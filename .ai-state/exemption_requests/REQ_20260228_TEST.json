@@ -1,0 +1,10 @@
+{
+  "request_id": "REQ_20260228_TEST",
+  "applicant_agent": "cto_coder",
+  "violated_rule": "01-quality-redlines.md#单文件800行红线",
+  "target_file": "src\\huge_code.py",
+  "justification": "这是一次合法的压力测试，人类架构师已特批。",
+  "status": "approved",
+  "approved_by": "UIH00653",
+  "expiry_timestamp": 1900000000
+}
