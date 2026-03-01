@@ -51,14 +51,22 @@ def enforce_contract_hash(state: AgentGlobalState) -> AgentGlobalState:
     import hashlib
     import json
     
-    # 提取所有不可篡改的核心字段
+    # 核心字段存在性预校验 (防 AI 漏字崩溃)
+    required_fields = [
+        'sub_tasks', 'contract_metadata', 'metadata'
+    ]
+    for field in required_fields:
+        if field not in state:
+            raise ValueError(f"Missing required state field: {field}")
+    
+    # 提取字段（使用 get 处理可选字段，增强健壮性）
     payload_parts = [
         json.dumps(state['sub_tasks'], sort_keys=True),
         json.dumps(state.get('prototype_evaluation', {}), sort_keys=True),
-        state['contract_metadata']['contract_version'],
-        state['contract_metadata']['generated_at'],
-        state['contract_metadata']['operator_role_applied'],
-        state['metadata']['task_id']
+        state['contract_metadata'].get('contract_version', '1.0'),
+        state['contract_metadata'].get('generated_at', ''),
+        state['contract_metadata'].get('operator_role_applied', ''),
+        state['metadata'].get('task_id', '')
     ]
     
     # 有序拼接并计算 SHA-256
