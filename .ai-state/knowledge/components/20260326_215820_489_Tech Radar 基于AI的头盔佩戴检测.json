@@ -1,0 +1,18 @@
+{
+  "title": "[Tech Radar] 基于AI的头盔佩戴检测",
+  "domain": "components",
+  "content": "该智能摩托车点火系统利用YOLO（You Only Look Once）和BiLSTM（双向长短期记忆网络）融合技术，实时检测骑手是否佩戴头盔，以确保骑行安全。系统与Arduino及各类传感器集成，可能涉及摄像头捕获图像、AI模型进行实时分析、并通过Arduino控制点火系统。这为我们的智能头盔项目在视觉识别、ADAS功能（如头盔佩戴状态监测）以及嵌入式系统集成方面提供了具体的技术方案和参考。\n\n来源: https://github.com/cmanojkumar13-beep/cmanojkumar13-beep-YOLO-and-BiLSTM-Fusion-for-Smart-Motorcycle-Ignition",
+  "source": "platform_monitor:https://github.com/cmanojkumar13-beep/cmanojkumar13-beep-YOLO-and-BiLSTM-Fusion-",
+  "created_at": "2026-03-26",
+  "tags": [
+    "YOLO",
+    "BiLSTM",
+    "头盔检测",
+    "ADAS",
+    "AI",
+    "嵌入式",
+    "platform_monitor",
+    "tech_radar"
+  ],
+  "confidence": "medium"
+}

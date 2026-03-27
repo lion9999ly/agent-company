@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Luna 6地面标识、TSR与交通灯识别升级",
+  "domain": "components",
+  "content": "Luna 6地面标识识别距离为60 m，支持停止线、斑马线、地面箭头、减速带；Luna 3为50 m。TSR识别距离提升至80 m，支持全球限速类及常见禁止、警告、指示和辅助标识，并支持OCR辅助识别；Luna 3为50 m。交通灯识别距离提升至150 m，支持交通灯与车道关联、读秒；Luna 3为100 m。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "地面标识",
+    "TSR",
+    "OCR",
+    "交通灯",
+    "读秒"
+  ],
+  "confidence": "high"
+}

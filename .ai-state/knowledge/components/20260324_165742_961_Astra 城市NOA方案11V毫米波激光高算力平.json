@@ -1,0 +1,16 @@
+{
+  "title": "Astra 城市NOA方案：11V+毫米波+(激光)高算力平台",
+  "domain": "components",
+  "content": "Astra城市NOA方案采用11V+毫米波+(激光)配置，运行于高算力平台。可实现高速NOA+城区NOA+漫游（不含车位到车位），并支持APA、RPA、RA。方案宣称“全国都能开”，但部分场景仍有局限，高速与城区功能切换体验不连续，适合从高速向城区扩展的主流高阶智驾车型。",
+  "source": "doc_import:智驾大陆 Astra 产品介绍 20260206 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Astra",
+    "城市NOA",
+    "11V",
+    "毫米波",
+    "激光雷达",
+    "高算力"
+  ],
+  "confidence": "high"
+}

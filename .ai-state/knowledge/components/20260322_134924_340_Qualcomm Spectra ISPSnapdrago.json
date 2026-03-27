@@ -1,0 +1,15 @@
+{
+  "title": "Qualcomm Spectra ISP：Snapdragon AR1 Gen 1 影像系统",
+  "domain": "components",
+  "content": "Snapdragon AR1 Gen 1 集成 Qualcomm Spectra Image Signal Processor，采用双 14-bit ISP。支持最高 12 MP computational HDR 与人像模式照片拍摄，具备高级自动曝光、自动白平衡、硬件电子防抖（EIS）。视频方面支持最高 6 MP 30 FPS 采集，并支持 720p120 FPS 慢动作视频。还集成 AI Face Detection 与 Facial Landmark Detection，面向智能眼镜第一视角影像采集优化。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Spectra ISP",
+    "dual ISP",
+    "camera",
+    "HDR",
+    "EIS"
+  ],
+  "confidence": "high"
+}

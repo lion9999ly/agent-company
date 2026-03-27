@@ -1,0 +1,13 @@
+{
+  "title": "[教训] mesh对讲方案该怎么选（评价C）",
+  "domain": "lessons",
+  "content": "1. **失败根因**：未先以 **CARDO** 这一摩托 Mesh 对讲标杆做竞品与技术路线对标，直接抽象裁决，导致方案脱离用户真实参照系。  \n\n2. **出问题环节**：**知识库不足 + CMO市场 + Critic评审**  \n- 知识库不足：缺少对 CARDO / Sena 等摩托对讲主流方案认知。  \n- CMO市场：没从“用户拿谁比较”出发定义问题。  \n- Critic评审：未识别“缺少标杆对标”这一关键前提缺口。  \n\n3. **下次怎么做**：先重构问题为“若对标 CARDO，mesh 方案该怎么选”。按 **竞品→体验→技术→成本→量产** 顺序分析：先拆 CARDO 的组网人数、重连、跨品牌、音质、稳定性与宣传口径，再判断自研/采购/授权哪条路适合 V1。结论必须回答“相比 CARDO 我们取舍了什么”。  \n\n4. **需补充知识**：CARDO Dynamic Mesh Communication（DMC）机制、Sena Mesh 对比、摩托场景真实痛点（高速噪声/断链/重连/手套操作）、跨品牌互通现状、头盔一体式对讲的认证/功耗/天线/麦克风阵列约束。",
+  "source": "user_feedback_analysis",
+  "created_at": "2026-03-26",
+  "tags": [
+    "evolution",
+    "failure",
+    "rating_c"
+  ],
+  "confidence": "high"
+}

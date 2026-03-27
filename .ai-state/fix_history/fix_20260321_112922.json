@@ -1,0 +1,12 @@
+{
+  "fix_id": "fix_20260321_112922",
+  "title": "为执行输出增加字数统计",
+  "description": "在执行输出结构中为 CTO/CMO/原型结果增加可选字数统计字段，供 state_merge 汇聚日志记录各角色输出字数。",
+  "file_path": "src/schema/state.py",
+  "old_content": "class ExecutionData(TypedDict):\n    prototype_output: Optional[Dict[str, str]]\n    cto_output: Optional[Dict[str, str]]\n    cmo_output: Optional[Dict[str, str]]\n    review_reports: Annotated[List[Dict[str, str]], append_logs]\n",
+  "new_content": "class ExecutionData(TypedDict):\n    prototype_output: Optional[Dict[str, str]]\n    prototype_output_word_count: Optional[int]\n    cto_output: Optional[Dict[str, str]]\n    cto_output_word_count: Optional[int]\n    cmo_output: Optional[Dict[str, str]]\n    cmo_output_word_count: Optional[int]\n    review_reports: Annotated[List[Dict[str, str]], append_logs]\n",
+  "risk_level": "medium",
+  "created_at": "2026-03-21T11:29:22.507464",
+  "status": "executed",
+  "executed_at": "2026-03-21T11:29:44.402216"
+}

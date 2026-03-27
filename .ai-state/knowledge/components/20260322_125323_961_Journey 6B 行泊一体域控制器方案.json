@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 行泊一体域控制器方案",
+  "domain": "components",
+  "content": "Journey 6B 支持 Driving & Parking Integrated Solution（Domain Controller Solution）。典型配置包括：8MP Camera@120°FOV（X8D）前视，3MP×4 Camera@195°FOV，另有 3MP Camera@60°FOV（Opt）或 1.5M/2M DMS Camera。文档强调“Integrated driving&parking”“Fisheye cameras support driving function”，说明鱼眼摄像头不仅用于泊车，也可参与行车功能。该方案面向更舒适的行车与泊车体验，并具备更强功能扩展能力。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "Domain Controller",
+    "Driving & Parking",
+    "3MPx4",
+    "Fisheye"
+  ],
+  "confidence": "high"
+}

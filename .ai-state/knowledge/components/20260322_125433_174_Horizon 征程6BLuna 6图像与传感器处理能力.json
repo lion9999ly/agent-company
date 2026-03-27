@@ -1,0 +1,17 @@
+{
+  "title": "Horizon 征程6B（Luna 6）图像与传感器处理能力升级",
+  "domain": "components",
+  "content": "征程6B在图像与传感器处理方面新增和增强多项能力：ISP图像专用处理带宽达到0.6 Gpix/s，可确保图像高质量并支持更丰富的传感器模组；支持Radar接入处理，同时兼容传统CV处理链路。该升级意味着Luna 6可承载更复杂的多传感器输入和更高质量视觉前端，优于征程3。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Horizon",
+    "征程6B",
+    "ISP",
+    "传感器",
+    "图像带宽",
+    "Radar",
+    "CV"
+  ],
+  "confidence": "high"
+}

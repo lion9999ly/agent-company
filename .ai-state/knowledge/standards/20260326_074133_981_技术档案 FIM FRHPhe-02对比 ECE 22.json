@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] FIM FRHPhe-02（对比 ECE 22.06）",
+  "domain": "standards",
+  "content": "以下是基于**公开可验证信息**整理的技术档案。先给结论：\n\n- **FIM FRHPhe-02 不是“民用道路头盔法规”**，而是 **FIM（国际摩托车联合会）赛用头盔认证规范**，主要面向 MotoGP、WSBK、EWC 等高等级赛事。\n- **ECE 22.06** 是 **联合国欧洲经济委员会道路摩托车头盔法规**，面向公路合法销售与使用。\n- 两者**不是简单上下级关系**：  \n  - **FIM FRHPhe-02 更偏极限赛道、高能量冲击、职业竞赛场景**。  \n  - **ECE 22.06 更偏道路全场景、量产一致性、附件/翻盖/日常使用合规**。\n- **很多顶级赛道头盔会同时具备 ECE 22.06 + FIM FRHPhe-02**，但**并非所有 ECE 22.06 头盔都有 FIM**。\n\n---\n\n# 一、FIM FRHPhe-02 技术档案\n\n## 1. 基本定义\n\n**全称**：FIM Racing Homologation Programme for Helmets, version 02  \n**简称**：FIM FRHPhe-02  \n**发布/适用阶段**：第二版赛用头盔认证规范，替代早期 FRHPhe-01  \n**主管机构**：FIM（Fédération Internationale de Motocyclisme，国际摩托车联合会）  \n**定位**：高等级摩托车赛事专用头盔认证  \n**适用对象**：\n- MotoGP\n- Moto2 / Moto3\n- WorldSBK / WorldSSP\n- Endurance World Championship\n- 其他要求 FIM 认证的国际赛事\n\n## 2. 认证目标\n\nFIM FRHPhe-02 的目标不是“让头盔能合法上路”，而是：\n\n- 在**极高速赛道事故**中提供更高等级保护\n- 关注**高能量线性冲击**\n- 强化**斜向/旋转冲击**表现\n- 控制头盔在多位置、多工况下的整体一致性\n- 适配职业赛车使用中的空气动力学、稳定性、视野和保持系统要求\n\n---\n\n## 3. 关键技术要求与测试重点\n\n> 说明：FIM 规范的完整实验室细项通常以官方技术文件和认可实验室流程为准。以下为公开资料中可稳定确认的重点框架与常见参数级别；个别数值在不同摘要来源中表述略有差异，因此我会标注“约”或“公开常见值”。\n\n### 3.1 冲击测试\nFIM FRHPhe-02 相比普通道路法规，特点是：\n\n- **测试点更多**\n- **速度更高或更苛刻**\n- **更强调头盔整体壳体/缓冲层一致性**\n- **更重视旋转加速度控制**\n\n公开资料普遍提到：\n- 采用**多点冲击测试**\n- 包含**不同砧座**（平砧、棱边/路缘类砧座等）\n- 包含**斜向冲击测试*",
+  "source": "completeness_check",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "high"
+}

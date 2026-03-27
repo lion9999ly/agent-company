@@ -1,0 +1,18 @@
+{
+  "title": "Journey 6E SIP 数据手册目录结构：从产品描述到接口时序",
+  "domain": "components",
+  "content": "目录显示文档覆盖完整模块级信息链路：1 Scope（含 1.1 General Product Description、1.2 Module Block Diagram）；2 Ordering Information；3 J6E SIP Feature；4 Package and Pin definitions（含 I/O 参数定义、封装、引脚图、引脚说明）；后续还包括电气规格与接口时序。该结构表明 Journey 6E SIP 是面向系统集成的模块级器件，而非仅芯片裸片说明。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Contents",
+    "Scope",
+    "Ordering Information",
+    "Features",
+    "Package",
+    "Pin Definitions",
+    "Electrical",
+    "Timing"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 在 ADR/EDR 车载数据记录场景的支持",
+  "domain": "components",
+  "content": "Journey 6B 支持 ADR（Automatic Vehicle Data Recorder）/ EDR（Event Data Recorder）场景。方案亮点包括：支持 trigger video、perception 和 body data 的 ETH 回传；支持视频 codec 压缩。资源页显示 DVR/EDR DRAM 占用范围为 MIN 100MB、MAX 200MB，说明平台已考虑事件记录功能的内存预算。该能力适合事故/事件触发后的多源数据留存与上传，满足法规、售后分析和安全追溯需求。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "ADR",
+    "EDR",
+    "Event Data Recorder",
+    "ETH回传"
+  ],
+  "confidence": "high"
+}

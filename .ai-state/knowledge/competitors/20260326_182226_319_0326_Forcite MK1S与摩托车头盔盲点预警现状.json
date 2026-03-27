@@ -1,0 +1,19 @@
+{
+  "title": "0326_Forcite MK1S与摩托车头盔盲点预警：现状、供应商线索与2026可行路径",
+  "domain": "competitors",
+  "content": "基于现有公开资料，Forcite MK1S 是一款智能摩托车全盔，但截至已披露信息，它并未集成真正的盲点警告（BSW）ADAS雷达或后向摄像头方案。三份来源一致指出：MK1S核心能力是前置行车记录、导航提示、蓝牙音频与HUD/LED提示，而非实时环境感知。可确认的产品信息包括：MK1S于2022年亮相、2023年开始发货；前置摄像头规格常见为1080p@60fps；外壳强调碳纤维结构。来源还指出，其“危险警报”更多依赖GPS和社区数据，而不是毫米波雷达。这里需特别排除自行车头盔语境：本条讨论对象是摩托车全盔，摩托车ADAS对抗振动、风噪、雨雾和高速工况的要求远高于自行车头盔。",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "smart helmet",
+    "motorcycle helmet",
+    "BSW",
+    "ADAS",
+    "radar",
+    "camera supplier",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

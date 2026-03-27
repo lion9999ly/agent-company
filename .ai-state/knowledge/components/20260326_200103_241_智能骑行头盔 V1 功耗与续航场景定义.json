@@ -1,0 +1,18 @@
+{
+  "title": "智能骑行头盔 V1 功耗与续航场景定义",
+  "domain": "components",
+  "content": "报告指出“8 小时续航”在全开场景下非常激进：系统功耗可能达到 4.5–6.5W，3500mAh 锂电按 3.8V 约 13.3Wh，若平均功耗 5W，理论续航仅 2.6h。因此 PRD 不允许只写模糊总续航，必须拆成场景化定义：纯互联/待机模式 8h+，HUD 导航 + 语音 5–6h，HUD + 语音 + 1080p 录像 3h+，事件触发录像模式用于长途可用。该结论直接要求产品采用功耗分级策略，而非单一宣传数字。",
+  "source": "deep_research:prd_reference",
+  "created_at": "2026-03-26",
+  "tags": [
+    "续航",
+    "功耗",
+    "3500mAh",
+    "13.3Wh",
+    "5W",
+    "PRD",
+    "deep_research",
+    "prd_reference"
+  ],
+  "confidence": "medium"
+}

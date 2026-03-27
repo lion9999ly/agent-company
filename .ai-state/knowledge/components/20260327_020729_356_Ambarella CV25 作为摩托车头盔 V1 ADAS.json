@@ -1,0 +1,18 @@
+{
+  "title": "Ambarella CV25 作为摩托车头盔 V1 ADAS 主方案",
+  "domain": "components",
+  "content": "报告明确裁决 Ambarella CV25 为 V1 量产主方案，CV22 不推荐作为标准量产方案。CV22 AI 算力约 ~1 TOPS 级，典型整机功耗 ~1.5–2.5W，SoC 单价 18–28 美元；CV25 AI 算力约 ~1–2 TOPS 级，典型整机功耗 ~2–3W，SoC 单价 28–45 美元。CV25 更适合同时承载 4K 录像、BSD/FCW 推理、IMU 融合和 HUD 提示链路。首代量产若选 CV22，虽然可节省 10–17 美元级差价，但会显著增加延迟、掉帧、误报、热和续航风险。",
+  "source": "deep_research:auto_20260327_2",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Ambarella",
+    "CV25",
+    "CV22",
+    "SoC选型",
+    "功耗",
+    "BOM",
+    "deep_research",
+    "auto_20260327_2"
+  ],
+  "confidence": "medium"
+}

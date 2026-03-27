@@ -1,0 +1,17 @@
+{
+  "title": "Horizon 征程6B（Luna 6）vDSP、MCU与Codec高集成方案",
+  "domain": "components",
+  "content": "征程6B集成高灵活性vDSP、全功能MCU和视频Codec。MCU提供5K+ DMIPS、ASIL-D级算力，可降低一体机成本与设计难度；Codec支持4K@60fps H.265/4数据回传，保证较高视频质量。该高集成设计使Luna 6除感知计算外，还可覆盖控制与视频回传场景，系统级能力明显强于征程3。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Horizon",
+    "征程6B",
+    "vDSP",
+    "MCU",
+    "ASIL-D",
+    "Codec",
+    "4K60"
+  ],
+  "confidence": "high"
+}

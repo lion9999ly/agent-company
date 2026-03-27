@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1 防水基线：等效 IPX6+，不宣传整机 IP67",
+  "domain": "components",
+  "content": "针对 100km/h 暴雨骑行场景，报告建议整机按等效 IPX6 以上设计，关键外露件如摄像头窗、充电口、麦克风声学膜、按键按 IPX6/IPX7 局部设计。行业参考中 Lumos 为 IPX6，EyeRide 为 IP54，报告明确认为 IP54 对摩托暴雨明显不够，同时不建议宣传整机 IP67，因为全盔通风结构会与浸水能力口径冲突。决策上应采用“高速暴雨喷淋通过/等效 IPX6+”作为宣传与设计基线。",
+  "source": "deep_research:prd_technical_baseline",
+  "created_at": "2026-03-26",
+  "tags": [
+    "防水",
+    "IPX6",
+    "IPX7",
+    "100km/h",
+    "可靠性",
+    "deep_research",
+    "prd_technical_baseline"
+  ],
+  "confidence": "medium"
+}

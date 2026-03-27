@@ -1,0 +1,14 @@
+{
+  "title": "Snapdragon AR1 Gen 1 拍照能力：12 MP HDR 与人像模式",
+  "domain": "components",
+  "content": "该平台的拍照能力聚焦智能眼镜场景，支持最高 12 MP 照片拍摄，并明确支持 computational HDR 与 portrait mode。官方强调可实现 vivid colors and clarity，适合随手记录场景。结合双 14-bit ISP、自动曝光、自动白平衡与低光增强算法，Snapdragon AR1 Gen 1 旨在提升眼镜端照片质量与可用性。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "12MP",
+    "computational HDR",
+    "portrait mode",
+    "photo capture"
+  ],
+  "confidence": "high"
+}

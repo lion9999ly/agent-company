@@ -1,0 +1,19 @@
+{
+  "title": "0327_2025摩托车智能头盔ADAS盲点预警：Forcite MK1S、Intelligent Cranium iC-R与BM",
+  "domain": "competitors",
+  "content": "面向摩托车全盔场景，2025年“头盔级ADAS盲点预警”仍处于早期，三类路线差异明显。第一类是Forcite MK1S（澳大利亚 Forcite Helmets）：其核心是HUD+摄像头+互联，公开信息显示采用SONY IMX前置摄像头，支持1080p/60fps录制，整盔售价常见区间约1000-1200美元。需特别标注：来源之间存在矛盾——有来源称MK1S可通过后置摄像头和AI实现盲点预警，但另有来源明确指出MK1S本身并无盲点雷达/侧向传感器，当前更像“信息显示平台”，适合承接来自摩托车本体ADAS的告警，而非独立完成盲点检测。基于现有证据，后者可信度更高。第二类是Intelligent Cranium iC-R（美国 Intelligent Cranium）：定位更激进，方案包含后视/多摄像头、HUD、侧向近距离传感器，部分资料还提到规划集成雷达/激光雷达、触觉振动告警、头盔后部LED刹车灯等。它是最接近“头盔自带盲点监测”的产品，但商业化成熟度不足，长期处于预订或有限生产状态，量产与交付节奏存在不确定性，因此更像技术样机型竞争对手。第三类是BMW Motorrad ConnectedRide Smartglasses（BMW Motorrad）：这不是头盔，而是智能眼镜，必须与摩托车头盔配合使用，不能算我方直接同类。其价值在于把导航、车速、挡位等信息投到视野中，价格约690欧元，支持与BMW Motorrad Connected App联动；但现有资料未显示其自身具备独立盲点探测能力，更现实的路径是与宝马摩托车已上车的雷达/车机系统联动，把告警前移到骑手视野。结论：2025年真正成熟可卖的摩托车全盔ADAS方案，仍以“头盔显示+车端感知”最可落地；若做竞品对标，Forcite适合参考人机交互与HUD集成，iC-R适合参考传感器野心与多模态告警，BMW智能眼镜则适合作",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "摩托车全盔",
+    "ADAS",
+    "盲点预警",
+    "Forcite MK1S",
+    "Intelligent Cranium iC-R",
+    "BMW Motorrad ConnectedRide Smartglasses",
+    "HUD",
+    "竞品分析",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

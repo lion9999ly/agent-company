@@ -1,0 +1,18 @@
+{
+  "title": "[Tech Radar] MCP服务器与AI助手资源",
+  "domain": "components",
+  "content": "此项目提供MCP服务器、工具和资源列表，特别强调AI助手应用。对于智能摩托车头盔项目，MCP接口可用于集成AI助手功能，如语音控制、ADAS数据处理或AR显示内容生成。研究这些资源有助于深入了解MCP协议在AI交互中的具体实现细节，探索如何利用现有工具和服务器构建高效、智能的头盔系统，提升用户体验和开发效率。\n\n来源: https://github.com/timunbasah3/awesome-mcp",
+  "source": "platform_monitor:https://github.com/timunbasah3/awesome-mcp",
+  "created_at": "2026-03-27",
+  "tags": [
+    "MCP",
+    "AI",
+    "服务器",
+    "工具",
+    "协议",
+    "AI助手",
+    "platform_monitor",
+    "tech_radar"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Luna 6满足E-NCAP 2026的关键策略：优先提升②③而非完全依赖①",
+  "domain": "lessons",
+  "content": "文档给出的关键判断是：②③为Luna 6目标，目标是满足E-NCAP 5星；而①受主机厂舱内摄像头配置制约。由此可见，Luna 6策略是优先通过Vehicle Assistance与Crash Avoidance能力拿分，降低对整车座舱硬件选配的依赖。数据上，Safe Driving可达72.69%-78.63%，Crash Avoidance最高达88.9477/100，为2026 5星提供主要支撑。",
+  "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "产品策略",
+    "E-NCAP 2026",
+    "Safe Driving",
+    "Crash Avoidance"
+  ],
+  "confidence": "high"
+}

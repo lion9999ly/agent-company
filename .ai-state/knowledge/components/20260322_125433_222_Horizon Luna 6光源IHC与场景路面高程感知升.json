@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Luna 6光源/IHC与场景路面高程感知升级",
+  "domain": "components",
+  "content": "Luna 6在光源及IHC方面支持对向双灯1000 m、同向双灯500 m；Luna 3分别为800 m和500 m。场景及路面高程方面，Luna 6可识别光照、天气、雨量、雾等级、道路场景、停车场环境、路面类型及高程；Luna 3仅支持雨量、雾等级及部分路面类型。Luna 6环境理解维度更完整。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "IHC",
+    "光源检测",
+    "场景识别",
+    "天气",
+    "路面高程"
+  ],
+  "confidence": "medium"
+}

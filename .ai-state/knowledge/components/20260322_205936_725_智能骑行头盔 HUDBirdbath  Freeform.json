@@ -1,0 +1,18 @@
+{
+  "title": "智能骑行头盔 HUD：Birdbath / Freeform Prism 优先于 Waveguide",
+  "domain": "components",
+  "content": "报告明确建议：面向 2026 年前后量产型智能骑行头盔，主路线优先选择 Birdbath 或 Freeform Prism，小型化方案优于直接采用高端 AR 波导。原因是骑行场景更看重户外高亮可视性、成本、结构可靠性、抗震和量产成熟度，而非极致轻薄。若产品定位 2000–4000 元人民币主流高端头盔附件/模组，建议采用 Micro-OLED/LCoS + Birdbath；若定位 5000 元以上旗舰，可预研波导，但更适合作为二代/三代平台，而不建议作为首代主销机型核心方案。",
+  "source": "deep_research:optical_suppliers",
+  "created_at": "2026-03-22",
+  "tags": [
+    "智能骑行头盔",
+    "HUD",
+    "Birdbath",
+    "Freeform Prism",
+    "Waveguide",
+    "量产路线",
+    "deep_research",
+    "optical_suppliers"
+  ],
+  "confidence": "high"
+}

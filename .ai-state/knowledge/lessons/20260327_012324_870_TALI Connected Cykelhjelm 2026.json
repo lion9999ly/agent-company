@@ -1,0 +1,17 @@
+{
+  "title": "TALI Connected Cykelhjelm 2026 smart cycling helme",
+  "domain": "lessons",
+  "content": "**智能骑行头盔研发关键信息摘要**\n\n### 1. 可能的产品方案/核心器件\n- **主控/通信SoC：Nordic nRF5340**\n  - 双核 Arm Cortex-M33：**128MHz 应用核 + 64MHz 网络核**\n  - 存储：**1MB Flash + 512KB RAM**（应用侧），**256KB Flash + 64KB RAM**（网络侧）\n  - 支持：**Bluetooth 5.3、LE Audio、Thread、Zigbee、Matter、NFC**\n  - 低功耗指标：**TX 0dBm 4.8mA，RX 2.6mA，深睡 0.9µA**\n  - 研发价值：适合做**灯控+传感器融合+BLE互联+OTA升级+未来音频扩展**\n\n- **传感器方案**\n  - 刹车检测依赖**三轴加速度计/IMU**，文中举例：**LSM6DS3、BMI270**\n  - 可用于**减速识别、跌倒检测、手势/姿态识别**\n\n- **灯光系统**\n  - **刹车灯**：后部高亮红色 LED 阵列，亮度推测 **50–200 lm**，响应目标 **<200ms**\n  - **转向灯**：左右琥珀色 LED 阵列，亮度推测 **30–100 lm**\n  - 闪烁频率参考：**60–120 次/分钟（1–2Hz）**\n\n- **电池**\n  - 类型：**Li-ion / Li-Po**\n  - 容量推测：**500–1500mAh**，典型智能灯控头盔建议 **800–1200mAh**\n  - 续航推测：**8–15小时**\n\n### 2. 技术趋势\n- **BLE SoC 一体化**成为主流：主控、无线、低功耗管理集中化\n- **传感器融合驱动主动安全**：刹车灯自动触发、跌倒检测、手势控制\n- **LE Audio**为头盔加入**导航语音、",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "竞品",
+    "智能骑行头盔",
+    "拆解",
+    "Nordic",
+    "尾灯",
+    "转向灯",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

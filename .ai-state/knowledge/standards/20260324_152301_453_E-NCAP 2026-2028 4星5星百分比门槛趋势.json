@@ -1,0 +1,16 @@
+{
+  "title": "E-NCAP 2026-2028 4星/5星百分比门槛趋势",
+  "domain": "standards",
+  "content": "表格给出星级百分比门槛：Safe Driving 5星为2026年60%、2027年70%、2028年80%；4星为50%、60%、70%。Crash Avoidance 5星为2026年70%、2027年80%、2028年80%；4星为60%、70%、70%。趋势上，2026-2028要求逐年提高，其中Crash Avoidance在2027后进入平台期。",
+  "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "5星门槛",
+    "4星门槛",
+    "Safe Driving",
+    "Crash Avoidance",
+    "2026",
+    "2028"
+  ],
+  "confidence": "high"
+}

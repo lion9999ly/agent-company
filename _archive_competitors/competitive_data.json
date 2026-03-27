@@ -1,0 +1,108 @@
+{
+  "timestamp": "2026-03-16T20:35:13.671165",
+  "products": {
+    "INMO Air3": {
+      "price": "$1,099",
+      "resolution": "1920×1080",
+      "fov": "36°",
+      "brightness": "600 nits",
+      "display": "Sony Micro-OLED 双目1D波导",
+      "processor": "Qualcomm Snapdragon 8核",
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "660mAh",
+      "battery_life": "7小时",
+      "camera": "120°超广角",
+      "weight": "~75g (估计)",
+      "audio": "4麦克风 + 2扬声器",
+      "os": "IMOS 3.0",
+      "features": [
+        "All-in-One设计",
+        "ChatGPT集成",
+        "3DoF智能指环",
+        "GMS认证"
+      ],
+      "source": "https://www.inmoxr.com/products/inmo-air3-ar-glasses-all-in-one-full-color-waveguide",
+      "confidence": "high"
+    },
+    "Xreal Air 2": {
+      "price": "$499-599 (估计)",
+      "resolution": "1920×1080",
+      "fov": "46°",
+      "brightness": "500 nits",
+      "display": "Sony Micro-OLED",
+      "processor": "N/A (需外接设备)",
+      "ram": "N/A",
+      "storage": "N/A",
+      "battery": "N/A (有线供电)",
+      "battery_life": "N/A",
+      "camera": "无",
+      "weight": "72g",
+      "audio": "内置扬声器",
+      "os": "N/A (投屏设备)",
+      "features": [
+        "轻量化",
+        "高FOV",
+        "有线连接"
+      ],
+      "source": "https://www.xreal.com/air2/ (部分数据来自行业报道)",
+      "confidence": "medium"
+    },
+    "Rokid Max": {
+      "price": "$449-499 (估计)",
+      "resolution": "1920×1080",
+      "fov": "50°",
+      "brightness": "600 nits",
+      "display": "Sony Micro-OLED",
+      "processor": "N/A (需外接设备)",
+      "ram": "N/A",
+      "storage": "N/A",
+      "battery": "N/A (有线供电)",
+      "battery_life": "N/A",
+      "camera": "无",
+      "weight": "75g",
+      "audio": "内置扬声器",
+      "os": "N/A (投屏设备)",
+      "features": [
+        "最大FOV",
+        "轻量化",
+        "有线连接"
+      ],
+      "source": "https://global.rokid.com/ (部分数据来自行业报道)",
+      "confidence": "medium"
+    },
+    "雷鸟 Air 2": {
+      "price": "$399-449 (估计)",
+      "resolution": "1920×1080",
+      "fov": "47°",
+      "brightness": "400 nits",
+      "display": "Sony Micro-OLED",
+      "processor": "N/A (需外接设备)",
+      "ram": "N/A",
+      "storage": "N/A",
+      "battery": "N/A (有线供电)",
+      "battery_life": "N/A",
+      "camera": "无",
+      "weight": "75g",
+      "audio": "内置扬声器",
+      "os": "N/A (投屏设备)",
+      "features": [
+        "性价比高",
+        "TCL品牌背书"
+      ],
+      "source": "行业报道整理",
+      "confidence": "low"
+    }
+  },
+  "bilibili": {
+    "videos_analyzed": [
+      {
+        "bv": "BV1Ph411M7XP",
+        "title": "Xreal Air评测",
+        "views": 502660,
+        "likes": 531
+      }
+    ],
+    "note": "影目Air3特定评测视频较少，Xreal和Rokid讨论度更高"
+  }
+}

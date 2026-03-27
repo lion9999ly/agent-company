@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Sena SRL3（对比 Sena Impulse / Sena Stryker / Sena R2 EVO / Sena S1）",
+  "domain": "competitors",
+  "content": "以下内容先做一个**关键纠偏**：\n\n## 结论先说\n**Sena SRL3 并不是“尚未发布”的假设产品。它已经是 Sena 官方在售/已发布的产品。**  \n它是 **Shoei 专用集成式摩托车头盔通讯系统**，主要面向：\n\n- **Shoei Neotec 3**\n- **Shoei GT-Air 3**\n- **Shoei J-Cruise 3**\n\n而不是独立头盔，也不是通用外挂对讲机。\n\n你给出的“搜索结果”里把 SRL3 说成“截至 2024 年初尚未发布”，这已经过时或混淆了 **SRL2** 与 **SRL3**。\n\n---\n\n# Sena SRL3 技术档案\n\n## 1. 产品定位\n\n**产品名称**：Sena SRL3  \n**类型**：Shoei 指定头盔专用内嵌式通讯系统  \n**品牌关系**：Sena 为 Shoei 第三代预留位头盔开发的原厂风格集成通讯方案  \n**适配头盔**：\n\n- Shoei Neotec 3\n- Shoei GT-Air 3\n- Shoei J-Cruise 3\n\n**核心卖点**：\n\n- 与头盔外形高度一体化\n- 支持 **Mesh Intercom**\n- 支持 **Bluetooth Intercom**\n- 配备 **Harman Kardon** 扬声器与麦克风\n- 保持 Shoei 头盔的外观、风噪控制和空气动力学完整性\n\n---\n\n## 2. 关键技术参数\n\n> 注：不同地区官网/经销商页面在表述上会有轻微差异，以下为公开资料中最常见、最稳定的一组参数口径。\n\n### 通讯与连接\n- **Mesh Intercom**：支持\n- **Bluetooth Intercom**：支持\n- **蓝牙版本**：通常标注为 **Bluetooth 5.x**（不同页面有时不强调小版本）\n- **蓝牙对讲人数**：最多 **4 人**\n- **蓝牙对讲距离**：约 **1.2 km / 0.8 mi**（开放地形）\n- **Mesh 单跳距离**：约 **2.0 km / 1.2 mi**（开放地形）\n- **Mesh 扩展距离**：最多约 **8.0 km / 5.0 mi**（至少 6 名骑手中继条件下）\n- **Open Mesh**：支持，多频道\n- **Group Mesh**：支持，私有群组\n\n### 音频\n- **扬声器**：Harman Kardon 定制扬声器\n- **麦克风**：Harman Kardon 定制麦克风\n- **降噪**：Advanced Noise Control\n- **音频多任务**：支持（视连接场景与固件而定）\n\n### 电池与充电\n- **Mesh 通话时间**：约 **8 小时**\n- **Bluetooth 通话时间**：约 **11 小时**\n- *",
+  "source": "completeness_check",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Sena R1/R2/Impulse 续航落差暴露智能头盔核心短板",
+  "domain": "components",
+  "content": "报告指出，Sena R1 / R2 / Impulse 在开启 Mesh Intercom + 音乐后，用户实际续航常只有 4–6小时，明显低于宣传的 12小时；Forcite MK1S 常见续航反馈也仅 4–6小时。结合头盔可容纳电池通常仅 2000–4000mAh，可见当前行业最大痛点不是功能少，而是核心功能一开启就掉电快、长途必须带充电宝。对产品决策而言，真实续航应优先于功能堆叠，目标需做到导航+通讯典型场景 ≥8小时、基础模式 ≥12小时。",
+  "source": "deep_research:user_pain_points",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Sena",
+    "Forcite",
+    "续航",
+    "电池",
+    "Mesh",
+    "产品KPI",
+    "deep_research",
+    "user_pain_points"
+  ],
+  "confidence": "high"
+}

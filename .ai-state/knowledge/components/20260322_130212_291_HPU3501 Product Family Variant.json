@@ -1,0 +1,16 @@
+{
+  "title": "HPU3501 Product Family Variants A/B/C/D",
+  "domain": "components",
+  "content": "HPU3501 产品家族包含 4 个型号：HPU3501A、HPU3501B、HPU3501C、HPU3501D，均为 48-pin 6x6 QFN。A/B 型号不带 power on/off key input，C/D 型号带 power on/off key input。I2C 地址方面：A/C 在 OTPSEL=0 时为 0x1E、OTPSEL=1 时为 0x3E；B/D 在 OTPSEL=0 时为 0x1C、OTPSEL=1 时为 0x3C。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "HPU3501A",
+    "HPU3501B",
+    "HPU3501C",
+    "HPU3501D",
+    "I2C Address",
+    "PWRKEY"
+  ],
+  "confidence": "high"
+}

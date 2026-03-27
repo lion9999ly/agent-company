@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Sena 50S（对比 Sena Impulse / Sena Stryker / Sena R2 EVO / Sena S1）",
+  "domain": "competitors",
+  "content": "以下是 **Sena 50S 技术档案**，并重点对比 **Sena Impulse / Sena Stryker / Sena R2 EVO / Sena S1**。  \n我会尽量给出**具体参数、价格区间、适用场景、优劣势**。  \n需要先说明一点：**Impulse / Stryker / R2 EVO / S1 都是“带内置通讯系统的头盔/骑行头盔”**，而 **50S 是“独立安装式通讯主机”**，这决定了它们在灵活性、音质、维护、适配头盔类型上天然不同。\n\n---\n\n# 1. Sena 50S 技术档案\n\n## 1.1 产品定位\n- **产品名称**：Sena 50S\n- **类别**：摩托车蓝牙/Mesh 对讲系统\n- **形态**：外置安装式通讯主机\n- **适用对象**：摩托车骑士、双人骑行、车队骑行、长途旅行用户\n- **市场定位**：Sena 高端旗舰级通讯器之一\n\n---\n\n## 1.2 核心卖点\n- **Mesh 2.0 对讲**\n- **Harman Kardon 联名扬声器与麦克风**（后期版本）\n- **蓝牙 5.0**\n- **旋钮 + 实体按键操作**\n- **支持语音指令**\n- **支持 WiFi 适配器自动固件更新**\n- **支持 FM 收音机**\n- **支持与手机/GPS/TFT 连接**\n\n---\n\n## 1.3 详细技术参数\n\n## 基本规格\n- **主机尺寸**：约 102 mm × 56 mm × 27 mm\n- **重量**：约 64 g\n- **工作温度**：-10°C ~ 55°C\n- **充电温度**：0°C ~ 45°C\n\n## 蓝牙\n- **蓝牙版本**：Bluetooth 5.0\n- **支持协议**：\n  - HSP\n  - HFP\n  - A2DP\n  - AVRCP\n\n## 对讲能力\n### Mesh Intercom 2.0\n- **Open Mesh**\n  - 频道数：9\n  - 用户数：理论上几乎无限\n  - 距离：单节点间最远约 2 km\n  - 扩展距离：在理想开放环境下，6 名以上骑士可扩展到约 8 km\n\n- **Group Mesh**\n  - 最多 **24 人**\n  - 距离：单节点间最远约 2 km\n  - 扩展距离：理想条件下约 8 km\n\n### 蓝牙对讲\n- **最多 4 人**\n- **最远约 2 km**（开放环境）\n\n## 音频\n- **扬声器**：40 mm\n- **扬声器厚度**：约 7.2 mm\n- **音频系统**：Harman Kardon 扬声器 + 麦克风（新版本）\n- **降噪**：Advanced Noise Control\n- **编解码器**：SBC\n- **FM 收音机**：\n  - 频率范围：76 ~ 108 MHz\n ",
+  "source": "completeness_check",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "high"
+}

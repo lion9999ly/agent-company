@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Robotics X3M 典型参数验证与用户赔偿义务",
+  "domain": "standards",
+  "content": "文档特别指出 datasheet/specification 中给出的“Typical”参数会因应用不同而变化，实际性能也可能随时间变化；包括“Typicals”在内的所有工作参数都必须由用户针对具体应用自行验证。若用户未经授权使用 Horizon 产品或不遵守免责声明条款，用户同意对因此产生的 claims、damages、costs、losses、liabilities 向 Horizon 及其代表进行全额赔偿。这一条款对车载、安防、机器人等高可靠场景导入 X3M 时尤为关键。",
+  "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Typical parameters",
+    "Validation",
+    "User responsibility",
+    "Indemnify",
+    "Application safety"
+  ],
+  "confidence": "high"
+}

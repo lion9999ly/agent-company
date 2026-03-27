@@ -1,0 +1,13 @@
+{
+  "title": "[浅档案] USB Type-C Receptacle USB4085-GF-A",
+  "domain": "components",
+  "content": "USB4085-GF-A 是一款 **USB Type-C 母座（Receptacle）连接器**，用于安装在设备端 PCB 上，供外部 USB-C 插头插入。根据你给的资料，它由 **JAE（Japan Aviation Electronics，日本航空电子）**生产，属于其 USB Type-C 连接器系列。\n\n主要参数方面，资料显示它通常支持 **USB 3.2 Gen 2（最高 10Gbps）**，并可配合 **USB Power Delivery** 实现最高 **100W（20V/5A）** 供电；额定电压约 **20V DC**，VBUS/GND 引脚电流可到 **5A**。机械性能上，插拔寿命大约 **10,000 次**，工作温度一般为 **-30°C 到 +85°C**。结构上多为 **mid-mount（中置安装）**，适合做薄型设备设计。资料还提到该系列部分型号具备 **防水能力**，可能达到 **IPX7/IPX8**，但这一点我不能完全确认到 USB4085-GF-A 的所有具体后缀型号。\n\n适用场景主要包括：**智能终端、可穿戴设备、工业设备、车载或户外电子产品**等，尤其适合需要 **小型化、高速传输、较高供电能力、一定耐用性** 的产品。需要注意的是，它本身是 **板载外部接口连接器**，**不是板对板/FPC 连接器**。",
+  "source": "kg_expand:connector_interface",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "shallow",
+    "connector_interface"
+  ],
+  "confidence": "low"
+}

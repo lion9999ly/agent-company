@@ -1,0 +1,23 @@
+{
+  "title": "0326_EJEAS Q8摩托车全盔对讲模块：2025年Mesh/蓝牙认证与供应链判断",
+  "domain": "components",
+  "content": "EJEAS（易极思）Q8属于摩托车头盔对讲系统，应与自行车头盔通信器明确区分：其设计场景是全盔/揭面盔高速骑行，认证重点是2.4GHz无线、EMC、音频与电池安全，而非自行车轻量化头盔附件。基于现有3个来源，Q8被描述为支持Mesh 2.0与Bluetooth 5.1（或更高），其中唯一可明确补充的具体版本数据是Bluetooth 5.1；但这里存在信息冲突：来源1强调“若支持标准Bluetooth Mesh，则模块需做Bluetooth SIG的Bluetooth Mesh Profile认证”；来源2、3则更像把“Mesh对讲”泛化为品牌私有Mesh。对摩托车对讲行业而言，Sena的Mesh Intercom™、Cardo的DMC™常为专有协议，因此Q8更可能采用“蓝牙+私有Mesh”架构，而不一定是标准Bluetooth Mesh。对模块供应商而言，2025年最关键的不是整机营销参数，而是预认证能力：1）Bluetooth SIG列名，至少覆盖Bluetooth Core 5.x、HFP、A2DP、GATT，若真用标准蓝牙组网，还需Mesh Profile；2）美国FCC Part 15 Subpart C，模块需有FCC ID；3）欧盟CE/RED（2014/53/EU），通常对应EN 300 328、EN 301 489-1/-17、EN 62368-1，并提供DoC；4）英国UKCA；5）环保合规如RoHS/REACH。原始结果明确提到的公司/品牌名包括EJEAS、Bluetooth SIG、Sena、Cardo、FCC。来源未给出Q8具体无线模块供应商名称，也未出现具体芯片型号，如QCC5181、BES2800、IMX678这类信息均不能补充；同样，原始结果未提供发射功率、通信距离、降噪分贝、电池容量、亮度、重量等具体参数，也没有官方售价、模组单价或如“￥20",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "EJEAS",
+    "Q8",
+    "摩托车头盔",
+    "全盔",
+    "Mesh对讲",
+    "Bluetooth 5.x",
+    "FCC",
+    "CE RED",
+    "UKCA",
+    "Bluetooth SIG",
+    "无线模组认证",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

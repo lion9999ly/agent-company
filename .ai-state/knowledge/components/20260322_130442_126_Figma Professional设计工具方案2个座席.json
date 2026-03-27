@@ -1,0 +1,15 @@
+{
+  "title": "Figma Professional设计工具方案：2个座席，$16/月/席",
+  "domain": "components",
+  "content": "设计编辑工具选型为Figma Professional，文档标注“够用”。价格为包年$16/月/全坐席，需开通2个座席。补充说明：没有发票，只有海外invoice。对应链接为https://www.figma.com/pricing/。该方案适合当前小规模设计团队协作，但在财务合规上存在海外票据限制。",
+  "source": "doc_import:X：2年智能规划.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Figma",
+    "Professional",
+    "设计工具",
+    "座席",
+    "价格"
+  ],
+  "confidence": "high"
+}

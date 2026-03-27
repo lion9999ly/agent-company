@@ -1,0 +1,16 @@
+{
+  "title": "BT+GYRO+18650电池独立模块",
+  "domain": "components",
+  "content": "第2页下方出现独立模块描述：BT+GYRO+18650电池，支持+72V VIN、GND、CAN1_H、CAN1_L、CAN_GND、485A1_TX1、485B1_RX1、485A2_TX2、485B2_RX2、+72V VOUT、ACC、+12V_VOUT、CAN2_H、CAN2_L、+12V_VIN，并带终端电阻。该模块具备独立供电与双CAN/双485能力，可能承担车联网、姿态检测或中控网关功能。",
+  "source": "doc_import:NXT_T519-2000W(48V双总线+双包电池)整车逻辑图-20250725.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "BT",
+    "GYRO",
+    "18650",
+    "独立工作",
+    "CAN1",
+    "CAN2"
+  ],
+  "confidence": "high"
+}

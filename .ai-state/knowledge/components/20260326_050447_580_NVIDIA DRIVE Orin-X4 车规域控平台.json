@@ -1,0 +1,19 @@
+{
+  "title": "NVIDIA DRIVE Orin-X*4 车规域控平台",
+  "domain": "components",
+  "content": "NVIDIA DRIVE Orin-X 单颗AI算力约254 TOPS（INT8），CPU为Arm Cortex-A78AE多核，GPU为Ampere架构；Orin-X*4总算力约1016 TOPS。单颗典型功耗约40W-60W，四颗系统级功耗带来数百瓦级热设计压力。单颗模组/板级方案常见估算约800-1500美元/颗，四颗组合仅核心计算部分约3200-6000美元，若加板卡、存储、供电、散热、接口与软件，整套成本更高。报告结论是该平台算力极强但对智能骑行头盔完全过剩，功耗、散热、重量、供电均不可接受。",
+  "source": "deep_research:enrich_81",
+  "created_at": "2026-03-26",
+  "tags": [
+    "NVIDIA",
+    "Orin-X",
+    "254TOPS",
+    "1016TOPS",
+    "40W-60W",
+    "800-1500美元",
+    "车规域控",
+    "deep_research",
+    "enrich_81"
+  ],
+  "confidence": "high"
+}

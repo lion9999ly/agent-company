@@ -1,0 +1,16 @@
+{
+  "title": "Eyelights Eye-Ride HUD 安装支架脆弱问题",
+  "domain": "lessons",
+  "content": "ADVrider 用户指出 Eyelights Eye-Ride HUD 的“安装支架非常脆弱/flimsy”。该问题与前述粘合剂不牢形成呼应，说明产品在安装固定系统上存在系统性短板。对于摩托车场景，支架需承受持续震动、风压和频繁拆装，若结构强度不足，可能导致显示偏移、松动甚至脱落。",
+  "source": "doc_import:Eyelights用户反馈分析报告.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Eyelights",
+    "Eye-Ride HUD",
+    "安装支架",
+    "结构强度",
+    "ADVrider",
+    "硬件可靠性"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "深化:Lumos 智能骑行头盔产品线",
+  "domain": "competitors",
+  "content": "**结论：内容相关，但为“预测/模拟”，非已发布实锤信息。研发参考价值高，市场情报可信度中等。**\n\n### 1. 预测产品线与定位\n- **Lumos UrbanFlow**：城市通勤，强调可见性/基础智能/舒适。\n- **Lumos SportPulse**：运动性能，强调轻量化、空气动力学、通信、数据追踪。\n- **Lumos ApexVision**：旗舰探索，主打 **AR显示、环境感知、AI辅助**。\n\n### 2. 可关注的新技术/参数/价格信息\n- **防护结构**：MIPS Integra、Koroyd/WaveCel、多密度EPS；提出自研脑保护概念 **Kinetic Impact Shield**。\n- **碰撞检测+SOS**：加速度计/陀螺仪/气压计 + 边缘AI，宣称识别准确率 **99%+**；支持 **5G/LTE eSIM** 独立求救。\n- **环境感知**：后向 **毫米波雷达+超声波**，用于后车预警。\n- **灯光系统**：前灯 **500lm COB LED**，后灯 **800lm RGB LED阵列**，支持环境光/速度自适应；转向灯、自动刹车灯。\n- **显示交互**：**Micro-LED/LCoS + 光波导 AR HUD**；触觉导航（LRA震动）。\n- **音频通信**：骨传导/定向扬声器、多麦降风噪、**Mesh 2.0** 对讲（**16人/2km**）。\n- **生理监测**：PPG心率、GSR压力/疲劳监测。\n- **续航**：UrbanFlow **15h**，SportPulse **12h**，ApexVision **8–10h**；**USB-C PD、Qi无线充**。\n- **连接**：Bluetooth **6.0 LE Audio**、Wi‑Fi **6E**、5G/LTE。\n- **价格*",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "竞品",
+    "智能头盔",
+    "灯光",
+    "安全",
+    "Lumos",
+    "night_deep"
+  ],
+  "confidence": "medium"
+}

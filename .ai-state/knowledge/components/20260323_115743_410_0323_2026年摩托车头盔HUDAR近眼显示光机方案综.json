@@ -1,0 +1,23 @@
+{
+  "title": "0323_2026年摩托车头盔HUD/AR近眼显示光机方案综述",
+  "domain": "components",
+  "content": "面向2026年的摩托车头盔HUD/AR，光机方案核心在于“高亮微显示+轻量光学耦合+低功耗计算”。从现有来源看，微显示器主流候选包括Micro-LED、Micro-OLED与LCoS。其中特别适合户外强光骑行的是Micro-LED，报告给出的亮度可达100,000尼特以上，适合白天导航、碰撞预警等高可视场景；代表供应商为JBD（Jade Bird Display）。Micro-OLED则以高对比度和高像素密度见长，像素密度可达4,000 PPI以上，供应商包括Sony、视涯（SeeYA）和BOE，适合高端彩色界面，但在烈日下可视性弱于Micro-LED。LCoS技术成熟、成本较低，但因依赖外部光源、体积和效率劣势，更可能用于中低端方案。",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "摩托车头盔",
+    "HUD",
+    "AR",
+    "近眼显示",
+    "Micro-LED",
+    "Micro-OLED",
+    "JBD",
+    "Sony",
+    "BOE",
+    "P0",
+    "HUD",
+    "AR显示",
+    "光学"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Snapdragon AR1 Gen 1 影像增强算法：低光、时域滤波与色差校正",
+  "domain": "components",
+  "content": "平台提供多项图像质量增强能力，包括 Mega Low-Light Photo Capture、Motion Compensated Temporal Filtering、Smart ASF（改善对齐与 halo control）以及 LCAC（广角色差校正）。这些算法面向智能眼镜小型摄像头模组的成像短板，重点提升低光、运动场景和广角镜头画质。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Mega Low-Light",
+    "MCTF",
+    "Smart ASF",
+    "LCAC",
+    "imaging"
+  ],
+  "confidence": "high"
+}

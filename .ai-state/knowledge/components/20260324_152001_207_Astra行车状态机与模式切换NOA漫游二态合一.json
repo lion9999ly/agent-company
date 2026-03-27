@@ -1,0 +1,15 @@
+{
+  "title": "Astra行车状态机与模式切换（NOA/漫游二态合一）",
+  "domain": "components",
+  "content": "Astra行车状态机将HNOA和CNOA合一为NOA，仅保留NOA、漫游两个功能状态，不提供ACC或传统LCC，适用于城区、高速，SOP(530)。NOA切换到漫游的触发条件包括：到终点、到ODD边界、软开关选择漫游、无导航信息、定位偏离。漫游切换到NOA则在满足NOA进入条件时发生。该设计体现Astra以高阶辅助驾驶为核心的产品架构，强调模式简化与全场景连续体验。",
+  "source": "doc_import:Astra行车功能介绍 20260210 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Astra",
+    "状态机",
+    "NOA",
+    "漫游",
+    "模式切换"
+  ],
+  "confidence": "high"
+}

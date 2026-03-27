@@ -1,0 +1,18 @@
+{
+  "title": "0325_2025摩托车智能全盔ADAS方案：Ambarella CV25与Qualcomm RB3 Gen 2的取舍",
+  "domain": "components",
+  "content": "面向2025年智能摩托车全盔，ADAS核心应围绕前向碰撞预警（FCW）、盲点监测（BSD）与后视增强展开，且必须区别于自行车头盔：摩托车场景速度更高、振动更强、法规要求更严，SoC需兼顾低功耗、视频编码和实时AI。来源一致认为，摄像头至少应为1080p，优选前后双摄；前视用于FCW/LDW，后视用于BSD与行车记录，关键参数包括广角FOV、WDR和低照度性能。来源还提到4K摄像头可提升识别精度，但对头盔电池与散热压力更大。SoC方面，Ambarella CV25被描述为偏视觉AI与低功耗路线，适合多摄像头输入、ISP和边缘推理一体化，常见供应商为Ambarella；Qualcomm RB3 Gen 2则偏通用机器人/边缘AI平台，供应商为Qualcomm，优势在CPU/GPU/AI异构能力与生态扩展，更适合叠加语音、连接、HUD和多传感器融合。价格上，来源未给出CV25或RB3 Gen 2官方单价，这是明显信息缺口；若做BOM估算，CV25方案通常更像“视觉主控”，RB3 Gen 2更像“综合计算平台”，后者整机成本大概率更高，但该判断在现有来源中未被量化。冲突点在于：一组来源强调CV25“非常适合”头盔低功耗视觉处理，另一组来源对RB3 Gen 2的描述停留在平台级概念，缺少头盔落地案例，因此两者并非同维度直接对比。对摩托车全盔产品定义而言，建议排除自行车智能头盔常见的轻量化优先方案，因为其通常只做尾灯、蓝牙或低速提醒，无法覆盖摩托车所需的高速碰撞预警。落地建议是：入门款采用1080p前后双摄+CV25类视觉SoC，聚焦FCW/BSD/录像；高配款可评估RB3 Gen 2，叠加HUD、语音助手、eCall与更复杂AI，但必须重点验证续航、热管理和ECE/DOT整盔认证兼容性。",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "motorcycle-smart-helmet",
+    "ADAS",
+    "collision-warning",
+    "Ambarella-CV25",
+    "Qualcomm-RB3-Gen-2",
+    "camera",
+    "AI-SoC",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

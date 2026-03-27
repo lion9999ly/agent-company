@@ -1,0 +1,17 @@
+{
+  "title": "Lumos Nyxel smart bike helmet 2025 teardown MIPS C",
+  "domain": "lessons",
+  "content": "**说明**：结果明确为“假设性产品推断”，非真实拆解；以下仅提炼对研发有参考价值的信息。  \n\n### 1) 可能的产品/技术配置\n- **MIPS防护**：推测采用 **MIPS Evolve / Integra**，低摩擦层可相对滑移 **10–15 mm**；文中引用MIPS官方口径称可降低旋转运动 **10–50%**。  \n- **后灯方案**：建议用 **COB LED rear light**，优势是高亮度、均匀发光、散热更好、体积更小。推测后灯亮度 **150–300 lm**，高于常见尾灯建议值 **50 lm**、高可见性 **100 lm+**。  \n- **转向灯**：左右独立琥珀色LED阵列；控制方式包括 **BLE车把遥控器**、**IMU手势识别**、与导航/车载系统联动。  \n- **传感器/芯片**：提到可用 **ST LSM6DSV16X**（加速度计+陀螺仪）做动作识别。  \n- **电池架构**：推测 **3.7V Li-Po 1500–2000 mAh**，较现有 **800–1200 mAh** 提升；续航 **10–18h**，低功耗模式 **20h+**。  \n- **充电**：**USB-C 5V/2A快充**，高端版可加 **Qi无线充电**。  \n- **BMS**：需具备 **过充/过放/过流/温度监控/电量计量**；文中点名可参考 **TI BQ** 或 **ADI LTC** 系列。  \n- **结构/材料**：**PC外壳+EPS in-mold**，兼顾轻量化与强度；防护等级推测 **IPX5/IPX6**。  \n\n### 2) 技术趋势\n- 智能头盔从“灯+遥控”升级到 **传感器融合、导航联动、无线充电、快充、精细BMS**。  \n- **COB灯带/面光源** 替代传统点状SMD，提升可见性与外观一体化",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Lumos",
+    "Nyxel",
+    "MIPS",
+    "teardown",
+    "turn signal",
+    "battery",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

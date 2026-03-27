@@ -1,0 +1,19 @@
+{
+  "title": "歌尔JDM合作：NRE付款结构应坚持20/30/30/20",
+  "domain": "components",
+  "content": "报告明确建议与歌尔按JDM推进时，NRE不要接受传统30/40/30或40/30/30结构，优先谈20/30/30/20，备选15/30/30/25，并要求前两阶段合计不超过50%。阶段付款需绑定明确交付物：A阶段15%–20%用于系统架构、HUD/摄像/声学/电池热设计可行性、重量预算、功耗预算、认证风险清单、EVT样机BOM上限；B阶段25%–30%绑定EVT功能样机、HUD可视性、语音识别风噪测试、影像EIS/WDR初版、热仿真；C阶段25%–30%绑定DVT可靠性、防水、跌落、振动、温升、认证预测试；D阶段20%–30%绑定PVT试产、良率、治具、SOP、送检版本冻结。",
+  "source": "deep_research:supplier_negotiation",
+  "created_at": "2026-03-26",
+  "tags": [
+    "歌尔",
+    "JDM",
+    "NRE",
+    "付款条款",
+    "EVT",
+    "DVT",
+    "PVT",
+    "deep_research",
+    "supplier_negotiation"
+  ],
+  "confidence": "medium"
+}

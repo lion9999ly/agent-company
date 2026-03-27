@@ -1,0 +1,17 @@
+{
+  "title": "智能全盔 V1（BSD/LCA 工程 KPI）",
+  "domain": "components",
+  "content": "报告指出 Bosch MSC、BMW ConnectedRide、Continental ARAS 均未公开披露摩托 BSD/FCW 官方误报漏报 KPI，因此以下为 V1 工程门槛建议值。BSD/LCA 指标为：告警总时延 ≤150ms，目标值 ≤100ms；漏报率 ≤3%；误报率城市 ≤1 次/小时，高速 ≤0.3 次/小时；有效探测区后向 5~30m、侧向 3~5m；相对速度覆盖 -20 ~ +40 m/s。用户体验红线是误报达到 2~3 次/小时即不可接受，系统应下线或降级。",
+  "source": "deep_research:auto_20260326_1",
+  "created_at": "2026-03-26",
+  "tags": [
+    "BSD",
+    "LCA",
+    "KPI",
+    "误报率",
+    "时延",
+    "deep_research",
+    "auto_20260326_1"
+  ],
+  "confidence": "high"
+}

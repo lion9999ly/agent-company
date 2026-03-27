@@ -1,0 +1,14 @@
+{
+  "title": "Solos AirGo Vision参数定位",
+  "domain": "competitors",
+  "content": "Solos AirGo Vision是报告中的AI拍摄眼镜样本，起步价2183元，未配镜重量34g，在拍摄眼镜中属于较轻产品。其定价与Ray-Ban Meta相同，但重量更低，体现出轻量化设计取向。报告未单列其摄像头和芯片细节，但拍摄眼镜整体通常采用1200万-1600万像素摄像头，电池容量250mAh-350mAh或更高，AI功能围绕图像处理、实时识别和环境反馈展开。",
+  "source": "doc_import:2025年中国AI眼镜行业研究报告 - i-research.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Solos AirGo Vision",
+    "AI拍摄眼镜",
+    "2183元",
+    "34g"
+  ],
+  "confidence": "medium"
+}

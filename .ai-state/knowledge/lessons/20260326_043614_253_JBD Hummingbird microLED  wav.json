@@ -1,0 +1,17 @@
+{
+  "title": "JBD Hummingbird microLED + waveguide bicycle helme",
+  "domain": "lessons",
+  "content": "**智能骑行头盔研发关键信息摘要**\n\n### 1. 可落地的新技术/参数\n- **显示方案**：**JBD Hummingbird microLED + waveguide（波导）HUD**\n- **芯片/模组亮度**\n  - JBD microLED芯片峰值亮度：**>500万尼特（绿色）**\n  - Hummingbird模组输出亮度：**10万–20万尼特**\n  - 结合波导后，2025年骑行HUD眼前有效亮度预测：**3000–5000尼特**\n- **波导效率**\n  - 当前主流：**10%–20%**\n  - 2025优化预期：**15%–25%**\n- **Eyebox（出瞳区域）**\n  - 当前AR眼镜常见：**8–12 mm**\n  - 骑行HUD 2025目标：**15–20 mm**\n  - 关键技术：**Multi-Pupil Replication、多层/几何波导**\n- **功耗**\n  - Hummingbird显示模组：**100–500 mW**\n  - 2025光学引擎（含波导）目标：**200–600 mW**\n  - 整机HUD系统：**1.5–3 W**\n- **续航估算**\n  - 电池 **10–20 Wh** 时，理论续航 **5–10小时**\n- **分辨率/FoV**\n  - 2025可行目标：**HD(1280×720)~FHD(1920×1080)**，**20–30°对角视场角**\n- **结构**\n  - 光机体积：**<0.5 cm³**\n  - 波导厚度：**1–2 mm**\n\n### 2. 技术趋势/行业变化\n- **microLED替代OLED/LCD做户外HUD**：高亮、低功耗、耐温、抗震，更适合骑行头盔。\n- **单色高效优先，全彩逐步导入**：短期可先用**绿色单色HUD**提升阳光下可读性",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "HUD",
+    "microLED",
+    "波导",
+    "JBD",
+    "光机",
+    "功耗",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

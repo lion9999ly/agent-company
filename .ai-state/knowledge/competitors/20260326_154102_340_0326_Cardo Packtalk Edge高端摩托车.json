@@ -1,0 +1,22 @@
+{
+  "title": "0326_Cardo Packtalk Edge：高端摩托车全盔Mesh对讲基准款",
+  "domain": "competitors",
+  "content": "Cardo Systems 的 Packtalk Edge 是面向摩托车头盔、尤其适合全盔集成的高端 Mesh 对讲系统，并非自行车头盔配件，这一点需与部分运动头盔通讯产品明确区分。现有来源一致指出，市场主销型号为 Cardo Packtalk Edge，本体最早发布于 2021 年末至 2022 年，未见“2025 专属新型号”证据，因此若电商或评测写“2025 Cardo Packtalk Edge”，更准确理解应是 2025 年仍在售/仍具竞争力，而不是新硬件代次。核心规格较明确：采用 DMC Gen 2 动态网状通信，支持最多 15 名骑手组网；单机到单机理想距离约 1.6 km，群组总覆盖可达 8 km；蓝牙版本为 Bluetooth 5.2；JBL 40 mm 扬声器；IP67 防尘防水；USB-C 充电；标称最长通话时间 13 小时，快充 20 分钟可获得约 2 小时通话。安装上使用 Air Mount 磁吸底座，是其与 Packtalk Bold 等旧款的重要差异。来源还提到支持 OTA 无线固件升级、自然语音控制“Hey Cardo”、自动音量调节，以及与手机、GPS、摩托车 TFT 的蓝牙连接。FCC 方面，来源仅确认“具备 FCC 合规/认证，可在美国市场合法销售”，但未给出 FCC ID 编号，因此若后续做合规数据库核验，仍需补查官方认证记录。价格方面，本轮来源未提供官方 MSRP，这是一个信息缺口；结合其定位，可先标注为高端双人/多人骑行通讯方案，但不能在条目中虚构售价。需要标注的矛盾点主要有两处：第一，发布时间有“2021 年末/2022 年初”与“2022 年发布”两种表述，属于上市窗口差异，不影响产品识别；第二，蓝牙 5.2 是否已完整落地 LE Audio/LC3，来源带有推测色彩，不能直接当作已开放给用户的成熟功能。结论上，Packtal",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Cardo",
+    "Packtalk Edge",
+    "motorcycle helmet",
+    "Mesh intercom",
+    "DMC Gen 2",
+    "Bluetooth 5.2",
+    "FCC",
+    "JBL 40mm",
+    "IP67",
+    "全盔通讯",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

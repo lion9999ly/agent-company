@@ -1,0 +1,23 @@
+{
+  "title": "0323_2026穿戴设备声学选型：骨传导传感器与MEMS麦克风供应商对比",
+  "domain": "components",
+  "content": "面向2026年AI耳机、智能眼镜与助听类穿戴设备，骨传导振动传感器与MEMS麦克风的组合正成为主流方案。现有来源显示，Knowles与Upbeat是两类代表性供应商：Knowles提供MEMS Mic、BA与V2S（Voice Vibration Sensor）骨传导/语振传感器，Synnex（联强）为其代理并提供从前期选型、规格确认、测试验证板，到中期Layout/机构review、后期debug及量产不良处理的一站式支持；Knowles总部位于美国伊利诺州，1946年成立，在上海、深圳、台湾设有office，制造据点在苏州与马来西亚槟城。Upbeat则主打MEMS骨传导振动传感器UPM01、UPM02，面向耳机、智能眼镜、AI wearable、机器人及超薄录音配件，且规划于2026年Q3向合作伙伴提供MEMS超声波传感器UPM05。具体参数方面，已披露信息中Upbeat强调UPM01具“高灵敏度、卓越信噪比、宽频宽”，可在高噪环境下实现清晰通讯、耳语输入和稳定语音指令，但公开来源未给出dB灵敏度、SNR、频响曲线、封装尺寸与单价；Knowles V2S资料同样明确应用于OTC Hearing Aid、Earphone、Wearable，以及Self-speech detection、Wind noise reduction，但未披露具体型号参数与价格。供应链能力上，瑞勤电子可作为MEMS麦克风国产备选：成立于2011年，硅麦月产能140KK、电容麦52KK，拥有17条SMT线和20条蓝牙音频模块测试线，2025年已有18大品牌、23款产品采用其方案，说明其在量产交付上具备规模优势。需要标注的矛盾是：AI Summary将“bone conduction speaker”与“bone conduction sensor/microphone”并列描述，但给定原始来源实际",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "骨传导",
+    "MEMS麦克风",
+    "可穿戴设备",
+    "Knowles",
+    "Synnex",
+    "Upbeat",
+    "UPM01",
+    "UPM02",
+    "V2S",
+    "选型",
+    "技术",
+    "音频",
+    "供应商"
+  ],
+  "confidence": "high"
+}

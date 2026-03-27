@@ -1,0 +1,19 @@
+{
+  "title": "0325_Shoei Opticson HUD全盔：索尼显示供应链信息尚未官方确认，需警惕原型期参数混杂",
+  "domain": "competitors",
+  "content": "Shoei Opticson 是面向摩托车骑行的智能全盔原型，不是自行车头盔；若参考到 bicycle helmet 的 HUD 方案，应明确排除，因为其碰撞标准、风噪、配重和高速可视性要求完全不同。现有3个来源对 Opticson 的共识是：它是 Shoei 在 EICMA/CES 展示的 HUD+后视摄像头概念产品，仍处原型或开发阶段，官方尚未公布量产时间、正式售价和完整 BOM。时间点存在矛盾：来源1称最早概念可追溯到 2021 年底 EICMA，并在 2023 CES 展示；来源2称“首次亮相”为 EICMA 2023。较稳妥表述应为：2021-2023 年间持续公开展示，2025-2026 被外界视为可能上市窗口，但 Shoei 未官宣。供应商信息也有明显冲突：来源1、2都指出 Shoei 官方未公开 HUD 显示屏供应商，Sony Semiconductor 只是“高概率潜在供应商”；但来源3直接称索尼半导体解决方案公司已提供 OLED Microdisplay 与波导光学模块。由于来源3未给出 Shoei 官方声明或合同依据，这一说法目前只能标注为“未经官方证实”。可确认的是，若 Opticson 采用高端 HUD，技术路径大概率是 Micro-OLED/微型 OLED + 波导方案，因为该路线能在有限空间内实现高亮度、高对比度和小体积。来源1给出可参考的行业基准：Sony 在 PSVR2 上使用每眼 2000×2040、120Hz 的 Micro-OLED，在 Apple Vision Pro 相关供应链中也被认为具备 3386 PPI 级能力，这说明 Sony 具备为头盔 HUD 提供微显示器的技术实力，但不能据此反推其已是 Opticson 供应商。原型参数方面，来源3提到续航约 8 小时、M 码重量约 1,800g、符合 JIS；这些数据可作为早期样机",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Shoei",
+    "Opticson",
+    "HUD",
+    "motorcycle helmet",
+    "Micro-OLED",
+    "Sony Semiconductor",
+    "EICMA",
+    "smart full-face helmet",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

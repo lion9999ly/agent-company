@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Continental 实车测试准出指标：需求验收100%与Bug DI值30",
+  "domain": "standards",
+  "content": "实车测试准出指标包括：需求验收通过率100%，Bug DI值30，Block级别Bug遗留数0，测试执行率/通过率100%/95%，感知Badcase Block遗留数0。该组指标构成版本实车准出的核心量化门槛。",
+  "source": "doc_import:测试能力与流程 20260130 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "准出指标",
+    "需求验收通过率",
+    "Bug DI值",
+    "Block Bug",
+    "测试通过率"
+  ],
+  "confidence": "high"
+}

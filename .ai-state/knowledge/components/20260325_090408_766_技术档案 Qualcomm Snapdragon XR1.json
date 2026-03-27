@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] Qualcomm Snapdragon XR1 (Qualcomm)",
+  "domain": "components",
+  "content": "以下基于你给出的搜索结果整理，**仅使用结果中明确出现的信息**；凡搜索结果未明确给出的，标注 **“未查到”**。对明显存在冲突的信息，我会注明“**搜索结果存在冲突/推断**”。\n\n---\n\n# Qualcomm Snapdragon XR1 完整技术档案\n\n## 1. 基本参数\n\n### 1.1 产品定位与发布时间\n- **产品名称**：Qualcomm Snapdragon XR1\n- **厂商**：Qualcomm（高通）\n- **发布时间**：**2018年**\n- **产品属性**：高通首款专用 XR 平台 / SoC\n- **官方定位**：面向**智能眼镜、轻量级 VR/AR 头显、独立式 XR 设备**，偏**入门级/中端**，强调**功耗效率和成本效益**\n\n---\n\n### 1.2 制程\n- **制程工艺**：**10nm 或 11nm FinFET**\n- **备注**：搜索结果中写法为“通常采用10nm或11nm FinFET工艺”，**未给出唯一确定值**，因此记为：\n  - **制程：10/11nm FinFET（搜索结果存在不确定性）**\n\n---\n\n### 1.3 CPU\n- **CPU 架构**：Qualcomm **Kryo 360**\n- **核心数**：**八核**\n- **核心配置**：**4 个性能核心 + 4 个效率核心**\n- **底层 ARM 参考架构**：搜索结果提到“基于 ARM Cortex 技术”，另有对比段落提到“通常基于 Cortex-A73/A53 混合架构”\n- **CPU 主频**：**性能核心约 2.0 GHz**\n- **更细主频分档**：**未查到**\n\n---\n\n### 1.4 GPU\n- **GPU 型号**：**Adreno 615**\n- **图形 API 支持**：\n  - OpenGL ES 3.2\n  - OpenCL 2.0\n  - Vulkan 1.1\n- **GPU 主频**：**未查到**\n- **GPU 算力（GFLOPS/TFLOPS）**：**未查到**\n\n---\n\n### 1.5 NPU / AI Engine / DSP\n- **AI 引擎**：Qualcomm AI Engine\n- **DSP**：**Hexagon 682 DSP**\n- **AI 架构说明**：由 **Hexagon DSP + Adreno GPU + Kryo CPU** 协同完成设备端 AI\n- **AI 算力**：\n  - 一处搜索结果写到：**高达 3 TOPS**\n  - 但并非所有结果都重复该数字\n  - 因此可记为：**AI 算力：约 3 TOPS（搜索结果提及，但未见更高可信交叉确认）**\n- **独立 NPU 名称**：**未查到**\n- **NPU 主频**：**未查到**\n\n---\n\n### 1.6 ISP / 视觉处理\n- **ISP 能力**：支持**双摄像头**\n- **摄像头像素支持**：**最高 16MP**\n- **视觉处理特性**：\n  - 6DoF 头部追踪\n  - 手部追踪\n  - 物体识别与追踪\n  - 低延迟视觉处理\n- **是否有专用 VPS（Visual Processing Subsystem）**：搜索结果描述为“拥有专用硬件加速器/视觉处理子系统”，但**未给出模块编号**\n\n---\n\n### 1.7 显示与视频能力\n搜索结果中有两组说法，存在一定差异：\n\n- **显示支持（版本1）**：\n  - **最高 4",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "qualcomm"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "Journey 6E SIP V0.2 更新：新增绝对最大额定值、工作条件与 DC 特性",
+  "domain": "components",
+  "content": "V0.2（2024-03-26）更新内容包括：Section 4.3 引脚图更新；Section 4.4.1 描述更新并增加注释；Section 5.1 新增 absolute maximum ratings；Section 5.2 更新 operating conditions；Section 5.3 新增 DC characteristics。该版本首次补齐关键电气边界条件，表明模块从概念定义向可评估硬件接口阶段推进。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "V0.2",
+    "2024-03-26",
+    "Absolute Maximum Ratings",
+    "Operating Conditions",
+    "DC Characteristics",
+    "Pin Map"
+  ],
+  "confidence": "high"
+}

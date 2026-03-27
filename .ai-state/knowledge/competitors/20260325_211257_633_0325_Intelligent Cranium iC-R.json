@@ -1,0 +1,20 @@
+{
+  "title": "0325_Intelligent Cranium iC-R 智能摩托车全盔：后置摄像头/盲点预警供应链信息缺失，项目大概率已停摆",
+  "domain": "competitors",
+  "content": "Intelligent Cranium iC-R 是面向摩托车骑行场景的智能全盔概念产品，不是自行车头盔；若参考可穿戴摄像头或骑行 HUD 方案，必须注意摩托车全盔需满足更高的抗冲击、供电、密封和高速风噪约束。现有3个来源一致指出：iC-R 曾在 2015-2017 年通过 Indiegogo 推广，宣传功能包括 210°后置摄像头、HUD、盲点警告、蓝牙、碰撞检测、导航、降噪、碳纤维外壳，众筹金额一说“超过25万美元”，另一说“超过10万美元”，这是明显冲突点；交付时间也有“2016”与“2017”两种说法。更关键的是，来源均未给出任何已量产的 ADAS 后视摄像头/盲点预警供应商名称、BOM 或认证清单。相反，信息显示其官网 intelligentcranium.com 已不可访问、社媒多年停更、产品未形成大规模交付，因此“2026 款 iC-R”及其供应商基本无法被证实。可确认的数据只有：型号 iC-R，品类为智能摩托车头盔，核心卖点含后视摄像头+盲点警告，项目状态大概率为众筹失败或 vaporware。来源中提到的 Sony、OmniVision、Samsung、Ambarella、Qualcomm、NVIDIA、Bosch、Continental、Magna、Valeo、Mobileye、Aptiv 等，仅属于行业层面的潜在传感器、SoC 或 ADAS 方案商推测，并非 iC-R 已签约供应商。价格方面，给定来源没有提供 iC-R 官方零售价或最终出货价，因此不能编造。对我们做智能摩托车全盔的启示是：不要把“概念功能”当成可交付能力，尤其是后摄+HUD+盲点预警这类高耦合系统，若没有明确供应商、量产验证、法规认证与售后闭环，极易重演 iC-R 式失败。",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Intelligent Cranium",
+    "iC-R",
+    "smart motorcycle helmet",
+    "ADAS",
+    "rear camera",
+    "blind spot warning",
+    "crowdfunding failure",
+    "supplier unknown",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

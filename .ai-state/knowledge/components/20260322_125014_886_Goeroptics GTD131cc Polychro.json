@@ -1,0 +1,15 @@
+{
+  "title": "Goeroptics GTD13(1cc) Polychrome LCoS AR光机",
+  "domain": "components",
+  "content": "GTD13(1cc)为Goeroptics的Polychrome LCoS AR-LE产品，显示技术为0.14英寸LCoS_OV，分辨率648×648，像素尺寸3.8μm。瞳孔尺寸3.3mm，FOV(D) 28°，光通量2.2lm@0.5W（LED），模组尺寸16.9×9.6×8.5mm，体积1.0cc，重量1.8g，属于GOS标准AR-LE产品。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Goeroptics",
+    "GTD13",
+    "LCoS",
+    "AR光机",
+    "1.0cc"
+  ],
+  "confidence": "high"
+}

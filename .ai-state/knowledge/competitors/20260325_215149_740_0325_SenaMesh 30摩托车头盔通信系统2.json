@@ -1,0 +1,22 @@
+{
+  "title": "0325_Sena“Mesh 3.0”摩托车头盔通信系统（2025）供应链与JDM适配判断",
+  "domain": "competitors",
+  "content": "基于现有3个来源，需先标注一个关键矛盾：截至来源信息所示，Sena官方公开成熟量产的仍是 Mesh 2.0，“2025 Mesh 3.0”更像行业推测而非已被完整证实的正式平台，因此任何“拆解/供应商清单”都应视为预测，不宜当作已验证BOM。已知可落地的对标数据主要来自 Sena 现售摩托车通信产品：Mesh 2.0 在开放地形下单段对讲距离约 2 km；在至少 6 名骑手、每人间隔 1.6 km 的中继条件下，总通信距离可达 8 km；群组规模最多 24 人。续航方面，来源给出的现有产品区间为蓝牙对讲约 12-13 小时、Mesh 对讲约 8-9 小时。来源还提到潜在承载机型可能包括 Sena 50S Gen 2、50R Gen 2、50C Gen 2，但这同样属于预测，并非 Sena 官方已确认的 2025 平台名单。供应链层面，较高概率的核心器件方向是：1）主控/无线 SoC：Qualcomm（高通）QCC51xx 系列或未来更高级别方案，另有 MediaTek（联发科）、NXP Semiconductors（恩智浦）可选；若强调日本本地化，则 Renesas Electronics（瑞萨电子）因 MCU、模拟与电源管理能力，以及收购 Dialog Semiconductor 后补强蓝牙能力，属于 JDM 友好候选。2）RF 前端与天线：Qorvo、Skyworks Solutions，以及日本供应商 Murata Manufacturing（村田制作所）；其中村田在陶瓷天线、滤波器、电感与射频模组方面具优势。3）音频与降噪链路：高集成 DSP SoC 配合双麦克风阵列；若 2025 升级成立，重点大概率会落在 AI 降噪、LE Audio、蓝牙 5.3/5.4。对我们做智能摩托车全盔的启示是：应优先关注高速风噪抑制、厚手套操作、日本 MIC 无线合规及 ECE/PS",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Sena",
+    "Mesh 3.0",
+    "motorcycle helmet",
+    "JDM",
+    "Murata",
+    "Renesas",
+    "Qualcomm",
+    "Mesh 2.0",
+    "供应链",
+    "摩托车全盔",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

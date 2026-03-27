@@ -1,0 +1,15 @@
+{
+  "title": "AI智能管家：产品专家、故障自诊与Function Call任务编排",
+  "domain": "components",
+  "content": "AI智能管家优先级P1，包含两部分：1）产品专家与故障自诊，用户可语音询问“怎么配对”，系统直接解答；可主动播报错误代码并引导解决。2）AI工具调用（Function Call），支持一句话触发多步操作，如“我要跑山了”联动关通知+开赛道模式+开录像+播歌单；并可调用米家/HomeKit、本地生活服务、外卖/导航接口及日历提醒。目标是降低学习成本并提升复杂任务执行效率。",
+  "source": "doc_import:智能骑行头盔PRD_V1.0_To_JDM.xlsx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "AI管家",
+    "故障自诊",
+    "Function Call",
+    "智能家居",
+    "日程管理"
+  ],
+  "confidence": "medium"
+}

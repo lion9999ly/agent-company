@@ -1,0 +1,15 @@
+{
+  "title": "Mesh车队系统：无网多人对讲、HUD队友位置与音乐/FM共享",
+  "domain": "components",
+  "content": "车队指挥与娱乐系统要求支持Mesh自组网，实现无网多人对讲，并在HUD显示队友位置；同时支持音乐/FM共享，可一键同步音乐给队友或后座，形成DJ模式。优先级P0，主要面向进山无信号、队友失联以及后座娱乐需求，目标替代传统靠吼沟通的低效方式，增强社交与娱乐体验。",
+  "source": "doc_import:智能骑行头盔PRD_V1.0_To_JDM.xlsx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Mesh",
+    "多人对讲",
+    "HUD",
+    "音乐共享",
+    "FM共享"
+  ],
+  "confidence": "high"
+}

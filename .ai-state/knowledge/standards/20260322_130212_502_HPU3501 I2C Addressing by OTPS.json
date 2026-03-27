@@ -1,0 +1,17 @@
+{
+  "title": "HPU3501 I2C Addressing by OTPSEL and Variant",
+  "domain": "standards",
+  "content": "HPU3501 的 I2C 地址由型号和 OTPSEL 共同决定。HPU3501A/HPU3501C：OTPSEL=0 时地址 0x1E，OTPSEL=1 时地址 0x3E。HPU3501B/HPU3501D：OTPSEL=0 时地址 0x1C，OTPSEL=1 时地址 0x3C。该机制便于同系列器件在主从或多 PMIC 系统中避免地址冲突。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "I2C",
+    "Address",
+    "OTPSEL",
+    "0x1E",
+    "0x3E",
+    "0x1C",
+    "0x3C"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "歌尔AI OWS开放式耳机方案：12MP多模态AI与漏音消除",
+  "domain": "components",
+  "content": "歌尔开发中的AI OWS方案集成1200万像素图像分辨率摄像头，支持语音+图像多模态AI识别，并采用双振膜双单元驱动与漏音消除技术。该设计将开放式音频与视觉感知结合，适合AI可穿戴、智能助理和轻量化交互场景。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "OWS",
+    "AI耳机",
+    "12MP",
+    "多模态AI",
+    "双振膜",
+    "漏音消除"
+  ],
+  "confidence": "high"
+}

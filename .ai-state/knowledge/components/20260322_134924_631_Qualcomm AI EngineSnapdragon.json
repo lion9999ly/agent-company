@@ -1,0 +1,15 @@
+{
+  "title": "Qualcomm AI Engine：Snapdragon AR1 Gen 1 的端侧 AI 架构",
+  "domain": "components",
+  "content": "Snapdragon AR1 Gen 1 搭载 Qualcomm AI Engine，核心包括 Hexagon NPU，以及 Hexagon scalar、vector、tensor accelerators。支持 INT4、INT8 精度，适合低功耗端侧推理。官方将其用于增强图像与音频质量，并支撑视觉搜索、实时翻译等智能眼镜助手能力，是平台 AI 差异化的核心模块。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "AI Engine",
+    "Hexagon NPU",
+    "INT4",
+    "INT8",
+    "on-device AI"
+  ],
+  "confidence": "high"
+}

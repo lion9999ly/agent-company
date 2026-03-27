@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Robotics X3M Rev.1.1：PYM、MIPI DSI TX、RGB 输出、SPI 与 IPU 全面更新",
+  "domain": "components",
+  "content": "Rev.1.1（2021-04-23）在 1.3 Features 中更新 PYM features、MIPI DSI TX video output features、parallel RGB video display output features、SPI features；更新 Table 3-5 中 BP_ZN pin 描述；在 7.4 IPU 中更新 IPU Block Diagram 与 IPU features；在 7.5 PYM 中更新 PYM introduction、PYM Block Diagram、PYM features；并在 10.2 SPI 中更新 SPI introduction。该版本集中强化视觉金字塔、多显示输出和串行外设描述。",
+  "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Rev1.1",
+    "PYM",
+    "MIPI DSI TX",
+    "RGB display",
+    "SPI",
+    "IPU"
+  ],
+  "confidence": "high"
+}

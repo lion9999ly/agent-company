@@ -1,0 +1,19 @@
+{
+  "title": "0325_2025摩托车全盔Mesh对讲技术路线：QCC5181、DMC与LE Audio供应链观察",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2025年的主流对讲方案仍是“专有Mesh + 经典蓝牙”，而非纯LE Audio替代。需明确排除自行车头盔场景：自行车产品常强调轻量、开放式佩戴和低风噪工况，不适用于全盔在80-120km/h风噪、厚衬垫和防水等级要求下的设计。三份来源一致指出，高通S5平台中的QCC5181被视为高端音频SoC候选，优势是低功耗、多核DSP、支持Bluetooth LE Audio/LC3，并可承载ENC/ANC等算法；但来源未给出QCC5181在摩托车对讲量产中的公开定点型号，因此现阶段更适合作为“下一代平台预研器件”，不能直接写成已被某头盔品牌大规模采用。Mesh方面，Cardo的DMC被描述为支持约15-20人、具自愈网络；Sena Mesh则有Open Mesh和Group Mesh两类，来源称群组模式约24人，开放模式可更多。这里存在口径差异：一份来源写“15-24名甚至更多”，另一份写“15-20名”，说明群组上限与品牌/模式强相关，做产品定义时应按具体协议栈确认。LE Audio价值主要在LC3、更低功耗、多流音频和Auracast，但来源同样没有给出摩托车头盔端已成熟商用的公开SKU，因此2025年更现实的路线是：以QCC5181级别平台预留LE Audio能力，同时保留现有Mesh协议兼容。供应商层面，明确出现的上游是Qualcomm；协议/系统品牌是Cardo Systems与Sena Technologies。JDM市场方面，来源只给出“日本是高端摩托车和配件重要消费区”的定性判断，没有列出日本本土ODM/JDM整机供应商、认证费用或渠道价格，因此若要落地采购，还需补充PSE/TELEC/Bluetooth SIG列名与日本经销体系。价格上，三份来源均未提供QCC5181单价、模组BOM或整机零售价，这是当前信息缺口。结论：对智能全盔，2025年",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "motorcycle-helmet",
+    "mesh-intercom",
+    "QCC5181",
+    "Qualcomm-S5",
+    "DMC",
+    "LE-Audio",
+    "JDM",
+    "Bluetooth",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B HSM硬件安全模块架构",
+  "domain": "components",
+  "content": "J6B 集成 HSM（硬件安全模块），其处理器规格为 600 MHz、1.6K DMIPS。功能特性包括：Hardware root of trust、Anti physical attack、Anti side channel attack、Hardware crypto engine、TRNG、Secure DMA、Mailbox、Unique serial number。结合文档中 FIPS 140-3 Level 2 与 EVITA HSM Full compliant 的表述，该 HSM 是 J6B 实现安全启动、密钥管理、OTA 校验、设备身份与车载安全通信的核心硬件基础。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "HSM",
+    "600MHz",
+    "TRNG",
+    "Hardware Root of Trust"
+  ],
+  "confidence": "high"
+}

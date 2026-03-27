@@ -1,0 +1,18 @@
+{
+  "title": "Luna 6 光学模组",
+  "domain": "components",
+  "content": "Luna 6 当前唯一可靠参数为 HFOV 121°、VFOV 54.8°。报告明确指出，这组参数更符合摄像头采集链路，而非 HUD 光机常用的虚像距离、eyebox、出瞳、亮度、显示 FOV 指标，因此 Luna 6 不能定义为 HUD 显示链路器件，更合理定位是智能骑行头盔中的前向感知/录像候选模组。结论上它可进入候选池，但不能直接定型，也不能仅凭 121°/54.8° 证明适合作为头盔主前视方案。",
+  "source": "deep_research:deepen_276",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Luna 6",
+    "HFOV 121°",
+    "VFOV 54.8°",
+    "前向感知",
+    "录像模组",
+    "非HUD",
+    "deep_research",
+    "deepen_276"
+  ],
+  "confidence": "high"
+}

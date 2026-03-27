@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1（歌尔）- 重量、续航与硬件参数基线",
+  "domain": "components",
+  "content": "V1 的关键工程红线是重量目标 ≤380g（M 码），量产上限 420g，不应放宽到 450g。结构采用 PC 外壳 + EPS in-mold，通风孔 8–12 个，尺码为 M 54–58cm、L 58–62cm。电池优先 800–1200mAh，音频版上限 1500mAh；灯光常开续航 8–10 小时，灯光+蓝牙音频混合续航 4–6 小时，充电时间 <3 小时。无线建议 BLE 5.0/5.2，主控建议 Nordic nRF52/53 级别 SoC，传感器为 6 轴 IMU，遥控器使用 CR2032，续航目标 6 个月以上。",
+  "source": "deep_research:adhoc_智能骑行头盔V1_P",
+  "created_at": "2026-03-23",
+  "tags": [
+    "重量控制",
+    "硬件参数",
+    "续航",
+    "BLE",
+    "电池",
+    "deep_research",
+    "adhoc_智能骑行头盔V1_P"
+  ],
+  "confidence": "high"
+}

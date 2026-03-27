@@ -1,0 +1,16 @@
+{
+  "title": "歌尔组织架构中的 Alpha Labs 与核心研发条线",
+  "domain": "lessons",
+  "content": "文档显示歌尔组织架构覆盖组装业务、零组件业务与研发体系，其中 Alpha Labs 位于研发相关条线，周边能力包括人工智能、智能穿戴产品研发中心、射频&天线技术、创新设计中心、光学技术研发部、VR/MR产品研发中心、软件研发中心、音频技术研发部、汽车声学研发中心、制造技术研发中心、汽车电子研发中心等，反映其跨音频、光学、AI、整机的综合研发定位。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Alpha Labs",
+    "组织架构",
+    "研发中心",
+    "VR/MR",
+    "人工智能",
+    "软件研发"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "[内部PRD] 智能骑行头盔 V1 软件功能框架（用户定义）",
+  "domain": "components",
+  "content": "\n头盔HUD 一级功能：导航、来电、音乐、消息、AI语音助手、简易路线、主动安全预警提示、组队、摄像状态、胎温胎压、开机动画、速度、设备状态（电量/故障）、显示队友位置\n\nApp 一级Tab：设备、社区、商城、我的\n\n设备Tab基础功能：头盔/手机互联、骑行轨迹、设备状况、行车记录、高光时刻、分享、第三方设备绑定（胎压计/车/相机）、AI剪片\n\nAI功能：\n- 语音交互：核心导航场景\n- 视觉交互：ADAS、追踪\n- 其他多模态交互：陀螺仪、心率监测等\n\n交互方式：\n- 实体按键交互\n- 氛围灯交互\n- HUD显示交互\n- 语音交互\n- App触屏交互\n",
+  "source": "user_defined",
+  "created_at": "2026-03-27",
+  "tags": [
+    "internal",
+    "prd",
+    "product_definition",
+    "anchor",
+    "software_framework"
+  ],
+  "confidence": "medium"
+}

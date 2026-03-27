@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Luna 6 Planner E2E模型与驾驶体验提升",
+  "domain": "components",
+  "content": "Luna 6的Planner E2E Model可直接输出自车规划轨迹，减少传统规划链路中的规则拼接与离散切换。文档指出该方案使轨迹“丝滑程度”大幅提升，体验MPI提升30%。这表明Luna 6在纵横向控制前的规划质量和主观驾驶体验上较Luna 3有明显改善。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "Planner E2E",
+    "规划轨迹",
+    "MPI",
+    "驾驶体验"
+  ],
+  "confidence": "high"
+}

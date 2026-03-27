@@ -1,0 +1,76 @@
+{
+  "name": "academic_relation_mining",
+  "description": "Search papers and analyze relation graph with web-discussion evidence.",
+  "route": "academic",
+  "workflow_template": "academic_relations",
+  "aliases": [
+    "academic",
+    "papers",
+    "paper_relations",
+    "mindsearch_academic"
+  ],
+  "intent_keywords": [
+    "论文",
+    "文献",
+    "citation",
+    "arxiv",
+    "doi",
+    "benchmark",
+    "ablation",
+    "scholar",
+    "paper"
+  ],
+  "activation_keywords": [
+    "论文",
+    "文献",
+    "citation",
+    "arxiv",
+    "doi",
+    "benchmark",
+    "ablation",
+    "scholar",
+    "paper"
+  ],
+  "min_activation_hits": 1,
+  "min_score": 1.0,
+  "priority": 92,
+  "default_variables": {
+    "paper_sources": [
+      "arxiv"
+    ],
+    "num_results": 6,
+    "crawl_top_papers": 5
+  },
+  "default_options": {
+    "html_first": true,
+    "crawl_assist": false,
+    "use_browser": false,
+    "top_results": 8
+  },
+  "examples": [
+    "查询 RAG benchmark 论文关系并联动网上讨论",
+    "对比两篇论文的引用网络和观点冲突"
+  ],
+  "phases": [
+    {
+      "id": "intent",
+      "title": "Intent Resolve",
+      "goal": "明确论文主题、关系图和引用范围"
+    },
+    {
+      "id": "dry_run",
+      "title": "Compile & Lint",
+      "goal": "dry-run 检查 workflow 与变量注入"
+    },
+    {
+      "id": "execute",
+      "title": "Execute",
+      "goal": "执行论文检索+关系挖掘并输出 references"
+    },
+    {
+      "id": "verify",
+      "title": "Cross Verify",
+      "goal": "检查引用覆盖度与关系边质量"
+    }
+  ]
+}

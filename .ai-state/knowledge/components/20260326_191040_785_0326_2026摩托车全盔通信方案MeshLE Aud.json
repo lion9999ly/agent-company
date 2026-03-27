@@ -1,0 +1,20 @@
+{
+  "title": "0326_2026摩托车全盔通信方案：Mesh+LE Audio/LC3与Qualcomm S5 Gen 2、歌尔JDM机会",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2026年通信模组的主线将是私有Mesh对讲与Bluetooth LE Audio并存，而非自行车头盔方案。需明确区分：来源讨论的是摩托车头盔通信器生态，典型玩家为Sena与Cardo，不适用于轻量化自行车头盔的功耗、风噪和法规边界。现有可对标数据中，Sena Mesh 2.0宣称开放Mesh可实现最高约8 km链路范围，Group Mesh支持24名骑手；Cardo DMC常见口径为15名骑手、最高约8 km。这里存在口径差异：一处来源称Sena“24名骑手”，另一处又提到“开放模式几乎无限”，应理解为私密群组有人数上限、开放频道无固定上限但体验受网络密度影响。芯片侧，Qualcomm S5 Gen 2被多份资料指向为高端音频平台候选，支持24-bit/96 kHz、Bluetooth 5.3/5.4级连接、AI语音处理，以及LE Audio核心编解码LC3；另有来源给出端到端低延迟可低至48 ms，但该数值通常依赖特定手机与Snapdragon Sound链路，不能直接等同于头盔对讲实测。对全盔产品更关键的是：LC3在较低码率下优于传统SBC，能在高速风噪环境中提升语音清晰度并降低功耗；LE Audio的Multi-Stream也适合同时接入手机、导航与乘员对讲。供应链上，歌尔股份（Goertek）具备声学器件、麦克风阵列、扬声器、蓝牙模组和整机制造能力，适合作为JDM/ODM伙伴，为品牌方完成“芯片选型+声学腔体+天线+防水结构+量产认证”一体化开发。若以2026量产为目标，建议BOM定位高端全盔通信模组：Qualcomm S5 Gen 2主控、双麦ENC、40 mm薄型扬声器、Mesh+Classic BT+LE Audio三模并存。价格上，市场高端对标可参考Sena 50S/Cardo Packtalk级别，终端零售价通常在人民币2500-35",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "摩托车全盔",
+    "Mesh通信",
+    "Qualcomm S5 Gen 2",
+    "Bluetooth LE Audio",
+    "LC3",
+    "Goertek",
+    "JDM",
+    "Sena",
+    "Cardo",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

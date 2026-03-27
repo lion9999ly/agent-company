@@ -1,0 +1,16 @@
+{
+  "title": "HPU3501 Control and Protection Features",
+  "domain": "components",
+  "content": "HPU3501 支持丰富控制与保护功能：I2C 接口支持 standard、fast、fast plus 模式；提供开漏 POR 输出，面向处理器的 POR 延时大于 20ms；支持 Power key 输入、Reset 输入、可编程启动斜率、上电/下电时序、可编程电源轨使能。保护方面包括输出限流保护、输出短路保护、过载保护和过温关断，适合复杂 SoC 电源管理。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "I2C",
+    "POR",
+    "PWRKEY",
+    "RSTIN",
+    "OTP",
+    "Protection"
+  ],
+  "confidence": "high"
+}

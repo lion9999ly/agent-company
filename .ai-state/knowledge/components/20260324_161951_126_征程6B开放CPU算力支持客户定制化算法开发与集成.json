@@ -1,0 +1,15 @@
+{
+  "title": "征程6B开放CPU算力：支持客户定制化算法开发与集成",
+  "domain": "components",
+  "content": "文档明确指出征程6B支持CPU算力开放，可用于客户定制化算法开发和集成，开放能力达到2倍+。这意味着J6B不仅提供标准化芯片能力，也更适合主机厂或Tier1进行差异化算法部署，提升平台可扩展性与项目适配效率。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "征程6B",
+    "CPU开放",
+    "定制算法",
+    "算法集成",
+    "客户开发"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "0326_2026年摩托车智能全盔SOS/eCall方案对比：nRF9160与Quectel EG915的取舍",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，SOS/eCall核心链路是“IMU碰撞检测+GNSS定位+蜂窝回传”。需明确排除自行车头盔场景：自行车产品常用BLE+手机代拨，功耗和法规要求更低；摩托车全盔需要更高冲击阈值、更稳定独立通信和更强环境适应性。三份来源一致认为，2026年可行主流器件是Nordic nRF9160与Quectel EG915，但定位不同。nRF9160是LTE-M/NB-IoT SiP，集成GNSS与Arm Cortex-M33，适合做低功耗、独立上报型头盔主控通信一体方案；来源提到其支持多达32个GNSS通道，开阔环境定位可达数米级。Quectel EG915则是LTE Cat 1模块，优势是更高带宽和语音能力，来源给出的理论速率为下行10 Mbps、上行5 Mbps，更适合需要双向语音或更丰富事故数据上传的方案。关键矛盾点在于网络制式是否足以承载eCall：来源1、2认为LTE-M/NB-IoT可满足“最小数据集MSD+位置”上报，但若要稳定语音通话，EG915这类Cat 1更现实；因此若产品目标是“自动短信/数据SOS”，nRF9160更优，若目标是“自动报警+语音接通”，EG915更稳妥。定位精度方面，来源1提出eCall通常要求95%时间内10米以内，来源2则给出多星座GNSS在开阔区域2-5米，这两者并不冲突，可理解为工程目标与理想场景数据不同。供应商层面，Nordic Semiconductor是nRF9160原厂，Quectel是EG915原厂；GNSS能力均依赖多星座支持，至少应覆盖GPS、GLONASS、Galileo、BeiDou。成本上，三份来源未给出确切采购价，这是当前信息缺口，不能臆造；但可判断EG915因Cat 1与语音能力，BOM通常高于仅做LPWAN数据上报的nRF9160方案。对摩托车全盔产品定义的启示是：若强调续航、轻量化、独立求救，",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "摩托车全盔",
+    "eCall",
+    "SOS",
+    "碰撞检测",
+    "Nordic nRF9160",
+    "Quectel EG915",
+    "GNSS",
+    "LTE Cat 1",
+    "LTE-M",
+    "NB-IoT",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

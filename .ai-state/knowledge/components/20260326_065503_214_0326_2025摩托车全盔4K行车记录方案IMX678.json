@@ -1,0 +1,17 @@
+{
+  "title": "0326_2025摩托车全盔4K行车记录方案：IMX678 +“Ambarella CV25”低照度路线评估",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，当前可落地的高画质录像路线是Sony STARVIS 2 IMX678传感器配合Ambarella高端车载ISP/编码平台。IMX678为1/1.8英寸、约8.4MP，可原生输出3840×2160 4K视频，已被VIOFO A229 Pro、BlackVue DR970X-2CH等高端行车记录仪采用，终端整机价格通常约USD 329-489，供应商分别为VIOFO、BlackVue。其价值在于低照度与HDR：来源1称STARVIS 2低光灵敏度较上代约提升2倍、动态范围约提升3倍；来源2则仅表述“显著提升”，未给出同样量化数据，属于口径差异，需标注为未经统一验证。对摩托车夜骑、隧道出入口、逆光会车等场景，IMX678比传统2MP/5MP小底方案更适合做事故取证。",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "摩托车全盔",
+    "4K行车记录",
+    "Sony IMX678",
+    "STARVIS 2",
+    "低光性能",
+    "Ambarella",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

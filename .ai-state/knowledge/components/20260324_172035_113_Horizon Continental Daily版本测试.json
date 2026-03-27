@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Continental Daily版本测试：SIL/HIL功能、性能、稳定性与故障注入",
+  "domain": "components",
+  "content": "Daily版本测试包含SIL/HIL功能测试、HIL性能测试、HIL稳定性测试和HIL故障注入测试，并结合固定路线测试。该组合用于验证日常集成版本在功能正确性、性能表现、长时间稳定性及异常场景下的鲁棒性，形成高频回归机制。",
+  "source": "doc_import:测试能力与流程 20260130 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Daily测试",
+    "SIL",
+    "HIL",
+    "故障注入",
+    "功能测试"
+  ],
+  "confidence": "high"
+}

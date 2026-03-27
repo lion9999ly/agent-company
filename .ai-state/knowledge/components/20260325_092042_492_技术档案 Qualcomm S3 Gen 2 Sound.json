@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] Qualcomm S3 Gen 2 Sound Platform (Qualcomm)",
+  "domain": "components",
+  "content": "以下基于你提供的搜索结果整理，**仅使用结果中明确出现的信息**，不额外臆测；凡搜索结果未给出者，标注 **“未查到”**。\n\n---\n\n# Qualcomm S3 Gen 2 Sound Platform 技术档案\n\n## 0. 产品概述\n**Qualcomm S3 Gen 2 Sound Platform** 是高通面向**中高端无线音频设备**推出的音频SoC/平台，主要服务于：\n\n- TWS 真无线耳机\n- 无线头戴/颈挂耳机\n- 无线游戏耳机\n- 智能听戴设备 / 辅听设备\n- 便携式扬声器（搜索结果有提及）\n  \n核心卖点集中在：\n\n- **Snapdragon Sound**\n- **aptX Lossless**\n- **LE Audio**\n- **Auracast**\n- **Multi-Stream Audio**\n- **Adaptive ANC**\n- **cVc 通话降噪**\n- **低功耗蓝牙音频**\n\n---\n\n## 1. 基本参数\n\n### 1.1 制程\n- **制程：未查到**\n\n### 1.2 CPU / GPU / NPU 架构和算力\n- **CPU 架构：未查到**\n- **CPU 核心数：未查到**\n- **CPU 主频：未查到**\n- **GPU：未查到**\n- **NPU/AI 引擎：**\n  - 搜索结果仅提到：\n    - **集成 DSP**\n    - 可用于**音频处理和AI功能**\n    - 利用AI算法优化ANC、语音处理和用户体验\n  - **NPU独立架构：未查到**\n  - **AI算力（TOPS/GOPS）：未查到**\n\n### 1.3 DSP/音频处理\n- **集成DSP：有**\n- 主要用于：\n  - 音频编解码处理\n  - ANC\n  - cVc回声消除与噪声抑制\n  - 语音处理\n  - AI增强音频功能\n\n### 1.4 编解码与音频能力\n搜索结果明确提到支持：\n\n- **aptX Lossless**\n  - 可实现 **16-bit / 44.1kHz 无损 CD 级音频**\n- **aptX Adaptive**\n  - 支持动态比特率/延迟调节\n  - 支持高达 **24-bit / 96kHz** 高分辨率音频（搜索结果中有此表述）\n- **LC3**\n- **SBC**（作为对比被提及）\n- **aptX Voice**\n- **Snapdragon Sound**\n\n### 1.5 延迟\n- **最低延迟：低于 89ms**\n  - 搜索结果表述为：\n    - “最低延迟可达 89 毫秒（在特定配置下）”\n    - “低于 89 毫秒（aptX Adaptive Gaming Mode）”\n\n---\n\n## 2. 接口\n\n> 该芯片本质是音频平台，公开搜索结果几乎都围绕蓝牙音频能力，未给出典型应用处理器那种完整外设表。\n\n### 2.1 摄像头接口（CSI）\n- **CSI：未查到**\n- **摄像头支持：未查到**\n\n### 2.2 显示接口（DSI / MIPI）\n- **DSI：未查到**\n- **MIPI显示接口：未查到**\n- **显示输出能力：未查到**\n\n### 2.3 音频接口（I2S / PDM）\n- **I2S：未查到**\n- **PDM：未查到**\n- **模拟音频接口：未查到**\n- 但从平台定位可确认其具备：\n  - 麦克风语音处理能力\n  - ANC/通话降噪处理能力\n  - 耳机/耳塞音频播放能力  \n  只是**具体",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "qualcomm"
+  ],
+  "confidence": "high"
+}

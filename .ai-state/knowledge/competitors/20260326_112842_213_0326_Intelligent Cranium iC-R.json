@@ -1,0 +1,21 @@
+{
+  "title": "0326_Intelligent Cranium iC-R：面向摩托车全盔的ADAS智能头盔案例",
+  "domain": "competitors",
+  "content": "Intelligent Cranium iC-R 是一款明确面向摩托车骑行场景的智能全盔方案，不是自行车头盔，这一点对竞品分析很关键。公开资料显示，其核心卖点是把 ADAS 能力集成进全盔：后视摄像头、HUD 平视显示、盲点监测与碰撞预警。来源2给出的专利信息较完整：公司为 Intelligent Cranium Helmets (ICH), LLC，创始人 Lee Revere；美国专利号 US 10,004,297 B2，名称为“Motorcycle helmet with integrated advanced driver assistance system”，授权日期 2018-06-26。该专利直接说明其定位是 motorcycle helmet，而非 bicycle helmet。技术参数方面，来源2提到后视摄像头可提供约 180°广角视野，信息通过 HUD 投射到骑手视野下缘；盲点与碰撞预警依赖侧后方传感器与算法，对快速接近车辆进行视觉/听觉告警。来源1还补充了 GPS 导航、蓝牙通信、语音控制、环境光传感器，以及轻量化碳纤维外壳等配置，但这些点在现有来源中缺少统一型号级参数。CES 方面，来源1称 iC-R 在 CES 2017/2018/2019 多次亮相，并称其在 CES 2017 获得“车辆智能与自动驾驶技术”类别创新奖；但来源2则称其为 CES 2017 Innovation Award Honoree，且类别是“智能家居”。这构成明显冲突，需标注为待核验。时间线也有矛盾：搜索词含“2025”，但来源2、3均指出该产品的主要公开活动集中在 2017-2019 年，来源3进一步强调目前缺乏 2025 发布或 CES 2026 展示的可靠公开信息，因此不能把它当作 2025 年新上市产品。价格方面，本次 3 个来源均未提供可核实的官方零售价、预售价或量",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "摩托车全盔",
+    "智能头盔",
+    "ADAS",
+    "HUD",
+    "碰撞预警",
+    "盲点监测",
+    "CES",
+    "专利",
+    "Intelligent Cranium",
+    "iC-R",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

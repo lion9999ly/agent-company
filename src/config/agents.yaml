@@ -1,0 +1,29 @@
+# 🧠 虚拟公司异构模型路由与评审规范 (Model & Review Config)
+
+system_model_routing:
+  # CPO 规划中枢：需要极强的任务拆解与逻辑推演能力
+  cpo_plan_agent:
+    provider: "azure_openai"
+    model_id: "gpt-4o"  # 替代 Claude 做复杂 JSON 强输出
+    temperature: 0.2
+    max_tokens: 4096
+
+  # CPO 评审中枢：需要挑刺、边界审查，绝对防幻觉 (能力错位)
+  cpo_critic_agent:
+    provider: "google"
+    model_id: "gemini-1.5-pro" # 强逻辑、大上下文
+    temperature: 0.0 # 绝对确定性，不发散
+    max_tokens: 2048
+    # 强制评审红线维度（Critic 必须逐项 Check）
+    mandatory_dimensions:
+      - "Architecture_Compliance (架构合理性)"
+      - "Edge_Case_Coverage (边界场景)"
+      - "Metric_Executability (指标可执行性与工具匹配)"
+      - "Deadlock_Prevention (循环依赖与死锁预防)"
+    min_review_rounds: 3
+
+  # CTO/CMO 执行末端：代码编写与策略生成
+  execution_agents:
+    provider: "aliyun"
+    model_id: "qwen-max" # 阿里云通义千问 Max，代码与中文策略能力极强，性价比高
+    temperature: 0.1

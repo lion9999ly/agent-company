@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] Bouffalo Lab BL808 (博流智能)",
+  "domain": "components",
+  "content": "以下基于你给出的搜索结果整理，未额外引入新来源；凡搜索结果未明确给出的信息，标注为“未查到”。\n\n# Bouffalo Lab BL808 完整技术档案\n\n## 1. 基本参数\n\n### 1.1 芯片定位\n- 高度集成的异构多核 RISC-V SoC\n- 面向：\n  - IoT\n  - 边缘 AI\n  - 智能视觉\n  - 多媒体设备\n  - 智能家居/工业控制\n\n### 1.2 制程\n- 制程：未查到\n\n### 1.3 CPU 架构\n搜索结果里有两套说法，存在版本/资料差异，需并列标注：\n\n#### 说法 A\n- 主核：**64-bit RISC-V C906**\n- 协处理器：**32-bit RISC-V E907**\n\n#### 说法 B\n- **D0 Core**：64-bit RISC-V **C906**，最高 **480 MHz**\n- **M0 Core**：32-bit RISC-V **E902**，最高 **320 MHz**\n- **P0 Core**：32-bit RISC-V **E902**，最高 **320 MHz**\n  - 其中一颗低功耗/实时控制\n  - 一颗用于 Wi‑Fi/Bluetooth MAC/Baseband 处理\n\n> 结论：可确认 BL808 是**异构多核 RISC-V SoC**，至少包含 1 个 64 位高性能核 + 1~2 个 32 位低功耗/实时核。  \n> 精确核型组合在给定搜索结果中存在冲突，建议最终以官方最新版 datasheet 为准。\n\n### 1.4 CPU 主频\n- 高性能核 C906：最高 **480 MHz**\n- 低功耗/实时核 E902：最高 **320 MHz**\n- 另一份结果中仅提到 E907，但未给出主频\n- 因资料冲突，建议保守写法：\n  - **主核最高 480 MHz**\n  - **辅核最高 320 MHz**\n\n### 1.5 GPU 架构和算力\n- 独立 GPU：**未查到**\n- 搜索结果倾向于：\n  - **无独立 GPU**\n  - 图形/显示能力主要依赖多媒体显示控制器，而非通用 3D GPU\n- GPU 算力：未查到\n\n### 1.6 NPU 架构和算力\n- NPU：**BLAI-100**\n- 支持数据类型：\n  - **INT8**\n  - **INT16**\n- AI 算力：\n  - **最高 200 GOPS**\n\n### 1.7 多媒体能力\n- 支持：\n  - **H.264 编解码**\n  - **JPEG 编解码**\n- 视频输入/输出能力（搜索结果给出的典型值）：\n  - **MIPI CSI 2-lane：1080p@30fps 或 720p@60fps**\n  - **MIPI DSI 2-lane：1080p@30fps**\n\n---\n\n## 2. 接口\n\n## 2.1 摄像头接口\n- **MIPI CSI**\n  - 2-lane\n  - 支持高达 **1080p@30fps** 或 **720p@60fps**\n- **DVP 并口摄像头接口**\n  - 支持传统并行摄像头模块\n\n## 2.2 显示接口\n- **MIPI DSI**\n  - 2-lane\n  - 支持高达 **1080p@30fps**\n- **RGB LCD 接口**\n  - 支持并行 RGB 屏\n\n## 2.3 音频接口\n- **I2S**\n  - 支持数字音频输入/输出\n- **PDM**\n  - 支持 PDM 麦克风/麦克风阵列输",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "博流智能"
+  ],
+  "confidence": "high"
+}

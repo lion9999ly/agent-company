@@ -1,0 +1,15 @@
+{
+  "title": "Google Gemini API 每模型每日请求配额：250 次/天",
+  "domain": "standards",
+  "content": "错误详情显示项目级、模型级每日请求配额规则：quotaId 为 GenerateRequestsPerDayPerProjectPerModel，quotaMetric 为 generativelanguage.googleapis.com/generate_requests_per_model_per_day。当前模型 gemini-3.1-pro 在 global 维度下的 quotaValue 为 250，超过后将触发 429/RESOURCE_EXHAUSTED。该信息可作为调用容量规划与限流设计依据。",
+  "source": "doc_import:20260318-175916.jpg",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Google Gemini API",
+    "配额",
+    "GenerateRequestsPerDayPerProjectPerModel",
+    "gemini-3.1-pro",
+    "global"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "Horizon Continental V1：泊车/静置长稳参数直接影响待机与唤醒可靠性",
+  "domain": "components",
+  "content": "报告将头盔“泊车长稳”定义为静置待机、摘盔、充电、热浸、反复唤醒等场景，建议测试时长为 24h 静置 + 7 天待机循环，覆盖哨兵模式、充电、反复开关机、摘戴检测。验收门槛包括：待机异常唤醒 <1 次/24h、哨兵误触发率 <5%、低电保护触发准确率 100%、冷启动 <5s。该定义被明确纳入正式方案，说明 V1 的长稳验证不能只看骑行过程，还必须覆盖静置与唤醒可靠性。",
+  "source": "deep_research:deepen_339",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Horizon Continental",
+    "V1",
+    "泊车长稳",
+    "待机循环",
+    "冷启动",
+    "deep_research",
+    "deepen_339"
+  ],
+  "confidence": "high"
+}

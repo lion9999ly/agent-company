@@ -1,0 +1,15 @@
+{
+  "title": "Goeroptics GTD13(0.7cc) Polychrome LCoS AR光机",
+  "domain": "components",
+  "content": "GTD13(0.7cc)采用0.14英寸LCoS_OV显示，分辨率648×648，像素尺寸3.8μm。瞳孔尺寸3.3mm，FOV(D) 28°，光通量1.6lm@0.4W（LED），模组尺寸12.4×7.6×10.9mm，体积0.7cc，重量1.4g。相较1.0cc版本，体积和重量更小，适合更紧凑的AR眼镜设计。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Goeroptics",
+    "GTD13",
+    "LCoS",
+    "0.7cc",
+    "AR光机"
+  ],
+  "confidence": "high"
+}

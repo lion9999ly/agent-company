@@ -1,0 +1,15 @@
+{
+  "title": "Snapdragon AR1 Gen 1 显示子系统：双目 1280×1280@60Hz",
+  "domain": "components",
+  "content": "平台支持单目或双目显示，其中规格页明确列出 Binocular Display，支持 1280 x 1280p 60 Hz RGB display output。文档还指出支持 3DoF，可将通知和提醒以具备景深感的方式叠加到用户视野中，提升视觉舒适度。该配置面向轻量级 AR 提示、消息通知和基础沉浸式交互。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "display",
+    "binocular",
+    "1280x1280",
+    "60Hz",
+    "3DoF"
+  ],
+  "confidence": "high"
+}

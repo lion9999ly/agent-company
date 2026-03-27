@@ -1,0 +1,16 @@
+{
+  "title": "Analog Devices ADXL367 + Maxim MAX32666 wearable f",
+  "domain": "lessons",
+  "content": "**1. 关键器件/参数（可直接用于智能头盔方案选型）**  \n- **ADI ADXL367 三轴MEMS加速度计**  \n  - 功耗：**0.9µA@100Hz**；唤醒模式**180nA**；待机**10nA**  \n  - 量程：**±2g/±4g/±8g**；**14位分辨率**  \n  - 功能：内置**活动/非活动检测、自由落体检测**，支持**SPI/I2C**  \n  - 温度：**-40°C~125°C**  \n  - 价值：适合头盔“**常开监测**”，可作为低功耗一级触发器，显著提升续航。  \n- **Maxim/ADI MAX32666 BLE MCU**  \n  - 内核：**ARM Cortex-M4F + FPU**  \n  - 功耗：活动模式**50µA/MHz**；深睡+RTC/RAM保持**1.5µA**  \n  - 通讯：**Bluetooth 5.2**  \n  - 存储：**1MB Flash + 560KB SRAM**  \n  - 价值：适合运行**传感器融合/轻量ML**、BLE告警、与手机App联动。  \n\n**2. 对智能骑行头盔研发的可借鉴设计**  \n- **事件驱动低功耗架构**：加速度计常驻监测，检测到自由落体/剧烈冲击后再唤醒主控与蓝牙，避免BLE常在线耗电。  \n- **传感器融合趋势**：加速度计 + **陀螺仪**（推荐）+ 可选**气压计/GPS**，通过**互补滤波/卡尔曼滤波/轻量ML**降低误报，适合骑行摔倒、碰撞识别。  \n- **边缘智能**：在头盔端完成初判，仅在确认异常后上传，兼顾**低延迟、低功耗、隐私**。  \n- **模块化通信**：BLE 5.2适合与手机联动；若做高阶版，可扩展蜂窝/GPS模块实现独立SOS。  \n\n**3. 技术趋势/行业变化**  \n- 智能头盔正从“蓝牙音",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-25",
+  "tags": [
+    "fall detection",
+    "ADXL367",
+    "MAX32666",
+    "sensor fusion",
+    "ultra low power",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

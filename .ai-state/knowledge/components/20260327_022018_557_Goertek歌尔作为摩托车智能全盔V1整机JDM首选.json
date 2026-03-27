@@ -1,0 +1,17 @@
+{
+  "title": "Goertek（歌尔）作为摩托车智能全盔V1整机JDM首选",
+  "domain": "components",
+  "content": "报告明确结论是V1最优路线不是让汽车ADAS/HUD供应商直接主导整顶头盔，而是由歌尔作为整机JDM主承接方，吸收Continental与Bosch的方法论和模块能力。原因在于目标产品必须同时满足ECE 22.06、整机≤1.65kg、8h续航、HUD入眼亮度3000 nits、100km/h暴雨可用、100km/h风噪下语音可用、贴脸区温度<40°C等约束，核心难点是光学、声学、结构、热、防水、认证、量产装配的系统集成。歌尔被认为最匹配的能力包括AR/VR整机、微型光学、声学、摄像头模组、精密结构、热设计、防水与量产协同。",
+  "source": "deep_research:auto_20260327_3",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Goertek",
+    "JDM",
+    "智能头盔",
+    "系统集成",
+    "量产",
+    "deep_research",
+    "auto_20260327_3"
+  ],
+  "confidence": "medium"
+}

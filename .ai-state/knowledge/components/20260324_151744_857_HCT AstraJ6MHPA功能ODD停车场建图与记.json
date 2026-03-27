@@ -1,0 +1,16 @@
+{
+  "title": "HCT Astra（J6M）HPA功能ODD：停车场建图与记忆巡航能力",
+  "domain": "components",
+  "content": "Astra（J6M）HPA全部规划为OTA(830)上线，Luna 6（J6B）对应项均为“×”。HPA ODD包括建图停车场类型、路径信息识别、地图里程/数量、车速、建图目标车位类别等基础条件定义，并支持进入/出停车场弱提醒。说明Astra将具备停车场内从建图到巡航泊入的完整高阶泊车框架。",
+  "source": "doc_import:Astra泊车功能介绍 20260302 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Astra",
+    "J6M",
+    "HPA",
+    "建图",
+    "记忆巡航",
+    "OTA830"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "0327_2025智能摩托车全盔方案：CV25+IMX678后视/BSD/ADAS组件组合",
+  "domain": "components",
+  "content": "面向智能摩托车全盔（明确不是自行车头盔），2025年较有可行性的视觉方案是 Ambarella CV25 SoC 搭配 Sony STARVIS IMX678 后视摄像头模组，用于后视显示、盲点检测（BSD）和轻量ADAS。来源一致认为，CV25属于 Ambarella 的低功耗视觉AI处理器，适合电池供电设备；IMX678属于 Sony STARVIS 系列，主打低照度成像。可落地的头盔级配置通常是：1颗后置广角摄像头，分辨率 4K 级（约8MP），镜头视场角建议 120°-150°，视频输出 1080p/60fps 或 4K/30fps，再由 CV25 在本地完成目标检测、跟踪和告警。来源提到 IMX678 在约 0.005 lux 低照环境下仍可获得可识别画面，这对夜骑后视和BSD很关键。CV25则被描述为可支持 4K 视频处理与AI推理，适合做车辆/行人识别、相对速度估计和危险区域告警。",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "motorcycle-helmet",
+    "Ambarella CV25",
+    "Sony IMX678",
+    "BSD",
+    "ADAS",
+    "rearview camera",
+    "smart helmet",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

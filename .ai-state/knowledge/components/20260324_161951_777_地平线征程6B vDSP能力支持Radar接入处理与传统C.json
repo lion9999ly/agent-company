@@ -1,0 +1,15 @@
+{
+  "title": "地平线征程6B vDSP能力：支持Radar接入处理与传统CV",
+  "domain": "components",
+  "content": "征程6B提供高灵活性的vDSP，支持Radar接入处理，同时兼容传统CV任务。该设计说明J6B不仅面向纯视觉方案，也支持雷达等异构传感器数据处理，适合多传感器融合与复杂车载场景部署，为Luna 6两段式端到端架构提供更灵活的感知输入能力。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "征程6B",
+    "vDSP",
+    "Radar",
+    "传统CV",
+    "多传感器"
+  ],
+  "confidence": "high"
+}

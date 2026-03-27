@@ -1,0 +1,24 @@
+{
+  "title": "0327_Forcite MK1S智能HUD摩托车全盔供应链拆解（2024-2025推断）",
+  "domain": "competitors",
+  "content": "Forcite MK1S是澳大利亚Forcite Helmets推出的智能摩托车全盔，明确属于full-face motorcycle helmet，而非自行车头盔；产品定位与我们同赛道。现有来源一致指出其核心卖点为HUD、前置摄像头、蓝牙通信与导航提醒，并符合ECE 22.06与DOT标准。外壳材料在来源3中被描述为碳纤维全盔，但来源2仅确认“高端智能全盔”，未给出材料，故“碳纤维”需标注为高概率信息而非完全实锤。价格方面，本次3个来源未给出官方售价，不能臆造；若用于竞品库，应补采官网或零售渠道价格。供应链层面，SoC最可能来自Ambarella，来源1进一步推测为CVflow系列，如CV25、CV28或更高阶CV3，理由是其具备低功耗视频编码、ISP和AI视觉处理能力，适合头盔内4K/高码率录像、HUD图形叠加及潜在ADAS预警。图像传感器方面，3个来源均将Sony IMX列为高概率方案，来源1给出更具体候选：IMX335（5MP）、IMX415（8MP）或同级IMX3xx/4xx系列，重点需求是HDR、低照度和抗振场景适配。制造端，Goertek（歌尔股份）被来源2、3列为“潜在ODM/OEM合作伙伴”，逻辑是其具备声学、光学、微显示、精密结构与整机组装能力，适合HUD头盔这类高集成产品；但需注意，这一点没有官方确认，属于供应链推断，不应写成已证实事实。功能参数上，来源均确认MK1S具备前置广角摄像头、GPS导航、蓝牙连接、危险警报与App联动，但电池续航仅被笼统描述为“数小时”，缺少Wh或mAh数据。对我们最有价值的启示是：Forcite路线不是简单加装运动相机，而是以Ambarella+Sony IMX这类成熟视觉方案叠加HUD与音频模组，形成“安全提醒+记录+交互”闭环。若对标，应重点关注其HUD光机体积、热管理、整机重量控制及ECE 22.06下的电子模组布置",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "HUD",
+    "motorcycle helmet",
+    "full-face",
+    "Ambarella",
+    "Sony IMX",
+    "Goertek",
+    "ECE 22.06",
+    "DOT",
+    "smart helmet",
+    "竞品拆解",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

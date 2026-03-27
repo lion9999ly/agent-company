@@ -1,0 +1,22 @@
+{
+  "title": "0325_Sena“60S Mesh 3.0”情报现状：暂无FCC拆解，芯片供应商仅能基于50S/50R路线推测",
+  "domain": "competitors",
+  "content": "基于3个来源，当前可确认的结论是：截至来源所述时间点，Sena尚未公开发布名为“60S”的摩托车通信器，也没有公开“Mesh 3.0”对应产品的FCC备案、内部照片或拆解资料。因此，搜索词中的“2025 Sena 60S Mesh 3.0 chipset supplier / FCC internal photos / teardown”暂无可核实实锤，任何芯片供应商判断都属于推测。需注意，本条目讨论的是摩托车头盔通信系统，适配全盔场景，不是自行车头盔；若有自行车Mesh/蓝牙案例，不能直接类比其风噪、续航和安装约束。现有可参考对象是Sena 50S/50R：来源2给出其采用Bluetooth 5.0、Mesh 2.0，Mesh对讲在6人以上场景最远可达8 km，并支持最多24名参与者。按市场定位，50S零售价通常在US$339-359区间，50R约US$299-329，供应商为Sena Technologies, Inc.。关于潜在芯片路线，3个来源都把Qualcomm/CSR列为最可能核心无线方案供应商，候选平台包括QCC51xx或QCC30xx系列；同时，主控MCU可能来自STMicroelectronics或NXP，电源管理可能来自Texas Instruments或Dialog/Renesas，外部Flash可能来自Winbond或Macronix。矛盾点在于：来源1称“2025年产品，其FCC ID尚未生成”；来源2则进一步指出“连60S/Mesh 3.0官方命名本身都未被Sena确认”。两者并不完全冲突，但后者更严格，意味着不仅没有FCC，连产品存在性都未获官方证实。对我们做智能摩托车全盔的启示是：竞品研究不能把未来型号当已上市项目立项；若要追踪Sena下一代，应重点盯FCC短期保密到期后的内部照片、Bluetooth SIG成员声明、以及Qualcomm Q",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Sena",
+    "60S",
+    "Mesh 3.0",
+    "motorcycle helmet",
+    "Bluetooth 5.0",
+    "Qualcomm",
+    "FCC",
+    "teardown",
+    "50S",
+    "50R",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

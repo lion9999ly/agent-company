@@ -1,0 +1,18 @@
+{
+  "title": "AR1 + BES2800 + 独立视觉 ISP/AI 芯片（V1 必须上 4K+基础 ADAS 时的三芯片方案）",
+  "domain": "components",
+  "content": "如果业务坚持 V1 必须具备 4K 录像 + 基础 ADAS，报告推荐升级为三芯片架构：AR1 + BES2800 + 独立视觉 ISP / AI 芯片，而不是用 XR2 单芯片硬扛。其核心逻辑是将 HUD 与录像/ADAS 解耦，避免单芯片热崩，保留 HUD 体验稳定性，并让 4K 录像成为可控的高性能子系统。ADAS 在 V1 只建议做提醒型能力，包括盲区提示和前向 TTC 预警；复杂目标分类与车道级 AR 融合应放到 V2。该方案代价是 BOM、板级复杂度、EMI 风险、功耗调度复杂度和软件集成难度上升，但仍比 XR2 单芯片更稳。",
+  "source": "deep_research:tree_ar_xr_soc",
+  "created_at": "2026-03-26",
+  "tags": [
+    "三芯片架构",
+    "AR1",
+    "ADAS",
+    "ISP",
+    "AI芯片",
+    "V1升级",
+    "deep_research",
+    "tree_ar_xr_soc"
+  ],
+  "confidence": "high"
+}

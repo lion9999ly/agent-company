@@ -1,0 +1,16 @@
+{
+  "title": "Specialized Mode Smart Helmet 2025 ANGi integrated",
+  "domain": "lessons",
+  "content": "**结构化摘要（面向智能骑行头盔研发）**\n\n1. **产品/技术方向**\n- 主题指向：**Specialized Mode 2025 智能头盔（预测性分析）**，核心为 **ANGi碰撞检测 + 集成灯光 + BLE互联 + MIPS**。\n- 预期功能：**碰撞报警、前/后警示灯、App连接、固件升级、紧急联系人管理**。\n- 趋势功能：**环境光自适应亮度、刹车感应灯、碰撞后自动高亮/爆闪**。\n\n2. **关键器件与参数**\n- **主控/蓝牙SoC**：倾向 **Nordic nRF52**（如 **nRF52832/nRF52840**），备选 **STM32L / Silicon Labs EFR32BG**；原因是**低功耗+BLE集成**。\n- **传感器融合**：采用 **6轴IMU**（3轴加速度计+3轴陀螺仪），候选 **Bosch BMI270/BMA400、ST LSM6DSOX、TDK ICM-20602**；用于区分**颠簸 vs 真碰撞**。\n- **电池管理**：小型 **Li-Po 200–500mAh**，充电/PMU候选 **TI BQ2407x、ADI ADP509x**。\n- **灯光系统**：高亮低功耗 **SMD LED** + 驱动电路，强调**续航与可见性平衡**。\n- **PCB**：预计 **4层/6层 FR-4**，满足高密度集成与RF完整性。\n- **无线通信**：**BLE 5.x**，优势是**更远距离、更低功耗、更高吞吐**。\n\n3. **天线与射频设计**\n- 2.4GHz天线优先：**IFA / MIFA PCB天线**，原因是**成本低、体积小、适合穿戴设备**；芯片天线为次选。\n- 关键设计点：**50Ω阻抗匹配、地平面/净空控制、头盔壳体与人体邻近效应补偿**。\n\n4. **可借鉴设计理念**\n",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Specialized",
+    "ANGi",
+    "智能头盔",
+    "拆解",
+    "传感器",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

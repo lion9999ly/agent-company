@@ -1,0 +1,21 @@
+{
+  "title": "0323_2026年HUD光波导+Micro OLED智能眼镜供应链与成本观察",
+  "domain": "components",
+  "content": "到2026年，HUD型智能眼镜的核心价值量仍集中在“微显示+光学”两大环节。现有资料显示，消费级产品已形成两条路线：一是Birdbath+Micro OLED，代表机型如雷鸟 Air 3，售价1699元，76g，46°FOV；Rokid AR Lite 售价3699元，75g，43°FOV。二是更接近HUD形态的衍射光波导方案，如雷鸟 X3 Pro，售价8999元，75g，30°FOV；Rokid Glasses 售价2499元，49g，衍射光波导+Micro-LED，50°FOV。由此可见，2025-2026年真正采用光波导的轻量化眼镜，价格带大致落在2499-8999元，而Birdbath+Micro OLED产品已下探至1699-3699元，说明光波导仍是整机成本抬升的关键。供应商层面，Micro OLED面板主要由Sony、Samsung Display、Kopin，以及中国厂商京东方、视涯技术、奥雷德等提供；光波导侧则以Lumus、DigiLens、WaveOptics等海外厂商为代表，国内则受益于量产工艺推进，成本有下降趋势。参数上，Micro OLED的典型能力已覆盖2K级分辨率，行业报告列举Kopin产品规格包括2048×2048、1920×1200、1280×1024等，像素间距约9.3μm、9.6μm、12μm，适合做高PPI近眼显示。需求端，远瞻慧库援引IDC/Wellsenn XR数据称，2026年中国智能眼镜出货量预计451万台，其中AI眼镜343万台；全球AI眼镜2025年为766万台，2026年将突破1000万台。成本趋势上，来源普遍认为2026年国产Micro OLED与光波导良率提升将推动BOM下降，但未给出统一单件成本。需要标注的矛盾是：一份资料将Rokid Glasses归为“衍射光波导+Micro-LED”，而用户检索主题聚焦“光波导",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "HUD",
+    "光波导",
+    "Micro OLED",
+    "智能眼镜",
+    "供应链",
+    "成本",
+    "2026",
+    "技术",
+    "HUD",
+    "光学",
+    "供应商"
+  ],
+  "confidence": "high"
+}

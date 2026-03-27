@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 经济型行泊一体方案",
+  "domain": "components",
+  "content": "文档提出 Economic Integrated Driving & Parking Solution，基于 Horizon Journey® 6B 实现更高性价比的行泊一体。可组合 8MP 前视、3MP×4 鱼眼、可选 3MP@60°FOV 或 1.5M/2M DMS Camera，在单 SoC 上实现驾驶与泊车功能整合。其核心优势是利用 J6B 的算力、ISP、视频与网络资源，在控制系统成本的同时保留功能扩展空间，适合中低成本车型的智能驾驶升级。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "经济型",
+    "行泊一体",
+    "DMS",
+    "多摄像头"
+  ],
+  "confidence": "medium"
+}

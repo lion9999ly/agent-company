@@ -1,0 +1,15 @@
+{
+  "title": "HCT 3D OCC感知能力：稳定检出悬空消防栓箱",
+  "domain": "components",
+  "content": "文档在APA/RPA亮点中明确提到“HCT感知3D OCC稳定检出悬空消防栓箱”。结合配图可知，该能力通过3D体素/Occupancy表示环境，识别连续边界、大型障碍物和立式障碍物，为泊车路径规划与避障提供支持。该能力直接支撑OTA(830)中的悬空障碍物避障，是复杂停车场感知的重要技术点。",
+  "source": "doc_import:Astra泊车功能介绍 20260302 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "3D OCC",
+    "感知",
+    "悬空障碍物",
+    "消防栓箱",
+    "泊车感知"
+  ],
+  "confidence": "high"
+}

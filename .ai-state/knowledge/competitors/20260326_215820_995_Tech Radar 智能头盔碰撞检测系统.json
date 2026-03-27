@@ -1,0 +1,17 @@
+{
+  "title": "[Tech Radar] 智能头盔碰撞检测系统",
+  "domain": "competitors",
+  "content": "该项目设计了一个物联网（IoT）智能头盔，核心功能是实时检测碰撞并立即向紧急联系人发送短信，旨在解决医疗延误问题。技术细节可能包括使用加速度计、陀螺仪等传感器进行碰撞检测，通过GSM/GPRS模块实现短信发送，以及与Arduino等微控制器集成。这为我们的智能头盔项目在ADAS、安全功能和紧急通信方面提供了宝贵的实现思路和技术参考。\n\n来源: https://github.com/Student-Chirag/Smart-helmet-project-code",
+  "source": "platform_monitor:https://github.com/Student-Chirag/Smart-helmet-project-code",
+  "created_at": "2026-03-26",
+  "tags": [
+    "智能头盔",
+    "IoT",
+    "碰撞检测",
+    "紧急通信",
+    "ADAS",
+    "platform_monitor",
+    "tech_radar"
+  ],
+  "confidence": "medium"
+}

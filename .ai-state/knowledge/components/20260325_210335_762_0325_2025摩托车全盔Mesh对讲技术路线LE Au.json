@@ -1,0 +1,20 @@
+{
+  "title": "0325_2025摩托车全盔Mesh对讲技术路线：LE Audio/LC3/Auracast与Qualcomm平台机会",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2025年对讲系统的主线不是“普通蓝牙耳机升级”，而是Mesh组网+Bluetooth LE Audio。需明确排除自行车头盔场景：自行车产品常强调超轻、开放式声学和低风速环境，不适用于全盔在80-120km/h风噪、厚衬垫、手套操作和ECE 22.06/PSC适配要求。现有摩托车对讲头部玩家仍是Sena与Cardo：来源1称Sena Mesh 2.0可支持24人、最远8km（理想地形），来源2称Cardo DMC支持15人、单组1.2km；两者口径不同，且“8km/1.2km”都高度依赖地形与中继人数，不能直接横比。芯片侧，来源对“Qualcomm S7 Pro Gen 1”存在明显矛盾：来源1认为其更像智能头盔主控/计算平台，不是直接蓝牙音频SoC；来源2又将其类比为S7 Gen 2 Sound Platform；来源3则直接称其为已发布旗舰音频平台。基于这三源，较稳妥判断是：Qualcomm高端S系列可作为AI音频/语音处理核心，但量产摩托车对讲模组仍可能搭配专用蓝牙音频芯片，而非单芯片包打天下。协议侧，LE Audio的价值明确：LC3在更低码率下优于传统SBC，来源2给出功耗可比经典蓝牙音频低约50%或更多；这对全盔尤为关键，可在1000-1500mAh电池下争取更长连续对讲。Auracast更适合“单向广播”新场景，如车队领航、赛道PIT公告、租赁车队统一播报，但它不是Mesh多人双向对讲的替代品。供应链上，可优先关注Qualcomm（平台/参考设计）、Sena与Cardo（整机竞品）、以及日本JDM渠道适配商；JDM市场若进入量产，除蓝牙认证外，还要考虑日本PSC流通、日语语音UI和本地售后。价格方面，三源未给出S7平台BOM或模组报价，现阶段只能参考高端摩托车Mesh对讲终端通常位于300-500美元带；若做全盔一体化，需把双麦克风ENC",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "motorcycle-helmet",
+    "mesh-intercom",
+    "qualcomm",
+    "le-audio",
+    "lc3",
+    "auracast",
+    "jdm",
+    "sena",
+    "cardo",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

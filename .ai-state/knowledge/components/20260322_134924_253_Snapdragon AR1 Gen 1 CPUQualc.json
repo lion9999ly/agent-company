@@ -1,0 +1,14 @@
+{
+  "title": "Snapdragon AR1 Gen 1 CPU：Qualcomm Kryo 4 核 1.9 GHz",
+  "domain": "components",
+  "content": "CPU 采用 Qualcomm Kryo CPU，配置为 4 个核心，主频 1.9 GHz，支持 64-bit Architecture。该规格表明平台在智能眼镜场景中更偏向低功耗与轻量计算，而非高性能移动终端级算力，适合配合专用 ISP、NPU 与连接模块协同工作。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Kryo CPU",
+    "4 cores",
+    "1.9GHz",
+    "64-bit"
+  ],
+  "confidence": "medium"
+}

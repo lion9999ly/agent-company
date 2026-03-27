@@ -1,0 +1,20 @@
+{
+  "title": "0325_Cardo Packtalk Mesh（摩托车全盔对讲）与DMC二代现状：2025并无独立新型号",
+  "domain": "competitors",
+  "content": "Cardo Packtalk Mesh是面向摩托车全盔/揭面盔场景的高端车队对讲方案，不是自行车头盔产品；若检索结果混入自行车Mesh对讲，应明确排除，因为其风噪、车速、安装底座与手套操作需求均不同。基于3个来源可确认：截至当前，Cardo官方并未发布名为“Packtalk Mesh DMC 2nd Gen 2025”的独立新品，所谓“2025”更多是用户对现有二代DMC平台的搜索称呼。已落地的代表型号包括Packtalk Edge、Packtalk Neo、Packtalk Custom，以及第三来源补充的Packtalk Pro。核心参数在多个来源基本一致：DMC动态网状通信支持最多15名骑手全双工通话，单机点对点最远约1.6公里，6人以上车队总覆盖可扩展到约8公里；蓝牙版本在来源1、2中均写为Bluetooth 5.2；续航约13小时，快充20分钟可获得约2小时通话；防护等级IP67；音频方案为JBL 40mm扬声器；支持“Hey Cardo”自然语音控制与OTA无线升级。安装结构上，Edge采用磁吸式Air Mount，Neo/Custom为卡扣式。来源间的主要矛盾点有两处：其一，第三来源称Cardo通常“不明确标记DMC 1st/2nd Gen”，而前两条将Edge/Neo/Custom直接归入“第二代DMC”；其二，第三来源提到“15名或更多，取决于型号和环境”，但前两条明确写死为15人上限，因此在做竞品对标时应以“官方常见口径15人”为保守值。价格方面，本次来源未给出明确数字，不能臆造；若做采购或BOM对标，至少应记录供应商为Cardo Systems，音频合作方为JBL。对我们智能摩托车头盔的启示是：高端用户真正买单的是稳定组网、免重连、自愈网络、手套友好语音控制和全天候防护，而不是单纯蓝牙对讲；若要超越Packtalk，需在车队规模、风噪抑制、与头盔一体化",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Cardo",
+    "Packtalk",
+    "DMC",
+    "Mesh",
+    "摩托车头盔",
+    "车队对讲",
+    "JBL",
+    "IP67",
+    "Bluetooth 5.2",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "歌尔股份智能骑行头盔方案",
+  "domain": "components",
+  "content": "报告明确建议优先选择歌尔股份，但合作模式必须限定为“电子智能模组/JDM整机平台 + 专业头盔厂负责安全壳体联合开发”。原因是歌尔公开优势集中在声学、光学、MEMS/传感器、精密制造、智能硬件ODM，而非ECE 22.06、DOT、CCC等头盔安全认证壳体体系。决策上不建议让歌尔单独承担完整头盔安全产品总包，最佳策略是“歌尔 + 专业头盔厂”的双供应商/JDM联合方案。",
+  "source": "deep_research:why_goertek",
+  "created_at": "2026-03-22",
+  "tags": [
+    "歌尔股份",
+    "JDM",
+    "ODM",
+    "头盔认证",
+    "供应商策略",
+    "deep_research",
+    "why_goertek"
+  ],
+  "confidence": "high"
+}

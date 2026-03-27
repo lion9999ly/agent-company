@@ -1,0 +1,15 @@
+{
+  "title": "Luna 6算法架构：两段式端到端感知与规划",
+  "domain": "components",
+  "content": "Luna 6升级为两段式端到端技术架构，由Perception E2E Model与Planner E2E Model组成。相较Luna 3的分离式重后处理方案，Luna 6通过模型直出减少后处理链路，提升感知稳定性、轨迹精度与规划体验，是本次平台升级的核心技术变化。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "端到端",
+    "E2E",
+    "Perception E2E Model",
+    "Planner E2E Model"
+  ],
+  "confidence": "high"
+}

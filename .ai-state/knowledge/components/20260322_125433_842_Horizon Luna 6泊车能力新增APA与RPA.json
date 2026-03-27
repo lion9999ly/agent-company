@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Luna 6泊车能力新增APA与RPA",
+  "domain": "components",
+  "content": "泊车功能方面，Luna 6支持APA自动泊车辅助和RPA遥控泊车辅助，而Luna 3不支持。文档特别说明比较对象为单芯片方案，不含J3融合其他芯片方案，且“√”表示可以实现。因此在单芯片集成能力上，Luna 6已覆盖从行车到泊车的更完整功能闭环。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "APA",
+    "RPA",
+    "自动泊车",
+    "遥控泊车"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,20 @@
+{
+  "title": "歌尔智能骑行头盔 V1：HUD 与语音交互关键规格",
+  "domain": "components",
+  "content": "V1 建议量产的核心体验是 HUD 基础版与 AI 语音交互。HUD 显示内容包括导航箭头、车速/限速、来电提示、ADAS 光效预警和环境光自适应，光学目标为入眼亮度 >3000 nits，FOV 控制在 20°–28°，方案建议采用 MicroLED 或 LCoS + Birdbath 自由曲面。语音部分要求离线唤醒和本地指令集，覆盖导航、接听、录像、通透模式；指标为 100km/h 下关键词识别率目标 >90%，唤醒 <400ms，依赖 4 麦阵列、风道设计、下巴帘和麦位优化。这些参数可直接作为供应链选型和样机验收标准。",
+  "source": "deep_research:adhoc_基于PRD_V0.1",
+  "created_at": "2026-03-23",
+  "tags": [
+    "歌尔",
+    "HUD",
+    "语音交互",
+    "MicroLED",
+    "LCoS",
+    "Birdbath",
+    "4麦阵列",
+    "规格",
+    "deep_research",
+    "adhoc_基于PRD_V0.1"
+  ],
+  "confidence": "high"
+}

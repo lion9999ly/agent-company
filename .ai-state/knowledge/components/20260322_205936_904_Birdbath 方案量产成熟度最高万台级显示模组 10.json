@@ -1,0 +1,18 @@
+{
+  "title": "Birdbath 方案：量产成熟度最高，万台级显示模组 100–180 美元",
+  "domain": "components",
+  "content": "Birdbath 方案典型参数为 FOV 20°–40°、模组厚度 20–50mm、虚像距离 1.5m–5m，适配 Micro-OLED、LCoS、DLP。其优势是成熟度最高、亮度和对比度较好、成本相对低、装调和量产风险较低，尤其适合头盔这种对体积容忍度略高、但对亮度要求极高的场景。成本方面，光学模组 BOM 约 80–200 美元；完整显示子系统小批量约 150–300 美元，万台级约 100–180 美元。报告判断其成熟度、量产适配度、头盔适配度均为高。",
+  "source": "deep_research:optical_suppliers",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Birdbath",
+    "成本",
+    "量产",
+    "Micro-OLED",
+    "LCoS",
+    "头盔HUD",
+    "deep_research",
+    "optical_suppliers"
+  ],
+  "confidence": "high"
+}

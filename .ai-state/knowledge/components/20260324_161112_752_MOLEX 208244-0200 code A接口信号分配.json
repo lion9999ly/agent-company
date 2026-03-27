@@ -1,0 +1,15 @@
+{
+  "title": "MOLEX 208244-0200 code A接口信号分配：前视/DMS/IVI/DVR",
+  "domain": "components",
+  "content": "MOLEX 208244-0200（Black）4 in 1 mini FAKRA code A的4路信号定义为：Pin1 FRONT-CAM-GMSL-A，Go To 8M camera；Pin2 DMS-GMSL-B，Go To DMS；Pin3 AVM-VIDEO-GMSL-OUT1，Go To IVI；Pin4 DVR-GMSL-OUT，Go To DVR。Signal definition均为GMSL。该分配表明code A接口不仅接入前视与DMS摄像头，还承担向IVI和DVR的视频输出链路，属于复合型视频接口。",
+  "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "208244-0200",
+    "前视摄像头",
+    "DMS",
+    "IVI",
+    "DVR"
+  ],
+  "confidence": "high"
+}

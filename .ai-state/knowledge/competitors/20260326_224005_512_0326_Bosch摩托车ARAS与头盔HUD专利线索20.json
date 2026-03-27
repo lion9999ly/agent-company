@@ -1,0 +1,17 @@
+{
+  "title": "0326_Bosch摩托车ARAS与头盔HUD专利线索：2025年盲点/碰撞预警方案评估",
+  "domain": "competitors",
+  "content": "基于现有检索结果，Bosch在2025年前后的重点并非“已量产的智能摩托车全盔”，而是围绕摩托车ARAS（Advanced Rider Assistance Systems）与头盔/HUD人机界面的专利和系统级布局。可确认的专利线索包括：US 10,549,760 B2《Motorcycle with a rider assistance system》、EP 3 459 790 A1 / WO 2019/057404 A1，以及US 10,604,188 B2《System and method for displaying information to a motorcycle rider》，申请人均为Robert Bosch GmbH。原始结果未给出具体头盔型号、HUD量产产品型号、芯片型号或单价，因此这些信息保持不变，不能补充为IMX678、BES2800、QCC5181或￥200-300、$15-25/颗等具体数据。\n\n从已检索内容看，Bosch明确涉及的公司/品牌名包括Bosch、Robert Bosch GmbH、BMW Motorrad、Skully，以及与底盘安全相关的WHO统计背景。功能层面，Bosch方案聚焦盲点检测、变道碰撞预警、前向碰撞预警，并可结合IMU、ABS、MSC（Motorcycle Stability Control）数据进行姿态与风险判断。原始结果还提到Bosch自1995年推出首个摩托车ABS，并在2013年推出MSC，但未提供对应产品价格或量产车型清单。\n\n传感器方面，原始搜索结果可确认其核心为后向或前后向毫米波雷达，频段提到24 GHz或77 GHz；其中“77 GHz毫米波雷达”在专利概述里更明确，而“24 GHz或77 GHz”则被描述为摩托车盲点系统的常见配置，因此更适合解读为不同阶段或不同方案，而非同一量产规格。原始结果",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Bosch",
+    "摩托车ARAS",
+    "盲点预警",
+    "HUD",
+    "毫米波雷达",
+    "专利",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

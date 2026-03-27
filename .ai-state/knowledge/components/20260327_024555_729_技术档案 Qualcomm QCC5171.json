@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Qualcomm QCC5171",
+  "domain": "components",
+  "content": "下面给出一份面向**“Mesh对讲与头盔无线音频互联”**的完整技术档案。  \n我按你给的模板，选取了行业里最有代表性的几类节点：**Bluetooth标准、BLE Audio/Auracast标准、Qualcomm音频SoC平台、Nordic BLE SoC、Silicon Labs Mesh SoC、Sena商用Mesh方案、Cardo DMC商用Mesh方案、国产量产模组路线**。  \n这样你可以直接用于**方案选型、竞品分析、立项评审、供应链沟通**。\n\n---\n\n# 1）节点名称：Bluetooth Classic Audio（传统蓝牙音频）\n\n- **厂商/标准组织：** Bluetooth SIG\n- **节点类型：** 协议标准\n- **具体型号或标准号：** Bluetooth BR/EDR + HFP/A2DP/AVRCP\n- **目标应用：** 骑行对讲、导航播报、音乐播放、手机通话、相机控制\n- **无线能力：**\n  - Bluetooth版本：常见实现为 Bluetooth 4.x / 5.x 中的 BR/EDR部分\n  - BLE Audio：不支持\n  - Classic Audio：支持\n  - Auracast：不支持\n  - 专有Mesh：标准本身不支持\n- **音频能力：**\n  - HFP语音：CVSD、mSBC（宽带语音）\n  - A2DP音乐：SBC，部分平台支持 AAC/aptX\n  - 采样率：HFP常见8/16 kHz；A2DP可到44.1/48 kHz\n  - 双麦/多麦支持：取决于SoC平台\n  - AEC/ENC链路：通常由芯片DSP或外挂DSP实现\n- **Mesh能力：**\n  - 拓扑结构：点对点、点对多点，非标准Mesh\n  - 最大节点数：传统头盔对讲通常2~4台，优化方案可到6~8台但稳定性下降\n  - 中继能力：无标准中继\n  - 重连时间：通常2~10秒\n  - 组网方式：配对式\n- **射频参数：**\n  - 发射功率：常见Class 2约4 dBm，Class 1可到20 dBm\n  - 接收灵敏度：典型 -85 ~ -92 dBm，视芯片而定\n  - 天线接口：PCB/FPC/陶瓷/外置天线\n  - 典型距离：10~100米，Class 1空旷可更远\n  - 共存能力：与Wi‑Fi/2.4G设备共存依赖AFH\n- **并发连接：**\n  - 手机：支持\n  - 导航：支持\n  - 相机：可通过BLE或HFP控制\n  - 乘客对讲：支持\n  - 多设备同时连接数：常见2手机+1对讲链路，复杂并发受限\n- **时延与稳定性：**\n  - 端到端时延：HFP语音较低，A2DP音乐通常150~250 ms\n  - 丢包恢复：基础重传与链路自适应\n  - 抗干扰：中等\n  - 风噪场景表现：依赖麦克风阵列和DSP\n- **功耗与热设计：**\n  - 待机/通话/广播功耗：成熟，整体较低\n  - 电池影响：适合中低功耗头盔设备\n- **头盔集成要点：**\n  - 天线布局需避开金属漆、碳纤维层\n  - 人体头部遮挡明显影响左右侧链路\n  - 按键交互成熟，语音唤醒可选\n- **软件生态：**\n  - SDK：依赖芯片厂\n  - 协议开放度：高，标准成熟\n  - 手机APP支持：成熟\n  - OTA能力：可实现\n- **认证要求：**\n  - Bluetooth SIG\n  - SRRC/FCC/CE/TELEC等\n- **供应与成本：**\n  - 模组化可得性高\n  - 量产风险",
+  "source": "kg_expand:mesh_intercom",
+  "created_at": "2026-03-27",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "mesh_intercom"
+  ],
+  "confidence": "medium"
+}

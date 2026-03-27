@@ -1,0 +1,14 @@
+{
+  "title": "Horizon Robotics X3M Rev.0.81：IPU 描述修正",
+  "domain": "components",
+  "content": "Rev.0.81（2020-08-24）专门修正 IPU description。虽然更新项较少，但单独发布说明 IPU 模块在前序版本中存在较重要的描述偏差。对于依赖 X3M 图像预处理、格式转换、缩放或 ISP 前后级协同的项目，应优先参考 0.81 及之后版本的 IPU 说明，避免依据旧框图或旧功能列表进行软件适配。",
+  "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Rev0.81",
+    "IPU",
+    "Image processing",
+    "Documentation correction"
+  ],
+  "confidence": "medium"
+}

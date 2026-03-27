@@ -1,0 +1,11 @@
+{
+  "fix_id": "fix_20260319_111615",
+  "title": "测试提案：工具调研日志优化",
+  "description": "将工具调研日志从显示截断后长度改为显示原始长度",
+  "file_path": "src/graph/router.py",
+  "old_content": "print(f\"[CDO] 设计调研成功，数据 {len(design_data)} 字\")",
+  "new_content": "print(f\"[CDO] 设计调研成功，原始 {len(result[\"data\"])} 字，截断到 {len(design_data)} 字\")",
+  "risk_level": "low",
+  "created_at": "2026-03-19T11:16:15.426183",
+  "status": "pending"
+}

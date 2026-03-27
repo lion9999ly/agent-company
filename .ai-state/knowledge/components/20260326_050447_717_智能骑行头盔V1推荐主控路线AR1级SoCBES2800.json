@@ -1,0 +1,19 @@
+{
+  "title": "智能骑行头盔V1推荐主控路线：AR1级SoC+BES2800+独立ISP/MCU",
+  "domain": "components",
+  "content": "报告给出的V1量产最优技术路线是“AR1级可穿戴/AR SoC + BES2800级音频AI SoC + 独立ISP/MCU”的分布式架构，而不是Orin、J6M、A1000、8650等车规高算力平台。该架构分工为：主控1负责HUD、UI、轻量视觉、连接、基础本地AI；主控2负责语音、蓝牙、音频、低功耗待机；协处理负责相机常录、IMU、传感器融合、SOS、低功耗守护。报告明确指出，这套方案在功耗、重量、热设计、离线能力、认证风险、量产复杂度、用户体验之间取得最优平衡。",
+  "source": "deep_research:enrich_81",
+  "created_at": "2026-03-26",
+  "tags": [
+    "AR1",
+    "BES2800",
+    "ISP",
+    "MCU",
+    "分布式架构",
+    "V1量产",
+    "头盔主控",
+    "deep_research",
+    "enrich_81"
+  ],
+  "confidence": "high"
+}

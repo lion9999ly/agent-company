@@ -1,0 +1,19 @@
+{
+  "title": "NXP i.MX RT600 + Bluetooth Front-end（V2 旗舰/高配路线）",
+  "domain": "components",
+  "content": "报告将 NXP i.MX RT600 + Bluetooth Front-end 定位为 V2 Pro / 旗舰版方案，而非 V1 首发。其优势是 DSP 算力强，适合 3–5 麦阵列、波束成形、复杂前端、离线 ASR、本地复杂混音，并具备 HiFi4 DSP、较大 SRAM、多路音频接口，适合追求更强本地离线语音和复杂 Mesh。但风险标注为高：需外挂蓝牙前端，板级面积更大、功耗更高，不利于 ≥8 小时续航；同时 EMC、热、联调风险更大，也不适合头盔这种空间极限产品和 6–9 个月快速量产。决策上应仅在 V2 旗舰探索中采用。",
+  "source": "deep_research:tree_audio_soc",
+  "created_at": "2026-03-26",
+  "tags": [
+    "NXP",
+    "i.MX RT600",
+    "V2旗舰",
+    "HiFi4 DSP",
+    "离线ASR",
+    "3-5麦阵列",
+    "高算力",
+    "deep_research",
+    "tree_audio_soc"
+  ],
+  "confidence": "high"
+}

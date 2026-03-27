@@ -1,0 +1,17 @@
+{
+  "title": "歌尔AR系统设计能力：光学器件、处理器与轻量化材料",
+  "domain": "components",
+  "content": "歌尔AR系统设计能力覆盖人机、电子工程、音频、工艺、结构、软件等全栈。光学器件方面支持WG 30°视场角、FF 40°视场角、PWG 68°视场角；小型化光机方面支持LCoS <1.0cc 640P、μLED <0.4cc 640P；处理器方面支持低功耗SoC与SiP；轻量化材料包括碳纤维、镁锂合金、低密度塑料；零组件包括一体化镜腿、铰链、柔性均热管。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "AR系统",
+    "波导",
+    "LCoS",
+    "μLED",
+    "SiP",
+    "碳纤维",
+    "镁锂合金"
+  ],
+  "confidence": "high"
+}

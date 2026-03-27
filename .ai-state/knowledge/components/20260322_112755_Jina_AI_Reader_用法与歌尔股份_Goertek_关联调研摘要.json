@@ -1,0 +1,19 @@
+{
+  "title": "Jina AI Reader 用法与歌尔股份（Goertek）关联调研摘要",
+  "domain": "components",
+  "content": "内容主要包含两部分：一是 Jina AI Reader 的基础信息与用法，包括通过 r.jina.ai 抓取网页内容、通过 s.jina.ai 执行搜索查询，以及其主页链接；二是围绕歌尔股份（Goertek）与 Jina AI Reader 的潜在关系所做的研究摘要。摘要指出，歌尔股份是全球领先的声学、光学、微电子及智能硬件 ODM/OEM 厂商，在 TWS、VR/AR、智能穿戴等领域具备强制造与研发能力；Jina AI Reader 则代表 AI 内容读取/处理能力。现有公开信息下，双方没有直接公开合作，但在智能硬件集成、AI语音交互、可穿戴与沉浸式设备等方向存在潜在协同空间，因此对关注 AI 与硬件结合的研究具有参考价值。",
+  "source": "user_share:url",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Jina AI Reader",
+    "Jina AI",
+    "歌尔股份",
+    "Goertek",
+    "AI语音",
+    "智能硬件",
+    "TTS",
+    "ODM/OEM",
+    "user_share"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "todo_20260317143703933113",
+  "layer": "session",
+  "info_type": "todo",
+  "content": "更新CLAUDE.md上下文入口",
+  "importance": 5,
+  "created_at": "2026-03-17T14:37:03.933113",
+  "expires_at": null,
+  "source_session": "20260317_143703",
+  "tags": [
+    "medium"
+  ],
+  "metadata": {}
+}

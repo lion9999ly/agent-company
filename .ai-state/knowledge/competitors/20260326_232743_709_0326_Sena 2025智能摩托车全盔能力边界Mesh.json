@@ -1,0 +1,19 @@
+{
+  "title": "0326_Sena 2025智能摩托车全盔能力边界：Mesh已成熟，HUD仍是明显缺口",
+  "domain": "competitors",
+  "content": "面向摩托车全盔赛道看，Sena在2025年的核心竞争力仍是通信而非HUD。已知量产代表型号包括Sena Stryker、Sena Impulse、Sena Momentum EVO，其中Stryker与Impulse均为motorcycle full-face helmet，集成Sena Mesh Intercom™ 2.0与Harman Kardon音频系统；原始结果明确提到品牌/公司包括Sena、Harman Kardon、NuViz、Cardo、Forcite、BMW Motorrad、Shoei、HJC、Schuberth。来源一致指出其Group Mesh最多24人，Open Mesh为开放大群组。通信距离存在口径差异：一处写单车间1.6 km、6人中继可扩展到约8 km；另一处直接写Open Mesh可在8 km（5英里）范围通信，因此更合理的理解应是“多节点扩展总距离”而非任意两车稳定8 km，需明确标注为来源口径不一。HUD方面，3个来源都未给出Sena已量产HUD全盔的证据，仅提到Sena于2019年收购NuViz，说明其具备HUD技术储备，但截至2024/2025公开信息里，Sena仍未形成成熟商用HUD全盔，这正是与Forcite MK1S、BMW Motorrad相关概念方案相比的产品缺口。材料与供应链上，来源未披露明确一级供应商名单，也未给出壳体材料BOM、具体壳体材料型号、显示光机型号或主控芯片型号，因此不能补出类似IMX678、BES2800、QCC5181这类具体器件信息；但可确认Sena现有全盔路线更偏“在成熟头盔结构中集成电子件”，关键器件包括Mesh模组、扬声器、麦克风、电池、天线与控制单元，而非自研新型壳体材料。价格方面，原始结果未提供Sena Stryker、Impulse、Momentum EVO官方售价，也未给出单颗器件成本区间",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Sena",
+    "摩托车全盔",
+    "Mesh 2.0",
+    "HUD",
+    "NuViz",
+    "差距分析",
+    "供应链",
+    "Harman Kardon",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

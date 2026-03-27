@@ -1,0 +1,21 @@
+{
+  "title": "0326_Forcite MK1S智能摩托车头盔：摄像头/ADAS供应链与“2025拆解”可得信息",
+  "domain": "competitors",
+  "content": "Forcite MK1S是面向摩托车骑行的智能全盔，不是自行车头盔；若参考骑行头盔行业资料，必须排除自行车HUD/运动相机方案，因为其法规、冲击标准和风噪环境均不同。基于给定3个来源，可确认的硬信息主要集中在现售MK1S，而“2025款”“拆解识别ADAS供应商”目前都缺乏官方或第三方实锤。已知MK1S核心卖点包括前置广角摄像头、HUD/OLED提示、GPS、IMU与Forcite OS；其中一处来源明确写到摄像头规格为1080p@30fps。来源还指出其ADAS更接近“ADAS-like”能力，即依赖摄像头、地图/GPS、IMU和软件算法做危险提醒，而非汽车常见的独立雷达/激光雷达方案。供应商层面，3个来源都承认没有公开拆解报告，因此只能做高概率推断：图像传感器可能来自Sony IMX、OmniVision或Samsung；IMU可能来自Bosch Sensortec、STMicroelectronics或TDK InvenSense；GNSS模块可能来自u-blox、Qualcomm或MediaTek；主控SoC则更可能落在Ambarella CVflow视觉芯片或Qualcomm嵌入式平台。这里存在明显矛盾/不确定性：一组来源倾向Ambarella或Qualcomm可作为2025视觉AI核心，另一组则强调当前根本无法确认任何具体供应商。价格方面，给定来源未提供官方售价，因此不能在本条中伪造数字；若后续做竞品库，建议补采Forcite官网、RevZilla或经销商页面价格。对我们做智能摩托车全盔的启示是：Forcite的差异化不在“堆料式ADAS”，而在把1080p摄像、HUD、导航预警、事故检测整合进ECE/DOT级全盔体验中；但其供应链透明度低，说明竞品分析应优先关注用户可感知参数——录像分辨率、延迟、续航、重量、认证、售价——而不是过度依赖未经证实的拆解猜测。",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "smart motorcycle helmet",
+    "ADAS",
+    "camera",
+    "HUD",
+    "OLED",
+    "1080p30",
+    "supplier",
+    "teardown",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

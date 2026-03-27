@@ -1,0 +1,15 @@
+{
+  "title": "Gemini API 重试窗口：retryDelay 69222s",
+  "domain": "standards",
+  "content": "返回的 RetryInfo 指定 retryDelay 为 69222s，对应约 19 小时 13 分 42.990424396 秒。说明该失败并非瞬时抖动，而是明确的配额恢复等待期。对于依赖 Gemini 3.1 Pro 的图片识别或文档解析流程，应增加任务排队、跨模型切换或次日重试机制，避免无效重试。",
+  "source": "doc_import:20260318-175916.jpg",
+  "created_at": "2026-03-22",
+  "tags": [
+    "RetryInfo",
+    "retryDelay",
+    "重试策略",
+    "API稳定性",
+    "限流恢复"
+  ],
+  "confidence": "medium"
+}

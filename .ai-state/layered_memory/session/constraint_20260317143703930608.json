@@ -1,0 +1,16 @@
+{
+  "id": "constraint_20260317143703930608",
+  "layer": "session",
+  "info_type": "constraint",
+  "content": "上下文压缩会导致信息丢失",
+  "importance": 10,
+  "created_at": "2026-03-17T14:37:03.930608",
+  "expires_at": null,
+  "source_session": "20260317_143703",
+  "tags": [
+    "system"
+  ],
+  "metadata": {
+    "scope": "system"
+  }
+}

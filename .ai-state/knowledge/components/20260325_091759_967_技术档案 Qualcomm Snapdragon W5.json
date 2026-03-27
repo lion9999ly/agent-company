@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] Qualcomm Snapdragon W5+ Gen 1 (Qualcomm)",
+  "domain": "components",
+  "content": "以下内容**仅基于你提供的搜索结果整理**，不额外引入外部资料。凡搜索结果未明确给出的项目，统一标注 **“未查到”**；对明显属于行业估算/营销口径的内容，我会注明 **“估算/官方宣称”**。\n\n---\n\n# Qualcomm Snapdragon W5+ Gen 1 完整技术档案\n\n## 1. 基本参数\n\n### 1.1 产品定位\n- 芯片名称：**Qualcomm Snapdragon W5+ Gen 1**\n- 发布时间：**2022年7月**\n- 平台类型：**可穿戴设备SoC**\n- 官方主定位：**下一代智能手表平台 / 高端可穿戴平台**\n\n### 1.2 制程\n- **主SoC制程：4nm**\n- **Always-On 协处理器制程：22nm**\n\n### 1.3 CPU 架构\n- CPU核心：**4× Arm Cortex-A53**\n- CPU主频：**最高 1.7GHz**\n\n### 1.4 GPU 架构\n- GPU：**Adreno 702**\n- GPU架构细节：**未查到**\n- GPU主频：**未查到**\n- GPU算力：**未查到**\n\n### 1.5 NPU / AI\n- 独立NPU：**未查到**\n- AI/NPU架构：**未查到**\n- AI算力（TOPS）：**未查到**\n\n> 说明：搜索结果提到其有混合架构、DSP/协处理器、传感器处理能力，但**没有给出独立NPU型号或TOPS数值**。\n\n### 1.6 协处理器\n- 类型：**Always-On (AON) Co-Processor**\n- 制程：**22nm**\n- 架构：**Cortex-M55**\n- 作用：\n  - 低功耗常驻任务\n  - 传感器数据采集\n  - 通知管理\n  - Always-On Display\n  - 蓝牙低功耗连接\n  - 背景健康监测\n\n### 1.7 内存支持\n- 内存类型：**LPDDR4**\n- 内存位宽/频率/容量上限：**未查到**\n\n### 1.8 性能口径（相对前代）\n相对 Snapdragon Wear 4100+：\n- **CPU性能：最高 2倍提升**（官方宣称）\n- **GPU性能：最高 2倍提升**（官方宣称）\n- **内存带宽：2倍**（官方宣称）\n- **平台尺寸：缩小 30%**（官方宣称）\n\n---\n\n## 2. 接口与连接能力\n\n> 注意：你要求列出 CSI / DSI / 音频 / 无线等接口，但搜索结果对“物理接口规格”披露很少，因此很多只能标“未查到”。\n\n### 2.1 摄像头接口（CSI）\n- MIPI CSI接口数量：**未查到**\n- 支持摄像头数量：**未查到**\n- 最大摄像头像素：**未查到**\n- ISP规格：**未查到**\n\n> 从搜索结果看，W5+ Gen 1主要面向智能手表，公开资料重点不在摄像头能力。\n\n### 2.2 显示接口（DSI / MIPI）\n- MIPI DSI：**未查到**\n- 显示输出通道数：**未查到**\n- 最大分辨率：**未查到**\n- 刷新率支持：**未查到**\n- Always-On Display：**支持**\n\n### 2.3 音频接口（I2S / PDM）\n- I2S：**未查到**\n- PDM：**未查到**\n- 音频DSP：搜索结果提到**DSP/音频优化能力**，但具体模块规格**未查到**\n- LE Audio：**支持（蓝牙5.3相关）**\n\n### 2.4 无线连接\n#### 蓝牙\n- **Blueto",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "qualcomm"
+  ],
+  "confidence": "high"
+}

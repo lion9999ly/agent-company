@@ -1,0 +1,15 @@
+{
+  "title": "MOLEX 208244-0201 4 in 1 mini FAKRA code B连接器",
+  "domain": "components",
+  "content": "4 in 1 mini FAKRA code B连接器供应商为MOLEX，零件号208244-0201，颜色White，数量1。接口描述为Mini FAKRA interface。该接口页面定义为“接鱼眼”，4个Pin均为GMSL链路，分别对应AVM-CAM-GMSL-C、AVM-CAM-GMSL-D、AVM-CAM-GMSL-A、AVM-CAM-GMSL-B，连接3M 360camera REAR、FRONT、LEFT、RIGHT。该接口专用于环视四路鱼眼摄像头接入。",
+  "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "MOLEX",
+    "208244-0201",
+    "mini FAKRA",
+    "code B",
+    "AVM"
+  ],
+  "confidence": "high"
+}

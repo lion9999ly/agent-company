@@ -1,0 +1,17 @@
+{
+  "title": "高通 QCS/QCM + 恒玄 BES2800（智能骑行头盔 V1 推荐架构）",
+  "domain": "components",
+  "content": "报告最终裁决明确：V1 智能骑行头盔量产推荐采用“双芯架构”，即高通 QCS/QCM 级应用 SoC 做主控，恒玄 BES2800 做音频/语音副控。原因是头盔需同时支持 HUD 导航、1080P/2.7K/4K 录像、EIS/WDR、基础 ADAS、AI 语音离线唤醒、ANC/ENC、手机 + 车辆 TFT 双连接、冷启动 <5s、续航 ≥8h，纯音频 SoC 无法单芯片承担摄像头 ISP、视频编解码、显示输出、Linux/Android 级系统与复杂并发调度。主控适配度排序为：1. 高通 QCS/QCM；2. 紫光展锐；3. 恒玄 BES；4. 高通 QCC；5. Nordic。",
+  "source": "deep_research:main_chipset_selection",
+  "created_at": "2026-03-26",
+  "tags": [
+    "高通QCS",
+    "BES2800",
+    "双芯架构",
+    "主控选型",
+    "智能骑行头盔",
+    "deep_research",
+    "main_chipset_selection"
+  ],
+  "confidence": "medium"
+}

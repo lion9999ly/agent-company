@@ -1,0 +1,22 @@
+{
+  "title": "0326_Shoei摩托车智能全盔HUD路线：Opticson概念、DigiLens波导与Micro-OLED供应链判断",
+  "domain": "competitors",
+  "content": "Shoei在智能摩托车全盔方向最明确的公开信号，是其于2020年CES展示的“Shoei Opticson”概念HUD头盔。原始搜索结果明确写到其“首次亮相”为2020年CES，并指出目前仍处于概念/原型阶段，2026只是行业对类似产品可能上市的推测时间点，并非Shoei官方确认发布日期。这里可与“Shoei目前没有内置HUD的商业化智能头盔产品”并存理解：Shoei已有HUD概念验证，但截至现有公开信息，尚无量产在售型号。对智能摩托车全盔研发的参考意义在于，Shoei路线明确面向摩托车全盔，而非自行车头盔或骑行眼镜；后者在冲击、防水、振动和高速风噪约束上都不是同一等级。\n\n技术栈上，原始搜索结果给出的最关键公司名包括Shoei、DigiLens、WaveOptics、Lumus、Sony Semiconductor Solutions、Kopin、eMagin、BOE、Samsung Display，以及通信合作方向上的Sena。其中，DigiLens被点名为衍射波导（Diffractive Waveguide）代表厂商，WaveOptics（Snap旗下）也被列为同类路线，Lumus（HTC旗下）则属于反射波导（Reflective Waveguide）路线。波导价值在于可通过全内反射（TIR）把显示模组隐藏在头盔内部更隐蔽位置，再将图像耦合到骑手视野，兼顾透明度、紧凑性与较大的Eye Box。原始搜索结果同时强调近眼显示关键指标包括亮度、对比度、分辨率、刷新率、FOV、Eye Box、尺寸、重量、续航与散热，但未给出3000nits、42dB、1.65kg这类具体数值，因此这些参数不能补写。\n\nMicro-OLED方面，原始搜索结果给出了可直接补充的具体参数：典型器件可做到0.49英寸、1920×1080分辨率、像素密度超过4000 PPI，适合作为近眼显示光机。潜在",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Shoei",
+    "Opticson",
+    "摩托车全盔",
+    "HUD",
+    "近眼显示",
+    "波导",
+    "DigiLens",
+    "Micro-OLED",
+    "供应链",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

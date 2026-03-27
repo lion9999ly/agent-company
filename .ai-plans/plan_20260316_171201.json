@@ -1,0 +1,64 @@
+{
+  "metadata": {
+    "plan_id": "plan_20260316_171201",
+    "title": "Phase 2 Test Plan",
+    "description": "Test Plan Persistence",
+    "created_at": "2026-03-16T17:12:01.228882",
+    "updated_at": "2026-03-16T17:12:01.228882",
+    "status": "draft",
+    "total_phases": 2,
+    "completed_phases": 0,
+    "overall_progress": 0.0
+  },
+  "phases": [
+    {
+      "phase_id": "plan_20260316_171201_phase_0",
+      "name": "Phase 2.1: Setup",
+      "description": "",
+      "checklist": [
+        {
+          "id": "plan_20260316_171201_p0_c0",
+          "description": "Create dir",
+          "completed": false,
+          "completed_at": null,
+          "notes": null
+        },
+        {
+          "id": "plan_20260316_171201_p0_c1",
+          "description": "Create script",
+          "completed": false,
+          "completed_at": null,
+          "notes": null
+        }
+      ],
+      "status": "pending",
+      "progress": 0.0
+    },
+    {
+      "phase_id": "plan_20260316_171201_phase_1",
+      "name": "Phase 2.2: Verify",
+      "description": "",
+      "checklist": [
+        {
+          "id": "plan_20260316_171201_p1_c0",
+          "description": "Test plan creation",
+          "completed": false,
+          "completed_at": null,
+          "notes": null
+        },
+        {
+          "id": "plan_20260316_171201_p1_c1",
+          "description": "Test progress update",
+          "completed": false,
+          "completed_at": null,
+          "notes": null
+        }
+      ],
+      "status": "pending",
+      "progress": 0.0
+    }
+  ],
+  "context": {},
+  "decisions": [],
+  "blockers": []
+}

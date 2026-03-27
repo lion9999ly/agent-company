@@ -1,0 +1,17 @@
+{
+  "title": "智能头盔V1定价与目标用户门槛",
+  "domain": "components",
+  "content": "报告建议 V1 零售价带宽为标准版 3999–4999 元、Pro 版 4999–5999 元；低于 3999 元难以覆盖 BOM、认证、渠道和售后，高于 5999 元则会被用户直接拿去对比高端 Shoei/Arai + Cardo + Action Cam 组合。目标用户通常拥有 2 万元以上燃油摩托或 8000 元以上高端电摩，月可支配收入 1.5 万元以上。商业模式建议以硬件毛利 + 软件轻订阅为主，但不建议 V1 过早押注订阅收入。",
+  "source": "deep_research:adhoc_飞猪flyai_MC",
+  "created_at": "2026-03-26",
+  "tags": [
+    "定价",
+    "商业模式",
+    "目标用户",
+    "BOM",
+    "高端市场",
+    "deep_research",
+    "adhoc_飞猪flyai_MC"
+  ],
+  "confidence": "medium"
+}

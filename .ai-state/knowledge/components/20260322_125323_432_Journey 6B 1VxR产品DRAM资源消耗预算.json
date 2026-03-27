@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 1VxR产品DRAM资源消耗预算",
+  "domain": "components",
+  "content": "J6B 1VxR 产品的 DRAM 预算为：BSP 304MB，Middleware 最小 107MB、最大 212MB，Perception 400MB，Fusion/Prediction/Environment Model 最小 150MB，DVR/EDR 最小 100MB、最大 200MB。总计为 ≥961MB（Without DVR/EDR）以及 ≥1266MB（文档原文如此，疑似含 DVR/EDR 场景）。页尾说明：1VxR turnkey solution 不含 DVR/EDR 时内存消耗超过 861MB，系统设计最小要求为 2GB DDR。该预算为量产系统内存选型提供直接依据。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "1VxR",
+    "DRAM",
+    "内存预算",
+    "DVR/EDR"
+  ],
+  "confidence": "high"
+}

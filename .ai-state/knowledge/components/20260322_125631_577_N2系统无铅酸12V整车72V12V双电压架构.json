@@ -1,0 +1,16 @@
+{
+  "title": "N2系统（无铅酸12V）整车72V/12V双电压架构",
+  "domain": "components",
+  "content": "文档定义N2系统为72V主电池平台+无铅酸12V低压系统。主电池向控制器、ABS、DCDC等供电，DCDC1/DCDC2输出12V，备注明确“DCDC使能信号为72V”。整车存在中控-仪表12V、USB快充、灯具、锁具、雷达、记录仪等12V/5V负载。架构图中保留P+、P-、GND、CANH、CANL、CAN_GND等主干接口，体现高低压分层与CAN集中通信。",
+  "source": "doc_import:N2(CAN)整车架构图_无铅酸12V-20240229.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "N2",
+    "整车架构",
+    "72V",
+    "12V",
+    "DCDC",
+    "无铅酸12V"
+  ],
+  "confidence": "high"
+}

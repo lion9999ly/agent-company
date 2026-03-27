@@ -1,0 +1,18 @@
+{
+  "title": "智能骑行头盔 V1（全盔+HUD）量产基线",
+  "domain": "components",
+  "content": "报告明确 V1 成败首先取决于“能否做成装备”而非功能堆叠。头盔本体必须满足 ECE 22.06 / DOT / 3C 认证路径，整机重量控制在 ≤1.65kg，商业目标更优区间为 1.55–1.60kg；贴脸区表面温度需 <40℃；工作环境为 -20~60℃；并要求在 100km/h 暴雨场景可用。这些指标被定义为生死线，优先级高于重 AR、Mesh、社交等功能，直接决定产品是否可长戴、可依赖、可量产。",
+  "source": "deep_research:prd_reference",
+  "created_at": "2026-03-26",
+  "tags": [
+    "智能头盔",
+    "认证",
+    "重量",
+    "热管理",
+    "可靠性",
+    "V1",
+    "deep_research",
+    "prd_reference"
+  ],
+  "confidence": "medium"
+}

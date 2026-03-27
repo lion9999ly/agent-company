@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "web-rooter": {
+      "command": "python",
+      "args": ["main.py", "--mcp"],
+      "cwd": "/path/to/web-rooter",
+      "env": {
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
+  }
+}

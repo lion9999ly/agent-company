@@ -1,0 +1,21 @@
+{
+  "title": "0322_2025 Unit 1 智能头盔核心器件条目：nRF5340 + QCC3056 音频/互联方案",
+  "domain": "components",
+  "content": "基于现有两组检索结果，2025 款 Unit 1 smart helmet 的主控/音频架构大概率采用“Nordic nRF5340 + Qualcomm QCC3056 + Knowles 数字 MEMS 麦克风”的组合。nRF5340 是 Nordic 的双核蓝牙 SoC，提供 128/64 MHz Arm Cortex-M33 应用核、64 MHz Cortex-M33 网络核，片上资源为 1 MB Flash + 512 KB RAM（应用侧）及 256 KB Flash + 64 KB RAM（网络侧），并支持 Bluetooth LE Audio、TrustZone 与 CryptoCell-312，适合头盔这类需要低功耗连接、语音、灯光/HUD 协同控制的可穿戴设备。可采购型号至少包括 NRF5340-QKAA（QFN）与 NRF5340-CLAA（WLCSP）；来源中还出现了分销料号 nRF5340-QKAA-R7，说明其有卷带出货版本。供应商方面，Rutronik 页面明确列出 Nordic nRF5340，亿配芯城页面列出 nRF5340-QKAA-R7，属于可落地采购渠道。价格方面，本次来源未给出明确单价，这是一个信息缺口。音频侧，AI 摘要称 Unit 1 使用 Qualcomm QCC3056；第二组摘要进一步称其为“audio codec”，并提到支持 MEMS microphone 与 DSP。更准确地说，QCC3056通常应归类为蓝牙音频 SoC/平台，而非单纯音频编解码器；若拆解确认其承担蓝牙音频链路、语音处理和 ANC/通话 DSP，则与智能头盔的对讲、导航播报、耳机单元驱动需求高度匹配。麦克风部分，第一组摘要明确点名 Knowles SPH0645LM4H-1。Excelpoint 页面对应器件为 SPH0645LM4H-1-8，属于 ",
+  "source": "daily_deep",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Unit 1",
+    "智能头盔",
+    "nRF5340",
+    "QCC3056",
+    "Knowles",
+    "SPH0645LM4H-1-8",
+    "MEMS麦克风",
+    "Bluetooth LE Audio",
+    "拆解",
+    "规格书",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

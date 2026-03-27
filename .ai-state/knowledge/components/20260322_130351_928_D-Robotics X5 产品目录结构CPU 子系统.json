@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 产品目录结构：CPU 子系统",
+  "domain": "components",
+  "content": "目录显示 X5 数据手册将 CPU 作为独立特性章节（1.3.2 CPU）进行描述，说明该 SoC 的处理器子系统是核心模块之一。结合版本历史可知文档曾在 0.86 版本更新 X5H 的 CPU frequency 描述，表明 CPU 频率参数在不同型号/版本中存在差异并被重点修订。当前截取内容未包含 CPU 架构、核心数、频率、缓存、指令集等具体参数，但可确认 CPU 是 X5/X5H 关键配置项，且与软件命名一致性和版本发布密切相关。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "CPU",
+    "X5",
+    "SoC",
+    "目录",
+    "处理器"
+  ],
+  "confidence": "medium"
+}

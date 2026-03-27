@@ -1,0 +1,17 @@
+{
+  "title": "Qualcomm QCC5181 + Nordic nRF5340 双芯片 V2 Mesh 架构",
+  "domain": "components",
+  "content": "V2 推荐采用 Qualcomm QCC5181 + Nordic nRF5340 双芯片架构：QCC5181 负责多麦阵列、ANC/ENC、低功耗音频，nRF5340 负责低功耗组网、控制信令、路由管理。nRF5340 关键参数为双核 128 MHz + 64 MHz、1 MB Flash / 512 KB RAM、支持 BLE 5.3。报告明确指出标准 Bluetooth Mesh 不适合直接承载多人实时语音，真正可行路线应为 BLE / 私有 2.4G 做发现与控制，私有低时延语音链路做实时音频承载。",
+  "source": "deep_research:tree_mesh_intercom",
+  "created_at": "2026-03-26",
+  "tags": [
+    "QCC5181",
+    "nRF5340",
+    "双芯片",
+    "BLE5.3",
+    "私有Mesh",
+    "deep_research",
+    "tree_mesh_intercom"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Horizon X3M视觉SoC",
+  "domain": "components",
+  "content": "文档为Horizon Robotics Sunrise 3.0M（X3M）芯片数据手册V1.6，时间为2022年3月，且明确标注为“under development”，参数可能变更。结合已给页面可提取的与智能骑行头盔研发相关信息：1）产品属性：X3M为面向视觉/AI处理的SoC，适合作为头盔端智能主控候选器件；2）能力线索：修订记录显示其包含BPU算力模块、IPU图像处理、视频编解码、网络接口、I2S音频、MIPI CSI Host/Device、多路SPI、DDR4/LPDDR4支持，说明其适合多传感器融合、摄像头接入、音视频处理与边缘AI；3）视频/相机：支持MIPI RX/CSI、MIPI CSI TX，记录中出现“8M@30fps for bypass and display path”“Standalone as AP with Mono Camera/Multiple Cameras”，表明支持单目/多目相机方案，适合骑行记录、后视/环视、碰撞识别；4）编码能力：修订中提到H.264支持SVC-T，可用于分层视频传输/存储；5）音频：I2S支持64kHz采样率，可用于语音交互、通话、提示音；6）存储与接口：支持DDR4/LPDDR4，存在SD、USB、电源域、ESD、电气规格等内容，说明可构建完整嵌入式系统。结论：该文档虽非头盔专用，但X3M作为高集成视觉AI主控，与智能骑行头盔中的摄像、AI识别、音视频交互高度相关；当前页缺少完整性能、电源、封装和热设计细节，选型仍需结合完整手册验证功耗、散热和尺寸。",
+  "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
+  "created_at": "2026-03-21",
+  "tags": [
+    "视觉处理SoC",
+    "AI加速",
+    "多摄像头"
+  ],
+  "confidence": "high"
+}

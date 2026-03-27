@@ -1,0 +1,20 @@
+{
+  "title": "0325_Shoei智能摩托车全盔HUD项目：已知合作、22.06约束与2025传闻边界",
+  "domain": "competitors",
+  "content": "截至目前，公开信息里**没有Shoei官方确认的“2025智能摩托车全盔HUD量产项目”**，也**没有Shoei已官宣与Sony Semiconductor或歌尔股份（Goertek）签约**的证据；这一点需与市场传闻明确区分。原始搜索结果给出的时间边界是**截至2023年末/2024年初**，结论仍是“未见官方公告、新闻稿或产品路线图”。已被多方报道、相对确定的是：Shoei曾展示面向**摩托车全盔**的HUD概念，如**2019年CES**前后与**Nippon Seiki Co., Ltd.（NSC，日本精机）**合作的**OPTICSON**与**IT-HL（Information Technology Helmet）**方向，核心是把**导航、速度、来电提醒、告警信息**等投射到骑手视野中。这里必须强调：本条目讨论的是**摩托车头盔**，不是自行车头盔；自行车HUD产品在碰撞法规、结构强度、电池布置和高速风噪环境上都与全盔不同，不能直接类比。\n\n从供应链推测看，**Sony Semiconductor**之所以常被传为潜在AR显示方，主要因为其在**微型OLED**与**LCoS（Liquid Crystal on Silicon，硅基液晶）微显示**方面具备优势；原始结果举到的具体型号只有**Sony ECX339A**，但并**没有**出现其分辨率、亮度、尺寸、单价等可直接对应Shoei项目的参数，因此不能补写为已定型规格。同样，**歌尔股份（Goertek）**被讨论的依据，是其作为**ODM/OEM**在**AR/VR光学模组、精密零组件与整机制造**上的经验，且原始结果明确提到其为**Meta Quest、Pico**等提供代工；但搜索结果**没有**给出Shoei项目中的具体模组型号、BOM价格、量产节奏或签约信息。\n\n至于法规约束，用户提到的**E",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Shoei",
+    "HUD",
+    "AR显示",
+    "Nippon Seiki",
+    "ECE 22.06",
+    "摩托车全盔",
+    "Sony Semiconductor",
+    "Goertek",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

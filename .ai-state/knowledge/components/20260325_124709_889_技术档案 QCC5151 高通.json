@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] QCC5151 (高通)",
+  "domain": "components",
+  "content": "以下档案**仅基于你给出的搜索结果整理**，并对其中明显带有“系列能力/平台能力”色彩、而非QCC5151单芯片已公开硬规格的内容做了**可信度标注**。  \n结论先说：**QCC5151 是一颗偏高端 TWS/可穿戴蓝牙音频 SoC，强项是低功耗、混合 ANC、cVc 通话降噪、aptX Adaptive/Voice、LE Audio 路线兼容。** 但如果你要把它用于**智能摩托车全盔**，尤其是**100km/h 持续强风噪场景**，它**不是“单靠芯片就能保证有效 ANC”的方案**，更依赖整机声学结构、麦克风防风设计、耳罩/耳塞密封性与算法调校。\n\n---\n\n# QCC5151 完整技术档案\n\n## 1) 基本参数\n\n## 1.1 芯片定位\n- 厂商：Qualcomm\n- 型号：**QCC5151**\n- 产品类型：超低功耗蓝牙音频 SoC\n- 主要应用：\n  - TWS 真无线耳机\n  - 高端蓝牙耳机/可穿戴音频设备\n  - Hearables / 智能听戴设备\n\n## 1.2 蓝牙版本\n根据搜索结果：\n- **Bluetooth 5.2**\n- 支持面向下一代音频的 **LE Audio** 路线\n\n> 说明：搜索结果多次提到 BT 5.2，这是本档案中可信度较高的信息。\n\n## 1.3 支持编解码\n搜索结果明确提到支持：\n- **aptX Adaptive**\n- **aptX HD**\n- **aptX**\n- **AAC**\n- **SBC**\n- **LC3**（通过 LE Audio）\n\n其中你特别要求的三项：\n- **aptX：支持**\n- **AAC：支持**\n- **LC3：支持**\n\n补充：\n- 搜索结果还提到 **aptX Voice**，用于更高质量语音通话\n- aptX Adaptive 被描述为可动态平衡码率、延迟与抗干扰\n\n## 1.4 DSP 算力 / 处理架构\n搜索结果给出的信息是：\n- **双核 32 位处理器**\n- **双核 Qualcomm Kalimba DSP**\n\n但**没有给出明确 MIPS / DMIPS 数值**。因此可确认的是：\n- DSP 架构：**双 Kalimba DSP**\n- CPU：**双核 32-bit**\n- **DSP 算力数值：搜索结果未提供，无法从现有材料中严谨给出具体 MIPS**\n\n> 结论写法建议：  \n> **QCC5151 具备双核 Kalimba DSP 音频处理架构，足以承载混合 ANC、cVc ENC、语音增强和高品质编解码，但本次搜索结果未给出公开可核验的 DSP MIPS 数值。**\n\n---\n\n# 2) 降噪能力\n\n## 2.1 ANC 类型与档位\n\n搜索结果显示 QCC5151 支持：\n- **前馈 ANC**\n- **反馈 ANC**\n- **混合 ANC（Hybrid ANC）**\n- **自适应 ANC（Adaptive ANC）**\n- **通透模式 / Transparency Mode**\n\n### ANC 档位\n搜索结果**没有给出固定“几档 ANC”**的芯片级定义。  \n因此不能严谨写成“3档/4档/多档”这种确定值。\n\n更准确的表述是：\n- 芯片支持**可调 ANC 强度**\n- 终端产品可做成：\n  - ANC 开/关\n  - 低/中/高\n  - 自适应 ANC\n  - 通透模式\n- **具体档位数由耳机厂商 UI 和算法策略决定，不是 QCC5151 固定硬规格**\n\n## 2.2 ANC 降噪深度\n搜索结果",
+  "source": "kg_expand:audio_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "audio_soc",
+    "高通"
+  ],
+  "confidence": "high"
+}

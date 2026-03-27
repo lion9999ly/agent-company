@@ -1,0 +1,17 @@
+{
+  "title": "Tucano Urbano EL'JETTIN smart helmet 2025 2026 tea",
+  "domain": "lessons",
+  "content": "**产品/技术要点（基于搜索内容的可研推演）**\n- **Tucano Urbano EL'JETTIN 智能城市骑行头盔**：面向 **urban e-bike** 通勤场景，核心功能为**后灯、转向灯、蓝牙连接**。\n- **电子架构预期**：  \n  - 主控SoC：倾向 **Qualcomm QCC / Nordic nRF / MTK** 低功耗方案，集成 **Bluetooth + MCU/DSP**。  \n  - 传感器：**加速度计+陀螺仪** 用于刹车灯触发、碰撞检测、转向辅助；**环境光传感器**用于自适应亮度。  \n  - 电池：**Li-Po 1000–2500mAh**，续航预估 **8–15h**；**USB-C快充**，未来可能支持 **Qi无线充电**。  \n  - 防护：电子模块目标 **IPX4/IPX5**。  \n- **照明系统趋势**：  \n  - 后灯采用 **高亮LED/COB LED + 光导/扩散器**，提升广角可视性；  \n  - **智能刹车灯**、**自适应亮度**、**动态/序列式转向灯**、**导航联动自动转向提示**是重点方向。  \n- **蓝牙/音频趋势**：  \n  - 升级至 **Bluetooth 5.3/5.4**，强调低功耗与稳定性；  \n  - 支持 **多设备连接**、**Mesh群组对讲**、**LC3/aptX Adaptive** 音频编解码、**Siri/Google Assistant** 语音助手。  \n- **结构/材料设计**：  \n  - 外壳：**PC或ABS+PC复合材料**；  \n  - 缓冲层：**多密度EPS**；  \n  - 安全设计可引入 **MIPS** 以应对旋转冲击；  \n  - 内部布线趋向 **FPC/FFC柔性化**，减少对EPS完整性的破坏。  \n\n*",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "竞品",
+    "智能骑行头盔",
+    "Tucano Urbano",
+    "拆解",
+    "尾灯",
+    "蓝牙",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

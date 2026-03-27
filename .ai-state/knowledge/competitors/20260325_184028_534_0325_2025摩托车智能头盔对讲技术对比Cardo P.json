@@ -1,0 +1,19 @@
+{
+  "title": "0325_2025摩托车智能头盔对讲技术对比：Cardo Packtalk Edge vs Sena Mesh系，LE Audio",
+  "domain": "competitors",
+  "content": "面向智能摩托车全盔集成方案，2025年可落地的主流并不是“头盔内置LE Audio”，而是外挂/可集成对讲模组的Mesh路线。需明确排除自行车头盔场景：自行车产品常强调轻量、开放式通风和低速通勤，对高速风噪、全盔腔体声学、厚手套操作与雨天密封要求不同，不能直接类比。现有来源中，Cardo Packtalk Edge是已知量产旗舰，采用DMC Gen 2；Sena方面并无官方“Sena 60S”发布，真实可对标的是50S/50R/50C系列，采用Mesh 2.0，因此“60S”只能视为假设型号。参数上，Cardo DMC支持最多15名骑手，单车间距约1.6 km、群组总距约8 km；Sena Mesh 2.0在来源中出现冲突：一处称Group Mesh最多24人、Open Mesh近乎无限，另一处又写群组模式9人，因此应标注为来源不一致，但可确认其提供Open Mesh/Group Mesh双模式、总距约8 km。价格方面，来源未给出官方数字，若做采购评估应补采供应商报价；当前可确认的供应商名为Cardo Systems与Sena Technologies。技术趋势上，蓝牙LE Audio的LC3编码、多流音频和更低功耗被普遍视为2025-2026代产品关键升级，但来源同时明确：Packtalk Edge与Sena 50系列目前均未集成LE Audio/LC3，只是基于蓝牙5.x。对全盔产品定义的启示是：2025年量产方案应优先兼容现有Cardo/Sena生态，重点解决40 mm扬声器布置、麦克风抗风噪、手套友好按键/旋钮、IP等级与续航，而不是押注尚未落地的“60S+LE Audio”概念。若做竞品对标，Cardo优势在DMC稳定性与大组骑行口碑，Sena优势在开放频道与更大的理论群组规模；两家Mesh协议互不兼容，是用户体验与生态合作的核心限制。",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "摩托车全盔",
+    "Mesh对讲",
+    "DMC",
+    "Cardo Packtalk Edge",
+    "Sena 50S",
+    "LE Audio",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

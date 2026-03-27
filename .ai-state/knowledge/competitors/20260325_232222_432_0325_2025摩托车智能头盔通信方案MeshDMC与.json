@@ -1,0 +1,21 @@
+{
+  "title": "0325_2025摩托车智能头盔通信方案：Mesh/DMC与LE Audio的竞品判断",
+  "domain": "competitors",
+  "content": "面向智能摩托车全盔，2025年高端通信核心仍是外挂/内置对讲模组，而非自行车头盔方案；若检索中出现自行车头盔Mesh或开放耳机产品，应明确排除，因为其风噪、时速、壳体空间与ECE 22.06场景完全不同。现有可落地竞品主要围绕Cardo Packtalk Edge与Sena 50系，所谓“Sena 60S”在给定来源中均被标注为“假设/预测产品”，暂无官方发布，因此不能当作已上市竞品。已知Cardo Packtalk Edge采用DMC 2.0，来源给出群组上限15人，单机典型距离1.6 km，多车接力最远8 km；音频侧与JBL合作，是其高端卖点。Sena侧，来源将对标能力归于Mesh 2.0：Open Mesh近乎无限人数、Group Mesh最多24人，理想条件下同样可到8 km。这里存在口径差异：一处说Sena 8 km需至少6名骑手、每人间隔1.6 km；另一处对Cardo写“至少4名”或“6人以上”才能到8 km，说明两家都在用接力场景放大宣传，产品定义时应把“单机直连距离”和“多节点接力距离”分开标注。技术趋势上，蓝牙LE Audio是2025-2026最值得跟进的方向，核心价值不是替代Mesh/DMC，而是补强手机音频链路：LC3编解码可在更低码率下提升语音清晰度并降低功耗，Auracast适合车队领航广播导航/讲解，多流音频适合头盔扬声器、HUD眼镜等多终端同步。来源未给出Packtalk Edge或“Sena 60S”已正式支持LE Audio的确证，因此现阶段应视为规划项而非现货能力。价格方面，给定来源未提供官方售价，不能虚构；供应商可明确为Cardo Systems与Sena Technologies。对我们做智能摩托车全盔的启示是：短期需兼容现有Cardo/Sena生态，中期把LE Audio作为手机连接与低功耗升级点，长期再考虑把Mesh能力深度",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "摩托车全盔",
+    "智能头盔",
+    "Mesh对讲",
+    "DMC 2.0",
+    "Bluetooth LE Audio",
+    "Cardo Packtalk Edge",
+    "Sena 50S",
+    "Sena 60S预测",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

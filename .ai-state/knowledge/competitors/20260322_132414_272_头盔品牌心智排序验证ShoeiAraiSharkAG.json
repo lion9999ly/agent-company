@@ -1,0 +1,16 @@
+{
+  "title": "头盔品牌心智排序验证：Shoei/Arai/Shark/AGV/HJC/LS2/Scorpion/Rsmorax/GSB",
+  "domain": "competitors",
+  "content": "文档要求受访者对知名头盔品牌进行从高到低的价值排序，并简述各品牌在其心中的形象和意义。品牌名单包括：Shoei、Arai、Shark、AGV、HJC、LS2、Scorpion、Rsmorax、GSB。研究目的不是单纯排名，而是验证用户对头盔产品的认知深度、品牌层级感知与联名偏好。文档还要求进一步追问：如果项目产品与知名头盔品牌联名，用户希望与哪家联名，以及愿意支付多少钱。",
+  "source": "doc_import:头盔项目用户访谈脚本（V2）.docx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Shoei",
+    "Arai",
+    "AGV",
+    "HJC",
+    "LS2",
+    "品牌心智"
+  ],
+  "confidence": "high"
+}

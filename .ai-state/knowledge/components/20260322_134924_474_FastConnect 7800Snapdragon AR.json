@@ -1,0 +1,14 @@
+{
+  "title": "FastConnect 7800：Snapdragon AR1 Gen 1 无线连接系统",
+  "domain": "components",
+  "content": "Snapdragon AR1 Gen 1 采用 Qualcomm FastConnect 7800 Mobile Connectivity System，支持 Wi‑Fi 7、Wi‑Fi 6，峰值速率 5.8 Gbps，兼容 802.11be、803.11ax、802.11ac、802.11a/b/g/n，并 qualified against Bluetooth Core 5.4。该连接系统面向智能眼镜的高速直播、共享 XR 与低时延无线连接。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "FastConnect 7800",
+    "Wi-Fi 7",
+    "Bluetooth 5.4",
+    "wireless"
+  ],
+  "confidence": "high"
+}

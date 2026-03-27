@@ -1,0 +1,16 @@
+{
+  "title": "Tandem Helmets The Beam 2025 smart cycling helmet ",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- 假想产品名：**Tandem Helmets The Beam 2025**；定位为集成**前后灯+转向灯+BLE App**的智能骑行头盔。\n- 结构材料：**PC外壳+In-Mold工艺+多密度EPS**，目标重量 **350–450g**，防水 **IPX4/IPX5**。\n- 前灯：**200–500lm**，2–4颗高亮SMD LED，候选 **Cree XP-G3 / Lumileds Luxeon V**，驱动IC示例 **TI TPS61165 / ADI ADP1650**，功耗 **2–4W**。\n- 后灯：**50–150lm**，5–10颗红光LED，支持常亮/闪烁；转向灯为左右琥珀LED，支持**跑马灯/同步闪烁**，单次功耗约 **0.5–1W**。\n- 电池：**3.7V Li-Po 1500–3000mAh**，续航 **2–20h**；**USB-C 5V/1A~2A**；充电/BMS候选 **TI BQ25895 / LTC4054**。\n\n**芯片/传感器方案**\n- 主控优先：**Nordic nRF52840**（MCU+BLE 5.0一体）或 **STM32L4**；独立无线模块备选 **u-blox NINA-B4 / ESP32-PICO-D4**。\n- 传感器融合：**IMU（LSM6DS3 / MPU-6050）+ 环境光传感器（TSL2572）**，用于**碰撞检测、手势/姿态触发转向、自动调光**。\n- PCB设计重点：**升降压PMIC、恒流LED驱动、FPC连接灯条、电池后置配重、防水密封**。\n\n**研发趋势/可借鉴点**\n- 趋势：智能头盔正从“被动防护”转向**主动可见性+互联安全**，核心是**灯控、BLE、传感器融合、事故检测**。\n- 设计理念：优先采用**SoC集成（MCU",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "竞品",
+    "自行车头盔",
+    "拆解",
+    "尾灯",
+    "BLE",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 假设安全目标与安全状态",
+  "domain": "standards",
+  "content": "Journey®6B 的假设安全目标为：在 ODD 限制内执行正常动态驾驶任务时，设计目标是为最高 L2+ ADS 提供 ASIL D 输出。定义的安全状态包括：Report error、Reset、Power Off。分域安全目标为：MCU domain shall generate correct control signals for automotive driving tasks（ASIL D）；Main domain shall generate correct data for downstream devices（ASIL B）。这表明 J6B 采用主域与安全岛分层的功能安全设计思路。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "FUSA",
+    "ASIL D",
+    "ASIL B",
+    "L2+"
+  ],
+  "confidence": "high"
+}

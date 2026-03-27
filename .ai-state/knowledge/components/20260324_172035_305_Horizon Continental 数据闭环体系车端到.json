@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Continental 数据闭环体系：车端到云端数据闭环",
+  "domain": "components",
+  "content": "测试体系强调“车端到云端的数据闭环”，核心链路包括路测数据、数据挖掘、Trigger、场景数据、Badcase、数据标注、自动化规则、评价指标体系和自动驾驶场景库。该闭环用于支撑问题触发、场景沉淀、规则化评估与版本迭代，形成从数据采集到评价验收的完整链路。",
+  "source": "doc_import:测试能力与流程 20260130 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Horizon Continental",
+    "数据闭环",
+    "车端到云端",
+    "路测数据",
+    "Badcase"
+  ],
+  "confidence": "high"
+}

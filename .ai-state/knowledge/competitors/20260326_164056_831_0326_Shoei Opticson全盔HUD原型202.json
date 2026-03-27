@@ -1,0 +1,20 @@
+{
+  "title": "0326_Shoei Opticson全盔HUD原型：2026量产目标、NS West光学合作与ECE 22.06约束",
+  "domain": "competitors",
+  "content": "Shoei在EICMA 2023展示的全盔HUD原型通常被称为“Shoei Opticson”，早期开发名见于“IT-HL”。需强调：这是摩托车全盔原型，不是自行车头盔；若外部资料混入自行车HUD头盔案例，应明确排除，因为其碰撞法规、壳体强度和高速风噪约束与摩托车全盔不同。现有来源一致指出，Opticson仍处原型阶段，Shoei给出的量产目标约为2026年，但截至来源时间点并无正式上市型号、零售价或ECE 22.06认证编号。已知功能包括：在骑手右下视野投射导航、车速、来电和音乐信息；通过蓝牙连接手机，并配合车把控制器操作；头盔内置电池供电。核心HUD技术合作方被指向日本NS West Co., Ltd.，其角色是提供光学模块与显示方案。关于材料与供应链，信息存在明显不完整：来源一基于行业推测，认为Shoei若量产HUD全盔，外壳大概率仍沿用其AIM+/多层复合纤维路线，潜在原材料供应商可能包括Toray、Teijin、Hexcel、SGL Carbon（碳纤维）、DuPont/Teijin（芳纶）、Owens Corning/Jushi（玻纤），树脂可能来自Hexion、Huntsman、Dow；但这些都不是Shoei官方确认名单。来源二则明确表示，除NS West外，Opticson原型的外壳材料供应商、HUD内部器件材料供应商均未公开披露。ECE 22.06是该项目能否落地的关键门槛：新规自2021年发布、2023年起强制执行，要求更广泛冲击点、斜向冲击、附件集成安全和视野控制。对Shoei这类高端全盔而言，HUD模块、电池、线束和显示器不能削弱壳体与多密度EPS结构，也不能显著增加重量或遮挡视野。结论上，当前最可信的竞争情报是：Shoei已公开HUD全盔方向，NS West是已知显示技术伙伴；但具体材料供应商、最终型号参数、续航、整盔重量和价格仍未公开，任何“已定",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Shoei",
+    "Opticson",
+    "HUD头盔",
+    "摩托车全盔",
+    "NS West",
+    "ECE 22.06",
+    "智能头盔",
+    "竞争情报",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

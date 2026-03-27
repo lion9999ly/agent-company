@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔PRD建议参数基线",
+  "domain": "components",
+  "content": "报告给出可直接写入PRD的基线：摩托车头盔认证至少ECE 22.06，北美再加DOT；自行车头盔至少CE / CPSC。重量目标为摩托车智能全盔≤1650g，自行车智能盔≤500g；整机防水至少IPX4；接口采用USB-C。连接侧建议Bluetooth 5.0及以上，蓝牙稳定距离10米，首次配对<60秒，OTA失败可回滚。音频连续续航目标≥8小时，V1整机续航目标8–12小时。",
+  "source": "deep_research:prd_reference",
+  "created_at": "2026-03-22",
+  "tags": [
+    "PRD基线",
+    "认证",
+    "续航",
+    "蓝牙",
+    "防水",
+    "deep_research",
+    "prd_reference"
+  ],
+  "confidence": "high"
+}

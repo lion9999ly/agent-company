@@ -1,0 +1,21 @@
+{
+  "title": "0326_Forcite MK1S 智能摩托车全盔：HUD/摄像头/材料与潜在供应链梳理",
+  "domain": "competitors",
+  "content": "Forcite MK1S 是面向摩托车骑行的智能全盔，不是自行车头盔；其设计约束更强调高速风噪、ECE/DOT碰撞标准、面罩机构与行车记录功能，因此不能直接套用自行车HUD头盔方案。基于现有公开信息，MK1S 属于量产型号而非“2025新款”，来源1把“2025 MK1S”作为趋势预测，来源2/3则明确目前公开可查的仍是现款 MK1S，这一点需标注为时间口径冲突。已知功能层面，MK1S 集成 HUD、前置摄像头、蓝牙连接与导航/危险提醒；摄像头规格在来源2中给出为 1080p@30fps，属于行车记录仪级别。安全认证方面，来源2提到通常符合 ECE 22.05/22.06 与 DOT，但未说明具体批次差异，因此采购评估时应要求供应商提供对应市场版本证书。材料方面，三份来源均指向“碳纤维复合外壳 + 多密度 EPS + 光学级聚碳酸酯面罩”的典型架构；来源1进一步推测纤维可能来自 Toray、Hexcel、Teijin，树脂可能来自 Hexion、Huntsman，EPS 可能来自 BASF、Kaneka，面罩材料可能采用 SABIC Lexan 体系。这些均为潜在供应商而非 Forcite 官方确认。HUD 方案上，来源2/3倾向“微型 OLED + 光学投影/波导”，来源1则进一步预测 2025 可能升级到 Micro-LED 或 LCoS，因此显示核心存在技术路线不确定性。电子器件方面，来源2/3推测 SoC 可能来自 Qualcomm/MediaTek，图像传感器可能来自 Sony、OmniVision、Samsung，IMU 可能来自 Bosch、ST、ADI，GPS 模块可能来自 u-blox。价格方面，本组来源未给出官方售价，不能臆造；如需竞品对标，应补充零售渠道数据。对我方智能摩托车全盔的启示是：Forcite 的差异化不在单一硬件参数，而在“HUD+摄像头+",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "智能摩托车头盔",
+    "HUD",
+    "行车记录仪",
+    "碳纤维复合材料",
+    "潜在供应链",
+    "ECE",
+    "DOT",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

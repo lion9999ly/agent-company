@@ -1,0 +1,18 @@
+{
+  "title": "深化:高通 QCS/QCM + 恒玄 BES2800（智能骑行头盔",
+  "domain": "components",
+  "content": "**智能骑行头盔V1推荐架构摘要（研发相关）**\n\n**1. 推荐芯片方案**\n- **主控**：高通 **QCS4290 / QCS6490**\n  - QCS4290：8核Kryo 260，**4 TOPS AI**，Adreno 610，双16MP ISP，支持单摄25MP/双13MP\n  - QCS6490：8核Kryo 670，**12 TOPS AI**，Adreno 642L，双25MP ISP，支持单摄64MP/双32MP\n  - 连接：**Wi‑Fi 6/6E、BT 5.2/5.3、GNSS**，可选 **LTE Cat.13/18 或 5G NR、eSIM**\n  - 存储/内存：**LPDDR4X/LPDDR5、UFS 2.2/3.1**\n- **音频协处理器**：恒玄 **BES2800YP / BES2800Y**\n  - **BT 5.2/5.3**\n  - 支持 **SBC/AAC**，部分型号支持 **LDAC/LHDC**\n  - **ANC -35dB~-45dB**，支持前馈/反馈/混合降噪\n  - **2~4麦阵列 + 波束成形 + ENC**，适合骑行风噪抑制\n  - 接口：**I2S/PCM + I2C/SPI**\n\n**2. 适合头盔研发的系统架构**\n- 采用 **“高通主控 + 恒玄音频协处理器”** 双芯架构：\n  - 高通负责：**AI推理、摄像头/ISP、导航、传感器融合、蜂窝/Wi‑Fi、OS/UI**\n  - 恒玄负责：**蓝牙音频、对讲、ANC/ENC、语音处理**\n- 适合功能：**碰撞检测自动求救、前后摄录、语音助手、群组对讲、导航播报、环境音透传**\n\n**3. 技术趋势（2026）**\n- 智能头盔向 **安全+通信+导航+AI** 一体化发展\n- 重点能力升级：**LE Audio、蓝牙5.4/5.5、",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "高通QCS",
+    "BES2800",
+    "双芯架构",
+    "主控选型",
+    "智能骑行头盔",
+    "deep_research",
+    "main_chipset_selection",
+    "night_deep"
+  ],
+  "confidence": "medium"
+}

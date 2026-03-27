@@ -1,0 +1,17 @@
+{
+  "title": "Astra 全场景D2D方案：11V+毫米波+激光超高算力平台",
+  "domain": "components",
+  "content": "Astra全场景D2D方案采用11V+毫米波+激光传感器组合，基于超高算力平台。功能覆盖高速NOA+城区NOA+漫游（含车位到车位），并支持APA、RPA、RA、AVP。官方表述为90%高频场景完全由系统覆盖，10%场景通过丝滑人机共驾处理，强调全域自主通行能力与低接管率。",
+  "source": "doc_import:智驾大陆 Astra 产品介绍 20260206 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Astra",
+    "D2D",
+    "全场景辅助驾驶",
+    "11V",
+    "激光雷达",
+    "超高算力",
+    "AVP"
+  ],
+  "confidence": "high"
+}

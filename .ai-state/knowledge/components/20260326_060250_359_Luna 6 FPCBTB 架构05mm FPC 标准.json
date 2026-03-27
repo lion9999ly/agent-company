@@ -1,0 +1,20 @@
+{
+  "title": "Luna 6 FPC/BTB 架构：0.5mm FPC 标准化 + BTB 系统级双供",
+  "domain": "components",
+  "content": "在柔性互连层与板间互连层，报告给出两条关键决策：FPC/FFC 统一采用 0.5mm pitch，BTB 采用系统级双供但不追求同焊盘兼容。FPC 主选为 Molex Easy-On 0.5mm，推荐 503480-1000、503480-1200、502250、504051 系列，参数包括 0.5mm pitch、6~40Pin、0.9mm / 1.0mm / 1.2mm / 2.0mm 高度、典型 0.5A/Pin、50V，单颗约 0.08–0.35 USD/pcs。BTB 主选为 Molex SlimStack 0.4mm / 0.5mm 系列，常用 20Pin、30Pin、40Pin，堆叠高度 1.5mm、2.0mm、2.5mm，额定电流约 0.3–0.5A/Pin，单对约 0.25–0.90 USD/set；流程上要求 EVT 锁主选，DVT 完成备选验证。",
+  "source": "deep_research:enrich_260",
+  "created_at": "2026-03-26",
+  "tags": [
+    "FPC",
+    "BTB",
+    "Molex Easy-On",
+    "Molex SlimStack",
+    "0.5mm",
+    "0.4mm",
+    "EVT",
+    "DVT",
+    "deep_research",
+    "enrich_260"
+  ],
+  "confidence": "high"
+}

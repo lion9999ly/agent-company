@@ -1,0 +1,16 @@
+{
+  "title": "智能骑行头盔V1功能取舍建议",
+  "domain": "components",
+  "content": "报告建议智能骑行头盔V1按优先级聚焦P0能力：安全结构、照明/可视化警示、手机连接/App、音频通话、导航提示；P1为事故检测/SOS、摄像记录；P2为HUD/AR显示、Mesh群组对讲、后视摄像头。V1应保留灯光、转向/刹车提醒、蓝牙通话/语音、App、导航语音或低干扰LED提示、碰撞检测；应砍掉透明AR HUD、后视摄像头、4G独立联网、复杂Mesh组网、双摄/高规格录像。",
+  "source": "deep_research:prd_reference",
+  "created_at": "2026-03-22",
+  "tags": [
+    "V1规划",
+    "功能优先级",
+    "PRD",
+    "产品取舍",
+    "deep_research",
+    "prd_reference"
+  ],
+  "confidence": "high"
+}

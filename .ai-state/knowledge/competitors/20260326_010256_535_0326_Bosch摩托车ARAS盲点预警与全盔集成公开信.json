@@ -1,0 +1,22 @@
+{
+  "title": "0326_Bosch摩托车ARAS盲点预警与全盔集成：公开信息现状与产品启示",
+  "domain": "competitors",
+  "content": "基于3个来源，当前公开渠道并不存在题为“2026 Bosch motorcycle ARAS blind spot collision warning helmet integration white paper”的官方白皮书，这一点在来源2、3中一致；来源1则是基于现有技术趋势撰写的推演性草稿，因此应标注为“非官方预测”，不能当作博世正式路线图。已确认的公开事实是：Bosch已量产摩托车ARAS核心能力，包括ACC、FCW、BSD/BCW，核心传感器为77GHz毫米波雷达，已落地车型包括Ducati Multistrada V4（2021）、KTM 1290 Super Adventure S（2021）和BMW R 1250 RT（2021，公开信息更常见于ACC）。现有预警输出主要是后视镜或仪表LED，而非头盔原生集成。来源1提到多车事故中约20%-30%与“未发现摩托车/盲点”相关，并引用NHTSA“摩托车每英里致死风险高于乘用车28倍以上”；这些数据可作为安全需求背景，但未见与“头盔集成”直接对应的Bosch官方验证数据。对我们做智能摩托车全盔的启示是：应把Bosch视为车端ARAS能力提供方，而头盔侧机会在于HMI闭环。可行方案是与车端BSD/BCW通过BLE或专有低时延链路连接，在全盔内提供三类告警：1）左右侧定向音频；2）耳侧或后枕部轻振；3）HUD/边缘灯带视觉提示。这里必须明确排除自行车头盔方案：自行车产品常见的是MIPS、被动照明或运动相机集成，缺少与摩托车77GHz雷达、ECU、转向灯状态联动的车规接口，且抗风噪、ECE 22.06认证、全盔供电与密封要求完全不同，不能直接复用。价格层面，3个来源未给出Bosch雷达模组或整套ARAS的公开采购价，属于信息缺口；供应商层面可确认Bosch为核心系统供应商，整车客户至少包括Ducati、KTM、BMW。",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Bosch",
+    "摩托车ARAS",
+    "盲点预警",
+    "全盔",
+    "77GHz雷达",
+    "Ducati",
+    "KTM",
+    "BMW",
+    "HUD",
+    "智能头盔",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

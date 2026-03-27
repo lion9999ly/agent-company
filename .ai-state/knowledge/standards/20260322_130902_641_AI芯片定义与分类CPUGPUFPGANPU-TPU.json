@@ -1,0 +1,17 @@
+{
+  "title": "AI芯片定义与分类：CPU/GPU/FPGA/NPU-TPU的边界",
+  "domain": "standards",
+  "content": "白皮书将AI芯片定义为：基于软硬件协同设计，针对矩阵运算、并行计算、低精度计算、稀疏化等AI负载进行硬件级优化的处理器，目标是同时突破“计算墙”“内存墙”“功耗墙”，实现高TOPS与TOPS/W。广义AI芯片包括CPU、GPU、FPGA等所有可加速AI负载的处理器；狭义AI芯片特指面向AI场景设计的ASIC，如NPU、TPU。CPU灵活且生态成熟但AI能效低；GPU并行度高、训练主力但功耗高；FPGA可重构、低延迟但开发难；NPU/TPU性能和能效极致但灵活性差。",
+  "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "AI芯片定义",
+    "CPU",
+    "GPU",
+    "FPGA",
+    "NPU",
+    "TPU",
+    "ASIC"
+  ],
+  "confidence": "high"
+}

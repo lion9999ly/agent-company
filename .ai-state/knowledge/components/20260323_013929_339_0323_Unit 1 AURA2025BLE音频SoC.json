@@ -1,0 +1,19 @@
+{
+  "title": "0323_Unit 1 AURA（2025）BLE音频SoC方案与认证落地要点",
+  "domain": "components",
+  "content": "基于现有检索结果，未找到名为“Unit 1 AURA chipset”的公开datasheet，因此更合理的做法是把“AURA”视为一类2025年BLE音频/ Auracast产品方案来定义。若目标支持LE Audio或Auracast，SoC至少应满足Bluetooth 5.2；Nordic 2025年资料明确指出，LE Audio与Auracast的实现基础是Bluetooth 5.2引入的Isochronous Channels，这意味着AURA若定位音频广播，BLE 5.0/5.1已不足。供应商上，可优先比较Nordic、Silicon Labs、TI、ST。来源1给出的典型指标显示：Nordic nRF53/nRF54级别方案睡眠电流<1 µA、RX/TX约3-5 mA；Silicon Labs EFR32BG22/BG24为<1 µA、3-6 mA；ST STM32WB约4-7 mA；TI CC26xx/CC23xx约3-5 mA。若AURA需要麦克风前端，MEMS麦克风建议优先选数字PDM/I2S接口，原因是BLE音频链路对同步和抗噪更敏感，数字麦可减少模拟走线耦合；选型时至少锁定灵敏度、SNR、AOP、供电电压四项，但本次来源未给出具体麦克风型号与参数，属于信息缺口。天线设计方面，2.4 GHz BLE通常优先PCB倒F天线或芯片天线；若追求小型化可选芯片天线，但会牺牲部分效率并增加匹配调试成本。若采用预认证模块而非裸SoC，可缩短认证周期，但BOM单价通常更高。市场上可参考Ezurio的Aurawave AW100 Series（页面显示为Auracast平台）作为模块化竞品方向。认证成本方面，来源存在明显冲突：Compliance Testing给出的2025年FCC基础电子设备价格为3,000-5,000美元起，且整体FCC/CE实验室费用常见在3,0",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "BLE 5.2",
+    "Auracast",
+    "LE Audio",
+    "Nordic",
+    "FCC认证",
+    "CE认证",
+    "MEMS麦克风",
+    "天线设计",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

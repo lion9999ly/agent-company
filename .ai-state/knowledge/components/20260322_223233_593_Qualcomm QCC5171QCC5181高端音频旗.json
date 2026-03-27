@@ -1,0 +1,19 @@
+{
+  "title": "Qualcomm QCC5171/QCC5181：高端音频旗舰头盔优选，但单价 3–6 美元/颗",
+  "domain": "components",
+  "content": "高通 QCC5171/QCC5181 被定位为高端摩托车通讯头盔和海外品牌路线的优选。QCC5171 支持 Bluetooth 5.3、LE Audio、LC3、Auracast、多重串流、aptX Adaptive 和 cVc 通话降噪；QCC5181 定位高于 QCC5171，强调更强 AI/音频处理和 LE Audio 能力。大批量采购价格通常约 3–6 美元/颗，整体 BOM 明显高于 BES。报告指出其优势在于音频能力、ANC/ENC、品牌背书和海外市场认可度，但开发门槛和授权门槛更高。",
+  "source": "deep_research:main_chipset_selection",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Qualcomm",
+    "QCC5171",
+    "QCC5181",
+    "LE Audio",
+    "高端头盔",
+    "ANC",
+    "ENC",
+    "deep_research",
+    "main_chipset_selection"
+  ],
+  "confidence": "high"
+}

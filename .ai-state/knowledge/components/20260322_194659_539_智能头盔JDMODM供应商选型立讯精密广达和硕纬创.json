@@ -1,0 +1,26 @@
+{
+  "title": "智能头盔JDM/ODM供应商选型：立讯精密、广达、和硕、纬创、富士康、Flex、Jabil",
+  "domain": "components",
+  "content": "候选供应商可分两类：1）大型EMS/ODM：立讯精密、广达电脑、和硕、纬创、富士康，优势在精密制造、声学/光学/无线通信、系统集成与全球供应链。已知代工客户/项目包括：立讯服务苹果AirPods、Apple Watch、iPhone，并被提及参与Vision Pro；广达代工Meta Oculus Quest、参与微软HoloLens；和硕为苹果iPhone、iPad代工；纬创曾为微软HoloLens代工；富士康与Meta有AR/VR合作布局。2）高可靠性与垂直行业型：Flex、Jabil，强项是工业/医疗/汽车级设计制造、传感器集成、复杂系统组装、法规遵从，适合工业级智能头盔JDM。技术参数层面，智能头盔核心模块包括AR/VR显示、蓝牙、Wi‑Fi、5G、AI处理单元、摄像头、麦克风、扬声器。原文未给出具体报价、单价、月产能、良率或BOM数字；仅有“2023年财报”“全球最大/第二大EMS”“两位数甚至更高CAGR”等定性信息。选型上，消费级优先立讯/广达/和硕，超大批量看富士康，工业级优先Flex/Jabil。",
+  "source": "jdm_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "智能头盔",
+    "ODM",
+    "JDM",
+    "立讯精密",
+    "广达电脑",
+    "和硕",
+    "纬创",
+    "富士康",
+    "Flex",
+    "Jabil",
+    "AR/VR",
+    "苹果供应链",
+    "Meta Quest",
+    "HoloLens",
+    "工业级头盔",
+    "jdm_study"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Sena 50R（对比 Sena Impulse / Sena Stryker / Sena R2 EVO / Sena S1）",
+  "domain": "competitors",
+  "content": "以下是 **Sena 50R 技术档案**，并重点对比 **Sena Impulse / Sena Stryker / Sena R2 EVO / Sena S1**。  \n我会尽量给出**具体参数、价格区间、已知客户/适用用户群**，并明确说明哪些信息是**官方公开规格**、哪些是**市场常见售价**、哪些属于**基于产品定位的判断**。\n\n---\n\n# 一、Sena 50R 技术档案\n\n## 1) 产品定位\n\n**Sena 50R** 是 Sena 50 系列中的高端摩托车通讯器，定位是：\n\n- 面向 **摩托车骑行用户**\n- 主打 **低风阻、超薄机身、三键操作**\n- 核心卖点是：\n  - **Mesh 2.0 对讲**\n  - **Bluetooth 5.0**\n  - **Harman Kardon 音频系统**（新版本/新版包装）\n  - **语音指令**\n  - **WiFi 适配器自动更新**\n  - 相比 50S 更偏向“扁平化、运动化、低外凸”设计\n\n它本质上不是头盔，而是一个 **外置式头盔通讯模块**。\n\n---\n\n## 2) 关键规格总表\n\n> 注：不同销售批次可能存在“标准版 / Harman Kardon版”差异，以下以当前主流版本为主。\n\n| 项目 | Sena 50R |\n|---|---|\n| 产品类型 | 摩托车头盔蓝牙/Mesh 通讯器 |\n| 安装方式 | 外置式，安装在头盔侧面 |\n| 适用对象 | 摩托车骑士、双人骑行、车队骑行 |\n| 蓝牙版本 | Bluetooth 5.0 |\n| Mesh 技术 | Mesh Intercom 2.0 |\n| Mesh 模式 | Open Mesh / Group Mesh |\n| Open Mesh 频道 | 9 个频道 |\n| Group Mesh | 最多 24 名骑士（单组） |\n| Open Mesh 容量 | 理论上几乎无限/大规模开放网络，官方常表述为可连接大量用户 |\n| 蓝牙对讲 | 最多 4 人蓝牙对讲 |\n| 蓝牙对讲距离 | 最多约 2 km（空旷环境） |\n| Mesh 对讲距离 | 最多约 2 km；中继扩展可更远（理想条件下可到约 8 km，需多骑士中继） |\n| 扬声器 | Harman Kardon 扬声器（新版） |\n| 麦克风 | Harman Kardon 麦克风（新版） |\n| 音频功能 | 高级降噪、语音提示、音乐共享、音频多任务 |\n| 语音控制 | 支持语音命令 |\n| FM 收音机 | 支持 |\n| FM 预设 | 10 个电台预设 |\n| 充电接口 | USB-C |\n| 快充 | 支持，约 20 分钟可获得数小时通话/对讲能力 |\n| 通话时间 | 蓝牙对讲约 13 小时 |\n| Mesh 对讲时间 | 约 8 小时",
+  "source": "completeness_check",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "high"
+}

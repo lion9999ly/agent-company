@@ -1,0 +1,22 @@
+{
+  "title": "0327_摩托头盔Mesh通信竞品分析：Cardo、Sena、Reso",
+  "domain": "competitors",
+  "content": "摩托车全盔Mesh通信市场目前仍以Cardo与Sena双寡头为主，Reso更像区域性/低知名度补充品牌。需明确排除：本条仅讨论摩托车头盔通信系统，不适用于自行车头盔；自行车产品常强调轻量、开放式佩戴和运动耳机形态，与全盔内置对讲的安装空间、降噪和高速稳定性要求不同。Cardo高端代表是Packtalk Edge，常见参数包括DMC二代Mesh、蓝牙5.2、JBL 40mm扬声器、IP67防护、官方宣称最长约13小时通话、单机点对点最远约1.6km、最多15人组网，海外零售价通常约US$399.95，双机套装约US$699.95，供应商为Cardo Systems。Sena旗舰是50S/50R，采用Mesh Intercom（Open Mesh/Group Mesh）+蓝牙5.0，50S配Harman Kardon音频版本后，官方常见口径为Mesh开放模式可连近乎无限用户、私有群组24人，单机距离约2km，价格常见US$339-359，供应商为Sena Technologies。两者技术路线差异明显：Cardo偏封闭DMC生态，强项是重连稳定、语音控制和大团骑一致性；Sena偏产品线广、OEM合作强，常见于Shoei/Schuberth集成方案，兼容和渠道覆盖更好。用户口碑上，Cardo通常被评价为“Mesh更稳、音质更好、雨天更放心”，但价格更高、App偶有争议；Sena则被认为“安装生态成熟、配件多、与头盔品牌结合紧”，但部分用户反馈早期固件和多层菜单学习成本较高。关于Reso，给定来源未提供可核验的主流型号、官方参数、价格和全球渠道数据，说明其市场地位明显弱于Cardo/Sena；若项目需量产合作，应先核查其是否具备摩托车场景认证、稳定供货与售后网络。来源间存在轻微矛盾：Cardo群组规模均指向15人，但总通信距离有“8km”与“更宽泛表述”差异；Sena开放Mesh人",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "摩托车头盔",
+    "全盔通信",
+    "Mesh对讲",
+    "Cardo",
+    "Sena",
+    "Reso",
+    "竞品分析",
+    "DMC",
+    "蓝牙5.2",
+    "Packtalk Edge",
+    "Sena 50S",
+    "auto_evolution"
+  ],
+  "confidence": "medium"
+}

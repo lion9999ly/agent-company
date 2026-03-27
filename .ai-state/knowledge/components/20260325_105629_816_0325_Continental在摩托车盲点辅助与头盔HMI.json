@@ -1,0 +1,17 @@
+{
+  "title": "0325_Continental在摩托车盲点辅助与头盔HMI中的供应链定位（2025）",
+  "domain": "components",
+  "content": "基于现有公开信息，2025年前后并不存在一款已量产、可明确命名为“Continental摩托车盲点辅助头盔HMI ADAS预警系统”的完整商用品；更准确的行业判断是：Continental是摩托车ADAS核心部件供应商，而非全盔成品供应商。其角色集中在毫米波雷达、ECU与算法，HMI输出目前主要落在车端，而不是头盔端。已知量产参照包括Ducati Multistrada V4（2021起，前后雷达，提供ACC/BSD）、KTM 1290 Super Adventure S（2021起，雷达ACC/BSD）以及BMW R 1250 RT（来源称采用Continental雷达，主要用于ACC，BSD扩展未完全确认）。这里存在来源差异：一部分信息强调BMW/Continental合作，另一部分仅将Continental定义为通用ARAS供应商，未给出具体量产车型清单。技术上，Continental可提供类似ARAS方案中的后向雷达、控制器和警报信号输出，潜在器件可参考其汽车/两轮通用雷达平台，如来源提到的ARS540，但该型号是否已直接用于量产摩托车BSD，公开证据不足，应谨慎引用。头盔侧HMI则更可能由全盔厂商与显示/音频公司二次集成，例如Shoei、Schuberth等高端头盔品牌，结合HUD或蓝牙音频方案；DigiLens、WayRay被提及为潜在HUD技术方，但未见与Continental在摩托车全盔上的公开量产合作。价格方面，来源未给出Continental摩托车BSD模组或头盔HMI的官方报价，只能从整车侧推断：搭载雷达ADAS的高端探险/旅行摩托通常处于高价区间，相关系统多作为整车配置而非独立零售件。对我们做智能摩托车全盔的启示是：应明确排除自行车头盔路径，因为摩托车全盔需满足ECE/DOT等更严格法规，且高速风噪、震动、供电与碰撞安全要求远高于自行车产品。可行架构",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Continental",
+    "摩托车ADAS",
+    "盲点辅助BSD",
+    "全盔HMI",
+    "ARAS",
+    "供应链",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

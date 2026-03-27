@@ -1,0 +1,16 @@
+{
+  "title": "Luna 主动安全量产时间表（2025年Q2-2026年Q3）",
+  "domain": "lessons",
+  "content": "Luna量产规划分四阶段。2025年Q2目标法规为CIASI-2023 G+、IVISTA-2023 G、C-NCAP 2024五星+、E-NCAP2023五星；前向量产AEB/FCW/MEB、TLR/SAS、IHC/ADB，侧向量产LDW/LKA/ELK。2025年Q4新增侧向BSD/LCA/DOW及后向RCW/RCTA。2026年Q2面向E-NCAP2026-2028五星，前向扩展AEB正/误触发至车辆/行人/骑行人/锥桶/防撞桶/水马，并量产PMA；侧向量产ESA/AES（车辆/行人/骑行人）。2026年Q3面向组合辅助驾驶，前向扩展AEB正/误触发至通用障碍物/雨雪/雾天并量产MEB，侧向扩展ESA/AES至通用障碍物。",
+  "source": "doc_import:主动安全功能介绍 20251027 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna",
+    "量产规划",
+    "法规",
+    "MEB",
+    "RCW",
+    "RCTA"
+  ],
+  "confidence": "high"
+}

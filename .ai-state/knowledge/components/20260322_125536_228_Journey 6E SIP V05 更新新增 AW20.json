@@ -1,0 +1,18 @@
+{
+  "title": "Journey 6E SIP V0.5 更新：新增 AW20 电源测试脚与 M45 PMCTRL_19",
+  "domain": "components",
+  "content": "V0.5（2024-07-19）更新内容包括：Section 2 更新料号定义；Section 4.3 更新引脚图；Section 4.4.1 更新电源/地引脚表，并新增 Pin Number AW20 used to Power test；Section 4.4.5 更新其他引脚表，新增 Pin Number M45 used to PMCTRL_19；Section 4.5 更新封装外形图；Section 5.6 更新接口电气规格；Section 6 更新接口时序规格。说明引脚定义仍在变化。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "V0.5",
+    "2024-07-19",
+    "AW20",
+    "Power Test",
+    "M45",
+    "PMCTRL_19",
+    "Interface Electrical",
+    "Timing"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "UNECE R10 Rev.6 Annex 10 transient immunity and co",
+  "domain": "lessons",
+  "content": "**主题定位**  \nUNECE **R10 Rev.6 Annex 10** 适用于安装在车辆上的**电子子组件 ESA**。若智能骑行头盔电子模块需**接车载电源/与车机通信**，可能按 ESA 单独做 EMC 认证。\n\n**与智能头盔研发直接相关的法规要点**  \n1. **传导发射**：通常按 **CISPR 25** 测试。  \n   - 频段：**150 kHz–108 MHz**  \n   - 测试治具：**LISN + EMI接收机/频谱仪**  \n   - 典型目标等级：**Class 3/4/5**，其中 **Class 5 最严**  \n   - 示例限值（Class 5）：  \n     - 150 kHz–500 kHz：**79/59 dBµV**（准峰/平均）  \n     - 500 kHz–5 MHz：**73/53 dBµV**  \n     - 5 MHz–30 MHz：**67/47 dBµV**  \n     - 30 MHz–108 MHz：**61/41 dBµV**\n\n2. **瞬态抗扰度**：通常按 **ISO 7637-2**。  \n   - 关键脉冲：  \n     - **Pulse 1/负载突降**：12V系统可到 **+87~+150 V**, 约 **0.5 ms**  \n     - **Pulse 2a/2b**：**-10~-150 V / +10~+150 V**, **50~200 µs**  \n     - **Pulse 3a/3b**：**±25~±150 V**, **100 ns**, **100 Hz~10 kHz**  \n     - **Pulse 4/冷启动跌落**：降至 **4.5V或6V**, **100~200 ms**\n\n**对产品设计的启发**  \n- **电源/BMS/无线",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "UNECE R10",
+    "EMC",
+    "瞬态抗扰",
+    "传导发射",
+    "ESA",
+    "车载电子",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

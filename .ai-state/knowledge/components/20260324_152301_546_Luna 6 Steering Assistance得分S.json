@@ -1,0 +1,14 @@
+{
+  "title": "Luna 6 Steering Assistance得分：Steering Assistance与Lane Change Assist",
+  "domain": "components",
+  "content": "Steering Assistance满分5，由Steering Assistance 4分和Lane Change Assist 1分组成。1V配置得4分（Steering Assistance 4，Lane Change Assist 0）；1V1-4R、1V5R、5V5R12Uss均得5分（Lane Change Assist补齐1分）。说明增加雷达后可满足变道辅助相关评分要求。",
+  "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "Steering Assistance",
+    "Lane Change Assist",
+    "E-NCAP"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "MotoEye / ASMAX 头盔加装HUD方案分析",
+  "domain": "competitors",
+  "content": "MotoEye、ASMAX代表头盔加装设备初创企业路线，集成HUD、CarPlay/HiCar、行车记录仪、流媒体后视镜，后装成套方案售价约￥2499。优点是属于头盔外装垂类HUD解决方案，后装通用性强，切换至CarPlay后可提供类“汽车座舱”体验。缺点包括品牌营销弱、交互体验一般、功能堆砌明显；切换CarPlay后无法提供两轮导航；ID设计不足；HUD显示晶体不如镜片成像直观；外挂设备影响外观，并在高速骑行时增加噪音和阻力。",
+  "source": "doc_import:两轮项目立项报告（智能头盔） V2.1 - 草稿！！！ (1).docx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "MotoEye",
+    "ASMAX",
+    "HUD",
+    "CarPlay",
+    "HiCar"
+  ],
+  "confidence": "high"
+}

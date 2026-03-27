@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Sena Spider ST1（对比 Sena Impulse / Sena Stryker / Sena R2 EVO / Sena S1）",
+  "domain": "competitors",
+  "content": "以下是 **Sena Spider ST1** 的完整技术档案，并重点对比 **Sena Impulse / Sena Stryker / Sena R2 EVO / Sena S1**。  \n先说明一个关键点：\n\n- **Spider ST1 是摩托车用外置通讯器**\n- **Impulse / Stryker 是集成通讯系统的摩托车头盔**\n- **R2 EVO / S1 是自行车/轻运动场景的智能头盔，不是摩托车头盔**\n\n因此，这几款产品并不是完全同类，比较时必须区分：\n1. **通讯能力**\n2. **音频能力**\n3. **头盔形态/安全定位**\n4. **适用场景**\n5. **总拥有成本**\n\n---\n\n# 1. Sena Spider ST1 技术档案\n\n## 1.1 产品定位\n**Sena Spider ST1** 是 Sena 面向摩托车用户推出的 **入门级 Mesh 对讲器**。  \n它的核心卖点不是“功能最全”，而是：\n\n- 以较低价格进入 Sena Mesh 生态\n- 操作简单\n- 适合多人骑行\n- 支持手机连接、导航、音乐\n- 但**不支持传统蓝牙对讲**\n\n这点非常重要：  \n**Spider ST1 是“Mesh-only intercom”路线**，即蓝牙用于连接手机等设备，但骑手之间对讲主要依赖 Mesh，而不是传统蓝牙链式对讲。\n\n---\n\n## 1.2 基本参数\n\n| 项目 | Sena Spider ST1 |\n|---|---|\n| 产品类型 | 摩托车头盔外置通讯器 |\n| 发布代际 | Spider 系列，约 2022 年上市 |\n| 对讲架构 | **Mesh Intercom 2.0** |\n| 蓝牙版本 | **Bluetooth 5.2** |\n| 蓝牙用途 | 手机、GPS、音乐等连接 |\n| 蓝牙对讲 | **不支持传统蓝牙 rider-to-rider intercom** |\n| Mesh 模式 | Open Mesh / Group Mesh |\n| Open Mesh | 多频道开放组网 |\n| Group Mesh | 私有群组对讲 |\n| 扬声器 | HD Speakers，40 mm |\n| 扬声器厚度 | 约 7.2 mm |\n| 电池续航 | Mesh 对讲最长约 **12 小时** |\n| 充电时间 | 约 **2.5 小时** |\n| 快充 | 支持，约 20 分钟可获得数小时 Mesh 使用时间（不同固件/环境略有差异） |\n| 主机尺寸 | 约 86 × 52 × 27.5 mm |\n| 重量 | 约 **60 g** |\n| 操作方式 | **三键式按键控制** |\n| 语音提示 | 支持 |\n| 手机 App | 支持 Sena Motorcycles App |\n",
+  "source": "completeness_check",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "high"
+}

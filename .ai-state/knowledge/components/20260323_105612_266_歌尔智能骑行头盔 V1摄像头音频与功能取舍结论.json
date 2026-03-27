@@ -1,0 +1,20 @@
+{
+  "title": "歌尔智能骑行头盔 V1：摄像头、音频与功能取舍结论",
+  "domain": "components",
+  "content": "V1 建议量产的黑匣子方案为单前摄，支持 4K30 / 1080p60、EIS、WDR、循环录制和事故锁档，传感器建议采用 Sony IMX577 或 IMX678 级别，1/1.56\" 大底仅作为高配版或 V2 预研，不作为 V1 标配。音频侧建议优先 40mm 扬声器，不建议 V1 上 53mm；通话链路目标是 SNR 提升 8–12dB。功能裁决上，V1 不承诺前向碰撞预警，只保留风险提示级 ADAS light；Mesh 对讲放到 V2，V1 仅做稳定蓝牙双机/小队互联。该结论可直接指导器件选型和首代功能冻结。",
+  "source": "deep_research:adhoc_基于PRD_V0.1",
+  "created_at": "2026-03-23",
+  "tags": [
+    "歌尔",
+    "Sony IMX577",
+    "Sony IMX678",
+    "4K30",
+    "40mm扬声器",
+    "SNR",
+    "ADAS light",
+    "Mesh",
+    "deep_research",
+    "adhoc_基于PRD_V0.1"
+  ],
+  "confidence": "high"
+}

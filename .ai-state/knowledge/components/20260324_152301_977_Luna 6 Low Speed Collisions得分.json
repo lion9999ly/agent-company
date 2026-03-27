@@ -1,0 +1,16 @@
+{
+  "title": "Luna 6 Low Speed Collisions得分：交叉、转向、泊车与Dooring场景",
+  "domain": "components",
+  "content": "Low Speed Collisions满分20，配置差异显著：1V为3.25，1V2R为3.75，1V3-5R为14，5V5R12Uss为17.5。Car-to-Car Crossing从0提升到3/3；Car-to-Motorcyclist Crossing从0提升到3/3；Car-to-Motorcyclist Turn Across Path从2.25提升到3/3；Car-to-Pedestrian Manoeuvring Moving从0提升到1.5再到5/5；Car-to-Bicyclist Crossing从0提升到2/3；Dooring从0到0.5/2。超声波与多传感器对低速近场场景贡献最大。",
+  "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "Low Speed Collisions",
+    "Crossing",
+    "Manoeuvring",
+    "Dooring",
+    "USS"
+  ],
+  "confidence": "high"
+}

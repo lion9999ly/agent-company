@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Robotics HPU3501 PMIC for Horizon SoC X3/X5",
+  "domain": "components",
+  "content": "HPU3501 是面向 Horizon SoC X3/X5 的高集成 PMIC。输入电压范围 2.7V~5.5V，输出电压范围 0.6V~3.6V，支持 DVS。集成 5 路同步 Buck：Buck1/2/3/4 单路最高 4A，Buck5 最高 3A；另有 3 路 300mA LDO。输出精度 ±2%，支持可编程限流、Auto PFM/Forced PWM、预设上电/下电时序、可编程使能控制、I2C、POR、PWRKEY、RSTIN、RTC/Alarm、过温保护。结温工作范围 -40°C~125°C，封装为 6mm×6mm 48-pin QFN。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Horizon Robotics",
+    "HPU3501",
+    "PMIC",
+    "X3",
+    "X5"
+  ],
+  "confidence": "high"
+}

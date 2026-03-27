@@ -1,0 +1,17 @@
+{
+  "title": "歌尔JDM IP归属：项目定制IP付清NRE后归我方",
+  "domain": "components",
+  "content": "报告建议与歌尔明确区分背景 IP 与项目定制 IP。歌尔背景IP如声学腔体 know-how、HUD 光机通用设计、产线测试方法、BES/AR1 底层通用驱动框架归歌尔，但我方应获得本项目范围内、永久、可转制造的使用权；我方背景IP如产品定义、UI 逻辑、ADAS 策略、事故判定规则、App、云端、数据闭环归我方。项目定制IP（Foreground IP）如本头盔专用结构、主板堆叠、线束布局、HUD UI 资源、整机热设计、专用算法参数，建议付清对应 NRE 后归我方所有，歌尔仅保留制造所需使用权。算法训练数据、骑行视频数据、事故数据必须归我方，并写入源代码 escrow（托管）条款。",
+  "source": "deep_research:supplier_negotiation",
+  "created_at": "2026-03-27",
+  "tags": [
+    "歌尔",
+    "IP归属",
+    "Foreground IP",
+    "数据资产",
+    "源代码托管",
+    "deep_research",
+    "supplier_negotiation"
+  ],
+  "confidence": "medium"
+}

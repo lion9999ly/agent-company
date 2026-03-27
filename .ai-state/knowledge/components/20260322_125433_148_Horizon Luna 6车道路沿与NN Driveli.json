@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Luna 6车道、路沿与NN Driveline路径规划能力",
+  "domain": "components",
+  "content": "Luna 6车道和路沿识别距离提升至180 m，Luna 3为150 m。更重要的是，Luna 6支持NN Driveline路径规划，可覆盖常规车道、虚拟车道、绕行等复杂场景；Luna 3不支持该能力。说明Luna 6不仅看得更远，还具备更强的可行驶路径理解与规划支撑能力。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "车道线",
+    "路沿",
+    "NN Driveline",
+    "虚拟车道",
+    "绕行"
+  ],
+  "confidence": "high"
+}

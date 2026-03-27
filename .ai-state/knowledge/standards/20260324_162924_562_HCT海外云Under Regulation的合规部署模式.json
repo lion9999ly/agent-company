@@ -1,0 +1,15 @@
+{
+  "title": "HCT海外云：Under Regulation的合规部署模式",
+  "domain": "standards",
+  "content": "海外页明确标注“HCT海外云 Under Regulation”，说明海外数据闭环部署需在监管约束下运行。该模式强调在不同国家/地区法规框架内进行数据采集、脱敏、传输和平台处理，适配欧洲、日本、印度等版本，体现出跨境智驾数据业务的合规优先原则。",
+  "source": "doc_import:数据闭环介绍 20260119 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "HCT海外云",
+    "Under Regulation",
+    "海外合规",
+    "数据监管",
+    "区域部署"
+  ],
+  "confidence": "high"
+}

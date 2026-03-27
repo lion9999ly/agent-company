@@ -1,0 +1,16 @@
+{
+  "title": "歌尔音频技术方案：AR/MR声学、VPU与语音算法栈",
+  "domain": "components",
+  "content": "歌尔音频技术覆盖AR声学方案（强调性能与私密性）和MR声学方案（强调低失真、低振动、高性能），并配套VPU与完整音频算法栈。算法包括虚拟低音、环绕声、声场扩展、空间音频、多段EQ/DRC、回声消除、风噪抑制、DNN降噪、骨传导拾音、盲源分离、VAD、语音识别、关键词激活、高动态范围录音、声源定位、去混叠、波束成型。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "AR声学",
+    "MR声学",
+    "VPU",
+    "语音增强",
+    "DNN降噪",
+    "波束成型"
+  ],
+  "confidence": "high"
+}

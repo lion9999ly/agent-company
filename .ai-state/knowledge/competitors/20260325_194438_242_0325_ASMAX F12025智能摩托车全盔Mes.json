@@ -1,0 +1,23 @@
+{
+  "title": "0325_ASMAX F1（2025）智能摩托车全盔：Mesh通信、BSD/ADAS与材料供应链研判",
+  "domain": "competitors",
+  "content": "基于现有3个来源，公开市场上**未检索到“ASMAX F1”已正式发布的官方产品信息**，因此更适合将其视为“2025年高端智能摩托车全盔”的概念竞品画像，而非已量产SKU。需明确：本条目讨论的是**摩托车全盔（full-face）**，不是自行车头盔；若参考到**Sena Technologies**、**Cardo Systems**等通信生态，也仅借鉴其摩托车对讲技术。技术上，Mesh通信最可能采用**Sena Mesh Intercom™**或**Cardo Dynamic Mesh Communication（DMC™）**路线：来源1称Sena可支持**24名骑手**，Cardo可支持**15名骑手**；来源2/3则给出行业常见值**15-24人**。通信距离方面，开阔地带单跳通常为**1-2 km**，其中来源2明确给出约**1.6 km（1英里）**，并称多跳总范围可到**8 km（5英里）以上**。这部分存在口径差异，应视具体协议版本与地形而定。通信芯片层面，**Qualcomm（高通）QCC系列**被多次提及，适合作为蓝牙/音频SoC基础，但原始结果**未给出具体型号**，因此不能补成QCC5181等确定器件。ADAS/BSD方面，来源集中指向**后向广角摄像头+毫米波雷达/视觉算法**两条路线，潜在供应商包括**Bosch（博世）**、**Continental（大陆）**、**Valeo（法雷奥）**、**RideVision**；其中Bosch更强于摩托车雷达与整车级BSD，RideVision更接近摩托车视觉预警方案。若做头盔内集成，摄像头需兼顾行车记录与盲区识别，典型规格应至少达到**广角、毫秒级预警链路**，但3个来源均未给出ASMAX F1的确定**分辨率、帧率、FOV角度或传感器型号**，因此不能补充如**IMX678**之类的具体器件。",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "ASMAX F1",
+    "smart motorcycle helmet",
+    "full-face",
+    "Mesh communication",
+    "BSD",
+    "ADAS",
+    "camera",
+    "Sena",
+    "Cardo",
+    "Bosch",
+    "Qualcomm",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

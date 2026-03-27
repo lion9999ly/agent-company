@@ -1,0 +1,18 @@
+{
+  "title": "TDK InvenSense ICS-40720 麦克风参数与头盔适配性",
+  "domain": "components",
+  "content": "在高风噪骑行场景中，报告建议头盔不要使用单麦方案，至少采用2麦，更优为3麦阵列。关键指标建议为SNR至少64 dB、AOP至少130 dB SPL、优先PDM数字麦克风。TDK InvenSense ICS-40720的典型参数为PDM接口、约64 dB SNR、约130 dB SPL AOP、价格约0.7–2.2美元/颗，属于高AOP方案，适合高速风噪、喇叭和发动机噪声环境。报告在2026年可落地方案中将ICS-40720列为3麦数字MEMS阵列主选。",
+  "source": "deep_research:audio_camera_suppliers",
+  "created_at": "2026-03-22",
+  "tags": [
+    "TDK",
+    "ICS-40720",
+    "MEMS麦克风",
+    "3麦阵列",
+    "高AOP",
+    "PDM",
+    "deep_research",
+    "audio_camera_suppliers"
+  ],
+  "confidence": "high"
+}

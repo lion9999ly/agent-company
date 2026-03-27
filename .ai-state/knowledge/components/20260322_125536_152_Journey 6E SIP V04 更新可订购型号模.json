@@ -1,0 +1,17 @@
+{
+  "title": "Journey 6E SIP V0.4 更新：可订购型号、模拟引脚与电源输出 DC 特性修订",
+  "domain": "components",
+  "content": "V0.4（2024-06-14）更新包括：Section 2 更新 Figure 2-1 料号定义与 Table 2-1 可订购型号；Section 4.4.4 修正 Table 4-5 Analog Pin List；Section 5.1 更新绝对最大额定值；Section 5.2 更新工作条件；Section 5.3 更新 SIP module Output power supply DC characteristics。该版本重点修正模拟接口和供电输出特性，对硬件设计影响较大。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "V0.4",
+    "2024-06-14",
+    "Orderable Part",
+    "Analog Pin List",
+    "Absolute Maximum Ratings",
+    "Operating Conditions",
+    "Output Power Supply DC"
+  ],
+  "confidence": "high"
+}

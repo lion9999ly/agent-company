@@ -1,0 +1,19 @@
+{
+  "title": "能力卸载策略（头盔端 + 手机 App 分工）",
+  "domain": "components",
+  "content": "报告给出的核心产品策略是 V1 不应把所有能力都堆在头盔端，而应采用“能力卸载”。头盔端只做 KWS 唤醒词检测、固定指令、音频前处理、多麦 ENC / AEC / 风噪抑制、蓝牙通话、导航播报、提示音、基础对讲；开放域 ASR/NLU、AI 助手、复杂车队管理、云端账号与地图联动、后续 OTA 扩展能力则卸载到手机 App。该策略可显著降低 BOM、功耗、热、板级面积、EMI 和开发风险，同时保留用户可感知的智能体验。对 V1 决策而言，这一分工是 BES2700/2800 或 ATS3085 成立的前提，也是避免过度设计的关键。",
+  "source": "deep_research:tree_audio_soc",
+  "created_at": "2026-03-26",
+  "tags": [
+    "能力卸载",
+    "手机App",
+    "KWS",
+    "ASR/NLU",
+    "BOM优化",
+    "低功耗",
+    "系统架构",
+    "deep_research",
+    "tree_audio_soc"
+  ],
+  "confidence": "high"
+}

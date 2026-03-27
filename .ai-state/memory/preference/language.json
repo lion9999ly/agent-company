@@ -1,0 +1,10 @@
+{
+  "id": "user_preference:language",
+  "type": "user_preference",
+  "key": "language",
+  "value": "zh-CN",
+  "created_at": "2026-03-17T05:56:06.839733",
+  "updated_at": "2026-03-17T05:56:06.839733",
+  "ttl": null,
+  "metadata": {}
+}

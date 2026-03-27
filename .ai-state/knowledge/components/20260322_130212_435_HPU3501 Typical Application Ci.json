@@ -1,0 +1,18 @@
+{
+  "title": "HPU3501 Typical Application Circuit Interfaces",
+  "domain": "components",
+  "content": "典型应用图显示 HPU3501 需要 5 个 1µH 电感（L1~L5），对应 SW1~SW5 与 VOUT1~VOUT5。输入侧包括 PVIN1~PVIN5、AVIN，控制接口包括 SDA、SCL、EN、VSEL、OTPSEL、PWRKEY、RSTIN、POR、ALARM、VDDIO。RTC 相关引脚包括 X1、X2、XTAL、CLKO、VRTC。该图表明器件可直接连接 Host Processor，适合多轨 SoC 电源树设计。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Typical Application",
+    "PVIN",
+    "SW",
+    "VOUT",
+    "SDA",
+    "SCL",
+    "VSEL",
+    "OTPSEL"
+  ],
+  "confidence": "medium"
+}

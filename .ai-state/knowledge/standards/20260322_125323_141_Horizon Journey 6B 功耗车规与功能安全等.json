@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Journey 6B 功耗、车规与功能安全等级",
+  "domain": "standards",
+  "content": "Journey® 6B 在车规与安全方面给出明确指标：TDP<6W@Tj=125℃，SDP<5W@Tj=125℃；集成 Safety Island - MCU，性能 5K+ DMIPS（lock-step），2MB SRAM，6×CANFD + 1×LIN；支持 HSM，满足 FIPS 140-3 Level 2；通过 AEC-Q100 Grade 2；功能安全等级为主域 ASIL-B、MCU 域 ASIL-D。该组合表明其面向高温车载环境、具备较强安全与合规能力，适合 ADAS、记录仪及法规驱动场景。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "TDP",
+    "AEC-Q100",
+    "ASIL-B",
+    "ASIL-D",
+    "FIPS140-3"
+  ],
+  "confidence": "high"
+}

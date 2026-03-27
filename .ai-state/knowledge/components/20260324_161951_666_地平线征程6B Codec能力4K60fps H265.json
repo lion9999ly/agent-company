@@ -1,0 +1,16 @@
+{
+  "title": "地平线征程6B Codec能力：4K@60fps H.265/H.264数据回传",
+  "domain": "components",
+  "content": "征程6B支持Codec数据回传，规格为4K@60fps H.265/4（原文如此，通常指H.265/H.264），可保证较高视频质量。该能力适用于紧急事件记录、DVR/RVC等场景，说明J6B不仅负责前端感知计算，也兼顾高质量视频编码与回传链路。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "征程6B",
+    "Codec",
+    "4K@60fps",
+    "H.265",
+    "H.264",
+    "数据回传"
+  ],
+  "confidence": "high"
+}

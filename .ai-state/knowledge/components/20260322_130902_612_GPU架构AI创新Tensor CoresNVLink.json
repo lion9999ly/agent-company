@@ -1,0 +1,17 @@
+{
+  "title": "GPU架构AI创新：Tensor Cores、NVLink、HBM与CUDA全栈",
+  "domain": "components",
+  "content": "GPU被白皮书定义为大规模并行计算主力，主要面向AI训练与HPC。核心AI创新包括Tensor Cores、NVLink高速互联和HBM高带宽内存。软件生态由CUDA、cuDNN、TensorRT等构成全栈式支持，形成强软硬件护城河。其特点是性能强但功耗高，通常需要先进冷却技术。典型应用包括AI模型训练、大规模推理和科学计算。生态策略是全栈垂直整合。",
+  "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "GPU",
+    "Tensor Cores",
+    "NVLink",
+    "HBM",
+    "CUDA",
+    "cuDNN",
+    "TensorRT"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Nordic nRF5340：适合轻量安全型头盔或副控，不宜单独承担复杂音频主控",
+  "domain": "components",
+  "content": "Nordic nRF5340 更适合尾灯、转向、跌倒检测、BLE 连接、IMU、OTA 等低功耗控制场景，而非高质量双向语音主控。该芯片支持 Bluetooth 5.2，采用双核架构，应用核最高 128 MHz、网络核最高 64 MHz，并可支持 BLE、Thread、Zigbee。大批量价格约 2.5–5 美元/颗。报告建议其作为轻量自行车安全头盔主控或高端头盔副控使用；若需要对讲、复杂 ENC/ANC 或高质量音频，通常需要更重的软件投入或外挂独立音频方案。",
+  "source": "deep_research:main_chipset_selection",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Nordic",
+    "nRF5340",
+    "BLE",
+    "副控",
+    "IMU",
+    "低功耗",
+    "安全头盔",
+    "deep_research",
+    "main_chipset_selection"
+  ],
+  "confidence": "high"
+}

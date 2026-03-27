@@ -1,0 +1,80 @@
+{
+  "injected_at": "2026-03-17T14:37:04.381722",
+  "project": {
+    "name": "智能骑行头盔虚拟研发中心",
+    "tech_stack": [
+      "Python",
+      "LangGraph",
+      "Azure OpenAI"
+    ],
+    "phase": "开发中"
+  },
+  "models": {
+    "GPT-5.4": {
+      "available": true,
+      "purpose": "旗舰模型"
+    },
+    "Claude Opus 4.6": {
+      "available": true,
+      "purpose": "深度推理"
+    },
+    "Gemini 3.1 Pro": {
+      "available": true,
+      "purpose": "多模态"
+    },
+    "o3-deep-research": {
+      "available": true,
+      "purpose": "深度研究"
+    }
+  },
+  "recent_decisions": [
+    {
+      "content": "选择Azure GPT-4o作为主力模型",
+      "reason": "Gemini IP受限, Qwen API无效",
+      "outcome": "所有Agent统一使用Azure"
+    }
+  ],
+  "active_constraints": [],
+  "pending_todos": [
+    {
+      "content": "实现分层记忆系统",
+      "priority": "high"
+    },
+    {
+      "content": "更新CLAUDE.md上下文入口",
+      "priority": "medium"
+    }
+  ],
+  "last_checkpoint": {
+    "checkpoint_id": "ckpt_20260317_143703_001",
+    "session_id": "20260317_143703",
+    "created_at": "2026-03-17T14:37:03.935117",
+    "summary": "初始记忆系统测试完成",
+    "key_decisions": [
+      "使用GPT-5.4作为主力模型"
+    ],
+    "key_discoveries": [
+      "Gemini 3.1 Pro 可用"
+    ],
+    "active_tasks": [
+      "实现分层记忆系统",
+      "更新CLAUDE.md上下文入口"
+    ],
+    "pending_todos": [
+      "实现分层记忆系统",
+      "更新CLAUDE.md上下文入口"
+    ],
+    "context_state": {
+      "model_config": "GPT-5.4 + Gemini 3.1 Pro",
+      "active_agents": [
+        "CPO",
+        "CTO",
+        "CMO",
+        "CPO_Critic",
+        "CRO"
+      ],
+      "session_items": 5
+    },
+    "token_count": 5000
+  }
+}

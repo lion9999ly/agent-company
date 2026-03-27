@@ -1,0 +1,16 @@
+{
+  "title": "RISC-V架构AI创新：开放可定制与ONNX Runtime集成",
+  "domain": "components",
+  "content": "白皮书将RISC-V定义为开放可定制、灵活创新的AI架构。核心创新包括自定义指令扩展、矢量/张量处理单元，以及可定制NPU。软件生态依赖专用工具链和ONNX Runtime集成，硬件指令集可快速响应生态需求。其优势是能效比高、模块化设计、低成本，适合IoT、边缘AI、定制化AI芯片和新兴市场。生态策略以开源开放、社区驱动为主，并探索硬件指令集兼容性。",
+  "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "RISC-V",
+    "自定义指令",
+    "张量处理单元",
+    "ONNX Runtime",
+    "开源生态",
+    "边缘AI"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "4 in 1 mini FAKRA连接器通用机械特征",
+  "domain": "components",
+  "content": "两款4 in 1 mini FAKRA（208244-0200/0201）前视图均显示相同基础结构：主体宽12±0.2mm，内部为2×2排列的4个圆形同轴接口，孔位编号1/2/3/4，右侧标注上下排中心距参考尺寸(4)。顶部带“HFM”标识及卡扣/键位结构，底部含左右机械固定柱和中间3个焊接引脚，适合板端安装。code A与code B主要通过键位防呆区分，以避免线束误插。",
+  "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "mini FAKRA",
+    "4in1",
+    "机械尺寸",
+    "板端",
+    "同轴接口"
+  ],
+  "confidence": "medium"
+}

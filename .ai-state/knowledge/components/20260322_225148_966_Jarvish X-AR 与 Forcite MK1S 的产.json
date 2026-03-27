@@ -1,0 +1,17 @@
+{
+  "title": "Jarvish X-AR 与 Forcite MK1S 的产品教训",
+  "domain": "components",
+  "content": "Forcite MK1S 被认可的关键是采用低干扰 LED 提示逻辑，而非复杂透明AR，已知方向包括 LED提示屏、转弯导航、危险警告、高清摄像头。相反，Jarvish X-AR 是反面案例：公开反馈显示其HUD强光下可视性差，宣传续航 4–6 小时，实际多功能开启可能仅 2–3 小时，重量约 1.8–2.0kg，而普通全盔常见约 1.4–1.6kg；同时还存在软件Bug多、连接不稳、量产质量控制差、延期交付等问题。报告特别指出头盔重量每增加 200–400g，用户体感非常明显。",
+  "source": "deep_research:hud_decision",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Jarvish X-AR",
+    "Forcite MK1S",
+    "竞品教训",
+    "续航",
+    "重量",
+    "deep_research",
+    "hud_decision"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "Sena C1 smart cycling helmet 2025 teardown Mesh in",
+  "domain": "lessons",
+  "content": "**结论**：搜索结果基于**假设性产品“Sena C1 2025”**，非官方已发布机型；但对智能骑行头盔研发有较高参考价值。\n\n### 1) 可提炼的产品/技术规格\n- **通信**：推测采用 **Mesh Intercom 3.0**，支持  \n  - Open Mesh：开放组网、无限用户  \n  - Group Mesh：最多 **24人**  \n  - 单跳距离 **1.6–2 km**\n- **主控/芯片**：建议方向为 **ARM Cortex-M** 高性能低功耗MCU，如 **STM32H7 / NXP i.MX RT**；Mesh RF可能选 **Qualcomm / Nordic** 或定制方案。\n- **音频系统**：  \n  - 扬声器：超薄钕磁动圈，高保真，适配EPS耳槽  \n  - 麦克风：**双MEMS阵列** + 波束成形 + DSP降噪/AI降噪\n- **电池/BMS**：**Li-Po 1500–2500mAh**；Mesh续航 **10–15h**，音乐 **20h+**；USB-C快充，可能支持 **PD/Qi无线充电**；需集成过充/过放/温控保护。\n- **防水结构**：目标 **IPX5/IPX6**；方案包括硅胶/EPDM密封圈、三防漆、局部灌封、疏水透气膜、排水通道。\n- **材料/结构**：**PC/ABS + In-Mold + 多密度EPS**，兼顾轻量化、抗冲击与电子件嵌入。\n\n### 2) 技术趋势\n- **Mesh对讲**替代传统蓝牙串联，强调自愈、自优化网络。\n- **AI语音控制/AI降噪**成为高端卖点。\n- **传感器融合**（加速度计+陀螺仪+GPS）用于跌倒检测、导航、运动数据。\n- **蓝牙5.2+/LE Audio**、可能引入Wi‑Fi OTA升级。\n- 高端化方向：**智能灯控、摄像头、A",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "竞品",
+    "Sena",
+    "Mesh",
+    "拆解",
+    "音频",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

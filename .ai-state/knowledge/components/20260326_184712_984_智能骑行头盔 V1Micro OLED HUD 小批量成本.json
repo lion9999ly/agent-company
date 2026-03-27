@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1：Micro OLED HUD 小批量成本约 $120–250/套，复杂光机可达 $250–400/套",
+  "domain": "components",
+  "content": "报告给出 V1 HUD 的关键成本区间：Micro OLED 方案在小批量下，面板 + BOM + 光机 + 驱动估算为 $120–250/套；若增加定制自由曲面镜、调焦机构，成本可能升至 $250–400/套。相比之下，光波导整套光学模组通常为 $300–600+，LED 矩阵/边缘光效仅 $10–40。该数据直接支持方案取舍：V1 若要兼顾量产风险与售价 4999–6999 元，Micro OLED 反射光机是唯一相对可控的主 HUD 成本路径。",
+  "source": "deep_research:hud_decision",
+  "created_at": "2026-03-26",
+  "tags": [
+    "BOM成本",
+    "Micro OLED",
+    "光波导",
+    "LED矩阵",
+    "定价",
+    "deep_research",
+    "hud_decision"
+  ],
+  "confidence": "medium"
+}

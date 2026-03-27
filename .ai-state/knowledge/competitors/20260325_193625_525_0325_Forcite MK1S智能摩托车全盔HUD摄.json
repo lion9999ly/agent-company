@@ -1,0 +1,22 @@
+{
+  "title": "0325_Forcite MK1S智能摩托车全盔：HUD/摄像头/传感器供应链与拆解线索",
+  "domain": "competitors",
+  "content": "Forcite MK1S是澳大利亚Forcite Helmets推出的智能摩托车全盔，定位高端HUD头盔，已知为MK1升级款，来源称其于2021年前后上市；目前并无可靠官方证据证明存在“2025款MK1S”，这一点需明确。产品核心是将HUD、前置摄像头、蓝牙通信与安全提醒集成进符合摩托车头盔规范的全盔结构中，且应与自行车头盔严格区分：其设计目标是DOT/ECE级摩托车防护，不适用于自行车轻量化场景。已知公开规格里，摄像头为前置1080p/30fps广角模组，存储介质为microSD；HUD采用微型显示+光学投射方案，信息显示在骑手前方约3米虚像位置，亮度支持自动调节。来源一推测2025迭代可能上探720p显示分辨率、2000 nit以上亮度、20-30°视场角，以及4K/30-60fps摄像头，但这些都属于供应链推演，不是Forcite已确认参数，与来源二的“1080p/30fps”存在明显口径差异，应标注为“预测值”。\n\n供应商层面，公开资料未披露BOM，但可从技术路径推断：HUD微显示可能来自Sony Semiconductor Solutions、Kopin或eMagin/Samsung Display；光学模组可能涉及WaveOptics、Lumus、Vuzix一类AR光学方案商。IMU方面，来源二确认其功能上“不可或缺”，但未给出型号，合理候选通常会是Bosch BMI/BMA系列、TDK InvenSense ICM系列或ST LSM6系列这类车规/工规6轴器件。麦克风系统大概率为双麦或多麦阵列，用于语音控制、通话和环境降噪；但来源二明确指出：MK1S“目前不具备ANC主动降噪”，仅可能依赖被动隔音、风噪抑制和通话降噪算法，因此若竞品宣传ANC，应视为Forcite当前短板。材料方面，来源一指出其为碳纤维外壳并满足DOT/ECE安全标准，这与其高端定价逻辑一致，",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "HUD",
+    "motorcycle helmet",
+    "camera",
+    "IMU",
+    "microphone",
+    "ANC",
+    "carbon fiber",
+    "supplier teardown",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 1VxR产品CPU资源消耗预算",
+  "domain": "components",
+  "content": "J6B 针对 Horizon 1VxR 产品给出 CPU 资源预算：OS/BSP/Middleware 为 4 kDMIPS，Post-processing Algorithms 为 5.5 kDMIPS，Fusion/Prediction/Environment Model 为 3 kDMIPS，PnC 为 2.5 kDMIPS，总计 15 kDMIPS。文档结论指出 1VxR turnkey solution 的 CPU 消耗小于 15kDMIPS，并额外预留 2kDMIPS 给 DMS。结合芯片总 CPU 性能 23K DMIPS，说明在单芯片上运行主感知、融合、规划控制及 DMS 具备可行性。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "1VxR",
+    "CPU预算",
+    "kDMIPS",
+    "软件模块"
+  ],
+  "confidence": "high"
+}

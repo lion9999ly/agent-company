@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 功能安全架构机制",
+  "domain": "standards",
+  "content": "Journey 6B 功能安全架构覆盖互连、存储、处理器、通信与监控。关键机制包括：互连奇偶校验、超时检查、包一致性检查、ECC；存储侧 on-chip buffer ECC、NVM 控制器数据与地址路径奇偶校验；处理器侧 lockstep processors、watchdog、ECC memory protection、指令缓存奇偶校验、SW test library；设备侧电压/温度监控、时钟监控、上电 LBIST/MBIST、故障收集与处理；通信侧协议检查、硬件冗余、内建诊断、CRC。架构中主域含 A520AE Cluster MP4、BPU 3.0、VDSP、VPU，MCU 域含 R52+ 集群。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "功能安全架构",
+    "ECC",
+    "Lockstep",
+    "Watchdog"
+  ],
+  "confidence": "high"
+}

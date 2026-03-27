@@ -1,0 +1,16 @@
+{
+  "title": "歌尔AR参考设计 Mulan2：轻型双目单色AR",
+  "domain": "components",
+  "content": "Mulan2是歌尔的轻型双目单色AR参考设计，采用BES2800芯片SiP方案，一体化镜腿设计，支持IP54防水，整机重量36g。该方案体现歌尔在轻量化AR眼镜上的系统设计能力，适合强调佩戴舒适性与基础显示交互的场景。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Mulan2",
+    "AR眼镜",
+    "双目单色",
+    "BES2800",
+    "IP54",
+    "36g"
+  ],
+  "confidence": "high"
+}

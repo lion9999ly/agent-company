@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-03-26T11:10:05.942053",
+  "summary": {
+    "total_nodata": 1,
+    "valuable_pending_research": 0,
+    "generic_needs_content": 1,
+    "skipped_anchor": 645,
+    "modified": 1
+  },
+  "valuable_entries": [],
+  "generic_entries": [
+    {
+      "title": "",
+      "domain": "unknown",
+      "content_len": 0
+    }
+  ]
+}

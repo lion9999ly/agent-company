@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1（歌尔）- P0/P1 功能优先级",
+  "domain": "components",
+  "content": "P0 必须功能包括：前后高亮 LED 示宽灯，夜间 180°以上可视、目标可视距离 >100m；左右转向灯通过车把无线遥控器控制，响应延迟 <200ms；基于 6 轴 IMU 的自动刹车灯，触发延迟 <500ms，误触发率目标 <5%/小时骑行；蓝牙连接 App，支持电量显示、灯效配置、固件升级；USB-C 充电；基础防水 IPX4 起步、目标 IPX5；跌倒检测 + SOS 通过手机 App 发短信/通知。开放式扬声器 + 麦克风仅列为 P1，而非 P0。",
+  "source": "deep_research:adhoc_智能骑行头盔V1_P",
+  "created_at": "2026-03-23",
+  "tags": [
+    "P0功能",
+    "刹车灯",
+    "转向灯",
+    "SOS",
+    "IPX5",
+    "deep_research",
+    "adhoc_智能骑行头盔V1_P"
+  ],
+  "confidence": "high"
+}

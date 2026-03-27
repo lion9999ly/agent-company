@@ -1,0 +1,14 @@
+{
+  "title": "HPU3501A50IQNXMA Master Configuration (OTPSEL=0)",
+  "domain": "components",
+  "content": "HPU3501A50IQNXMA 在 Master（OTPSEL=0）配置下的默认电源轨为：Buck1 0.82V，Group 5 上电/Group 5 下电；Buck2 0.82V，Group 5/5；Buck3 0.8V，Group 5/5；Buck4 1.1V，Group 2 上电/Group 1 下电；Buck5 1.8V，Group 1 上电/Group 2 下电；LDO1 0.8V，Group 4/4；LDO2（VSEL=0）1.8V，Group 6/6；LDO3 3.3V，Group 6/6。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "HPU3501A50IQNXMA",
+    "Master",
+    "OTPSEL=0",
+    "Voltage Rails"
+  ],
+  "confidence": "high"
+}

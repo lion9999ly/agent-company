@@ -1,0 +1,25 @@
+{
+  "title": "OmniVision（豪威科技）OV传感器在智能眼镜/骑行头盔摄像模组中的JDM/ODM选型要点",
+  "domain": "components",
+  "content": "公司名称：OmniVision Technologies（豪威科技），定位为CMOS图像传感器核心器件供应商，而非整机JDM/ODM。核心能力：小型化、低功耗、BSI堆栈式PureCel/PureCel Plus/PureCel Plus-S、Nyxel近红外、Global Shutter全局快门、WLO晶圆级光学。关键技术参数：Nyxel在940nm量子效率可达40%以上；OV9282为1MP全局快门，1280x800下120fps；OV9782为1.3MP全局快门；OV7251为VGA全局快门；OV2775/OV2778为2.5MP/2.9MP，HDR高达140dB；OV4689为4MP支持4K；OV48C/OV64B为48MP/64MP；OV5640/OV5670/OV8856为5MP/8MP；OV2740/OV2775为2MP/2.5MP；OV6946/OV6948尺寸0.575mm×0.575mm，可实现直径小于1mm模组。适配方向：智能眼镜SLAM/眼动追踪优先OV9282、OV9782、OV7251；头盔运动相机可选OV2740、OV2775、OV4689及更高像素方案。代工客户、报价水平、产能规模：搜索结果未提供具体OEM/ODM客户、单价、月产能数据。",
+  "source": "jdm_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "OmniVision",
+    "豪威科技",
+    "CMOS图像传感器",
+    "智能眼镜",
+    "骑行头盔",
+    "摄像模组",
+    "Global Shutter",
+    "Nyxel",
+    "PureCel",
+    "OV9282",
+    "OV9782",
+    "OV7251",
+    "OV2775",
+    "OV4689",
+    "jdm_study"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "V1量产规格建议：HUD≥3000 nits、10–15° FOV、3–5麦阵列、Wi‑Fi 6",
+  "domain": "components",
+  "content": "报告给出可直接用于产品定义的V1量产边界：HUD采用单目，10–15° FOV，≥3000 nits，只显示导航、车速、告警；语音采用3–5麦阵列，离线唤醒，目标100km/h可用，且必须风洞验证；降噪以ENC优先，ANC只做中低频优化；摄像支持4K，但续航方案应按1080p常录、4K事件触发设计；ADAS先做提示级BSD/FCW，优先接车辆数据；SOS采用IMU+GPS+佩戴检测多条件触发并设置取消窗口；互联要求手机+TFT双通道并发，并支持Wi‑Fi 6闪传。该组合被定义为“高可读HUD+强语音+可靠影像+提示级ADAS+SOS”的量产闭环。",
+  "source": "deep_research:auto_20260327_3",
+  "created_at": "2026-03-27",
+  "tags": [
+    "V1规格",
+    "HUD",
+    "语音",
+    "ADAS",
+    "WiFi 6",
+    "deep_research",
+    "auto_20260327_3"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,26 @@
+{
+  "title": "AAC Technologies / Goertek / Knowles 等智能头盔音频供应商选型要点",
+  "domain": "components",
+  "content": "候选供应商集中在微型扬声器、MEMS麦克风、骨传导与MEMS扬声器方案。AAC Technologies与Goertek具备微型扬声器、受话器、麦克风、声学模组及大规模量产能力，适合JDM/ODM整机协同开发，但原文未给出具体代工客户、报价或产能数字。Knowles核心能力是MEMS麦克风与平衡电枢BA驱动器，适合高端语音拾取、ANC/ENC、紧凑型高音质方案。USound与xMEMS Labs主打MEMS扬声器，优势为超薄、低功耗、高保真、低失真，适合高端/ARVR头盔。TDK具备压电与磁性驱动器及材料、传感器融合能力。选型技术重点：开放式/近耳式、骨传导、微型动圈、MEMS四路线；系统需兼顾风噪/环境噪声抑制、AI自适应ANC/ENC、波束成形、定向音频、防水防尘防震与低功耗。市场侧仅给出行业区间：2022年全球智能头盔市场约4-5亿美元，2030年15-25亿美元，CAGR 15-20%。",
+  "source": "jdm_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "AAC Technologies",
+    "Goertek",
+    "Knowles",
+    "TDK",
+    "USound",
+    "xMEMS Labs",
+    "MEMS扬声器",
+    "MEMS麦克风",
+    "骨传导",
+    "开放式音频",
+    "ANC",
+    "ENC",
+    "JDM",
+    "ODM",
+    "智能头盔",
+    "jdm_study"
+  ],
+  "confidence": "high"
+}

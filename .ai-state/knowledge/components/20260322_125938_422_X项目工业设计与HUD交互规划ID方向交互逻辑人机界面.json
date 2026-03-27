@@ -1,0 +1,16 @@
+{
+  "title": "X项目工业设计与HUD交互规划：ID方向、交互逻辑、人机界面、CMF",
+  "domain": "components",
+  "content": "设计模块包含多项并行任务：初步产品ID方向明确；HUD交互逻辑框架完成；ID设计方案2轮输出并锁定；HUD人机界面2轮输出及方案细化；CMF方案2轮输出。说明该产品包含HUD相关交互与显示设计，且工业设计、界面设计、CMF需多轮迭代后收敛。",
+  "source": "doc_import:X 项目规划.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "工业设计",
+    "ID",
+    "HUD",
+    "交互逻辑",
+    "人机界面",
+    "CMF"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Sony ISX031 + onsemi AR0823AT helmet camera compar",
+  "domain": "lessons",
+  "content": "**智能骑行头盔研发关键信息摘要**\n\n### 1. 芯片/传感器选型\n- **Sony ISX031（文中参考IMX490/IMX678汽车级方案）**\n  - 约 **8.4MP / 4K UHD**\n  - 像素尺寸约 **3.0μm**\n  - 光学尺寸 **1/2.3\"~1/2.5\"**\n  - HDR：**100–120dB+**\n  - 技术：**STARVIS / STARVIS 2、DOL-HDR、LFM**\n- **onsemi AR0823AT**\n  - **8.3MP / 4K**\n  - 像素尺寸 **2.1μm**\n  - 光学尺寸 **1/3\"**\n  - HDR：**120–140dB**\n  - 技术：**Clarity+、Super Exposure、LFM**\n- **价格**：原文未提供。\n\n### 2. 对头盔产品最有价值的技术结论\n- **HDR**：骑行场景频繁经历阳光/树荫/隧道切换，**120dB级HDR**已成为高端头盔摄像模组的重要门槛。\n- **LED闪烁抑制（LFM）**：对交通灯、汽车LED灯、路灯拍摄非常关键；**onsemi在LFM上被描述为更强**，适合城市骑行安全记录。\n- **卷帘快门风险**：两者均为**Rolling Shutter**，高速骑行和头部抖动下会有果冻效应；需依赖**高速读出+ISP+EIS**补偿。\n- **EIS系统设计趋势**：传感器本身不够，头盔方案应做**IMU（陀螺仪/加速度计）+ ISP + 视频算法**融合，预留裁切冗余用于防抖。\n- **热设计**：汽车级传感器适合宽温，但头盔空间小，4K/HDR/EIS同时开启会推高功耗；需重视**散热路径、金属中框/导热片、低功耗模式切换**。\n\n### 3. 可借鉴的设计理念\n- 采用**汽车级图像传感器下放到消费级头盔**，提",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "技术",
+    "摄像头",
+    "Sony",
+    "onsemi",
+    "HDR",
+    "LED频闪",
+    "EIS",
+    "热设计",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

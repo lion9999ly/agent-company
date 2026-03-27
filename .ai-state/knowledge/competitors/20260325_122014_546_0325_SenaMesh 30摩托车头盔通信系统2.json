@@ -1,0 +1,19 @@
+{
+  "title": "0325_Sena“Mesh 3.0”摩托车头盔通信系统（2025）供应链与JDM研判",
+  "domain": "competitors",
+  "content": "截至给定来源，Sena官方尚未发布名为“Mesh 3.0”的量产产品，因此“2025 Sena Mesh 3.0”更接近基于现有Mesh Intercom/业内路线图的预测性条目，而非已证实规格。三份来源一致指出：当前Sena高端摩托车通信平台仍以50S、50R、50C、Impulse、Stryker、SRL-Mesh等为代表，核心能力为Open Mesh与Group Mesh；其中Group Mesh最多24人，Open Mesh提供9个频道，单机典型距离约800米到1.6公里，6人中继下总距离可扩展至8公里。这里存在轻微口径差异：一处写“单机800米”，另一处写“单机1.6公里”，应视为不同产品/场景或宣传条件差异，需标注冲突。供应链层面，来源1推测主SoC大概率来自Qualcomm QCC51xx后续平台，也可能是MediaTek、NXP或ST；RF前端可能涉及Skyworks或Qorvo，但均无拆机实证。音频侧，来源2与3提到Sena已与Harman Kardon合作，说明扬声器/麦克风模组可能继续走品牌联合路线。JDM方面，重点不是硬件差异，而是日本无线认证、日语语音/UI、本地说明书与渠道适配。价格方面，来源未给出“Mesh 3.0”售价，只能参考现有旗舰摩托车系统通常位于高端区间；因此若内部竞品库需要录入，应明确标注“价格未公开”。同时必须排除自行车头盔语境：本条讨论的是摩托车全盔通信系统，尤其像Shoei适配的SRL-Mesh这类摩托车头盔集成方案，不适用于自行车头盔的轻量化、低速风噪和法规场景。结论：现阶段更应把“Sena Mesh 3.0”视为竞品路线预警，重点跟踪Qualcomm级蓝牙音频SoC、Harman Kardon式声学合作、JDM认证与全盔内嵌式结构，而不是把它当作已上市确定型号。",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Sena",
+    "Mesh Intercom",
+    "摩托车头盔",
+    "全盔",
+    "JDM",
+    "Qualcomm",
+    "Harman Kardon",
+    "竞品研判",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] QCC3071 (高通)",
+  "domain": "components",
+  "content": "以下基于你给出的搜索结果整理，**只采用结果中明确出现的信息**，并对“明确参数 / 行业常见实现 / 未公开”做区分。由于 QCC3071 的很多细项通常在 Qualcomm NDA 资料里，下面会把**确定项**和**推断项**分开写，避免把营销口径当成芯片硬指标。\n\n---\n\n# Qualcomm QCC3071 完整技术档案\n\n## 1. 芯片定位与概述\n\n**QCC3071** 是 Qualcomm 面向中高端蓝牙音频设备的低功耗音频 SoC，主要应用方向包括：\n\n- TWS 真无线耳机\n- 头戴式蓝牙耳机\n- 蓝牙音箱\n- 其他 hearables / 可穿戴音频设备\n\n从搜索结果看，QCC3071 被归入：\n\n- **Qualcomm S5 Gen 2 Sound Platform**\n- **Snapdragon Sound / 骁龙畅听生态**\n- 面向 **LE Audio**、**ANC/ENC**、**aptX Adaptive** 的中高端方案\n\n它的核心卖点是：\n\n- 低功耗\n- 支持 LE Audio\n- 支持高性能 ANC / ENC\n- 支持 aptX Adaptive\n- 具备较强 DSP 音频处理能力\n\n---\n\n# 2. 基本参数\n\n## 2.1 蓝牙版本\n\n**明确可确认：蓝牙 5.3**\n\n搜索结果中多次提到 QCC3071 支持：\n\n- **Bluetooth 5.3**\n- 兼容经典蓝牙 + BLE / LE Audio\n\n### 结论\n- **蓝牙版本：BT 5.3**\n\n---\n\n## 2.2 支持编解码\n\n根据搜索结果，QCC3071 支持以下编解码与音频体系：\n\n### 明确支持\n- **LC3**\n  - LE Audio 核心编解码器\n- **aptX Adaptive**\n  - Qualcomm 主打的动态码率高品质/低延迟编解码\n- **AAC**\n- **SBC**\n\n### 搜索结果未明确但需谨慎表述\n你要求必须写 aptX / LC3 / AAC，因此这里按结果可写为：\n\n- **aptX：支持 aptX Adaptive**\n- **LC3：支持**\n- **AAC：支持**\n\n### 关于 aptX Lossless\n搜索结果里有一处提到“aptX Adaptive Lossless”，但整体上下文并不稳定，且没有更强佐证。为了避免误写成芯片官方硬能力，建议保守写：\n\n- **已明确：aptX Adaptive**\n- **aptX Lossless：搜索结果未形成稳定、可交叉验证的明确结论**\n\n### 结论\n- **支持编解码：LC3 / aptX Adaptive / AAC / SBC**\n- **aptX 家族：至少可确认 aptX Adaptive**\n\n---\n\n## 2.3 DSP 算力\n\n这是 QCC3071 最容易被“泛化宣传”的部分。搜索结果只明确说：\n\n- 集成**强大的可编程 DSP**\n- 可运行 ANC、EQ、空间音频、cVc 等复杂算法\n- 具备较强实时音频处理能力\n\n但**没有给出明确 MIPS / DMIPS / TOPS 数值**。\n\n### 结论\n- **DSP 算力：官方公开搜索结果中未给出明确数值**\n- 可确认的是：\n  - 集成可编程 DSP\n  - 足以支持 ANC / ENC / 波束成形 / 通透 / EQ / 低延迟音频处理\n- 若要写成档案格式：\n  - **DSP：高性能可编程音频 DSP（具体算力数值未公开）*",
+  "source": "kg_expand:audio_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "audio_soc",
+    "高通"
+  ],
+  "confidence": "high"
+}

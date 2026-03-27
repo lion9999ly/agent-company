@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1 双SKU路线",
+  "domain": "components",
+  "content": "报告给出的最优产品策略是“双SKU + 双阶段”。标准版 V1 优先采用无摄像轻量版，或手机协同计算 + 本地安全闭环；高配版 V1.5/V2 采用 AR1 + BES，承载 HUD + 1080P60 长录 + 轻量 ADAS。架构评分显示，D 方案“无摄像轻量版：HUD+语音+导航+对讲”总评 33 分，为最稳商业落地方案；C 方案“手机协同计算，本地安全闭环”总评 27 分，适合 V1 过渡；A 方案“AR1 + BES 一体化HUD+轻ADAS+语音”总评 26 分，适合作为高配版主路线。这意味着 V1 决策应优先稳定交付，而不是追求最高算力。",
+  "source": "deep_research:deepen_338",
+  "created_at": "2026-03-26",
+  "tags": [
+    "AR1",
+    "BES",
+    "双SKU",
+    "V1",
+    "产品路线",
+    "deep_research",
+    "deepen_338"
+  ],
+  "confidence": "high"
+}

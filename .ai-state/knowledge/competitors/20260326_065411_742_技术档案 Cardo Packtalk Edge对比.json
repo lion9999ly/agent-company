@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Cardo Packtalk Edge（对比 Cardo Packtalk Pro / Cardo Beyond GTS）",
+  "domain": "competitors",
+  "content": "以下是 **Cardo Packtalk Edge 技术档案**，并重点对比 **Cardo Packtalk Pro** 与 **Cardo Beyond GTS（Shoei 集成方案）**。  \n我会尽量基于目前公开可确认的信息来写；对 **Beyond GTS** 这类区域/头盔适配型产品，公开参数往往不如 Edge / Pro 完整，个别项目会注明“依头盔版本/地区而异”。\n\n---\n\n# 1. 产品定位总览\n\n## Cardo Packtalk Edge\n- **定位**：Cardo 通用型高端摩托车蓝牙/Mesh 对讲旗舰之一\n- **核心卖点**：\n  - **DMC Gen 2 动态 Mesh**\n  - **Air Mount 磁吸快拆**\n  - **JBL 40mm 扬声器**\n  - **蓝牙 5.2**\n  - **IP67**\n  - **自然语音控制**\n  - **手机 OTA 升级**\n\n## Cardo Packtalk Pro\n- **定位**：在 Edge 基础上进一步强化的**更高端旗舰**\n- **相对 Edge 的主要升级**：\n  - **45mm JBL 扬声器**\n  - **碰撞检测 / 紧急通知**\n  - **自动开关机**\n  - 更偏向“长途、高预算、安全优先”的用户\n\n## Cardo Beyond GTS\n- **定位**：面向特定头盔平台的**集成式通信系统**，强调外观一体化与低风噪\n- **典型特征**：\n  - 与 Shoei 等特定头盔深度整合\n  - 外观更隐蔽\n  - 技术代际通常**落后于 Edge / Pro**\n  - 更适合“头盔原厂一体化体验优先”的用户\n\n---\n\n# 2. Cardo Packtalk Edge 完整技术档案\n\n## 2.1 基本信息\n- **产品名称**：Cardo Packtalk Edge\n- **产品类型**：摩托车头盔蓝牙/Mesh 对讲系统\n- **上市代际**：Packtalk 新一代平台（相对 Bold/Black 为明显升级）\n- **安装方式**：头盔侧装，**Air Mount 磁吸式底座**\n- **适用对象**：\n  - 摩旅车队\n  - 双人骑行\n  - 通勤用户\n  - 需要跨品牌互联的骑士\n\n---\n\n## 2.2 通信能力\n\n### Mesh 对讲\n- **技术**：**DMC Gen 2**\n- **最大群组人数**：**15 名骑士**\n- **单人与单人典型距离**：**约 1.6 km / 1 mile**\n- **群组总覆盖距离**：**最高约 8 km / 5 miles**\n- **特点**：\n  - 自组网\n  - 掉线自动重连\n  - 群组稳定性优于传统蓝牙链式对讲\n  - 更适合多人编队骑行\n\n#",
+  "source": "completeness_check",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Bosch BMI270（V1 成本备胎）",
+  "domain": "components",
+  "content": "Bosch BMI270 被报告明确定位为 V1 成本备胎，适用于 BOM 压力极大且主控算力足够的方案。其参数包括 Acc 噪声约 100 µg/√Hz、Gyro 噪声约 0.007 dps/√Hz、量程 ±16g / ±2000 dps，具备基础中断/FIFO，价格区间 $1.5–2.8（估），是候选中最便宜的一档。报告强调它成熟、低功耗、成本友好，但在摩托车高振动环境下，需要主控承担更多滤波、融合和误报抑制，调参工作量更大，系统总开发成本未必低，甚至可能“省了器件钱，亏在算法和售后”，因此风险标注为高。",
+  "source": "deep_research:tree_sensor_imu",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Bosch",
+    "BMI270",
+    "成本备胎",
+    "低成本",
+    "噪声",
+    "高振动",
+    "FIFO",
+    "deep_research",
+    "tree_sensor_imu"
+  ],
+  "confidence": "high"
+}

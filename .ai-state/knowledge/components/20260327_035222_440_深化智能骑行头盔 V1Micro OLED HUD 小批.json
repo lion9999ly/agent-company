@@ -1,0 +1,18 @@
+{
+  "title": "深化:智能骑行头盔 V1：Micro OLED HUD 小批量成本",
+  "domain": "components",
+  "content": "**1. HUD核心方案与成本**\n- **Micro OLED HUD模组**：小批量成本约 **$120–250/套**；复杂光机方案约 **$250–400/套**。  \n- **入门显示参数**：QVGA 320×240 / WQVGA 428×240 / VGA 640×480；亮度 **1000–5000 nits**；对比度 **>10000:1**；PPI **2000–4000**；尺寸 **0.2–0.7英寸**；功耗 **100–500mW**。  \n- **高端方案**：HD 1280×720 / FHD 1920×1080，全彩，适合地图/视频/AR叠加。  \n- **光学参数**：FOV 入门 **10°–20°**，高端 **20°–35°**；Eye relief **15–25mm**；Exit pupil **8–12mm**；透光率 **80%–90%**。  \n\n**2. 可选技术路线**\n- **低成本光机**：Birdbath、自由曲面棱镜，体积/外观妥协较大，但适合V1验证。  \n- **高端光机**：衍射/反射波导，轻薄高透，但制造难、成本高，是2026前主要成本瓶颈。  \n- **供应链参考**：Kopin、SeeYA、Sony、eMagin/L3Harris；波导方向可关注 Lumus、WaveOptics。  \n\n**3. 智能头盔整机架构建议**\n- **传感器融合**：GPS/北斗/GLONASS + IMU（加速度计/陀螺仪/磁力计）+ 环境光 + 麦克风 + 碰撞检测；可扩展后视摄像头。  \n- **芯片选型方向**：低功耗 ARM Cortex-A / 可穿戴SoC，必要时加 AI 加速器做语音识别、图像处理。  \n- **通信模块**：Bluetooth LE 为核心，兼容 ANT+ 连接心率/踏频/功率计；",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "BOM成本",
+    "Micro OLED",
+    "光波导",
+    "LED矩阵",
+    "定价",
+    "deep_research",
+    "hud_decision",
+    "night_deep"
+  ],
+  "confidence": "medium"
+}

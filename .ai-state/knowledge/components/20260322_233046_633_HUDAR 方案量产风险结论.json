@@ -1,0 +1,17 @@
+{
+  "title": "HUD/AR 方案量产风险结论",
+  "domain": "components",
+  "content": "报告明确将HUD/AR显示列为P2高风险创新，不建议V1量产导入。依据是Eyelights类方案用户反馈集中在3个致命问题：日光下几乎看不清、续航差、外壳开裂/支架脆弱；同时Jarvish X-AR虽具备透明AR HUD、导航/速度/天气显示、语音控制、后视摄像头和碰撞检测，但未见稳定量产与大规模口碑闭环。结论是HUD不是不能做，而是不能作为V1核心卖点。",
+  "source": "deep_research:prd_reference",
+  "created_at": "2026-03-22",
+  "tags": [
+    "HUD",
+    "AR",
+    "量产风险",
+    "Eyelights",
+    "Jarvish",
+    "deep_research",
+    "prd_reference"
+  ],
+  "confidence": "high"
+}

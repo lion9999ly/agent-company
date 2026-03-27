@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="author" content="qinuoli">
+    <title>å¤å¿«å¥½çï¼è´­ç©ä¸äº¬ä¸</title>
+    <script>
+        //è¿å¥é¡µé¢åç«å³è§¦åä¸æ¬¡
+        window.onload = function () {
+            // è®¾è®¡ç¨¿å®½åº¦
+            var designWidth = 375;
+            var width = window.innerWidth;
+            document.documentElement.style.fontSize = (width / designWidth) * 100 + 'px'; //å¯¹äºä¸åçè®¾è®¡ç¨¿å¯ä»¥é¤ä»¥ä¸åçç­å
+
+            //çå¬ææºå±å¹åå,æåååå¨èµ°ä¸æ¬¡
+            window.addEventListener('resize', () => {
+                var width = window.innerWidth; //è·åå±å¹çå®½åº¦,ç¶åæ ¹æ®ä¸åçå±å¹å®½åº¦è®¾ç½®ä¸åçfont.size
+                //æè®¾è®¡ç¨¿åæ750ç­å,ä»å°±åæäº7.5è¿æ ·å¤ªå°äº,æå°æ¯12,æä»¥è¦*100æ¾å¤§100å
+                document.documentElement.style.fontSize = (width / designWidth) * 100 + 'px'; //å¨htmlæ ç­¾ä¸æ·»å è¡åæ ·å¼å­ä½å¤§å°
+            });
+        };
+    </script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <style>
+        /* éç½®æ ·å¼ */
+        * {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            outline: 0;
+        }
+
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        hr,
+        p,
+        blockquote,
+        dl,
+        dt,
+        dd,
+        ul,
+        ol,
+        li,
+        pre,
+        form,
+        fieldset,
+        legend,
+        button,
+        input,
+        textarea,
+        th,
+        td {
+            margin: 0;
+            padding: 0;
+            vertical-align: baseline;
+        }
+
+        img {
+            border: 0 none;
+            vertical-align: top;
+        }
+
+        i,
+        em {
+            font-style: normal;
+        }
+
+        ol,
+        ul {
+            list-style: none;
+        }
+
+        input,
+        select,
+        button,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: 100%;
+            font-family: inherit;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        a,
+        a:visited {
+            text-decoration: none;
+            color: #333;
+        }
+        html {
+            height: 100%;
+        }
+        body {
+            margin: 0 auto;
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            min-width: 3.20rem;
+            max-width: 5.40rem;
+            font-size: 0.14rem;
+            font-family: -apple-system, Pingfang SC, sans-serif;
+            line-height: 1.5;
+            color: #666;
+            -webkit-text-size-adjust: 100% !important;
+            padding-bottom: constant(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
+            max-width: 1000rem !important;
+        }
+
+        #modal {
+            display: none;
+            flex-direction: column;
+            width: 2.95rem;
+            max-width: 6rem;
+            background: #FFF;
+            border-radius: 0.12rem;
+            text-align: center;
+            margin: 50% 0;
+        }
+
+        #top_img {
+            width: 100%;
+            height: 1.01rem;
+            background-image: url(https://storage.360buyimg.com/static-common/wxsq/icon-limit-atmosphere.png);
+            border-radius: 0.12rem 0.12rem 0 0;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            color: #1A1A1A;
+            margin: 0 0.20rem;
+        }
+
+        #title {
+            font-size: 0.16rem;
+            font-weight: 600;
+            margin: 0.12rem 0 0.11rem 0;
+
+        }
+
+        #info {
+            font-size: 0.14rem;
+            font-weight: normal;
+        }
+
+        #to_app {
+            width: 100%;
+            padding: 0.11rem 0;
+            border-radius: 0.24rem;
+            font-size: 0.16rem;
+            line-height: 1;
+            color: #FFF;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin: 0.23rem 0 0.27rem 0;
+            background: #666;
+        }
+
+        #refresh {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 2.95rem;
+            max-width: 6rem;
+        }
+
+        #img {
+            width: 1.6rem;
+            height: 1.6rem;
+            background-image: url(https://storage.360buyimg.com/static-common/wxsq/icon-limit-nodata.png);
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        #text {
+            color: #757575;
+            font-size: 0.14rem;
+        }
+
+        #refresh_btn {
+            border: 0.01rem solid #BFBFBF;
+            border-radius: 0.24rem;
+            width: 0.68rem;
+            padding: 0.08rem 0;
+            font-size: 0.12rem;
+            line-height: 1;
+            margin-top: 0.16rem;
+            color: #BFBFBF;
+            text-align: center;
+        }
+    </style>
+</head>
+<script type="text/javascript" src="https://storage.360buyimg.com/static-common/js/zepto.min.js"></script>
+<script type="text/javascript" src="https://storage.360buyimg.com/static-common/js/zepto.cookie.min.js"></script>
+<script src="//wq.360buyimg.com/js/common/dest/m_common_merge.min.js?v=1.0.7"></script>
+
+<body style="padding-bottom: 0px;">
+    <div id="modal">
+        <div id="top_img"></div>
+        <div class="content">
+            <div id="title">æ´»å¨å¤ªç«çå¦</div>
+            <div id="info">å½åäººæ°è¿å¤ï¼æ´å¤ç²¾å½©è¯·åå¾äº¬ä¸APP~</div>
+            <div id="to_app">åå¾äº¬ä¸APP</div>
+        </div>
+    </div>
+    <div id="refresh">
+        <div id="img"></div>
+        <div id="text">
+            å è½½å¤±è´¥ï¼è¯·ç­ä¸ç­åå·æ°å¦
+        </div>
+        <div onclick="refresh()" id="refresh_btn">å·æ° (5)</div>
+    </div>
+</body>
+<script>
+    var time = 5;
+    var $toApp = $('#to_app');
+    var module = getQuery('module') || '';
+    var sceneType = getQuery('sceneType') || ''; // é¡µé¢ä½¿ç¨åºæ¯
+    setAppBtnStyle(sessionStorage.limitedConfig);
+    function getQuery(name) {
+        var u = window.location.search && window.location.search;
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = u.substr(u.indexOf("?") + 1).match(reg);
+        return r != null ? r[2] : "";
+    }
+    var search = window.location.search && window.location.search.substr(1);
+    var lastIndex = search.lastIndexOf('referer=');
+    var refer = decodeURIComponent(search.slice(lastIndex + 8));
+    var keyWord = decodeURIComponent(getQuery('keyword'));
+    
+    function chooseStyle(isUA) {
+        if(!refer) {
+            crash();
+            return;
+        }
+        $('body').css('background', isUA ? "rgba(0,0,0,0.7)" : "#FFF");
+        $('#modal').css('display', isUA ? "flex" : "none");
+        $('#refresh').css('display', isUA ? "none" : "flex");
+        if (!isUA) {
+            var btn = $("#refresh_btn");
+            var timer = setInterval(() => {
+                time--;
+                if (time == 0) {
+                    clearInterval(timer);
+                    btn.text('å·æ°');
+                    btn.css('border-color', 'rgba(117,117,117,1)');
+                    btn.css('color', '#1A1A1A');
+                } else {
+                    btn.text('å·æ° (' + time + ')');
+                }
+            }, 1000)
+        }
+    }
+    function setAppBtnStyle(config) {
+        if ((config && $toApp && $toApp[0])) {
+            $toApp[0].style = "background:linear-gradient(98.54deg, rgba(255, 64, 79, 1) 0%, rgba(250, 44, 25, 1) 100%)";
+        }
+    }
+    function crash() {
+        $('#refresh').css('display', "flex");
+        $('#text').text('æ´»å¨å¤ªç«çäº,è¯·ç¨åéè¯~');
+        $('#refresh_btn').css('display', 'none');  
+    }
+    function setData(config) {
+        if (!sceneType) {
+            config.msg1 && $('#text').text(config.msg1);
+            config.img1 && $('#img').css('background-image', "url(" + config.img1 + ")");
+            if(!config.uaList) {
+                crash();
+                return;
+            }
+            var isHasUa = config.uaList.length && !uaList(config.uaList).length;
+            if (isHasUa) {
+                config.msg2 && $('#title').text(config.msg2[0]);
+                config.msg2 && $('#info').text(config.msg2[1]);
+                config.msg2 && $('#to_app').text(config.msg2[2]);
+                config.img2 && $('#top_img').css('background-image', "url(" + config.img2 + ")");
+            }
+            chooseStyle(isHasUa);
+        } else { 
+            if (sceneType === '1') { // å½ä¸­ç¾è¡¥å±è½åºæ¯
+                config.img2 && $('#top_img').css('background-image', "url(" + config.img2 + ")");
+                var title = 'æ´»å¨ç«ç', info = 'è¯·éè´­å¶ä»åå', to_app = 'æç¥éäº'; //ææ¡ååº
+                if(config.msg3) {
+                    title = config.msg3[0];
+                    info = config.msg3[1];
+                    to_app = config.msg3[2];
+                }
+                $('body').css('background',"rgba(0,0,0,0.7)");
+                $('#title').text(title);
+                $('#info').text(info);
+                $('#to_app').text(to_app);
+                $('#modal').css('display', 'block');
+            }
+        }
+    }
+    function getData() {
+        var url = 'https://api.m.jd.com/trade/config';    
+        if (module) {
+            $.ajax({
+                url: url,
+                data: {
+                    functionId: 'trade_config',
+                    appid: 'm_core',
+                    uuid: $.fn.cookie('visitkey') || '',
+                    body: JSON.stringify({
+                        platform: '3',
+                        extParam: {
+                            waf_module: module
+                        }
+                    })
+                },
+                dataType: 'json',
+                timeout: 3000,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    if (data.code == "0" && JSON.stringify(data.body) != '{}') {
+                        var config = data.body.wafConfig;
+                        sessionStorage.limitedConfig = JSON.stringify(config);
+                        sessionStorage.limitedTime = +new Date();
+                        sessionStorage.moduleName = module;
+                        setAppBtnStyle(sessionStorage.limitedConfig);
+                        setData(config);
+                    }
+                    else {
+                        crash();
+                    }
+                },
+                error: function (xhr, type) {
+                    console.log(xhr.response);
+                    crash();
+                }
+            })
+        } else {
+            crash();
+        }
+
+    }
+    var storageConfig = JSON.parse(sessionStorage.getItem('limitedConfig')) || null;
+    if (!storageConfig || +new Date() - sessionStorage.getItem('limitedTime') >= 60000 || sessionStorage.getItem('moduleName') !== module) {
+        getData();
+    } else {
+        setData(storageConfig);
+    }
+    function toAPP() {
+        var skuId = '';
+        var index = refer.lastIndexOf('product/');
+        var storeConfig = JSON.parse(sessionStorage.limitedConfig);
+        var config = storeConfig.openConfig;
+        if (index !== -1) {
+            var lastIndex = refer.lastIndexOf('.html');
+            skuId = refer.slice(index + 8, lastIndex);
+        } else {
+            index = refer.lastIndexOf('wareId=');
+            if (index !== -1) {
+                skuId = refer.slice(index + 7);
+            }
+        }
+        
+        $.immediateOpenApp({
+            M_sourcefrom: config.sourceFrom,
+            inteneUrl: 'openApp.jdMobile://virtual?',
+            inteneUrlParams: {
+                category: 'jump',
+                des: config.des,
+                skuId: skuId,
+                sourceType: 'h5',
+                keyWord: keyWord,
+                from: config.sourceFrom || "",
+                sourceValue: config.sourceValue
+            }
+        })
+    }
+    function refresh() {
+        if (time > 0) return;
+        location.replace(unescape(refer));
+    }
+    /**
+    * uaå±è½
+    */
+    function uaList(arr = []) {
+        var lowUa = navigator.userAgent.toLowerCase();
+        var uaArr = arr.filter(function (ua) {
+            var itemUa = ua ? ua.toLowerCase() : '';
+            return lowUa.indexOf(itemUa) != -1
+        })
+        return uaArr
+    }
+
+    $('#to_app').on('click', function () {
+        if (sceneType === '1') { // ç¾è¡¥å±è½è·³è½¬é¦é¡µ
+            location.replace('https://m.jd.com/')
+        } else {
+            if (sessionStorage.limitedConfig) {
+                toAPP();
+            }
+        }
+    })
+</script>
+
+</html>

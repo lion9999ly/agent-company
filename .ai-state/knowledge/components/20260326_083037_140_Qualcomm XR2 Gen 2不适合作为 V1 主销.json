@@ -1,0 +1,18 @@
+{
+  "title": "Qualcomm XR2 Gen 2（不适合作为 V1 主销量产主方案）",
+  "domain": "components",
+  "content": "XR2 Gen 2 规格很强：4nm 制程，GPU 较前代约 2.5x，AI 约 8x，可支持单眼 3K×3K@90/120Hz，多摄公开资料常见最多 10 路并发。但报告裁决其不适合作为 V1 主销量产主方案，只适合作为 V2 高配候选。核心原因不是能力不足，而是能力过剩且代价过高：在头盔内连续运行 HUD + 视觉 + 录像时，8h 续航压力极大，散热难，夏季暴晒/低速堵车场景风险高，且 BOM 高。对于贴脸、封闭、受认证约束的高速穿戴设备，XR2 Gen 2 的高热密度和持续功耗会直接转化为产品失败风险。",
+  "source": "deep_research:tree_ar_xr_soc",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Qualcomm",
+    "XR2 Gen 2",
+    "4nm",
+    "高功耗",
+    "V2高配",
+    "热管理",
+    "deep_research",
+    "tree_ar_xr_soc"
+  ],
+  "confidence": "high"
+}

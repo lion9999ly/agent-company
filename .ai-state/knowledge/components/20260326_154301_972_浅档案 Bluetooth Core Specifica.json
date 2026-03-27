@@ -1,0 +1,13 @@
+{
+  "title": "[浅档案] Bluetooth Core Specification 5.4",
+  "domain": "components",
+  "content": "Bluetooth Core Specification 5.4 是蓝牙技术的核心标准版本之一，规定了蓝牙设备在无线通信中的协议、功能和兼容性要求。它不是某一家芯片厂商的产品，而是由 **Bluetooth SIG（蓝牙技术联盟）** 制定和发布的行业规范。\n\n从基本参数看，5.4 属于蓝牙核心规范的更新版本，主要面向 **Bluetooth LE（低功耗蓝牙）** 能力增强。相关特性通常包括对低功耗通信、设备发现、广播机制和连接管理的改进；在音频相关应用中，常与 **LE Audio** 体系一起被提及。不过要说明的是，**LE Audio 的关键基础更多是在 5.2 中引入**，5.4 是在此基础上继续完善和扩展。我不完全确定“5.4 本身新增特性”在所有场景下都直接等同于“低延迟音频能力提升”，因为具体还要看芯片、协议栈和实现方案。\n\n适用场景方面，Bluetooth Core Specification 5.4 适合 **低功耗无线连接** 场景，如智能穿戴、耳机、助听设备、传感器、智能家居、工业物联网，以及需要广播、组网或控制信令优化的设备。若用于智能头盔语音对讲，它可作为底层通信规范的一部分，但“多跳语音对讲”通常还需要厂商在标准之上做额外系统设计。",
+  "source": "kg_expand:mesh_intercom",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "shallow",
+    "mesh_intercom"
+  ],
+  "confidence": "low"
+}

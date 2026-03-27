@@ -1,0 +1,15 @@
+{
+  "title": "Luna 6一体机结构尺寸与重量参数",
+  "domain": "components",
+  "content": "Luna 6一体机整机结构参数为123mm×73mm×36mm，重量280g。该尺寸与重量表明其属于紧凑型一体化车载视觉硬件，兼顾安装空间与结构强度，适合车内/车载固定安装场景。",
+  "source": "doc_import:Luna 6一体机 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "尺寸",
+    "重量",
+    "结构设计",
+    "整机参数"
+  ],
+  "confidence": "high"
+}

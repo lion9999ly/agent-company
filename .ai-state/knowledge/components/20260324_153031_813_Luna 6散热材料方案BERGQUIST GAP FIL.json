@@ -1,0 +1,16 @@
+{
+  "title": "Luna 6散热材料方案：BERGQUIST GAP FILLER TGF-4400",
+  "domain": "components",
+  "content": "整机导热材料指定为BERGQUIST GAP FILLER TGF-4400。结合爆炸图中的金属壳体、导热垫与散热鳍片，可判断该材料用于填补器件与壳体间隙、降低界面热阻。文档整体反复强调热管理，说明该导热胶是关键热设计材料之一。",
+  "source": "doc_import:Luna 6一体机 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "散热",
+    "导热胶",
+    "BERGQUIST",
+    "TGF-4400",
+    "热管理"
+  ],
+  "confidence": "high"
+}

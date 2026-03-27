@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1：HUD 亮度目标需达到典型 3000 nits、峰值 5000 nits",
+  "domain": "components",
+  "content": "报告将“白天可读”列为 HUD 成败底线，并给出明确亮度门槛：经光机后做到 >3000 nits 入眼亮度可行，CTO 建议目标为典型 3000 nits、峰值 5000 nits；同时要求在正午阳光、深色镜片、雨雾环境下验证 3000+ nits 是否足够。Forcite 的失败经验显示，白天亮度不够会直接导致 HUD 价值坍塌，因此亮度不是可选优化项，而是 V1 是否成立的硬性决策指标。",
+  "source": "deep_research:hud_decision",
+  "created_at": "2026-03-26",
+  "tags": [
+    "亮度",
+    "可读性",
+    "nits",
+    "户外显示",
+    "Forcite",
+    "deep_research",
+    "hud_decision"
+  ],
+  "confidence": "medium"
+}

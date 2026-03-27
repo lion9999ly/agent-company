@@ -1,0 +1,17 @@
+{
+  "title": "智能全盔 V1（头盔独立感知功耗与续航约束）",
+  "domain": "components",
+  "content": "头盔独立完成可用盲区/前向预警，至少需要后向/侧后向 77GHz 毫米波雷达 ×1~2、前向摄像头或前向雷达 ×1、IMU + GNSS、本地感知 SoC。参考器件成本：TI AWR1843 / AWR2944 单颗 BOM 约 30~80 美元，视觉 SoC 模组功耗通常 3~8W，IMX 级大底 4K 模组 15~40 美元。独立 ADAS + 4K 录像 + HUD 时，整机平均功耗容易达到 8~12W；在 3500mAh、约 13Wh 电池条件下，很难满足 ≥8h 续航，因此不适合作为 V1 主链路。",
+  "source": "deep_research:auto_20260326_1",
+  "created_at": "2026-03-26",
+  "tags": [
+    "功耗",
+    "续航",
+    "BOM",
+    "77GHz雷达",
+    "SoC",
+    "deep_research",
+    "auto_20260326_1"
+  ],
+  "confidence": "high"
+}

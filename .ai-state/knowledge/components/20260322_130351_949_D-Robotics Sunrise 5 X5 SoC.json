@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics Sunrise 5 (X5) SoC 概览",
+  "domain": "components",
+  "content": "文档为 D-Robotics Sunrise 5（X5）芯片数据手册，版本 Rev.1.0，发布日期 2024-08，产品状态为 under development。文档明确声明产品信息可能变更或停产且不另行通知，面向系统与软件实现者使用。目录显示 X5 为一款集成 CPU、BPU、Audio DSP、Memory、视频输入、ISP、VSE、GDC、视频/JPEG 编解码、图形引擎、显示接口及多种外设接口的 SoC，适用于机器人/智能视觉类应用。当前截取内容未给出具体算力、频率、工艺、封装、价格等核心参数。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "D-Robotics",
+    "Sunrise 5",
+    "X5",
+    "SoC",
+    "Datasheet"
+  ],
+  "confidence": "high"
+}

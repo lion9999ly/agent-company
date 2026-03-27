@@ -1,0 +1,14 @@
+{
+  "title": "Snapdragon AR1 Gen 1 GPU：Adreno 与稀疏 AR 内容生成",
+  "domain": "components",
+  "content": "GPU 采用 Qualcomm Adreno GPU，支持 power-efficient sparse AR content generation，并兼容 OpenGL ES 3.2 与 Vulkan 1.1。该定位说明其图形能力主要服务于轻量 AR 叠加、通知显示和基础图形渲染，而非复杂 6DoF 高负载图形场景。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Adreno GPU",
+    "AR content",
+    "OpenGL ES 3.2",
+    "Vulkan 1.1"
+  ],
+  "confidence": "medium"
+}

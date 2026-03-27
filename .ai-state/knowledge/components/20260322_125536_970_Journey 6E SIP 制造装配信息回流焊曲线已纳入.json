@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6E SIP 制造装配信息：回流焊曲线已纳入文档",
+  "domain": "components",
+  "content": "V0.3（2024-05-13）新增 Section 8 的 Figure 8-1 J6E SIP Reflow Profile，说明文档已覆盖 SMT 装配相关信息。对于 SIP 模块导入，回流焊曲线是评估焊接窗口、热冲击风险、返修策略和产线兼容性的关键数据。虽然当前正文未给出具体温度数值，但已确认存在正式回流焊规范章节。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Reflow Profile",
+    "Section 8",
+    "Manufacturing",
+    "Assembly",
+    "V0.3"
+  ],
+  "confidence": "medium"
+}

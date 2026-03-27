@@ -1,0 +1,17 @@
+{
+  "title": "智能头盔V1量产红线指标",
+  "domain": "components",
+  "content": "报告给出 V1 量产的关键硬指标：整机重量目标 ≤1.65kg，贴脸区温度要求 <40°C，续航目标 ≥8 小时，并要求在 100km/h 风噪下语音、HUD、防抖、防水必须系统级可用。同时认证需覆盖 ECE 22.06 / 3C / DOT，任何壳体开孔、让位、布线都可能影响测试闭环。结论是 V1 的首要目标不是功能上限，而是量产成功率、认证通过率、热管理、续航、售后和口碑，这些指标直接决定方案取舍。",
+  "source": "deep_research:adhoc_飞猪flyai_MC",
+  "created_at": "2026-03-26",
+  "tags": [
+    "重量",
+    "热管理",
+    "续航",
+    "认证",
+    "ECE22.06",
+    "deep_research",
+    "adhoc_飞猪flyai_MC"
+  ],
+  "confidence": "medium"
+}

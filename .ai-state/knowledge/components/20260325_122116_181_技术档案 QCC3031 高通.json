@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] QCC3031 (高通)",
+  "domain": "components",
+  "content": "以下基于你给出的搜索结果整理，**只采用结果中明确出现的信息**，并对不确定项做了标注。由于搜索结果并非高通官方完整 datasheet，部分参数只能给出“已知/未知/推断范围”。\n\n---\n\n# Qualcomm QCC3031 完整技术档案\n\n## 0. 芯片定位与背景\n\n- **型号**：Qualcomm QCC3031\n- **厂商**：Qualcomm\n- **发布时间**：**2018 年**\n- **产品定位**：低功耗蓝牙音频 SoC，面向：\n  - 无线头戴耳机\n  - 颈挂式耳机\n  - 部分 TWS 耳机\n  - 便携式蓝牙音箱\n- **代际属性**：QCC30xx 系列，属于较早一代高通蓝牙音频平台  \n- **2026 年视角**：规格本身不会变化，但到 2026 年已明显落后于支持 LE Audio / Auracast / 更强自适应 ANC 的新平台\n\n---\n\n# 1. 基本参数\n\n## 1.1 蓝牙版本\n- **Bluetooth 5.0**\n- 支持**经典蓝牙 + BLE 双模**\n\n### 支持的典型蓝牙配置文件\n- A2DP\n- AVRCP\n- HFP\n- HSP\n\n---\n\n## 1.2 支持编解码\n\n### 已明确支持\n- **SBC**\n- **AAC**\n- **aptX Classic**\n- **aptX HD**\n\n### 未见支持证据\n- **LC3：不支持 / 至少搜索结果未显示支持**\n  - 原因：LC3 通常与 **LE Audio / BT 5.2+** 生态强相关，而搜索结果明确指出 QCC3031 仅为 **Bluetooth 5.0**，且后续芯片才引入 LE Audio\n- **aptX Adaptive：搜索结果未提及**\n- **aptX Lossless：搜索结果未提及**\n\n### 结论\n- 对你要求的三项可直接写成：\n  - **aptX：支持（Classic / HD）**\n  - **AAC：支持**\n  - **LC3：不支持**\n\n---\n\n## 1.3 DSP 算力\n\n- 搜索结果明确提到：\n  - 内置 **Qualcomm Kalimba DSP**\n  - 支持 EQ、ANC、回声消除、噪声抑制等复杂音频算法\n- **但未给出明确 MIPS / MHz / TOPS 数值**\n- 因此可确认：\n  - **DSP 类型**：Kalimba 可编程 DSP\n  - **DSP 算力数值**：**搜索结果未提供**\n\n### 工程判断\nQCC3031 的 DSP 能力足以支撑：\n- 混合 ANC\n- cVc 通话降噪\n- 多麦波束成形\n- 常规 EQ / 音效处理\n\n但明显不属于后期 AI 音频 SoC 那种高算力平台。\n\n---\n\n# 2. 降噪能力\n\n## 2.1 ANC 类型与档位\n\n### ANC 技术类型\n- **集成数字 ANC**\n- 支持：\n  - **Hybrid ANC（混合式）**\n  - **Feedforward（前馈）**\n  - **Feedback（反馈）**\n\n### ANC 档位 / 模式\n搜索结果明确提到的模式有：\n- **ANC 模式**\n- **环境音模式 / Transparency / Hear-through**\n\n### 是否支持多档 ANC 强度\n- 搜索结果未给出官方“几档”定义\n- 但从“制造商可定制算法、可做不同模式”可推断：\n  - **理论上可由整机厂做多档位**\n  - **芯片层面未",
+  "source": "kg_expand:audio_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "audio_soc",
+    "高通"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Himax LCoS V1主线方案",
+  "domain": "components",
+  "content": "报告最终裁决：V1量产应坚持单目 Himax 类 LCoS + LED 光源 + 自由曲面棱镜路线，不把 JBD MicroLED 作为 V1 量产主线，TI DLP 仅保留为工程备份验证线。冻结参数建议为：入眼亮度目标 3000 nits、量产下限 ≥2500 nits，FOV 14°~18° 对角，虚像距离 7~10m，眼盒 8×8mm 起步、目标 10×12mm，HUD 平均功耗 1.5~2.2W，峰值 <3W，HUD 光机 ≤30g，贴脸区 <40℃，连续工作 1h 温升 ΔT <8℃。",
+  "source": "deep_research:auto_20260326_2",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Himax",
+    "LCoS",
+    "HUD",
+    "V1",
+    "量产参数",
+    "棱镜",
+    "deep_research",
+    "auto_20260326_2"
+  ],
+  "confidence": "high"
+}

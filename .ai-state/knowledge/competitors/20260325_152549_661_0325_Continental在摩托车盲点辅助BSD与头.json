@@ -1,0 +1,19 @@
+{
+  "title": "0325_Continental在摩托车盲点辅助/BSD与头盔HUD链路中的定位：2026年更像ARAS雷达与ECU供应商，而非整",
+  "domain": "competitors",
+  "content": "基于3个来源，Continental到2026年在摩托车ARAS/ADAS中的确定角色是“雷达+ECU+算法”供应商，而不是直接销售全盔HUD的头盔品牌。来源一致提到其核心能力是77GHz雷达、控制单元和软件，覆盖ACC自适应巡航、FCW前碰预警、BSD/BSA盲点辅助。可引用的型号包括来源2提到的ARS4-A系列，来源1还举了汽车侧ARS540作为技术积累参考，但ARS540是否已直接用于摩托车，来源未证实，因此只能视为技术迁移背景，不能当作摩托车量产型号。应用侧，来源2和3都提到KTM 1290 Super Adventure S、BMW、Ducati、Kawasaki等高端车型已采用雷达辅助系统，但这里存在供应商归属不完全清晰的矛盾：来源称“Continental或Bosch”均可能供货，因此不能把上述全部车型都明确归到Continental名下。对我们做智能摩托车全盔的启示是：Continental更适合作为车端BSD/BSA数据源或HMI接口伙伴，而不是整盔竞品。头盔HUD部分，来源1明确判断Continental更可能提供数据接口、微型显示/投影等关键技术，警报通过CAN总线等协议输出给第三方HUD或头盔厂商。需特别排除自行车头盔场景：本条仅讨论摩托车全盔，摩托车系统需适配更高车速、振动、倾角和恶劣天气，不能直接套用自行车HUD方案。价格方面，3个来源都没有给出Continental摩托车雷达、ECU或HUD模块的公开单价，这是信息缺口；若做采购评估，应向Continental AG或其区域Tier1渠道索取RFQ。供应商名可明确写为Continental AG，主要竞对是Bosch。结论：2026年若我们做全盔HUD联动盲点预警，最现实路径不是采购“Continental头盔”，而是对接Continental车载77GHz BSD/BSA系统输出，在头盔内实现",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Continental",
+    "摩托车ADAS",
+    "BSD",
+    "BSA",
+    "77GHz雷达",
+    "HUD",
+    "全盔",
+    "供应商",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

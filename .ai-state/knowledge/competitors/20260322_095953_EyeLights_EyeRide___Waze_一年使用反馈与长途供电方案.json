@@ -1,0 +1,16 @@
+{
+  "title": "EyeLights EyeRide + Waze：一年使用反馈与长途供电方案",
+  "domain": "competitors",
+  "content": "一位用户表示已使用 EyeRide 1 年，认为其质量好、头盔安装相对容易、音质优秀、图像清晰。典型使用方式是搭配 Waze 查看警报和车速，包括超速提醒。长途骑行时通过充电宝为设备与手机供电，公路旅行则将充电宝接入摩托车 USB 口，实现近似“无限电力”的续航补充方案。",
+  "source": "doc_import:eyelights_competitor_analysis.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EyeLights",
+    "EyeRide",
+    "Waze",
+    "power bank",
+    "USB",
+    "long ride"
+  ],
+  "confidence": "high"
+}

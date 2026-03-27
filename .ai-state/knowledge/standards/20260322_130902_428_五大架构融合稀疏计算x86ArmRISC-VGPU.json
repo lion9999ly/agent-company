@@ -1,0 +1,17 @@
+{
+  "title": "五大架构融合稀疏计算：x86、Arm、RISC-V、GPU、DSA对比",
+  "domain": "standards",
+  "content": "白皮书比较了五类架构的稀疏计算路径：x86通过AVX-512支持稀疏数据加载和条件操作，并结合Intel oneMKL优化稀疏矩阵；Arm依托SME2多向量与外积计算，更适合非规则数据，并可与Mali GPU协同；RISC-V因开源可扩展，适合快速原型和定制稀疏指令；GPU是工业实践领导者，NVIDIA Ampere/Hopper的Sparse Tensor Cores支持2:4结构化稀疏，可将推理吞吐量提升高达2倍；DSA/NPU/TPU则可从零设计稀疏编码片上存储和零值跳过机制，以牺牲通用性换极致效率。",
+  "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "稀疏计算",
+    "x86",
+    "Arm",
+    "RISC-V",
+    "GPU",
+    "DSA",
+    "2:4稀疏"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] Qualcomm QCC3086 (Qualcomm)",
+  "domain": "components",
+  "content": "以下基于你提供的搜索结果整理。**注意：QCC3086 的公开资料非常有限，很多底层参数通常在 Qualcomm NDA 文档中，以下仅输出“公开可见 + 可合理归纳”的技术档案；凡搜索结果未明确给出的，一律标注“未查到”或“公开未披露”。**\n\n---\n\n# Qualcomm QCC3086 完整技术档案\n\n## 0. 芯片定位概述\n\n**Qualcomm QCC3086** 是 Qualcomm 面向**高端无线音频设备**推出的**低功耗蓝牙音频 SoC**，属于 **QCC30xx 系列**。  \n核心定位不是手机/AP/XR 主控，而是：\n\n- TWS 真无线耳机\n- 头戴式/颈挂式蓝牙耳机\n- 便携蓝牙音箱\n- 游戏音频外设\n- PSAP/助听类设备\n\n其设计重点是：\n\n- **蓝牙音频连接**\n- **LE Audio**\n- **aptX Adaptive**\n- **ANC/通话降噪**\n- **超低功耗**\n- **小型电池设备续航优化**\n\n---\n\n# 1. 基本参数\n\n## 1.1 制程\n\n- **制程工艺：未查到**\n- 搜索结果未给出公开制程节点（如 22nm/28nm/40nm 等）\n- Qualcomm 面向音频 SoC 的详细工艺信息通常不在公开营销资料中披露\n\n## 1.2 CPU 架构\n\n- **CPU：集成式低功耗 CPU**\n- **具体架构：公开资料倾向为 ARM Cortex-M 系列，但 QCC3086 对应具体型号未查到**\n- 用途：\n  - 系统控制\n  - 蓝牙协议栈管理\n  - 外设控制\n  - 低负载应用逻辑\n\n> 说明：搜索结果中提到“通常是 ARM Cortex-M 系列处理器”，但没有明确到 Cortex-M4/M33 等级，因此不能进一步坐实。\n\n## 1.3 DSP / 音频处理架构\n\n- **DSP：集成可编程音频 DSP**\n- **架构：Kalimba DSP**\n- 用途：\n  - 音频编解码\n  - ANC\n  - 通话降噪\n  - 语音处理\n  - 音效算法\n  - 可能的低功耗语音唤醒/Always-on Voice 类处理\n\n## 1.4 GPU\n\n- **GPU：未查到 / 大概率无独立图形 GPU**\n- 作为蓝牙音频 SoC，其公开定位不涉及图形渲染\n\n## 1.5 NPU / AI 引擎\n\n- **NPU：未查到**\n- 搜索结果仅提到“用于 AI 功能的 DSP/语音处理能力”，**未显示存在独立 NPU**\n- 因此更准确表述为：\n  - **具备一定 AI/语音算法处理能力**\n  - **但未查到独立 NPU 架构与 TOPS 算力**\n\n## 1.6 算力\n\n- **CPU 算力：未查到**\n- **DSP 算力：未查到**\n- **NPU 算力：未查到**\n- **GPU 算力：不适用 / 未查到**\n\n## 1.7 主频\n\n- **CPU 主频：未查到**\n- **DSP 主频：未查到**\n\n---\n\n# 2. 接口\n\n## 2.1 摄像头接口（CSI）\n\n- **CSI：未查到**\n- 从公开定位看，QCC3086 是音频 SoC，**不属于摄像头/视觉处理平台**\n- 搜索结果未提及 MIPI CSI、并行摄像头接口或 ISP 摄像头输入能力\n\n## 2.2 显示接口（DSI / MIPI）\n\n- **显示接口：未查到**\n- 搜索结果未提及 MIPI DSI、RGB、SPI Display 等显示输出能力\n- 结合产品定位，**基本",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "qualcomm"
+  ],
+  "confidence": "high"
+}

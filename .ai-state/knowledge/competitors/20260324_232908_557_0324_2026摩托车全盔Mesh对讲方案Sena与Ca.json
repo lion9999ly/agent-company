@@ -1,0 +1,23 @@
+{
+  "title": "0324_2026摩托车全盔Mesh对讲方案：Sena与Cardo竞品格局及芯片路线判断",
+  "domain": "competitors",
+  "content": "面向智能摩托车全盔，Mesh对讲已从传统蓝牙链式连接升级为“自组网+自愈合”架构，核心竞品仍是Sena与Cardo。需明确：以下均为摩托车头盔/对讲系统信息，不适用于自行车头盔；若市场上出现“骑行头盔Mesh”表述，必须区分两轮摩托高速、强风噪场景与自行车低速场景的声学、续航和法规差异。现有资料显示，Sena Mesh 2.0提供Open Mesh与Group Mesh两种模式，Group Mesh通常支持24人，Open Mesh被描述为“理论上无限”或超大规模；Cardo DMC则更强调稳定性，常见表述为15人级群组。单节点通信距离，来源给出1.6-2.0公里；经多节点中继后，总覆盖可达8公里以上。这里存在轻微冲突：一组来源称Sena/Cardo“通常支持15-24人”，另一组则将Cardo更明确限定在15人级，说明不同代际产品或宣传口径不完全一致，产品定义时应按“稳定群组人数”与“理论接入人数”分开标注。代表型号方面，Sena侧包括50S、50R、50C、SRL-Mesh、SPIDER系列；Cardo侧包括Packtalk Edge、Packtalk Neo、Packtalk Custom。资料未给出统一官方售价，但Packtalk Edge、Sena 50S通常定位高端旗舰，行业零售价一般处于300-400美元带；集成式方案如SRL-Mesh因适配Shoei全盔，价格通常更高。供应商层面，Sena与Cardo是整机/系统品牌方，Sena还与Shoei、HJC等头盔厂合作，Cardo则与JBL联合强化音频卖点。芯片方案上，公开资料没有披露明确SoC型号，这是关键空白；但可确认系统至少包含蓝牙SoC、Mesh无线链路、DSP降噪与语音处理模块。对2026年产品规划的启示是：若做智能全盔一体化，重点不应只比“最大人数”，而应优先优化高速风噪下的语音清晰度、断链恢复时延、与",
+  "source": "daily_deep",
+  "created_at": "2026-03-24",
+  "tags": [
+    "摩托车全盔",
+    "Mesh对讲",
+    "自组网",
+    "Sena",
+    "Cardo",
+    "Packtalk Edge",
+    "Sena 50S",
+    "芯片方案",
+    "竞品分析",
+    "2026",
+    "P1",
+    "通讯",
+    "Mesh"
+  ],
+  "confidence": "high"
+}

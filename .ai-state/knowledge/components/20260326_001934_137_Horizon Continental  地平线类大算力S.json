@@ -1,0 +1,17 @@
+{
+  "title": "Horizon Continental / 地平线类大算力SoC",
+  "domain": "components",
+  "content": "报告明确结论：Horizon Continental / 地平线类大算力 SoC 不建议用于智能骑行头盔 V1 量产。核心原因是其典型功耗区间为 8–15W，在贴脸佩戴场景下会同时放大热、续航、重量、认证复杂度和量产风险。替代架构矩阵中，F 方案“地平线类大算力SoC + 音频副控”总评仅 13 分，显著低于 A 方案 AR1 + BES 的 26 分、C 方案手机协同计算的 27 分、D 方案无摄像轻量版的 33 分，说明其更适合作为算法验证平台、能力对标对象和 V2+ / 特定 B2B 场景预研，而非 V1 主芯片量产路线。",
+  "source": "deep_research:deepen_338",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Horizon Continental",
+    "地平线",
+    "SoC",
+    "功耗",
+    "量产决策",
+    "deep_research",
+    "deepen_338"
+  ],
+  "confidence": "high"
+}

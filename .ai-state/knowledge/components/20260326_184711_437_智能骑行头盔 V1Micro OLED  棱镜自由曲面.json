@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1：Micro OLED + 棱镜/自由曲面反射光机为首选主方案",
+  "domain": "components",
+  "content": "报告明确裁定第一代产品必须上 HUD，但只能做“单目、极简、可量产、白天可读”的 HUD，主路线为 Micro OLED + 棱镜/自由曲面反射光机。推荐规格为 FOV 10°–15°、分辨率 ≥640×480，建议 800×600 或 1024×768、虚像距离 2–4m、刷新率 30–60Hz、HUD 模组重量 <80g。该路线被认为在供应链成熟度、显示效果、功耗和量产性之间最平衡，适合承载导航箭头、速度/限速、ADAS 预警、来电/对讲状态 4 类核心信息。",
+  "source": "deep_research:hud_decision",
+  "created_at": "2026-03-26",
+  "tags": [
+    "HUD",
+    "Micro OLED",
+    "反射光机",
+    "V1量产",
+    "规格定义",
+    "deep_research",
+    "hud_decision"
+  ],
+  "confidence": "medium"
+}

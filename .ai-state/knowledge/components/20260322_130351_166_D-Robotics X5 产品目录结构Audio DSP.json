@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 产品目录结构：Audio DSP 音频处理模块",
+  "domain": "components",
+  "content": "目录中 1.3.4 为 Audio DSP，表明 X5 不仅面向视觉，也集成独立音频数字信号处理能力。该模块通常用于语音采集、回声消除、降噪、关键词检测或多媒体音频处理。当前截取内容未提供 DSP 架构、主频、支持采样率、接口或算法能力，但从模块独立列出可判断其在产品定义中具有明确功能边界，适合机器人、智能终端等需要本地音频处理的场景。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Audio DSP",
+    "音频",
+    "X5",
+    "SoC",
+    "目录"
+  ],
+  "confidence": "medium"
+}

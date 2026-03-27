@@ -1,0 +1,14 @@
+{
+  "title": "HPU3501A50IQNXMA Slave Configuration (OTPSEL=1)",
+  "domain": "components",
+  "content": "HPU3501A50IQNXMA 在 Slave（OTPSEL=1）配置下的默认电源轨为：Buck1 0.8V（Dual Phase），Group 5/5；Buck3 0.8V，Group 5/5；Buck4 Disabled；Buck5 3.3V，Group 1 上电/Group 1 下电；LDO1 0.8V，Group 6/6；LDO2 3.3V，Group 6/6；LDO3 Disabled。表中 Buck2 与 Buck1 合并显示，说明采用双相模式；Buck4、LDO3 被禁用，体现该 OTP 配置针对特定系统电源树优化。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "HPU3501A50IQNXMA",
+    "Slave",
+    "OTPSEL=1",
+    "Dual Phase"
+  ],
+  "confidence": "high"
+}

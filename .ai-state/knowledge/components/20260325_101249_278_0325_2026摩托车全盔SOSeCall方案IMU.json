@@ -1,0 +1,20 @@
+{
+  "title": "0325_2026摩托车全盔SOS/eCall方案：IMU+GNSS+LTE Cat-1 bis与Quectel EG915选型要",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2026年可行的SOS/eCall架构通常是“6轴/9轴IMU + 多星座GNSS + LTE Cat-1 bis蜂窝模组 + 本地语音/按键触发”。需明确：本条目讨论的是摩托车全盔，不是自行车头盔；两者在碰撞能量、法规环境、续航和风噪语音链路上差异很大，自行车头盔方案不能直接复用。现有来源一致认为，IMU负责碰撞判定，GNSS负责事故定位，LTE Cat-1 bis负责把最小数据集发送到PSAP或云端。IMU建议至少6轴，算法需同时看高G冲击、角速度突变和倒地后静止状态；来源给出的碰撞阈值是20G-50G以上，但这是宽泛区间，实际量产必须按头盔结构、佩戴松紧和误报率重新标定。GNSS方面，来源称多星座定位在城市环境可达1-3米，也有来源给出消费级常见2-5米，二者存在口径差异，说明应区分理想测试与量产实装场景。蜂窝侧，Quectel EG915被反复提及，属于LTE Cat-1 bis模组，适合低功耗、广覆盖和单天线设计，优于2G退网风险方案；但来源未给出EG915的统一细分型号、频段和实价，因此这里不能伪造具体SKU。若按2026年BOM思路，EG915类蜂窝模组采购价通常会落在约8-15美元区间，多星座GNSS模组约3-8美元，6轴IMU约1-3美元，整套SOS通信与感知电子BOM大致可控制在15-30美元，不含电池、麦克风、扬声器、FPC、认证和结构件。供应商层面，可重点关注Quectel（蜂窝/GNSS）、Bosch Sensortec与STMicroelectronics（IMU）。标准方面，来源明确欧盟eCall自2018年已覆盖M1/N1新车，但并未强制摩托车，因此摩托车头盔eCall在2026年更可能走“类eCall/私有SOS平台”路线，而非直接宣称完全等同车规eCall；这是产品定义上的关键边界。结论：对摩托车全盔，最现实的方案是以",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "motorcycle helmet",
+    "eCall",
+    "SOS",
+    "IMU",
+    "GNSS",
+    "LTE Cat-1 bis",
+    "Quectel EG915",
+    "crash detection",
+    "full-face helmet",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

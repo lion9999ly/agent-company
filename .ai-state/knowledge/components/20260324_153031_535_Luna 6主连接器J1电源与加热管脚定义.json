@@ -1,0 +1,16 @@
+{
+  "title": "Luna 6主连接器J1电源与加热管脚定义",
+  "domain": "components",
+  "content": "J1电源相关管脚定义为：Pin1 BATT1（Power）、Pin2 BATT2（Power）、Pin3 GND（Power Ground）、Pin4 GND（Power Ground）、Pin5 HEATER_PWR_P（HEATER Power）、Pin6 GND（HEATER Power Ground）、Pin15 KL15（Wake-up）、Pin16 GND（Ground）。该配置表明整机支持主供电、独立加热供电及KL15唤醒。",
+  "source": "doc_import:Luna 6一体机 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "J1",
+    "BATT",
+    "GND",
+    "HEATER",
+    "KL15"
+  ],
+  "confidence": "high"
+}

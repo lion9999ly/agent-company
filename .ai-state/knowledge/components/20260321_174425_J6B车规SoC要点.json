@@ -1,0 +1,13 @@
+{
+  "title": "J6B车规SoC要点",
+  "domain": "components",
+  "content": "1) 文档主题：Horizon Robotics Journey 6B（J6B）高集成车规SoC，主要面向GSR/NCAP、ADAS、DVR/DMS/EDR等汽车场景。2) 与智能骑行头盔相关的可迁移能力：具备多摄像头接入、ISP、视频编解码、AI推理、安全MCU与低功耗特性，适合评估用于头盔视觉感知/录像平台，但整体规格明显偏车载。3) 关键参数：AI算力18 TOPS；CPU 23K DMIPS；安全岛MCU 5K+ DMIPS、2MB SRAM；MIPI-CSI为2×4-lane RX + 1×2-lane TX；ISP处理带宽0.64 Gpixel/s；vDSP 64 GFLOPS@FP32；视频编解码支持4K@60FPS/5K@30FPS H.264/265；DDR 32bit LPDDR5/4x/4，带宽约25GB/s；存储支持XSPI NorFlash、Nand、eMMC；GPIO主域约38、MCU约26；网络含2×1GE+1×100Mbps ETH；MCU侧6×CANFD+1×LIN。4) 功耗与可靠性：TDP<6W、SDP<5W（Tj=125℃）；支持HSM、FIPS140-3 Level 2、AEC-Q100 Grade2；ASIL-B主域+ASIL-D MCU域。5) 软件/资源：1VxR方案BPU占用<13 TOPS，另预留1~2 TOPS给DMS；CPU占用<15kDMIPS，另预留2kDMIPS给DMS；系统设计最小建议2GB DDR。6) 对头盔研发结论：其视频、AI与安全能力很强，但接口、车规安全与算力配置偏重，功耗也高于多数电池式头盔终端常见预算，更适合作为高端多摄像头/边缘AI原型参考，而非量产头盔首选主控。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-21",
+  "tags": [
+    "SoC芯片",
+    "视觉AI",
+    "功能安全"
+  ],
+  "confidence": "medium"
+}

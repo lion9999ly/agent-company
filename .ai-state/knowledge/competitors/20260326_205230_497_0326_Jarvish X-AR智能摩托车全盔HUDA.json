@@ -1,0 +1,22 @@
+{
+  "title": "0326_Jarvish X-AR智能摩托车全盔：HUD/AR与摄像系统的已知规格、供应链推测及信息矛盾",
+  "domain": "competitors",
+  "content": "Jarvish X-AR是台湾Jarvish Inc.推出的智能摩托车全盔，定位并非自行车头盔，研究时应明确排除自行车HUD产品。基于现有公开资料，X-AR/X-AR Pro最早在2018-2019年前后亮相，核心卖点是HUD平视显示、AR导航叠加、语音控制与集成行车记录。价格方面，公开传播中常见区间约为US$1,599-1,899，属于高端智能全盔。材料与认证层面，来源提到其采用碳纤维壳体，并面向DOT/ECE级别安全标准设计，但具体认证版本未在本次来源中完全核实。\n\n关键矛盾在摄像头规格：来源2称“现有X-AR Pro通常配备2K（1440p）前置摄像头”，视角约140-160°；来源3则直接写为“前置4K摄像头”，并提到部分配置可能带后置摄像头用于盲区监测。因此，若做竞品库录入，摄像头应标注为“2K到4K说法不一致，需以实机或官方SKU核验”。HUD/AR部分相对一致：均指向微显示+光学投射方案，可能采用LCoS、DLP或Micro-OLED路线，但官方未公开分辨率、亮度、FoV等关键参数。\n\n供应链与ODM方面，来源1明确指出Jarvish更像品牌与系统定义方，而非大型制造商，潜在ODM/JDM可能来自台湾或中国大陆电子制造体系，如Quanta、Compal、Wistron、Pegatron这类系统集成厂，或更垂直的AR/可穿戴ODM。上游器件推测包括：微显示器可能来自Kopin、Sony、eMagin、Himax或JBD；波导/光学引擎可能涉及Lumus、DigiLens、WaveOptics；主控与连接模组则可能采用手机级SoC、蓝牙/Wi-Fi/GPS组合方案。但这些都属于行业推断，不是已确认BOM。\n\n对我们做智能摩托车全盔有两点启发：第一，Jarvish证明HUD+语音+记录仪的产品叙事成立，但若核心参数不透明，容易造成市场认知混乱；第二，若要做ODM可落",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Jarvish",
+    "X-AR",
+    "摩托车全盔",
+    "HUD",
+    "AR",
+    "4K摄像头",
+    "2K摄像头",
+    "ODM",
+    "供应链",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

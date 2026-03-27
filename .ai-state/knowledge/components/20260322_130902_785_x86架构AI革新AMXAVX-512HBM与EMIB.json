@@ -1,0 +1,17 @@
+{
+  "title": "x86架构AI革新：AMX、AVX-512、HBM与EMIB系统级优化",
+  "domain": "components",
+  "content": "白皮书认为x86仍是通用计算基石，主要承担控制与调度角色。其AI创新包括AMX、AVX-512指令集，高带宽内存HBM，以及多芯片封装EMIB。软件生态侧依托oneAPI、AI框架优化和OpenVINO工具套件，强调系统级优化与CPU+GPU+FPGA异构协同。典型应用包括AI服务器、高性能AI PC和数据中心。总体定位是性能优先、能效持续优化，依靠广泛生态地位维持竞争力。",
+  "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "x86",
+    "AMX",
+    "AVX-512",
+    "HBM",
+    "EMIB",
+    "oneAPI",
+    "OpenVINO"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Robotics Journey 6E SIP 典型参数与客户验证要求",
+  "domain": "lessons",
+  "content": "文档特别指出 datasheet/specification 中给出的“Typical”参数会因应用不同而变化，且实际性能会随时间变化。包括“Typicals”在内的所有工作参数，都必须由客户技术专家针对具体应用进行验证。这意味着 Journey 6E SIP 的参数不能直接视为量产保证值，项目导入时需安排板级、电源、接口、热设计和系统级验证流程。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Typical Parameters",
+    "Validation",
+    "Application Design",
+    "Risk",
+    "Engineering"
+  ],
+  "confidence": "high"
+}

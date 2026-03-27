@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] NXP i.MX 93 (NXP)",
+  "domain": "components",
+  "content": "以下基于你给出的搜索结果整理，未在结果中明确出现的信息一律标注“未查到”或“搜索结果存在冲突”。\n\n---\n\n# NXP i.MX 93 完整技术档案\n\n## 1. 基本参数\n\n### 1.1 产品定位\nNXP i.MX 93 是一款面向**工业、IoT、边缘 AI、嵌入式控制**的低功耗应用处理器（Application Processor），强调：\n- 低功耗\n- 安全性\n- Linux + RTOS 异构处理\n- 边缘 AI 推理\n- 工业级可靠性\n\n### 1.2 制程\n- **制程工艺：16nm FinFET**\n\n### 1.3 CPU 架构\n搜索结果显示：\n- **Arm Cortex-A55**\n- **Arm Cortex-M33**\n\n具体描述：\n- Cortex-A55：用于应用处理、Linux、复杂业务逻辑\n- Cortex-M33：用于实时控制、低功耗任务、传感器管理\n\n### 1.4 CPU 核心数\n搜索结果存在冲突：\n- 一处写“**一个或两个 Cortex-A55**”\n- 另一处写“**多达两个（或四个，取决于具体型号）Cortex-A55**”\n\n因此可保守整理为：\n- **Cortex-A55：搜索结果存在冲突，至少 1~2 核，是否有 4 核型号未能确认**\n- **Cortex-M33：1 核**\n\n### 1.5 CPU 主频\n- **Cortex-A55：最高 1.7 GHz**\n- **Cortex-M33：最高 250 MHz**\n\n### 1.6 GPU 架构\n搜索结果存在两种说法：\n- “**Arm Mali-G31**”\n- “**Vivante 3D GPU**”\n\n由于原始结果本身不一致，故标注：\n- **GPU：搜索结果存在冲突（Mali-G31 / Vivante 3D GPU）**\n- GPU 主频：**未查到**\n- GPU 算力：**未查到**\n\n### 1.7 NPU / AI 加速器\n搜索结果一致提到：\n- **Arm Ethos-U65 microNPU**\n\n算力方面存在冲突：\n- 一处写：**256 GOPS**\n- 一处写：**0.5 TOPS**\n- 对比表中又写：**250 GOPS**\n\n因此可整理为：\n- **NPU 架构：Arm Ethos-U65**\n- **NPU 算力：搜索结果存在冲突，约 250~256 GOPS，另有资料写 0.5 TOPS**\n- **NPU 主频：未查到**\n\n### 1.8 安全架构\n- **EdgeLock Secure Enclave**\n- 支持：\n  - 硬件 Root of Trust\n  - 安全启动\n  - 安全固件更新\n  - 密钥管理\n  - 加密加速\n  - 防篡改检测\n\n---\n\n## 2. 接口\n\n## 2.1 摄像头接口\n- **MIPI-CSI**\n- 搜索结果提到“支持多路摄像头”\n- 具体 lane 数、版本、最大分辨率：**未查到**\n\n## 2.2 显示接口\n- **MIPI-DSI**\n- 搜索结果对比表还提到：\n  - **LVDS（最高 1080p）**\n- 具体 DSI lane 数、刷新率、双屏支持：**未查到**\n\n## 2.3 音频接口\n搜索结果未明确列出音频外设明细，只提到“丰富连接选项”和通用接口。\n- **I2S：未查到**\n- **PDM：未查到**\n- 其他音频子系统：**未查到**\n\n## 2.4 无线连接\n注意：i.MX 93 是应用处理器，很多无线能力通常依赖",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "nxp"
+  ],
+  "confidence": "high"
+}

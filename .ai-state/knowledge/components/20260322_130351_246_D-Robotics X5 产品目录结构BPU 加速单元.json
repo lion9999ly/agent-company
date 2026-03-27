@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 产品目录结构：BPU 加速单元",
+  "domain": "components",
+  "content": "目录中 1.3.3 单列 BPU，说明 X5 集成专用 BPU（Brain Processing Unit/AI 加速单元）作为独立卖点，面向智能感知、视觉推理或机器人 AI 任务。虽然当前截取内容未给出算力、精度、支持模型、内存带宽或工具链参数，但从 SoC 模块划分看，BPU 与 CPU、ISP、视频编解码并列，属于芯片核心计算资源。对于机器人和边缘视觉应用，BPU 很可能承担神经网络推理负载，是评估 X5 平台能力的关键模块之一。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "BPU",
+    "AI",
+    "加速器",
+    "X5",
+    "目录"
+  ],
+  "confidence": "high"
+}

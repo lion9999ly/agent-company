@@ -1,0 +1,17 @@
+{
+  "title": "肇观电子前向FCW/FDW/ACC车队模式",
+  "domain": "components",
+  "content": "前向视角FCW&FDW&ACC场景主打“车队模式”，在摩托车巡航车速内自动与前车保持合适纵向距离，以降低长时间骑行疲劳。AI适配车速30km/H~80km/H，支持纯摩托车队及摩托汽车混合车队，推荐主动控速范围为0 5m/S2（原文如此）。",
+  "source": "doc_import:肇观电子-两轮车产品介绍_2025Q2.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "肇观电子",
+    "FCW",
+    "FDW",
+    "ACC",
+    "前向视角",
+    "车队模式",
+    "自适应跟车"
+  ],
+  "confidence": "high"
+}

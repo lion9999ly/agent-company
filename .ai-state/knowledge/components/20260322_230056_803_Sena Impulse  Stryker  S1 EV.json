@@ -1,0 +1,19 @@
+{
+  "title": "Sena Impulse / Stryker / S1 EVO / R2 EVO（Sena）— 先做通信模块，再做头盔与 OEM 平台",
+  "domain": "components",
+  "content": "Sena 的核心优势不是先卖头盔，而是先建立蓝牙/Mesh 通信能力，再延伸到自有品牌头盔和 OEM/B2B。其智能自行车头盔包括 S1 EVO 与 R2 EVO，卖点为 Mesh对讲、蓝牙连接和尾灯；高端智能头盔如 Impulse / Stryker，价格通常在 US$500-700 区间。更关键的是，Shoei SRL 与 HJC Smart HJC 都属于 Sena 技术合作方向，证明其商业模式已从单品销售升级为“通信技术平台 + 全球分销网络 + 专业零售 + OEM合作”。对新项目而言，这意味着若具备成熟模块、认证能力和交付能力，B2B/OEM 比单纯自有品牌更容易形成稳定出货。",
+  "source": "deep_research:business_model",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Sena",
+    "Mesh",
+    "蓝牙通信",
+    "OEM",
+    "B2B",
+    "Shoei",
+    "HJC",
+    "deep_research",
+    "business_model"
+  ],
+  "confidence": "high"
+}

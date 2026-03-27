@@ -1,0 +1,15 @@
+{
+  "title": "HPU3501 Dual-Phase Buck Configuration",
+  "domain": "components",
+  "content": "HPU3501 支持双相 Buck 配置：Buck1 与 Buck2 可组合为双相 Buck，Buck3 与 Buck4 也可组合为双相 Buck。文档示例中 HPU3501A01IQNXMA 的 Buck1 标注为 0.8V（Dual Phase）；HPU3501A50IQNXMA 在 OTPSEL=1 的 Slave 配置中 Buck1 也标注为 0.8V（Dual Phase）。该特性适合 SoC 核心电源等大电流、低纹波场景。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Dual Phase",
+    "Buck1",
+    "Buck2",
+    "Buck3",
+    "Buck4"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "采购成熟 Mesh/模组更适合 V2：BOM 20-60 美元，NRE 50万-300万元，4-8个月集成",
+  "domain": "components",
+  "content": "报告建议 V2 若上 Mesh，优先采购成熟模组、协议栈授权或 ODM/JDM 方案，而不是从 0 自研。可行路径包括成熟蓝牙音频 SoC，如恒玄 BES2800 系、Qualcomm QCC 系，以及第三方 Mesh 协议栈/模组。量化收益是：模组 BOM 增量通常约 20-60 美元；若含协议授权/定制，NRE 约 50万-300万元人民币；周期可压到 4-8 个月集成验证。对首代智能全盔而言，这一路线更有利于按时交付并控制整机复杂度。",
+  "source": "deep_research:communication_solution",
+  "created_at": "2026-03-26",
+  "tags": [
+    "采购方案",
+    "Mesh模组",
+    "BOM",
+    "NRE",
+    "BES2800",
+    "QCC",
+    "deep_research",
+    "communication_solution"
+  ],
+  "confidence": "medium"
+}

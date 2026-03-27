@@ -1,0 +1,20 @@
+{
+  "title": "0326_Sena“Mesh 3.0 / Wave Intercom”信息核验：截至现有来源仍属未证实概念，采购与竞品分析应回到M",
+  "domain": "competitors",
+  "content": "基于给定3个来源，需先明确：截至来源所述，Sena并无可核验的官方“Mesh 3.0”或“Wave Intercom”摩托车头盔通信系统公开发布信息，其中来源1、2都明确标注为“预测/未发布”，而来源3却将其描述为“最新迭代”，这构成明显冲突，应视为信息不可靠。对我们做智能摩托车全盔产品研究，不能把“Wave Intercom”当成已上市竞品规格录入。\n\n可落地参考的是Sena现有摩托车通信平台Mesh 2.0，典型供应商为Sena Technologies，代表型号包括50S、50R、50C、SRL-Mesh。来源2给出的可用参数较完整：Open Mesh支持9个频道、参与者“几乎无限”；Group Mesh最多24名骑手；在理想条件下，6名骑手以1.6公里间隔可把总通信距离扩展到8公里，单链路约2公里。蓝牙侧通常为Bluetooth 5.0，可连接手机、GPS和第三方蓝牙设备，并支持Audio Multitasking、HD Voice、Advanced Noise Control。续航方面，Mesh对讲约8-12小时，快充约1小时可补能，完整充电约2.5小时。来源还提到高端机型常见Harman Kardon调音扬声器，但未给出统一适配全部型号的证据，因此应按具体SKU核验。\n\n价格方面，本次来源未提供官方售价，这是一个信息缺口；若做采购库，建议后续补齐50S、50R、50C、SRL-Mesh的渠道价、MSRP和BOM拆解。当前只能确认供应商是Sena Technologies，产品类别是摩托车头盔通信模组/外挂式对讲系统，而不是自行车头盔方案。需特别排除自行车头盔通信产品：自行车场景通常更强调轻量、低风速噪声和开放式佩戴，不适用于全盔高速骑行的风噪抑制、手套操作、长距离组网和防护集成要求。\n\n结论：现阶段“2026 Sena Mesh 3.0 Wave Interco",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Sena",
+    "Mesh 2.0",
+    "Wave Intercom",
+    "摩托车头盔通信",
+    "全盔",
+    "竞品分析",
+    "蓝牙5.0",
+    "Group Mesh",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "NVIDIA Orin-X / DRIVE Orin 不适合智能骑行头盔",
+  "domain": "components",
+  "content": "NVIDIA Orin-X / DRIVE Orin 典型规格为单颗 254 TOPS(INT8)，双 Orin 约 508 TOPS，4 Orin 约 1016 TOPS，采用 Arm Cortex-A78AE + Ampere GPU。单颗功耗约 45–75W，高配可到 100W；单芯片/B2B 采购价约 500–1000+ 美元/颗，完整域控板卡约 2000–5000+ 美元。报告明确指出，该平台生态虽成熟，但其功耗、价格与域控级形态均远超头盔可承受范围，直接采用会严重挤压 BOM、续航与散热空间。",
+  "source": "deep_research:enrich_83",
+  "created_at": "2026-03-26",
+  "tags": [
+    "NVIDIA",
+    "Orin-X",
+    "DRIVE Orin",
+    "254 TOPS",
+    "45-75W",
+    "500-1000美元",
+    "域控",
+    "deep_research",
+    "enrich_83"
+  ],
+  "confidence": "high"
+}

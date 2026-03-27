@@ -1,0 +1,17 @@
+{
+  "title": "Horizon Continental V1：标准长稳验收方案采用方案C",
+  "domain": "components",
+  "content": "报告最终裁决，智能骑行头盔 V1 不能采用纯拍屏方案，标准方案必须是“拍屏 + 系统日志 + 事件触发回录”的三层组合。推荐配置为外部拍屏 1080p60、内部日志 1Hz–10Hz 采样、异常触发前后 30–60 秒视频/日志保留，并同步 GPS/IMU/车速/亮度。该方案单套测试工装预算约 ￥8,000–20,000，软件投入约 4–6 人月，时间同步精度要求 <100ms。报告明确指出拍屏是必要条件，不是充分条件。",
+  "source": "deep_research:deepen_339",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Horizon Continental",
+    "V1",
+    "长稳测试",
+    "方案C",
+    "日志回录",
+    "deep_research",
+    "deepen_339"
+  ],
+  "confidence": "high"
+}

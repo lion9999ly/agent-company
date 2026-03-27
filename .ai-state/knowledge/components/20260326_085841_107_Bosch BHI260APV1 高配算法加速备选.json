@@ -1,0 +1,20 @@
+{
+  "title": "Bosch BHI260AP（V1 高配/算法加速备选）",
+  "domain": "components",
+  "content": "Bosch BHI260AP 被定义为 V1 高配备选，适合更强姿态融合、更低主控负担和更快做出稳定 SOS 的路线。器件带 Fuser2 MCU，常见量程为 ±16g / ±2000 dps，支持内置融合、姿态和可编程，价格区间 $3.5–6.0（估）。报告认为其对 HUD 头姿、EIS 辅助和 SOS 多条件判定更友好，可降低主控算法负担并缩短融合算法周期。但决策上未作为主推，原因是单价更高、SDK/BSP 学习成本更高、供应链和固件调试复杂度高于 BMI270，整体风险标注为中高。",
+  "source": "deep_research:tree_sensor_imu",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Bosch",
+    "BHI260AP",
+    "sensor hub",
+    "Fuser2 MCU",
+    "高配备选",
+    "姿态融合",
+    "HUD",
+    "EIS",
+    "deep_research",
+    "tree_sensor_imu"
+  ],
+  "confidence": "high"
+}

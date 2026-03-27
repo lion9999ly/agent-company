@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.venv/
+.venv*/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+
+# Claude Code
+.claude/
+CLAUDE.md
+claude-code-mcp.json
+.mcp.json
+
+# Temporary files
+temp/
+*.tmp
+
+# Analysis reports (keep only final docs)
+*_ANALYSIS.md
+*_SUMMARY.md
+*_IMPROVEMENTS.md
+
+# Test outputs
+test_*.py
+deep_test*.py
+!tests/test_*.py
+
+# Examples (keep minimal, exclude detailed examples)
+examples/*
+!examples/claude/
+!examples/claude/claude-code-mcp.example.json
+
+# Logs and cache
+logs/
+*.log
+.cache/
+.web-rooter/
+
+# Local reports (keep local, do not push)
+docs/reports/*
+!docs/reports/.gitkeep

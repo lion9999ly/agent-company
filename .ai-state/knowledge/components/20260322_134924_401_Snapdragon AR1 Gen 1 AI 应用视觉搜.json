@@ -1,0 +1,14 @@
+{
+  "title": "Snapdragon AR1 Gen 1 AI 应用：视觉搜索与实时翻译",
+  "domain": "components",
+  "content": "文档指出，Snapdragon AR1 Gen 1 结合第 3 代 Qualcomm Hexagon NPU 与 AR-grade Engine for Visual Analytics，可支持 visual search 和 real-time translation。其目标是把智能眼镜变成“ultimate personal assistant”，在用户视野中结合摄像头输入与端侧 AI 提供即时识别、翻译和辅助信息。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "visual search",
+    "real-time translation",
+    "AI assistant",
+    "visual analytics"
+  ],
+  "confidence": "high"
+}

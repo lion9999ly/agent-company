@@ -1,0 +1,19 @@
+{
+  "title": "智能骑行头盔核心器件BOM区间（经济型/主流型/旗舰型）",
+  "domain": "components",
+  "content": "报告给出了单台头盔核心声学+摄像头器件的粗略BOM区间，可直接用于产品分档。经济型方案：动圈2颗1.6–4美元，2颗歌尔/TDK麦克风1–3美元，OV 1080P模组4–8美元，合计6.6–15美元。主流型方案：动圈或骨传导4–12美元，2~3颗Knowles/TDK麦克风2–6美元，OV/Sony中端模组8–18美元，合计14–36美元。旗舰型方案：混合声学8–20美元，3颗高性能MEMS 3–7美元，Sony IMX模组15–30美元，合计26–57美元。以上均不含蓝牙/音频SoC、存储、电池、FPC/结构件、防水声学网、算法授权和组装测试。",
+  "source": "deep_research:audio_camera_suppliers",
+  "created_at": "2026-03-22",
+  "tags": [
+    "BOM",
+    "成本",
+    "经济型",
+    "主流型",
+    "旗舰型",
+    "Sony IMX",
+    "OmniVision",
+    "deep_research",
+    "audio_camera_suppliers"
+  ],
+  "confidence": "high"
+}

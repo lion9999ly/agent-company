@@ -1,0 +1,19 @@
+{
+  "title": "Qualcomm QCS400：功耗数十mW到数W，不适合作为轻量骑行头盔主控",
+  "domain": "components",
+  "content": "报告明确指出 Qualcomm QCS400 系列（QCS403/QCS404/QCS405/QCS407）面向智能音箱、智能显示和家庭音频，而不是轻量骑行头盔。其平台采用 Kryo CPU + Adreno GPU + Hexagon DSP，功耗区间推断为待机数十 mW、轻载数百 mW 到 1W、高负载数 W。相比 QCC 音频 SoC，QCS400 系统复杂度和功耗都明显更高，且成本通常也更高，因此不适合作为以 6–12 小时续航、轻量化和低发热为目标的智能骑行头盔主控首选。",
+  "source": "deep_research:main_chipset_selection",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Qualcomm",
+    "QCS400",
+    "QCS403",
+    "QCS404",
+    "QCS405",
+    "QCS407",
+    "不推荐",
+    "deep_research",
+    "main_chipset_selection"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "X项目 HUD方案：单色窄FOV导航HUD优于全彩视频型",
+  "domain": "components",
+  "content": "报告建议V1显示方案采用单色/高对比、窄FOV导航HUD，而非全彩视频型。目标参数为视场 8–12°，在正午户外照度 80k–100k lux 下，导航箭头和告警图标可辨识率 >95%。对应器件功耗上，单色/窄FOV HUD 光机待机 0.05W、典型 0.6W、峰值 1.2W；全彩视频型 HUD 光机待机 0.10W、典型 1.8W、峰值 3.0W。该取舍可同时降低功耗、热和重量，并提升认证通过率，因此被定义为V1唯一合理路线。",
+  "source": "deep_research:deepen_480",
+  "created_at": "2026-03-26",
+  "tags": [
+    "HUD",
+    "单色显示",
+    "8–12°",
+    "80k–100k lux",
+    "可视性",
+    "低功耗",
+    "deep_research",
+    "deepen_480"
+  ],
+  "confidence": "high"
+}

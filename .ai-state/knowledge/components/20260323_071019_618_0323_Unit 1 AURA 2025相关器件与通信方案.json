@@ -1,0 +1,19 @@
+{
+  "title": "0323_Unit 1 AURA 2025相关器件与通信方案线索梳理",
+  "domain": "components",
+  "content": "基于现有检索结果，“Unit 1 AURA 2025 chipset”并无可直接验证的官方datasheet，现阶段更像是市场传闻或被混用的名称，因此应拆分为BLE SoC、天线、MEMS麦克风与HUD通信四个器件层面分析。首先，最明确的BLE供应链线索来自Ezurio：其2025年发布的BL54L15μ系列被描述为“最小型nRF54模组之一”，采用Nordic nRF54平台并集成天线，适合LE Audio与紧凑型终端。来源未给出官方单价，但同类工业级BLE模组在分销市场通常处于约6-15美元/片区间，供应商名可明确写为Ezurio，底层SoC生态来自Nordic Semiconductor。其次，若AURA指向边缘计算主板而非单芯片，Luckfox Aura提供了较具体参数：基于Rockchip RV1126B，最高4GB LPDDR4X、可选64GB eMMC、双4-lane MIPI CSI、4-lane MIPI DSI最高1080p60、集成3 TOPS NPU，并带千兆以太网、Wi‑Fi 6、Bluetooth 5.4/BLE、USB 3.0 OTG和4路USB 2.0 Host。这说明“Aura”在市场上也被用于SBC命名，而不是单一BLE芯片。对HUD通信而言，现有来源没有给出AURA 2025直接支持车载HUD总线的证据；若用于HUD，合理接口应是MIPI DSI/eDP驱动显示，外加BLE用于头盔、耳机或手机配对，而非HUD主链路本身。MEMS麦克风方面，来源只在AI摘要中提到“集成MEMS microphone”，但没有型号、灵敏度、SNR或供应商，不能据此确认BOM；行业上更可能采用外置数字PDM麦克风，如楼氏、英飞凌或意法方案。天线设计上，Ezurio模组已集成天线，可降低2.4GHz射频匹配难度；若采用板载BLE SoC，则需重点控制天线净空区",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "BLE SoC",
+    "Ezurio",
+    "Nordic nRF54",
+    "Rockchip RV1126B",
+    "MEMS麦克风",
+    "HUD通信",
+    "天线设计",
+    "拆解线索",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

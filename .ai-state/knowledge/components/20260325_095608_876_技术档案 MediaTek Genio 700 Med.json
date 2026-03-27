@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] MediaTek Genio 700 (MediaTek)",
+  "domain": "components",
+  "content": "以下档案**仅基于你提供的搜索结果整理**；对互相冲突的信息，我会明确标注“**存在冲突**”并给出“**较可信/待核实**”判断。凡搜索结果未覆盖的内容，一律标注“**未查到**”。\n\n---\n\n# MediaTek Genio 700 完整技术档案\n\n## 0. 结论先看\n\nMediaTek Genio 700 是一款面向**边缘 AIoT** 的中高端 SoC/平台，官方定位偏向**工业物联网、智能零售、智能城市、医疗设备、机器人、智能家居**等，而**不是**为 AR/XR 眼镜或超低功耗可穿戴专门设计的芯片。\n\n从你给的搜索结果看，它的核心卖点是：\n\n- **TSMC 6nm**\n- **八核 CPU**\n- **约 4 TOPS 级 AI 算力**（但也有 3.2 TOPS 说法，存在冲突）\n- **双显示 / 多摄像头 / 较强多媒体**\n- **Wi‑Fi 6E + Bluetooth 5.3**\n- **Android / Yocto Linux / Ubuntu**\n- **10 年生命周期支持**\n\n对“智能摩托车全盔”这类产品，它**更适合高配、车载供电、强调视觉 AI 和多媒体的头盔/头显终端**，不太适合**超轻量、超长续航、纯电池小体积**方案。\n\n---\n\n# 1. 基本参数\n\n## 1.1 制程\n- **制程工艺：TSMC 6nm**\n- 依据：搜索结果多处一致提到“**台积电 6nm**”。\n\n## 1.2 CPU 架构与主频\n### 搜索结果存在两套说法：\n\n#### 说法 A\n- **CPU：8 核**\n- **2 × Arm Cortex-A73 + 6 × Arm Cortex-A53**\n- **主频：未查到**\n\n#### 说法 B\n- **CPU：8 核**\n- **2 × Arm Cortex-A78 + 6 × Arm Cortex-A55**\n- **主频：2.2GHz（A78）+ 2.0GHz（A55）**\n- 该说法出现在你给的“与高通 AR1 Gen1 对比”片段中。\n\n### 结论\n- **CPU 架构：存在冲突**\n- **较可信候选：2×Cortex-A78 + 6×Cortex-A55**\n  - 原因：与 6nm、4 TOPS、中高端边缘 AIoT 定位更匹配。\n- **保守写法：八核 CPU，具体大小核配置存在冲突，待官方资料核实**\n- **主频：2.2GHz / 2.0GHz（仅一处结果提及，待核实）**\n\n## 1.3 GPU 架构\n### 搜索结果存在两套说法：\n\n#### 说法 A\n- **Arm Mali-G52**\n\n#### 说法 B\n- **Arm Mali-G57 / Mali-G57 MC3**\n\n### 结论\n- **GPU：存在冲突**\n- **较可信候选：Arm Mali-G57（可能为 MC3）**\n  - 原因：与 A78/A55 组合和较新的平台定位更一致。\n- **GPU 主频：未查到**\n\n## 1.4 NPU / APU 架构与算力\n### 搜索结果存在两套说法：\n\n#### 说法 A\n- **NPU 算力：高达 4 TOPS**\n\n#### 说法 B\n- **APU 3.2 TOPS**\n\n### 结论\n- **AI 算力：存在冲突**\n- 可写为：\n  - **NPU/APU：集成专用 AI 处理器**\n  - **算力：3.2 TOPS～4 TOPS（搜索结果存在冲突，待官方确认）**\n- **NPU 架构细节：未查到**\n\n#",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "mediatek"
+  ],
+  "confidence": "high"
+}

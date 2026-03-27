@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 产品目录结构：外设接口与 USB 电气规范",
+  "domain": "components",
+  "content": "目录中 1.3.14 为 Peripheral Interfaces，表明 X5 集成多种通用外设接口。版本历史 1.0 明确新增 USB3.0 和 USB2.0 的 Electrical Specification，说明 USB 是该 SoC 板级设计和量产导入中的重点接口之一。当前截取内容未给出 UART、SPI、I2C、CAN、PCIe、GPIO 等具体列表，也未给出 USB 速率、电压摆幅、阻抗等参数，但可确认 Rev.1.0 已补充 USB 电气层规范，提升硬件设计可用性。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Peripheral Interfaces",
+    "USB3.0",
+    "USB2.0",
+    "X5",
+    "接口"
+  ],
+  "confidence": "high"
+}

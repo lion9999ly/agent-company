@@ -1,0 +1,17 @@
+{
+  "title": "EN 55032 EN 55035 smart helmet Bluetooth camera re",
+  "domain": "lessons",
+  "content": "**智能骑行头盔研发相关摘要（EN 55032 / EN 55035 EMC）**\n\n1. **适用标准与法规变化**\n- 智能头盔属**多媒体设备 MME**，EMC通常按**EN 55032（发射）+ EN 55035（抗扰度）**评估。\n- **EN 55032**已整合替代旧的**EN 55013/EN 55022**；**EN 55035**替代**EN 55020/EN 55024**。趋势是消费类智能头盔不再按单一IT/音视频设备拆分，而按“多媒体终端”统一认证。\n- 面向消费市场应按更严格的**Class B限值**设计。\n\n2. **对智能头盔的关键测试要求**\n- **蓝牙/摄像/多媒体/USB充电**会共同决定EMC风险，尤其是：\n  - 蓝牙2.4GHz使辐射发射测试范围扩展到**30MHz–6GHz**\n  - USB口既是**电源口**又可能是**数据口**，需重点做传导发射/抗扰度\n- **辐射发射 RE**：EUT放在**0.8m**非导电转台，常用**3m**测试距离；B类限值示例：\n  - 30–230MHz：**40 dBμV/m (QP)**\n  - 230MHz–1GHz：**47 dBμV/m (QP)**\n  - 1–3GHz：**50 dBμV/m (PK), 30 dBμV/m (AV)**\n  - 3–6GHz：**54 dBμV/m (PK), 34 dBμV/m (AV)**\n- **传导发射 CE**：**150kHz–30MHz**，USB/DC充电口需配**LISN**测试；B类限值示例：\n  - 150kHz–0.5MHz：**66–56 dBμV (QP), 56–46 dBμV (AV)**\n  - 0.5–5MHz：**56 / 46 dBμV**\n  - 5–30MHz：**60 / 50 dBμV**",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-25",
+  "tags": [
+    "EN 55032",
+    "EN 55035",
+    "EMC",
+    "蓝牙",
+    "摄像记录仪",
+    "USB充电",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

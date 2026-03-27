@@ -1,0 +1,14 @@
+{
+  "title": "HPU3501 Dynamic Voltage Scaling and Output Accuracy",
+  "domain": "components",
+  "content": "HPU3501 支持 DVS，整体输出电压范围覆盖 0.6V~3.6V，输出电压精度为 ±2%。其中 Buck1~Buck4 的可编程输出范围为 0.6V~1.275V，LDO 默认配置可见 0.8V、1.8V、3.3V 等电压档。该特性适合 SoC 核心电压动态调整、低功耗模式切换及多外设电压域管理。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "DVS",
+    "Voltage Accuracy",
+    "0.6V-3.6V",
+    "±2%"
+  ],
+  "confidence": "medium"
+}

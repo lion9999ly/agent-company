@@ -1,0 +1,18 @@
+{
+  "title": "HPU3501 Target Applications",
+  "domain": "components",
+  "content": "文档给出的 HPU3501 目标应用包括：AI 与视频处理器供电、智能手机、平板、AR/VR、无人机、光模块、SSD、NAS。结合其 2.7V~5.5V 输入、5 路 Buck + 3 路 LDO、RTC、I2C、时序控制和双相 Buck 能力，可见其定位为中高集成、多电源轨处理器 PMIC。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "AI",
+    "Video Processor",
+    "Smartphone",
+    "AR/VR",
+    "Drone",
+    "SSD",
+    "NAS",
+    "Optical Module"
+  ],
+  "confidence": "medium"
+}

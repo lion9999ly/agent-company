@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] JAE WP7B-S030VA1-R8000",
+  "domain": "components",
+  "content": "下面给出一份适用于**头盔系统布线/连接器选型**的**完整技术档案模板增强版**，并附带**可直接填写的标准格式**。  \n如果你后续需要，我还可以继续按这个模板，直接帮你输出具体器件的技术档案，例如：**USB-C母座、板对板BTB、FPC座、M8/M12防水圆形、Pogo Pin充电座、3.5mm/定制音频接口、IPEX/U.FL射频座**等。\n\n---\n\n# 头盔系统连接器/接口技术档案模板\n\n## 1. 基础信息\n- **节点名称：**  \n  例：主板-显示模组高速连接器 / 外置摄像头接口 / 充电口 / 左右耳罩线束接口\n\n- **厂商：**  \n  例：Hirose、JAE、Molex、TE Connectivity、Amphenol、JST、Luxshare、立讯、航插厂商等\n\n- **类别：**  \n  板对板 / 线对板 / FPC / USB-C / RF / 防水圆形 / pogo pin / 音频接口\n\n- **具体型号：**  \n  例：Hirose BMxx系列 / Molex SlimStack系列 / TE USB Type-C Receptacle / Amphenol LTW防水圆形等\n\n- **适用子系统：**  \n  HUD/AR、4K摄像、ANC/ENC、Mesh对讲、电池充电、外设扩展\n\n---\n\n## 2. 关键电气参数\n- **Pin数：**  \n  例：6Pin / 10Pin / 24Pin / 40Pin / 60Pin\n\n- **间距：**  \n  例：0.3 mm / 0.4 mm / 0.5 mm / 1.0 mm / 1.25 mm / 2.0 mm\n\n- **额定电流：**  \n  例：0.3 A/pin、0.5 A/pin、1 A/pin、3 A、5 A\n\n- **额定电压：**  \n  例：30 V / 50 V / 60 V / 100 V\n\n- **接触电阻：**  \n  例：≤30 mΩ / ≤50 mΩ\n\n- **绝缘电阻：**  \n  例：≥100 MΩ / ≥500 MΩ\n\n- **耐压：**  \n  例：100 VAC / 250 VAC / 500 VAC\n\n- **阻抗控制/高速支持：**  \n  - 是否支持差分对布线  \n  - 是否支持90 Ω / 100 Ω差分阻抗  \n  - 是否支持高速串行链路  \n  - 是否有屏蔽结构  \n  - 是否适合EMI敏感环境\n\n- **USB版本：**  \n  USB 2.0 / USB 3.2 Gen1 / USB 3.2 Gen2 / 仅充电 / 支持PD / 不支持PD\n\n- **信号能力说明：**  \n  适合低速控制 / 音频模拟 / 中速数字 / 高速视频 / 射频天线馈线\n\n---\n\n## 3. 关键机械参数\n- **堆叠高度：**  \n  例：0.6 mm / 0.8 mm / 1.0 mm / 1.5 mm / 3.0 mm\n\n- **外形尺寸：**  \n  长 × 宽 × 高，单位 mm\n\n- **安装方式：**  \n  SMT / DIP / 压接 / 焊线 / 面板安装 / 螺母固定 / 卡扣固定\n\n- **插拔寿命：**  \n  例：30次 / 50次 / 100次 / 5000次 / 10000次\n\n- **锁扣方式：**  \n  摩擦锁 / 翻盖锁 / 抽拉锁 / 螺纹锁 / 卡口锁 / 磁吸定位\n\n- **线缆出线方向：**  \n  上出线 / 下出线 / 侧出线 / 直出 / ",
+  "source": "kg_expand:connector_interface",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "connector_interface"
+  ],
+  "confidence": "high"
+}

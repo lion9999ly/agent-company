@@ -1,0 +1,16 @@
+{
+  "title": "EyeLights EyeRide：城市骑行导航、实时交通与音频体验",
+  "domain": "competitors",
+  "content": "城市骑行场景下，用户认为 EyeRide 可在无需把手机或 GPS 固定到摩托车上的情况下提供精准导航，并持续显示实时交通更新。正面反馈还包括扬声器表现优秀、音质好、设置简单、与手机配对顺畅。该条目反映其在城市通勤中的可用性优势，但未给出续航、价格等量化数据。",
+  "source": "doc_import:eyelights_competitor_analysis.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EyeLights",
+    "EyeRide",
+    "urban riding",
+    "real-time traffic",
+    "audio",
+    "phone pairing"
+  ],
+  "confidence": "high"
+}

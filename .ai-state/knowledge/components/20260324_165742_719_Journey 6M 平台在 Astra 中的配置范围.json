@@ -1,0 +1,16 @@
+{
+  "title": "Journey® 6M 平台在 Astra 中的配置范围",
+  "domain": "components",
+  "content": "Astra采用Journey® 6M平台，支持11V1R~11V5R（1L）多种传感器组合，覆盖Highway NOA、Urban NOA、APA、RPA、HPA等功能。该平台体现出较强扩展性，可在不同车型和成本带上灵活配置摄像头、毫米波雷达及1颗激光雷达，实现从高阶行车到泊车的一体化部署。",
+  "source": "doc_import:智驾大陆 Astra 产品介绍 20260206 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Journey 6M",
+    "Astra",
+    "11V1R",
+    "11V5R",
+    "1L",
+    "NOA"
+  ],
+  "confidence": "high"
+}

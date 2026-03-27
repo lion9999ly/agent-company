@@ -1,0 +1,15 @@
+{
+  "title": "N2 DCDC1/DCDC2双DC-DC模块配置",
+  "domain": "components",
+  "content": "架构图包含DCDC1与DCDC2两套模块，均由72V侧输入并输出12V。DCDC1标注“72V、12V输出、GND、DCDC使能”，DCDC2标注“+72V_VIN、DB_VCC_12V、DC_EN(72V)”。备注进一步确认“DCDC使能信号为72V”。双DCDC设计可用于负载分区、冗余或高功率附件供电，支撑仪表、灯具、锁具、雷达、记录仪、USB快充等低压系统。",
+  "source": "doc_import:N2(CAN)整车架构图_无铅酸12V-20240229.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "DCDC1",
+    "DCDC2",
+    "12V输出",
+    "72V输入",
+    "DC_EN"
+  ],
+  "confidence": "high"
+}

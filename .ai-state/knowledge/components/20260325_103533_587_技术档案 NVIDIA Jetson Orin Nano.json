@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] NVIDIA Jetson Orin Nano (NVIDIA)",
+  "domain": "components",
+  "content": "以下基于你提供的搜索结果整理，**仅使用结果中明确出现的信息**，未出现或无法确认的内容统一标注为 **“未查到”**。同时我会尽量区分 **Jetson Orin Nano 模块** 与 **开发者套件（Developer Kit）**，避免混淆。\n\n---\n\n# NVIDIA Jetson Orin Nano 完整技术档案\n\n## 0. 产品概述\n\n**NVIDIA Jetson Orin Nano** 是 NVIDIA Jetson 边缘 AI 平台中的入门级高性能计算模块，定位于**边缘 AI、机器人、智能视觉、工业自动化、教育研发**等场景。  \n其核心特点是：\n\n- 基于 **NVIDIA Ampere GPU**\n- 基于 **Arm Cortex-A78AE CPU**\n- 面向 **低功耗边缘 AI 推理**\n- 支持 JetPack 软件生态\n- 适合多摄像头、视觉 AI、机器人控制等应用\n\n---\n\n# 1. 基本参数\n\n## 1.1 制程\n- **制程：未查到**\n\n> 搜索结果中没有明确给出 Jetson Orin Nano 的工艺节点。虽然结果中提到未来制程趋势，但没有给出该芯片的官方制程值。\n\n---\n\n## 1.2 CPU 架构\n- **CPU 架构：Arm Cortex-A78AE**\n- **CPU 核心数：最高 6 核**\n\n### CPU 主频\n- **CPU 主频：未查到**\n\n---\n\n## 1.3 GPU 架构\n- **GPU 架构：NVIDIA Ampere**\n\n### GPU 规格\n根据搜索结果分为两个版本：\n\n#### Jetson Orin Nano 8GB\n- **CUDA Core：1024**\n- **Tensor Core：32**\n\n#### Jetson Orin Nano 4GB\n- **CUDA Core：512**\n- **Tensor Core：16**\n\n### GPU 主频\n- **GPU 主频：未查到**\n\n---\n\n## 1.4 NPU / AI 加速架构与算力\n严格来说，搜索结果没有把它写成独立“NPU”，而是以 **Ampere GPU + Tensor Core 提供 AI 推理能力** 来描述，因此这里按 AI 加速能力列出：\n\n### AI 算力\n- **Jetson Orin Nano 8GB：最高 40 TOPS（INT8）**\n- **Jetson Orin Nano 4GB：最高 20 TOPS（INT8）**\n\n### NPU 架构\n- **独立 NPU：未查到**\n- **AI 加速方式：Ampere GPU + Tensor Core**\n\n### NPU / AI 主频\n- **未查到**\n\n---\n\n## 1.5 内存\n- **版本：4GB / 8GB**\n- **内存类型：未查到**\n- **内存带宽：未查到**\n\n---\n\n## 1.6 模块尺寸\n- **模块尺寸：69.6 mm × 45 mm**\n\n---\n\n# 2. 接口\n\n> 这里同样只写搜索结果中明确提到的内容。\n\n## 2.1 摄像头接口\n- **MIPI CSI-2**\n- **支持多达 4 个摄像头**\n\n### 更细规格\n- CSI lane 数：**未查到**\n- 单路/总带宽：**未查到**\n- 是否支持虚拟通道：**未查到**\n\n---\n\n## 2.2 显示接口\n- **DisplayPort：支持**\n- **DSI / MIPI DSI：未查到**\n\n> ",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "nvidia"
+  ],
+  "confidence": "high"
+}

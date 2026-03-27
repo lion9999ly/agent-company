@@ -1,0 +1,15 @@
+{
+  "title": "Luna 6一体机硬件爆炸图与核心物料清单",
+  "domain": "components",
+  "content": "文档给出Luna 6一体机硬件爆炸图及6项关键物料：1) Carrier，材质AlSi8；2) 模组，HFOV 121°、VFOV 54.8°；3) PCBA，采用TE与MOLEX接插件；4) Cover，为冲压铝合金；5) 螺钉规格M2.5*6；6) 导热胶为BERGQUIST GAP FILLER TGF-4400。结构显示产品采用金属壳体、导热垫与导热胶协同散热，热管理是核心设计点。",
+  "source": "doc_import:Luna 6一体机 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "爆炸图",
+    "车载摄像头",
+    "结构件",
+    "BOM"
+  ],
+  "confidence": "high"
+}

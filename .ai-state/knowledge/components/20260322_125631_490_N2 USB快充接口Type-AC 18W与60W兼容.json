@@ -1,0 +1,15 @@
+{
+  "title": "N2 USB快充接口：Type-A+C 18W与60W兼容",
+  "domain": "components",
+  "content": "文档出现两组USB快充定义：一组为“TYPE-A+C快充(18W)”，另一组为“TYPE-A+C快充(60W)”。60W接口关联P+、GND、EN，并与车充口、记录仪等附件区域相邻。备注明确“USB的18W和60W兼容设计”，说明N2平台需兼容不同功率配置。另有“车充口的具体位置？”作为待确认项，表明接口布置仍在设计收敛中。",
+  "source": "doc_import:N2(CAN)整车架构图_无铅酸12V-20240229.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "USB快充",
+    "Type-A+C",
+    "18W",
+    "60W",
+    "车充口"
+  ],
+  "confidence": "high"
+}

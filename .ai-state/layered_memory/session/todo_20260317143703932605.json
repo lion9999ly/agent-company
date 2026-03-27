@@ -1,0 +1,14 @@
+{
+  "id": "todo_20260317143703932605",
+  "layer": "session",
+  "info_type": "todo",
+  "content": "实现分层记忆系统",
+  "importance": 8,
+  "created_at": "2026-03-17T14:37:03.932605",
+  "expires_at": null,
+  "source_session": "20260317_143703",
+  "tags": [
+    "high"
+  ],
+  "metadata": {}
+}

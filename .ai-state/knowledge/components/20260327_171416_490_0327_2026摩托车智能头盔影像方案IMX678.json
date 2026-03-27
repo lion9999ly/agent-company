@@ -1,0 +1,19 @@
+{
+  "title": "0327_2026摩托车智能头盔影像方案：IMX678 + Ambarella CV25 的可行性与散热约束",
+  "domain": "components",
+  "content": "面向全盔型智能摩托车头盔，2026年高端影像模组可参考“Sony STARVIS 2 IMX678 + Ambarella CV25”组合。IMX678为索尼1/1.8英寸、约8.42MP CMOS，原生覆盖4K UHD（3840×2160），像素尺寸约2.9μm，优势是低照度与HDR，适合夜骑、隧道口和逆光场景；供应商为Sony Semiconductor Solutions。CV25则是Ambarella的CVflow视觉SoC，支持H.264/H.265编码与4K视频处理，供应商为Ambarella, Inc.，适合作为头盔内置行车记录与基础AI识别的平台。三份来源均认为该组合适合摩托车场景，但未给出已量产头盔型号，说明它更像2026年可落地的方案级配置，而非现成整机清单。",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "摩托车智能头盔",
+    "全盔",
+    "4K行车记录仪",
+    "Sony IMX678",
+    "STARVIS 2",
+    "Ambarella CV25",
+    "散热设计",
+    "影像模组",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

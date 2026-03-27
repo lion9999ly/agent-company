@@ -1,0 +1,22 @@
+{
+  "title": "0326_NUVIZ HUD与2025摩托车头盔近眼显示路线：LCoS/DLP棱镜方案，不是Micro-OLED波导",
+  "domain": "competitors",
+  "content": "基于现有来源，首先必须澄清：**不存在“2025 NUVIZ HUD motorcycle helmet”在售新品**。NUVIZ已于2019年停止运营，且有来源称其资产被Ride Vision收购；因此若讨论“2025 NUVIZ”，更接近于对其历史方案、专利资产和后续技术路线的分析，而非真实新品拆解。对我们做**智能摩托车全盔**有价值的结论是：NUVIZ代表的是早期摩托车HUD路线，但**并非Micro-OLED+waveguide（波导）架构**。来源1、2称其原型/量产方案采用**LCoS微显示+棱镜/自由曲面反射镜**，来源3则称为**DLP微投影+透明combiner**；两者在光机表述上存在矛盾，但一致点是：**都不是波导，也不是自行车头盔方案，且产品定位为摩托车全盔/揭面盔外挂HUD**。已知公开参数包括：显示分辨率约**800×480**（来源2）或虚拟显示约**480×270**（来源3，存在冲突），亮度约**3000 nits**，发布时间约2017年，零售价市场常见为**699美元**（该价格未在本组来源直接给出，需谨慎引用）。专利层面，来源2提到NUVIZ, Inc. 的**US9891406B2《Head-up display device for a helmet》**，授权时间2018年，核心是头盔HUD的光学引擎、图像组合器与安装结构，而非Micro-OLED波导。对2025技术趋势，来源1给出一个“假设型升级路线”：若今天重做摩托车HUD，更可能采用**0.5英寸级Micro-OLED**，如**1920×1080**甚至**2K×2K**，亮度目标**5000–10000 nits**，刷新率**90/120Hz**，并配合波导实现更轻薄的近眼显示；文中举例供应链包括**Sony ECX339A**与**eMagin/三星显示**。但",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "NUVIZ",
+    "摩托车HUD",
+    "全盔",
+    "近眼显示",
+    "Micro-OLED",
+    "Waveguide",
+    "LCoS",
+    "DLP",
+    "US9891406B2",
+    "Ride Vision",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

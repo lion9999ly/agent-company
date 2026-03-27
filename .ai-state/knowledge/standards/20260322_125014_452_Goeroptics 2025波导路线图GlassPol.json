@@ -1,0 +1,17 @@
+{
+  "title": "Goeroptics 2025波导路线图：Glass、Polymer、SiC技术演进",
+  "domain": "standards",
+  "content": "Goeroptics波导路线图显示2024-2026年技术演进方向。Glass路线包括F25Ge(V1/V2)、F22Gi、F25Gi，强调高透过率、弱彩虹、厚度0.6mm、高效率与超高效率；Polymer路线包括F15Pi、G25Pi(V1/V2)、G□Pi(V3)、F20Pi，强调高MTF、弱彩虹、更轻更薄；SiC路线包括F30Se-FL、F50Se、F□Se，支持全贴合、彩虹不可见、超轻薄，FOV从50°扩展到60-70°。总体趋势为更薄、降本、提效、更轻和更大FOV。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "波导路线图",
+    "Waveguide",
+    "Glass",
+    "Polymer",
+    "SiC",
+    "2025",
+    "2026"
+  ],
+  "confidence": "high"
+}

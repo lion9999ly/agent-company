@@ -1,0 +1,16 @@
+{
+  "title": "歌尔高清音质TWS耳机参考设计：动圈低音+MEMS高音双单元",
+  "domain": "components",
+  "content": "歌尔已完成一款高清音质TWS耳机参考设计，采用“动圈低音+MEMS高音”双单元架构，频响范围20Hz-40kHz，并配置6 MIC+VACC+AI ENC方案。配套能力覆盖竞品分析、产品定义、系统架构设计、功能设计、硬件原理图设计与有效性验证，体现其在高音质真无线耳机上的系统级开发能力。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "TWS",
+    "MEMS高音",
+    "双单元",
+    "频响",
+    "6MIC",
+    "AI ENC"
+  ],
+  "confidence": "high"
+}

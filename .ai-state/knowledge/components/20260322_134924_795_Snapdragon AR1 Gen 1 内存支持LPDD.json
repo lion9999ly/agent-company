@@ -1,0 +1,13 @@
+{
+  "title": "Snapdragon AR1 Gen 1 内存支持：LPDDR4x 最高 2100 MHz",
+  "domain": "components",
+  "content": "平台支持 LPDDR4x 内存，频率最高 2100 MHz。该内存配置与智能眼镜轻量化、低功耗定位一致，可满足图像处理、AI 推理、显示输出与无线直播等任务的带宽需求，同时控制功耗与封装复杂度。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "LPDDR4x",
+    "memory",
+    "2100MHz"
+  ],
+  "confidence": "medium"
+}

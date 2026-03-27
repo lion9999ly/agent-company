@@ -1,0 +1,17 @@
+{
+  "title": "EyeLights EyeRide 负面评测：安装、续航、扬声器、遥控器与价格价值比问题",
+  "domain": "competitors",
+  "content": "该负评指出：显示效果清晰、导航易读是主要优点；但安装依赖双面胶而非支架，头盔上难找平面位置，导致安装点靠后且线缆几乎不够长。电池续航被评价为“terrible”；扬声器“非常糟糕”，通话尚可但音乐几乎无法听；遥控器约 5 次仅 1 次有效，且频繁断连，迫使用户通过 Captain Rider App 调音量，骑行中存在安全风险。用户认为即使打折购买也仍然昂贵，整体不值这个价格，并给出 2 星评价。",
+  "source": "doc_import:eyelights_competitor_analysis.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EyeLights",
+    "EyeRide",
+    "battery life",
+    "mounting",
+    "speakers",
+    "remote control",
+    "price"
+  ],
+  "confidence": "high"
+}

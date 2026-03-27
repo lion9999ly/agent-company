@@ -1,0 +1,16 @@
+{
+  "title": "Rosenberger E6S20F-40MT5-A以太网连接器：6路车载以太网拓扑",
+  "domain": "components",
+  "content": "J3以太网连接器采用Rosenberger型号E6S20F-40MT5-A，提供6路以太网接口。链路分配为：2对接网关、3对接座舱iTHU、5对接激光雷达、6对接前毫米波雷达、1/4预留。该配置显示域控通过单一多路以太网连接器汇聚车内高速网络，覆盖网关、座舱、激光雷达和前毫米波雷达等关键节点，并保留扩展端口。",
+  "source": "doc_import:Astra双J6M域控 20250610 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Rosenberger",
+    "E6S20F-40MT5-A",
+    "以太网连接器",
+    "6路以太网",
+    "网关",
+    "iTHU"
+  ],
+  "confidence": "high"
+}

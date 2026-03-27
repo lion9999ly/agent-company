@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1 重量红线与增重拆解",
+  "domain": "components",
+  "content": "用户定义的整机含电池重量红线为 ≤1.65kg，V1 推荐控制目标为 1.58–1.65kg，更安全目标是 1.58–1.62kg。报告给出电子系统增重拆解：通讯+音频 80–150g，摄像模组 20–50g，HUD 光机+支架 80–180g，4000mAh 电池 70–90g，主板/线束/散热/密封 80–150g。为降低颈部负担，HUD 模组重量建议 <150g，前后配重差控制 <80g。该结论可直接用于结构、器件和电池方案取舍。",
+  "source": "deep_research:prd_technical_baseline",
+  "created_at": "2026-03-26",
+  "tags": [
+    "重量",
+    "结构设计",
+    "HUD",
+    "1.65kg",
+    "配重",
+    "deep_research",
+    "prd_technical_baseline"
+  ],
+  "confidence": "medium"
+}

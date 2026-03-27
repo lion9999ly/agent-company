@@ -1,0 +1,16 @@
+{
+  "title": "Bern Hudson MIPS with Quin 2025 smart helmet teard",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- **概念产品**：Bern Hudson MIPS with Quin 2025（搜索结果明确为“假想/基于现有技术推演”，非已发布实机）。\n- **安全架构**：MIPS低摩擦层 + 多密度EPS + 复合材料外壳（碳纤维/玻纤/凯夫拉）+ 后部/顶部智能模块仓，强调被动防护与主动预警融合。\n- **碰撞检测模块**：核心为**6轴/9轴IMU**（示例芯片：**Bosch BMI270、ST LSM6DSOX**），高频采样；结合**ML算法**区分真实碰撞/误报，分析窗口约**500ms–2s**，确认后**10–30s**倒计时取消，再触发SOS。\n- **定位/通信**：**GNSS**（GPS/GLONASS/Galileo/北斗）用于事故定位；**BLE 5.x**用于App连接、OTA、配件互联；趋势上可加**LTE‑M/NB‑IoT蜂窝模块+eSIM**，实现脱离手机独立求救。\n- **电源/BMS**：采用**LiPo电池**，配套**PMU/BMS**做充放电与功耗优化；UI含**LED状态灯、物理SOS键、振动反馈、可选麦克风/扬声器**；内部建议用**FPC+防水连接器**减重并提升可靠性。\n\n**技术趋势/行业变化**\n- 从“蓝牙配件型头盔”转向“**传感器融合+AI碰撞识别+云/App服务**”。\n- **独立通信**（蜂窝）和**OTA持续升级**成为高端智能头盔方向。\n- **BLE Audio/Mesh**、多传感器融合、低功耗MCU（ARM Cortex‑M）是主流路线。\n\n**可借鉴设计/商业模式**\n- 设计：电子模块集中在后部以平衡重心；结构件与电子仓隔离，避免影响认证；保留手动SOS与误报取消机制。\n- 商业：硬件销售 + App服务/紧急联系人订阅；通过固件升级持续提升算法准确率。\n\n**标准/认",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "竞品",
+    "Quin",
+    "碰撞检测",
+    "拆解",
+    "BLE",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

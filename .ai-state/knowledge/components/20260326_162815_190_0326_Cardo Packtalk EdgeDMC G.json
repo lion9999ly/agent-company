@@ -1,0 +1,19 @@
+{
+  "title": "0326_Cardo Packtalk Edge（DMC Gen 2）技术条目：2025并无新型号，现售旗舰参数与采购信息",
+  "domain": "components",
+  "content": "检索结果一致指向：截至来源所述时间，Cardo并不存在名为“2025 Packtalk Edge Gen 2”的新型号或独立 technical specification PDF；当前在售的旗舰就是 Packtalk Edge，且其本身已搭载 Dynamic Mesh Communication Gen 2。对我们做智能摩托车全盔的意义在于：这是一套“安装在摩托车头盔外侧/内衬”的通讯模组，不是头盔本体，更不是自行车头盔配件，应用场景应明确限定为 motorcycle helmet。已知关键参数包括：DMC Gen 2 最多支持15名骑手组网，单节点最远约1.6 km，群组总覆盖约8 km；蓝牙版本为5.2，可同时连接2台蓝牙设备，并支持与其他品牌蓝牙对讲互联。音频部分为40 mm JBL扬声器，带3种JBL音效预设、自动音量控制、自然语音唤醒“Hey Cardo”。续航方面，通话时间最长13小时，待机约10天，20分钟快充可提供约2小时通话，完整充电约1.5-2小时，接口为USB-C。结构与环境规格方面，来源均提到IP67防水防尘，以及磁吸式 Air Mount/磁性支架，便于在全盔上快速拆装。软件侧支持 Cardo Connect App 和 OTA 无线升级。价格方面，本次3个来源未给出官方售价，因此不能硬填；若用于竞品建档，建议后续以 Cardo 官方商城或 RevZilla、Cycle Gear 等摩托车装备经销商页面补录单机/双机包价格。供应商名可确认的是 Cardo Systems（品牌/原厂），JBL（音频单元合作方）。需标注的矛盾点：一是“充满电时间”在来源中出现1.5-2小时与2小时两种表述，属于轻微口径差异；二是“是否存在独立技术规格PDF”，来源均倾向“没有单独PDF，通常以官网规格页或用户手册呈现”。结论：若我们评估摩托车智能全盔集成通讯方案，P",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Cardo",
+    "Packtalk Edge",
+    "DMC Gen 2",
+    "motorcycle helmet",
+    "mesh intercom",
+    "Bluetooth 5.2",
+    "JBL",
+    "IP67",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

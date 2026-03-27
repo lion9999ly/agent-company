@@ -1,0 +1,21 @@
+{
+  "title": "0325_2025摩托车全盔Mesh对讲方案对比：Cardo Packtalk Edge、Sena 50S/50R与Shoei S",
+  "domain": "competitors",
+  "content": "面向智能摩托车全盔，2025年可参考的主流Mesh对讲平台仍是Cardo、Sena与Shoei联名方案。先明确：本条仅讨论摩托车头盔系统，不适用于自行车头盔；自行车产品常见开放式耳机、低风噪场景与更轻电池设计，和全盔高速风噪、厚衬垫、ECE/DOT结构约束不同，不能直接类比。现有来源中“Sena 60S”并无已确认官方量产信息，应视为搜索误写或未来猜测，实际可比对象是Sena 50S/50R。Cardo Packtalk Edge采用DMC Gen 2与Bluetooth 5.2，JBL 40mm扬声器，官方常见参数为单车对单车最远约1.6km、群组总覆盖约8km、续航约13h，USB-C快充20分钟约可用2h，海外零售价通常约US$399.95，双机套装约US$699.95，供应商为Cardo Systems。Sena 50S/50R采用Mesh 2.0，支持Open Mesh与Group Mesh；来源称最多24人，这与市场上常见“Open Mesh可更多、Group Mesh常见24人”表述接近，但不同资料对人数口径不完全一致，需标注为来源差异。50S优势是Jog Dial物理旋钮，适合戴手套操作；50R更薄。其零售价通常在US$339-359区间，供应商为Sena Technologies。Shoei SRL-Mesh本质上是面向Shoei指定头盔的深度集成方案，常见适配包括GT-Air II、Neotec II、J-Cruise II等，采用Sena Mesh平台与Harman Kardon音频，价格通常约US$349-399。其价值不在绝对参数领先，而在“无外挂”外观、风噪控制和与壳体/内衬的结构匹配，更适合高端全盔原厂集成。若我们做智能全盔，产品启示有三点：第一，Mesh必须保留自愈网络与蓝牙兼容双栈，否则难覆盖车队与手机导航场景；第二，物理交互仍关键，Sen",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "motorcycle helmet",
+    "full-face helmet",
+    "Mesh intercom",
+    "Bluetooth",
+    "Cardo Packtalk Edge",
+    "Sena 50S",
+    "Sena 50R",
+    "Shoei SRL-Mesh",
+    "DMC",
+    "竞品分析",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

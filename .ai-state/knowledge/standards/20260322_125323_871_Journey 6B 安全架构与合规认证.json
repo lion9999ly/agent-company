@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 安全架构与合规认证",
+  "domain": "standards",
+  "content": "J6B 安全架构由 Trusted system、HSM、Secure world、Non-Secure world 组成。文档列出的标准与证书包括：Fully compliant with ISO/SAE 21434 Maturity Level 3、EVITA HSM Full compliant、OSCCA Certification Level 1、FIPS 140-3 Level 2。该组合表明 J6B 不仅具备芯片级安全模块，还面向汽车网络安全开发流程、HSM 规范和密码合规要求进行了系统设计，适合对整车网络安全与数据安全有较高要求的前装项目。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "ISO/SAE 21434",
+    "EVITA HSM",
+    "OSCCA",
+    "FIPS 140-3"
+  ],
+  "confidence": "high"
+}

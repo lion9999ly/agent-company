@@ -1,0 +1,16 @@
+{
+  "title": "N2仪表：TFT 5英寸彩屏，集成BT+NFC+GYRO",
+  "domain": "components",
+  "content": "N2仪表定义为“TFT 5\"彩屏”，并明确“含BT+NFC+GYRO功能”。仪表接入中控-仪表12V、CAN-H、CAN-L、Charge-ID、NC(ADDR)、P+、P-、NC(Plug-in)等接口。备注要求“仪表要有DCDC12V和电池电压的检测”，同时“P键接仪表，兼容进中控”“删除仪表复位中控的RST信号”，说明仪表兼具显示、身份交互、姿态感知及部分电源监测功能。",
+  "source": "doc_import:N2(CAN)整车架构图_无铅酸12V-20240229.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "仪表",
+    "TFT 5寸",
+    "BT",
+    "NFC",
+    "GYRO",
+    "中控"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,22 @@
+{
+  "title": "0326_Sena Stryker / Impulse 智能摩托车全盔与 Mesh 2.0 基线：2025“Mesh 3.0”应视",
+  "domain": "competitors",
+  "content": "针对“2025 Sena Mesh 3.0 motorcycle helmet intercom”检索，3个来源一致指出：截至2024年前后，Sena官方已量产的是Mesh 2.0，而非Mesh 3.0；所谓2025 Mesh 3.0参数均属预测，不能当作已发布规格。可作为摩托车全盔竞品基线的，是Sena Stryker与Impulse两款集成式智能全盔。来源给出的Mesh 2.0公开基线较一致：Open Mesh支持24个频道、近似“无限”用户接入；Group Mesh最多24人；单跳通信距离约2 km，多跳扩展约8 km（通常需至少6名骑手中继）。这意味着若我方做全盔对讲，2025年宣传口径应至少对齐“2 km单跳/24人私有组网”级别。需特别排除Sena R2：它是自行车智能头盔，不是摩托车全盔。来源2给出R2重量约390 g、续航蓝牙12 h / Mesh 8 h、价格约200-250美元，但这些数据仅可用于说明Sena在轻量化骑行头盔上的产品线，不应直接对标摩托车产品。对摩托车全盔，来源1和3都指出Stryker、Impulse当前集成的是Mesh 2.0与蓝牙5.0，而非Mesh 3.0。来源中未提供两款全盔统一售价与拆解BOM，因此“供应商/拆解”只能做谨慎推断：核心器件大概率包括蓝牙/2.4 GHz无线SoC、阵列麦克风、嵌入式扬声器、电池包、头盔壳体与EPS缓冲层，以及可能由Harman Kardon参与调音的音频模组；但这不是已证实的拆解结论。矛盾点主要在“未来Mesh 3.0”预测值：来源1预测单跳2.5-3 km、多跳10-12 km、群组30-50人、延迟低于50 ms；来源2也给出2.5-3 km和10 km以上的类似展望，但同样没有官方发布支撑。因此知识结论应写成：Sena在摩托车智能全盔市场的现实竞争力来自Stryker/Impulse + ",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Sena",
+    "Stryker",
+    "Impulse",
+    "Mesh 2.0",
+    "Mesh 3.0",
+    "motorcycle helmet",
+    "smart helmet",
+    "intercom",
+    "竞品分析",
+    "自行车头盔排除",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

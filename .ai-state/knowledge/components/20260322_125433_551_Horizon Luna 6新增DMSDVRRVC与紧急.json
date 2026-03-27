@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Luna 6新增DMS、DVR/RVC与紧急事件记录支持",
+  "domain": "components",
+  "content": "文档指出Luna 6芯片升级后支持接入DMS、DVR/RVC，并支持数据回传与紧急事件记录。这表明Luna 6不再局限于基础ADAS感知，可扩展到驾驶员监测、行车记录、倒车影像及事件数据留存等功能域，功能覆盖面较Luna 3更广。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "DMS",
+    "DVR",
+    "RVC",
+    "数据回传",
+    "紧急事件记录"
+  ],
+  "confidence": "medium"
+}

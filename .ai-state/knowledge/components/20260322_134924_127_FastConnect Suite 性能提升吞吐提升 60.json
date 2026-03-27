@@ -1,0 +1,15 @@
+{
+  "title": "FastConnect Suite 性能提升：吞吐提升 60%，时延降低 50%",
+  "domain": "components",
+  "content": "文档注明，在支持最新 FastConnect Suite 的情况下，用户可通过 Wi‑Fi 7、Wi‑Fi 6E 与 Bluetooth（qualified against Bluetooth Core 5.4）获得无卡顿共享 XR 体验。相较前代 FastConnect，吞吐量提升 60%，时延降低 50%。这对智能眼镜直播、远程协作和实时交互尤为关键。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "FastConnect Suite",
+    "throughput",
+    "latency",
+    "Wi-Fi 7",
+    "XR"
+  ],
+  "confidence": "high"
+}

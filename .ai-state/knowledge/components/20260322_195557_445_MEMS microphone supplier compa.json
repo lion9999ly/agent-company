@@ -1,0 +1,21 @@
+{
+  "title": "MEMS microphone supplier comparison：Knowles / TDK InvenSense / Goertek",
+  "domain": "components",
+  "content": "公司名称：Knowles、TDK InvenSense、歌尔股份。核心能力：Knowles为MEMS麦克风先驱，SiSonic™系列覆盖模拟、PDM、I2S接口，强调高SNR、高AOP、低功耗与高可靠性，适合高端手机、TWS、汽车与工业；TDK InvenSense依托TDK材料与制造体系，具备传感器融合与SmartSound™平台能力，主打高性能+成本平衡，适合汽车、工业及主流消费电子；歌尔具备MEMS芯片设计、封装、测试到整机组装的垂直整合能力，并与ODM/OEM协同，适合大批量消费电子项目。代工客户/品牌关系：Knowles面向苹果、三星等高端客户；TDK产品进入主流智能手机与TWS品牌；歌尔与苹果、华为、小米长期合作，是AirPods重要供应商。报价水平：原文未给出具体单价，仅显示Knowles偏高端，TDK强调竞争性价格，歌尔成本竞争力最强。产能规模：歌尔具备庞大自动化产线和大批量交付能力；Knowles、TDK未披露具体产能数字。技术参数：文中仅明确高SNR、高AOP、低功耗、多模式、模拟/PDM/I2S接口，未提供具体dB、mA等数值。时间与数字：Knowles成立于1946年，InvenSense成立于2003年、2017年被TDK收购，歌尔成立于2001年；Yole提到市场增长至2028年。",
+  "source": "jdm_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "MEMS麦克风",
+    "Knowles",
+    "TDK InvenSense",
+    "Goertek",
+    "ODM供应商",
+    "JDM选型",
+    "苹果供应链",
+    "TWS耳机",
+    "高SNR",
+    "PDM/I2S",
+    "jdm_study"
+  ],
+  "confidence": "high"
+}

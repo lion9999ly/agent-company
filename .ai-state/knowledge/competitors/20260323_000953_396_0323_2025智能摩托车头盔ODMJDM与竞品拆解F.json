@@ -1,0 +1,18 @@
+{
+  "title": "0323_2025智能摩托车头盔ODM/JDM与竞品拆解：Forcite MK1S为基准的HUD/声学/电池/BOM判断",
+  "domain": "competitors",
+  "content": "以2025年量产可行性看，智能摩托车头盔的核心不是“全彩AR HUD”，而是安全认证前提下，把导航提示、声学、摄像与电池做到可量产。现有公开竞品里，Forcite MK1S最具参考价值：美国市场MSRP为1099美元，采用碳纤维外壳、Harman Kardon扬声器、双麦克风、前置HD摄像头，以及位于鼻梁下方的LED导航/预警显示；RoadRUNNER与RideApart均提到其整盔由台湾制造伙伴生产，电子模块由Forcite在澳大利亚安装。这里存在一个重要“口径差异”：部分二手摘要把其称为HUD头盔，但更准确说法应是“LED阵列式近视线提示”，并非传统投影HUD。对ODM/JDM定义很关键，因为真正HUD会显著抬高光学、热管理与认证复杂度。",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "智能头盔",
+    "Forcite MK1S",
+    "ODM",
+    "JDM",
+    "HUD",
+    "BOM成本",
+    "中国供应链",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

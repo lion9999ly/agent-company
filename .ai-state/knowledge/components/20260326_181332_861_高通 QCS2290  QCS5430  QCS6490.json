@@ -1,0 +1,18 @@
+{
+  "title": "高通 QCS2290 / QCS5430 / QCS6490（最适合主控）",
+  "domain": "components",
+  "content": "报告认为真正适合智能骑行头盔主控的是高通 QCS/QCM 路线，代表型号包括 QCS2290、QCS5430、QCS6490 级。其典型能力包括 4 核 A53 / A78 级 CPU、Linux / Android 支持、完整摄像头、视频编解码、显示输出能力，并可外挂 NPU / DSP，适合 HUD + 影像 + 互联。价格区间为 15–40 美元/颗或 20–50+ 美元/颗，虽然 BOM 成本高、功耗和热设计压力更大、BSP 集成复杂，但报告结论是：若目标是高端一体化智能骑行头盔体验，高通 QCS 是当前“最稳妥的主控选择”，优先级高于展锐、BES、QCC 和 Nordic。",
+  "source": "deep_research:main_chipset_selection",
+  "created_at": "2026-03-26",
+  "tags": [
+    "QCS2290",
+    "QCS5430",
+    "QCS6490",
+    "应用SoC",
+    "HUD",
+    "视频编解码",
+    "deep_research",
+    "main_chipset_selection"
+  ],
+  "confidence": "medium"
+}

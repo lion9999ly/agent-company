@@ -1,0 +1,15 @@
+{
+  "title": "Luna 6光学模组视场参数：HFOV 121° / VFOV 54.8°",
+  "domain": "components",
+  "content": "爆炸图物料中明确标注模组视场角参数：HFOV 121°、VFOV 54.8°。该组合体现出横向超广角、纵向中等视场的设计取向，适合覆盖更宽车内/车前横向区域，同时控制垂直方向冗余视野。",
+  "source": "doc_import:Luna 6一体机 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "光学模组",
+    "HFOV",
+    "VFOV",
+    "镜头参数"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "47 CFR Part 15 Subpart B smart helmet digital devi",
+  "domain": "lessons",
+  "content": "**法规/认证要点**\n- 智能骑行头盔内的MCU/处理器、摄像头ISP、存储器、MIPI/USB等数字电路，按 **47 CFR Part 15 Subpart B** 属于**无意辐射体**；若面向消费市场，通常按 **Class B** 管控。\n- 关键测试：\n  - **传导发射**：USB充电线相关，**0.15–30 MHz**，依据 **15.207**；Class B限值：0.15–0.5 MHz **66–56 dBμV(QP)** / **56–46 dBμV(AVG)**，0.5–5 MHz **56/46 dBμV**，5–30 MHz **60/50 dBμV**。\n  - **辐射发射**：**30 MHz–1 GHz** 或至最高内部时钟5次谐波，依据 **15.109**；3 m限值：30–88 MHz **40 dBμV/m**，88–216 MHz **43.5 dBμV/m**，216–960 MHz **46 dBμV/m**，960 MHz以上 **54 dBμV/m**。\n- 测试方法参考 **ANSI C63.4**；国际可对照 **CISPR 32/22**。\n\n**对智能头盔研发的直接影响**\n- **USB充电/BMS** 是EMI高风险点：开关电源频率几十kHz到几MHz，易在USB线形成**共模噪声**，需重点做传导整改。\n- **摄像头/录像**：CMOS + **MIPI CSI-2**、视频编码器、高速存储读写是主要辐射源。\n- **芯片选型趋势**：高主频MCU/MPU（几十MHz到GHz）、DDR、高速总线提升功能，但显著增加EMI压力；功能集成越高，认证难度越大。\n\n**可借鉴设计策略**\n- 研发前置EMC：多层板、**完整地平面**、电源去耦、高速线短且阻抗匹配、数字/模拟/RF/电源**分区隔离**。",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "FCC",
+    "美国认证",
+    "Part 15B",
+    "数字设备",
+    "摄像头",
+    "USB充电",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

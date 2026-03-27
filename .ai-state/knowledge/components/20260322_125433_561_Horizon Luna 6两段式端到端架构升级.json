@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Luna 6两段式端到端架构升级",
+  "domain": "components",
+  "content": "Luna 3采用传统卷积方案与分离式重后处理算法架构，包括Perception Model、Post Processing、Tracking、Multi-Sensor Fusion等模块；Luna 6升级为两段式端到端技术架构，分为Perception E2E Model与Planner E2E Model。该变化代表从传统模块化感知向端到端感知与规划演进，是Luna 6相对Luna 3的关键算法代际升级。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "端到端",
+    "E2E",
+    "Perception",
+    "Planner",
+    "架构"
+  ],
+  "confidence": "high"
+}

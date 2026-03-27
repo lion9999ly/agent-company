@@ -1,0 +1,19 @@
+{
+  "title": "0326_Cardo Packtalk Edge（摩托车全盔通讯）与DMC Gen2：2025检索结果校验与竞品启示",
+  "domain": "competitors",
+  "content": "基于3个来源，Cardo Packtalk Edge可确认是面向摩托车头盔、尤其全盔/揭面盔场景的外置通讯器，而非自行车头盔产品；若后续检索混入自行车头盔Mesh对讲，应明确排除，因为安装底座、风噪抑制、手套操作和高速稳定性要求完全不同。可交叉确认的硬指标包括：Packtalk Edge于2022年末/2023年初上市，采用Air Mount磁吸底座、JBL 40mm扬声器、USB-C、IP67、蓝牙5.2、OTA升级，标称通话续航13小时，快充20分钟约可用2小时，DMC群组最多15名骑手、总覆盖距离约8km。供应商为Cardo Systems，常见销售渠道包括Cardo官网、RevZilla、WebBikeWorld提及的零售体系；市场零售价通常在US$389.95单机、Duo双机约US$699.95。",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Cardo",
+    "Packtalk Edge",
+    "DMC Gen2",
+    "motorcycle helmet",
+    "mesh intercom",
+    "JBL",
+    "IP67",
+    "Bluetooth 5.2",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

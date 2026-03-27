@@ -1,0 +1,19 @@
+{
+  "title": "恒玄 BES2700/BES2600：2026年前主流智能骑行头盔主控首选",
+  "domain": "components",
+  "content": "报告明确将恒玄科技 BES2700 评为 2026 年前后主流智能骑行头盔主控第一选择，适配蓝牙通话/对讲、导航播报、语音控制、尾灯/转向灯、事故检测、App 互联和 6–12 小时续航。BES2700 支持 Bluetooth 5.3/5.4、LE Audio、LC3、Auracast，BES2600 支持 Bluetooth 5.2。价格区间约为 BES2600 1.5–3 美元/颗、BES2700 2.5–4.5 美元/颗，通常低于同级高通方案，且功耗低、ODM/OEM 生态成熟、量产落地速度快。",
+  "source": "deep_research:main_chipset_selection",
+  "created_at": "2026-03-22",
+  "tags": [
+    "恒玄",
+    "BES2700",
+    "BES2600",
+    "蓝牙音频SoC",
+    "智能头盔",
+    "低功耗",
+    "成本优化",
+    "deep_research",
+    "main_chipset_selection"
+  ],
+  "confidence": "high"
+}

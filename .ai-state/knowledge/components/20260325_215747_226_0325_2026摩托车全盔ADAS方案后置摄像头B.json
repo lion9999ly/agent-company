@@ -1,0 +1,18 @@
+{
+  "title": "0325_2026摩托车全盔ADAS方案：后置摄像头+B​​SD可行，FCW需前视传感器，Ambarella CV25适合作为边缘",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2026年较现实的ADAS组合是“后置摄像头+盲点检测(BSD)+后向风险预警”，而不是仅靠后摄实现FCW。3个来源一致指出：后置摄像头应至少1080p@30fps，理想为1080p@60fps，视场角约150°-180°，并具备HDR、低照度、防水防震能力；这与全盔场景匹配，因为头盔空间、散热、重量和续航都比车载更苛刻。需明确排除自行车头盔：自行车产品常用低速记录或尾灯提醒，算法速度域、振动等级、风噪和法规环境均不同，不能直接复用到摩托车全盔。",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "motorcycle-helmet",
+    "ADAS",
+    "rear-camera",
+    "BSD",
+    "FCW",
+    "Ambarella",
+    "CV25",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

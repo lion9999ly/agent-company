@@ -1,0 +1,21 @@
+{
+  "title": "0325_2025年摩托车全盔SOS/eCall方案：IMU+GNSS+LTE Cat-1（Quectel EC200U）实施要点",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2025年可落地的SOS/eCall架构通常由IMU碰撞检测、GNSS定位和LTE Cat-1回传组成。需明确：本条目仅讨论摩托车头盔，不适用于自行车头盔；两者在碰撞能量、速度区间、法规环境和误报模型上差异明显，自行车方案不能直接复用。传感侧，来源均指向6轴IMU为核心，常见器件包括Bosch BMI270、ST LSM6DSOX，采样率建议100-1000Hz，用于识别瞬时高G冲击、角速度突变和翻滚姿态。为降低“头盔跌落/急刹/颠簸”误报，需做多传感器融合：IMU事件需叠加GNSS速度突降、持续静止、佩戴状态或倒计时取消机制。定位侧，多星座GNSS（GPS/GLONASS/Galileo/北斗）是主流，来源给出的精度为约2-5米，足以满足事故点上报。通信侧，LTE Cat-1适合头盔电池供电场景，来源给出峰值速率上行5Mbps、下行10Mbps，优势是功耗和成本低于Cat-4/5G，且通常支持VoLTE，便于数据上报后补充语音呼叫。模块选型上，Quectel EC200U被多次提及，关键价值是“蜂窝+GNSS一体化”，可减少PCB面积和BOM复杂度，接口一般含UART/USB/GPIO，适合与头盔主控MCU连接。供应商层面，蜂窝模块供应商为Quectel，IMU可选Bosch或ST。价格方面，给定来源未提供EC200U、BMI270或LSM6DSOX的公开成交价，因此不能臆造；若立项采购，应向Quectel授权渠道及Bosch/ST分销商询价。标准实施上，来源一致认为欧盟汽车eCall（112）是重要先例，但“摩托车头盔eCall已被强制标准化”这一点并无来源证实，因此当前更适合定义为企业级实现规范，而非已统一的强制法规。可行的最小实现链路是：IMU持续监测→算法判定事故→GNSS取坐标/时间/速度→EC200U经LTE Cat-1发送最小事故数据集，",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "摩托车全盔",
+    "eCall",
+    "SOS",
+    "碰撞检测",
+    "IMU",
+    "GNSS",
+    "LTE Cat-1",
+    "Quectel EC200U",
+    "Bosch BMI270",
+    "ST LSM6DSOX",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

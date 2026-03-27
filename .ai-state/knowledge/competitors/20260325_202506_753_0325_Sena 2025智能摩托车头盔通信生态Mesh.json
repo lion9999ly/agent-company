@@ -1,0 +1,19 @@
+{
+  "title": "0325_Sena 2025智能摩托车头盔通信生态：Mesh为已落地核心，\"Wave Intercom\"与\"60S\"暂无官方产品",
+  "domain": "competitors",
+  "content": "针对智能摩托车全盔场景，Sena当前可确认的成熟方案核心不是“Wave Intercom”，而是Sena Technologies官方已量产的Mesh Intercom 2.0与蓝牙5.0通信系统；需明确排除自行车头盔语境，以下信息仅适用于摩托车头盔/摩托车头盔通信系统。现有来源一致指出，Sena官方旗舰通信器型号为Sena 50S，而“Wave Intercom”并非Sena官方命名技术，“60S”截至原始搜索结果也未见Sena官方发布，因此若竞品调研中出现这两个词，应标注为市场误传、猜测型号或非官方叫法。50S定位为高端摩托车头盔外置通信系统，关键参数包括：支持Mesh 2.0，含Open Mesh与Group Mesh两种模式；Open Mesh在1英里（约1.6公里）范围内理论上可容纳无限用户，并提供9个频道；Group Mesh支持最多24名骑手。单设备理想通信距离约1.6-2.0公里，多跳网络在至少6名骑手、开阔地形下可扩展至约8公里。原始搜索结果还提到，Mesh 2.0相较第一代Mesh通信可靠性提升30%。音频方面，50S配备Sound by Harman Kardon，即哈曼卡顿合作扬声器与麦克风，支持语音指令、手机/GPS连接及蓝牙5.0。续航数据在来源中可确认的一组参数为：蓝牙对讲约12小时，Mesh对讲约8小时。供应商层面，核心品牌/公司为Sena Technologies，官网为sena.com；其智能头盔方向已有Sena Impulse、Sena Stryker等集成式摩托车全盔，说明Sena并非只卖外挂对讲，也在推进“通信系统+整盔”一体化。价格方面，原始搜索结果未提供Sena 50S、Impulse或Stryker的官方售价，因此不能补写具体价格，建议后续补采Sena官网或授权经销商页面。对我们做智能摩托车全盔的启示是：2025年若对标Sen",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Sena",
+    "摩托车头盔",
+    "全盔",
+    "Mesh Intercom 2.0",
+    "50S",
+    "Harman Kardon",
+    "蓝牙5.0",
+    "竞品分析",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "[Tech Radar] MCP接口与骑行技能集成",
+  "domain": "components",
+  "content": "该项目旨在探索和开发基于MCP（Motorcycle Control Platform/Protocol）的骑行技能或功能集成。可能涉及头盔通过MCP接口与摩托车车载系统进行数据交互，实现如车辆状态信息（速度、油量、档位）在HUD/AR上的显示、通过头盔控制车辆部分功能（如音乐、导航指令），或实现车辆与头盔间的Mesh对讲通信。重点在于定义和实现MCP协议下的数据传输标准和交互逻辑，提升骑行体验和安全性。",
+  "source": "platform_monitor:search",
+  "created_at": "2026-03-26",
+  "tags": [
+    "MCP",
+    "接口",
+    "互联",
+    "骑行",
+    "数据交换",
+    "控制",
+    "platform_monitor",
+    "tech_radar"
+  ],
+  "confidence": "medium"
+}

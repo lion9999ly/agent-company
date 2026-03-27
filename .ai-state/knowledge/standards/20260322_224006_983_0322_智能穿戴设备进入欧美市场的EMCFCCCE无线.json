@@ -1,0 +1,22 @@
+{
+  "title": "0322_智能穿戴设备进入欧美市场的EMC/FCC/CE无线认证要点",
+  "domain": "standards",
+  "content": "智能穿戴设备（如智能手表、手环、TWS耳机）通常集成Bluetooth、Wi‑Fi、NFC，部分型号还带LTE/5G与GNSS，因此欧美上市至少要同时考虑EMC、无线频谱、射频暴露和电气安全。欧盟侧核心是RED 2014/53/EU。其Article 3.1a要求健康与安全，常引用EN 62368-1做电气安全；贴身佩戴设备还要做RF Exposure/SAR评估，欧盟常见限值为头部/躯干2.0 W/kg（10g平均）、肢体4.0 W/kg（10g平均），常用标准包括EN 50663、EN 62209-1、EN 62209-2、EN 62479。Article 3.1b是EMC，蓝牙/Wi‑Fi设备常按EN 301 489-17，蜂窝设备常按EN 301 489-52；Article 3.2是频谱有效利用，2.4GHz蓝牙/Wi‑Fi常按EN 300 328，5GHz Wi‑Fi按EN 301 893，NFC按EN 300 330，LTE/5G按EN 301 908系列。对典型智能手表，若支持2.4GHz蓝牙5.0、发射功率约0 dBm到10 dBm，实验室会重点看占用带宽、杂散发射、接收灵敏度、频偏等参数。美国侧主要是FCC。带无线功能的穿戴设备通常走FCC ID认证路径，而不仅是普通SDoC；申请资料至少包括FCC申请表、授权信、保密信，这一点与CSDN来源一致。测试重点包括射频发射、杂散、EMC及必要时SAR。若产品含无线充电，还可能涉及FCC KDB 680106 D01v04的豁免条件判断。服务机构方面，American Certification Body, Inc.（ACB）是被FCC认可的TCB，也可作为欧盟RED公告机构提供型式检验证书；UL Solutions则提供FCC测试、EMC、SAR、IEC 62368-1等一站式服务。价格方面，给定来源未提供公",
+  "source": "daily_deep",
+  "created_at": "2026-03-22",
+  "tags": [
+    "智能穿戴",
+    "EMC",
+    "FCC",
+    "CE",
+    "RED",
+    "SAR",
+    "蓝牙",
+    "Wi-Fi",
+    "认证",
+    "标准",
+    "EMC",
+    "无线"
+  ],
+  "confidence": "high"
+}

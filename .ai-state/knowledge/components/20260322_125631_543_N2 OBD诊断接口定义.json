@@ -1,0 +1,16 @@
+{
+  "title": "N2 OBD诊断接口定义",
+  "domain": "components",
+  "content": "OBD接口定义为+12V(PIN4)、GND(PIN3)、CAN1H(PIN2)、CAN1L(PIN5)、K线(PIN6)、IGN(12V)。该配置覆盖CAN诊断与K线诊断两种方式，适配不同ECU/外设的调试需求。OBD作为售后与研发调试入口，可用于读取控制器、ABS、仪表等节点状态，符合整车电子电气系统的标准化诊断布置思路。",
+  "source": "doc_import:N2(CAN)整车架构图_无铅酸12V-20240229.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "OBD",
+    "诊断",
+    "CAN1H",
+    "CAN1L",
+    "K线",
+    "IGN"
+  ],
+  "confidence": "high"
+}

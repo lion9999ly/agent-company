@@ -1,0 +1,19 @@
+{
+  "title": "Molex PicoBlade 1.25：Luna 6 小信号层统一标准",
+  "domain": "components",
+  "content": "报告建议 Luna 6 小信号层统一到 1.25mm pitch 体系，以减少线束种类、压接治具和备料复杂度；主选为 Molex PicoBlade 1.25，TE 保留备选。推荐型号包括 Molex 51021-0200、53047-0210 和 50079 系列端子。其关键参数为 1.25mm pitch、2~15Pin、典型 1A/Pin、125V、-40°C ~ 85°C / 105°C（视具体型号），适用于按键板、麦克风、喇叭、LED 子板、传感器模组等。价格方面，Header 约 0.05–0.18 USD/pcs，Housing 约 0.03–0.08 USD/pcs，端子约 0.01–0.03 USD/pcs，2Pin 配套约 0.10–0.22 USD/set。",
+  "source": "deep_research:enrich_260",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Molex",
+    "PicoBlade",
+    "1.25mm",
+    "51021-0200",
+    "53047-0210",
+    "小信号",
+    "1A/Pin",
+    "deep_research",
+    "enrich_260"
+  ],
+  "confidence": "high"
+}

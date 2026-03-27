@@ -1,0 +1,16 @@
+{
+  "title": "MET Grancorso with Quin smart urban helmet 2025 te",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- **MET Grancorso with Quin Smart Urban Helmet（2025方向）**：主打**智能碰撞检测 ICD** + **后部LED警示** + **BLE手机互联**。\n- **传感器方案**：6轴/IMU为核心，文中提到可选 **Bosch BMI270**、**ST LSM6DSV16X**；检测线性加速度+角速度，用于识别碰撞/旋转冲击、降低误报。\n- **主控/通信**：可选 **Nordic nRF52** 或 **STM32**；通信为 **BLE 5.x**。\n- **LED模块**：高亮低功耗SMD LED，候选 **Osram OSLON Black Flat / Lumileds Luxeon**；单LED功耗约 **20–100mW**，亮度约 **10–50 lm**。\n- **电池/续航**：**LiPo 300–800mAh**，续航约 **4–10小时**；配套 **TI BQ / ADI LTC** 类电源管理，支持过充过放保护。\n- **充电接口**：倾向 **USB-C**，带防水塞/磁吸防水盖。\n\n**结构集成/拆解启发**\n- 设计理念是**“隐形智能”**：电子件尽量嵌入头盔内部，不破坏EPS吸能结构、舒适性和外观。\n- **碰撞传感器模块**：建议布置在**后部或顶部中央、贴近EPS**；采用**EPS预留腔体 + 结构胶**固定，外壳防水；可辅以**热熔/超声焊**实现一体化。\n- **LED模块**：建议位于**头盔后部**；采用**PCB+光导管**方案，光导管与PC外壳可用**双色注塑/超声焊**集成；模块通过**卡扣/螺丝+硅胶密封**实现防水。\n- **布线**：趋势是**FPC柔性电路**替代传统线束，贴合曲面、减重、减少装配复杂度；BLE天线可用**FPC",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "竞品",
+    "MET",
+    "Quin",
+    "城市头盔",
+    "模组集成",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

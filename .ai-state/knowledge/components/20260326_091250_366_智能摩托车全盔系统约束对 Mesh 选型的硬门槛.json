@@ -1,0 +1,17 @@
+{
+  "title": "智能摩托车全盔系统约束对 Mesh 选型的硬门槛",
+  "domain": "components",
+  "content": "报告强调 Mesh 选型必须服从整机系统约束：整机含电池目标 ≤ 1.65 kg，交互必须支持戴手套且满足 100 km/h 盲操，Mesh 对讲需与 ANC/ENC、语音唤醒、导航播报共存，且在 ECE 22.06 下天线、麦克风、扬声器、灯光、摄像头都要嵌入式布局。若方案导致明显侧面鼓包、EPS 开槽过多、热堆积、风噪恶化或 EMI 干扰 HUD、4K 录像、ADAS 并发稳定性，即使通信参数更强也不应选用。这是 V1 放弃自研原生 Mesh 的核心决策依据。",
+  "source": "deep_research:tree_mesh_intercom",
+  "created_at": "2026-03-26",
+  "tags": [
+    "1.65kg",
+    "ECE22.06",
+    "100km/h",
+    "EMI",
+    "系统约束",
+    "deep_research",
+    "tree_mesh_intercom"
+  ],
+  "confidence": "high"
+}

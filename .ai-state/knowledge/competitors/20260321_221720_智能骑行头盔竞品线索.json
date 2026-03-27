@@ -1,0 +1,13 @@
+{
+  "title": "智能骑行头盔竞品线索",
+  "domain": "competitors",
+  "content": "文档为竞品清单，核心与智能骑行头盔研发相关的信息主要集中在“智能竞品”页，未提供参数、价格、销量、规格或测试数据。“传统盔”页仅有表头，无实质内容。可提取的有效信息如下：1）直接头盔/摩托头盔竞品：GT‑Air 3 Smart+Eyelights、Shoei Opticson、Forcite MK1S、Motoeyes M6，说明市场存在“头盔+智能显示/灯光/互联”方向。2）头盔通信/音频相关竞品：Cardo Beyond GTS、Cardo Packtalk pro、Sena Stryker Sound、Sena Impulse、ASMAX F1 PRO、豆包耳机、光帆Lightwear耳机，提示头盔集成对讲、音频、语音交互是重要能力。3）AR/显示眼镜参考：雷鸟X3、BleeqUP、Meta Ray-Ban Display glasses、RESO Pilot Pro、夸克S1、PICO、Engo2、影目 Air 3，说明HUD/近眼显示可作为头盔信息呈现方案参考。4）影像/记录参考：Insta360 X5、DJI Osmo 360、DJI Action 6、DJI Pocket 3/4、Insta360 Go3s、Insta Nano、DJI Osmo Nano、INNOVV、盯盯拍摩托车记录仪，提示骑行记录、全景拍摄、轻量化相机模组有较强关联。5）运动与导航生态参考：COROS、Garmin、SUUNTO、Chigee（骑技）、Looki、大疆NEO2无人机，反映骑行场景可能涉及导航、运动数据、外设联动与内容记录。结论：该文档更像竞品池/生态池名单，适合用于建立智能骑行头盔的竞品地图与功能模块拆解，但不足以直接支撑参数定义或技术选型。",
+  "source": "doc_import:Project X 竞品分析.xlsx",
+  "created_at": "2026-03-21",
+  "tags": [
+    "智能头盔",
+    "骑行竞品",
+    "生态参考"
+  ],
+  "confidence": "high"
+}

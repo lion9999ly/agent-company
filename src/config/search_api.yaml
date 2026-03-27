@@ -1,0 +1,64 @@
+# 🔍 统一搜索API配置
+# @description: 配置第三方搜索API密钥与降级策略
+# @last_modified: 2026-03-17
+
+providers:
+  # === SerpAPI ===
+  # Google搜索结果API，最稳定
+  # 免费额度: 100次/月
+  # 申请地址: https://serpapi.com/
+  serpapi:
+    api_key: ""  # 从环境变量SERPAPI_KEY读取，或直接填入
+    endpoint: "https://serpapi.com/search"
+    free_limit: "100/month"
+    priority: 1
+
+  # === Tavily ===
+  # 专为AI Agent设计的搜索API
+  # 免费额度: 1000次/月
+  # 申请地址: https://tavily.com/
+  tavily:
+    api_key: ""  # 从环境变量TAVILY_API_KEY读取
+    endpoint: "https://api.tavily.com/search"
+    free_limit: "1000/month"
+    priority: 2
+    features:
+      - "include_answer: true"  # 返回AI生成的答案
+      - "search_depth: advanced"
+
+  # === Exa ===
+  # AI原生搜索引擎
+  # 免费额度: 1000次/月
+  # 申请地址: https://exa.ai/
+  exa:
+    api_key: ""  # 从环境变量EXA_API_KEY读取
+    endpoint: "https://api.exa.ai/search"
+    free_limit: "1000/month"
+    priority: 3
+    features:
+      - "useAutoprompt: true"  # 自动优化搜索词
+
+# === 降级顺序 ===
+fallback_order:
+  - serpapi    # P1: 最稳定
+  - tavily     # P2: AI优化
+  - exa        # P3: AI原生
+  - browser    # P4: 浏览器方案
+  - manual     # P5: 请求用户协助
+
+# === 超时与限制 ===
+timeout: 30
+max_results: 10
+retry_delay: 2  # 秒
+
+# === 结果缓存 ===
+cache:
+  enabled: true
+  ttl: 3600  # 1小时
+  max_size: 100
+
+# === 费用监控 ===
+cost_monitoring:
+  enabled: true
+  monthly_budget: 50  # 美元
+  alert_threshold: 0.8  # 80%时告警

@@ -1,0 +1,15 @@
+{
+  "title": "0322_competitors_Lumos smart helmet shell material P...",
+  "domain": "competitors",
+  "content": "**结构化摘要（智能骑行头盔研发相关）**\n\n1. **产品结构/材料方案**\n- Lumos类智能骑行头盔主流结构：**PC外壳 + EPS吸能层 + In-Mold一体成型**。\n- **PC（聚碳酸酯）**：提供抗穿刺、抗冲击、外观承载与尺寸稳定性。\n- **EPS（发泡聚苯乙烯）**：核心吸能层，可做**分区差异密度设计**以优化缓冲。\n- **In-Mold工艺**：PC薄壳与EPS在发泡成型时直接复合，优势是**更轻、更高结构强度、更大通风孔设计自由度、更好外观一致性**。\n\n2. **可关注的材料/供应链方向**\n- PC潜在行业供应商：**Covestro Makrolon、SABIC LEXAN、Trinseo CALIBRE、LG Chem、Teijin Panlite**。\n- EPS潜在行业供应商：**BASF Styropor/Neopor、Versalis Edistir、Sunpor、Kaneka Eperan**。\n- 研发启示：可优先筛选**高冲击、耐UV、易着色/易成型PC牌号**，以及适合头盔吸能曲线的**多密度EPS珠粒**。\n\n3. **技术趋势**\n- **旋转冲击保护**将持续强化，MIPS类方案已成高端头盔重要配置；未来标准可能更重视**旋转加速度控制**。\n- **多重冲击保护**是下一阶段方向，**EPP**因可恢复性强，可能在高端/特种骑行头盔中替代部分EPS场景。\n- 智能头盔研发需兼顾：**轻量化、通风、电子模组集成、结构安全认证**的协同设计。\n\n4. **标准/法规要点**\n- 当前核心认证：**美国 CPSC 16 CFR Part 1203、欧洲 EN 1078、澳新 AS/NZS 2063**；部分场景还涉及**ASTM F1447/F1952**。\n- 文中未给出“2026已生效的明确新条文”，但指出**到2026可能加强旋转冲击测试要求**，材料和结构设计需预留升级空间。\n\n5. **价格/数据表**\n- 搜索结果**未提供具体材料牌号参数、价格或2026认证数据表原文**。",
+  "source": "daily_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "lumos",
+    "material",
+    "supplier",
+    "2026",
+    "certification"
+  ],
+  "confidence": "medium"
+}

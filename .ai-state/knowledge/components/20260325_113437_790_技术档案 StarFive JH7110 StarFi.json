@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] StarFive JH7110 (StarFive)",
+  "domain": "components",
+  "content": "以下档案**仅基于你提供的搜索结果整理**，不额外引入外部新来源；因此凡搜索结果中未明确给出的内容，我会标注为**“未查到”**，或注明**“基于板级/社区数据估算”**。\n\n---\n\n# StarFive JH7110 完整技术档案\n\n## 1. 基本参数\n\n### 1.1 芯片定位\n- **厂商**：StarFive（星际时代）\n- **型号**：JH7110\n- **类型**：通用型 RISC-V SoC\n- **官方/公开定位**：高性能、低功耗 RISC-V SoC，面向边缘计算、IoT、工业控制、机器人、网络存储、桌面级应用等\n\n### 1.2 制程\n- **制程工艺**：**TSMC 28nm HPC+**\n- 说明：搜索结果明确提到为 **28nm HPC+（High-Performance Compact Plus）**\n\n### 1.3 CPU\n- **CPU 架构**：RISC-V\n- **CPU 核心**：\n  - 搜索结果一/二：**4× SiFive U74**\n  - 搜索结果三：**4× SiFive U74 + 1× SiFive S7 实时核心**\n- **指令集**：RV64GC\n- **主频**：**最高 1.5 GHz**\n- **缓存**：\n  - L1 I-cache：**16KB/核**\n  - L1 D-cache：**16KB/核**\n  - L2：**2MB 共享**\n- **CPU 算力**：**未查到官方 DMIPS/GOPS 数据**\n\n> 注：关于是否包含 **SiFive S7 实时核心**，搜索结果存在补充信息，但不是所有结果都一致提及。可记为：**公开二手资料显示可能带 1 个 S7 实时核心，但本次搜索结果未形成完全一致交叉确认。**\n\n### 1.4 GPU\n- **GPU 架构/型号**：**Imagination Technologies BXE-4-32**\n- **图形 API 支持**：\n  - OpenGL ES 3.2\n  - Vulkan 1.2\n  - OpenCL 1.2\n- **GPU 算力**：**未查到官方 GFLOPS 数据**\n- **GPU 主频**：**未查到**\n\n### 1.5 NPU / AI\n- **专用 NPU**：**未集成专用 NPU / 未明确集成**\n- **AI 算力**：**未查到**\n- **AI 处理方式**：\n  - 主要依赖 **CPU / GPU**\n  - 某条搜索结果提到可通过 **RISC-V Vector Extension (RVV) 或 GPU** 做 AI，但该点未见其他结果一致确认，谨慎表述为：**AI 推理主要依赖 CPU/GPU，缺乏专用低功耗 AI 加速器**\n\n### 1.6 内存\n- **支持内存类型**：**DDR4 / LPDDR4**\n- **容量**：搜索结果提到“最高可达 8GB（取决于板卡实现）”\n- **内存带宽/位宽**：**未查到**\n\n### 1.7 视频能力\n- **视频解码**：\n  - H.264/H.265 **4K@60fps**（一条结果）\n  - 另有结果写 **4K@30fps**\n  - 还提到支持 **VP9 4K@60fps**\n- **视频编码**：\n  - H.264 **1080p@30fps**\n  - 另有结果写 H.264/H.265 1080p@30fps\n- **结论**：\n  - **4K 级视频解码能力明确具备**\n  - ",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "starfive"
+  ],
+  "confidence": "high"
+}

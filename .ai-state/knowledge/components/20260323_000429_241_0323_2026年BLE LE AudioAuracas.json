@@ -1,0 +1,21 @@
+{
+  "title": "0323_2026年BLE LE Audio/Auracast智能头盔对讲方案观察",
+  "domain": "components",
+  "content": "面向2026年的智能头盔，对讲方案正从“经典蓝牙+私有Mesh”转向“BLE LE Audio+AURACAST广播音频”。从器件侧看，炬芯科技在2024年半年报披露，ATS2835P支持双模Bluetooth 5.4、LE Audio与Auracast广播、经典蓝牙Multipoint及丰富音频前后处理；同系列ATS2835K也为双核CPU+DSP架构，适合带麦克风音效的头盔/音箱类产品。该类SoC的意义在于：头盔可同时承载手机通话、导航、音乐分享和组队广播，减少传统经典蓝牙多设备切换的复杂度。供应商名明确包括炬芯科技（Actions Technology）。\n\n方案侧，RealMCU展示的“智能头盔”方案基于Realtek蓝牙音频芯片，分基础款与高阶款。基础款强调双模蓝牙连接、独立DSP降噪、I2S/SPI扩展，支持手机+另一头盔的音乐分享与对讲；高阶款则进一步集成Mesh能力。另据RealMCU在CES 2025文章，瑞昱给出LE Audio器件组合：RTL8763EAU（Dongle）、RTL8762G（HID）、RTL8763E/RTL8773D（LE Audio耳机）。虽然页面未直接给出头盔BOM价格，但按行业常见做法，若采用单颗LE Audio SoC+双麦+扬声器，2026年中高端头盔通信模组的芯片成本大概率落在5-12美元区间，整机零售则可能在399-999元人民币的附加价位带，具体取决于是否叠加Mesh、ENC和APP生态。此处价格为基于公开器件定位的推算，非来源直接报价。\n\n技术上，Auracast最适合“单向一发多收”场景，如领骑导航播报、教练指令、景区讲解或工业安全广播；而真正的多人全双工对讲，仍更依赖私有Mesh或混合架构。因此，2026年更现实的产品形态不是“纯Auracast替代对讲”，而是“LE Audio单播/多播+Mesh回传”的双栈方",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "BLE",
+    "LE Audio",
+    "Auracast",
+    "智能头盔",
+    "对讲",
+    "Realtek",
+    "炬芯科技",
+    "Bluetooth 5.4",
+    "技术",
+    "蓝牙",
+    "通讯"
+  ],
+  "confidence": "high"
+}

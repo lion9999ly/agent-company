@@ -1,0 +1,21 @@
+{
+  "title": "0325_Forcite MK1S智能摩托车全盔HUD技术现状与2026 AR升级判断",
+  "domain": "competitors",
+  "content": "Forcite（澳大利亚）MK1S是面向摩托车骑行的智能全盔，不是自行车头盔；若参考AR眼镜/自行车HUD资料，需明确其在抗冲击、风噪、ECE/DOT认证和高速可视性上的要求完全不同。现有来源较一致地表明：MK1S已量产的核心是基础HUD，而非成熟AR波导方案。已知信息包括：MK1S约于2021年前后上市，价格常见区间约1000-1200美元，供应商/品牌方为Forcite Helmets；功能含导航箭头、限速/危险提醒、蓝牙连接，以及集成摄像头与后/侧LED警示。来源1指出其HUD更像“小型透明投影屏”，显示内容以单色或有限色彩文本/图标为主；来源2则称“透明OLED或类似技术”；来源3进一步推测“极有可能采用光学波导”。这里存在明显矛盾：截至这些来源，没有Forcite官方公开确认MK1S已使用waveguide（波导）或microLED，因此“MK1S=波导+MicroLED”不能当作已证实事实，更像2026代际升级假设。若展望2026，技术路径上最合理的是：Forcite后续型号在HUD模组中引入更高亮微显示器，并结合波导提升透明度与封装紧凑性。MicroLED之所以被反复提及，是因为摩托车场景需要强日照下可读性、高对比度和低功耗；波导则有利于把显示做进镜片/视区，减少体积与遮挡。但难点同样明确：亮度均匀性、色散、视场角、量产良率、成本和头盔重量控制。关于供应链，搜索词中的Goertek（歌尔股份）在AR/VR、声学和精密制造上具备能力，因此可被视为潜在模组或整机制造候选；但本组来源没有给出Forcite与Goertek的已签约证据，也没有JDM（日本本土市场）版本、价格或认证型号数据。结论：对竞品研判应把Forcite MK1S定义为“已商业化的智能摩托车全盔HUD产品”，价格带约1000-1200美元；而“2026 AR波导+MicroLED+Goertek供应",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "motorcycle helmet",
+    "HUD",
+    "AR",
+    "waveguide",
+    "MicroLED",
+    "Goertek",
+    "smart helmet",
+    "full-face helmet",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

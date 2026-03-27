@@ -1,0 +1,21 @@
+{
+  "title": "0325_2025年摩托车全盔ADAS竞品观察：摄像头BSD/FCW仍处早期，Mobileye与Bosch更多是技术参照而非现成头",
+  "domain": "competitors",
+  "content": "基于现有3个来源，2025年“智能摩托车全盔”上的ADAS重点仍是摄像头驱动的盲点检测（BSD）与前方碰撞预警（FCW），但市场上更接近“概念验证+高端集成”，尚未看到Mobileye或Bosch直接面向头盔发布标准化量产模组。来源一致认为，方案核心是前/后广角摄像头、边缘计算SoC、HUD/音频/振动告警；潜在芯片方向包括 Ambarella、Qualcomm、NVIDIA Jetson Nano 级平台，但原始结果未给出具体型号如 IMX678、QCC5181、BES2800、EyeQ 或 Jetson Nano 的明确绑定，也未给出已量产头盔的型号对应关系，这一点应视为信息缺口。对我们做全盔产品尤其重要的是：来源讨论对象是 motorcycle helmet，不是 bicycle helmet；若参考自行车头盔的后视灯或简单摄像头产品，只能借鉴交互，不能等同于摩托车ADAS。数据层面，来源明确引用美国国家公路交通安全管理局 NHTSA：按每英里计，摩托车骑手致命事故死亡率约为乘用车乘员的28倍，这解释了 BSD/FCW 的需求强度。功能上，BSD通常依赖头盔后部或车体后向广角摄像头监测侧后方盲区，FCW则通过前向摄像头估算目标距离、相对速度与 TTC。供应商层面，Mobileye 优势在 EyeQ 系列视觉感知算法积累，Bosch 优势在两轮车安全系统、传感器与整车级 ADAS 经验，但3个来源都没有给出“Mobileye/Bosch 已商用供货某款智能摩托车头盔”的确证，因此现阶段更适合作为技术路线参照，而非可直接采购的头盔 Tier1。价格与参数方面，原始结果未提供可核验的量产头盔售价、摄像头像素、FOV、续航、整机重量，也没有 3000nits、42dB、1.65kg、$15-25/颗、￥200-300 这类具体数字，这是明显不足。唯一可落地的结论是，2025年",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "motorcycle-helmet",
+    "smart-helmet",
+    "ADAS",
+    "BSD",
+    "FCW",
+    "computer-vision",
+    "camera",
+    "Mobileye",
+    "Bosch",
+    "full-face-helmet",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

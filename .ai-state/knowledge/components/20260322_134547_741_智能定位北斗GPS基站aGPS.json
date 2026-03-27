@@ -1,0 +1,15 @@
+{
+  "title": "智能定位：北斗、GPS、基站aGPS",
+  "domain": "components",
+  "content": "文档说明：北斗卫星和GPS都属于卫星定位；基站定位属于基于流量的定位（aGPS）。户外主要使用北斗和GPS卫星定位，室内主要使用基站流量定位。国际主要卫星定位系统包括中国北斗、美国GPS、欧盟伽利略、俄罗斯Gloness。该能力是智能车联网、安防和轨迹服务的基础。",
+  "source": "doc_import:电动车基础知识-20260115 - Leo批注版.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "北斗",
+    "GPS",
+    "aGPS",
+    "基站定位",
+    "智能化"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "updated_at": "2026-03-21",
+  "topics": [
+    {"query": "智能自行车头盔 新品 2026", "domain": "competitors", "tags": ["竞品", "自行车", "新品"]},
+    {"query": "智能摩托车头盔 新品 趋势 2026", "domain": "competitors", "tags": ["竞品", "摩托车", "趋势"]},
+    {"query": "E-bike 电动自行车头盔 市场趋势", "domain": "competitors", "tags": ["竞品", "E-bike", "市场"]},
+    {"query": "骑行头盔 众筹 Kickstarter Indiegogo 2026", "domain": "competitors", "tags": ["竞品", "众筹"]},
+    {"query": "摩托车头盔 HUD 通讯 市场规模 2026", "domain": "competitors", "tags": ["竞品", "摩托车", "HUD", "市场"]},
+    {"query": "AI wearable electronics latest technology 2026", "domain": "components", "tags": ["技术", "AI", "穿戴"]},
+    {"query": "HUD 抬头显示 微投影 光波导 AR眼镜 最新方案 2026", "domain": "components", "tags": ["技术", "HUD", "光学"]},
+    {"query": "骨传导扬声器 MEMS麦克风 主动降噪 骑行应用 2026", "domain": "components", "tags": ["技术", "音频", "降噪"]},
+    {"query": "运动相机 云台防抖 微型摄像头 穿戴设备 2026", "domain": "components", "tags": ["技术", "摄像", "云台"]},
+    {"query": "LED smart lighting control ambient light adaptive wearable", "domain": "components", "tags": ["技术", "灯光", "自适应"]},
+    {"query": "多传感器融合 IMU 气压计 心率 穿戴设备 最新方案", "domain": "components", "tags": ["技术", "传感器", "融合"]},
+    {"query": "multimodal AI voice vision edge computing wearable 2026", "domain": "components", "tags": ["技术", "多模态", "边缘计算"]},
+    {"query": "头盔材料 PC EPS EPP 碳纤维 新型复合材料 轻量化", "domain": "components", "tags": ["技术", "材料", "轻量化"]},
+    {"query": "BLE LE Audio Auracast low power bluetooth 2026 new features", "domain": "components", "tags": ["技术", "蓝牙", "音频"]},
+    {"query": "wireless charging Qi2 magnetic wearable device solution 2026", "domain": "components", "tags": ["技术", "无线充电", "穿戴"]},
+    {"query": "户外运动装备 工业设计 获奖作品 iF Red Dot 2026", "domain": "lessons", "tags": ["设计", "户外", "获奖"]},
+    {"query": "出行科技产品 设计趋势 CMF 材质配色 2026", "domain": "lessons", "tags": ["设计", "出行", "CMF"]},
+    {"query": "潮玩科技 穿戴设备 年轻用户 设计语言 2026", "domain": "lessons", "tags": ["设计", "潮玩", "年轻"]},
+    {"query": "骑行装备 生活方式 城市通勤 设计 urban cycling gear", "domain": "lessons", "tags": ["设计", "骑行", "通勤"]},
+    {"query": "ECE 22.06 motorcycle helmet standard latest requirements 2026", "domain": "standards", "tags": ["标准", "ECE", "摩托车"]},
+    {"query": "DOT FMVSS 218 helmet certification update 2026", "domain": "standards", "tags": ["标准", "DOT", "认证"]},
+    {"query": "EN 1078 bicycle helmet standard revision 2026", "domain": "standards", "tags": ["标准", "EN1078", "自行车"]},
+    {"query": "智能穿戴设备 EMC 无线认证 FCC CE 要求 2026", "domain": "standards", "tags": ["标准", "EMC", "认证"]},
+    {"query": "Multi-Agent collaboration best practices 2026", "domain": "lessons", "tags": ["AI", "Multi-Agent", "最佳实践"]},
+    {"query": "LangGraph AI Agent new features tools 2026", "domain": "lessons", "tags": ["AI", "LangGraph", "工具"]}
+  ]
+}

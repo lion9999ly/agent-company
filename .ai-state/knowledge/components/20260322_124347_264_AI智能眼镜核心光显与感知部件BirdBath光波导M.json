@@ -1,0 +1,15 @@
+{
+  "title": "AI智能眼镜核心光显与感知部件：BirdBath、光波导、Micro OLED、Micro LED、LCoS",
+  "domain": "components",
+  "content": "白皮书指出，当前AI智能眼镜主要搭载BirdBath和光波导两种前沿光学方案，以及Micro OLED和Micro LED两种高性能显示方案；产业链图谱中还列出LCoS、摄像头、IMU等关键部件。光显技术进步被视为驱动产品功能体验持续提升的核心因素，也是AI+AR眼镜未来成为主流的重要技术基础。",
+  "source": "doc_import:2025中国AI智能眼镜行业白皮书 - 沙利文.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "BirdBath",
+    "光波导",
+    "Micro OLED",
+    "Micro LED",
+    "LCoS"
+  ],
+  "confidence": "high"
+}

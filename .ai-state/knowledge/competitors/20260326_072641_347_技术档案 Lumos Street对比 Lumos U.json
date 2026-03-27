@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Lumos Street（对比 Lumos Ultra / Ultra Fly / Ultra Fly MIPS）",
+  "domain": "competitors",
+  "content": "以下是基于你给出的搜索结果整理的 **Lumos Street 技术档案**，并重点与 **Lumos Ultra / Ultra Fly / Ultra Fly MIPS** 做对比。\n\n> 说明：你提供的搜索结果里，关于 **Lumos Street** 的信息明显少于 Ultra 系列，且 Street 已属较早期型号，很多参数属于公开资料汇总口径，市场上也已接近停产/停售状态。因此下面我会把内容分成：\n> 1. **已知/较高可信参数**\n> 2. **对比结论**\n> 3. **价格与客户信息**\n> 4. **不确定项说明**\n\n---\n\n# Lumos Street 技术档案\n\n## 1. 产品定位\n\n**Lumos Street** 是 Lumos 较早期的智能骑行头盔型号，核心卖点是把以下功能集成到头盔中：\n\n- 前后 LED 照明\n- 转向灯\n- 自动刹车灯\n- 蓝牙连接 App\n- 无线遥控器控制转向\n\n它的定位更偏向：\n\n- 城市通勤\n- 日常休闲骑行\n- 夜间可见性增强\n- 对“被看见”有强需求的用户\n\n相较后续的 Ultra 系列，Street 更像是 **Lumos 智能头盔路线的早期基础款/初代成熟产品**。\n\n---\n\n## 2. 核心规格参数\n\n## 2.1 基本参数\n\n| 项目 | Lumos Street |\n|---|---:|\n| 产品类型 | 智能骑行头盔 |\n| 主要场景 | 城市通勤、休闲骑行、夜骑 |\n| 重量 | 约 **380 g** |\n| 通风口数量 | **8 个** |\n| 前灯 | **10 颗白色 LED** |\n| 后灯 | **38 颗红色 LED** |\n| 转向灯 | 支持 |\n| 自动刹车灯 | 支持，基于内置加速度计 |\n| 无线遥控 | 支持 |\n| 蓝牙/App | 支持 |\n| 续航 | 约 **3–6 小时**（视模式而定） |\n| 充电时间 | 约 **2 小时** |\n| 安全认证 | CPSC、EN1078（搜索结果口径） |\n| MIPS | **不支持** |\n\n---\n\n## 2.2 功能特性\n\n### 照明系统\n- 前部白光 LED 用于提升正面可见性\n- 后部红光 LED 用于尾部警示\n- 支持转向灯提示\n- 支持刹车减速时自动高亮/触发刹车灯逻辑\n\n### 智能交互\n- 通过无线遥控器控制左右转向\n- 通过蓝牙连接 Lumos App 进行设置\n- 可调整灯光模式（通常包括常亮、闪烁等）\n\n### 安全属性\n- 满足基础自行车头盔认证标准\n- 但 **没有 MIPS 版本**\n- 相比后续 Ultra 系列，安全技术层面偏基础\n\n---\n\n## 3. 价格信息\n\n| 项目 | Lumos Street |\n|---|---:|\n| 官方建议零售价 MSR",
+  "source": "completeness_check",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "high"
+}

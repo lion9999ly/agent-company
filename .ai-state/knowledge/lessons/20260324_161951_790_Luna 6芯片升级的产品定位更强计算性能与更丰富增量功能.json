@@ -1,0 +1,15 @@
+{
+  "title": "Luna 6芯片升级的产品定位：更强计算性能与更丰富增量功能",
+  "domain": "lessons",
+  "content": "文档对Luna 6芯片升级的总体定位是：计算性能更强大，增量功能更丰富，同时“加量不加价”。支撑点包括18 TOPS算力、BPU Nash架构、0.6Gpix/s ISP、5K+ DMIPS ASIL-D MCU、4K@60fps编码回传，以及DMS、DVR/RVC、紧急事件记录等功能扩展。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "产品定位",
+    "计算性能",
+    "增量功能",
+    "加量不加价"
+  ],
+  "confidence": "high"
+}

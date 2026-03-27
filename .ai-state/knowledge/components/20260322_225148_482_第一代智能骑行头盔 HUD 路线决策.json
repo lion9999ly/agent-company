@@ -1,0 +1,16 @@
+{
+  "title": "第一代智能骑行头盔 HUD 路线决策",
+  "domain": "components",
+  "content": "报告明确建议第一代产品不上全功能透明HUD/AR HUD，也不把Micro OLED HUD作为量产主卖点；若必须上显示能力，优先级为 LED矩阵/LED提示带 > Micro OLED单目小窗 > 光波导透明HUD。推荐量产路线是 P1 做蓝牙通讯、语音、导航音频、摄像头/后视可选、LED警示/转向/导航提示，P1.5 做外挂/模块化单目显示验证，P2 再考虑Micro OLED HUD。核心原因是HUD会同时拉高BOM、结构复杂度、认证难度、售后成本和软件维护成本。",
+  "source": "deep_research:hud_decision",
+  "created_at": "2026-03-22",
+  "tags": [
+    "HUD路线",
+    "产品决策",
+    "量产策略",
+    "第一代产品",
+    "deep_research",
+    "hud_decision"
+  ],
+  "confidence": "high"
+}

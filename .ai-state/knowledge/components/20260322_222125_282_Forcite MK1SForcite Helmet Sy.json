@@ -1,0 +1,18 @@
+{
+  "title": "Forcite MK1S（Forcite Helmet Systems Pty Ltd）跨国分段供应链",
+  "domain": "components",
+  "content": "Forcite MK1S 未发现公开披露的单一 OEM 代工厂。可确认的信息是：品牌主体为 Forcite Helmet Systems Pty Ltd，总部在澳大利亚悉尼；设计、软件、系统开发在澳大利亚；有来源称碳纤维壳体在越南制造、电子部分在台湾生产、最终在悉尼组装，且媒体称其为 built-to-order in Sydney。该产品价格约 1,299 澳元，折合约 970 美元，摄像头常见宣传为 1080p。更准确的供应链判断是“越南壳体 + 台湾电子 + 悉尼总装/定制”，而非单一整机代工。",
+  "source": "deep_research:competitor_supply_chain",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "OEM",
+    "越南壳体",
+    "台湾电子",
+    "悉尼总装",
+    "deep_research",
+    "competitor_supply_chain"
+  ],
+  "confidence": "high"
+}

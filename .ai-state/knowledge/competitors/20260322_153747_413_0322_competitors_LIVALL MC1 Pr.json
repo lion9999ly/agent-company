@@ -1,0 +1,15 @@
+{
+  "title": "0322_competitors_LIVALL MC1 Pro HUD visor display 20...",
+  "domain": "competitors",
+  "content": "**相关产品/技术**\n- **LIVALL MC1 Pro HUD visor display（预计2026）**：面向智能骑行头盔的HUD遮阳板显示方案，目标显示信息含导航、速度、心率、来电通知，且可能集成**后视摄像头**。\n- **显示路线**：  \n  - **Micro-LED**：被视为户外HUD优选，优势是**高亮度/高对比/低功耗/长寿命**，适合强光骑行场景。  \n  - 备选：**LCoS、Micro-OLED**，但前者亮度一般，后者户外可视性偏弱。\n- **光学方案**：重点是**波导（Waveguide）+ 微显示模组**，用于透明叠加显示。\n\n**潜在供应链/器件方向**\n- **微显示**：JBD、Himax、Kopin、Sony 等。  \n- **波导/光学**：Lumus、DigiLens、Largan、Sunny Optical。  \n- **遮阳板材料**：**PC聚碳酸酯**仍是主流，强调**高透明、抗冲击、轻量化**；材料商可关注 **Covestro、SABIC**。  \n- **涂层**：需集成**增透、防眩、防刮、防雾、UV防护**。\n\n**通信与电子架构**\n- **Bluetooth 5.3** 是重点：  \n  - **LE Audio**：适合头盔语音/耳机低延迟连接；  \n  - **Periodic Advertising Enhancement**、**Connection Subrating**：有助于**降低功耗、延长续航**；  \n  - 安全性增强，适合骑行数据与设备互联。  \n- 潜在芯片平台：**Qualcomm、Nordic、NXP、ST** 等，研发上可优先考虑**低功耗BLE SoC + 边缘计算**架构。\n\n**技术趋势/行业变化**\n- 智能骑行头盔正从“灯光+蓝牙”升级到**HUD可视化、AR辅助、边缘AI、后视感知**。  \n- 2026方向明显偏向：**微型化、高能效、户外高亮显示、长续航**。  \n- **AI边缘计算**将减少对手机/云端依赖，提升实时性与隐私。\n\n**可借鉴设计理念**\n- 以**安全优先**为核心：只显示骑行关键数据，减少视线切换。  \n- 采用**模块化供应链**：显示、波导、通信、遮阳板材料分层选型，便于成本/性能分级。  \n- 高端款可走**HUD+后视摄像头+语音互联**组合，形成差异化。  \n\n**价格/法规**\n- 原文**未提供明确价格**。  \n- **未出现具体标准法规变更条款**。",
+  "source": "daily_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "livall",
+    "HUD",
+    "material",
+    "supplier",
+    "communication"
+  ],
+  "confidence": "medium"
+}

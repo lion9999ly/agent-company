@@ -1,0 +1,16 @@
+{
+  "title": "HUD 单眼显示经验：主导眼/非主导眼选择对体验影响显著",
+  "domain": "standards",
+  "content": "一条经验反馈提到，用户曾在 SCBA（自给式呼吸器）中使用类似系统，发现 HUD 应安装在哪只眼睛上非常关键：若放在非主导眼，体验会“完全不同”。虽然原文不完整，但可提炼出重要的人因工程结论：单眼 HUD 的适配应考虑用户主导眼，否则可能显著影响可读性、舒适度和整体体验。",
+  "source": "doc_import:eyelights_competitor_analysis.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "HUD",
+    "dominant eye",
+    "non-dominant eye",
+    "SCBA",
+    "human factors",
+    "display ergonomics"
+  ],
+  "confidence": "high"
+}

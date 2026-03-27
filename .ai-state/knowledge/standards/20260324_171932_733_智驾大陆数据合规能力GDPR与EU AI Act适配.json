@@ -1,0 +1,15 @@
+{
+  "title": "智驾大陆数据合规能力：GDPR与EU AI Act适配",
+  "domain": "standards",
+  "content": "文档指出智驾大陆具备“涵盖全球法律的合规云和数据脱敏”能力，并明确提及GDPR与EU AI Act。该能力面向海外智能驾驶数据采集、传输、存储、训练与使用全流程，重点解决欧洲市场对个人数据保护和AI系统监管的合规要求。",
+  "source": "doc_import:智驾大陆出海能力介绍 20260205 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "数据合规",
+    "GDPR",
+    "EU AI Act",
+    "数据脱敏",
+    "合规云"
+  ],
+  "confidence": "high"
+}

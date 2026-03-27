@@ -1,0 +1,15 @@
+{
+  "title": "Luna 6小域控连接器BOM总览",
+  "domain": "components",
+  "content": "连接器清单共4项：1) System Connector，零件号30059-01K，供应商THB；2) Ethernet Connector，1000BASE Ethernet interface，零件号E3SN1A-BMR131-S00P780，供应商Amphenol AACS；3) 4 in 1 mini FAKRA code B，零件号208244-0201，供应商MOLEX；4) 4 in 1 mini FAKRA code A，零件号208244-0200，供应商MOLEX。该BOM表明整机采用“1个主线束+1个千兆以太网+2个四合一同轴”的接口架构。",
+  "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "连接器清单",
+    "THB",
+    "Amphenol AACS",
+    "MOLEX",
+    "BOM"
+  ],
+  "confidence": "high"
+}

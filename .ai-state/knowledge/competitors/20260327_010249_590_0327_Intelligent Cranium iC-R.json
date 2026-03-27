@@ -1,0 +1,21 @@
+{
+  "title": "0327_Intelligent Cranium iC-R：集成后视摄像头/HUD的摩托车全盔专利与ADAS能力评估",
+  "domain": "competitors",
+  "content": "Intelligent Cranium iC-R 是面向摩托车骑行场景的智能全盔概念，核心不是自行车头盔，需与 bicycle helmet 明确区分。现有来源中最可核实的硬数据是其核心专利 **US10709204B2**，专利名为 **Motorcycle helmet with integrated rear view camera and display**，申请日 **2018-03-09**，授权日 **2020-07-14**，发明人 **Jake Lah**，受让人 **Intelligent Cranium Helmets, LLC**。该专利覆盖的关键方案是：在摩托车头盔内集成后视摄像头、显示模组/HUD、处理单元，并基于视频流实现后方态势感知，可扩展到盲点检测（BSD）与碰撞预警（CW）。\n\n从产品定义看，iC-R 的卖点是把汽车 ADAS 思路移植到摩托车头盔：后部广角摄像头采集后方画面，在骑手视野内显示，减少转头观察需求；同时通过视觉/听觉提示提醒后方快速接近车辆或侧后方目标。来源还提到系统可能结合扬声器、骨传导、振动等多模态告警，但这些更接近专利可扩展描述，未见量产参数。**价格、量产型号、电池容量、传感器规格、供应商清单**在给定来源中均未被可靠披露，因此不能臆造；唯一可确认的供应商/主体是 **Intelligent Cranium Helmets, LLC**。\n\n需要特别标注的矛盾是：来源一把 iC-R 描述为“经历多年研发和众筹、量产面临挑战”；来源三则更明确指出其在 **2013-2015** 年间主要停留于概念/原型阶段，**未实现大规模商业化上市**。因此，“**2025 Intelligent Cranium iC-R**”更可能是搜索语境中的年份标签，而**不是 2025 年新授权专利**。目前可确认的核心专利时间点仍是 **",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Intelligent Cranium",
+    "iC-R",
+    "motorcycle helmet",
+    "ADAS",
+    "rearview camera",
+    "blind spot detection",
+    "collision warning",
+    "HUD",
+    "US10709204B2",
+    "专利",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

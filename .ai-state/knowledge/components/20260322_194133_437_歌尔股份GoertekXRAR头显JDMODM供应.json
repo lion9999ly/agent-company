@@ -1,0 +1,26 @@
+{
+  "title": "歌尔股份（Goertek）：XR/AR头显JDM/ODM供应商选型要点",
+  "domain": "components",
+  "content": "公司名称：歌尔股份（Goertek）。核心能力：全球领先XR/AR/VR OEM/ODM，覆盖产品设计、原型开发到量产；在声学、光学、精密制造、供应链垂直整合和质量控制方面优势突出。代工客户：Meta（Quest 2/3/Pro）、Pico（Pico 4、Neo 3）、Sony（PS VR2）、Microsoft（HoloLens部分组件或早期版本）、HTC VIVE等。市场与产能：行业估计其VR头显制造份额可能超过70%，具备大规模量产能力。报价水平：BOM通常占直接制造成本50%-70%；Quest 2 BOM约180-200美元，对Meta制造报价约220-260美元；Pico 4 BOM约250-300美元，报价约300-380美元；Quest 3 BOM约350-400美元，报价约420-480美元；PS VR2 BOM约400-450美元，报价约480-550美元。技术参数/成本驱动：Micro-OLED单屏成本数十至数百美元；高通XR2 Gen 1/2 SoC成本数十至100多美元；支持Pancake、光波导、Fast-LCD、Micro-OLED、ToF、眼动追踪、Wi‑Fi 6/6E、Bluetooth 5.x、LPDDR5、UFS等。适合作为高复杂度智能头显/骑行头盔显示模组JDM/ODM候选。",
+  "source": "jdm_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Goertek",
+    "歌尔股份",
+    "JDM",
+    "ODM",
+    "XR头显",
+    "AR头显",
+    "VR制造",
+    "Meta Quest",
+    "Pico",
+    "Sony PS VR2",
+    "HoloLens",
+    "Pancake光学",
+    "Micro-OLED",
+    "报价",
+    "产能",
+    "jdm_study"
+  ],
+  "confidence": "high"
+}

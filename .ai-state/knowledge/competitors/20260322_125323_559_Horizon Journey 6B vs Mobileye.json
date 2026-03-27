@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Journey 6B vs Mobileye EyeQ 6L 竞品对比",
+  "domain": "competitors",
+  "content": "文档将 Journey® 6B 与 Mobileye EyeQ™ 6L 对比，强调 J6B 具备更强算力与资源以支持更多功能。关键数据：J6B 为 18 TOPS，EyeQ 6L 为 5 TOPS；J6B 提供 0.6 Gpix/s 级 ISP 带宽以保障画质并支持接入更多传感器；在 DVR 场景中，J6B 支持 emergency/event 数据记录。页面还给出“2+ times”“3+ times”的优势表述，并暗示系统成本对比中 J6B 低于 EyeQ 6L（以 ￥￥￥ vs ￥￥￥￥￥ 表示）。结论是 J6B 在功能扩展与成本效率上更有竞争力。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "Mobileye",
+    "EyeQ 6L",
+    "TOPS",
+    "ISP",
+    "DVR"
+  ],
+  "confidence": "high"
+}

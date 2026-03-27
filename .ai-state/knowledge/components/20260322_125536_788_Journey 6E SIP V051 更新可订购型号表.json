@@ -1,0 +1,14 @@
+{
+  "title": "Journey 6E SIP V0.51 更新：可订购型号表再次修订",
+  "domain": "components",
+  "content": "V0.51（2024-09-30）仅记录一项更新：Section 2 的 Table 2-1 Orderable Part 被更新。虽然改动范围小，但可订购型号表的再次修订通常意味着 SKU、封装组合、配置版本或商业化命名仍在调整，采购和BOM冻结前需再次核对最新版本。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "V0.51",
+    "2024-09-30",
+    "Orderable Part",
+    "Section 2"
+  ],
+  "confidence": "medium"
+}

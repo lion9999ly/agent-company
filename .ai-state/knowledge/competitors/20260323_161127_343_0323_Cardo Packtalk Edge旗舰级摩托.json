@@ -1,0 +1,19 @@
+{
+  "title": "0323_Cardo Packtalk Edge：旗舰级摩托车全盔对讲系统，核心为DMC Gen2而非“Mesh 3.0”",
+  "domain": "competitors",
+  "content": "Cardo Packtalk Edge 是 Cardo Systems 面向摩托车头盔市场推出的旗舰对讲器，定位明确属于摩托车全盔/揭面盔通信配件，不是自行车头盔产品，相关参数也应按摩托车高速骑行场景理解。基于现有来源，用户搜索中的“Mesh 3.0”并非 Cardo 官方主打术语，Edge 的核心网状通信技术实际是 DMC Gen2（Dynamic Mesh Communication 第二代），这一点需要明确标注，避免与其他品牌或非官方说法混淆。Packtalk Edge 支持最多 15 名骑手全双工通话，理想条件下两机点对点距离约 1.6 公里（1 英里），群组总覆盖可扩展至约 8 公里（5 英里）。连接层面采用 Bluetooth 5.2，可同时连接 2 台蓝牙设备，常见组合是手机+GPS/TFT，支持 A2DP 与 HFP。音频部分由 JBL 定制 40mm 扬声器，是其高端卖点之一，适合高速环境下语音清晰度和音乐表现。交互上支持 Natural Voice Operation，自然语音命令如“Hey Cardo, music on”可减少骑行中手动操作。硬件安装采用 Air Mount 磁吸式底座，相比传统卡扣更强调快速拆装。来源中未给出明确 FCC 认证编号、整机电池容量、续航小时数、防护等级和官方售价，因此这些字段目前不能强行补全；若后续采购评估需要，建议再核验 FCC ID、充电接口规格、快充时间和中国区渠道价格。就竞品判断而言，Packtalk Edge 的优势在于 DMC Gen2 组网稳定性、15 人规模、JBL 40mm 音频和磁吸安装体验；潜在风险则是高端定价通常高于入门蓝牙对讲器，但本来源未提供具体价格与供应商名称，存在信息缺口。当前唯一可确认的供应商主体是品牌方 Cardo Systems。若用于我方智能摩托车全盔方案参考，最值得借鉴的是“自",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "Cardo",
+    "Packtalk Edge",
+    "摩托车头盔对讲",
+    "DMC Gen2",
+    "Bluetooth 5.2",
+    "JBL 40mm",
+    "Air Mount",
+    "Mesh通信",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

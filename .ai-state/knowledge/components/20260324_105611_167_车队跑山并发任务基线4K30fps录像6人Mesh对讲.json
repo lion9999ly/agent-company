@@ -1,0 +1,15 @@
+{
+  "title": "车队跑山并发任务基线：4K/30fps录像+6人Mesh对讲+AI高光标记",
+  "domain": "components",
+  "content": "车队跑山场景使用占比约15%，系统负载显著上升。并发任务包括：HUD赛道模式（G值球+倾角+转速光带，高刷新）、4K/30fps录像、6人Mesh自组网对讲、ADAS盲区监测、AI语音免唤醒、EIS六轴防抖实时处理、AI高光自动标记（大倾角/高G值触发）。体验要求为4K录像无掉帧、无果冻效应，Mesh对讲延迟可感知但不影响沟通，高光标记准确且不遗漏关键压弯片段。续航目标≥4h。",
+  "source": "doc_import:智能骑行头盔PRD_V1.0_To_JDM.xlsx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "车队跑山",
+    "4K/30fps",
+    "6人Mesh",
+    "EIS",
+    "4h续航"
+  ],
+  "confidence": "high"
+}

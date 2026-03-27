@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 单SoC扩展与成本优化价值",
+  "domain": "lessons",
+  "content": "文档多处强调 Journey 6B 的单 SoC 集成价值：可替代独立 DVR 摄像头、同时支持 DMS、ADR/EDR、前视与泊车等功能；“Single SOC supports function expansion, realizing higher system cost-effectiveness”。结合 18 TOPS AI、23K DMIPS CPU、0.64 Gpixel/s ISP、4K@60/5K@30 编解码、2×1GE 网络与 LPDDR5/4x/4 内存支持，J6B 的核心策略是通过高集成减少多芯片方案成本，并为后续功能升级保留余量。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "单SOC",
+    "成本优化",
+    "功能扩展",
+    "系统集成"
+  ],
+  "confidence": "high"
+}

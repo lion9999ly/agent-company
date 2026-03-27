@@ -1,0 +1,17 @@
+{
+  "title": "Specialized Search helmet ANGi 2025 2026 teardown ",
+  "domain": "lessons",
+  "content": "**1. 已知产品/技术基线（Specialized ANGi）**  \n- **ANGi（Angular and G-Force Indicator）**：Specialized 头盔碰撞检测模块，现状为**BLE连接手机**，触发事故后通过App向紧急联系人发送**GPS位置**。  \n- **现有集成方式**：多为**头盔后部外置小模块**。  \n- **电源**：**CR2032 纽扣电池**，续航约**6个月**。  \n- **安全系统**：高端款普遍配**MIPS**；贴合系统含 **Mindset/Headset**。  \n\n**2. 2025-2026研发趋势（对智能骑行头盔有直接借鉴）**  \n- **传感器深度集成**：碰撞传感器从外挂转向**嵌入式**，可能与**MIPS层/衬垫/泡沫结构**融合，提升外观、气动和耐久。  \n- **多IMU传感器融合**：由单点检测升级为**多点IMU阵列（加速度计+陀螺仪）**，提高对**旋转冲击/擦碰/跌落误报**的区分能力。  \n- **算法升级**：引入**机器学习**，结合**运动模式、GPS速度/海拔**做事故识别，趋势与 Apple Watch / Garmin 事故检测一致。  \n- **通信模块演进**：  \n  - 近端：**BLE 5.1+ AoA/AoD**，可提升搜救近距离定位精度；  \n  - 远端：探索**NB-IoT / LoRaWAN**，减少对手机依赖；极高端可能考虑卫星备援。  \n- **电池管理**：从一次性纽扣电池转向**可充电LiPo**，接口趋向**防水USB-C**，高端可尝试**Qi无线充电**。  \n- **安全结构趋势**：MIPS向 **Integra / Spherical** 等更深度集成方案发展。  \n\n**3. 可借鉴设计/商业模式**  \n- **“安",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "竞品",
+    "Specialized",
+    "ANGi",
+    "碰撞检测",
+    "BLE",
+    "MIPS",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

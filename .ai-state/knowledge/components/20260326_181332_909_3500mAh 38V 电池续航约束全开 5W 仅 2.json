@@ -1,0 +1,18 @@
+{
+  "title": "3500mAh 3.8V 电池续航约束（全开 5W 仅 2.6 小时）",
+  "domain": "components",
+  "content": "报告给出关键功耗测算：若整机电池为 3500mAh、3.8V，则总能量约 13.3Wh；若系统平均功耗达到 5W，理论续航只有 2.6 小时。这意味着在 V1 中若同时全开 4K 录像 + HUD 高亮 + 多麦降噪 + Wi‑Fi 并发，几乎不可能实现 ≥8h 续航。因此产品策略必须从“找一颗神奇单芯片”转向“主控负责高负载任务、音频副控负责常开低功耗任务、通过场景调度压低平均功耗”。报告建议非必要时录像降到 1080P、ADAS 采用事件触发、HUD 动态调光、音频链路交给低功耗副控常开。",
+  "source": "deep_research:main_chipset_selection",
+  "created_at": "2026-03-26",
+  "tags": [
+    "续航",
+    "功耗",
+    "3500mAh",
+    "13.3Wh",
+    "5W",
+    "2.6小时",
+    "deep_research",
+    "main_chipset_selection"
+  ],
+  "confidence": "medium"
+}

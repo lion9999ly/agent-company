@@ -1,0 +1,17 @@
+{
+  "title": "歌尔股份（Goertek）智能头盔JDM报价区间",
+  "domain": "components",
+  "content": "报告基于行业BOM、竞品价格和歌尔客户定位推算，歌尔智能模组/JDM开发费大概率在数百万元人民币起。基础项目NRE约200–500万元，复杂项目（含HUD/摄像头/多认证）约500–1500万元以上。量产出厂价方面，基础智能通讯头盔约600–900元/顶，中配智能安全头盔约900–1400元/顶，高配HUD智能摩托车头盔约1400–2500元/顶，甚至更高；若带HUD/AR、双摄、Mesh、AI语音，可上探2000元以上。报告强调这些均为推算值，不是官方报价。",
+  "source": "deep_research:goertek_profile",
+  "created_at": "2026-03-22",
+  "tags": [
+    "歌尔股份",
+    "报价",
+    "NRE",
+    "HUD",
+    "智能头盔",
+    "deep_research",
+    "goertek_profile"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,11 @@
+{
+  "title": "标准库明显偏少，影响方案合规性与说服力，需补充头盔相关无线充电、灯光、电池与EMC安全标准。",
+  "domain": "lessons",
+  "content": "好的，作为研究助手，我将为您深入调研并扩充标准列表至15条以上，优先涵盖Qi、IEC/UL电池安全、EMC、IP防护、骑行灯光可视性相关标准，并提供详细的数据和事实支撑。同时，我将建立一个任务引用模板，以方便您进行项目管理和合规性跟踪。\n\n---\n\n## 深入调研：核心标准扩充与解析\n\n以下是根据您的要求，扩充并详细解析的各项标准，总计超过20条，涵盖了您优先关注的领域及其他重要的产品合规性方面。\n\n### 一、 无线充电 (Qi) 相关标准\n\nQi是无线充电联盟（Wireless Power Consortium, WPC）制定的一项开放接口标准，用于感应式无线电力传输。\n\n1.  **WPC Qi Specification (e.g., Version 1.3.2)**\n    *   **标准编号:** WPC Qi Specification (最新版本如 1.3.2)\n    *   **标题:** Wireless Power Transfer System Power Class 0 Specification\n    *   **范围/应用:** 定义了无线充电器（Power Transmitter, PTU）和接收器（Power Receiver, PRU）之间的电力传输、通信协议、安全机制（如异物检测FOD、过温保护）等。适用于智能手机、耳机、智能手表等消费电子产品。\n    *   **关键方面:**\n        *   **电力传输等级:** 定义了不同功率等级（如Baseline Power Profile, Extended Power Profile）。\n        *   **通信协议:** PTU和PRU之间的握手、功率控制等。\n        *   **异物检测 (FOD):** 防止金属异物在充电区域引起过热。\n      ",
+  "source": "self_evolution",
+  "created_at": "2026-03-21",
+  "tags": [
+    "auto_evolution"
+  ],
+  "confidence": "medium"
+}

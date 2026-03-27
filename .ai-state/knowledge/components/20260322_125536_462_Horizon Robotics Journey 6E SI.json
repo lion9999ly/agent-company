@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Robotics Journey 6E SIP Datasheet Rev.0.51（开发中产品）",
+  "domain": "components",
+  "content": "文档为 Horizon Robotics 的 Journey 6E SIP 数据手册，版本 Rev.0.51，日期为 August 2024。首页明确说明该产品“under development”，Horizon Robotics 保留在不通知情况下变更或停产该产品的权利。文档版权标注为 ©2018 Horizon Robotics。该条目反映产品当前仍处于开发阶段，所有参数和供货信息存在后续调整风险。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Horizon Robotics",
+    "Journey 6E",
+    "SIP",
+    "Datasheet",
+    "Rev.0.51",
+    "August 2024"
+  ],
+  "confidence": "high"
+}

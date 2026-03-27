@@ -1,0 +1,19 @@
+{
+  "title": "0323_LIVALL BH51M Neo（2025展望）关键器件与方案研判",
+  "domain": "components",
+  "content": "基于现有公开线索，LIVALL BH51M Neo 这类智能骑行头盔的核心器件大概率仍是“蓝牙音频SoC+传感器+电源管理”架构。来源未给出官方拆机BOM或datasheet，因此以下型号属于高匹配度候选，而非已证实定版。主控SoC方面，候选集中在 Qualcomm QCC30xx/QCC51xx、Airoha AB15xx/AB16xx、Realtek RTL876x、Nordic nRF52/nRF53、炬芯 ATS28xx、恒玄 BES23xx/BES25xx。若按BH51M Neo现有功能看，蓝牙版本至少应为Bluetooth 5.0，CPU多为 ARM Cortex-M0/M3/M4 级，需集成 Flash/RAM、I2C/SPI/UART/GPIO、音频编解码与低功耗待机能力；若面向2025升级并加入HUD或更强语音交互，则更可能转向带DSP/NPU能力的平台。供应商层面，高通在蓝牙音频稳定性上优势明显，但单价通常高于络达、瑞昱；恒玄与炬芯在可穿戴音频市场性价比较强。来源未提供精确采购价，只能按行业常见区间估算：中端蓝牙音频SoC批量价约3-8美元，带更强音频/AI能力的平台约6-12美元。麦克风方面，头盔通话与风噪环境决定其大概率采用MEMS麦克风，优先考虑数字PDM或模拟低噪声方案，关键指标是灵敏度、SNR、AOP及抗风噪结构适配。若做双麦通话降噪，常见单颗MEMS成本约0.2-0.8美元，供应商可比对 Knowles、Goertek、AAC、Infineon。天线方案上，头盔壳体为非金属材料，适合2.4GHz FPC天线或LDS天线；FPC成本低、调试快，单价常见约0.1-0.5美元，LDS一致性更好但模具与制造成本更高。若2025版本引入HUD，光学链路将从“音频穿戴”升级为“微显示+光波导”，候选供应商可关注波导厂商如舜宇、歌尔相关光学链，以及显示侧M",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "LIVALL",
+    "BH51M Neo",
+    "Bluetooth SoC",
+    "MEMS麦克风",
+    "天线设计",
+    "HUD波导",
+    "供应商比较",
+    "智能头盔",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

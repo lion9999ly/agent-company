@@ -1,0 +1,16 @@
+{
+  "title": "E-NCAP 四大支柱评分结构：Safe Driving / Crash Avoidance / Crash Protection / Post-Crash",
+  "domain": "standards",
+  "content": "E-NCAP总评由四大支柱组成：Safe Driving权重20、总分100；Crash Avoidance权重20、总分100；Crash Protection权重50、总分100；Post-Crash权重10、总分100。该页重点标注了Safe Driving中的Occupant Monitoring、Driver Engagement、Vehicle Assistance，以及Crash Avoidance整列，表明文档主要聚焦主动安全与驾驶监测相关得分实现。",
+  "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "E-NCAP",
+    "评分结构",
+    "Safe Driving",
+    "Crash Avoidance",
+    "Crash Protection",
+    "Post-Crash"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "EN 301 489-17 + FCC Part 15 Subpart C 智能头盔 蓝牙 Wi-F",
+  "domain": "标准法规",
+  "content": "**相关性：高（直接涉及智能头盔蓝牙/Wi‑Fi研发合规）**\n\n### 1. 适用法规/标准\n- **欧盟 RED 2014/53/EU**：智能头盔进入 EU 的核心法规。  \n- **EMC**：  \n  - **EN 301 489-1**：通用 EMC 要求  \n  - **EN 301 489-17**：针对 **2.4GHz/5GHz 宽带设备**，适用于 **Bluetooth BR/EDR/LE、Wi‑Fi 802.11a/b/g/n/ac/ax**\n- **频谱性能**：  \n  - **EN 300 328**：2.4GHz 蓝牙/Wi‑Fi  \n  - **EN 301 893**：5GHz Wi‑Fi\n- **美国 FCC Part 15 Subpart C**：蓝牙/2.4G Wi‑Fi 重点看 **15.247**；AC 供电还涉及 **15.207**，通用辐射看 **15.209**\n\n### 2. 对智能骑行头盔研发最关键的参数\n- **SAR**：头盔贴近头部，EU 头部/躯干限值通常 **2.0 W/kg（10g 平均）**  \n- **2.4GHz EIRP（EU）**：**100 mW / 20 dBm**（EN 300 328）  \n- **5GHz Wi‑Fi（EU）**：不同子频段通常 **200 mW 或 1W**，且需 **DFS**  \n- **FCC 15.247**：2.4GHz 最大峰值输出功率通常 **1W / 30 dBm**\n\n### 3. EMC/射频测试重点\n- **发射**：辐射发射、传导发射  \n- **抗扰度**：ESD、辐射抗扰、EFT、Surge、传导抗扰、电压跌落  \n- **RF 性能**：发射功率、占用带宽、杂散、频率稳定性、蓝牙跳频、5GHz DFS\n\n### 4. 对产品设计的直接启",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EN 301 489-17",
+    "FCC Part 15",
+    "EMC",
+    "RED",
+    "蓝牙",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

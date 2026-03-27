@@ -1,0 +1,15 @@
+{
+  "title": "COROS 运动穿戴品牌",
+  "domain": "competitors",
+  "content": "文档列出“COROS”。该条目属于品牌级竞品，适合用于运动数据、导航、训练生态能力对比。原文未给出具体型号，因此无法保留价格、续航、GNSS、传感器等参数；当前仅保留品牌 COROS。",
+  "source": "doc_import:Project X 竞品分析.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "COROS",
+    "运动手表",
+    "运动穿戴",
+    "导航",
+    "品牌竞品"
+  ],
+  "confidence": "medium"
+}

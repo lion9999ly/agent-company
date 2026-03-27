@@ -1,0 +1,19 @@
+{
+  "title": "TDK ICM-42688-P（仅保留为性能验证样本）",
+  "domain": "components",
+  "content": "TDK ICM-42688-P 在原始性能上优于 BMI270，参数为 Acc 噪声约 80 µg/√Hz、Gyro 噪声约 0.0055 dps/√Hz、量程 ±16g / ±2000 dps，功耗为 Acc 约 1.25mA、Gyro 约 3.2mA，价格区间 $1.8–3.2（估）。报告结论明确指出，虽然其更适合强调 EIS 和姿态原始数据质量的场景，但由于功耗不占优、传感器侧智能能力弱、系统复杂度上升，不适合作为续航敏感头盔设备的 V1 主路径。因此裁决为 V1 不走 TDK 高性能主路径，ICM-42688-P 仅保留为专项验证样本。",
+  "source": "deep_research:tree_sensor_imu",
+  "created_at": "2026-03-26",
+  "tags": [
+    "TDK",
+    "ICM-42688-P",
+    "性能验证",
+    "低噪声",
+    "高功耗",
+    "EIS",
+    "非主路径",
+    "deep_research",
+    "tree_sensor_imu"
+  ],
+  "confidence": "high"
+}

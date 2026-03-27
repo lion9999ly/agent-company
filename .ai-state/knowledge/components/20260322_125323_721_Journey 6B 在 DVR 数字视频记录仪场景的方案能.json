@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 在 DVR 数字视频记录仪场景的方案能力",
+  "domain": "components",
+  "content": "Journey 6B 扩展应用场景之一是 DVR（Digital Video Recorder）。方案亮点包括：可替代独立 DVR 摄像头以降低成本；支持 ETH 或 LVDS 输出；支持 codec 压缩；支持停车 DVR 低功耗录制模式。结合 SoC 本身视频能力，J6B 支持 H.264/265 编解码，最高 4K@60FPS 或 5K@30FPS，适合车载持续录像与事件录像。该方案核心价值是通过单芯片整合视频接入、处理、压缩与传输，减少系统 BOM 与功耗。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "DVR",
+    "Digital Video Recorder",
+    "低功耗录制",
+    "Codec"
+  ],
+  "confidence": "high"
+}

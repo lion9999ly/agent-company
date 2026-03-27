@@ -1,0 +1,22 @@
+{
+  "title": "0327_Forcite MK1S智能摩托车头盔：摄像头/音频/电子系统与潜在供应链拆解",
+  "domain": "competitors",
+  "content": "Forcite MK1S是澳大利亚Forcite Helmets推出的智能全盔，定位明确为摩托车头盔，而非自行车头盔；其结构、认证与高速骑行场景均不同，不能与自行车智能头盔混用比较。公开资料显示，MK1S核心配置包括前置集成摄像头、RAYDAR LED提示系统、蓝牙音频、GPS/IMU传感器与手机App联动。现有来源对摄像头规格存在矛盾：一组信息推测2025版可升级到4K@60fps并支持HDR/EIS，但另两组更接近已上市产品口径，指向1080p@30fps，部分提到最高可到60fps。因此在没有官方2025新款公告前，更可信的结论是MK1S公开量产规格仍以1080p级为主，4K属于趋势性推测而非已证实参数。音频方面，来源提到Forcite曾与Harman Kardon合作，头盔内置扬声器与双麦克风，连接规格为Bluetooth 5.0级别；麦克风/声学器件潜在供应商可落在Knowles、Goertek等，蓝牙/主控SoC则可能来自Qualcomm或MediaTek，但具体芯片型号未公开。摄像头供应链上，图像传感器最可能来自Sony IMX系列，也有OmniVision、Samsung的替代可能；镜头模组潜在供应商包括Largan、Sunny Optical，若考虑JDM偏好，日本Sony、Kioxia、Kantatsu等更具讨论价值。存储侧，来源提到eMMC或microSD方案，潜在闪存供应商包括Samsung、Micron、Kioxia。电池为锂离子电池，续航约4-6小时，USB-C充电。头盔壳体通常被描述为碳纤维复合材料，并符合ECE 22.05/22.06及DOT等摩托车头盔标准。价格方面，本次来源未给出官方售价，无法可靠写入具体零售价；若用于竞品库，应标注“价格待官方渠道确认”。结论上，MK1S的竞争力不在单一硬件参数，而在把摄像头、导航提醒、音频与碰撞感知集成",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "smart motorcycle helmet",
+    "全盔",
+    "摄像头",
+    "Harman Kardon",
+    "Sony",
+    "Kioxia",
+    "Bluetooth 5.0",
+    "RAYDAR",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

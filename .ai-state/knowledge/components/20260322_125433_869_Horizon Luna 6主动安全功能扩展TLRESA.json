@@ -1,0 +1,17 @@
+{
+  "title": "Horizon Luna 6主动安全功能扩展：TLR、ESA/AES、PMA、MEB",
+  "domain": "components",
+  "content": "在单芯片方案对比中，Luna 6与Luna 3均支持AEB/FCW、LDW/LKA/ELK、SAS、IHC/ADB、RCW/RCTA、BSD/LCA、DOW；但Luna 6新增支持TLR交通信号灯识别、ESA紧急转向辅助/AES自动紧急转向、PMA防油门误踩、MEB低速自动紧急制动，而Luna 3不支持这些功能。说明Luna 6主动安全覆盖更完整。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "主动安全",
+    "TLR",
+    "ESA",
+    "AES",
+    "PMA",
+    "MEB"
+  ],
+  "confidence": "high"
+}

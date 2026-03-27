@@ -1,0 +1,15 @@
+{
+  "title": "HPU3501 Buck Converters Architecture and Current Capability",
+  "domain": "components",
+  "content": "HPU3501 内置 5 路同步降压转换器。Buck1、Buck2、Buck3、Buck4 输出电压可编程范围为 0.6V~1.275V，单路最大输出电流 4A；Buck5 最大输出电流 3A。Buck 转换器工作频率为 1.2MHz，可配合较小外部器件。支持 Auto PFM 模式以提升轻载效率，也支持 Forced PWM。该架构适合 AI、视频处理器等多电源轨 SoC 供电场景。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Buck",
+    "同步降压",
+    "4A",
+    "3A",
+    "1.2MHz"
+  ],
+  "confidence": "high"
+}

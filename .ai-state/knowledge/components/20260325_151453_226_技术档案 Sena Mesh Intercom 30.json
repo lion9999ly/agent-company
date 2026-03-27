@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Sena Mesh Intercom 3.0",
+  "domain": "components",
+  "content": "下面给出一份面向“Mesh对讲与头盔无线音频互联”的**完整技术档案模板 + 可直接填充的候选技术节点清单**。  \n我会按你给的字段输出，并尽量聚焦于**骑行头盔/摩托头盔对讲、导航播报、音乐共享、相机联动、SOS广播**场景。\n\n> 说明  \n> 1. 部分商用方案厂商对底层参数未完全公开，以下内容会区分：**公开可确认**、**行业常见实现**、**需向原厂FAE确认**。  \n> 2. 如果你后续要做**选型报告/PPT/BOM建议/架构图**，我也可以基于这份档案继续整理。  \n> 3. 以下节点覆盖：**协议标准、蓝牙SoC、音频SoC、商用Mesh方案、模组**五类。\n\n---\n\n# 一、技术档案模板（标准版）\n\n- **节点名称：**  \n- **厂商/标准组织：**  \n- **节点类型：** 蓝牙SoC / 音频SoC / 协议标准 / 商用Mesh方案 / 模组  \n- **具体型号或标准号：**  \n- **目标应用：** 骑行对讲、导航播报、音乐共享、相机联动、SOS广播  \n- **无线能力：** Bluetooth版本、BLE Audio、Classic Audio、Auracast、专有Mesh  \n- **音频能力：** LC3 / CVSD / mSBC / aptX支持，采样率，双麦/多麦支持，AEC/ENC链路  \n- **Mesh能力：** 拓扑结构、最大节点数、中继能力、重连时间、组网方式  \n- **射频参数：** 发射功率、接收灵敏度、天线接口、典型距离、共存能力  \n- **并发连接：** 手机、导航、相机、乘客对讲、多设备同时连接数  \n- **时延与稳定性：** 端到端时延、丢包恢复、抗干扰、风噪场景表现  \n- **功耗与热设计：** 待机/通话/广播功耗，电池影响  \n- **头盔集成要点：** 天线布局、人体遮挡、壳体材料影响、按键/语音交互  \n- **软件生态：** SDK、协议开放度、手机APP支持、OTA能力  \n- **认证要求：** Bluetooth SIG、SRRC / FCC / CE / TELEC等  \n- **供应与成本：** 模组化可得性、量产风险、授权费用  \n- **竞品对比：**  \n- **适配建议：** 自研Mesh / 采购模组 / 高端旗舰 / 中端量产  \n- **信息来源与链接：**\n\n---\n\n# 二、核心候选节点技术档案\n\n---\n\n## 1) Bluetooth LE Audio + Auracast\n\n- **节点名称：** Bluetooth LE Audio / Auracast Broadcast Audio  \n- **厂商/标准组织：** Bluetooth SIG  \n- **节点类型：** 协议标准  \n- **具体型号或标准号：** Bluetooth Core Spec 5.2/5.3/5.4相关LE Audio框架；Auracast为Bluetooth SIG广播音频品牌  \n- **目标应用：**  \n  骑行对讲中的低功耗音频链路、导航播报、音乐共享、多人广播、SOS广播、头盔到头盔/头盔到乘客音频分发  \n- **无线能力：**  \n  - Bluetooth版本：基于BLE Isochronous Channels  \n  - BLE Audio：支持  \n  - Classic Audio：不属于其本身，但可与双模芯片共存  \n  - Auracast：支持广播音频  \n  - 专有Mesh：不直接等同于传",
+  "source": "kg_expand:mesh_intercom",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "mesh_intercom"
+  ],
+  "confidence": "high"
+}

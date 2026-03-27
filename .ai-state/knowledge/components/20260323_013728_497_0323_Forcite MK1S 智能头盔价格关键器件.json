@@ -1,0 +1,18 @@
+{
+  "title": "0323_Forcite MK1S 智能头盔：价格、关键器件与供应链拆解要点",
+  "domain": "components",
+  "content": "Forcite MK1S并非“2025新款”已公开量产机型，现有可核实信息主要来自2023年前后评测，因此“MK1S 2025 teardown/BOM”更多应视为基于现款的拆解推演。已确认数据较一致：美国零售价为1099美元，销售渠道包括Forcite官网与Tucker Powersports；可选X Master & Dynamic Speaker Upgrade Pack，价格129美元。认证方面，RideApart称其具备ECE 22.05与DOT认证；Motorcycle.com强调其为T-400 carbon fiber外壳、尺码XS-XL，并提到头盔在台湾制造、电子部分在澳大利亚安装。功能上，AI摘要称其带1080p摄像头、HUD、导航与通信，续航最高12小时，但该“12小时”未被其余来源交叉验证，应谨慎看待。",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "smart helmet",
+    "HUD",
+    "BOM",
+    "carbon fiber",
+    "Tucker Powersports",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

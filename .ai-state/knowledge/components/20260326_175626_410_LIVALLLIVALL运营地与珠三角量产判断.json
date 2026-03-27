@@ -1,0 +1,18 @@
+{
+  "title": "LIVALL（LIVALL）运营地与珠三角量产判断",
+  "domain": "components",
+  "content": "LIVALL 是中国品牌，公开运营主体长期在深圳。结合其产品形态主要为自行车/轻出行智能头盔，典型配置包括 LED灯带/转向灯、IMU、蓝牙、小电池 800–1800mAh、简单语音/遥控器联动，其价格带为 100–200美元，BOM 为 25–60美元。基于这一配置和成本结构，可中置信判断其研发和供应链中心在深圳/东莞，量产工厂大概率位于东莞、惠州或周边珠三角，但未见官方明确公布唯一主工厂地址。对决策最重要的是：LIVALL 适合作为轻智能头盔供应链成熟度样本，不应直接等同于摩托全盔能力。",
+  "source": "deep_research:competitor_supply_chain",
+  "created_at": "2026-03-26",
+  "tags": [
+    "LIVALL",
+    "深圳",
+    "东莞",
+    "惠州",
+    "智能头盔",
+    "珠三角供应链",
+    "deep_research",
+    "competitor_supply_chain"
+  ],
+  "confidence": "medium"
+}

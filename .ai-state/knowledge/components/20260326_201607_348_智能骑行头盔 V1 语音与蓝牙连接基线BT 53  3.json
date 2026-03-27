@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1 语音与蓝牙连接基线：BT 5.3 + 3–5 麦 ENC",
+  "domain": "components",
+  "content": "报告建议 V1 采用 BT 5.3 双连接，手机连接按 10–20m 稳定可用、工程上按 10m 稳定设计；车队通信先支持蓝牙点对点 300–800m、蓝牙小队/手机中转，不在 V1 上 Mesh，因 Mesh/DMC 虽可实现单跳 1.2–2km、多跳 5–8km，但会显著增加功耗、认证和复杂度。语音部分建议 3–5 麦阵列，ENC 15–20dB，ANC 10–15dB，在 100km/h 风噪环境下固定口令唤醒成功率 >95%，指令识别率 >90%，通透模式延迟 <80ms，且明确 ENC 比 ANC 更关键。",
+  "source": "deep_research:prd_technical_baseline",
+  "created_at": "2026-03-26",
+  "tags": [
+    "蓝牙",
+    "BT5.3",
+    "麦克风阵列",
+    "ENC",
+    "语音交互",
+    "deep_research",
+    "prd_technical_baseline"
+  ],
+  "confidence": "medium"
+}

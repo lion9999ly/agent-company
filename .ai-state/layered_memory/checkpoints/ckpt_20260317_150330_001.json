@@ -1,0 +1,22 @@
+{
+  "checkpoint_id": "ckpt_20260317_150330_001",
+  "session_id": "20260317_150330",
+  "created_at": "2026-03-17T15:03:30.480958",
+  "summary": "Pre-compact automatic checkpoint",
+  "key_decisions": [],
+  "key_discoveries": [],
+  "active_tasks": [],
+  "pending_todos": [],
+  "context_state": {
+    "model_config": "GPT-5.4 + Gemini 3.1 Pro",
+    "active_agents": [
+      "CPO",
+      "CTO",
+      "CMO",
+      "CPO_Critic",
+      "CRO"
+    ],
+    "session_items": 0
+  },
+  "token_count": 0
+}

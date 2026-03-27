@@ -1,0 +1,38 @@
+{
+  "description": "Claude Code Hook配置 - 强制执行项目规则",
+  "instructions": "将以下内容添加到 ~/.claude/settings.json 或项目根目录的 .claude/settings.json",
+
+  "hooks_config": {
+    "hooks": {
+      "PostToolUse": [
+        {
+          "matcher": {
+            "toolName": "Write|Edit"
+          },
+          "hooks": [
+            {
+              "type": "command",
+              "command": "python scripts/hooks/post_write_hook.py --file ${file_path}"
+            }
+          ]
+        }
+      ],
+      "Stop": [
+        {
+          "hooks": [
+            {
+              "type": "command",
+              "command": "python scripts/hooks/session_end_hook.py"
+            }
+          ]
+        }
+      ]
+    }
+  },
+
+  "notes": [
+    "PostToolUse: 每次Write/Edit后自动质量检查+标记评审",
+    "Stop: 会话结束前强制评审+检查点+归档",
+    "如果Hook返回非零退出码，Claude Code会阻止操作"
+  ]
+}

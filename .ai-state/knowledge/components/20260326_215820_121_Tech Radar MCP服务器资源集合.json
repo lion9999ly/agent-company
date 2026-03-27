@@ -1,0 +1,16 @@
+{
+  "title": "[Tech Radar] MCP服务器资源集合",
+  "domain": "components",
+  "content": "该项目汇集了Model Context Protocol (MCP) 服务器，旨在提供无缝连接和增强项目体验。对于智能头盔的MCP接口设计，可以从中获取不同MCP服务器的架构、通信机制、数据模型等技术细节，作为选型或实现参考，以确保头盔与其他系统的高效互联互通。\n\n来源: https://github.com/ayaanjan76/awesome-mcp-servers",
+  "source": "platform_monitor:https://github.com/ayaanjan76/awesome-mcp-servers",
+  "created_at": "2026-03-26",
+  "tags": [
+    "MCP",
+    "服务器",
+    "协议",
+    "接口",
+    "platform_monitor",
+    "tech_radar"
+  ],
+  "confidence": "medium"
+}

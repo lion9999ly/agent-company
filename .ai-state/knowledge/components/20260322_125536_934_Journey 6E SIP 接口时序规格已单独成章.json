@@ -1,0 +1,14 @@
+{
+  "title": "Journey 6E SIP 接口时序规格已单独成章",
+  "domain": "components",
+  "content": "修订记录显示 Section 6 为 Interface Timings Specifications，并在 V0.5（2024-07-19）进行了更新。该信息表明 Journey 6E SIP 的外部接口不仅有电气约束，还有明确时序要求，适用于高速数字接口、控制信号或同步总线设计。由于时序章节仍在更新，系统联调时需关注版本一致性。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Interface Timing",
+    "Section 6",
+    "Timing Specifications",
+    "Revision V0.5"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "Eyelights/Eyeride 电池续航与日光可视性负面反馈",
+  "domain": "lessons",
+  "content": "Reddit 用户反馈称 Eyelights/Eyeride 产品“完全是个灾难”，核心问题包括电池续航“差得离谱”，以及显示屏在日光下“几乎看不清”。该反馈直接指向两项关键产品体验短板：续航能力不足、户外强光环境显示效果差。对于摩托车 HUD 产品，这两项均属于高优先级基础性能指标，若不能满足，将显著影响骑行场景可用性与安全感知。",
+  "source": "doc_import:Eyelights用户反馈分析报告.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Eyelights",
+    "Eyeride",
+    "电池续航",
+    "日光可视性",
+    "Reddit",
+    "HUD"
+  ],
+  "confidence": "high"
+}

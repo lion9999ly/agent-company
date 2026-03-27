@@ -1,0 +1,16 @@
+{
+  "title": "Micro OLED 单目HUD成本门槛与验证指标",
+  "domain": "components",
+  "content": "Micro OLED 单目HUD采用 0.39–0.71 英寸级微显示器时，整套HUD子系统粗略BOM约 80–180 美元/套；若叠加复杂光学、定制结构和低量产摊销，成本还会更高，量产初期整机零售价通常至少要因此上浮 200–500 美元。报告将其评级为成本中高、技术风险高、量产风险高、第一代适配度中低。若作为技术储备，重点验证指标包括正午日照可视性、夜间防眩、续航是否 ≥ 4–6 小时、增重是否控制在 <120–180g，以及高低温、震动、雨淋可靠性。",
+  "source": "deep_research:hud_decision",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Micro OLED",
+    "单目HUD",
+    "成本评估",
+    "验证指标",
+    "deep_research",
+    "hud_decision"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "0322_competitors_Forcite smart motorcycle helmet she...",
+  "domain": "competitors",
+  "content": "**1. 产品/技术要点**\n- **Forcite MK1S Carbon**：明确采用**碳纤维复合外壳**，定位高端轻量化智能摩托车头盔；文中未给出重量、售价。\n- **智能系统专利方向**：核心不是材料本身，而是**集成显示+摄像头+通信/警报**。公开专利包括：\n  - **US10921609B2**：Helmet with integrated display\n  - **AU2018200049A1**：Motorcycle helmet with integrated display and camera\n  - **WO2018000001A1**：Helmet with integrated display  \n  重点覆盖：视野边缘显示导航/速度/警告、摄像头集成、数据处理与UI。\n\n**2. 材料与结构研发启示**\n- **外壳趋势**：碳纤维复合材料用于提升**强度/重量比、冲击分散、刚性与高端外观**，适合智能头盔因电子模组增加后的减重需求。\n- **内衬趋势**：\n  - **EPS**：主流方案，单次冲击吸能效率高，可做**多密度分区设计**。\n  - **EPP**：具**多次冲击恢复能力**，成本更高，适合与EPS做复合分层，提高轻微/重复冲击场景表现。\n- 可借鉴方案：**碳纤维外壳 + 多密度EPS + 局部EPP**，兼顾轻量化、单次大冲击与多次小冲击防护。\n\n**3. 供应链情报**\n- 碳纤维潜在上游：**Toray、Hexcel、Teijin、SGL Carbon、Mitsubishi Chemical**\n- 泡沫材料潜在上游：**BASF（EPS）、JSP/Arpro（EPP）、Kaneka、Sekisui**\n- 行业模式：品牌方聚焦**智能硬件/软件集成与体验**，基础材料和壳体/泡沫成型多依赖外部成熟供应链。\n\n**4. 专利/法规判断**\n- 文中未出现**2026年标准法规变更**的明确内容。\n- “**专利2026**”无直接证据；按文中判断，Forcite核心专利多申请于**2017–2019**，通常**20年保护期**，大概率不会在2026到期。",
+  "source": "daily_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "forcite",
+    "material",
+    "2026",
+    "composite",
+    "supplier"
+  ],
+  "confidence": "medium"
+}

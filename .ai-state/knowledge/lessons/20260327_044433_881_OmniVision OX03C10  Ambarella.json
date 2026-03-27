@@ -1,0 +1,17 @@
+{
+  "title": "OmniVision OX03C10 + Ambarella CV22 helmet rear ca",
+  "domain": "lessons",
+  "content": "**智能骑行头盔研发关键信息摘要**\n\n### 1. 可直接选型的核心器件\n- **OmniVision OX03C10**：汽车级 **3MP CMOS**，**2048×1536**，**1/3英寸**，**3.0µm像素**，**全局快门**，**120dB HDR**，内置 **LFM（LED Flicker Mitigation）**，接口 **MIPI CSI-2**。  \n- **认证/可靠性**：**AEC-Q100 Grade 2**、支持 **ASIL-B** 功能安全。  \n- **Ambarella CV22**：AI视觉SoC，**CVflow 1 TOPS**，内置 **ISP + H.264/H.265硬编**，最高 **4Kp60**，支持多路 MIPI 输入，适合低延迟视频链路。  \n- **价格**：原文未提供。\n\n### 2. 对头盔产品最有价值的技术点\n- **后视安全摄像头方案**：OX03C10 + CV22 适合做**头盔后置摄像头/HUD后视系统**。  \n- **HDR能力**：120dB HDR 可应对逆光、隧道口、夜间车灯等高反差场景，提升骑行安全。  \n- **LED灯控相关**：OX03C10 的 **LFM** 可稳定识别**汽车尾灯、刹车灯、交通信号灯**，避免视频中 LED 闪烁/消失，对骑行场景非常关键。  \n- **低延迟链路**：全局快门 + 高速 MIPI + CV22 低延迟 ISP/硬编码，适合做**实时后视流媒体**到 HUD、手机或外接显示器。  \n- **AI扩展**：CV22 的 1 TOPS 可支持后续加入**盲点监测、车辆识别、距离预警**等智能安全功能。\n\n### 3. 技术趋势/行业变化\n- **汽车级器件下沉到骑行装备**：头盔摄像头正从普通消费级方案转向**汽车级传感器 + AI",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "OmniVision",
+    "OX03C10",
+    "Ambarella CV22",
+    "helmet camera",
+    "HDR",
+    "LED flicker",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

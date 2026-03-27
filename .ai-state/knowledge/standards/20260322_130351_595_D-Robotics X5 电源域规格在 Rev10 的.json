@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 电源域规格在 Rev.1.0 的新增价值",
+  "domain": "standards",
+  "content": "版本 1.0（2024-08-25）新增“the min and max voltage of each power domain”，说明 X5 在正式面向 RDK release 时补充了各电源域最小/最大电压范围。这类信息对 PMIC 选型、电源时序、容差设计、板级 SI/PI 验证和可靠性评估至关重要。虽然当前截取内容未列出具体电压数值和电源域名称，但该更新表明早期版本在硬件落地信息上不完整，Rev.1.0 已显著增强工程可实施性。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Power Domain",
+    "Voltage",
+    "Rev 1.0",
+    "硬件设计",
+    "X5"
+  ],
+  "confidence": "high"
+}

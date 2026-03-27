@@ -1,0 +1,27 @@
+{
+  "title": "Sony / JBD / BOE Micro OLED/MicroLED 近眼显示供应商选型要点",
+  "domain": "components",
+  "content": "公司名称：Sony、JBD、BOE。核心能力：Sony为智能眼镜/AR近眼显示核心Micro OLED供应商，AI摘要指出其服务VITURE、Rokid，且Micro OLED具高分辨率、低功耗优势；TailorPixels提到Sony控制约80%市场份额，显示其在高端近眼显示供应链中的主导地位。JBD核心为MicroLED微显示，2025年将坏点数降至≤3/面板，并推出Hummingbird II、Roadrunner I Polychrome Projectors；官网披露Hummingbird I全彩RGB光机亮度6000 nits、FOV 30°。BOE同样被AI摘要列为AR眼镜Micro OLED供应商。代工/品牌客户：Sony已知合作品牌包括VITURE、Rokid；JBD、BOE未见明确代工客户。报价水平：本组结果未提供具体单价、模组报价或阶梯价格。产能规模：未见月产能/年产能数字。技术参数：Micro OLED强调高分辨率、低功耗；JBD已披露≤3坏点/面板、6000 nits、30° FOV。选型建议：若重视成熟客户验证与市场份额，优先评估Sony；若重视MicroLED亮度与前沿方案，可评估JBD；BOE适合作为中国本土替代供应源进一步尽调。",
+  "source": "jdm_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Micro OLED",
+    "MicroLED",
+    "Sony",
+    "JBD",
+    "BOE",
+    "AR眼镜",
+    "智能眼镜",
+    "近眼显示",
+    "VITURE",
+    "Rokid",
+    "6000 nits",
+    "30° FOV",
+    "≤3坏点/面板",
+    "80%市场份额",
+    "低功耗",
+    "高分辨率",
+    "jdm_study"
+  ],
+  "confidence": "high"
+}

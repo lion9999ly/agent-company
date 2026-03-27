@@ -1,0 +1,18 @@
+{
+  "title": "Waveguide 方案：最薄但成本高，头盔项目中小批量 300–800 美元",
+  "domain": "components",
+  "content": "Waveguide 包括衍射波导、体全息波导、反射式波导，典型 FOV 为 20°–50°，波导片厚度仅几毫米，透明度通常较高，但亮度效率普遍低于 Birdbath / Prism，眼盒常偏小。报告指出其在头盔场景中的主要问题是成本最高、亮度效率低、强日光下需要更强光机导致功耗上升，同时眼盒、均匀性、彩虹纹、鬼影以及振动和装配偏差下的体验稳定性仍不如 Birdbath/Prism。对头盔项目而言，完整显示模组中小批量大概率为 300–800 美元，大批量理想状态为 150–400 美元，成本成熟度低于 Birdbath/Prism。",
+  "source": "deep_research:optical_suppliers",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Waveguide",
+    "波导",
+    "成本",
+    "亮度效率",
+    "AR",
+    "旗舰预研",
+    "deep_research",
+    "optical_suppliers"
+  ],
+  "confidence": "high"
+}

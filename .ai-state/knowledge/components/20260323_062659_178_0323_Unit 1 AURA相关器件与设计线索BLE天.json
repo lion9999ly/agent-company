@@ -1,0 +1,19 @@
+{
+  "title": "0323_Unit 1 AURA相关器件与设计线索：BLE天线、SoC平台及声学/显示供应链",
+  "domain": "components",
+  "content": "基于现有检索结果，\"Unit 1 AURA chipset datasheet 2025\"并无可核验的公开芯片数据手册，现有证据更接近于Unit 1的AURA智能头盔产品资料，而非自研SoC。FCC用户手册明确出现“Smart urban helmet…AURA”字样，说明AURA首先是整机品牌/型号。来源间存在明显矛盾：一处AI摘要称AURA芯片组来自NXP，另一处又称已有“2025 BLE SoC datasheet”，但给出的可点击来源实际只有NXP BLE天线设计指南、Ezurio蓝牙模块页和Unit 1头盔手册，均未直接提供“AURA芯片组”型号、封装、寄存器表或BOM，因此该芯片结论应视为未证实。可落地的器件线索主要来自BLE方案与天线设计。NXP《BLE Antenna Design Guide（UM10992）》给出2.4GHz芯片天线供应商与料号示例，包括AN3216、AN2051、AN6520、AN0835、AN9520，以及RFANT5220110AT、RFANT3216120AT、RFECA3216060A1T、RGANT8010100A0T、BTCA5020、BTCA4020等，适合BLE头盔、穿戴和传感节点的PCB天线选型与匹配网络设计。无线平台方面，Ezurio页面显示其Aurawave方案基于Nordic nRF5340，用于LE Audio创新；同时其BL54L15μ系列在2025-08发布，定位“最小nRF54集成天线模块”，另有BL5340PA长距离蓝牙模块。虽然页面摘录未给出价格，但已明确供应商名为Ezurio、核心SoC平台为Nordic nRF5340/nRF54系列。对于MEMS麦克风与HUD光波导，当前三个来源没有直接参数或供应商清单；AI摘要中提到Knowles、TDK、Cirrus Logic，以及“HUD optical",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "Unit1 AURA",
+    "BLE SoC",
+    "NXP",
+    "Ezurio",
+    "Nordic nRF5340",
+    "天线设计",
+    "MEMS麦克风",
+    "HUD光波导",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

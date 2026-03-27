@@ -1,0 +1,235 @@
+{
+  "generated_at": "2026-03-16T17:31:48.588717",
+  "summary": {
+    "total_files_checked": 7,
+    "total_modules_checked": 5,
+    "total_issues": 29,
+    "critical_issues": 0,
+    "error_issues": 26,
+    "warning_issues": 3,
+    "passed": false
+  },
+  "file_reports": [
+    {
+      "file_path": "src\\huge_code.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": null,
+        "dependencies": null,
+        "last_modified": null,
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [],
+      "actual_imports": [],
+      "dependency_mismatch": [],
+      "issue_count": 3
+    },
+    {
+      "file_path": "src\\audit\\behavior_logger.py",
+      "has_docstring": false,
+      "docstring_fields": {
+        "description": null,
+        "dependencies": null,
+        "last_modified": null,
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [],
+      "actual_imports": [
+        "hashlib",
+        "json",
+        "dataclasses",
+        "enum",
+        "datetime",
+        "threading",
+        "pathlib",
+        "typing"
+      ],
+      "dependency_mismatch": [
+        "未声明依赖: threading"
+      ],
+      "issue_count": 4
+    },
+    {
+      "file_path": "src\\graph\\context_slicer.py",
+      "has_docstring": false,
+      "docstring_fields": {
+        "description": null,
+        "dependencies": null,
+        "last_modified": null,
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [],
+      "actual_imports": [
+        "hashlib",
+        "json",
+        "dataclasses",
+        "enum",
+        "datetime",
+        "src.audit",
+        "pathlib",
+        "typing"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 3
+    },
+    {
+      "file_path": "src\\graph\\router.py",
+      "has_docstring": false,
+      "docstring_fields": {
+        "description": null,
+        "dependencies": null,
+        "last_modified": null,
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [],
+      "actual_imports": [
+        "hashlib",
+        "json",
+        "langgraph.graph",
+        "os",
+        "src.schema.state",
+        "src.graph.context_slicer",
+        "pathlib",
+        "langgraph.types",
+        "typing"
+      ],
+      "dependency_mismatch": [
+        "未声明依赖: langgraph.graph",
+        "未声明依赖: langgraph.types"
+      ],
+      "issue_count": 5
+    },
+    {
+      "file_path": "src\\schema\\state.py",
+      "has_docstring": false,
+      "docstring_fields": {
+        "description": null,
+        "dependencies": null,
+        "last_modified": null,
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [],
+      "actual_imports": [
+        "enum",
+        "operator",
+        "typing"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 3
+    },
+    {
+      "file_path": "src\\security\\instruction_guard.py",
+      "has_docstring": false,
+      "docstring_fields": {
+        "description": null,
+        "dependencies": null,
+        "last_modified": null,
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [],
+      "actual_imports": [
+        "re",
+        "dataclasses",
+        "enum",
+        "typing"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 3
+    },
+    {
+      "file_path": "src\\security\\kpi_trap_detector.py",
+      "has_docstring": false,
+      "docstring_fields": {
+        "description": null,
+        "dependencies": null,
+        "last_modified": null,
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [],
+      "actual_imports": [
+        "re",
+        "dataclasses",
+        "enum",
+        "typing"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 3
+    }
+  ],
+  "module_reports": [
+    {
+      "module_path": "src",
+      "has_readme": false,
+      "readme_sections": [],
+      "missing_sections": [
+        "功能",
+        "职责",
+        "接口"
+      ],
+      "files_checked": 1,
+      "files_with_issues": 1
+    },
+    {
+      "module_path": "src\\audit",
+      "has_readme": false,
+      "readme_sections": [],
+      "missing_sections": [
+        "功能",
+        "职责",
+        "接口"
+      ],
+      "files_checked": 2,
+      "files_with_issues": 1
+    },
+    {
+      "module_path": "src\\graph",
+      "has_readme": false,
+      "readme_sections": [],
+      "missing_sections": [
+        "功能",
+        "职责",
+        "接口"
+      ],
+      "files_checked": 3,
+      "files_with_issues": 2
+    },
+    {
+      "module_path": "src\\schema",
+      "has_readme": false,
+      "readme_sections": [],
+      "missing_sections": [
+        "功能",
+        "职责",
+        "接口"
+      ],
+      "files_checked": 1,
+      "files_with_issues": 1
+    },
+    {
+      "module_path": "src\\security",
+      "has_readme": false,
+      "readme_sections": [],
+      "missing_sections": [
+        "功能",
+        "职责",
+        "接口"
+      ],
+      "files_checked": 3,
+      "files_with_issues": 2
+    }
+  ]
+}

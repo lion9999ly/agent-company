@@ -1,0 +1,16 @@
+{
+  "title": "HCT Astra 主动安全功能矩阵（11V3R12USS）",
+  "domain": "components",
+  "content": "Astra平台在11V3R12USS配置下覆盖最完整主动安全能力，支持AEB/FCW、LDW/LKA/ELK、TLR、SAS、IHC/ADB、RCW/RCTA、BSD/LCA、DOW、ESA/AES、PMA、MEB。相较Luna低配，Astra在单一高配架构下实现前向、侧向、后向主动安全全覆盖，适合面向更高法规和五星评价目标的量产方案。",
+  "source": "doc_import:主动安全功能介绍 20251027 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "HCT",
+    "Astra",
+    "11V3R12USS",
+    "主动安全",
+    "AES",
+    "MEB"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Continental 数据测试方法：回灌与Logsim评估新版本表现",
+  "domain": "components",
+  "content": "数据测试基于实车获取的大量数据，依托回灌、Logsim等仿真手段，评估测试数据在新版本下的表现。其目标是跟进Badcase，并对各类场景下整体指标效果进行评估，形成版本优化与回退风险判断依据。",
+  "source": "doc_import:测试能力与流程 20260130 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "数据测试",
+    "回灌",
+    "Logsim",
+    "Badcase跟进",
+    "版本评估"
+  ],
+  "confidence": "high"
+}

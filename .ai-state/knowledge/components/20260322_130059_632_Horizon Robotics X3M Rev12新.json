@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Robotics X3M Rev.1.2：新增订货信息、I2C 时序与热阻说明",
+  "domain": "components",
+  "content": "Rev.1.2（2021-07-05）新增 Section 2 Ordering Parts，更新 Table 3-5 中 SD0_WPROT GPIO function 描述，更新 Table 3-6 中 USB ID 描述，在 Table 3-9 Thermal Resistance Parameters 下新增注释，并新增 Section 3.4.14 I2C Interface Timing。该版本使 X3M 从纯技术规格进一步补齐采购与接口时序信息，便于器件选型、供应链管理和 I2C 外设联调。",
+  "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Rev1.2",
+    "Ordering Parts",
+    "I2C timing",
+    "Thermal resistance",
+    "USB ID",
+    "GPIO"
+  ],
+  "confidence": "high"
+}

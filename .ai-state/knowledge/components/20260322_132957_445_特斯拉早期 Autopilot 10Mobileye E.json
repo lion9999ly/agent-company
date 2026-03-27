@@ -1,0 +1,15 @@
+{
+  "title": "特斯拉早期 Autopilot 1.0：Mobileye EyeQ3 与 0.256 TOPS",
+  "domain": "components",
+  "content": "自动驾驶前瞻性是特斯拉早期用户的重要购买动机。尽管早期 Autopilot 1.0 功能相对简单，但其硬件已采用 Mobileye EyeQ3 芯片，算力为 0.256 TOPS。“汽车自己开”的概念本身就极具吸引力。一位用户表示，自己购买特斯拉主要是为了体验辅助驾驶功能，作为投资人需要亲自验证新技术落地。该案例说明前沿功能即使尚不成熟，也能成为高认知用户的强驱动力。",
+  "source": "doc_import:特斯拉早期用户.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Autopilot 1.0",
+    "Mobileye EyeQ3",
+    "0.256TOPS",
+    "辅助驾驶",
+    "前瞻技术"
+  ],
+  "confidence": "high"
+}

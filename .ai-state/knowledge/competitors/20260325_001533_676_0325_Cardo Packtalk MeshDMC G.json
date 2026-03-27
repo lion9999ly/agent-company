@@ -1,0 +1,19 @@
+{
+  "title": "0325_Cardo Packtalk Mesh（DMC Gen2）对智能摩托车全盔通信方案的参考价值",
+  "domain": "competitors",
+  "content": "Cardo Packtalk Mesh并不是头盔本体，而是面向摩托车全盔/揭面盔安装的外置通信系统；若搜索中出现自行车头盔Mesh产品，应明确排除，因为其风噪、车速、法规与安装空间假设均不同，不适用于智能摩托车全盔。基于现有来源，Cardo在2025年前后的主力型号包括Packtalk Edge、Packtalk Neo、Packtalk Custom，核心都是DMC Gen2网状对讲。已知关键参数较一致：DMC群组最多15名骑手、单节点最远约1.6km、6人以上组网总覆盖可达约8km；蓝牙侧通常为Bluetooth 5.2，并支持与手机、GPS、摩托车TFT及其他品牌蓝牙设备互联。音频方面，Packtalk Edge/Neo普遍配40mm JBL扬声器，续航约13小时，并支持“Hey Cardo”语音控制、OTA升级、USB-C充电。产品定位上，Edge为旗舰，特点是磁吸底座；Neo为相近功能但传统卡扣；Custom则偏订阅解锁的入门DMC方案。价格方面，本次来源未给出统一官方售价，按2024-2025市场常见区间，Edge单机通常约US$399-429，Duo双机约US$699-759；Neo单机约US$339-369；Custom单机约US$269-299，但不同零售商会波动，需以Cardo官网、RevZilla、Cycle Gear、Amazon授权店实时价格为准。供应商层面，Cardo Systems是品牌方，JBL为音频合作方。需要标注的矛盾点有两处：其一，来源都称DMC Gen2较Gen1范围提升，但仅有一处提到Gen1约1.2km、Gen2约1.6km，其他来源未复核；其二，FCC被提及为“在美销售无线设备必须合规”，但本批来源没有给出具体FCC ID，因此若做竞品数据库，FCC认证号仍需单独检索。对智能摩托车全盔产品的启示是：Cardo证明了“Mesh+蓝",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Cardo",
+    "Packtalk Edge",
+    "DMC Gen2",
+    "Mesh Intercom",
+    "Bluetooth 5.2",
+    "JBL",
+    "摩托车全盔",
+    "竞品分析",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

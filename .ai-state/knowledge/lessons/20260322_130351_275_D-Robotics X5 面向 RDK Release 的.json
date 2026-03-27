@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 面向 RDK Release 的文档成熟度信号",
+  "domain": "lessons",
+  "content": "版本 1.0 的描述为“Update for RDK release”，并同步补充电源域电压范围与 USB2.0/3.0 电气规范，说明 X5 文档从早期草案逐步过渡到更适合开发板/参考设计发布的工程化阶段。对研发情报而言，这意味着产品生态可能已进入对外开发者支持或平台推广阶段。虽然仍标注 under development 且保留变更权，但从文档完备度看，X5 已从概念说明走向更可执行的硬件/软件集成阶段。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "RDK release",
+    "文档成熟度",
+    "量产准备",
+    "X5",
+    "工程化"
+  ],
+  "confidence": "high"
+}

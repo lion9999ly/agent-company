@@ -1,0 +1,15 @@
+{
+  "title": "全域互联中枢：双通道并发连接与Wi‑Fi 6 5.8GHz闪传",
+  "domain": "components",
+  "content": "系统连接模块优先级P0，要求支持双通道并发，可同时连接手机与车辆TFT仪表；并支持Wi‑Fi 6闪传，使用5.8GHz频段进行高速素材导出与OTA升级。该设计用于解决设备连接单一、信号冲突以及蓝牙传输4K素材过慢的问题，是整机生态连接与大文件传输的关键基础能力。",
+  "source": "doc_import:智能骑行头盔PRD_V1.0_To_JDM.xlsx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Wi-Fi 6",
+    "5.8GHz",
+    "双通道连接",
+    "TFT仪表",
+    "OTA"
+  ],
+  "confidence": "high"
+}

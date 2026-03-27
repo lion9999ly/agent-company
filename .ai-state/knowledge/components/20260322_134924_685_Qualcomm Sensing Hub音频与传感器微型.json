@@ -1,0 +1,15 @@
+{
+  "title": "Qualcomm Sensing Hub：音频与传感器微型 NPU",
+  "domain": "components",
+  "content": "平台集成 Qualcomm Sensing Hub，内置面向音频和传感器处理的 Micro NPU，支持 INT8 精度。该模块适合承担低功耗常开感知任务，如语音唤醒、环境感知与传感器融合，帮助智能眼镜在保持续航的同时实现 always-on 体验。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Sensing Hub",
+    "Micro NPU",
+    "audio",
+    "sensors",
+    "INT8"
+  ],
+  "confidence": "medium"
+}

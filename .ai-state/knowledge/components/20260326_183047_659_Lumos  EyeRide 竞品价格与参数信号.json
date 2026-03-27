@@ -1,0 +1,17 @@
+{
+  "title": "Lumos / EyeRide 竞品价格与参数信号",
+  "domain": "components",
+  "content": "竞品数据表明用户更愿为安全可信和一体化体验付费，而非“泛 AI”。Lumos 已验证“头盔+灯光+蓝牙+App”可商品化，价格 119–199 美元，续航 6–10 小时；EyeRide 代表外挂 HUD 路线，参数为 20°FOV、3000 nits、720p、8–12 小时标称续航，售价 500–700 美元，但用户反馈集中在真实续航差、安装复杂、稳定性一般。Sena/Cardo 的成功点则是对讲、音频、降噪等高频刚需，说明 V1 应优先做高频、可靠、低学习成本能力。",
+  "source": "deep_research:adhoc_飞猪flyai_MC",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Lumos",
+    "EyeRide",
+    "竞品",
+    "HUD",
+    "定价",
+    "deep_research",
+    "adhoc_飞猪flyai_MC"
+  ],
+  "confidence": "medium"
+}

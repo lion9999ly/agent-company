@@ -1,0 +1,15 @@
+{
+  "title": "Gemini API 错误分类：RESOURCE_EXHAUSTED 与 429 对应关系",
+  "domain": "standards",
+  "content": "该记录表明 Gemini API 在配额耗尽场景下使用 HTTP 429，并在错误体中返回 status=RESOURCE_EXHAUSTED。details 中包含 Help、QuotaFailure、RetryInfo 三类结构化信息，可用于程序化处理：Help 提供文档链接，QuotaFailure 给出超限指标与维度，RetryInfo 给出可重试时间。适合纳入统一异常处理规范。",
+  "source": "doc_import:20260318-175916.jpg",
+  "created_at": "2026-03-22",
+  "tags": [
+    "RESOURCE_EXHAUSTED",
+    "HTTP 429",
+    "错误处理",
+    "API异常",
+    "Google RPC"
+  ],
+  "confidence": "medium"
+}

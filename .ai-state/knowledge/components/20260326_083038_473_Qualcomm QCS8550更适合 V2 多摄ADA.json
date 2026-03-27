@@ -1,0 +1,18 @@
+{
+  "title": "Qualcomm QCS8550（更适合 V2 多摄/ADAS/高码率影像平台）",
+  "domain": "components",
+  "content": "报告将 QCS8550 定位为 V2 平台而非 V1 主选。其基础接近 Snapdragon 8 Gen 2 工业化变体，优势在于 ISP、AI、视频能力强，且工业温区与供货稳定性更好，适合工程化多摄、黑匣子录像、哨兵模式、故障诊断等场景。最终建议是：V2 高配方案优先考虑 QCS8550 三芯片架构，其次才是 XR2 Gen 2；若重点是多摄融合/ADAS/录像，选 QCS8550，若重点是 XR HUD 体验/空间融合，再选 XR2 Gen 2。之所以不进入 V1，是因为其仍属高功耗、高成本平台，无法解决 V1 的热、重量、BOM 核心矛盾。",
+  "source": "deep_research:tree_ar_xr_soc",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Qualcomm",
+    "QCS8550",
+    "V2",
+    "多摄融合",
+    "ADAS",
+    "工业平台",
+    "deep_research",
+    "tree_ar_xr_soc"
+  ],
+  "confidence": "high"
+}

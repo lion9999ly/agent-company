@@ -1,0 +1,15 @@
+{
+  "title": "歌尔游戏头戴方案：10ms超低延时与4扬声器空间定位",
+  "domain": "components",
+  "content": "歌尔正在开发游戏头戴产品，关键卖点包括10ms超低延时、电池可拆卸模组化设计，以及4扬声器高精准度空间定位技术。该方案面向游戏场景，强调低时延、续航维护便利性与沉浸式空间音频体验，适合电竞及XR音频外设方向。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "游戏头戴",
+    "10ms低延时",
+    "可拆卸电池",
+    "4扬声器",
+    "空间定位"
+  ],
+  "confidence": "high"
+}

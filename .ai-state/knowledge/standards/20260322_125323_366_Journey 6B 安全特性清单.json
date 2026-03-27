@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 安全特性清单",
+  "domain": "standards",
+  "content": "J6B 安全特性包括：Lifecycle Management，支持汽车场景多生命周期阶段，并按生命周期进行权限控制，隔离 Horizon secret 与 OEM secrets；Secure Boot，基于 chain of trust，支持对称认证与非对称签名验证；Secure OTA，在升级前检查固件与配置的完整性和真实性；Secure Key Management，提供灵活密钥管理；Secure Storage，提供密钥与敏感数据加密存储；通过 MMU/MPU 与 firewall 进行内存访问控制，并对 SRAM/DRAM 区域提供 ECC 保护；Secure Debug 提供不同调试模式；Camera Protection 支持设备认证与控制路径保护。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "Secure Boot",
+    "Secure OTA",
+    "Secure Storage",
+    "Secure Debug"
+  ],
+  "confidence": "high"
+}

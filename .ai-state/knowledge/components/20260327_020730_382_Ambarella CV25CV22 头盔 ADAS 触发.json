@@ -1,0 +1,18 @@
+{
+  "title": "Ambarella CV25/CV22 头盔 ADAS 触发阈值需依赖 IMU 门控",
+  "domain": "components",
+  "content": "报告指出 V1 不能采用单阈值硬触发，必须做分层预警 + IMU 门控。BSD 推荐三条件联合：目标类别、ROI 占用、相对运动；一级提示为目标进入侧后盲区 >0.3s，二级强提示为持续 >0.8s 且相对接近速度明显。抑制条件包括车速 <15km/h 不报、头部横摆角速度 >35–45°/s 时暂缓 200–300ms、倾角 >35° 时降低灵敏度。FCW 推荐车速激活门槛 >25km/h，一级预警 TTC <2.0s，二级强预警 TTC <1.2–1.5s；倾角 >25° 时关闭静止障碍物预警。结论是 IMU 不是辅助件，而是误报控制主件。",
+  "source": "deep_research:auto_20260327_2",
+  "created_at": "2026-03-27",
+  "tags": [
+    "IMU",
+    "触发阈值",
+    "BSD",
+    "FCW",
+    "TTC",
+    "误报控制",
+    "deep_research",
+    "auto_20260327_2"
+  ],
+  "confidence": "medium"
+}

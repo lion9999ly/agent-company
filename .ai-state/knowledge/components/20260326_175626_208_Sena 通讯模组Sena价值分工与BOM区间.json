@@ -1,0 +1,18 @@
+{
+  "title": "Sena 通讯模组（Sena）价值分工与BOM区间",
+  "domain": "components",
+  "content": "Sena 的核心能力不在晶圆制造，而在协议栈、固件、Mesh、RF调优、AEC/ENC、天线布局和声学调校；具体 PCBA/模组制造由中国或东南亚 EMS/模组厂完成，但公开未披露厂名。芯片层中置信推断基于 Qualcomm QCC系列或其他蓝牙音频SoC。其模组 BOM 拆解为：蓝牙/MCU SoC 5–15美元，功放+电源+PMIC 2–5美元，麦克风阵列 1–6美元，扬声器 3–10美元，电池 3–8美元，FPC/按键/结构件 5–12美元，整套成熟模组 BOM 20–50美元，品牌出货价 60–120美元+。这说明决策上应把 Sena 视为系统定义与软件能力方，而非整机制造方。",
+  "source": "deep_research:competitor_supply_chain",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Sena",
+    "通讯模组",
+    "Mesh",
+    "Qualcomm QCC",
+    "BOM",
+    "EMS",
+    "deep_research",
+    "competitor_supply_chain"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "0324_摩托车全盔Mesh对讲方案对比：Sena Mesh 2.0/潜在3.0 与 Cardo Packtalk DMC（202",
+  "domain": "components",
+  "content": "针对智能摩托车全盔，对讲系统应优先评估摩托车Mesh方案，而非自行车头盔通信产品；本来源讨论对象均为摩托车头盔场景，可直接参考。现阶段市场主流是Sena Mesh Intercom与Cardo DMC。来源显示，Sena Mesh 2.0已用于50S、50R、50C及Shoei专用SRL-Mesh，核心参数包括：单机点对点最远约2 km，多跳后群组总范围可扩展至8 km（至少6名骑手）；Open Mesh支持9个频道，近乎无限用户接入同频道；Group Mesh支持最多24名骑手私密通信；相较Mesh 1.0，连接速度提升80%；底层蓝牙版本为Bluetooth 5.0。Cardo方面，DMC用于Packtalk系列，单机最远约1.6 km，多跳后同样可扩展至8 km（至少6名骑手），支持最多15名骑手全双工通话，强调动态路由与掉线自动恢复。就产品能力看，Sena在“私密群组人数”和单跳距离上更激进，Cardo在动态网络管理与无感重连体验上口碑更强。对整盔厂商而言，若目标是大车队、开放频道和更强生态兼容，Sena方案更适合；若强调稳定群骑、低维护和自然语音协作，Packtalk/DMC更值得优先验证。来源未给出Sena Mesh 3.0正式发布时间、型号或定价，因此“2025年Mesh 3.0”仍属趋势判断，不能当作已量产规格；这也是当前唯一需要明确标注的不确定点。另一个信息缺口是价格：来源未提供Sena 50S、50R、50C或Cardo Packtalk具体售价，也未列出供应商名称，只能确认供应商品牌为Sena与Cardo两家。结论上，2025年前后摩托车全盔若要集成Mesh对讲，建议以Sena 50系/ SRL-Mesh和Cardo Packtalk作为竞品基线，重点测试8 km多跳覆盖、24人对15人群组上限、2 km对1.6 km单跳差异，以及开放频道与私密群组在",
+  "source": "daily_deep",
+  "created_at": "2026-03-24",
+  "tags": [
+    "摩托车全盔",
+    "Mesh Intercom",
+    "Sena",
+    "Cardo",
+    "Packtalk",
+    "DMC",
+    "Sena 50S",
+    "SRL-Mesh",
+    "头盔对讲",
+    "2025竞品",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

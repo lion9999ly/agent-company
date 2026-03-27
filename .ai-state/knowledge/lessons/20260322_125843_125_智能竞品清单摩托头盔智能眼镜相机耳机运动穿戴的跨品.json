@@ -1,0 +1,16 @@
+{
+  "title": "智能竞品清单：摩托头盔、智能眼镜、相机、耳机、运动穿戴的跨品类对标框架",
+  "domain": "lessons",
+  "content": "从“智能竞品”Sheet 可见，竞品池覆盖 5 类方向：1）智能头盔/通信系统，如 Shoei、Forcite、Sena、Cardo；2）智能眼镜/AR，如 雷鸟X3、Meta Ray-Ban、Engo2、影目 Air 3；3）运动/全景相机，如 Insta360、DJI；4）耳机音频，如 豆包耳机、光帆 Lightwear；5）运动穿戴/骑行电子，如 Garmin、COROS、Chigee、INNOVV。说明项目对标并非单一头盔，而是围绕骑行场景的整套智能硬件生态。",
+  "source": "doc_import:Project X 竞品分析.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "竞品框架",
+    "跨品类",
+    "智能头盔",
+    "眼镜",
+    "相机",
+    "耳机"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 前视摄像头方案配置",
+  "domain": "components",
+  "content": "文档单列 Front Camera Solution，核心配置为 8MP Camera@120°FOV（X8D）。该方案面向日常驾驶中的“Comprehensive Security Guard”，强调在单前视架构下提供更强感知与安全能力。结合 J6B 的 18 TOPS BPU、23K DMIPS CPU、0.64 Gpixel/s ISP 带宽和视频编解码能力，可支撑高分辨率前视感知、录像与算法处理。适合前装主动安全、法规合规和基础 L2/L2+ 感知入口。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "Front Camera",
+    "8MP",
+    "120°FOV",
+    "X8D"
+  ],
+  "confidence": "medium"
+}

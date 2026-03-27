@@ -1,0 +1,15 @@
+{
+  "title": "HPU3501 Power-Up and Power-Down Sequencing Capability",
+  "domain": "components",
+  "content": "HPU3501 支持预设上电/下电时序和可编程使能控制。默认 OTP 示例中使用 Group 1~Group 6 进行时序编排：如 HPU3501A01IQNXMA 中 LDO1 为 Group 2，Buck1/3/4/5 为 Group 3，LDO2/LDO3 为 Group 4；HPU3501A50IQNXMA Master 中 Buck5 为 Group 1、Buck4 为 Group 2、LDO1 为 Group 4、Buck1/2/3 为 Group 5、LDO2/LDO3 为 Group 6。适合处理器对电源依赖顺序的要求。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Power Sequence",
+    "Startup",
+    "Shutdown",
+    "Group1",
+    "Group6"
+  ],
+  "confidence": "high"
+}

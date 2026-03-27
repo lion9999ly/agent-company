@@ -1,0 +1,20 @@
+{
+  "title": "0327_2025摩托车全盔Mesh对讲系统对比：Cardo Packtalk Edge、Shoei SRL-Mesh与Sena ",
+  "domain": "competitors",
+  "content": "面向智能摩托车全盔，2025年主流Mesh对讲方案仍以Cardo DMC与Sena Mesh 2.0为核心；需明确排除自行车头盔场景，因为其风噪、续航、安装位和ECE/DOT适配要求均不同。现有来源中，Cardo Packtalk Edge是已明确量产的通用外置系统，Shoei SENA SRL-Mesh是面向Shoei全盔的嵌入式系统，而“Sena 60S”在给定来源里更像基于50S/50R的预测型号，不能视为已确认上市产品，这一点必须标注。参数上，来源一致认为Cardo Packtalk Edge采用DMC Gen 2、Bluetooth 5.2、JBL 40mm扬声器、13小时通话、IP67防护，单骑手间最大距离约1.6km，群组总距离约8km，最多15名骑手；其卖点是Air Mount磁吸底座和“Hey Cardo”自然语音。Shoei SENA SRL-Mesh定位是Shoei专用集成方案，优势是外观一体化、风噪和突起更少，适合Neotec 3、GT-Air 3、J-Cruise 3等Shoei头盔平台，但来源未给出统一价格与续航数据。Sena Mesh 2.0方面，来源给出Open Mesh“几乎无限用户”、Group Mesh最多24人、单节点约1.6km、总距离约8km；同时提到蓝牙对讲4路、FM收音机、OTA升级、语音控制等，这些更接近50S系已知能力。冲突点在于“Sena 60S”是否真实存在及其蓝牙版本：来源一推测可能是Bluetooth 5.0以上，来源二又推测5.3，均属预测，不应作为采购依据。价格方面，给定来源未提供官方成交价，只能确认供应商层级：Cardo Systems供应Packtalk Edge，Sena Technologies供应Mesh平台与SRL-Mesh电子系统，Shoei提供头盔本体与适配结构。对智能全盔产品定义的启示是：若追",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "摩托车全盔",
+    "Mesh对讲",
+    "DMC",
+    "Cardo Packtalk Edge",
+    "Shoei SRL-Mesh",
+    "Sena",
+    "智能头盔",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

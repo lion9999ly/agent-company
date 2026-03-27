@@ -1,0 +1,17 @@
+{
+  "title": "OmniVision OX01N1B + Ambarella CV28 helmet rear ca",
+  "domain": "lessons",
+  "content": "**相关方案摘要（面向智能骑行头盔研发）**\n\n1. **核心器件/参数**\n- **OmniVision OX01N1B**：1.3MP（1280×1080）车规图像传感器，**3.0µm**像素，**全局快门**，**120dB HDR**，**LED闪烁抑制LFM**，**Nyxel NIR近红外增强**，接口 **MIPI CSI-2**；符合 **AEC-Q100 Grade 2**，支持 **ASIL-B**。\n- **Ambarella CV28**：低功耗AI视觉SoC，集成 **ISP + H.264/H.265编码 + CVflow AI引擎**，支持高帧率/低延迟处理，输入 **MIPI CSI-2**，显示输出 **MIPI DSI/LVDS**，车规级 **AEC-Q100**。\n- **价格**：原文未提供。\n\n2. **对头盔产品的直接价值**\n- **电子后视镜 e-mirror**：全局快门可抑制头盔振动和快速运动导致的果冻效应，适合骑行场景。\n- **复杂光照适应**：120dB HDR + LFM，适合逆光、隧道、夜间车灯环境，提升后视安全。\n- **低功耗录像/显示**：CV28硬件ISP与H.265编码有利于**续航优化**，适合电池供电头盔。\n- **夜视增强**：NIR能力可支持低照度后视或辅助感知。\n\n3. **技术趋势/行业变化**\n- 头盔视觉系统正从“单纯录像”转向**实时感知+显示**，即**摄像头—ISP—编码—HUD/屏显**一体化。\n- **车规芯片下沉到骑行装备**成为趋势：借用汽车级可靠性、HDR、LFM、功能安全能力。\n- **AI预留**：CV28可扩展**盲点检测、碰撞预警、目标识别**，适合后续做智能安全订阅/高配版差异化。\n\n4. **可借鉴设计理念**\n- 采用“**车规传感器 + 低功耗AI S",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "摄像头",
+    "OmniVision",
+    "Ambarella",
+    "HDR",
+    "低功耗",
+    "电子后视",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

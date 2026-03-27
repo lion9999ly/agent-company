@@ -1,0 +1,17 @@
+{
+  "title": "Horizon Continental V1：行车长稳关键参数与验收门槛",
+  "domain": "components",
+  "content": "V1 行车长稳建议参数为：单次测试 8h，累计 >200h；场景覆盖城市/高架/隧道/夜路/暴雨模拟；速度覆盖 0–120km/h；振动主频 20–200Hz；环境温度覆盖 -10℃、25℃、45℃、60℃ 热箱；功能并发为 HUD 导航 + 蓝牙音乐 + 1080p 录像 + 语音唤醒。验收指标要求黑屏/死机 0 次/8h、HUD 关键信息漏显 0 次、录像中断 0 次、系统重启 0 次、语音误唤醒率 <2 次/h、表面贴脸区温度 <40℃。",
+  "source": "deep_research:deepen_339",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Horizon Continental",
+    "V1",
+    "行车长稳",
+    "验收指标",
+    "HUD",
+    "deep_research",
+    "deepen_339"
+  ],
+  "confidence": "high"
+}

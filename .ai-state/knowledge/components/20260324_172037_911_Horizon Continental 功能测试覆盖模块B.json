@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Continental 功能测试覆盖模块：BaseTech",
+  "domain": "components",
+  "content": "BaseTech测试覆盖标定、Vehicle IO/配置字管理、通讯等模块。该类能力支撑整车接口、参数管理和通信链路，是系统集成与功能落地的基础技术模块，需在台架环境中进行针对性覆盖测试。",
+  "source": "doc_import:测试能力与流程 20260130 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "BaseTech",
+    "标定",
+    "Vehicle IO",
+    "配置字管理",
+    "通讯"
+  ],
+  "confidence": "medium"
+}

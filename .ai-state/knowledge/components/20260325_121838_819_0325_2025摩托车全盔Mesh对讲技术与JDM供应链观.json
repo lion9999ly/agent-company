@@ -1,0 +1,19 @@
+{
+  "title": "0325_2025摩托车全盔Mesh对讲技术与JDM供应链观察：DMC、LE Audio、Qualcomm S5",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2025年对讲核心已从传统蓝牙串联转向Mesh+LE Audio双栈。现有高端方案主要由Cardo DMC与Sena Mesh 2.0主导：Cardo DMC常见指标为最多15人、群组总距离约8km；Sena Group Mesh常见指标为24人、总距离约8km，Open Mesh则强调更大规模开放频道。两者都适合摩托车全盔集成，不应与自行车头盔通信方案混淆；自行车产品更强调轻量和开放式佩戴，风噪、法规、麦克风布置与全盔完全不同，应明确排除。芯片层面，Qualcomm S5音频平台（常被指向QCC517x级别）是2025高端候选，优势是原生支持Bluetooth LE Audio、LC3编解码、多重串流与Auracast，并可叠加cVc类通话降噪和更强DSP/AI算力，适合全盔内置阵列麦、风噪抑制和语音助手。来源未给出确定量产头盔型号已采用S5，因此这里应标注：S5更像2025高端路线，而非已被JDM全盔大规模公开验证的既成事实。JDM供应侧更现实的路径，是日本头盔品牌与对讲品牌联合：Shoei、Arai偏强整盔与安全认证，通信模块多由Sena、Cardo等外部供应商提供，日本本土系统集成与电子件厂商承担线束、声学件、装配适配。价格方面，来源未提供JDM官方成交价，行业上高端Mesh模组通常落在约300-500美元/套的消费级区间，但该数字在本次来源中无直接证据，需谨慎引用。存在两处信息冲突：其一，LE Audio发布时间有“2020发布”与“2022正式发布”两种说法，建议以Bluetooth SIG正式规范落地时间口径核验；其二，DMC单节点距离有“1.6km”与仅给出“总距离8km”两种表述，产品定义可能不同。对我们做全盔的启示是：短期应优先兼容现有Mesh生态，中期预留LE Audio/S5升级位，避免押注仅适合消费耳机或自行车场景的方案。",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "motorcycle-helmet",
+    "mesh-intercom",
+    "Qualcomm-S5",
+    "Bluetooth-LE-Audio",
+    "DMC",
+    "JDM",
+    "Sena",
+    "Cardo",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

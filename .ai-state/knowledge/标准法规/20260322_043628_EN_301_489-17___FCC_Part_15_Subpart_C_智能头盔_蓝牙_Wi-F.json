@@ -1,0 +1,16 @@
+{
+  "title": "EN 301 489-17 + FCC Part 15 Subpart C 智能头盔 蓝牙 Wi-F",
+  "domain": "标准法规",
+  "content": "**相关标准/法规**\n- 欧盟：智能头盔带蓝牙/Wi‑Fi属 RED 2014/53/EU 管辖，EMC符合性主要用 **EN 301 489-17 V3.2.4（或最新版）**；频谱合规还需配套 **EN 300 328（蓝牙/2.4G Wi‑Fi）**、**EN 301 893（5G Wi‑Fi）**。\n- 美国：题目涉及 **FCC Part 15 Subpart C**，但原文主要展开的是欧盟侧 EMC/EMI 要求。\n\n**对智能骑行头盔研发最相关的测试项与限值**\n- **工作模式覆盖**：Tx最大发射、Rx、Idle、充电、数据传输；研发阶段需预留多模式测试固件。\n- **辐射发射（EN 55032 Class B）**\n  - 30–230 MHz：**30 dBμV/m** @10 m\n  - 230 MHz–1 GHz：**37 dBμV/m** @10 m\n  - 1–3 GHz：**50 dBμV/m峰值 / 30 dBμV/m平均** @3 m\n  - 3–6 GHz：**54 dBμV/m峰值 / 34 dBμV/m平均** @3 m\n- **传导发射（0.15–30 MHz）**：对电池头盔主要看**充电模式/充电口**；0.5–5 MHz限值常用 **56 dBμV准峰 / 46 dBμV平均**。\n- **抗扰度关键限值**\n  - ESD：**接触±4 kV，空气±8 kV**\n  - 辐射抗扰：**80 MHz–6 GHz，3 或 10 V/m**\n  - EFT：AC口 **±1 kV**，DC/信号口 **±0.5 kV**\n  - Surge：AC口线地 **±2 kV**，线线 **±1 kV**\n  - 传导抗扰：**0.15–80 MHz，3/10 Vrms**\n  - 工频磁场：**3 A/m**\n\n**研发启示**\n-",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EMC",
+    "EN 301 489-17",
+    "FCC Part 15",
+    "蓝牙",
+    "Wi-Fi",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

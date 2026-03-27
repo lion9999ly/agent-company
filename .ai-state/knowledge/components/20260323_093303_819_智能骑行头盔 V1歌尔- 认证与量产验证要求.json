@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1（歌尔）- 认证与量产验证要求",
+  "domain": "components",
+  "content": "V1 必须按“头盔安全 + 电子无线”双线认证规划。头盔侧需满足 CPSC 1203、EN 1078、GB 24429，如有需要可选 AS/NZS 2063；电子与电池侧需覆盖 FCC、CE RED、IC、SRRC、RoHS、REACH、UN38.3、IEC 62133 基线。报告同时要求电子模组不能破坏 EPS 吸能路径。进入 EVT 前需优先完成 3 项高风险验证：刹车灯触发阈值与误报率、跌倒检测误报率、不同尺码下重量是否稳定压到 380–420g。",
+  "source": "deep_research:adhoc_智能骑行头盔V1_P",
+  "created_at": "2026-03-23",
+  "tags": [
+    "认证",
+    "CPSC1203",
+    "EN1078",
+    "GB24429",
+    "EVT验证",
+    "deep_research",
+    "adhoc_智能骑行头盔V1_P"
+  ],
+  "confidence": "high"
+}

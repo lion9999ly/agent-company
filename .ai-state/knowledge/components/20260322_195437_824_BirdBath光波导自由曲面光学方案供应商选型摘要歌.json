@@ -1,0 +1,25 @@
+{
+  "title": "BirdBath/光波导/自由曲面光学方案供应商选型摘要（歌尔股份、舜宇光学、Lumus、DigiLens等）",
+  "domain": "components",
+  "content": "选型结论：BirdBath更适合成本敏感、量产优先的智能骑行头盔HUD/AR项目；光波导适合轻薄高端AR；自由曲面适合高性能但高成本方案。1) BirdBath：核心供应商含歌尔股份、立讯精密、舜宇光学、大立光，微显示器来自JDI、京东方、索尼、三星；优势是工艺成熟、良率较高、图像质量好、FoV较大，AR透光率约20%-40%，单模组成本数十美元到数百美元，已用于Meta Quest 2/3、Pico 4、PS VR2，说明具备成熟消费级代工基础。2) 光波导：核心技术商有Lumus、DigiLens、Vuzix、WaveOptics，制造集成仍可由歌尔、舜宇承接；基板厚度通常仅几毫米，但光效率低、色散/鬼影明显，单模组成本数百至上千美元，典型客户/产品为HoloLens 2、Magic Leap 2、Vuzix Blade。3) 自由曲面：更像设计制造能力而非单一架构，依赖超精密加工、金刚石车削、精密注塑与高精检测，单高精度棱镜/镜片成本可达数百至上千美元，适合高端定制ODM。产能方面，原文未给出明确片数/年数据，但BirdBath已在Quest/Pico等大批量消费电子中验证量产能力。",
+  "source": "jdm_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "AR光学",
+    "BirdBath",
+    "光波导",
+    "自由曲面",
+    "ODM选型",
+    "JDM选型",
+    "歌尔股份",
+    "舜宇光学",
+    "Lumus",
+    "DigiLens",
+    "成本对比",
+    "FoV",
+    "透光率20%-40%",
+    "数十至上千美元",
+    "jdm_study"
+  ],
+  "confidence": "high"
+}

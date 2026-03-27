@@ -1,0 +1,19 @@
+{
+  "title": "Molex Micro-Fit 3.0：Luna 6 电池/主供电主选连接器",
+  "domain": "components",
+  "content": "Luna 6 内部主供电层建议优先采用 Molex Micro-Fit 3.0 作为电池包到主板、主板到高功率灯板的主选方案。推荐型号包括 Molex 43025-0200、43020-0200，以及 43030-0007 / 43031 系列端子。其关键参数为 3.00mm pitch、2~12Pin、典型 5A/Pin、250V、-40°C ~ 105°C，并带锁扣，适合振动环境。价格方面，Housing 约 0.08–0.20 USD/pcs，端子约 0.02–0.05 USD/pcs，完整 2Pin 配套约 0.20–0.40 USD/set。报告同时提示：若电池峰值电流超过 5A/Pin，必须重新校核温升与线规。",
+  "source": "deep_research:enrich_260",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Molex",
+    "Micro-Fit 3.0",
+    "43025-0200",
+    "43020-0200",
+    "主供电",
+    "5A/Pin",
+    "3.00mm",
+    "deep_research",
+    "enrich_260"
+  ],
+  "confidence": "high"
+}

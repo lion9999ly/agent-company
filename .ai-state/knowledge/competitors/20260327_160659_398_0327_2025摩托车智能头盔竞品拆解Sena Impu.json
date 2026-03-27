@@ -1,0 +1,21 @@
+{
+  "title": "0327_2025摩托车智能头盔竞品拆解：Sena Impulse、Forcite MK1S与Shoei HUD路线对比",
+  "domain": "competitors",
+  "content": "2025年摩托车智能头盔赛道里，真正可对标的主要是Sena Impulse、Forcite MK1S，以及Shoei的HUD原型路线；需明确排除Livall主力产品，因为Livall更知名的是自行车/轻出行智能头盔，其技术思路可参考，但不应直接视为全盔摩托车竞品。Sena Impulse是量产成熟方案，定位模块化摩托车头盔，集成Mesh 2.0与Bluetooth 5.0，对讲可覆盖24人Mesh网络；续航约18小时（蓝牙）/11小时（Mesh），充电约2.5小时，重量约1720g，市场价约599-699美元。其核心供应链特征是“Harman Kardon音频+Sena通信模组”，卖点在通信和音质，而非视觉显示；公开资料显示其满足DOT/ECE标准，但无HUD。Forcite MK1S则是更激进的“摄像头+导航提示+音频”路线，通常被视为澳洲高端智能全盔代表，价格常见区间约1099-1299澳元；其前置摄像头可录制骑行视频，导航通过视野边缘LED提示而非完整AR投影，配套蓝牙控制器与手机App，外壳常见描述为碳纤维复合材料，强调轻量化与空气动力学。相比Sena，Forcite更像“感知与内容平台”，但公开参数透明度较低，续航、重量和认证信息在不同渠道表述不完全一致。Shoei方面，需特别标注：来源中“Shoei Opticson HUD”更接近概念/原型方向，而非已广泛销售的标准量产型号；其技术基础通常被描述为基于GT-Air II等高端全盔平台，采用AIM+多层复合纤维壳体，潜在HUD光学方案涉及DLP/LCoS类微显示，若商业化，价格普遍被预测在1000美元以上，但目前公开市场数据不足。材料与供应商层面，Shoei复合材料体系常被推测与东丽（Toray）等高性能纤维供应链相关；Sena的关键外部合作方已知是Harman Kardon；Forcite则更多依赖复合材料壳体",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "motorcycle-smart-helmet",
+    "Sena-Impulse",
+    "Forcite-MK1S",
+    "Shoei-HUD",
+    "Harman-Kardon",
+    "Toray",
+    "HUD",
+    "Mesh-2.0",
+    "full-face-helmet",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

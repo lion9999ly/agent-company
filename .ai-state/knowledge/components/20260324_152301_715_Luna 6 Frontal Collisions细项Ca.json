@@ -1,0 +1,15 @@
+{
+  "title": "Luna 6 Frontal Collisions细项：Car-to-Car与Car-to-Motorcyclist场景得分",
+  "domain": "components",
+  "content": "Car & PTW场景细项包括：Car-to-Car Rear 6.1938/6.5（各配置相同）；Car-to-Car Front 1V/1V2R为4.3334/5，1V3-5R/5V5R12Uss为4.5834/5；Car-to-Car Turn Across Path均为4.5625/5；Car-to-Car Crossing由4.2563/7.5提升至5.9363/7.5。摩托车场景中Rear约3.2993/3.5，Turn Across Path均4.5625/5，Crossing由4.2563升至5.9363。",
+  "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "Car-to-Car Rear",
+    "Car-to-Car Front",
+    "Turn Across Path",
+    "Motorcyclist Crossing"
+  ],
+  "confidence": "high"
+}

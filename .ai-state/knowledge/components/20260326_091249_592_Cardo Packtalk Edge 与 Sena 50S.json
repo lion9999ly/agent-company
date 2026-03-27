@@ -1,0 +1,17 @@
+{
+  "title": "Cardo Packtalk Edge 与 Sena 50S 竞品基线",
+  "domain": "components",
+  "content": "报告给出对标基线：Cardo Packtalk Edge 支持 DMC 最多 15 人，单机距离约 1.6 km，多跳总距离约 8 km，蓝牙 5.2，防护 IP67，价格约 ¥2500–3000+；Sena 50S 支持 Group Mesh 24 人，单机距离约 2 km，多跳约 8 km，蓝牙 5.0，价格约 ¥2000–2500。结论是不建议 V1 硬对标 Cardo / Sena，因为其壁垒在多年协议调优、真实骑行验证和复杂射频/音频协同经验，而非单纯“有 Mesh”参数。",
+  "source": "deep_research:tree_mesh_intercom",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Cardo",
+    "Sena",
+    "Packtalk Edge",
+    "50S",
+    "竞品基线",
+    "deep_research",
+    "tree_mesh_intercom"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 法律声明与使用责任边界",
+  "domain": "standards",
+  "content": "文档声明信息仅用于帮助系统和软件实现者使用 D-Robotics 产品，不授予基于文档信息设计或制造集成电路的明示或默示版权许可。所有信息可变更且“AS IS”提供，不构成任何明示或默示担保，包括适销性、特定用途适用性、非侵权。用户需自行完成独立分析、评估与验证，并对应用安全性及法规合规承担全部责任。典型参数会因应用不同而变化，所有运行参数均需用户逐案验证。若因未经授权应用或不符合声明条款引发索赔、损失或责任，用户需对 D-Robotics 进行赔偿。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Disclaimer",
+    "AS IS",
+    "Liability",
+    "Compliance",
+    "IP"
+  ],
+  "confidence": "medium"
+}

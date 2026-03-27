@@ -1,0 +1,15 @@
+{
+  "title": "歌尔音频眼镜参考设计能力",
+  "domain": "components",
+  "content": "歌尔已完成音频眼镜项目，能力覆盖机械设计、结构堆叠设计、传感器/光学/声学系统设计及防水设计。软件侧具备Qualcomm、BES、Airoha、Realtek平台开发经验，可进行蓝牙、传感器、音频固件开发与算法部署。该方案体现其在眼镜形态可穿戴设备上的整机集成能力。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "音频眼镜",
+    "近耳音频",
+    "结构设计",
+    "传感器",
+    "防水设计"
+  ],
+  "confidence": "high"
+}

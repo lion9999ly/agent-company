@@ -1,0 +1,16 @@
+{
+  "title": "Luna 6 Frontal Collisions细项：Pedestrian与Bicyclist场景得分",
+  "domain": "components",
+  "content": "Pedestrian & Cyclist场景中：Car-to-Pedestrian Longitudinal均为2.3959/2.5，Turning均为1.6563/2.5，Crossing由4.4024/5升至4.4371/5；Car-to-Bicyclist Longitudinal均为2.3959/2.5，Turning由1.5938/2.5升至1.6563/2.5，Crossing由4.575/5升至4.6/5。相比车车/车摩场景，VRU场景提升幅度较小。",
+  "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "Pedestrian",
+    "Bicyclist",
+    "Crossing",
+    "Turning",
+    "Longitudinal"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 产品目录结构：视频输入接口",
+  "domain": "components",
+  "content": "目录中 1.3.6 为 Video Input Interface，说明 X5 支持摄像头/视频源接入，是视觉 SoC 的关键前端模块。该部分通常涉及 MIPI CSI、并口、同步信号、lane 数、分辨率与帧率支持等。虽然当前截取内容未给出具体接口数量和带宽，但结合后续 ISP、VSE、GDC、视频编解码等模块可判断 X5 面向完整视觉处理链路设计，适合机器人、智能摄像头或边缘感知设备。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Video Input",
+    "Camera Interface",
+    "X5",
+    "视觉",
+    "目录"
+  ],
+  "confidence": "high"
+}

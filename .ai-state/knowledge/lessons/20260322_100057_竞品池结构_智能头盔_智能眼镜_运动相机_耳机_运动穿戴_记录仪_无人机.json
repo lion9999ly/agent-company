@@ -1,0 +1,16 @@
+{
+  "title": "竞品池结构：智能头盔、智能眼镜、运动相机、耳机、运动穿戴、记录仪、无人机",
+  "domain": "lessons",
+  "content": "从“智能竞品”工作表可归纳出竞品池覆盖多品类：智能头盔（Shoei、Forcite、Sena）、智能眼镜/AR（雷鸟X3、Meta Ray-Ban、Engo2、影目 Air 3）、运动/全景相机（Insta360、DJI）、耳机（豆包耳机、光帆 Lightwear）、运动穿戴（COROS、Garmin、SUUNTO）、摩托车记录仪（INNOVV、盯盯拍）、无人机（大疆 NEO2）。说明项目 X 的对标范围已超出单一头盔，延伸到完整骑行智能生态。",
+  "source": "doc_import:Project X 竞品分析.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "竞品池",
+    "品类结构",
+    "智能头盔",
+    "智能眼镜",
+    "运动相机",
+    "摩托车生态"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "深化:采购成熟 Mesh/模组更适合 V2：BOM 20-60 美",
+  "domain": "components",
+  "content": "**智能骑行头盔研发可用结论（基于Mesh/通信模组采购策略）**\n\n1. **V2阶段优先采购成熟通信/蓝牙Mesh模组**\n   - 适合头盔的**通讯模块、蓝牙模块、语音控制、音频系统、GPS/传感器联动**快速落地。\n   - 价值：降低RF/天线/协议栈开发风险，缩短上市周期，团队可聚焦**佩戴体验、音频、灯控、传感器融合、App**。\n\n2. **关键成本/周期区间**\n   - **模组BOM**：基础蓝牙/Zigbee Mesh **3–10美元**；中端多协议/Thread/增强蓝牙Mesh **8–25美元**；高端多协议/Wi‑Fi 6/6E/Matter方向 **20–50+美元**。  \n   - 对骑行头盔，若做**头盔-手机-尾灯/对讲配件互联**，优先看 **5–25美元**区间模组。\n   - **NRE**：**50万–300万元人民币**合理，覆盖主板、电源管理、电池管理、固件、App、OTA、测试认证。\n   - **集成周期**：**4–8个月**可实现，适合V2迭代。\n\n3. **可选芯片/模组方向**\n   - **Espressif ESP32系列**：Wi‑Fi/BT Mesh，**3–10美元**，适合成本敏感型头盔（语音、灯控、App连接）。\n   - **Nordic nRF52/nRF53系列**：Bluetooth/Thread Mesh，**5–15美元**，低功耗优势明显，适合**电池供电头盔、传感器融合、音频控制**。\n   - **Silicon Labs EFR32MG系列**：Zigbee/Thread/Bluetooth Mesh，**8–25美元**，适合多协议扩展。\n   - 高端Wi‑Fi 6/6E模组 **20–60美元**，对头盔通常偏重，除非做**HUD/高带宽视频/AR**。\n\n4. *",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "采购方案",
+    "Mesh模组",
+    "BOM",
+    "NRE",
+    "BES2800",
+    "QCC",
+    "deep_research",
+    "communication_solution",
+    "night_deep"
+  ],
+  "confidence": "medium"
+}

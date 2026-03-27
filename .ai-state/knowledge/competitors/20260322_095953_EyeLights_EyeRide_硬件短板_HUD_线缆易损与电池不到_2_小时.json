@@ -1,0 +1,16 @@
+{
+  "title": "EyeLights EyeRide 硬件短板：HUD 线缆易损与电池不到 2 小时",
+  "domain": "competitors",
+  "content": "用户明确指出 EyeRide 的 HUD 线缆“非常易断”，且电池“不到 2 小时”就耗尽，因此“不适合一整天的骑行”。这是文档中少数带有明确时长数据的负面反馈，直接影响长途和全天骑行场景。尽管用户认可产品理念，但认为当前硬件成熟度仍不足，存在典型早期产品问题。",
+  "source": "doc_import:eyelights_competitor_analysis.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EyeLights",
+    "EyeRide",
+    "HUD cable",
+    "battery",
+    "day ride",
+    "hardware issues"
+  ],
+  "confidence": "high"
+}

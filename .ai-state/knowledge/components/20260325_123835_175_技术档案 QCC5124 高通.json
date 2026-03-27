@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] QCC5124 (高通)",
+  "domain": "components",
+  "content": "以下内容基于你给出的搜索结果整理，并对“明确可证实”和“行业常识推断”做了区分。由于搜索结果本身并非原始 datasheet，且其中部分表述互相存在轻微出入，因此我会尽量采用**保守、工程上可信**的写法，不把无法确认的参数写成“官方铁值”。\n\n---\n\n# Qualcomm QCC5124 完整技术档案\n\n## 0. 结论先看\n\n**QCC5124** 是高通面向 **TWS / 蓝牙耳机 / 头戴耳机 / hearables** 的一代成熟型低功耗蓝牙音频 SoC，核心卖点是：\n\n- **Bluetooth 5.0 级别平台**\n- 支持 **aptX / aptX HD / aptX Adaptive / AAC / SBC**\n- 集成 **Kalimba DSP**，可跑 ANC / ENC / EQ / 语音处理\n- 支持 **Hybrid ANC（前馈+反馈）**\n- 支持 **Qualcomm cVc 通话降噪**\n- 支持 **多麦克风方案**\n- 功耗较低，适合 TWS 和小型电池设备\n\n但如果从 **2026 年视角**看，它属于**成熟老平台**，并**不属于 BLE Audio / LC3 / Auracast 原生主力平台**。  \n如果你的目标是**智能摩托车全盔**，尤其要求 **100 km/h 风噪环境下有效 ANC + 高质量通话**，QCC5124 **能做基础可用方案，但不是最优平台**，更适合中端、成本敏感、功能成熟的项目，而不是极限风噪场景的旗舰方案。\n\n---\n\n# 1. 基本参数\n\n## 1.1 芯片定位\n- **厂商**：Qualcomm\n- **型号**：QCC5124\n- **系列**：QCC5100 系列\n- **定位**：高性能、低功耗蓝牙音频 SoC\n- **典型应用**：\n  - TWS 真无线耳机\n  - 蓝牙头戴耳机\n  - 颈挂式耳机\n  - hearables\n  - 小型蓝牙音频设备\n\n---\n\n## 1.2 蓝牙版本\n根据搜索结果，QCC5124 主流公开资料一致指向：\n\n- **Bluetooth 5.0**\n\n搜索结果中有“部分实现可能支持 5.2”的说法，但这通常更像是产品级软件栈/兼容性表述，不应直接等同于芯片原生完整支持 BLE Audio 时代特性。  \n**保守结论：QCC5124 应视为 BT 5.0 平台。**\n\n---\n\n## 1.3 支持编解码\n\n### 明确支持\n- **SBC**\n- **AAC**\n- **aptX**\n- **aptX HD**\n- **aptX Adaptive**\n\n### 关于 LC3\n- **LC3：未见搜索结果支持证据**\n- 从平台代际判断，**QCC5124 不应视为原生 LC3 / LE Audio 主平台**\n\n### 结论\n| 编解码 | 支持情况 |\n|---|---|\n| SBC | 支持 |\n| AAC | 支持 |\n| aptX | 支持 |\n| aptX HD | 支持 |\n| aptX Adaptive | 支持 |\n| LC3 | **不建议认定支持** |\n\n---\n\n## 1.4 DSP 算力\n\n搜索结果只明确提到：\n- 集成 **Qualcomm Kalimba DSP**\n- 可执行 ANC / ENC / 音频后处理 / 语音算法\n- 采用多核架构，含 32 位控制处理器 + 音频 DSP\n\n### 需要特别说明\n你要求“DSP 算力”，但搜索结果**没有给出明确 MIPS / MH",
+  "source": "kg_expand:audio_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "audio_soc",
+    "高通"
+  ],
+  "confidence": "high"
+}

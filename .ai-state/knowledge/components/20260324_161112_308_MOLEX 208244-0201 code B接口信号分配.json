@@ -1,0 +1,15 @@
+{
+  "title": "MOLEX 208244-0201 code B接口信号分配：3M环视四路鱼眼",
+  "domain": "components",
+  "content": "MOLEX 208244-0201（White）4 in 1 mini FAKRA code B的4路信号定义为：Pin1 AVM-CAM-GMSL-C，对应3M 360camera REAR；Pin2 AVM-CAM-GMSL-D，对应3M 360camera FRONT；Pin3 AVM-CAM-GMSL-A，对应3M 360camera LEFT；Pin4 AVM-CAM-GMSL-B，对应3M 360camera RIGHT。4路均为GMSL信号。该接口专门服务AVM环视系统，集中接入前后左右四路3M鱼眼摄像头。",
+  "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "208244-0201",
+    "360camera",
+    "鱼眼",
+    "AVM",
+    "GMSL"
+  ],
+  "confidence": "high"
+}

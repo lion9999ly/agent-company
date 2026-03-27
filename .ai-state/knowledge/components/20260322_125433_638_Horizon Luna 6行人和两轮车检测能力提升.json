@@ -1,0 +1,14 @@
+{
+  "title": "Horizon Luna 6行人和两轮车检测能力提升",
+  "domain": "components",
+  "content": "Luna 6对弱势交通参与者的检测距离均提升：行人由Luna 3的100 m提升至120 m，两轮车也由100 m提升至120 m。该提升有助于城市道路和夜间场景下更早识别风险目标，增强AEB、FCW等主动安全功能的触发裕量。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "行人检测",
+    "两轮车检测",
+    "探测距离"
+  ],
+  "confidence": "high"
+}

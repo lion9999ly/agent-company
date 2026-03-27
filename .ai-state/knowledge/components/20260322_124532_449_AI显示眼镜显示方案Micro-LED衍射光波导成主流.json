@@ -1,0 +1,15 @@
+{
+  "title": "AI显示眼镜显示方案：Micro-LED+衍射光波导成主流",
+  "domain": "components",
+  "content": "报告指出，为满足全天候佩戴需求，传统AR方案Birdbath + Micro OLED因体积大、使用寿命较短，厂商普遍转向Micro-LED + 光波导方案。样本产品Rokid Glasses、StarV Air2、雷鸟X2、Even Realities G1 A均采用Micro-LED屏幕与衍射光波导光学方案。为提高性价比，绝大部分厂商选择单绿色显示，仅雷鸟X2为全彩显示。这表明当前消费级AI+AR眼镜在显示技术上已形成较明确的主流路线：Micro-LED、衍射光波导、单绿优先。",
+  "source": "doc_import:2025年中国AI眼镜行业研究报告 - i-research.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Micro-LED",
+    "衍射光波导",
+    "Birdbath",
+    "Micro OLED",
+    "单绿显示"
+  ],
+  "confidence": "high"
+}

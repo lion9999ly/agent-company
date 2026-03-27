@@ -1,0 +1,16 @@
+{
+  "title": "Eyelights Eye-Ride HUD 500 英里后出现闪屏故障",
+  "domain": "lessons",
+  "content": "ADVrider 用户反馈称，Eyelights Eye-Ride HUD 在骑行 500 英里后开始出现闪屏问题，且尝试重置后故障仍持续。这表明问题并非简单的软件临时异常，可能涉及显示模组、电源管理、连接稳定性或抗震设计不足。500 英里这一使用里程节点说明产品在中短期实际骑行环境中的耐久性存在风险。",
+  "source": "doc_import:Eyelights用户反馈分析报告.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Eyelights",
+    "Eye-Ride HUD",
+    "闪屏",
+    "耐久性",
+    "500英里",
+    "ADVrider"
+  ],
+  "confidence": "high"
+}

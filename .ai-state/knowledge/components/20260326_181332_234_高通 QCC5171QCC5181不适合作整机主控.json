@@ -1,0 +1,17 @@
+{
+  "title": "高通 QCC5171/QCC5181（不适合作整机主控）",
+  "domain": "components",
+  "content": "高通 QCC5171 / QCC5181 定位高端蓝牙音频 SoC，优势包括 BT 5.3 / 5.4、LE Audio、aptX 生态成熟、ANC / ENC、多麦阵列、语音链路强、功耗低，价格区间约 3–8 美元或 4–8 美元/颗。但报告明确指出，QCC 不适合做 4K 摄像、HUD 渲染、ADAS 主控，也缺乏 Linux/Android 级系统承载能力，因此“适合做音频副控，不适合做头盔主控”。对需要 HUD + 影像 + 互联的一体化智能骑行头盔，若选 QCC 单芯片做整机主控，将在视觉链路、显示链路和系统并发能力上直接失配。",
+  "source": "deep_research:main_chipset_selection",
+  "created_at": "2026-03-26",
+  "tags": [
+    "QCC5171",
+    "QCC5181",
+    "音频SoC",
+    "不适合主控",
+    "蓝牙音频",
+    "deep_research",
+    "main_chipset_selection"
+  ],
+  "confidence": "medium"
+}

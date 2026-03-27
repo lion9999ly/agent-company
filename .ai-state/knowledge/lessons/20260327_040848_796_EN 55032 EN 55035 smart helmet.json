@@ -1,0 +1,17 @@
+{
+  "title": "EN 55032 EN 55035 smart helmet multimedia equipmen",
+  "domain": "lessons",
+  "content": "**智能骑行头盔研发关键信息（EMC/法规）**\n\n1. **适用标准与定位**\n- 智能头盔集成蓝牙、摄像头、GPS、音频、USB-C充电，属于**多媒体设备 MME**，欧盟EMC合规核心标准为：\n  - **EN 55032（发射）**\n  - **EN 55035（抗扰度）**\n- 对应欧盟法规基础：**EMC Directive 2014/30/EU**。\n\n2. **EN 55032 发射要求：研发重点**\n- 智能头盔通常按**Class B**（家用/近人体环境）设计，限值更严。\n- **传导发射**：150 kHz–30 MHz，重点看**USB-C充电口/数据口**。\n  - Class B典型限值：0.15–0.5 MHz **66–56 dBμV(QP)** / **56–46 dBμV(AVG)**；0.5–5 MHz **56/46 dBμV**；5–30 MHz **60/50 dBμV**。\n- **辐射发射**：30 MHz–6 GHz。\n  - 3 m Class B典型限值：30–230 MHz **30 dBμV/m**；230 MHz–1 GHz **37 dBμV/m**；1–3 GHz **47 avg / 50 peak**；3–6 GHz **50 avg / 54 peak**。\n- **高风险噪声源**：USB-C/DC-DC、电池管理电路、蓝牙2.4 GHz谐波、摄像头/MIPI CSI高速线、MCU/DSP时钟。\n\n3. **EN 55035 抗扰度要求：设计输入**\n- **ESD**：接触 **±4 kV**，空气 **±8 kV**；重点防护按键、外壳、USB-C口。\n- **辐射抗扰度**：80 MHz–6 GHz，典型 **3 V/m（至1 GHz）**、**1 V/m（1–6 GHz）**；影响蓝牙稳定性",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "标准",
+    "EN 55032",
+    "EN 55035",
+    "EMC",
+    "多媒体设备",
+    "USB-C",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] QCC3056 (高通)",
+  "domain": "components",
+  "content": "以下基于你给出的搜索结果做“**QCC3056 完整技术档案**”。  \n先给结论：**QCC3056 是一颗面向 TWS/轻量无线耳机的中高端蓝牙音频 SoC，强项是 BT 5.2、LE Audio Ready、aptX Adaptive、混合 ANC、cVc 通话降噪、低功耗。它适合耳塞/头戴耳机，也可用于轻型头盔蓝牙耳机模块；但若目标是“智能摩托车全盔 + 100km/h 持续强风噪 + 依赖 ANC 明显降噪”，QCC3056 并不是理想主控，原因不是芯片不能做 ANC，而是**头盔场景的风噪频谱、漏音、麦克风布置、腔体密封**远比 TWS 更苛刻，最终效果高度受整机声学设计限制。**\n\n---\n\n# 1. 基本参数\n\n## 1.1 芯片定位\n- **型号**：Qualcomm QCC3056\n- **类别**：蓝牙音频 SoC\n- **发布时间**：约 2020 年\n- **主要应用**：\n  - TWS 真无线耳机\n  - 无线头戴耳机\n  - 小型可穿戴音频设备\n  - 可扩展到头盔蓝牙音频模组，但不是其最典型主战场\n\n## 1.2 蓝牙版本\n- **Bluetooth 5.2**\n\n这是搜索结果中最明确的一项，也是 QCC3056 的核心卖点之一，因为它为 **LE Audio** 能力提供了协议基础。\n\n## 1.3 支持编解码\n基于搜索结果，可确认/较高可信度支持如下：\n\n- **LC3**：支持  \n  - 作为 **LE Audio Ready** 的关键组成\n- **aptX Adaptive**：支持  \n  - 高通平台核心卖点之一\n- **AAC**：搜索结果未直接点名，但在 QCC30xx 面向主流手机生态的产品定位下，**终端产品通常会支持 AAC**  \n  - 但严格按你给的搜索结果，**只能把 AAC 标为“常见支持/依 OEM 固件实现”**\n- **SBC**：蓝牙音频基础编解码，通常默认支持\n- **aptX 系列**：搜索结果明确提到的是 **aptX Adaptive**，未明确列出 aptX Classic / aptX HD\n\n### 编解码结论\n| 编解码 | 结论 |\n|---|---|\n| aptX Adaptive | 明确支持 |\n| LC3 | 明确支持/LE Audio Ready |\n| AAC | 搜索结果未直接实锤，通常可支持，取决于产品实现 |\n| SBC | 常规蓝牙音频基础支持 |\n\n## 1.4 DSP 算力\n搜索结果只提到：\n- **集成可编程 DSP**\n- **支持复杂音频算法**\n- **可实现低延迟 ANC/ENC 处理**\n\n但**没有给出明确 MIPS / DMIPS / 核心频率数值**。  \n因此严谨写法应为：\n\n- **DSP 算力：搜索结果未提供官方量化值**\n- 能力层面可确认：\n  - 支持混合 ANC\n  - 支持 cVc 通话降噪\n  - 支持风噪抑制、波束成形、回声消除、AGC\n  - 支持 LE Audio/LC3 相关处理\n  - 支持 aptX Adaptive\n\n---\n\n# 2. 降噪能力\n\n## 2.1 ANC 类型与档位\n### ANC 架构\n- **混合式 ANC（Hybrid ANC）**\n  - **前馈 Feedforward**\n  - **反馈 Feedback**\n\n这意味着它不是最基础的单麦 ANC，而是可做更完整的宽频降噪方案。\n\n### ANC 档位\n搜索结果没有给出“官方固定几档”的芯片级定义，但",
+  "source": "kg_expand:audio_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "audio_soc",
+    "高通"
+  ],
+  "confidence": "high"
+}

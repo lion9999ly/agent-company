@@ -1,0 +1,16 @@
+{
+  "title": "EyeLights EyeRide 改进点：App 操作、手机配对、客服提升，但线缆与续航仍弱",
+  "domain": "lessons",
+  "content": "同一位返修用户指出，EyeRide 在软件与服务层面已有明显进步：App 操作更好，智能手机配对比最初顺畅得多，客户服务也更快、更友好。但硬件仍有“初期问题”：HUD 线缆非常易断，电池续航不到 2 小时，因此“不适合一整天骑行”。结论是产品理念很好，但硬件成熟度仍需提升。",
+  "source": "doc_import:eyelights_competitor_analysis.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EyeLights",
+    "EyeRide",
+    "app usability",
+    "smartphone pairing",
+    "cable durability",
+    "battery under 2 hours"
+  ],
+  "confidence": "high"
+}

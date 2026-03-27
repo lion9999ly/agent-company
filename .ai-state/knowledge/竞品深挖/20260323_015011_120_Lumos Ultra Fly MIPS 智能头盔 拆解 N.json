@@ -1,0 +1,16 @@
+{
+  "title": "Lumos Ultra Fly MIPS 智能头盔 拆解 Nordic nRF52 转向灯模组 IM",
+  "domain": "竞品深挖",
+  "content": "**产品/技术要点**\n- **Lumos Ultra Fly MIPS**：智能骑行头盔，集成 **前后LED灯组、转向灯、IMU、BLE、锂聚合物电池+BMS、MIPS防护结构**。  \n- **主控芯片**：疑似 **Nordic nRF52832 / nRF52840**  \n  - nRF52832：**Cortex-M4F 64MHz，512KB Flash / 64KB RAM，BLE 5.0**  \n  - nRF52840：**1MB Flash / 256KB RAM，BLE 5.0/5.1/5.2，支持OTA，安全加密更强**  \n  - 适合头盔场景：**低功耗、BLE遥控/APP互联、PWM灯控、传感器数据处理、OTA升级**\n- **功耗参考**：nRF52832 在 3V 下 **RX 5.5mA、TX 5.3mA、深睡 0.3µA**，说明智能头盔主控正向采用超低功耗BLE SoC。\n\n**关键模组设计**\n- **灯控模组**：高亮SMD LED + 恒流驱动 + FPC/小型PCB + PC扩散罩；支持 **转向灯序列闪烁、刹车灯、亮度/PWM控制**。  \n- **可见性设计**：LED效率可参考 **150–200 lm/W**；后部两侧箭头式/流动式转向提示是可借鉴方案。  \n- **防护要求**：电子模组建议 **IPX4及以上**，常见做法为 **密封+灌封**。  \n- **IMU方案**：常见候选 **Bosch BMI160/BMI270/BMA400、ST LSM6DS3/LSM6DSOX、TDK MPU/ICM系列**；用于 **碰撞检测、刹车灯触发、运动状态识别**。\n\n**研发趋势**\n- **BLE遥控器+手机App+头盔三端联动** 成为智能骑行头盔主流架构。  \n- **OTA升级** 已是标配方向，可持续增",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-23",
+  "tags": [
+    "Lumos",
+    "MIPS",
+    "nRF52",
+    "turn signal",
+    "teardown",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "BH60SE Neo smart cycling helmet 2026 teardown Liva",
+  "domain": "lessons",
+  "content": "**产品/技术要点（基于“假想拆解”内容，可信度中低）**\n- **产品名**：Livall **BH60SE Neo (2026)**，定位智能骑行头盔。\n- **主控/芯片选型方向**：ARM Cortex-M4/M7 MCU，候选含 **STM32H7 / NXP i.MX RT**；蓝牙候选 **Nordic nRF5340 / Qualcomm QCC**，支持 **Bluetooth 5.3/5.4、LE Audio**。\n- **传感器融合**：多维 **IMU** 用于碰撞检测/刹车灯触发；可能扩展环境感知（空气质量、UV、心率）。\n- **通信模块趋势**：蓝牙为标配；高端可选 **UWB**（精确配对/防丢/车队距离感知）、**eSIM/LTE Cat-M1/NB-IoT**（脱离手机通话/定位）、Wi‑Fi仅用于升级。\n- **LED灯控**：后部 **14–20颗 RGBW 可寻址LED**，前部可选 **4–8颗白光LED**；后灯亮度预估 **80–150 lm**；支持转向/刹车/动画效果，柔性PCB或导光条一体化。\n- **音频系统**：双 **MEMS数字麦克风** + 波束成形/ENC降噪；扬声器为开放式或骨传导，单侧约 **0.5–1W**，强调环境声感知与通话清晰度。\n- **电池管理/充电**：**800–1200mAh Li-Po**，续航 **10–15h**；**USB‑C + PD快充**，30–60分钟充至80%；高端可选 **Qi无线充电**；BMS含过充/过放/过流/温保。\n- **遥控器**：蓝牙LE，小型化，**3–5键**，可用 **CR2032** 或小锂电，续航数月，支持戴手套操作。\n\n**研发可借鉴点**\n- 头盔电子系统走向 **模块化、轻量化、高集成、防水IPX6/7**。\n- **LE Audio +",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "竞品",
+    "LIVALL",
+    "拆解",
+    "FCC",
+    "音频",
+    "灯光",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

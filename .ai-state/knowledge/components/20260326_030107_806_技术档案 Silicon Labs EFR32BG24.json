@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Silicon Labs EFR32BG24",
+  "domain": "components",
+  "content": "下面给出一份**面向“Mesh对讲与头盔无线音频互联”选型的完整技术档案**。  \n我会按你给的模板，整理成**可直接用于产品预研/器件选型/方案对比**的格式。\n\n考虑到该领域涉及：\n- **蓝牙SoC**\n- **音频SoC**\n- **Bluetooth LE Audio / Auracast 标准**\n- **商用Mesh对讲方案**\n- **可量产模组**\n\n我先给出一组**最相关、最常见、最适合头盔对讲场景**的节点档案，覆盖：\n1. **Qualcomm QCC5181 / QCC3086**\n2. **Nordic nRF5340**\n3. **Airoha AB1565 / AB1568 系列**\n4. **Bluetooth LE Audio / Auracast 标准节点**\n5. **Bluetooth Mesh 标准节点**\n6. **Sena Mesh Intercom 商用方案**\n7. **Cardo Dynamic Mesh Communication (DMC) 商用方案**\n8. **Qualcomm QCC3056 模组化中端方案参考**\n\n> 说明：  \n> - 商业厂商对部分参数（尤其是私有Mesh拓扑、重连时间、链路预算、功耗细项）通常不会完全公开。  \n> - 以下内容基于公开资料、行业常识和头盔对讲应用经验整理，**适合做技术预研与方案比较**，但在立项前仍建议向原厂/代理索取最新datasheet、SDK说明和NDA资料。  \n> - 对于**Cardo DMC、Sena Mesh**这类商用方案，很多核心协议细节并不开放，适合做竞品分析，不一定适合直接采购协议栈落地。\n\n---\n\n# 1) 节点名称：Qualcomm QCC5181\n\n- **厂商/标准组织：** Qualcomm\n- **节点类型：** 蓝牙音频SoC\n- **具体型号或标准号：** QCC5181\n- **目标应用：** 骑行对讲、导航播报、音乐共享、语音助手、手机互联、未来BLE Audio广播接收/发送扩展\n\n## 无线能力\n- **Bluetooth版本：** Bluetooth 5.3 级别能力（具体以量产版本和SDK支持为准）\n- **BLE Audio：** 支持方向明确，适合LE Audio产品设计\n- **Classic Audio：** 支持，适合HFP/A2DP/AVRCP等传统头盔场景\n- **Auracast：** 具备相关演进基础，是否完整商用取决于平台软件版本\n- **专有Mesh：** 芯片本身不等于自带成熟“头盔对讲Mesh协议”，通常需厂商自研或第三方协议栈\n\n## 音频能力\n- **编解码支持：** LC3、CVSD、mSBC，部分平台可支持aptX系列能力（取决于授权与SKU）\n- **采样率：** 常见支持8/16/24/32/48 kHz等级音频路径\n- **双麦/多麦支持：** 支持双麦降噪，部分设计可扩展多麦输入\n- **AEC/ENC链路：** 支持回声消除、环境噪声抑制、语音上行优化，适合头盔风噪场景前端处理\n\n## Mesh能力\n- **拓扑结构：** 芯片级不限定，取决于上层协议；可做星型、链式、广播中继式或自定义Mesh\n- **最大节点数：** 无官方统一值，取决于协议设计与时隙调度\n- **中继能力：** 可实现，但需自研协议/调度\n- **重连时间：** 取决于协议实现，通常可做到秒级甚至亚秒级恢复\n- **组网方式：** BLE广播+连接态混合、Classic",
+  "source": "kg_expand:mesh_intercom",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "mesh_intercom"
+  ],
+  "confidence": "high"
+}

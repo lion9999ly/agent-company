@@ -1,0 +1,23 @@
+{
+  "title": "0326_Shoei GT-Air 3 与 Sena SRL3 Mesh：面向全盔的一体化通讯系统与推测性BOM分析",
+  "domain": "components",
+  "content": "Shoei GT-Air 3 是面向摩托车运动旅行场景的全盔，非自行车头盔；若检索中出现 bicycle helmet 通讯方案，应明确排除，因为其壳体结构、风噪环境、ECE 22.06 约束和麦克风布置均不同。基于3个来源，可确认 GT-Air 3 已作为 2024/2025 在售型号，核心卖点是 ECE 22.06 认证、AIM+ 复合纤维外壳、多密度 EPS、QSV-2 内置遮阳镜，以及为 Sena SRL3 预留的隐藏式安装位。来源对“是否已正式发布”存在矛盾：第1、3个来源认为 GT-Air 3 已发布并在售，第2个来源则称截至其知识库时间点“尚未正式发布”，因此应以较新的市场信息为准，但需标注时间差导致的冲突。\n\nSRL3 Mesh 被描述为 Shoei GT-Air 3/Neotec 3/J-Cruise 3 专用通讯系统，功能参数在来源间较一致：支持 Mesh Intercom 与 Bluetooth 5.0，Open Mesh 覆盖约 1.6 km，Group Mesh 最多 24 人，Mesh 续航约 8 小时、蓝牙对讲约 11 小时，带 HD 扬声器、语音指令、FM 收音机和降噪。第2来源把“开放式 Mesh 最多24人”与第1来源“Group Mesh 24人、Open Mesh 近乎无限”混用，属于定义冲突，按 Sena 既有产品逻辑更接近后者。\n\n公开资料没有真实拆解BOM，因此以下仅为工程推测：主板应包含低功耗无线 SoC、蓝牙/专有 Mesh 射频前端、音频 DSP、Flash、RAM、PMIC、锂聚合物电池、双扬声器、杆麦或软线麦、FPC 连接件与 USB 充电接口。潜在供应链类型可参考行业通用组合：电池来自 ATL、欣旺达或 EVE 一类厂商；MEMS 麦克风可能来自 Knowles、Goertek、AAC；扬声器可能来自 Foster、",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Shoei",
+    "GT-Air 3",
+    "Sena",
+    "SRL3 Mesh",
+    "motorcycle helmet",
+    "full-face helmet",
+    "Mesh Intercom",
+    "Bluetooth 5.0",
+    "ECE 22.06",
+    "BOM",
+    "supplier",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

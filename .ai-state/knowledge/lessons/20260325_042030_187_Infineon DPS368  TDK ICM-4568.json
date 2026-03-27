@@ -1,0 +1,17 @@
+{
+  "title": "Infineon DPS368 + TDK ICM-45686 + Nordic nRF54L15 ",
+  "domain": "lessons",
+  "content": "**智能骑行头盔研发关键信息摘要**\n\n**1. 推荐器件组合与关键参数**\n- **Infineon DPS368**（气压/温度传感器）：相对精度 **±0.002 hPa**、绝对精度 **±0.06 hPa**，可感知约 **2 cm** 高度变化；功耗 **1.7 µA@1Hz**，待机 **0.5 µA**；I²C/SPI，封装 **2.0×2.5×0.9 mm**。适合做**跌落/高度变化辅助判断**。\n- **TDK ICM-45686**（6轴IMU）：加速度 **±2/4/8/16g**，陀螺仪 **±15.625~±2000 dps**；噪声低（加速度约 **50 µg/√Hz**，陀螺约 **3.8 mdps/√Hz**）；Acc+Gyro功耗约 **1.25 mA**，支持FIFO/DMP/中断。适合做**碰撞、翻滚、急刹、姿态识别**。\n- **Nordic nRF54L15**（BLE SoC）：**Cortex-M33 128 MHz**，约 **512 KB Flash / 64 KB RAM**，支持 **Bluetooth LE 5.4**；TX **约2.5 mA@0 dBm**，RX **约1.5 mA**，System OFF亚微安级。适合做**本地传感器融合、BLE告警、低功耗主控**。\n\n**2. 可直接借鉴的设计理念**\n- **三传感器融合**：IMU做主判定，气压传感器做“跌落/高度变化”辅助，可显著降低“头盔掉地”“路面颠簸”误报。\n- **算法框架**：建议采用“**阈值 + 状态机 + 姿态融合**”的轻量方案起步，再逐步升级到**卡尔曼/互补滤波**或轻量ML模型。\n- **超低功耗架构**：IMU低功耗常开 + 中断唤醒主控；BLE仅在事件/周期同步时开启，适合头盔长续航设计。\n\n**3. 技术趋势**\n- *",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-25",
+  "tags": [
+    "技术",
+    "跌倒检测",
+    "Infineon",
+    "TDK",
+    "Nordic",
+    "sensor fusion",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

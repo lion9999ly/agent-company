@@ -1,0 +1,12 @@
+{
+  "title": "跨界:Smith Vantage MIPS Aleck Nunch",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- **基础头盔平台**：Smith **Vantage MIPS**，已知特性含 **Koroyd®材料、MIPS、多向冲击防护、Boa 360调节、可调通风**；耳垫结构适合第三方音频模块改装。对智能骑行头盔启发：保留原头盔认证结构，采用**外挂/嵌入式模块化升级**。\n- **音频模块**：Aleck **Nunchucks** 现状参数：**Bluetooth 5.0、40mm单元、IPX4、约18h续航**。文中预测2026升级方向：**BT 5.3/LE Audio、LC3编解码、45mm钕磁单元、20Hz–20kHz、THD<0.5%、多MEMS麦克风阵列+波束成形+AI降噪、24–30h播放、72h待机、IPX7/8**。\n- **碰撞感知/救援**：建议集成 **6轴IMU**（3轴加速度+3轴陀螺仪），可选 **气压计/GPS**；候选器件点名 **Bosch BMI323、ST LSM6DSOX、Bosch BMP390**。目标指标：**±200g加速度、±4000dps角速度**。方案强调**边缘AI**区分真实事故与日常颠簸，降低误报；支持**蓝牙联手机自动SOS**，高端可加 **eSIM独立蜂窝**。\n- **硬件架构趋势**：主控/无线SoC可参考 **Qualcomm QCC518x** 或 **Nordic nRF54L**；集成 **DSP/PMIC/Flash**。充电接口为 **USB-C**，并提出 **Qi 2.0无线充电**、隐藏式 **LED状态灯**、手套友好按键/语音/手势控制。\n- **设计理念可借鉴**\n  1. **模块化 retrofit 商业模式**：不改头盔主体，通过耳垫/衬里插槽升级音频、传感器、通信能力。  \n  2. **安全+娱乐双价值**：音频通讯与碰撞救援共平台，提升客单",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "night_cross",
+    "跨界"
+  ],
+  "confidence": "medium"
+}

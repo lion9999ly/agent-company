@@ -1,0 +1,16 @@
+{
+  "title": "LED矩阵/LED提示带方案成本与量产适配",
+  "domain": "components",
+  "content": "LED矩阵/LED提示带方案是第一代最优显示解，粗略BOM区间约 8–30 美元/套，通常包括 RGB LED/LED矩阵、导光件/遮光件、控制板、简单传感器/环境光调节。相比Micro OLED和光波导，LED方案具备成本最低、功耗低、亮度容易做高、UI简单、分心风险更低、结构和装配难度低、量产风险低等优势。报告给出的风险评级为：成本低、技术风险低到中、量产风险低、第一代适配度高。",
+  "source": "deep_research:hud_decision",
+  "created_at": "2026-03-22",
+  "tags": [
+    "LED矩阵",
+    "BOM",
+    "量产",
+    "低干扰提示",
+    "deep_research",
+    "hud_decision"
+  ],
+  "confidence": "high"
+}

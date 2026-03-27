@@ -1,0 +1,16 @@
+{
+  "title": "歌尔EMG技术平台：AFE SiP、片上学习与柔性材料集成",
+  "domain": "components",
+  "content": "歌尔在EMG方向具备EMG/IMU融合算法、AI平台研究、EMG电路设计与验证方案，并推出EMG AFE SiP，可节约70%的空间。材料与工艺方面包括LSR、嵌件成型、印刷、薄膜、针织、电路及高精度EMG传感器，强调佩戴舒适与可拉伸薄膜。平台还支持云计算与多传感器集成，包括PPG、ECG、BIA、EDA、GSR、EMG，并支持快速适配柔性磁吸表带。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EMG",
+    "AFE SiP",
+    "片上学习",
+    "LSR",
+    "可拉伸薄膜",
+    "多传感器"
+  ],
+  "confidence": "high"
+}

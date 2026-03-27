@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Robotics X3M 文档修订历史总览（2019-12-10 至 2021-07-14）",
+  "domain": "lessons",
+  "content": "X3M Datasheet 修订历史从 0.1（2019-12-10，Initial draft）持续到至少 1.3（2021-07-14），当前文档封面版本为 Rev.1.6（March 2022）。修订内容覆盖引脚定义、MIPI、IPU、PYM、DDR、热参数、电气规格、功耗域、时序、封装、订货信息等多个模块，说明 X3M 在量产前后经历了较密集的规格收敛与文档完善过程。对研发团队而言，版本差异可能直接影响硬件设计、BSP 适配和量产一致性验证。",
+  "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Revision history",
+    "0.1",
+    "1.3",
+    "Documentation evolution",
+    "Change tracking"
+  ],
+  "confidence": "high"
+}

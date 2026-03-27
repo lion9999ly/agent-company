@@ -1,0 +1,15 @@
+{
+  "title": "Luna 6小域控机械零件材料规范",
+  "domain": "standards",
+  "content": "机械零件材料表给出壳体/载体材料与标准：CARRIER-Casting；COVER-Casting可选AlSi12Cu1(Fe)，标准EN AC-47100；AlSi10MnMg，标准EN AC-43500；AlSi12(Fe)(a)，标准EN AC-44300。另有COVER-Stamping方案，材料为DC51D+Z，执行Q/BQB 425-2019。该页说明产品壳体支持压铸铝与冲压钢板两类工艺路线，材料选择兼顾散热、强度、耐腐蚀与制造成本。",
+  "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "机械材料",
+    "压铸",
+    "冲压",
+    "铝合金",
+    "标准"
+  ],
+  "confidence": "high"
+}

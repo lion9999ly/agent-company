@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] QCC5141 (高通)",
+  "domain": "components",
+  "content": "以下基于你提供的搜索结果整理，**只引用和归纳现有结果中的信息**，对未在结果中明确给出的项目，我会标注为**“搜索结果未明确”**或**“取决于整机设计”**，避免把营销口径当成硬规格。\n\n---\n\n# Qualcomm QCC5141 完整技术档案\n\n## 1. 芯片定位与概述\n\n**QCC5141** 是高通 Qualcomm 面向 **TWS 真无线耳机、高端蓝牙音频设备、智能 hearables** 推出的低功耗蓝牙音频 SoC，属于 **QCC5100 系列**。  \n发布时间大致在 **2019 年末 / 2020 年初**，并不是 2026 年新品。\n\n它的核心卖点是：\n\n- **Bluetooth 5.2**\n- **LE Audio Ready**\n- **aptX Adaptive / aptX Voice / AAC / SBC**\n- **混合式 ANC**\n- **cVc 通话降噪**\n- **TrueWireless Mirroring**\n- 面向小体积设备的**低功耗设计**\n\n---\n\n# 2. 基本参数\n\n## 2.1 蓝牙版本\n\n- **Bluetooth 5.2**\n- 支持 **LE Audio（通过固件更新 / 平台支持）**\n\n> 搜索结果明确提到：QCC5141 支持 Bluetooth 5.2，并可通过固件更新支持 LE Audio。\n\n---\n\n## 2.2 支持编解码\n\n根据搜索结果，QCC5141支持：\n\n- **aptX Adaptive**\n- **aptX Voice**\n- **AAC**\n- **SBC**\n- **LC3**（作为 LE Audio 的核心编解码器，属于 LE Audio Ready 能力的一部分）\n\n### 你特别关心的三项：\n- **aptX：支持**\n  - 更准确说是 **aptX Adaptive**，并支持 **aptX Voice**\n- **LC3：支持 / LE Audio Ready**\n- **AAC：支持**\n\n> 注意：搜索结果没有明确写出“普通 aptX / aptX HD”是否都支持，因此这里不擅自扩展，只确认结果中明确出现的 **aptX Adaptive、aptX Voice、AAC、SBC、LC3**。\n\n---\n\n## 2.3 DSP 算力\n\n搜索结果明确提到：\n\n- 集成 **双核 32 位处理器**\n- 集成 **Qualcomm Kalimba DSP**\n\n但**没有给出明确的 DSP MIPS / DMIPS / MHz 数值**。\n\n因此可写为：\n\n- **DSP 架构：Qualcomm Kalimba DSP**\n- **CPU：双核 32 位处理器**\n- **DSP 算力：搜索结果未明确给出具体 MIPS 数值**\n\n---\n\n# 3. 降噪能力\n\n## 3.1 ANC 类型与档位\n\n### ANC 类型\nQCC5141 支持：\n\n- **前馈 ANC（Feedforward）**\n- **反馈 ANC（Feedback）**\n- **混合 ANC（Hybrid ANC）**\n\n其中核心能力是 **混合式 ANC**。\n\n### ANC 档位\n搜索结果没有给出“固定几档”的官方硬件档位数，但明确提到：\n\n- 厂商可做 **多种预设降噪模式**\n  - 如通勤模式\n  - 室内模式\n  - 户外模式\n- 可实现 **自适应 ANC**\n- 支持 **通透模式 / 环境音模式**\n\n因此更准确的表述是：\n\n- ",
+  "source": "kg_expand:audio_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "audio_soc",
+    "高通"
+  ],
+  "confidence": "high"
+}

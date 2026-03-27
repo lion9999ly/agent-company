@@ -1,0 +1,17 @@
+{
+  "title": "Horizon Luna 6行车辅助功能升级：ICA增强与ILCA新增",
+  "domain": "components",
+  "content": "Luna 6与Luna 3均支持FDI前车间距提醒/FVSA前车起步提醒、ACC自适应巡航控制、ICA智能巡航辅助。但Luna 6的ICA进一步支持红绿灯启停、风险变道、风险限速；同时新增ILCA指令变道辅助，而Luna 3不支持ILCA。Luna 6在巡航场景中的自动化程度和场景覆盖更强。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "ACC",
+    "ICA",
+    "ILCA",
+    "红绿灯启停",
+    "风险变道",
+    "风险限速"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,20 @@
+{
+  "title": "0326_Intelligent Cranium iC-R：带AR HUD与盲点预警的智能摩托车全盔专利与产品化进展",
+  "domain": "competitors",
+  "content": "Intelligent Cranium iC-R定位为智能摩托车全盔，而非自行车头盔；其核心知识产权是 **US10705500B2**《Smart helmet with augmented reality display and blind spot detection》，申请日 **2018-09-28**、授权日 **2020-07-07**，受让人为 **Intelligent Cranium Helmets, LLC**。专利描述的关键能力包括：在骑手视野内叠加 **AR HUD** 信息、通过后向/侧向感知实现 **盲点检测**，并以视觉或音频方式触发 **碰撞预警**。从公开产品叙述看，iC-R主打 **180°后视摄像头**、导航、速度/来电显示、蓝牙通信与事故辅助等，目标是形成“数字副驾驶”式体验。\n\n来源间有两点需要明确：第一，关于公司人物信息存在冲突，一处称创始人/CEO为 **Dr. Marcus Weller**，另一处又提到创始人如 **Dr. Alfred R. Scott**；在缺乏公司官方最新页佐证时，应视为待核。第二，“**2025**”更像市场或搜索语境中的目标年份，并非专利年份；现有来源没有给出2025量产上市的硬证据，反而指出该项目自 **2015-2017** 年引发关注后，**未按原计划实现大规模量产**。\n\n参数与商业化信息方面，来源给出了较具体但仍偏概念验证的数据：显示方案被描述为 **透明 OLED / 微投影HUD**，后视覆盖约 **180度**，外壳材料提到 **碳纤维**。但对量产版最关键的 **ECE/DOT认证、整盔重量、电池续航、量产型号编号、正式零售价、量产供应商**，三份来源均未提供可核实数字，因此不能写成已确认规格。价格方面，本次来源没有可靠报价；若用于竞品库，应标记为“**价格未公开/未证实**”。",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Intelligent Cranium",
+    "iC-R",
+    "smart motorcycle helmet",
+    "AR HUD",
+    "blind spot detection",
+    "collision warning",
+    "US10705500B2",
+    "full-face helmet",
+    "竞品",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

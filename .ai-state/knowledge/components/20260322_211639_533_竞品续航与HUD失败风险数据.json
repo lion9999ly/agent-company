@@ -1,0 +1,17 @@
+{
+  "title": "竞品续航与HUD失败风险数据",
+  "domain": "components",
+  "content": "竞品验证显示，智能骑行头盔已覆盖LED提示、转弯导航、危险警告、高清摄像头、透明AR HUD、语音控制、后视摄像头、碰撞检测、Mesh对讲等方向。其中TALI Connected电池约2000–3000mAh / 3.7V，续航约4–8小时，说明摄像头、互联和事故检测会显著受电池容量约束。与此同时，Eyelights类HUD用户反馈集中在日光下看不清、续航差、外壳开裂、支架脆弱、安装与耐久性问题，因此第一代产品不建议直接上全HUD，供应商必须优先解决功耗、热、结构、可靠性和户外可视性。",
+  "source": "deep_research:why_goertek",
+  "created_at": "2026-03-22",
+  "tags": [
+    "竞品",
+    "续航",
+    "HUD",
+    "可靠性",
+    "电池",
+    "deep_research",
+    "why_goertek"
+  ],
+  "confidence": "high"
+}

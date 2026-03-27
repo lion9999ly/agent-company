@@ -1,0 +1,14 @@
+{
+  "title": "HPU3501 LDO and RTC Integration",
+  "domain": "components",
+  "content": "HPU3501 除 5 路 Buck 外，还集成 3 路 300mA LDO 和 1 个实时时钟 RTC。器件支持 Alarm 输出，并在典型应用图中包含 32kHz 晶振相关引脚 X1/X2、XTAL、CLKO、VRTC。LDO 输出在默认配置中可设为 0.8V、1.8V、3.3V 等，适合为 IO、RTC、外设或 Always-on 电源域供电。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "LDO",
+    "RTC",
+    "300mA",
+    "Alarm"
+  ],
+  "confidence": "high"
+}

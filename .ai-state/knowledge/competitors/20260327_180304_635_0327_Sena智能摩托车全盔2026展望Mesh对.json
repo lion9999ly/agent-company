@@ -1,0 +1,20 @@
+{
+  "title": "0327_Sena智能摩托车全盔（2026展望）：Mesh对讲、Harman Kardon音频与推测性BOM",
+  "domain": "competitors",
+  "content": "面向2026年的Sena智能摩托车全盔，可参考其现有高端全盔Stryker、Impulse及50系列通信技术做推演。需明确：这里讨论的是摩托车全盔，不是自行车头盔；两者在认证、结构强度、风噪环境和通信需求上完全不同，不能混用。现有来源较一致地指向Sena核心卖点为Mesh Intercom 2.0与Harman Kardon调音音频。公开资料显示，Mesh 2.0在群组模式支持24名骑手，开放地形最远约8 km；两名骑手间典型最远约1.6-2.0 km。这里存在来源差异：一处写“至少6名骑手间隔1.6 km可达8 km”，另一处写“每两名骑手最远2 km、总范围8 km”，应视为测试条件不同而非硬冲突。音频方面，Sena已在Impulse、Stryker等型号上采用Harman Kardon扬声器/麦克风方案，定位高于普通蓝牙耳机模组。安全标准方面，来源提到DOT与ECE 22.06，说明其产品路线仍是公路摩托车全盔。若2026年推出新旗舰，合理推测会延续ECE 22.06、全盔壳体+EPS多密度缓冲结构，并升级到“Mesh 3.0”级别，但该命名目前无官方发布，需标注为预测。价格上，结合Sena现有高端智能全盔通常处于US$499-799区间，2026年若叠加更高集成度、ANC或HUD，零售价可能上探US$799-999。推测性BOM可分四块：1）壳体与结构件约占30%-40%，外壳可能采用碳纤/玻纤复合，材料供应商可参考Toray、Teijin，面罩材料可参考SABIC Lexan，防雾方案常见Pinlock；2）通信与主控约占20%-25%，含蓝牙/Mesh射频、天线、DSP、存储与电源管理；3）音频系统约占10%-15%，Harman Kardon负责声学调校，麦克风/扬声器器件可能来自歌尔、瑞声等声学链条；4）电池与传感器约占8%-12%，若加入IMU、碰撞检测或",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Sena",
+    "smart helmet",
+    "motorcycle full-face",
+    "Mesh Intercom",
+    "Harman Kardon",
+    "BOM",
+    "ECE 22.06",
+    "DOT",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

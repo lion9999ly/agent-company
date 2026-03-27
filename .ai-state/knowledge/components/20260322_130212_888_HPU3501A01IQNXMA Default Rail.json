@@ -1,0 +1,14 @@
+{
+  "title": "HPU3501A01IQNXMA Default Rail Configuration",
+  "domain": "components",
+  "content": "HPU3501A01IQNXMA 默认配置为 Master（OTPSEL=0）。默认输出与时序：Buck1 为 0.8V（Dual Phase），上电 Group 3、下电 Group 3；Buck3 为 0.82V，Group 3/3；Buck4 为 0.82V，Group 3/3；Buck5 为 0.8V，Group 3/3；LDO1 为 0.8V，Group 2/2；LDO2（VSEL=0）为 1.8V，Group 4/4；LDO3 为 3.3V，Group 4/4。表中 Buck2 与 Buck1 合并显示，反映其双相配置。",
+  "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "HPU3501A01IQNXMA",
+    "Default Voltage",
+    "Power Sequence",
+    "Master"
+  ],
+  "confidence": "high"
+}

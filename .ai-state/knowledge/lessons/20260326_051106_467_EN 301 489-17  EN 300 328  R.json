@@ -1,0 +1,19 @@
+{
+  "title": "EN 301 489-17 + EN 300 328 + RED smart cycling hel",
+  "domain": "lessons",
+  "content": "**智能骑行头盔研发关键信息摘要**\n\n### 1. 认证/法规要点\n- **RED 2014/53/EU** 为欧盟上市强制法规，头盔需同时满足：  \n  - **3.1(a)** 健康安全：电池安全、材料安全、RF暴露；  \n  - **3.1(b)** EMC：抗干扰与不对外过度辐射；  \n  - **3.2** 频谱利用：无线模块不得造成有害干扰。  \n- 合规路径：采用协调标准后可出具 **DoC** 并加贴 **CE**。\n\n### 2. 与蓝牙/Wi‑Fi模块选型直接相关的标准\n- **EN 300 328 V2.2.2 (2019-07)**：适用于 **2.4GHz 蓝牙/BLE Audio/Wi‑Fi**。  \n  关键指标：  \n  - 频段：**2400–2483.5 MHz**  \n  - 最大发射功率：**100 mW / 20 dBm EIRP**  \n  - PSD限制：**10 dBm/MHz**（DSSS/OFDM），FHSS为 **10 dBm/100 kHz**  \n  - 杂散发射：  \n    - **30 MHz–1 GHz：-36 dBm EIRP**  \n    - **1–12.75 GHz：-30 dBm EIRP**  \n    - 受限频段更严：**-54 dBm EIRP**\n- **EN 301 489-17 V3.2.4 (2020-09)** + **EN 301 489-1**：针对蓝牙/Wi‑Fi EMC。  \n  重点测试：  \n  - 辐射发射、充电口/数据口传导发射  \n  - **ESD：接触 ±8 kV，空气 ±15 kV**\n\n### 3. 技术趋势/设计启示\n- **蓝牙 LE Audio + Wi‑Fi 共存** 成为智能头盔新方向，适合语音、对讲、导航音频、App互联。\n- 2.4GHz",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "标准",
+    "RED",
+    "EN 301 489-17",
+    "EN 300 328",
+    "蓝牙",
+    "LE Audio",
+    "EMC",
+    "射频认证",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

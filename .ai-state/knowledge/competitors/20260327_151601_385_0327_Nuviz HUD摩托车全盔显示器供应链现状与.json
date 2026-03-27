@@ -1,0 +1,22 @@
+{
+  "title": "0327_Nuviz HUD（摩托车全盔显示器）供应链现状与2025近眼光学模块判断",
+  "domain": "competitors",
+  "content": "Nuviz不是2025年的有效供应商对象。3个来源一致指出：Nuviz于2017年推出可安装在摩托车全盔/揭面盔下巴部位的HUD，原始售价约699美元，续航约8小时，功能含导航、速度、来电、音乐控制，核心结构是“微型投影仪+半透明combiner（组合镜）”，虚像距离约10英尺。随后公司在2018年末至2019年间停止运营，资产/知识产权被Sena Technologies收购，产品停产且官方支持终止。因此，若我们做智能摩托车全盔HUD，对标应从“Nuviz遗留方案”转向“2025可落地模块供应链”。\n\n可参考的现役竞品方向包括Forcite Helmets（澳大利亚，MK1/MK1S智能头盔）和Eye-Lights/EyeRide（法国，可加装HUD模块）。但需注意来源表述存在差异：一处称Forcite为“内置HUD/微型投影”，另一处称其为“集成LED显示屏”；这说明公开资料对其显示架构并不完全一致，做竞品拆解时应以实物BOM或FCC/专利为准。另有Shoei、BMW Motorrad仅见概念或原型，不应视为2025稳定量产供应商。这里明确排除自行车头盔场景：自行车HUD常用更轻量、低速、开放式视野设计，抗风噪、抗震、ECE/DOT适配与摩托车全盔完全不同，不能直接迁移。\n\n从2025近眼光学模块看，供应链应拆成两层：第一层是微显示器，候选包括Sony、eMagin（已并入Applied Materials）等OLED microdisplay厂商；来源还预测Micro-LED会成为更优路线，原因是户外强光下亮度可达“数百万尼特”级别，优于传统OLED/LCoS，更适合白天骑行可视性。第二层是光学模组，仍以自由曲面反射/折反射、combiner或更先进波导方案为主。对摩托车全盔而言，优先级不是炫技，而是亮度、眼盒、抗震、重量和防水。经验上，Nuviz失败点已给出边界：6",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Nuviz",
+    "HUD",
+    "摩托车全盔",
+    "近眼光学",
+    "Microdisplay",
+    "Sony",
+    "eMagin",
+    "Sena",
+    "Forcite",
+    "Eye-Lights",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "Luna 6平台新增应用支持：DMS、DVR/RVC与紧急事件记录",
+  "domain": "components",
+  "content": "基于征程6B，Luna 6新增或强化对DMS、DVR/RVC的支持，并支持数据回传与紧急事件记录。文档将其归纳为“增量功能更丰富”，体现Luna 6从单纯感知计算平台向更完整的车载智能与记录平台扩展，覆盖驾驶员监测、视频记录、倒车影像及事件留存等功能。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "DMS",
+    "DVR",
+    "RVC",
+    "紧急事件记录",
+    "数据回传"
+  ],
+  "confidence": "high"
+}

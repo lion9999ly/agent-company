@@ -1,0 +1,21 @@
+{
+  "title": "0323_2025智能摩托车头盔认证要点：ECE 22.06、DOT FMVSS 218与电子模块合规路径",
+  "domain": "standards",
+  "content": "到2025年，所谓“smart helmet”并没有单一全球认证，量产产品通常要走“头盔本体+电子模块”双轨合规。面向欧洲销售，核心是ECE 22.06；面向美国销售，核心是DOT FMVSS 218。ECE 22.06较22.05显著加严：除保留约7.5 m/s冲击条件外，还增加低速与高速测试，RevZilla转述的数据为4 m跌落、低速6 m/s、高速最高8.2 m/s，且低速冲击传递峰值限值180 g，传统条件下限值275 g。对智能头盔的关键影响是：蓝牙模块、摄像头支架、HUD光机、电池包都可能被视为附件或突出物，必须在更多冲击点和斜向冲击中证明不会形成二次伤害。",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "ECE 22.06",
+    "DOT FMVSS 218",
+    "smart helmet",
+    "TÜV",
+    "SGS",
+    "UL",
+    "Bluetooth",
+    "HUD",
+    "battery",
+    "camera",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

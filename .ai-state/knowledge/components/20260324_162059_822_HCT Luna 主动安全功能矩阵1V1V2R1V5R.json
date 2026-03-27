@@ -1,0 +1,17 @@
+{
+  "title": "HCT Luna 主动安全功能矩阵（1V/1V2R/1V5R/5V5R12USS）",
+  "domain": "components",
+  "content": "Luna平台按传感器配置分为1V、1V2R、1V5R、5V5R12USS。1V起即支持AEB/FCW、LDW/LKA/ELK、TLR、SAS、IHC/ADB。1V2R新增RCW/RCTA、BSD/LCA、DOW。1V5R进一步支持ESA/AES。5V5R12USS在上述基础上支持PMA防油门误踩（无需额外融合）及MEB低速自动紧急制动。文档说明：√表示可实现，C表示需融合其他传感器。",
+  "source": "doc_import:主动安全功能介绍 20251027 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "HCT",
+    "Luna",
+    "主动安全",
+    "AEB",
+    "LDW",
+    "BSD",
+    "RCW"
+  ],
+  "confidence": "high"
+}

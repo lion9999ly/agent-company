@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Apple Vision Pro",
+    "url": "https://www.apple.com/apple-vision-pro/",
+    "specs": {
+      "weight": "5 g",
+      "FOV": "360° "
+    },
+    "status": 200
+  },
+  {
+    "name": "Magic Leap 2",
+    "url": "https://www.magicleap.com/magic-leap-2",
+    "specs": {},
+    "status": 200
+  }
+]

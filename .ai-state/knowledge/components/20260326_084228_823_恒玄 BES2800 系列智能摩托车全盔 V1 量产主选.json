@@ -1,0 +1,19 @@
+{
+  "title": "恒玄 BES2800 系列（智能摩托车全盔 V1 量产主选）",
+  "domain": "components",
+  "content": "报告明确给出 V1 量产主选为 BES2800 系列，原因是其在 5 个硬门槛下综合最平衡：支持手机 + 车辆 TFT/导航双设备并发，适配 3–5 麦前端，可并行承载 ENC / ANC / 通透 / KWS，且 BT + DSP + Codec 一体化，有利于控制功耗、板面积、BOM、热设计与 EMC 风险。该路线更适合满足 ≥8 小时续航和整机 ≤1.65kg 目标，并匹配 6–9 个月快速量产节奏。结论是 BES2800 不是参数最强，但在 100km/h 风噪可用、量产生态成熟、开发风险最低这几个维度上最适合 V1。",
+  "source": "deep_research:tree_audio_soc",
+  "created_at": "2026-03-26",
+  "tags": [
+    "BES2800",
+    "V1量产",
+    "Audio SoC",
+    "双连接",
+    "3-5麦",
+    "8h续航",
+    "头盔电子",
+    "deep_research",
+    "tree_audio_soc"
+  ],
+  "confidence": "high"
+}

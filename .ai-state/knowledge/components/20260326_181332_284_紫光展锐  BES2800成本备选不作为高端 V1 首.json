@@ -1,0 +1,17 @@
+{
+  "title": "紫光展锐 + BES2800（成本备选，不作为高端 V1 首选）",
+  "domain": "components",
+  "content": "报告对紫光展锐的裁决是“可作为成本优化型主控备选，但不应作为高端智能骑行头盔 V1 的首选主控”。原因在于其国内供应链沟通友好、成本更有竞争力，适合车机 / IoT 式整合，且可与 BES2800 组成“展锐主控 + BES 音频副控”的 B 样验证方案；但在 HUD + 视觉 + 高可靠音频 + 高速骑行场景调优、AR/HUD、全球生态、第三方算法适配、开发工具链和品牌溢价支撑上，成熟度仍不如高通。报告特别指出 CTO 提到的 2–5 美元/颗更像穿戴/音频类芯片价格，不能简单等同完整主控级 SoC 价格。",
+  "source": "deep_research:main_chipset_selection",
+  "created_at": "2026-03-26",
+  "tags": [
+    "紫光展锐",
+    "BES2800",
+    "成本备选",
+    "B样验证",
+    "供应链",
+    "deep_research",
+    "main_chipset_selection"
+  ],
+  "confidence": "medium"
+}

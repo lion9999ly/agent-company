@@ -1,0 +1,18 @@
+{
+  "title": "[Tech Radar] 智能头盔紧急求救系统",
+  "domain": "components",
+  "content": "该项目专注于为智能骑行设备提供安全和紧急求救功能。核心技术可能包括内置多轴传感器（如加速度计、陀螺仪）进行碰撞检测，通过算法判断事故发生。一旦检测到事故，系统能自动触发SOS信号，通过Mesh对讲或蜂窝网络向预设紧急联系人发送位置信息和求救消息。可能还包括跌落检测、心率监测等生命体征监控，以及一键手动求救功能。",
+  "source": "platform_monitor:search",
+  "created_at": "2026-03-26",
+  "tags": [
+    "安全",
+    "SOS",
+    "紧急",
+    "ADAS",
+    "碰撞检测",
+    "传感器",
+    "platform_monitor",
+    "tech_radar"
+  ],
+  "confidence": "medium"
+}

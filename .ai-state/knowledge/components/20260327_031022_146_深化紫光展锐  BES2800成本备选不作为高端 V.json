@@ -1,0 +1,18 @@
+{
+  "title": "深化:紫光展锐 + BES2800（成本备选，不作为高端 V1 首",
+  "domain": "components",
+  "content": "**方案定位**\n- **UNISOC + BES2800** 适合**成本敏感的中高端智能穿戴/IoT**，可作为智能骑行头盔的**成本备选方案**，但**不适合高端V1首选**。\n\n**与骑行头盔研发直接相关的芯片/模块信息**\n- **主控：紫光展锐 W517L / W517Pro+（推测适配）**\n  - 集成：**CPU/GPU/基带/Wi‑Fi/蓝牙/GNSS**\n  - 通信：**LTE Cat.4/Cat.6、Wi‑Fi 802.11 b/g/n/ac、蓝牙5.0/5.1/5.2**\n  - 定位：**GPS/GLONASS/北斗/Galileo**\n  - 传感器接口：支持**加速度计、陀螺仪、气压计**等\n  - 制程：**12nm/6nm**\n- **音频协处理：恒玄 BES2800 系列**\n  - 蓝牙：**5.2/5.3**\n  - 音频：支持 **LE Audio、LC3、AAC、SBC、LDAC（可选）**\n  - 语音：支持**低功耗语音唤醒、AI/DNN降噪**\n  - ANC：**混合式ANC**，文中提及可达**-40dB以上、20Hz–2kHz**\n  - 接口：**I2S/PCM/SPI/I2C**\n  - 功耗：音频/ANC场景**毫瓦级**\n\n**对智能骑行头盔的可借鉴点**\n- **双芯片分工**：主控负责**通信/GPS/HUD/UI/传感器融合**，BES2800负责**蓝牙音频、通话降噪、语音控制**，有利于降低主SoC复杂度与BOM风险。\n- **LE Audio趋势**：适合头盔的**低功耗对讲、导航播报、多人广播音频（Auracast）**。\n- **多模定位+运动传感器**：适合骑行轨迹、事故检测、姿态识别。\n- **Always-on Voice**：适合骑行中免手操作语音控制。\n\n**技术趋势/行业变化**",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "紫光展锐",
+    "BES2800",
+    "成本备选",
+    "B样验证",
+    "供应链",
+    "deep_research",
+    "main_chipset_selection",
+    "night_deep"
+  ],
+  "confidence": "medium"
+}

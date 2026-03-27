@@ -1,0 +1,23 @@
+{
+  "title": "0326_Forcite MK1S：面向摩托车全盔的HUD/ADAS一体化方案观察",
+  "domain": "competitors",
+  "content": "Forcite MK1S 是澳大利亚 Forcite Helmets 推出的智能摩托车全盔，定位高端安全与互联装备，需明确其产品类别为 motorcycle helmet，而非自行车头盔。基于现有来源，MK1S 的核心卖点是将 HUD、前置摄像头、蓝牙通信与基于视觉/地图的预警能力整合进全盔结构。来源指出其 HUD 可显示导航、速度、限速与危险提醒，价值在于减少骑手低头看仪表或手机的频次；ADAS 侧重前方碰撞预警、限速提醒和危险路况警报，属于轻量级骑行辅助，而非汽车级自动驾驶。摄像头方面，来源给出的规格为“通常提供 1080p 或 4K”，这本身存在不确定性，说明公开信息未统一，做竞品分析时应标注为分辨率区间而非确定参数。材料与安全上，来源提到碳纤维外壳，并称符合 ECE、DOT 等认证，但未给出具体认证版本，如 ECE 22.05 或 22.06，因此不能进一步细化。供应链方面，来源未披露 Forcite 的实名供应商，只能按器件类型推测：HUD 显示模组可能来自 Kopin 或 Himax 这类微显示/光学方案商；摄像头 CMOS 传感器可能来自 Sony、OmniVision 或 Samsung；ADAS/图像处理 SoC 则可能由通用视觉处理芯片厂商提供。需要强调，这些都只是潜在供应商类型，不应写成已确认合作。价格方面，本来源没有给出 MK1S 的官方售价，因此无法补充具体零售价；若内部知识库要求“具体价格”，此条目应明确标注“来源缺失价格数据”。对我们做智能摩托车头盔产品定义的启示是：Forcite MK1S 证明了全盔形态下 HUD+摄像头+App 生态的可行性，但其真正壁垒不只在硬件堆料，而在低干扰的人机交互、预警可信度和认证落地。",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "smart helmet",
+    "motorcycle helmet",
+    "HUD",
+    "ADAS",
+    "camera",
+    "supplier",
+    "carbon fiber",
+    "ECE",
+    "DOT",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

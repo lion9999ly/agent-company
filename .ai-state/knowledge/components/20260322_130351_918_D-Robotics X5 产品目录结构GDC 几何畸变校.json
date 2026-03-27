@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 产品目录结构：GDC 几何畸变校正",
+  "domain": "components",
+  "content": "目录中 1.3.9 为 Geometry Distortion Correction（GDC），表明 X5 支持几何畸变校正，适用于广角、鱼眼或多摄像头视觉场景。GDC 常用于镜头畸变矫正、透视变换、电子防抖前处理或环视拼接预处理。当前截取内容未给出支持的映射模型、吞吐率、分辨率或延迟指标，但该模块的存在说明 X5 面向机器人和智能视觉应用时考虑了复杂光学系统的图像校正需求。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "GDC",
+    "Geometry Distortion Correction",
+    "畸变校正",
+    "X5",
+    "目录"
+  ],
+  "confidence": "medium"
+}

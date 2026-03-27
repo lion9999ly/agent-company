@@ -1,0 +1,22 @@
+{
+  "title": "0326_Intelligent Cranium iC-R：面向摩托车全盔的AR HUD+ADAS概念竞品观察",
+  "domain": "competitors",
+  "content": "Intelligent Cranium iC-R 是一款明确面向摩托车骑行场景的智能全盔项目，不是自行车头盔；若检索中出现 bicycle helmet 相关案例，应排除，因为其安全标准、速度场景和空气动力学要求均不同。基于现有3个来源，iC-R 的核心卖点集中在 AR HUD 与 ADAS：HUD 计划在骑手前方视野叠加速度、导航、来电/音乐、天气及预警信息；ADAS 侧重后视摄像头、盲点监测、碰撞预警，目标是提供接近 180° 的后方可视范围。供应商/品牌名为 Intelligent Cranium Helmets，创始人被指为 Dr. Nick Cho。来源还提到其需满足摩托车头盔常见认证方向，如 DOT、ECE、Snell，但未给出已获证型号编号，因此现阶段更应视为“高关注概念/原型”而非成熟量产件。价格方面，3个来源均未提供 2025 年官方售价、预售价或量产渠道，这是重要信息缺口。型号方面，目前可确认的公开型号名称就是 iC-R，未见更细分 SKU。参数方面，能提取的具体项包括“AR HUD”“后部广角摄像头”“盲点监测 BSD”“碰撞预警 FCW/RCW”“可能的车道偏离预警 LDW”“蓝牙连接与语音控制”；但关于分辨率、亮度、延迟、电池容量、整盔重量、续航小时数、传感器类型（雷达/超声波）等关键硬参数，来源没有一致且可核验的数据。关于 CES 2025，来源2明确写明“尚未公布具体参展或发布信息”，但同时又根据其过往在 CES 2017-2019 的曝光推测 2025 可能展示更接近量产的版本；这意味着“2025 CES 关联”目前属于推断，不是已证实事实。来源之间的主要矛盾在于：一方面强调功能覆盖 HUD、BSD、FCW、LDW、360°态势感知，另一方面又承认大量能力仍停留在“计划集成”“可能包括”层面，说明产品定义较激进、量产成熟度不明。对我们做智能摩",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Intelligent Cranium",
+    "iC-R",
+    "motorcycle helmet",
+    "full-face helmet",
+    "AR HUD",
+    "ADAS",
+    "blind spot detection",
+    "rear-view camera",
+    "CES 2025",
+    "smart helmet",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

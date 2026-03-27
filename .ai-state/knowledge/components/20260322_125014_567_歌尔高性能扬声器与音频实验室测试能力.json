@@ -1,0 +1,16 @@
+{
+  "title": "歌尔高性能扬声器与音频实验室测试能力",
+  "domain": "components",
+  "content": "歌尔具备高性能扬声器设计与完整声学实验室能力，实验设施包括消声室、试听室、风噪发生器及测试系统、声音检测与音频精度测试系统、AQUCA测试系统。文档展示了SBS-RT181031-01在20mW条件下的SPL/THD曲线，以及EQ后RMS -18.71dBFS与-24.61dBFS等测试信息，说明其具备从器件到算法的量化验证能力。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "扬声器",
+    "音频实验室",
+    "消声室",
+    "风噪测试",
+    "THD",
+    "SPL"
+  ],
+  "confidence": "medium"
+}

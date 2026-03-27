@@ -1,0 +1,19 @@
+{
+  "title": "0325_Forcite MK1S智能摩托车全盔：HUD并非AR，供应链公开度低，Goertek仅属能力匹配型候选",
+  "domain": "competitors",
+  "content": "Forcite MK1S是澳大利亚品牌Forcite Helmets推出的智能摩托车全盔，不是自行车头盔，相关自行车HUD头盔方案不适用。现有来源一致指出，Forcite MK1S已在2023年末/2024年初发布并开始交付，因此“2025”更应理解为其持续销售周期，而非已公开的新型号。产品核心配置包括：下巴区域集成前置摄像头，支持1080p视频录制；头盔内置GPS、蓝牙通信、导航提示、危险预警与“Peripheral Vision Display（周边视觉显示）”。这里有一个关键认知点：多来源都强调MK1S并非真正AR HUD，不是把图像叠加到外部道路场景上的波导或面罩投影，而是位于视线下方的小型高亮LED显示屏/显示模块，因此若拿AR眼镜或自行车AR头盔对标，会产生技术路线偏差。供应链方面，Forcite公开口径更偏向自研系统集成，即显示交互、软件和AI预警由Forcite Helmets主导，但具体显示模组、摄像头模组、声学器件供应商未公开。来源均提到Goertek（歌尔股份）在光学模组、微型摄像头、麦克风、扬声器以及AR/VR整机ODM方面具备能力，因此“有能力成为供应商”这一判断成立；但同样需要标注，目前没有公开证据证明Goertek就是Forcite MK1S的HUD或摄像头直接供应商，这一点几份来源并无冲突。拆解层面，公开资料不足，没有可靠teardown能给出镜头、Sensor、FPC或显示器件厂牌，也没有出现IMX678、BES2800、QCC5181这类具体型号信息。价格方面，原始搜索结果明确指出本次来源未给出Forcite MK1S官方售价，因此不能补充具体价格。对智能摩托车全盔产品的启示是：1）“HUD”命名要谨慎，若不是面罩叠加显示，应避免宣传为AR；2）1080p摄像头已是基础门槛，但真正差异化在低光、畸变控制和稳定性；3）若选择歌尔股份这类大厂",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Forcite MK1S",
+    "motorcycle helmet",
+    "HUD",
+    "非AR",
+    "Goertek",
+    "camera module",
+    "smart helmet",
+    "competitor",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

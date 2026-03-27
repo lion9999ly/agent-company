@@ -1,0 +1,14 @@
+{
+  "title": "Journey 6E SIP V0.1 初始草案版本信息",
+  "domain": "lessons",
+  "content": "V0.1 发布日期为 2024-02-25，描述为 Initial Draft。该版本代表 Journey 6E SIP 数据手册的首个草案节点，通常意味着产品规格、封装、引脚和电气参数仍处于早期定义阶段。对研发导入而言，V0.1 仅适合作为预研参考，不宜作为定版设计依据。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "V0.1",
+    "2024-02-25",
+    "Initial Draft",
+    "Document Maturity"
+  ],
+  "confidence": "medium"
+}

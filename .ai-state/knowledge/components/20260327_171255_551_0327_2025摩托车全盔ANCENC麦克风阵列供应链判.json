@@ -1,0 +1,21 @@
+{
+  "title": "0327_2025摩托车全盔ANC/ENC麦克风阵列供应链判断：Goertek、Knowles、Qualcomm cVc为主，xM",
+  "domain": "components",
+  "content": "面向智能摩托车全盔（非自行车头盔），2025年可落地的ANC/ENC方案核心仍是“MEMS麦克风阵列+蓝牙/DSP语音算法”，而不是单一器件。骑行场景风噪通常在高速下达到90-105 dB SPL，这决定了头盔通话更依赖ENC/波束成形，ANC更多用于耳边低频噪声补偿。供应链上，Goertek（歌尔）适合做整机声学模组或ODM集成，优势是MEMS麦克风量产和模组化能力，但本次来源未给出其具体头盔型号、单价或麦克风料号，属于“强制造、弱公开参数”。Knowles则更像上游器件商，其SiSonic系列数字MEMS麦克风常见参数包括约65 dBA SNR、PDM/I2S输出、面向语音拾取和阵列设计，适合布置在下巴区+壳体外侧形成2-4麦阵；但来源同样未提供2025年针对摩托车头盔的专用SKU和报价。Qualcomm cVc（Clear Voice Capture）是最明确的算法平台，常与QCC系列蓝牙音频SoC配套，用于双麦/三麦ENC、AEC和风噪抑制，行业常见芯片如QCC3056/QCC5171，终端BOM中蓝牙音频主控单价通常约5-15美元，取决于采购量与封装；其价值在于缩短头盔对讲、通话、语音助手的算法开发周期。xMEMS需要特别标注：它的公开强项主要是MEMS微型扬声器而非传统硅麦克风，因此更可能用于头盔内超薄发声单元，而不是ENC麦克风阵列主供应商。若项目目标是2025量产，推荐架构是：外部前馈麦1-2颗+嘴部近讲麦1颗+耳侧反馈麦1颗，配Qualcomm cVc类算法平台，再由Goertek类厂商做模组集成，Knowles供高SNR麦克风。价格上，高端智能全盔声学/通信模组增量成本可粗估20-50美元。需注意来源间存在信息缺口而非直接矛盾：都认同Goertek/Knowles/Qualcomm相关，但没有任何来源给出xMEMS作为“麦克风阵列主供”的直接证据，因此应",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "摩托车全盔",
+    "ANC",
+    "ENC",
+    "麦克风阵列",
+    "Goertek",
+    "Knowles",
+    "Qualcomm cVc",
+    "xMEMS",
+    "MEMS麦克风",
+    "语音降噪",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,22 @@
+{
+  "title": "0326_Shoei Opticson：面向摩托车全盔的HUD/AR智能头盔项目梳理（非自行车头盔）",
+  "domain": "competitors",
+  "content": "Shoei Opticson应归类为“摩托车智能全盔”方向，而非自行车头盔。现有来源显示，Shoei Opticson Co., Ltd.于2017年1月成立，为日本头盔品牌Shoei与日本NSK Ltd.（NSK株式会社）合资公司，目标是开发集成于摩托车全盔的HUD系统，核心方案常被称为IT-HL（Intelligent Transport Helmet System）。已公开信息表明，其原型曾在2021年EICMA和2022年CES等场合展示，功能包括HUD导航、速度/通知显示、后视摄像头画面、蓝牙通信与降噪。需要注意：原始搜索结果对首次公开时间存在冲突，有的写2019-2021年间，有的强调2021年EICMA/2022年CES，因此应标注为“原型公开时间未完全一致”。\n\n从供应链与技术栈看，最明确的上游不是Honda，而是NSK：NSK提供精密机械、光学与机电一体化能力，Shoei负责头盔壳体、安全结构与整机集成。关于Honda，原始搜索结果明确指出“目前没有公开信息表明Shoei Opticson与Honda有独家或联合开发的合作关系”，因此只能推断未来可能与Honda RoadSync等车机生态互联，在竞品分析中应把Honda视为潜在生态兼容方，而非已确认客户。产品形态上，Opticson是全盔内嵌式方案，原始搜索结果仅推测可能采用波导（Waveguide）技术或自由曲面棱镜（Freeform Prism）结合微型投影仪；其中DigiLens、Lumus仅被作为该领域专家举例，并无公开确认其为Shoei供应商，不能写成既定事实。\n\n参数与商业化方面，公开资料仍明显不足：原始搜索结果没有给出任何具体型号信息，如IMX678、BES2800、QCC5181，也没有整盔重量、续航、电池容量、视场角FoV、亮度、分辨率、降噪分贝或正式售价，因此不能补出3000nits、",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Shoei",
+    "Opticson",
+    "HUD",
+    "AR",
+    "motorcycle helmet",
+    "full-face",
+    "NSK",
+    "Honda",
+    "smart helmet",
+    "supplier",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

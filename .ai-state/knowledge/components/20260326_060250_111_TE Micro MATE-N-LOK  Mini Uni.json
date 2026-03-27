@@ -1,0 +1,19 @@
+{
+  "title": "TE Micro MATE-N-LOK / Mini Universal MATE-N-LOK：主供电备选双供方案",
+  "domain": "components",
+  "content": "为对冲供应风险，报告建议在 Luna 6 主供电连接器上并行导入 TE 备选方案，优先考虑 TE Connectivity Micro MATE-N-LOK / Mini Universal MATE-N-LOK。推荐型号包括 TE 1-794374-0、1-794374-2，以及 794606-2 / 770988 系列端子。其参数与主选接近：约 3.0mm 级别 pitch、典型 5A 左右、250V 级、-40°C ~ 105°C，并带锁扣。价格区间为 Housing 约 0.10–0.25 USD/pcs，端子约 0.02–0.06 USD/pcs，完整 2Pin 配套约 0.22–0.45 USD/set。决策上应以 Molex 为主、TE 为备，而不是强求同焊盘完全兼容。",
+  "source": "deep_research:enrich_260",
+  "created_at": "2026-03-26",
+  "tags": [
+    "TE Connectivity",
+    "Micro MATE-N-LOK",
+    "Mini Universal MATE-N-LOK",
+    "1-794374-0",
+    "主供电",
+    "双供应",
+    "5A",
+    "deep_research",
+    "enrich_260"
+  ],
+  "confidence": "high"
+}

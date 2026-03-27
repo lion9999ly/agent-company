@@ -1,0 +1,21 @@
+{
+  "title": "0327_Sena高端智能摩托车全盔现状：Mesh 2.0、Harman Kardon与ECE 22.06认证边界",
+  "domain": "competitors",
+  "content": "基于现有来源，需先明确：截至来源所述时间，Sena并未正式发布“Mesh 3.0”摩托车头盔，因此“2025 Sena Mesh 3.0 Harman Kardon ECE 22.06全盔”属于推测性概念，不能当作已上市竞品。可确认的技术基线是Sena Mesh 2.0，支持Open Mesh与Group Mesh：Open Mesh可实现近乎无限骑手接入，官方常见表述为开放地形下总距离约8 km（5英里，通常以至少6名骑手、每人间隔约1.6 km计算）；Group Mesh最多24名骑手，距离同样约8 km。音频方面，Sena已在高端产品中与Harman Kardon合作，代表型号包括Impulse与Stryker，两者均为摩托车头盔而非自行车头盔，符合我们全盔产品赛道。来源提到Impulse为全盔，集成Mesh 2.0与蓝牙通信，并搭载Harman Kardon扬声器/麦克风；Stryker同样为全盔，除Mesh 2.0与Harman Kardon外，还带QHD行车记录功能。认证上，来源存在明显矛盾：一处称相关高端智能头盔“符合ECE 22.06认证标准”，另一处又称Impulse、Stryker“符合ECE 22.05，未来版本将升级至22.06”。因此，对Sena现售智能全盔的合规判断不能直接写成“已全面22.06”，应标注为来源冲突，需以具体SKU和销售地区页面复核。价格方面，本组来源未给出官方售价，不能臆造；供应商可明确为Sena Technologies, Inc.，销售渠道通常包括Sena官网及RevZilla等摩托车装备零售商。对我们做智能摩托车全盔的启示是：1）Sena的差异化核心不是“头盔壳体”本身，而是深度集成通信+音频生态；2）Harman Kardon联名已成为高端卖点；3）若我们规划2025-2026产品，必须以ECE 22.06作为明确门槛，",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Sena",
+    "智能摩托车头盔",
+    "全盔",
+    "Mesh 2.0",
+    "Harman Kardon",
+    "ECE 22.06",
+    "Impulse",
+    "Stryker",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

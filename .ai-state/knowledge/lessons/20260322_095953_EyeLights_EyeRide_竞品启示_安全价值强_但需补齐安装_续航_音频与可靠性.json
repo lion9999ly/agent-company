@@ -1,0 +1,17 @@
+{
+  "title": "EyeLights EyeRide 竞品启示：安全价值强，但需补齐安装、续航、音频与可靠性",
+  "domain": "lessons",
+  "content": "综合多条用户反馈，EyeRide 的核心优势是清晰 HUD 显示、减少低头查看导航、提升骑行安全，并支持 GPS、通话、音乐、Waze 与实时交通。主要短板集中在双面胶安装不稳、线缆长度不足、HUD 线缆易损、电池续航差（有用户反馈不到 2 小时）、扬声器音乐体验差、遥控器断连且成功率仅约 1/5。产品方向正确，但硬件成熟度仍需提升。",
+  "source": "doc_import:eyelights_competitor_analysis.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EyeLights",
+    "EyeRide",
+    "product lessons",
+    "installation",
+    "battery life",
+    "audio",
+    "reliability"
+  ],
+  "confidence": "high"
+}

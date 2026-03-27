@@ -1,0 +1,19 @@
+{
+  "title": "Sena/LIVALL/Forcite 连接稳定性差是跨品牌共性问题",
+  "domain": "components",
+  "content": "研究显示，蓝牙、Mesh、App 连接不稳定是第二大高频抱怨，且跨品牌普遍存在。Sena 用户集中反馈 Mesh 无故掉线、蓝牙配对困难、App 连接不稳、固件更新后出现新问题；LIVALL 存在蓝牙频繁断连、App 崩溃卡顿、升级复杂甚至异常；Forcite MK1S 也常被提到 App 连接不稳、导航体验不顺。结论是，若出发前要折腾配对、骑行中突然断连、更新像赌博，再多功能都会被视为“电子垃圾”，连接体验必须做到接近汽车蓝牙耳机级别的无感稳定。",
+  "source": "deep_research:user_pain_points",
+  "created_at": "2026-03-22",
+  "tags": [
+    "连接稳定性",
+    "蓝牙",
+    "Mesh",
+    "App",
+    "Sena",
+    "LIVALL",
+    "Forcite",
+    "deep_research",
+    "user_pain_points"
+  ],
+  "confidence": "high"
+}

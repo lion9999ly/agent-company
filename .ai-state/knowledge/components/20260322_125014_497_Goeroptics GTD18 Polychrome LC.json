@@ -1,0 +1,15 @@
+{
+  "title": "Goeroptics GTD18 Polychrome LCoS AR光机",
+  "domain": "components",
+  "content": "GTD18为Polychrome LCoS方案，采用0.23英寸LCoS_OV显示，分辨率1560×1200，像素尺寸3μm。瞳孔尺寸3.0mm，FOV(D) 50°，光通量3.2lm@0.50W（LED），模组尺寸14.51×9.05×15.25mm，体积1.3cc，重量3.0g。该方案在分辨率和视场角上明显高于GTD13系列，适合更高显示性能需求。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Goeroptics",
+    "GTD18",
+    "LCoS",
+    "1560x1200",
+    "50°FOV"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "0327_Shoei Opticson：2025年AR/HUD智能摩托车全盔项目与供应链判断",
+  "domain": "competitors",
+  "content": "Shoei Opticson 是日本头盔品牌 Shoei（株式会社SHOEI）推进中的智能摩托车全盔项目，核心卖点是把 HUD（平视显示）与 AR 导航叠加到骑手视野中。需明确：这里讨论的是摩托车全盔，不是自行车头盔；若市场上有 bicycle smart helmet 的 HUD 方案，因碰撞标准、壳体空间和高速风噪环境不同，不能直接类比。基于现有 3 个来源，可较确定的信息是：Shoei 为整盔品牌方，NS West（株式会社NSウエスト）被多次指向 HUD 显示/光学模组供应商，NTT（日本電信電話株式会社）体系被指向通信、云平台或光学引擎支持方。项目最早在 2019 年东京车展阶段性亮相，多个来源都把 2025 年视为潜在商业化节点，但截至现有来源内容，并无已量产上市、已公布零售价或官方 MSRP 的确认，因此“2025 上市”应标注为目标时间而非既成事实。\n\n参数层面，公开结果仍以功能描述为主，未出现 IMX678、BES2800、QCC5181 这类可核验芯片型号，也没有 3000nits、42dB、1.65kg 这类明确参数。现有信息仅显示：显示内容包括速度、导航、来电提醒、警示信息；显示位置通常描述为视野下方、右下方或中央偏下，不遮挡主视线；连接方式涉及蓝牙，部分来源推测可扩展 5G、Wi‑Fi、GPS 与 V2X。另有来源提到可能集成环境光传感器、加速度计、陀螺仪及语音控制，但均未给出具体器件型号、视场角、亮度、分辨率、电池容量、整盔重量或续航数据。\n\n合作关系上存在信息分歧：一组来源称 NTT Device Technology 提供“光学引擎”，另一组仅称 NTT 或 NTT Docomo、NTT Data 提供通信、云和平台能力；“Sonimoto AR”也有冲突，一处称与 NTT Sonimoto 技术相关，另一处明确表示未找到其与 Opticso",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Shoei",
+    "Opticson",
+    "HUD",
+    "AR",
+    "smart motorcycle helmet",
+    "full-face helmet",
+    "NS West",
+    "NTT",
+    "2025",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

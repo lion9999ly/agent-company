@@ -1,0 +1,18 @@
+{
+  "title": "Qualcomm AR1 + BES2800（智能摩托车全盔 V1 主方案）",
+  "domain": "components",
+  "content": "报告最终裁决明确：V1 量产主方案不采用单颗高性能 XR SoC，而采用 Qualcomm AR1 + BES2800 + 安全 MCU / 轻视觉协处理器的异构分层架构。该方案围绕已锚定需求 HUD 导航、语音、降噪、SOS 与基础视觉设计，并服从头盔硬约束：贴脸区表面温度 <40°C、整机重量 <=1.65kg、续航 >=8h。AR1 负责 HUD、轻量 AR 导航与基础视觉显示链路，BES2800 负责语音唤醒、蓝牙、ANC/ENC、本地音频，MCU/轻 AI 负责 IMU、佩戴检测、SOS、低功耗待机。结论是 V1 应优先选择“最稳的系统架构”而非“最强的单颗芯片”。",
+  "source": "deep_research:tree_ar_xr_soc",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Qualcomm",
+    "AR1",
+    "BES2800",
+    "智能头盔",
+    "HUD",
+    "V1量产",
+    "deep_research",
+    "tree_ar_xr_soc"
+  ],
+  "confidence": "high"
+}

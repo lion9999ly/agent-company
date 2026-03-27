@@ -1,0 +1,16 @@
+{
+  "title": "歌尔交互外设：智能戒指与HCI手环的EMG/IMU手势识别",
+  "domain": "components",
+  "content": "歌尔交互外设方案包括智能戒指与HCI手环，通过集成EMG和IMU传感器实现沉浸式、直观可感的手势识别体验，并将首饰与AR控制器融合。功能覆盖多模态控制、健康监测、手势识别、触摸&压力、心率监测、血氧饱和度、体温、睡眠分析、运动监测、语音采集与振动反馈，适用于XR输入与健康穿戴场景。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "智能戒指",
+    "HCI手环",
+    "EMG",
+    "IMU",
+    "手势识别",
+    "AR控制器"
+  ],
+  "confidence": "high"
+}

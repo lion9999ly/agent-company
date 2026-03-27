@@ -1,0 +1,16 @@
+{
+  "title": "歌尔AR参考设计 Wood2：AI+AR眼镜",
+  "domain": "components",
+  "content": "Wood2是歌尔AI+AR参考设计，采用AR1 SiP，集成1200万像素摄像头，支持多模态AI，整机重量57g。该方案强调视觉感知与AI能力融合，适合智能识别、辅助交互和轻量级AR应用。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Wood2",
+    "AI+AR",
+    "AR1 SiP",
+    "1200万像素",
+    "多模态AI",
+    "57g"
+  ],
+  "confidence": "high"
+}

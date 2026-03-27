@@ -1,0 +1,15 @@
+{
+  "title": "Snapdragon AR1 Gen 1 视频能力：6 MP 30 FPS 与 720p120 慢动作",
+  "domain": "components",
+  "content": "Snapdragon AR1 Gen 1 支持最高 6 MP 30 FPS 视频采集，视频编解码规格包括 Decode 1920 x 1080 30 FPS、Encode 6 MP 30 FPS，并支持 720p30 encode + 720p30 decode 并发。平台还支持 720p120 FPS 慢动作视频拍摄，适合智能眼镜第一视角短视频与直播前处理场景。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "video capture",
+    "6MP",
+    "30FPS",
+    "slow motion",
+    "720p120"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "智能骑行头盔安全认证要求：ECE R22.06 / DOT FMVSS 218 / GB 811",
+  "domain": "standards",
+  "content": "头盔被动安全认证要求覆盖欧洲、美国、中国三大市场：ECE R22.06（含旋转冲击测试，MIPS等效，为最高优先级且不可妥协）、DOT FMVSS 218（美国市场准入）、GB 811（中国市场准入，需确认GB 811-2022新标对标版本）。该条目定义了整机结构、材料、缓冲系统和量产认证路线的硬性边界，是JDM方案必须优先满足的准入条件。",
+  "source": "doc_import:智能骑行头盔PRD_V1.0_To_JDM.xlsx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "ECE R22.06",
+    "DOT FMVSS 218",
+    "GB 811",
+    "头盔认证",
+    "被动安全"
+  ],
+  "confidence": "high"
+}

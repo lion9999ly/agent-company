@@ -1,0 +1,20 @@
+{
+  "title": "0327_Cardo Packtalk Edge（摩托车全盔对讲）技术条目：DMC Gen 2、JBL与FCC信息核验",
+  "domain": "competitors",
+  "content": "Cardo Packtalk Edge是Cardo Systems面向摩托车头盔的旗舰Mesh对讲系统，适配对象是摩托车全盔/揭面盔场景，不是自行车头盔产品，这一点需与Sena等自行车Mesh设备明确区分。现有来源一致指出，Packtalk Edge并不存在独立的“2025款”新型号，市场主销仍是2022年后发布的Packtalk Edge，因此“2025 Cardo Packtalk Edge”更多应理解为2025年仍在售/仍具竞争力的现款，而非年度改款。核心规格包括：DMC Gen 2动态网状通信、Bluetooth 5.2、JBL调音40mm扬声器、最长约13小时通话续航、20分钟快充可获得约2小时通话、满充约1.5-2小时。Mesh能力方面，官方口径通常为最多15名骑手全双工通信，单机点对点最远约1.6公里（1英里），6人以上编队时总链路可扩展到约8公里（5英里）。这些参数适合摩托车高速、强风噪环境，是其区别于自行车头盔通信器的关键。音频部分，JBL 40mm单元配合Cardo Connect App的预设EQ，强调人声清晰度和低频增强，适合导航、通话和音乐混用。来源还提到其支持自然语音控制、双手机/GPS蓝牙连接，以及与非Cardo设备的通用蓝牙互联，但后者通常退化为一对一或有限组网，不能等同完整DMC体验。价格方面，来源未给出统一成交价，因此不能在本条中确认2025年零售价；供应商可明确写为Cardo Systems，销售渠道通常包括品牌官网与摩托车装备零售商。关于FCC，来源只确认其作为在美国销售的无线设备必须具备FCC合规属性，但未提供可核验的FCC ID编号，因此“FCC technical review”应谨慎表述为“具备上市所需无线认证背景”，不能扩展成2025年新增FCC版本。矛盾点主要有两处：一是部分来源把“DMC Gen 2”描述为现有正式代际，",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Cardo",
+    "Packtalk Edge",
+    "摩托车头盔",
+    "Mesh对讲",
+    "DMC",
+    "Bluetooth 5.2",
+    "JBL",
+    "FCC",
+    "竞品分析",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

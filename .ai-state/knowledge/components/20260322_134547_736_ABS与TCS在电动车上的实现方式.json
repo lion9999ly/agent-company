@@ -1,0 +1,16 @@
+{
+  "title": "ABS与TCS在电动车上的实现方式",
+  "domain": "components",
+  "content": "ABS（anti-lock braking system）通过轮速感应传感器让刹车泵频繁开关，避免碟刹卡钳持续抱死导致打滑。TCS（文档写作Torch control system，牵引力控制）用于避免动力输出过大、超过路面摩擦力而打滑。实现方式有两类：1）控制器自行模拟（e-TCS）；2）基于ABS轮速传感器感应（机械TCS）。文档还展示了对置缸双活塞、对置缸四活塞和大盘反抱碟刹等配置。",
+  "source": "doc_import:电动车基础知识-20260115 - Leo批注版.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "ABS",
+    "TCS",
+    "轮速传感器",
+    "e-TCS",
+    "机械TCS",
+    "四活塞"
+  ],
+  "confidence": "high"
+}

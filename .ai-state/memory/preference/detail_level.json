@@ -1,0 +1,10 @@
+{
+  "id": "user_preference:detail_level",
+  "type": "user_preference",
+  "key": "detail_level",
+  "value": "high",
+  "created_at": "2026-03-17T05:56:06.840294",
+  "updated_at": "2026-03-17T05:56:06.840294",
+  "ttl": null,
+  "metadata": {}
+}

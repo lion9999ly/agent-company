@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] NVIDIA Jetson Orin NX (NVIDIA)",
+  "domain": "components",
+  "content": "以下基于你提供的搜索结果整理，**仅使用结果中已出现的信息**，未出现的统一标注为**“未查到”**。同时我会对明显互相矛盾的信息做备注说明。\n\n---\n\n# NVIDIA Jetson Orin NX 完整技术档案\n\n## 1. 基本参数\n\n### 1.1 产品形态\n- **类型**：NVIDIA 边缘 AI 计算模块 / SoM（System-on-Module）\n- **模块尺寸**：**69.6 mm × 45 mm**\n- **封装/连接方式**：**SODIMM 模块**\n- **定位**：高性能、低功耗边缘 AI / 机器人 / 自主机器平台\n\n### 1.2 制程\n- **制程工艺**：**未查到**\n\n### 1.3 CPU 架构与规格\n#### Jetson Orin NX 16GB\n- **CPU 架构**：**8 核 ARM Cortex-A78AE**\n- **CPU 主频**：**未查到**\n\n#### Jetson Orin NX 8GB\n- **CPU 架构**：**6 核 ARM Cortex-A78AE**\n- **CPU 主频**：**未查到**\n\n### 1.4 GPU 架构与规格\n#### Jetson Orin NX 16GB\n- **GPU 架构**：**NVIDIA Ampere**\n- **CUDA Core**：**1024**\n- **Tensor Core**：**32**\n- **GPU 主频**：**未查到**\n\n#### Jetson Orin NX 8GB\n搜索结果中出现了两组互相冲突的数据：\n- 版本 A：\n  - **GPU 架构**：NVIDIA Ampere\n  - **CUDA Core**：**1024**\n  - **Tensor Core**：**32**\n- 版本 B：\n  - **GPU 架构**：NVIDIA Ampere\n  - **CUDA Core**：**640**\n  - **Tensor Core**：**20**\n\n> 备注：由于搜索结果本身冲突，这里只能如实保留，**无法确认哪组为最终准确值**。\n\n- **GPU 主频**：**未查到**\n\n### 1.5 NPU / AI 加速器 / 视觉加速器\n- **NVDLA**：**2 × NVDLA v2.0**\n- **PVA（Vision Accelerator）**：**2 × PVA v2.0**\n- **独立“NPU”名称**：搜索结果未直接写“NPU”，但从功能上可视为由 **NVDLA + Tensor Core + PVA** 共同承担 AI/视觉加速\n\n### 1.6 AI 算力\n#### Jetson Orin NX 16GB\n- **AI 性能（FP16）**：**高达 100 TOPS**\n- 对应功耗模式：**25W 模式下**\n\n#### Jetson Orin NX 8GB\n- **AI 性能（FP16）**：**高达 70 TOPS**\n- 对应功耗模式：**20W 模式下**\n\n### 1.7 内存\n#### Jetson Orin NX 16GB\n- **内存容量**：**16GB LPDDR5**\n- **位宽**：**128-bit**\n- **带宽**：**102.4 GB/s**\n\n#### Jetson Orin NX 8GB\n- **内存容量**：**8GB LPDDR5**\n- **位宽**：**128-bit**\n- **带宽**：**68 GB/",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "nvidia"
+  ],
+  "confidence": "high"
+}

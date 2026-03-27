@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-03-16T20:08:26.494597",
+  "sources": [
+    {
+      "type": "jd",
+      "data": {
+        "url": "https://item.jd.com/100070432376.html",
+        "title": "",
+        "price": "",
+        "specs": {},
+        "reviews": []
+      }
+    },
+    {
+      "type": "competitors",
+      "data": []
+    },
+    {
+      "type": "tmall",
+      "url": "https://inmo.tmall.com"
+    }
+  ]
+}

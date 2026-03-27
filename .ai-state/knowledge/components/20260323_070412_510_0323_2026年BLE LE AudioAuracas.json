@@ -1,0 +1,19 @@
+{
+  "title": "0323_2026年BLE LE Audio/Auracast在智能头盔对讲中的可行方案",
+  "domain": "components",
+  "content": "到2026年，BLE LE Audio与Auracast更适合被定义为“智能头盔对讲的广播层+音频层”，而非单独替代现有Mesh对讲。原因在于：LE Audio的LC3编解码器可在更低码率下提供优于传统SBC的语音质量，适合头盔场景的降噪语音传输；Auracast则支持一对多广播，理论上可让大量头盔快速加入同一语音频道，省去传统蓝牙链式配对。对景区导览、教练指令、车队通知尤其有价值。现有产业信号已出现：Realtek在CES 2025资料中提到RTL8763EAU支持HID与Auracast传输；在Embedded World 2026展示中，又以RTL8782FWP、RTL8763ESE构建双安全帽音频分享/对讲平台，并以RTL8763E、RTL8773D、RTL87x3J面向安全帽与团体通讯，强调“长距离、低延迟、多方对讲”，且可接入最多6组数字麦克风与VAD语音活动侦测。说明芯片厂已把LE Audio、广播音频与Mesh/专有链路并行布局。",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "BLE",
+    "LE Audio",
+    "Auracast",
+    "智能头盔",
+    "对讲",
+    "Realtek",
+    "技术",
+    "蓝牙",
+    "通讯"
+  ],
+  "confidence": "high"
+}

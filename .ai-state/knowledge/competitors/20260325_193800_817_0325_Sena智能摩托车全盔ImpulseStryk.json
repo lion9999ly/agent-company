@@ -1,0 +1,21 @@
+{
+  "title": "0325_Sena智能摩托车全盔：Impulse/Stryker的Mesh 2.0、Harman Kardon与ECE 22.06",
+  "domain": "competitors",
+  "content": "面向2026年竞品研判，当前最接近目标形态的Sena智能摩托车全盔是Impulse与Stryker，两者均为全盔而非自行车头盔，集成Mesh 2.0对讲与“Harman Kardon调音”音频系统；需明确排除Outrush R，因为它是模块化揭面盔，不属于我们所定义的全盔。已知公开信息显示，Sena Mesh 2.0支持Open Mesh与Group Mesh两种模式：Open Mesh可在9个频道中切换，Group Mesh最多24名骑手；理想条件下单人与单人约2 km，多车接力最远约8 km。音频部分，Impulse/Stryker均采用Harman Kardon扬声器与麦克风，卖点是更高语音清晰度和更好的音乐表现。安全标准方面，来源一致指向ECE 22.06将成为欧洲市场的关键门槛，且22.06相较22.05新增斜向冲击、更多速度区间及附件测试，这对“集成式通讯头盔”尤其重要，因为外置/内置模块都可能影响认证。材料方面，本轮来源没有给出Sena外壳材料、克重或具体供应商名称，因此不能确认其是否采用碳纤、玻纤或复合材料，也无法确认上游供应商；这对我们是信息缺口。价格上，给定来源未提供Impulse/Stryker官方售价，不能硬填，但可确认其定位属于Sena高端智能头盔序列。需要标注的矛盾点有两处：其一，Open Mesh人数有“几乎无限”与“实际24人以上”两种表述，前者是官方营销口径，后者更接近可验证场景；其二，关于“2026新品”本身，来源均承认尚未发布，所谓Mesh 3.0、ANC、HUD、V2X等均属趋势推测，不应当作已落地规格。对我们做全盔产品定义的启示是：Sena已证明“全盔+集成对讲+品牌音频+ECE 22.06”是成立路线，但其公开资料在材料、重量、供应链透明度上不足，给后来者留下差异化空间。",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Sena",
+    "motorcycle helmet",
+    "full-face",
+    "Mesh 2.0",
+    "Harman Kardon",
+    "ECE 22.06",
+    "Impulse",
+    "Stryker",
+    "smart helmet",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

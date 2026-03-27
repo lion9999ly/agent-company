@@ -1,0 +1,15 @@
+{
+  "title": "Gemini API 配额文档与监控入口",
+  "domain": "lessons",
+  "content": "错误信息中给出两个关键入口：Gemini API 配额/速率限制文档 https://ai.google.dev/gemini-api/docs/rate-limits，以及使用量监控页面 https://ai.dev/rate-limit。同时提示检查 plan 和 billing details。说明在出现识别失败时，除等待配额恢复外，还应核查计费方案、项目配额配置与调用监控。",
+  "source": "doc_import:20260318-175916.jpg",
+  "created_at": "2026-03-22",
+  "tags": [
+    "配额文档",
+    "监控入口",
+    "rate limits",
+    "billing",
+    "运维"
+  ],
+  "confidence": "medium"
+}

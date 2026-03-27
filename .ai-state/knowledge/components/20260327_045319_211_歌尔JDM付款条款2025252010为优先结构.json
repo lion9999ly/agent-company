@@ -1,0 +1,17 @@
+{
+  "title": "歌尔JDM付款条款：20/25/25/20/10为优先结构",
+  "domain": "components",
+  "content": "报告明确建议歌尔 JDM 付款方式采用 20/25/25/20/10：20% 合同签署、25% EVT 样机通过、25% DVT 通过、20% PVT 通过、10% 首批量产交付/认证完成。可接受上限为 30/30/20/20，但超过 50% 前置付款不建议接受，除非对方承担明确性能对赌。原因是项目真正风险集中在 DVT/PVT 阶段，需验证系统级指标能否同时满足：重量 ≤1.65kg、续航 ≥8h、贴脸 <40℃、暴雨 100km/h、防护认证。该条款可直接用于压低前置现金流风险，并把付款节点绑定到可量产能力而非仅样机完成。",
+  "source": "deep_research:supplier_negotiation",
+  "created_at": "2026-03-27",
+  "tags": [
+    "歌尔",
+    "付款条款",
+    "DVT",
+    "PVT",
+    "现金流",
+    "deep_research",
+    "supplier_negotiation"
+  ],
+  "confidence": "medium"
+}

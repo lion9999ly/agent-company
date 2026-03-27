@@ -1,0 +1,22 @@
+{
+  "title": "0326_Sena SRL3 / Shoei Impulse全盔集成对讲：2025“Mesh 3.0”信息核验与现有技术基线",
+  "domain": "competitors",
+  "content": "基于给定3个来源，当前可确认的信息是：**Sena Technologies Inc.** 尚未正式发布“**Mesh 3.0**”官方白皮书，因此“2025 Sena Mesh 3.0”相关内容均属推测，不能当作已上市规格。较可靠的现有技术基线是 **SHOEI** 全盔集成 **Sena SRL3（Shoei Rider Link 3）**，其对应产品在来源中被写作 **Shoei Impulse**，并提到部分市场可能以 **Neotec 3 S.E. Impulse** 或 **GT-Air 3 S.E. Impulse** 命名，说明更可能是市场命名或适配版本差异，而非同一SKU完全等同。该方案定位为**摩托车全盔/翻盖盔通信系统**，并非自行车头盔方案。来源一致提到，SRL3采用 **Mesh 2.0 / Mesh 2.1 + Bluetooth 5.0** 架构，支持 **Open Mesh** 与 **Group Mesh**；其中 Open Mesh 可在 **9个频道** 中工作，Group Mesh 通常为**最多24名骑手**，单节点典型通信距离约 **1.6 km（1英里）**，经至少 **6名骑手** 中继时总距离可达 **8 km（5英里）**。音频部分被描述为与 **Harman Kardon** 合作调校，具备语音命令、手机连接、FM收音机和降噪功能。另一个明显矛盾是：部分来源把 SRL3 对应到“Mesh 2.0”，部分写成“Mesh 2.1”；由于原始结果未给出 **Sena** 官方白皮书、芯片型号或射频方案，无法补充诸如 **QCC5181** 一类主控型号，因此建议在竞品库中统一标注为 **Mesh 2.x 代际**。价格方面，原始搜索结果**未提供 SRL3、Shoei Impulse、Neotec 3 S.E. Impulse",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Sena",
+    "SRL3",
+    "Shoei Impulse",
+    "全盔",
+    "摩托车头盔",
+    "Mesh 2.0",
+    "Bluetooth 5.0",
+    "Harman Kardon",
+    "对讲系统",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

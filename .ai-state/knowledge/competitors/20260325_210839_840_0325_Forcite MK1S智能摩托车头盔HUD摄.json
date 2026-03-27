@@ -1,0 +1,21 @@
+{
+  "title": "0325_Forcite MK1S智能摩托车头盔：HUD/摄像头供应链判断与JDM Optics排除",
+  "domain": "competitors",
+  "content": "Forcite MK1S是澳大利亚Forcite Helmets推出的智能摩托车全盔，公开资料显示其核心卖点包括HUD导航提示、前置行车记录摄像头、后部LED警示、蓝牙/App联动，而非自行车头盔方案，需与Livall、Lumos等自行车产品明确区分。关于“2025 Forcite MK1S 的HUD AR显示器或摄像头供应商是否为JDM Optics”，三份来源结论基本一致：目前没有公开证据证明JDM Optics是其HUD、AR光学或摄像头供应商，应视为未证实并倾向排除。已知产品层面，MK1S通常被描述为集成1080p前置摄像头，部分来源提到60fps录制；显示部分则存在口径差异：一份来源称其为“专有光学系统+可能采用微型OLED/LCoS/波导组合”，另一份称其为“单色LED HUD”，第三份则直接写“微型OLED显示屏”。这说明公开信息对底层显示器件并不一致，能确认的是Forcite强调自研集成与专利化光学方案，而非公开指定外部品牌。发布时间也有冲突：来源分别给出2022年推出、2023年推出、2021末至2022初发货，反映MK1S从发布、预售到交付的时间口径不同。价格方面，本轮来源未给出官方定价，因此不能硬填；若做竞品库，应标注“价格待官网/零售商复核”。供应商层面，来源仅给出潜在器件生态而非Forcite确认合作：微显示可能来自Sony、eMagin、Kopin、JBD；图像传感器生态可能涉及Sony IMX系列，摄像头模组制造可能来自舜宇等，但都只是行业推测，不应写成已确认BOM。对我们做智能摩托车全盔的启示是：1）HUD应避免被市场误解为全彩AR眼镜级显示，Forcite实际更像低干扰信息提示；2）若供应链不公开，需在营销上突出“自研系统集成”而非模糊引用JDM；3）竞品分析时应把“显示技术未公开、供应商未公开、1080p摄像头已公开”分层记录，避免把推测",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "smart motorcycle helmet",
+    "HUD",
+    "camera",
+    "supplier",
+    "optics",
+    "JDM",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "high"
+}

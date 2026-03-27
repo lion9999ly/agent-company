@@ -1,0 +1,14 @@
+{
+  "title": "Horizon Robotics X3M Rev.0.4 新增 Boot Strap Pins Definitions",
+  "domain": "components",
+  "content": "Rev.0.4（2020-03-30）新增 Boot Strap Pins Definitions。启动绑带脚定义通常决定芯片上电后的启动模式、介质选择、调试配置或安全模式，因此该更新对板级上拉/下拉电阻设计、量产烧录流程和故障恢复策略具有直接影响。若系统使用 X3M 作为主控 AP，需将该版本后的启动脚定义纳入硬件审查。",
+  "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Rev0.4",
+    "Boot Strap Pins",
+    "Boot configuration",
+    "Startup"
+  ],
+  "confidence": "high"
+}

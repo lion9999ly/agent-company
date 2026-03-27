@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔 V1 摄像头规格：Sony IMX577/IMX678 级 4K/30",
+  "domain": "components",
+  "content": "V1 摄像头建议采用 Sony IMX577 / IMX678 级别传感器，主录制规格锁定 4K/30，而非首发承诺 4K/60；事件模式为 1080P/60。配套参数包括 120–140° FOV、6 轴 EIS、WDR + 低照降噪，4K 码率 45–60Mbps。报告明确指出“1/1.56 大底 + 头盔内散热 + 8 小时续航”存在天然冲突，因此 4K/30 稳定可用是 V1 更合理的工程基线，可避免热、续航、重量全面失衡。",
+  "source": "deep_research:prd_technical_baseline",
+  "created_at": "2026-03-26",
+  "tags": [
+    "摄像头",
+    "Sony IMX577",
+    "Sony IMX678",
+    "4K/30",
+    "EIS",
+    "deep_research",
+    "prd_technical_baseline"
+  ],
+  "confidence": "medium"
+}

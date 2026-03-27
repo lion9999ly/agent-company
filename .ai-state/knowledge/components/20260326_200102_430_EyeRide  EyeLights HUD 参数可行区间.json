@@ -1,0 +1,18 @@
+{
+  "title": "EyeRide / EyeLights HUD 参数可行区间",
+  "domain": "components",
+  "content": "HUD 被定义为产品差异化核心，但 V1 只做基础信息显示。报告给出的量产基线为：单目近眼显示、入眼亮度 >3000 nits、FOV 15°~20°、分辨率至少 720p。竞品 EyeRide / EyeLights 已验证 20° FOV、3000 nits、720p、US$500–700 的区间；BMW ConnectedRide Smartglasses 价格约 €690，说明高端骑行 HUD 存在付费意愿。决策上应优先锁定该参数带，而非投入复杂 AR 贴地锚定或赛道级沉浸 UI。",
+  "source": "deep_research:prd_reference",
+  "created_at": "2026-03-26",
+  "tags": [
+    "HUD",
+    "EyeRide",
+    "EyeLights",
+    "BMW",
+    "光学显示",
+    "定价",
+    "deep_research",
+    "prd_reference"
+  ],
+  "confidence": "medium"
+}

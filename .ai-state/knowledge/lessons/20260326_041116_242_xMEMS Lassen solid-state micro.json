@@ -1,0 +1,17 @@
+{
+  "title": "xMEMS Lassen solid-state microspeaker + Qualcomm Q",
+  "domain": "lessons",
+  "content": "**结构化摘要（面向智能骑行头盔研发）**\n\n**1. 关键器件/技术**\n- **xMEMS Lassen 固态MEMS微型扬声器**\n  - 尺寸：约 **6×6×1.2 mm**\n  - 声压级：**最高约105 dB SPL**\n  - 失真：**THD <0.5% @100 dB SPL**\n  - 特点：硅基压电、超小型、低失真、耐震、一致性高、低功耗  \n  - 研发价值：适合头盔内衬近耳集成，可做**定向发声、微型声学腔体、低泄漏开放式音频**\n\n- **Qualcomm QCC3086 蓝牙音频SoC**\n  - 支持：**Bluetooth 5.4、LE Audio、LC3、Auracast、aptX Adaptive**\n  - 能力：内置DSP，支持**Adaptive ANC、cVc回声/噪声抑制、ENC、EQ、空间音频**\n  - 研发价值：适合智能头盔做**开放式音频、通话降风噪、语音助手、低功耗蓝牙连接**\n\n**2. 与骑行头盔直接相关的性能结论**\n- 开放式头盔高速骑行风噪可达 **80–100 dB SPL**\n- 风噪主要集中在 **50 Hz–1 kHz**，其中 **50–500 Hz** 低频轰鸣最适合用ANC优先处理\n- QCC3086可结合环境麦克风做：\n  - **风噪自适应ANC**\n  - **麦克风端风噪抑制/通话ENC**\n  - **动态音量+EQ补偿**（风大时提升中高频语音清晰度）\n\n**3. 可借鉴设计理念**\n- **软硬件协同**：MEMS扬声器负责高指向、低失真；SoC/DSP负责风噪识别、ANC/ENC、动态调音\n- **近耳+导管/腔体设计**：将扬声器嵌入耳道附近凹槽，配合半开放声学腔体，兼顾环境感知与漏音控制\n- **多麦克风+多单元阵列**：未来可做**声束成形**，提升定向投声、降低外泄",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "open-ear audio",
+    "xMEMS",
+    "QCC3086",
+    "wind noise",
+    "leakage control",
+    "smart helmet",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

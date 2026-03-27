@@ -1,0 +1,2 @@
+HALTED_BY_HASH_CHECK_NODE: 致命安全阻断：检测到以下底层架构文件被非法篡改或未同步哈希：
+00-global-architecture.md (哈希不匹配/遭篡改)

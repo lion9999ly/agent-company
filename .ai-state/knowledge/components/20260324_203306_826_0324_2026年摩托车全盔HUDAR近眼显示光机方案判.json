@@ -1,0 +1,22 @@
+{
+  "title": "0324_2026年摩托车全盔HUD/AR近眼显示光机方案判断：MicroLED+波导走高端，自由曲面棱镜走量产",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2026年HUD/AR近眼显示的核心不在“能不能显示”，而在强日照可视、体积重量、抗震可靠性与量产成本的平衡。基于现有公开信息，微显示端将从LCoS/OLED逐步转向MicroLED：来源明确提到JBD（Jade Bird Display）已可提供“数百万尼特”级单色MicroLED，这类超高亮微显示适合摩托车户外场景，因为头盔HUD在正午阳光下通常需要>10,000 nits等效亮度才能保证可读性。若按2026年高端方案推演，MicroLED更适合导航箭头、盲区预警、车速等高对比信息；中端产品仍可能采用优化后的LCoS或OLED，以换取更低BOM成本和更成熟供应链。",
+  "source": "daily_deep",
+  "created_at": "2026-03-24",
+  "tags": [
+    "摩托车全盔",
+    "HUD",
+    "AR",
+    "近眼显示",
+    "MicroLED",
+    "波导",
+    "自由曲面棱镜",
+    "JBD",
+    "P0",
+    "HUD",
+    "AR显示",
+    "光学"
+  ],
+  "confidence": "high"
+}

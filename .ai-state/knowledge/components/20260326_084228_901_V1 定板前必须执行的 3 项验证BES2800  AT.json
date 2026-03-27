@@ -1,0 +1,19 @@
+{
+  "title": "V1 定板前必须执行的 3 项验证（BES2800 / ATS3085 / QCC/Airoha）",
+  "domain": "components",
+  "content": "报告要求在最终定板前必须完成 3 项验证，否则选型结论不可闭环：1）风洞 / 实骑 60 / 80 / 100km/h 采样；2）3 麦 vs 5 麦 AB Test；3）BES2800、ATS3085、QCC/Airoha 各选 1 款做同结构对比板验证。原因是头盔项目真实风险不在 PPT 参数，而在高速风噪、结构耦合和量产一致性。尤其在 100km/h + 侧风 + 全盔乱流条件下，不能只依赖默认算法，必须结合麦位设计、风噪导流、近讲麦策略和定制前端模型。对项目管理而言，这 3 项验证是量产决策的硬门槛。",
+  "source": "deep_research:tree_audio_soc",
+  "created_at": "2026-03-26",
+  "tags": [
+    "验证计划",
+    "60/80/100kmh",
+    "3麦",
+    "5麦",
+    "AB Test",
+    "风洞测试",
+    "量产验证",
+    "deep_research",
+    "tree_audio_soc"
+  ],
+  "confidence": "high"
+}

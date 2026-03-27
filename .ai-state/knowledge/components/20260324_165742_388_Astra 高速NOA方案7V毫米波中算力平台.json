@@ -1,0 +1,15 @@
+{
+  "title": "Astra 高速NOA方案：7V+毫米波中算力平台",
+  "domain": "components",
+  "content": "Astra高速NOA方案采用7V+毫米波传感器组合，基于中算力平台，定位仅高速场景可用。功能包含高速NOA（不含ETC）、APA、RPA、RA。该方案核心是优化7V方案局限，提升体验连续性，适合主流车型导入高阶辅助驾驶基础能力。",
+  "source": "doc_import:智驾大陆 Astra 产品介绍 20260206 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Astra",
+    "高速NOA",
+    "7V",
+    "毫米波",
+    "中算力"
+  ],
+  "confidence": "high"
+}

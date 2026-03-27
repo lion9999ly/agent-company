@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] Rockchip RK3588 (瑞芯微)",
+  "domain": "components",
+  "content": "以下基于你提供的搜索结果整理，**仅使用已给信息**，对 **Rockchip RK3588** 输出一份尽量完整的技术档案；凡搜索结果未明确给出的，统一标注 **“未查到”**。\n\n---\n\n# Rockchip RK3588 完整技术档案\n\n## 1. 基本参数\n\n### 1.1 制程\n- **制程工艺：** **8nm LP（Low Power）**\n\n### 1.2 CPU 架构与主频\n- **CPU 架构：** ARM big.LITTLE 八核\n- **CPU 配置：**\n  - 4 × **Cortex-A76**\n  - 4 × **Cortex-A55**\n- **CPU 主频：**\n  - Cortex-A76：**最高 2.4GHz**\n  - Cortex-A55：**最高 1.8GHz**\n\n### 1.3 GPU 架构\n- **GPU：** **ARM Mali-G610 MP4**\n- **图形 API 支持：**\n  - OpenGL ES 3.2\n  - Vulkan 1.1\n  - OpenCL 2.0\n\n### 1.4 NPU 架构与算力\n- **NPU：** 集成式 NPU\n- **AI 算力：** **6 TOPS**\n- **精度支持：**\n  - INT4\n  - INT8\n  - INT16\n  - FP16 混合精度计算\n- **NPU 架构细节：** **未查到**\n\n### 1.5 多媒体能力\n- **视频解码：**\n  - 8K@60fps H.265 / VP9 / AVS2\n  - 8K@30fps H.264\n  - 4K@60fps AV1\n- **视频编码：**\n  - 8K@30fps H.265 / H.264\n- **多路视频处理：** 支持多路 4K / 多路 1080P 视频流处理\n\n### 1.6 内存支持\n- **内存类型：**\n  - LPDDR4\n  - LPDDR4X\n  - LPDDR5\n- **最大容量：** **最高 32GB**\n\n---\n\n## 2. 接口\n\n> 你要求重点列出：摄像头(CSI)、显示(DSI/MIPI)、音频(I2S/PDM)、无线(BT/WiFi/UWB)\n\n### 2.1 摄像头接口（CSI）\n- **MIPI CSI：** **3 × MIPI CSI**\n- **能力说明：**\n  - 支持多摄像头输入\n  - 搜索结果提到“**最高支持 48MP ISP**”\n- **更多 ISP 细节：** 未查到\n\n### 2.2 显示接口（DSI / MIPI）\n- **MIPI DSI：** **2 × MIPI DSI**\n  - 支持 **4K@60Hz**\n- **其他显示接口：**\n  - **2 × HDMI 2.1**\n    - 支持 8K@60Hz 或 4K@120Hz\n  - **1 × DisplayPort 1.4**\n    - 支持 8K@30Hz\n  - **1 × eDP 1.3**\n    - 支持 4K@60Hz\n- **多显示能力：**\n  - 支持 **最多 4 路显示输出**\n  - 支持多屏异显/同显\n\n### 2.3 音频接口（I2S / PDM）\n- **I2S：** **未查到**\n- **PDM：** **未查到**\n- **其他音频相关接口信息：** 未查到\n\n### 2.4 无线接口（BT / WiFi / UWB）\n- **Bluetooth：** **未查到**\n- **Wi",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "瑞芯微"
+  ],
+  "confidence": "high"
+}

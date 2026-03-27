@@ -1,0 +1,17 @@
+{
+  "title": "Sony IMX662 Starvis 2 helmet rear camera low light",
+  "domain": "lessons",
+  "content": "**1) 可用于头盔后摄的关键器件**\n- **Sony IMX662（STARVIS 2）**：适合低照度骑行记录。文中提到典型规格为**2MP/1080p**（也有5MP配置说法）、支持**60fps或更高帧率**、**HDR**、**低功耗**、小型化封装，适合电池供电头盔集成。\n- 技术亮点：相较前代 Starvis，部分配置下**饱和信号量约提升2倍**，低噪声、弱光成像更强。\n\n**2) 与智能骑行头盔研发直接相关的技术点**\n- **LED灯控/低光抗闪烁**：针对汽车LED灯PWM调光导致的视频闪烁、条纹、车牌不可辨问题，需重点支持  \n  - **LED Flicker Suppression (LFS)** / **Flicker-Free Exposure**  \n  - ISP实时识别PWM频率并动态调曝光  \n  - 配合**去条纹算法**降低 rolling shutter banding\n- **芯片选型建议**：IMX662本身只是传感器，最终效果强依赖**ISP+固件算法+镜头+散热**，头盔产品应按“传感器+ISP协同”方案选型，而非只看CMOS参数。\n- **高帧率趋势**：60fps+有助于缓解LED闪烁并提升高速场景识别，对后向安全记录价值高。\n- **HDR趋势**：夜骑场景需同时处理强车灯与暗背景，HDR已成为后摄核心能力。\n\n**3) 可借鉴的产品设计理念**\n- 将后摄定位为**安全取证模块**而非普通运动相机：核心KPI应是**夜间车牌可辨率、LED抗闪烁能力、续航、重量**。\n- 头盔后摄应优先优化**夜骑/隧道/逆光**场景，而不是单纯追求更高像素。\n- 高端路线可关注**全局快门**，虽成本高，但可从根本上改善滚动快门条纹问题。\n\n**4) 行业/标准信息**\n- 文中未给出明确法规变更，但提到车载视觉领域对摄像头面",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Sony",
+    "IMX662",
+    "camera",
+    "low light",
+    "LED flicker",
+    "rear camera",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

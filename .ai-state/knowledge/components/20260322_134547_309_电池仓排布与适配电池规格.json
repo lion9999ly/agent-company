@@ -1,0 +1,15 @@
+{
+  "title": "电池仓排布与适配电池规格",
+  "domain": "components",
+  "content": "电池仓排布方式包括电池并列排布、纵列排布、混合排布。文档列出适配规格：一类对应48V12Ah、60V12Ah；一类对应48V20Ah、48V23Ah、60V20Ah、60V21Ah、60V22Ah、60V23Ah、60V25Ah、72V20Ah、72V21Ah、72V22Ah、72V23Ah、72V25Ah；另一类对应48V32Ah、60V32Ah、60V35Ah、72V32Ah、72V35Ah、72V38Ah，并包含以上容量。",
+  "source": "doc_import:电动车基础知识-20260115 - Leo批注版.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "电池仓",
+    "并列排布",
+    "纵列排布",
+    "48V20Ah",
+    "72V38Ah"
+  ],
+  "confidence": "medium"
+}

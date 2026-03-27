@@ -1,0 +1,17 @@
+{
+  "title": "歌尔智能骑行头盔 V1：关键硬件指标与量产门槛",
+  "domain": "components",
+  "content": "V1 建议硬件配置包括 SoC 采用高通 QCC / 恒玄 / Airoha，传感器采用 Bosch BMI270 / ST LSM6DSOX 级别 6 轴 IMU，音频为 2 扬声器 + 2 麦，电池容量 1500–2000mAh。关键量产指标为：综合续航 8–12h，纯灯光 >15h，夜间可视距离 >80m，遥控器连接稳定性 >99%，跌倒召回率 >90%，误报率 <1 次/100 小时骑行，重量目标 <450g、上限不超过 500g，防水至少 IPX4。这些数字可直接转化为 PRD、供应链选型和测试验收标准。",
+  "source": "deep_research:adhoc_基于PRD_V0.1",
+  "created_at": "2026-03-23",
+  "tags": [
+    "歌尔",
+    "硬件指标",
+    "电池",
+    "IMU",
+    "可靠性",
+    "deep_research",
+    "adhoc_基于PRD_V0.1"
+  ],
+  "confidence": "high"
+}

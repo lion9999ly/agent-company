@@ -1,0 +1,20 @@
+{
+  "title": "智能骑行头盔V1关键指标：≤1.65kg、≥3500mAh、8h、>3000 nits、ECE 22.06",
+  "domain": "components",
+  "content": "报告给出该项目作为歌尔JDM谈判前提的核心硬件与认证边界：HUD要求入眼亮度>3000 nits，并参考EyeRide公开参数20° FOV、720p、3000 nits、$500–700零售价；影像目标为4K摄像、传感器≥1/1.56\" IMX大底；音频为40–53mm动圈、3–5麦阵列、ANC/ENC；连接为Wi‑Fi 6 + BT 5.2/5.3；续航要求≥3500mAh，目标8h（HUD导航 + 蓝牙音乐 + 1080P录像）；整机重量≤1.65kg；认证覆盖ECE 22.06、DOT、3C + FCC、CE-RED、SRRC + UN38.3。报告指出，A阶段NRE的核心就是验证这些指标能否在同一产品中同时成立。",
+  "source": "deep_research:supplier_negotiation",
+  "created_at": "2026-03-26",
+  "tags": [
+    "智能骑行头盔",
+    "HUD",
+    "EyeRide",
+    "ECE 22.06",
+    "Wi‑Fi 6",
+    "BT 5.3",
+    "续航",
+    "重量",
+    "deep_research",
+    "supplier_negotiation"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "歌尔智能骑行头盔 V1：蓝牙音频与灯光/SOS的BOM与性能优先级",
+  "domain": "components",
+  "content": "报告给出 V1 最值得投入的成熟模块成本与性能区间：蓝牙 5.3 音频/通话方案采用 QCC 系列 / 恒玄 / Airoha，BOM 预估 $8–15，支持双麦 ENC，通话上行 SNR 目标 >58 dB，并要求在 25 km/h 风噪场景下语音可懂度可接受；后置高亮 LED 尾灯 + 转向灯遥控 BOM 预估 $3–6，夜间可视距离目标 >80 m，防水至少 IPX4；跌倒检测 + SOS 采用 6 轴 IMU，BOM $1.5–3。该组合说明 V1 应优先投资源到“灯光 + 蓝牙 + App + SOS”而非高风险新功能。",
+  "source": "deep_research:adhoc_基于PRD_V0.1",
+  "created_at": "2026-03-23",
+  "tags": [
+    "歌尔",
+    "BOM",
+    "蓝牙5.3",
+    "LED尾灯",
+    "SOS",
+    "deep_research",
+    "adhoc_基于PRD_V0.1"
+  ],
+  "confidence": "high"
+}

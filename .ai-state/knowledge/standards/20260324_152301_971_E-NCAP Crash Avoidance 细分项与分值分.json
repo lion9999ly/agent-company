@@ -1,0 +1,16 @@
+{
+  "title": "E-NCAP Crash Avoidance 细分项与分值分配",
+  "domain": "standards",
+  "content": "Crash Avoidance总分100，分为Frontal Collisions 60分（Car & PTW 40、Pedestrian & Cyclist 20）、Lane change Collisions 20分（Single Vehicle 10、Car & PTW 10）、Acceleration prevention 20分（Car & PTW 10、Pedestrian & Cyclist 10）。该结构体现E-NCAP 2026对前向碰撞、变道/偏离车道及低速/误加速场景的综合考核。",
+  "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Crash Avoidance",
+    "Frontal Collisions",
+    "Lane change Collisions",
+    "Acceleration prevention",
+    "AEB",
+    "ELK"
+  ],
+  "confidence": "high"
+}

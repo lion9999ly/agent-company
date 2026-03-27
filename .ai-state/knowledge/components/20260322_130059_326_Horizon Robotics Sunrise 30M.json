@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Robotics Sunrise 3.0M (X3M) Datasheet Rev.1.6 产品状态与版本信息",
+  "domain": "components",
+  "content": "文档对应产品为 Horizon Robotics Sunrise 3.0M（X3M），资料名称为《X3M Datasheet》，版本 Rev.1.6，发布时间 March 2022。文档明确声明该产品“under development”，Horizon Robotics 保留在不通知情况下变更或停产该产品的权利。版权页显示 ©2020 Horizon Robotics，官网为 https://www.horizon.ai 。该条目适合作为 X3M 芯片资料的基础元数据与版本识别信息。",
+  "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Horizon Robotics",
+    "Sunrise 3.0M",
+    "X3M",
+    "Datasheet",
+    "Rev1.6",
+    "March 2022"
+  ],
+  "confidence": "high"
+}

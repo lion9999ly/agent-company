@@ -1,0 +1,19 @@
+{
+  "title": "0323_2025智能头盔通讯与音频核心器件选型：nRF5340、QCC3056与SPH0645组合评估",
+  "domain": "components",
+  "content": "面向2025年智能头盔，较稳妥的架构是“主控+音频SoC”双芯片方案：Nordic nRF5340负责传感、组网与低功耗控制，Qualcomm QCC3056负责蓝牙音频链路与语音处理，前端拾音可选Knowles SPH0645数字MEMS麦克风。nRF5340为双核SoC，应用核Arm Cortex-M33最高128MHz，网络核64MHz，片上存储为1MB Flash+512KB RAM，并带独立256KB Flash+64KB RAM网络侧资源；其无线侧支持Bluetooth LE、Bluetooth Mesh、LE Audio、2Mbps、Long Range，以及Thread/Zigbee并发，这对头盔编队通信、手机App连接和OTA升级很关键。Nordic资料明确指出Mesh协议可与Bluetooth LE并行运行，适合“骑行队内广播+手机控制”场景。QCC3056则更偏音频，蓝牙5.2，主打aptX Adaptive与aptX Voice，适合导航播报、对讲降噪和音乐回放。若头盔目标是高质量通话，QCC3056比单用MCU更合适。",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "智能头盔",
+    "nRF5340",
+    "QCC3056",
+    "Knowles SPH0645",
+    "Bluetooth Mesh",
+    "BLE",
+    "LE Audio",
+    "MEMS麦克风",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

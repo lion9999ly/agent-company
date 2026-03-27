@@ -1,0 +1,20 @@
+{
+  "title": "歌尔智能骑行头盔 V1：双芯片架构与 BOM 约束",
+  "domain": "components",
+  "content": "报告建议歌尔 V1 采用双芯片优先架构：主控 A 使用高通 AR1，负责 HUD 图形、摄像头 ISP、部分 AI 语音推理和系统调度；协控 B 使用恒玄 BES2800，负责蓝牙音频、低功耗待机、语音唤醒和通话链路。电子 BOM 估算为 250–400 美元。报告明确不建议 V1 上地平线类 ADAS 主芯，因为若升级为三芯 ADAS，BOM 可能增加 60–120 美元，且热设计显著恶化。该结论可直接用于芯片平台冻结、成本测算和 V1/V2 功能分层决策。",
+  "source": "deep_research:adhoc_基于PRD_V0.1",
+  "created_at": "2026-03-23",
+  "tags": [
+    "歌尔",
+    "高通AR1",
+    "恒玄BES2800",
+    "双芯片",
+    "BOM",
+    "ADAS",
+    "成本",
+    "热设计",
+    "deep_research",
+    "adhoc_基于PRD_V0.1"
+  ],
+  "confidence": "high"
+}

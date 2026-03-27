@@ -1,0 +1,16 @@
+{
+  "title": "地平线征程6B MCU高集成方案：5K+ DMIPS ASIL-D",
+  "domain": "components",
+  "content": "征程6B集成全功能MCU，提供5K+ DMIPS、ASIL-D级算力与安全能力。文档强调该高集成MCU可降低一体机成本与设计难度，减少外部器件依赖，提升系统集成效率。相比征程3，J6B在功能完整性和车规级系统集成方面更具优势。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "征程6B",
+    "MCU",
+    "ASIL-D",
+    "5K+ DMIPS",
+    "高集成度",
+    "一体机成本"
+  ],
+  "confidence": "high"
+}

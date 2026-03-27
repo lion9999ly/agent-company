@@ -1,0 +1,18 @@
+{
+  "title": "0322_LIVALL BH51M / BH51M Neo 智能头盔关键器件与规格梳理（2025）",
+  "domain": "components",
+  "content": "LIVALL BH51M 系列公开拆解极少，现阶段更可靠的是“规格+供应链推断”而非完整BOM。已确认信息来自官方与零售页：BH51M NSO 官方售价为 179.00 美元，供应商为 LIVALL 官方商城；头围版本含 M 54-58 cm、L 57-61 cm（另一官方页写 L 58-62 cm，尺寸口径存在冲突）。Cool Mania 零售页给出较完整参数：蓝牙 BT 4.1，支持 HFP/HSP/A2DP，连接距离约 10 m；双扬声器 2×0.5 W；麦克风灵敏度 -42 dB；电池 600 mAh；充电输入 DC 5 V/0.5 A；充电时间约 2 小时；最长工作 10 小时，连续听音乐 3-6 小时，待机最长 180 天。官方页还确认其具备跌倒检测/SOS、转向灯、环境光相关安全功能，并宣称通过 CPSC 1203、EN 1078、AS/NZS 2063 认证。",
+  "source": "daily_deep",
+  "created_at": "2026-03-22",
+  "tags": [
+    "LIVALL",
+    "BH51M",
+    "智能头盔",
+    "Bluetooth SoC",
+    "MEMS麦克风",
+    "JBL",
+    "Qualcomm QCC",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

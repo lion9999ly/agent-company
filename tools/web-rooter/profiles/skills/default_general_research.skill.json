@@ -1,0 +1,48 @@
+{
+  "name": "default_general_research",
+  "description": "General-purpose web research with HTML-first reading as default.",
+  "route": "general",
+  "aliases": [
+    "general",
+    "web_research"
+  ],
+  "intent_keywords": [
+    "research",
+    "analysis",
+    "总结",
+    "调研",
+    "趋势",
+    "latest"
+  ],
+  "activation_keywords": [],
+  "min_activation_hits": 0,
+  "min_score": 0.0,
+  "priority": 30,
+  "default_variables": {},
+  "default_options": {
+    "html_first": true,
+    "crawl_assist": false,
+    "top_results": 6
+  },
+  "examples": [
+    "分析 AI Agent 工程实践趋势并给出处",
+    "总结某技术主题的主流观点和反方观点"
+  ],
+  "phases": [
+    {
+      "id": "intent",
+      "title": "Intent Resolve",
+      "goal": "确认任务目标、输出格式与证据要求"
+    },
+    {
+      "id": "dry_run",
+      "title": "Compile & Lint",
+      "goal": "先 dry-run 生成 IR 并校验 lint"
+    },
+    {
+      "id": "execute",
+      "title": "Execute",
+      "goal": "执行 workflow 并回收 citations/references"
+    }
+  ]
+}

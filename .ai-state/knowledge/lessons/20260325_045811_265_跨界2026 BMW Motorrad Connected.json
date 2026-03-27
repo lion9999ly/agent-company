@@ -1,0 +1,12 @@
+{
+  "title": "跨界:2026 BMW Motorrad ConnectedRid",
+  "domain": "lessons",
+  "content": "**1) 已发布产品基线（可对标）**  \n- **BMW Motorrad ConnectedRide Smartglasses**（2023.7）  \n- 功能：**HUD显示导航、车速、档位、限速提醒**  \n- 技术：**Waveguide波导光学 + Micro-OLED**  \n- 连接：**蓝牙**连接手机与BMW Motorrad Connected App  \n- 续航：**约10小时**  \n- 交互：通过**车把Multi-Controller**操作  \n- 现状痛点：**非头盔集成、额外佩戴负担、电池配重、视场有限**\n\n**2) 对智能骑行头盔研发的关键趋势（2026方向）**  \n- **头盔内置HUD**：显示模组/光学件/投影器嵌入头盔结构，强调**轻量化、重心平衡、舒适性**  \n- **AR导航**：导航箭头、车道引导、POI直接叠加真实道路  \n- **传感器融合**：**眼动追踪 + 头部追踪 + IMU + 环境光传感器**，用于视线适配、疲劳预警、亮度自动调节  \n- **V2X通信**：用于**障碍物/急刹/盲区预警、eCall**  \n- **语音控制/NLP**：减少手动操作，适合骑行场景  \n- **边缘AI计算**：头盔侧集成**低功耗AI芯片/XR平台**，降低对手机依赖\n\n**3) 关键参数/器件方向**  \n- 显示升级：从**Micro-OLED**向**Micro-LED/全息波导**演进  \n- 目标指标：**FoV 20–30°+**（现约10–15°）、**1080p+**、**PPD>60**、高亮阳光可视  \n- 电源：目标续航**15小时+**；关注**固态电池、无线充电、能量回收**  \n- 通信：**5G NR-V2X、Wi‑Fi 6E/7、蓝牙**  \n- 材料：**碳纤维/芳纶复合材料**",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-25",
+  "tags": [
+    "night_cross",
+    "跨界"
+  ],
+  "confidence": "medium"
+}

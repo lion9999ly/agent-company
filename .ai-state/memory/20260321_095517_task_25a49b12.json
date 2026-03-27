@@ -1,0 +1,16 @@
+{
+  "task_id": "task_25a49b12",
+  "timestamp": "20260321_095517",
+  "task_goal": "{'title': '', 'content': [[{'tag': 'code_block', 'language': 'PLAIN_TEXT', 'text': '设计骑行头盔的无线充电方案\\n'}]]}",
+  "roles_assigned": [
+    "cto",
+    "cdo"
+  ],
+  "critic_rounds": 1,
+  "critic_decision": "PASS",
+  "synthesis_conflicts": 1,
+  "user_rating": null,
+  "user_feedback": null,
+  "knowledge_gaps": [],
+  "new_knowledge": []
+}

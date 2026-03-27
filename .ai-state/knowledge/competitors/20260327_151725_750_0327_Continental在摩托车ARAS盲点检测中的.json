@@ -1,0 +1,22 @@
+{
+  "title": "0327_Continental在摩托车ARAS盲点检测中的角色：并非头盔厂商，而是雷达/ECU供应商",
+  "domain": "competitors",
+  "content": "基于现有3个来源，可确认：截至2025年前后，**Continental（大陆集团，Continental AG）并没有公开发布一款名为“Continental ARAS motorcycle blind spot detection helmet”的量产全盔产品**。这一点在来源2、3中表述一致；来源1更多是技术趋势分析，因此应视为概念性推演而非产品发布信息。对我们做**智能摩托车全盔**而言，正确理解是：Continental是**摩托车ARAS/ADAS核心部件与系统供应商**，不是头盔品牌。其价值在于提供可与头盔联动的盲点检测能力，而非直接销售头盔。技术上，来源2、3均指出其方案以**安装在摩托车上的后向雷达+ECU+算法**为核心，常见频段提到**24GHz或77GHz**；来源1进一步明确Continental在汽车ADAS中长期提供**77GHz短程/长程雷达、摄像头、中央计算单元**，并将这些能力迁移到摩托车ARAS。由于原始搜索结果未给出具体雷达型号、ECU型号或单颗器件价格，因此不能补充如IMX678、QCC5181或“$15-25/颗”这类数据。竞品参照方面，来源1列举了已量产的高端摩托车方案：**Ducati Multistrada V4、BMW R 1250 RT、KTM 1290 Super Adventure S**均已采用雷达类骑手辅助功能，且其中Ducati Multistrada V4明确提到配备**Bosch（博世）**雷达系统，说明市场验证路径是“车端先落地、头盔端后集成”。价格上，3个来源都**未给出Continental ARAS模块、BSD系统或整车BSD选装价格**，因此只能记录为“公开价格缺失”。供应链层面，可明确的公司/品牌包括**Continental、Bosch、Ducati、BMW、KTM**。对我们产品的启示是：若",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Continental",
+    "ARAS",
+    "摩托车全盔",
+    "盲点检测",
+    "ADAS",
+    "77GHz雷达",
+    "24GHz雷达",
+    "Bosch",
+    "OEM供应商",
+    "智能头盔",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

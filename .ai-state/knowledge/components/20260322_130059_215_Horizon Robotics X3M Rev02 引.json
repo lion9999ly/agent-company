@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Robotics X3M Rev.0.2 引脚更正：JTG_TDI/SPI1_MOSI 与 JTG_TDO/SPI1_MISO",
+  "domain": "components",
+  "content": "Rev.0.2（2020-02-02）修正了 JTG_TDI/SPI1_MOSI 与 JTG_TDO/SPI1_MISO 的定义。这类复用引脚修正对原理图、边界扫描、SPI 外设连接和调试接口设计影响较大，若项目基于早期草案设计，需重点核对 JTAG 与 SPI1 复用关系，避免板级连线错误导致下载、调试或外设通信异常。",
+  "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Rev0.2",
+    "Pin correction",
+    "JTAG",
+    "SPI1_MOSI",
+    "SPI1_MISO"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Forcite MK1S（Forcite）量产模式与成本结构",
+  "domain": "components",
+  "content": "Forcite 是澳大利亚悉尼公司，但公开信息未披露 Forcite MK1S 的具体整机代工厂。基于产品结构包含全盔壳体、前摄、侧边LED提示、音频通讯、App互联，以及需覆盖 EPS、FPC、线束、电池与BMS、EMC、射频一致性、ECE/DOT 认证样一致性控制，可高置信判断其不是单一传统头盔厂独立完成，而是“头盔厂+电子ODM/EMS协同”。成本上，BOM 为 250–450美元，零售价为 1000–1400美元，这一价格结构基本排除澳洲本土大规模量产，更合理的决策判断是品牌定义在悉尼、量产在亚洲，且大概率位于中国华南/华东。",
+  "source": "deep_research:competitor_supply_chain",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "代工",
+    "BOM",
+    "亚洲制造",
+    "头盔电子集成",
+    "deep_research",
+    "competitor_supply_chain"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "iC-R smart cycling helmet 2025 teardown brake ligh",
+  "domain": "lessons",
+  "content": "**产品/技术要点（基于“2025假想款”可借鉴方案）**\n- **刹车灯**：IMU方案识别减速/急刹，推荐 **Bosch BMI270** 或 **ST LSM6DSOX**；采样率最高 **1.6kHz**，BMI270功耗约 **700µA**。急刹判定阈值可设 **-0.5G~-1.0G / 0.5s内**；灯光响应延迟目标 **<100ms**。\n- **LED设计**：后部 **180°可见** 宽幅灯条/点阵，刹车灯亮度 **50-100lm**，转向灯 **20-50lm**；可用 **Osram OSLON Signal / Lumileds LUXEON Rebel**，配扩散板/导光件提升均匀性。\n- **转向遥控**：把立/车把遥控器采用 **BLE 5.x**，MCU可选 **Nordic nRF52810/nRF52832**；供电 **CR2032/CR2025**，续航 **6-12个月**；防护建议 **IPX6/IPX7**。\n- **App连接**：BLE 5.x + OTA，支持灯效/亮度/刹车灵敏度设置、电量显示、碰撞检测、紧急联系人、骑行记录；数据加密建议 **AES-128** 以上。\n- **电池/BMS**：头盔主电池建议 **3.7V LiPo 800-1500mAh**，能量密度 **200-250Wh/kg**；基础灯光续航 **10-15h**，高频交互 **4-8h**。充电接口趋向 **USB-C**，可考虑快充。\n\n**研发趋势/设计理念**\n- 从“带灯头盔”升级为 **传感器融合+通信+算法** 的安全系统。\n- 强调 **无缝集成、轻量化、高能效、模块化可维修/升级、数据驱动**。\n- 交互趋向 **遥控器 + App + 语音** 多模态，提升骑行中盲操安全性。\n\n**商业/产品启发**\n- 可对标",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "iC-R",
+    "cycling",
+    "smart lighting",
+    "turn signal",
+    "app",
+    "teardown",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

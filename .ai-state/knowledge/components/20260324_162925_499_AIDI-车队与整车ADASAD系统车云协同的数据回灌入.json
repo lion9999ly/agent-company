@@ -1,0 +1,16 @@
+{
+  "title": "AIDI-车队与整车ADAS/AD系统：车云协同的数据回灌入口",
+  "domain": "components",
+  "content": "架构图中出现AIDI-车队与整车ADAS/AD系统，说明HCT闭环不仅面向离线数据处理，也面向车队运营与整车系统协同。通过OTA、触发设置、数据包文件和数据回灌机制，车端传感器、CAN、GPS、里程计信息可持续回流云端，形成模型开发与量产运行之间的反馈通道。",
+  "source": "doc_import:数据闭环介绍 20260119 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "AIDI车队",
+    "ADAS",
+    "AD",
+    "整车系统",
+    "数据回灌",
+    "OTA"
+  ],
+  "confidence": "medium"
+}

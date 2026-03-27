@@ -1,0 +1,16 @@
+{
+  "title": "EyeLights EyeRide 长途骑行使用：Waze、速度提醒与外接供电",
+  "domain": "competitors",
+  "content": "一位使用 EyeRide 1 年的用户表示，设备质量好、头盔安装相对容易、音质优秀、图像清晰。典型使用场景是配合 Waze 查看警报和车速/超速提醒。长途骑行时会通过充电宝为设备与手机供电，公路旅行则把充电宝接到摩托车 USB 口，实现近似“无限电力”。该条目反映 EyeRide 在长途场景下依赖外部供电补足续航。",
+  "source": "doc_import:eyelights_competitor_analysis.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EyeLights",
+    "EyeRide",
+    "Waze",
+    "speed alerts",
+    "power bank",
+    "USB power"
+  ],
+  "confidence": "high"
+}

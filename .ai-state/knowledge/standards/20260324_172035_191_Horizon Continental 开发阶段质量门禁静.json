@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Continental 开发阶段质量门禁：静态扫描、MIL、SIL回归",
+  "domain": "standards",
+  "content": "在需求分析、设计、开发阶段，测试流程要求执行代码静态扫描、单元测试、MIL评测、模块Benchmark和SIL回归测试，并辅以小样本量实车测试。该阶段重点在于尽早发现设计与实现问题，建立从模型到软件的前置质量门禁。",
+  "source": "doc_import:测试能力与流程 20260130 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "代码静态扫描",
+    "MIL评测",
+    "SIL回归测试",
+    "模块Benchmark",
+    "质量门禁"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "ABUS GameChanger 2.0 with Quin crash detection sma",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- **ABUS GameChanger 2.0 with Quin Crash Detection**：高端公路骑行头盔+碰撞检测模块，定位“性能+安全”智能头盔。\n- **传感器方案**：核心为 **MEMS IMU**，含**3轴加速度计/6轴IMU（加速度计+陀螺仪）**，用于识别线性冲击与旋转冲击；强调**传感器融合**降低“头盔掉落/路面颠簸”误报。\n- **芯片/模组选型方向**：文中提到可采用 **Bosch/ST** 传感器，**ARM Cortex-M MCU**，如 **STM32L** 或 **Nordic nRF 系列**；通信为 **BLE蓝牙低功耗**，可用 **nRF52** 级别SoC。\n- **电池管理**：小型 **LiPo 50–150mAh**，续航目标为数周到数月；充电接口可能为 **USB-C**（也提到Micro-USB），需配套 **PMU/BMS**。\n- **连接架构**：头盔通过 **BLE** 连手机 App，**GPS定位依赖手机**，非头盔内置GNSS；支持 **OTA固件升级**。\n\n**功能/体验设计**\n- **碰撞流程**：检测到严重撞击后，App 倒计时 **30–90秒**，用户可取消；未取消则向紧急联系人发送**短信/邮件+GPS位置**。\n- **App功能**：紧急联系人管理、电量/连接状态、灵敏度调节、潜在骑行记录与第三方平台同步。\n- **结构集成**：智能模块建议置于**头盔后部EPS预留腔体**，兼顾头部运动采样、舒适性与结构完整性；封装建议 **IPX7** 级防水。\n\n**材料与安全趋势**\n- 头盔本体仍以 **PC外壳+In-Mold+多密度EPS** 为主，趋势是**更轻、更强、更环保复材**。\n- 高端产品继续叠加 **MIPS / MIPS Air ",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "竞品",
+    "ABUS",
+    "Quin",
+    "跌倒检测",
+    "拆解",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

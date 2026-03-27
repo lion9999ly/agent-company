@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Nordic nRF5340",
+  "domain": "components",
+  "content": "下面给出一份**面向“Mesh对讲与头盔无线音频互联”选型的完整技术档案模板**，并按你这个场景补充了**填写说明、关键指标解释、推荐候选节点清单**。  \n如果你愿意，我下一步还可以继续直接帮你输出：\n\n1. **按品牌/芯片逐项填好的技术档案**  \n2. **适合摩托车头盔对讲的BOM/架构建议**  \n3. **高端/中端/低成本三档方案对比表**\n\n---\n\n# Mesh对讲与头盔无线音频互联技术档案模板\n\n---\n\n## 1. 基础信息\n\n- **节点名称：**  \n- **厂商/标准组织：**  \n- **节点类型：** 蓝牙SoC / 音频SoC / 协议标准 / 商用Mesh方案 / 模组  \n- **具体型号或标准号：**  \n- **目标应用：** 骑行对讲、导航播报、音乐共享、相机联动、SOS广播  \n\n### 填写说明\n这里的“节点”可以是：\n- 一颗芯片，如 **Qualcomm QCC5171**\n- 一个标准，如 **Bluetooth LE Audio / Auracast**\n- 一个商用Mesh方案，如 **Sena Mesh Intercom**\n- 一个模组，如 **Nordic nRF5340模组**\n\n---\n\n## 2. 无线能力\n\n- **Bluetooth版本：**  \n- **BLE支持：** 是/否，版本  \n- **BLE Audio：** 支持/不支持  \n- **Classic Audio：** HFP / A2DP / AVRCP / PBAP / SPP 等  \n- **Auracast：** 支持/不支持  \n- **专有Mesh：** 支持/不支持，协议名称  \n- **多无线并存：** Bluetooth + Wi‑Fi / Bluetooth + Sub-GHz / Bluetooth + 私有2.4G  \n\n### 关键关注点\n头盔对讲场景通常需要同时满足：\n- **手机连接**：HFP、A2DP、AVRCP\n- **导航播报**：通常走HFP或A2DP混音\n- **对讲链路**：可能是Classic BT、BLE Audio、或私有Mesh\n- **相机联动**：BLE控制、HFP触发、APP联动\n- **群组广播/SOS**：更适合BLE广播或私有Mesh广播\n\n### 选型提示\n- **Classic Bluetooth**：兼容手机最好，但多节点Mesh能力弱\n- **BLE Audio**：未来方向，支持LC3、广播音频、低功耗\n- **Auracast**：适合单向广播，不天然等于双向对讲\n- **专有Mesh**：当前商用头盔对讲主流，实时性和组网体验通常优于纯标准蓝牙Mesh\n\n---\n\n## 3. 音频能力\n\n- **支持编解码：** LC3 / CVSD / mSBC / SBC / AAC / aptX / aptX Adaptive / 其他  \n- **语音采样率：** 8k / 16k / 24k / 32k / 48kHz  \n- **音乐采样率：**  \n- **双麦/多麦支持：**  \n- **AEC（回声消除）：** 支持/不支持  \n- **ENC（环境噪声抑制）：** 支持/不支持  \n- **NR（Noise Reduction）：** 支持/不支持  \n- **风噪抑制：** 支持/不支持，典型速度场景  \n- **侧音（Sidetone）：** 支持/不支持  \n- **混音能力：** 对讲+导航 / 对讲+音乐 / 导航打断",
+  "source": "kg_expand:mesh_intercom",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "mesh_intercom"
+  ],
+  "confidence": "high"
+}

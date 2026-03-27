@@ -1,0 +1,19 @@
+{
+  "title": "Cardo/Sena 音频能力仍未满足 80–120km/h 高速场景需求",
+  "domain": "components",
+  "content": "报告指出，音频体验的真实门槛不是静态环境“能响”，而是在 80–120km/h 下仍能听清导航和对讲。Sena 用户反复提到高速下音量不够、音质薄、麦克风风噪大、语音指令识别率低；LIVALL 也有扬声器音量偏低、通话时对方听不清的问题。即便口碑较好的 Cardo Packtalk 采用 JBL 方案，在高速风噪、多人通话、复杂环境下仍有不足。决策上应把风噪抑制、麦克风阵列、腔体声学和扬声器耳位适配列为核心研发项，而非附属体验优化。",
+  "source": "deep_research:user_pain_points",
+  "created_at": "2026-03-22",
+  "tags": [
+    "音频",
+    "语音",
+    "风噪",
+    "Cardo",
+    "Sena",
+    "高速骑行",
+    "声学设计",
+    "deep_research",
+    "user_pain_points"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "智能全盔 V1 推荐硬件参数与 BOM 增量",
+  "domain": "components",
+  "content": "V1 推荐硬件包括：主摄 Sony IMX577 / IMX678，传感器尺寸 1/1.8~1/1.56；编码支持 H.265、4K30 / 1080p60；存储采用 64GB UFS + TF卡 128/256GB，V30/A2；IMU 为 6轴 200Hz~1kHz，建议 500Hz；GNSS 为北斗/GPS 双模 1Hz~5Hz；RTC 采用独立实时时钟 + 后备电源；断电保持采用超级电容 1~5F 或小型保片电池，目标维持 3~10秒；Wi‑Fi 6，80MHz。BOM 增量约 ￥100~250，其中 IMU ￥8~20、GNSS ￥20~50、RTC+备份 ￥3~8、超级电容/保片电路 ￥15~40、UFS 64GB ￥35~55、TF卡槽+ESD/防护 ￥5~10、软件摊销单机约 ￥50~120。",
+  "source": "deep_research:auto_20260326_3",
+  "created_at": "2026-03-26",
+  "tags": [
+    "硬件参数",
+    "BOM",
+    "IMX577",
+    "IMX678",
+    "UFS",
+    "deep_research",
+    "auto_20260326_3"
+  ],
+  "confidence": "high"
+}

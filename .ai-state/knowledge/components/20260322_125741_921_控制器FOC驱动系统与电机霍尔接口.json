@@ -1,0 +1,16 @@
+{
+  "title": "控制器/FOC驱动系统与电机霍尔接口",
+  "domain": "components",
+  "content": "控制器侧关键信号包括PHASE、LOCK_MOTOR、FOC_ACC_OUT、P+输入、12V输出。电机接口包含三相信号、霍尔信号Ha/Hb/Hc、霍尔5V、霍尔地，文档中霍尔信号组出现两次，说明存在双路或重复标注。控制器还接收转把5V、转把地、转把信号、刹车开关、边撑开关、Ready键、加档/减档、定速巡航等输入，是整车动力与执行控制中心。",
+  "source": "doc_import:NXT_T519-2000W(48V双总线+双包电池)整车逻辑图-20250725.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "控制器",
+    "FOC",
+    "电机",
+    "霍尔",
+    "PHASE",
+    "FOC_ACC_OUT"
+  ],
+  "confidence": "high"
+}

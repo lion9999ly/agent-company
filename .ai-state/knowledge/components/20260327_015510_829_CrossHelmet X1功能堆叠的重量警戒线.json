@@ -1,0 +1,17 @@
+{
+  "title": "CrossHelmet X1功能堆叠的重量警戒线",
+  "domain": "components",
+  "content": "CrossHelmet X1公开资料常见重量约1.78kg，价格约USD 1,600–1,800，集成后视摄像、HUD、音频等功能。报告将其定义为典型反面案例，指出功能堆叠会迅速把整机推向长途疲劳区，并明确给出结论：1.75kg+ 对智能全盔来说不是可长期舒适佩戴的安全区。该数据直接支持V1必须把量产重量锁在1.58–1.65kg，并把1.70kg设为项目红线，避免“功能优先于头盔本体”的失衡方案。",
+  "source": "deep_research:auto_20260327_1",
+  "created_at": "2026-03-27",
+  "tags": [
+    "CrossHelmet X1",
+    "竞品警示",
+    "重量上限",
+    "佩戴疲劳",
+    "产品取舍",
+    "deep_research",
+    "auto_20260327_1"
+  ],
+  "confidence": "medium"
+}

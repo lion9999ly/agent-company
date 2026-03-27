@@ -1,0 +1,15 @@
+{
+  "title": "高速巡航并发任务基线：120km/h风噪下ANC有效与唤醒成功率≥95%",
+  "domain": "components",
+  "content": "高速巡航场景使用占比约25%，典型速度80-120km/h。并发任务包括：HUD巡航导航（路况/限速/ETA）、1080P/30fps循环录像、蓝牙音乐、ANC主动降噪、AI语音待命、ADAS后方盲区监测、随速音量与音频闪避。体验要求为ADAS盲区检测到HUD警示延迟≤500ms，ANC在120km/h风噪下有效，语音唤醒在120km/h风噪下成功率≥95%。续航目标≥6h。",
+  "source": "doc_import:智能骑行头盔PRD_V1.0_To_JDM.xlsx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "高速巡航",
+    "120km/h",
+    "ANC",
+    "ADAS",
+    "6h续航"
+  ],
+  "confidence": "high"
+}

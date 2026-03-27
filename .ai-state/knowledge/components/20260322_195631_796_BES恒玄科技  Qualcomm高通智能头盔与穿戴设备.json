@@ -1,0 +1,29 @@
+{
+  "title": "BES恒玄科技 / Qualcomm高通：智能头盔与穿戴设备ANC SoC方案选型",
+  "domain": "components",
+  "content": "公司名称：BES（恒玄科技）、Qualcomm（高通）。核心能力：两者均提供蓝牙音频SoC+DSP+ANC+电源管理高集成方案，适合智能头盔/穿戴ODM快速导入。BES主打高性价比、低功耗、混合ANC、自适应ANC，代表型号BES2300、BES2500，文中提及BES2500YP降噪深度最高-45dB，支持蓝牙5.2/5.3与通话ENC，适合中高端量产项目。Qualcomm主打高端音质与生态，QCC51xx/QCC30xx如QCC5171、QCC3071支持LE Audio、aptX Adaptive、ANC、风噪抑制、通透模式，适合高端头盔通信系统。代工/品牌客户：文中仅明确高通常见于Sony、Bose、Sennheiser部分产品线；BES未给出具体头盔客户。报价水平：原文未提供具体单价，可判断BES偏成本效益型，Qualcomm偏高端。产能规模：未披露月产能/年产能；市场侧仅提BES在全球TWS芯片市场占重要份额、在中国市场表现强劲，高通在高端TWS/头戴市场占主导。技术参数保留：蓝牙5.2/5.3、-45dB、QCC5171、QCC3071、BES2300、BES2500。",
+  "source": "jdm_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "ANC",
+    "智能头盔",
+    "穿戴设备",
+    "BES",
+    "恒玄科技",
+    "Qualcomm",
+    "高通",
+    "蓝牙音频SoC",
+    "QCC5171",
+    "QCC3071",
+    "BES2500YP",
+    "-45dB",
+    "蓝牙5.2",
+    "蓝牙5.3",
+    "LE Audio",
+    "aptX Adaptive",
+    "ENC",
+    "ODM选型",
+    "jdm_study"
+  ],
+  "confidence": "high"
+}

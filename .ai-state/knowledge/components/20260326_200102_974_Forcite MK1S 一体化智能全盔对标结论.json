@@ -1,0 +1,18 @@
+{
+  "title": "Forcite MK1S 一体化智能全盔对标结论",
+  "domain": "components",
+  "content": "Forcite MK1S 被列为第一优先级竞品，因为它最接近“摩托全盔一体化智能化”方向。公开资料较确定的影像规格为 1080p/30，另有资料称 4K，但不完全确定；整机重量约 1.5–1.6kg，续航约 5–6h，售价通常 US$1,000+。报告据此判断：一体化方向已被验证，但替代“高端全盔 + Cardo/Sena + GoPro/Insta360 + 手机支架/HUD 外挂”的成熟拼凑方案并不容易，因此 V1 应优先做安全闭环和一体化体验，而不是盲目追求参数领先。",
+  "source": "deep_research:prd_reference",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Forcite MK1S",
+    "竞品",
+    "一体化",
+    "续航",
+    "重量",
+    "影像",
+    "deep_research",
+    "prd_reference"
+  ],
+  "confidence": "medium"
+}

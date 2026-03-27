@@ -1,0 +1,16 @@
+{
+  "title": "Luna 6 Safe Driving能力评估：不同传感器组合得分对比",
+  "domain": "components",
+  "content": "文档比较4种配置在Safe Driving中的得分：1V、1V1-4R、1V5R、5V5R12Uss。总分分别为29.075、30.075、31.45、31.45（满分40），对应5星门槛达成率72.69%、75.19%、78.63%、78.63%。结论为“可满足E-NCAP 2026要求”，但尚未达到2027年70%提升后的更高绝对要求。",
+  "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "Safe Driving",
+    "1V",
+    "1V1-4R",
+    "1V5R",
+    "5V5R12Uss"
+  ],
+  "confidence": "high"
+}

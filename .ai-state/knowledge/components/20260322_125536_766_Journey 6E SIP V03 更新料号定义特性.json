@@ -1,0 +1,17 @@
+{
+  "title": "Journey 6E SIP V0.3 更新：料号定义、特性表、封装与回流焊曲线增强",
+  "domain": "components",
+  "content": "V0.3（2024-05-13）更新范围较广：Section 2 更新 Figure 2-1 J6E SIP Part Number Definitions；Section 3 更新 Table 3-1 features；Section 4.2 更新 Table 4-1 Package Information；Section 4.3 更新引脚图；Section 4.4.1 更新电源/地引脚表；Section 4.4.2 更新数字引脚表；Section 4.5 更新封装外形图；Section 8 新增 Figure 8-1 J6E SIP Reflow Profile。说明封装与制造信息开始完善。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "V0.3",
+    "2024-05-13",
+    "Part Number",
+    "Features",
+    "Package",
+    "Pin List",
+    "Reflow Profile"
+  ],
+  "confidence": "high"
+}

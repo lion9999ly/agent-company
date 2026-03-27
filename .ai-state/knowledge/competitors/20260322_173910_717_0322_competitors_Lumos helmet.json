@@ -1,0 +1,15 @@
+{
+  "title": "0322_competitors_Lumos helmet shell material PC EPS ...",
+  "domain": "competitors",
+  "content": "**结构/材料与可研发点**\n- **主流结构**：PC外壳 + EPS内衬 + **In-mold模内一体成型**，已是高性能自行车头盔行业标准。\n- **材料特性**：\n  - **PC**：高抗冲击、抗穿刺、轻量、易注塑复杂造型，适合集成灯带/外观件。\n  - **EPS**：单次冲击吸能效率高、成本低、轻量；可做**多密度分区**以优化不同部位防护。\n  - **In-mold**：PC与EPS直接融合，较胶粘方案更轻、结构完整性更高，并支持更大通风孔设计。\n- **研发启示**：可重点评估**多密度EPS**、更复杂风道、电子件与壳体一体化设计；同时关注EPS多次冲击后性能衰减问题。\n\n**技术趋势/行业变化**\n- 行业仍以 **PC+EPS+In-mold** 为基础方案，但因EPS多次冲击性能不足，正关注替代/增强方案：\n  - **EPP**（多次冲击能力）\n  - **Koroyd**（新型吸能结构）\n  - **MIPS**（旋转冲击防护）\n- 智能头盔正从单纯结构件转向“**防护+电子+通信**”集成产品，需同步管理结构安全与EMC/RF合规。\n\n**供应链与器件生态**\n- **PC树脂**：SABIC Lexan、Covestro Makrolon、LG Chem、三菱化学、帝人。\n- **EPS**：BASF Styropor、Kaneka、Sunpor、Versalis。\n- **电子器件方向**：\n  - LED：Cree、Osram、Lumileds、Nichia\n  - 电池：LG Energy Solution、Samsung SDI、Panasonic、Murata\n  - 蓝牙/MCU：Nordic、ST、NXP、TI\n  - 传感器：Bosch Sensortec、ST、TDK InvenSense\n- **制造模式**：品牌通常通过中国大陆/台湾/越南的头盔OEM/ODM整合材料、结构件与部分电子装配，适合智能头盔采用“结构厂+EMS”协同开发。\n\n**法规/认证要点（与2026申报相关）**\n- **FCC（美国）**：重点涉及 **Part 15**，覆盖蓝牙模块、MCU、LED驱动等的EMC/RF测试；需第三方实验室测试、技术文件、标签与FCC ID/DoC。\n- **CE（欧洲）**：原文未完整展开，但明确指向智能头盔进入欧盟需满足健康、安全、环境相关要求。\n- **研发建议**：2026新品立项时应预留**无线模组、PCB布局、屏蔽/接地、标签与技术文档**的前置合规设计空间。",
+  "source": "daily_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "lumos",
+    "材质",
+    "2026",
+    "supplier",
+    "filing"
+  ],
+  "confidence": "medium"
+}

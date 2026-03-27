@@ -1,0 +1,15 @@
+{
+  "title": "Journey 6B 在 DMS 驾驶员监控系统场景的集成能力",
+  "domain": "components",
+  "content": "Journey 6B 支持 DMS（Driver Monitoring System）摄像头接入与 DMS 算法集成，目标是在较低成本下满足法规与 NCAP 要求。文档还指出在 1VxR 产品资源规划中，可预留 1~2 TOPS 给 DMS，CPU 预留 2kDMIPS 给 DMS，说明其在主 ADAS 任务之外仍保留 DMS 扩展空间。适合将驾驶员监控与前视感知、记录功能整合到单 SoC 平台，提升系统性价比与功能复用度。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Journey 6B",
+    "DMS",
+    "Driver Monitoring System",
+    "NCAP",
+    "法规"
+  ],
+  "confidence": "high"
+}

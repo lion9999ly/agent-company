@@ -1,0 +1,17 @@
+{
+  "title": "Horizon 征程6B（Luna 6）vs 征程3（Luna 3）芯片算力升级",
+  "domain": "components",
+  "content": "文档显示征程6B相较征程3实现核心算力显著提升：AI算力由5 TOPS提升至18 TOPS，达到3倍+；CPU算力开放能力达到2倍+。征程6B采用BPU Nash架构，面向Transformer优化，同时在CNN和Transformer网络上具备更优FPS，支持客户定制化算法开发和集成。结论是Luna 6在计算资源和算法承载能力上明显强于Luna 3。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Horizon",
+    "征程6B",
+    "征程3",
+    "Luna 6",
+    "Luna 3",
+    "BPU",
+    "TOPS"
+  ],
+  "confidence": "high"
+}

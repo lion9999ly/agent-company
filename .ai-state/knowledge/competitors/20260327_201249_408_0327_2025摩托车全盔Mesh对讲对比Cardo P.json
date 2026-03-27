@@ -1,0 +1,21 @@
+{
+  "title": "0327_2025摩托车全盔Mesh对讲对比：Cardo Packtalk Edge、Sena 60S（未发布）与Shoei集成方",
+  "domain": "competitors",
+  "content": "面向智能摩托车全盔，2025年可直接参考的成熟对讲平台仍以外挂通信模组为主，而非真正“原生智能头盔”。需明确排除自行车头盔场景：本条仅讨论摩托车全盔（full-face）上的Mesh/DMC通信，不适用于自行车头盔。现有来源中，唯一有较明确现货参数的是Cardo Packtalk Edge：供应商为Cardo Systems，定位旗舰摩托车通信器，采用DMC 2.0动态Mesh，对讲最多15人，配40mm JBL扬声器，蓝牙5.2，续航约13小时，防护等级IP67，并使用Air Mount磁吸底座，市场价格通常在US$399.95单机、US$699.95双机附近。其优势是自愈网络稳定、重连快，适合车队骑行。Sena方面，来源多次提到“60S”，但同时明确说明截至2024年初该型号尚未正式发布，因此2025年“60S”属于预测项，不能当作已上市竞品写入产品路线。可确认的是Sena现旗舰仍以50S/50R能力为参照，核心为Mesh Intercom（Open Mesh与Group Mesh），其中Group Mesh最多24人，Open Mesh可支持更大规模临时组网；音频方向与Harman Kardon合作。这里与Cardo存在关键差异：Cardo DMC 2.0强调15人高稳定闭环网络，Sena Mesh强调开放组网灵活性。Shoei部分，来源写作“Shoei COMLINK full-face/集成型号”，但未给出官方已发布型号、价格、通信参数或供应商SKU，因此只能视为“头盔厂与通信系统深度集成”的趋势信号，不能与Packtalk Edge做同口径硬参数对比。矛盾点也需标注：一处来源称Sena Open Mesh“理论上无限人数”，另一处称“几乎无限数量”，两者本质一致但都不是严格可验证上限；此外，关于2025年是否会出现Sena 60S、Shoei COMLINK原厂",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "摩托车全盔",
+    "智能头盔",
+    "Mesh对讲",
+    "DMC",
+    "Cardo",
+    "Packtalk Edge",
+    "Sena",
+    "Shoei",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

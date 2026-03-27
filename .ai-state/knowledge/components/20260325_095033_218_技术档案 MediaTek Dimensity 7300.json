@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] MediaTek Dimensity 7300 (MediaTek)",
+  "domain": "components",
+  "content": "以下基于你给出的“搜索结果”整理，**只引用/归纳已出现的信息**；凡搜索结果里没有明确给出的，我标注为 **“未查到”**。另外，搜索结果内部有少量互相矛盾之处（如 GPU 型号、蓝牙版本、ISP 名称），我会在对应位置注明“**搜索结果存在冲突**”。\n\n---\n\n# MediaTek Dimensity 7300 完整技术档案\n\n## 1. 基本参数\n\n### 1.1 产品定位\n- **芯片名称**：MediaTek Dimensity 7300 / 联发科 天玑 7300\n- **发布时间**：**2024年5月**\n- **官方定位**：**中高端智能手机移动平台**、偏“轻旗舰/高端中端”市场\n\n### 1.2 制程\n- **制程工艺**：**TSMC 4nm**\n- 更细描述：搜索结果提到为 **TSMC N4P**\n- 说明：这是其能效优势的核心来源之一\n\n### 1.3 CPU 架构与主频\n- **CPU 架构**：八核\n  - **4 × Arm Cortex-A78**\n  - **4 × Arm Cortex-A55**\n- **主频**\n  - Cortex-A78：**最高 2.5GHz**\n  - Cortex-A55：**最高 2.0GHz**\n\n### 1.4 GPU 架构与主频\n- **GPU 架构**：\n  - 一处结果写 **Arm Mali-G615 MC2**\n  - 另一处结果写 **Arm Mali-G610 MC4**\n- **结论**：**搜索结果存在冲突，GPU 型号未能唯一确认**\n- **GPU 主频**：**未查到**\n\n### 1.5 NPU / APU 架构与算力\n- **AI 处理器**：**MediaTek APU 655**\n- **AI 算力（TOPS）**：**未查到**\n- 已知描述：\n  - AI 性能相较 Dimensity 7050 **约 2 倍**\n  - AI 任务能效更高\n- **NPU/APU 主频**：**未查到**\n\n### 1.6 ISP\n- 一处结果写 **MediaTek Imagiq 950**\n- 另一处结果写 **MediaTek Imagiq 730 ISP**\n- **结论**：**搜索结果存在冲突，ISP 名称未能唯一确认**\n- 已知能力：\n  - **支持最高 200MP 摄像头**\n  - **支持硬件级 4K HDR 视频录制**\n  - **支持双摄 4K 同时录制**\n  - **14-bit HDR ISP**（搜索结果有提及）\n\n### 1.7 内存与存储\n- **内存支持**：**LPDDR5**\n- **内存速率**：一处结果提到 **最高 6400Mbps**\n- **存储支持**：**UFS 3.1**\n\n---\n\n## 2. 接口\n\n> 说明：手机 SoC 的公开资料通常更强调“支持能力”，不一定公开到底层物理接口 lane 数、端口数、MIPI 版本号等。以下按搜索结果可确认内容整理。\n\n### 2.1 摄像头接口（CSI）\n- **MIPI CSI / CSI lane 数**：**未查到**\n- 已知摄像头相关能力：\n  - **支持最高 200MP**\n  - **支持双摄 4K 同录**\n  - **支持 4K HDR 视频录制**\n- 结论：可判断其具备手机多摄接入能力，但**具体 CSI 规格未查到**\n\n### 2.2 显示接口（DSI / MIPI）\n- **MIPI DSI / DSI l",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "mediatek"
+  ],
+  "confidence": "high"
+}

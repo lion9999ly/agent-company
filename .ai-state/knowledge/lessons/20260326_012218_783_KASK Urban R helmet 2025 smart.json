@@ -1,0 +1,16 @@
+{
+  "title": "KASK Urban R helmet 2025 smart rear light Bluetoot",
+  "domain": "lessons",
+  "content": "**产品/技术推测（可作研发参考）**\n- **KASK Urban R 2025 智能尾灯**：尚未发布，内容为基于行业方案的推测，但方向与智能骑行头盔研发高度相关。  \n- 预期功能：**环境光自适应亮度、加速度刹车灯、震动自动开关机、BLE遥控/App控制、USB-C充电、防水IPX6/IPX7**。  \n- 电池方案：**3.7V Li-Po 300–500mAh**，续航约**4–8h（高亮）/20–30h（低功耗）**，充电**1–2h**；遥控器可用**CR2032 220mAh**。  \n\n**关键器件/选型线索**\n- MCU/蓝牙：**Nordic nRF52**（BLE集成）或 **STM32L**（低功耗）；说明趋势是**低功耗MCU+BLE一体化**。  \n- 传感器：**Bosch BMA400 / ST LIS2DW12**（三轴加速度计）用于刹车检测/休眠唤醒；**VEML6075 / TSL2572**用于环境光感知。  \n- LED/驱动：**Osram OSLON Signal、Lumileds Luxeon Rebel** + 恒流驱动/PWM调光。  \n- 充电/电源管理：**TI BQ25895、ADI LTC4060** 类充电IC，强调**过充/过放/短路保护**。  \n\n**结构与防水设计启发**\n- 外壳材料：**PC/ABS + UV稳定剂**；透镜：**PMMA/PC**，可用**菲涅尔/导光柱/反射器阵列**提升广角可视性。  \n- 集成方式：**磁吸/卡扣/螺丝**，兼顾拆装维护与外观一体化。  \n- 防水方案：**硅胶圈、USB-C胶塞、超声波焊接、局部灌封**；目标等级建议**IPX6–IPX7**。  \n\n**技术趋势/商业模式**\n- 趋势：头盔灯从“被动照明”转向**传感器融合+BLE互联+App固件升级",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "KASK",
+    "尾灯",
+    "蓝牙遥控",
+    "防水",
+    "拆解",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Freeform Prism 方案：头盔专用 HUD 更优平衡，成本 100–220 美元",
+  "domain": "components",
+  "content": "Freeform Prism 典型参数为 FOV 15°–35°、虚像距离约 1–3m，亮度效率通常较高，模组体积通常比传统 Birdbath 更紧凑，适合单眼小视场 HUD。报告明确评价：如果团队能找到强光学 ODM，自由曲面棱镜其实比 Birdbath 更适合做“头盔专用 HUD”。其成本方面，光学件+显示器模组约 100–220 美元；若做高可靠定制，可到 150–300 美元。成熟度为中高，量产适配度为高，头盔适配度为很高，适合追求更好结构集成与产品化平衡的项目。",
+  "source": "deep_research:optical_suppliers",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Freeform Prism",
+    "自由曲面棱镜",
+    "头盔HUD",
+    "ODM",
+    "成本",
+    "结构集成",
+    "deep_research",
+    "optical_suppliers"
+  ],
+  "confidence": "high"
+}

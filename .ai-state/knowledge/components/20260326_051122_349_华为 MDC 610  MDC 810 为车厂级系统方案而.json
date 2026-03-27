@@ -1,0 +1,19 @@
+{
+  "title": "华为 MDC 610 / MDC 810 为车厂级系统方案而非头盔器件",
+  "domain": "components",
+  "content": "报告纠正“HW 610”应为华为 MDC 610。华为 MDC 610 典型算力约 200 TOPS，MDC 810 约 400 TOPS；公开精确功耗较少，但行业估计整板通常 100W+，模组/域控价格通常为数万元人民币。其商业模式往往不是单卖芯片，而是 MDC + ADS 软件栈 + 生态合作。对智能骑行头盔而言，这意味着它更像车厂级整体方案，难以裁剪到消费电子所需的重量、成本、散热与认证边界内。",
+  "source": "deep_research:enrich_83",
+  "created_at": "2026-03-26",
+  "tags": [
+    "华为",
+    "MDC 610",
+    "MDC 810",
+    "200 TOPS",
+    "400 TOPS",
+    "100W+",
+    "数万元人民币",
+    "deep_research",
+    "enrich_83"
+  ],
+  "confidence": "high"
+}

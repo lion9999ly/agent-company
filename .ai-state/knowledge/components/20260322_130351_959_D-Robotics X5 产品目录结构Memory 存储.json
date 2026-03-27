@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 产品目录结构：Memory 存储子系统",
+  "domain": "components",
+  "content": "目录中 1.3.5 为 Memory，说明 X5 数据手册对存储子系统进行专门描述。对于集成 CPU、BPU、ISP、视频编解码的 SoC，内存类型、带宽、容量支持和控制器能力直接影响 AI 推理、图像处理与多路视频性能。当前截取内容未给出 DDR 类型、位宽、频率、ECC、缓存架构等参数，但可确认 Memory 是 X5 平台关键基础模块，且与后续新增“各电源域最小/最大电压”一类硬件规格共同构成板级设计依据。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Memory",
+    "存储",
+    "X5",
+    "SoC",
+    "目录"
+  ],
+  "confidence": "medium"
+}

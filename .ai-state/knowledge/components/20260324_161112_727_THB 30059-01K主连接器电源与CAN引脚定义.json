@@ -1,0 +1,15 @@
+{
+  "title": "THB 30059-01K主连接器电源与CAN引脚定义",
+  "domain": "components",
+  "content": "30059-01K主连接器40Pin中，电源与CAN相关定义为：Pin1 HEATER；Pin2 GND；Pin3/4 CAN1-L/H；Pin5/6 CAN2-L/H；Pin7/8 CAN3-L/H；Pin9/10 CAN4-L/H；Pin11/12 CAN5-L/H；Pin15 GND；Pin16 KL15；Pin17 GND；Pin18 GND；Pin19 BATT；Pin20 BATT；Pin22 GND；Pin24 GND；Pin26 GND。Pin13、14、39、40为NC。该定义显示系统支持5路CAN、双BATT输入及KL15点火信号。",
+  "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "引脚定义",
+    "电源",
+    "CAN",
+    "KL15",
+    "BATT"
+  ],
+  "confidence": "high"
+}

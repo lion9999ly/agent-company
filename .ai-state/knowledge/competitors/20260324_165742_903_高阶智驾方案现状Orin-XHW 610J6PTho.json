@@ -1,0 +1,16 @@
+{
+  "title": "高阶智驾方案现状：Orin-X、HW 610、J6P、Thor-U 等高算力平台",
+  "domain": "competitors",
+  "content": "高算力方案包括Orin-X、HW 610、J6P、J6P*2、HW 610*2、Thor-U、Orin-Y等，主要面向城区NOA和更高功能覆盖。文档认为不同高算力平台在功性能上的差异并不显著，未来竞争重点将从单纯堆算力转向算法架构、数据闭环和成本效率。",
+  "source": "doc_import:智驾大陆 Astra 产品介绍 20260206 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "高算力",
+    "Orin-X",
+    "HW 610",
+    "J6P",
+    "Thor-U",
+    "城区NOA"
+  ],
+  "confidence": "medium"
+}

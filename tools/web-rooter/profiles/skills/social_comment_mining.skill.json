@@ -1,0 +1,92 @@
+{
+  "name": "social_comment_mining",
+  "description": "Mine social discussions/comments with source evidence output.",
+  "route": "social",
+  "workflow_template": "social_comments",
+  "aliases": [
+    "social",
+    "comments",
+    "social_comments"
+  ],
+  "intent_keywords": [
+    "评论",
+    "评论区",
+    "用户反馈",
+    "讨论",
+    "小红书",
+    "知乎",
+    "微博",
+    "抖音",
+    "贴吧",
+    "b站",
+    "bilibili",
+    "weibo",
+    "zhihu",
+    "xiaohongshu"
+  ],
+  "activation_keywords": [
+    "评论",
+    "评论区",
+    "用户反馈",
+    "小红书",
+    "知乎",
+    "微博",
+    "抖音",
+    "贴吧",
+    "b站",
+    "bilibili",
+    "weibo",
+    "zhihu",
+    "xiaohongshu",
+    "douyin",
+    "tieba",
+    "reddit",
+    "twitter"
+  ],
+  "min_activation_hits": 1,
+  "min_score": 1.0,
+  "priority": 90,
+  "default_variables": {
+    "platforms": [
+      "xiaohongshu",
+      "zhihu",
+      "weibo",
+      "bilibili",
+      "tieba",
+      "douyin"
+    ],
+    "top_hits": 6
+  },
+  "default_options": {
+    "html_first": true,
+    "crawl_assist": true,
+    "use_browser": true,
+    "top_results": 6
+  },
+  "examples": [
+    "爬取 iPhone 17 在小红书和知乎评论区的观点分歧",
+    "分析 某品牌 舆情反馈并保留原文出处"
+  ],
+  "phases": [
+    {
+      "id": "intent",
+      "title": "Intent Resolve",
+      "goal": "识别平台、评论目标与证据颗粒度"
+    },
+    {
+      "id": "auth",
+      "title": "Auth/Challenge Check",
+      "goal": "先检查登录态与挑战页策略是否就绪"
+    },
+    {
+      "id": "dry_run",
+      "title": "Compile & Lint",
+      "goal": "dry-run 确认 steps/vars/platforms"
+    },
+    {
+      "id": "execute",
+      "title": "Execute",
+      "goal": "执行抓取并产出 citation 对照"
+    }
+  ]
+}

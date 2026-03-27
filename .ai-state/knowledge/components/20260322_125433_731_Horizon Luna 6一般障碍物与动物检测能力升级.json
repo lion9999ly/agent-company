@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Luna 6一般障碍物与动物检测能力升级",
+  "domain": "components",
+  "content": "Luna 6一般障碍物检测距离提升至100 m，并支持“白名单通用障碍物+OCC”；Luna 3为75 m。动物检测方面，Luna 6支持大型动物100 m（牛、羊、袋鼠、麋鹿等）和小型动物50 m（猫、狗等），而Luna 3不支持。该升级显著扩展了非标准目标识别范围。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "障碍物检测",
+    "动物检测",
+    "OCC",
+    "白名单障碍物"
+  ],
+  "confidence": "high"
+}

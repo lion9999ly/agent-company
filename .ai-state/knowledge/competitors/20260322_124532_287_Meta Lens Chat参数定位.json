@@ -1,0 +1,14 @@
+{
+  "title": "Meta Lens Chat参数定位",
+  "domain": "competitors",
+  "content": "Meta Lens Chat被报告列为AI音频眼镜样本之一，起步价699元，未配镜重量34g。虽然文中未展开其扬声器和麦克风具体技术细节，但其被纳入AI音频眼镜价格与重量对比，说明其定位为轻量、入门级音频智能眼镜。该类产品通常依赖云端大模型进行语音识别和数据处理，主要提供音乐播放、接听电话、智能语音助手、语音搜索、翻译、通话控制等功能。",
+  "source": "doc_import:2025年中国AI眼镜行业研究报告 - i-research.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Meta Lens Chat",
+    "AI音频眼镜",
+    "699元",
+    "34g"
+  ],
+  "confidence": "medium"
+}

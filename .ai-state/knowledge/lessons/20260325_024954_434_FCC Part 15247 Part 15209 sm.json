@@ -1,0 +1,16 @@
+{
+  "title": "FCC Part 15.247 Part 15.209 smart helmet Bluetooth",
+  "domain": "lessons",
+  "content": "**智能骑行头盔研发相关FCC要点摘要**\n\n1. **适用法规框架**\n- 智能头盔通常同时落入 **FCC Part 15 Subpart B + Subpart C**：  \n  - **Subpart B**：摄像头、主控、显示/存储、高速接口等数字电路属“无意辐射器”。  \n  - **Subpart C / 15.247**：蓝牙、Wi‑Fi 模块属“有意辐射器”。  \n- 研发上意味着：**整机EMC** 与 **无线模组射频认证** 必须并行考虑。\n\n2. **蓝牙/Wi‑Fi关键参数（15.247）**\n- **蓝牙 FHSS，2.4GHz**：  \n  - ≥75跳频信道时，峰值输出功率上限 **1W / 30dBm**；15–74信道时 **125mW / 21dBm**。  \n  - 任一信道平均占用时间：任意20秒内不超过 **0.4秒**。  \n  - 典型模块功率：**Class 1 100mW(20dBm)**，**Class 2 2.5mW(4dBm)**。  \n- **Wi‑Fi DTS，2.4/5GHz**：  \n  - 峰值输出功率上限 **1W / 30dBm**。  \n  - **6dB带宽 ≥500kHz**。  \n  - 天线增益 **>6dBi** 时需降功率，避免EIRP超限。  \n- 对头盔启示：优先选 **已认证低功耗BT/Wi‑Fi模组**，兼顾续航、SAR、天线空间受限问题。\n\n3. **杂散/带外发射限制（15.209）**\n- 适用于无线模组杂散发射，以及摄像头/处理器等数字电路EMI。  \n- 3米场强限值示例：  \n  - 30–88MHz：**100µV/m**  \n  - 88–216MHz：**150µV/m**  \n  - 216–960MHz：**200µV/m**  \n  - >960MHz：*",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-25",
+  "tags": [
+    "FCC Part 15.247",
+    "FCC Part 15.209",
+    "Bluetooth",
+    "Wi-Fi",
+    "certification",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

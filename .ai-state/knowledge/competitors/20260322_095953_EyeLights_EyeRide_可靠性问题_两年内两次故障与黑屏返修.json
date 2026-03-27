@@ -1,0 +1,16 @@
+{
+  "title": "EyeLights EyeRide 可靠性问题：两年内两次故障与黑屏返修",
+  "domain": "competitors",
+  "content": "用户反馈 EyeRide 在 2 年内出现 2 次缺陷：首次在使用 1 年后停止工作，表现为屏幕全黑、无任何反应；返修后恢复正常，但约半年后再次出现同类问题。由于首次维修，用户获得新的 1 年保修。该案例说明产品在长期可靠性上存在风险，尤其是显示/供电相关故障值得关注。",
+  "source": "doc_import:eyelights_competitor_analysis.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EyeLights",
+    "EyeRide",
+    "reliability",
+    "black screen",
+    "repair",
+    "warranty"
+  ],
+  "confidence": "high"
+}

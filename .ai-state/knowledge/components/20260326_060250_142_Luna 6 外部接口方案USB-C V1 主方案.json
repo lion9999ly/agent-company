@@ -1,0 +1,19 @@
+{
+  "title": "Luna 6 外部接口方案：USB-C V1 主方案",
+  "domain": "components",
+  "content": "报告明确建议 Luna 6 V1 外部充电/调试接口采用 USB-C，但边界条件必须严格限制为“仅支持 5V 充电 + USB2.0 调试”，不做高速数据、不做首版全功能 PD、也不做复杂 Alt Mode。推荐使用 16Pin USB Type-C Receptacle，仅接入 VBUS、GND、CC1/CC2、D+/D-，不接高速 TX/RX 对；插拔寿命建议 10,000 次以上，整机防护目标为 IPX4~IPX6 级验证。该结论基于用户成功率、售后总成本、海外市场接受度和量产调试便利性的综合最优，而非单纯防水性能最优。",
+  "source": "deep_research:enrich_260",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Luna 6",
+    "USB-C",
+    "5V充电",
+    "USB2.0",
+    "16Pin",
+    "IPX4",
+    "IPX6",
+    "deep_research",
+    "enrich_260"
+  ],
+  "confidence": "high"
+}

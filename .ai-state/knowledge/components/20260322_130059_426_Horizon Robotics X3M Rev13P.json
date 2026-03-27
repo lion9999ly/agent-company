@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Robotics X3M Rev.1.3：Power Group Tree 与上电/下电/睡眠时序更新",
+  "domain": "components",
+  "content": "Rev.1.3（2021-07-14）重点更新 4.3.3 Power Groups 与 4.3.4 Power Sequence：修订 Figure 4-2 Power Group Tree 及 power group 5 相关描述，更新 Table 4-3 Power Groups；同时更新 Figure 4-3 Power-Up Sequence、Figure 4-4 Power-Down Sequence、Figure 4-5 Enter Sleep Mode Sequence、Figure 4-6 Exit Sleep Mode Sequence 及相关说明。该版本对 PMIC 配置、时序控制、低功耗切换和系统稳定启动至关重要。",
+  "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Rev1.3",
+    "Power groups",
+    "Power-up sequence",
+    "Power-down sequence",
+    "Sleep mode",
+    "Power tree"
+  ],
+  "confidence": "high"
+}

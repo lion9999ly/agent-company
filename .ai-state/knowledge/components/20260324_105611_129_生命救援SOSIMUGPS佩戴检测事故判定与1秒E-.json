@@ -1,0 +1,15 @@
+{
+  "title": "生命救援SOS：IMU+GPS+佩戴检测事故判定与≤1秒E-Call链路",
+  "domain": "components",
+  "content": "生命救援功能优先级P0，采用多维事故判定：IMU撞击+GPS骤停+佩戴检测，以降低误报。触发后执行E-Call：倒计时后自动发送定位、拨打120并由AI播报事故信息。优先通过蓝牙调用手机拨号；若蓝牙断连，则通过头盔内置蜂窝模组独立拨号。跨模块联动要求为“摔车检测→锁定录像→HUD倒计时→语音播报→发送E-Call”全链路≤1秒，面向单人跑山失去意识等高风险场景。",
+  "source": "doc_import:智能骑行头盔PRD_V1.0_To_JDM.xlsx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "SOS",
+    "E-Call",
+    "IMU",
+    "GPS",
+    "蜂窝模组"
+  ],
+  "confidence": "high"
+}

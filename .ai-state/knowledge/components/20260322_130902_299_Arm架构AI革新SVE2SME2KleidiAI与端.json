@@ -1,0 +1,17 @@
+{
+  "title": "Arm架构AI革新：SVE2/SME2、KleidiAI与端边云协同",
+  "domain": "components",
+  "content": "Arm在白皮书中被定位为高能效生态代表，适用于端边云协同。其AI创新包括SVE2/SME2矢量扩展、为AI优化的CPU核，以及与GPU/NPU紧密集成。软件侧依托KleidiAI软件库、CMSIS-NN兼容性和Arm NN SDK。系统层面强调能效比优势、大小核配置和Chiplet技术。典型应用覆盖移动端AI、边缘服务器和云原生部署。其生态策略是持续扩张并强化云端协同。",
+  "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Arm",
+    "SVE2",
+    "SME2",
+    "KleidiAI",
+    "CMSIS-NN",
+    "Arm NN SDK",
+    "Chiplet"
+  ],
+  "confidence": "medium"
+}

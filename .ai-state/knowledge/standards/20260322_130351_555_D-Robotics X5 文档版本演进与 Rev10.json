@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5 文档版本演进与 Rev.1.0 更新点",
+  "domain": "standards",
+  "content": "X5 数据手册版本历史：0.8（2024-01-20，Initial draft）；0.81（2024-02-21，Minor update）；0.82（2024-02-27，Minor update）；0.83（2024-03-25，Minor update）；0.84（2024-04-25，更新 strap pin 描述）；0.85（2024-06-16，修改芯片 PIN 名称以与软件一致）；0.86（2024-08-21，更新 X5H CPU frequency 描述、修正 2D engine performance 描述错误、更新 X5H part number 与说明）；1.0（2024-08-25，面向 RDK release 更新，新增各电源域最小/最大电压，新增 USB3.0 与 USB2.0 电气规范）。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Revision History",
+    "Rev 1.0",
+    "X5",
+    "X5H",
+    "文档变更"
+  ],
+  "confidence": "high"
+}

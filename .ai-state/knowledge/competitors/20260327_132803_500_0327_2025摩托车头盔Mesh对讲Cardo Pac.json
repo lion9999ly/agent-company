@@ -1,0 +1,19 @@
+{
+  "title": "0327_2025摩托车头盔Mesh对讲：Cardo Packtalk Edge与Sena“60S/Mesh 3.0”对比",
+  "domain": "competitors",
+  "content": "面向智能摩托车全盔，2025年高端Mesh对讲的可比对象主要是Cardo Packtalk Edge与Sena旗舰线，但需先标注来源冲突：来源1称Sena 60S已搭载Mesh 3.0；来源2称官方并无“Mesh 3.0”独立标准，60S采用Mesh Intercom 2.0；来源3进一步指出截至2024年公开旗舰仍是Sena 50S/50R，尚无“60S”正式发布。因此，对“Sena 60S Mesh 3.0”应视为市场传闻或未完全证实型号，不能与已量产的Packtalk Edge等量齐观。已确认产品方面，Cardo Packtalk Edge采用第二代DMC（Dynamic Mesh Communication），支持最多15名骑手组网；Sena现行Mesh体系分Open Mesh与Group Mesh，Group Mesh通常支持24人私密组，Open Mesh可在开放频道容纳更多用户。两者都强调自愈网络，但Cardo偏私密稳定群组，Sena偏开放/私密双模式灵活性。价格层面，Packtalk Edge单机市场价通常约US$399.95，双机套装约US$699.95；Sena 50S单机常见价约US$339-359，双机约US$599左右，若未来60S上市，预计会高于50S。对智能全盔产品定义更关键的是安装与法规：ECE 22.06是摩托车头盔认证，不是对讲认证；任何外置模块都不应通过钻孔破坏壳体。Packtalk Edge与Sena旗舰均采用夹具/胶贴安装，适配ECE 22.06头盔的原则是“可拆、低侵入、不过度增加风噪”。这与自行车头盔完全不同：自行车头盔通常无全包覆下巴结构、风噪环境和碰撞工况也不同，因此其蓝牙配件方案不能直接迁移到摩托车全盔。对我们做智能摩托车全盔的启示是：1）优先兼容Cardo/Sena主流底座或预留40mm级扬声器腔位；2）外壳侧面需给夹具",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "motorcycle helmet",
+    "Mesh intercom",
+    "Cardo Packtalk Edge",
+    "Sena 50S",
+    "Sena 60S",
+    "DMC",
+    "ECE 22.06",
+    "smart full-face helmet",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

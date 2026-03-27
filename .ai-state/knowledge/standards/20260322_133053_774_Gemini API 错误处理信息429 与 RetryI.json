@@ -1,0 +1,15 @@
+{
+  "title": "Gemini API 错误处理信息：429 与 RetryInfo 重试延迟",
+  "domain": "standards",
+  "content": "错误对象包含 code=429、status=RESOURCE_EXHAUSTED，并提供 RetryInfo.retryDelay=66558s，约等于 18 小时 29 分 18 秒。该信息可直接用于客户端退避重试、任务排队和告警策略设计。错误详情还附带 Help 链接与 QuotaFailure 结构化字段，适合做自动化异常分类与监控。",
+  "source": "doc_import:用户旅程图 - 20260318.jpg",
+  "created_at": "2026-03-22",
+  "tags": [
+    "HTTP 429",
+    "RetryInfo",
+    "重试机制",
+    "错误码",
+    "API治理"
+  ],
+  "confidence": "medium"
+}

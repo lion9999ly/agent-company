@@ -1,0 +1,18 @@
+{
+  "title": "Eyelights/Forcite/Jarvish 证明 HUD 应让位于低干扰可视提示",
+  "domain": "components",
+  "content": "可视性问题在真实户外环境中非常突出。Eyelights 被明确反馈“日光下几乎看不清”；Forcite MK1S 采用低视野 LED 提示而非全 HUD，方向被认为更合理，但仍存在强光下可见性与信息干扰平衡问题；Jarvish X-AR 这类透明 AR HUD 路线则更容易遇到亮度、对比度、视疲劳和分心风险。研究结论是，用户并不需要更炫的显示，而是需要白天看得见、夜间不刺眼、信息少而关键的提示系统，因此显示策略应优先极简、可靠、低干扰，而不是盲目上全 HUD。",
+  "source": "deep_research:user_pain_points",
+  "created_at": "2026-03-22",
+  "tags": [
+    "HUD",
+    "可视性",
+    "Eyelights",
+    "Forcite MK1S",
+    "Jarvish X-AR",
+    "显示策略",
+    "deep_research",
+    "user_pain_points"
+  ],
+  "confidence": "high"
+}

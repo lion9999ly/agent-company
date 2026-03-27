@@ -1,0 +1,14 @@
+{
+  "id": "decision_20260317143703927592",
+  "layer": "session",
+  "info_type": "decision",
+  "content": "使用GPT-5.4作为主力模型",
+  "importance": 9,
+  "created_at": "2026-03-17T14:37:03.927592",
+  "expires_at": null,
+  "source_session": "20260317_143703",
+  "tags": [],
+  "metadata": {
+    "reason": "Azure API已连通"
+  }
+}

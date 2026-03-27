@@ -1,0 +1,21 @@
+{
+  "title": "0326_Intelligent Cranium iC-R：AR HUD/ADAS智能摩托车全盔项目现状与2025供应链判断",
+  "domain": "competitors",
+  "content": "Intelligent Cranium iC-R 是面向摩托车的智能全盔概念项目，而非自行车头盔；若检索中出现 bicycle helmet 结果，应明确排除。基于现有3个来源，iC-R 在 2015-2017 年最活跃，开发主体为 Intelligent Cranium / Intelligent Cranium Technologies，创始人为 Dr. Marcus Weller。公开描述的目标功能包括 AR HUD、后视摄像头、后方预警/盲区监测、蓝牙通信、GPS 导航、语音控制、碰撞检测与紧急呼叫，定位明显高于普通蓝牙头盔。来源一致指出：该产品停留在原型/众筹阶段，未形成 2025 年可采购量产型号，因此“2025 supplier”并不存在可验证的整机供应商名单。\n\n认证方面，ECE 22.06 为摩托车头盔最新主流法规，2021 年生效、2023 年起在欧洲新售头盔中强制替代 ECE 22.05。3个来源均认为 iC-R 几乎可以确定未获得 ECE 22.06，因为项目沉寂时间早于该标准全面落地，且集成 HUD、电池、摄像头、扬声器后，要通过斜向冲击、附件安全、结构完整性测试难度很高。对我们做智能摩托车全盔的启示是：电子模组必须从一开始按 ECE 22.06 的附件与冲击约束设计，而不是后装拼接。\n\n价格与商业化信息存在缺口：来源未给出已上市零售价，也未提供 HUD 模组、摄像头、SoC、电池等一级供应商名称；这本身就是重要结论——iC-R 没有形成可核验 BOM 与渠道。唯一较明确的商业信号是其曾在 Indiegogo 发起众筹，但来源仅一致提到“未达目标/未成功量产”，未给出统一筹资金额。另一个矛盾点是项目起始时间：有来源写 2015 年首次展示，也有来源追溯到 2013 年亮相、2016 年众筹；可判断其宣传周期很长，但量产落地失败。\n\n结论：截至 20",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Intelligent Cranium",
+    "iC-R",
+    "motorcycle helmet",
+    "smart helmet",
+    "AR HUD",
+    "ADAS",
+    "rear warning",
+    "ECE 22.06",
+    "crowdfunding",
+    "competitor",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

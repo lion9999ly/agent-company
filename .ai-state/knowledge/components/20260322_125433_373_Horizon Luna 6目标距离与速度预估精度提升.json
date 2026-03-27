@@ -1,0 +1,15 @@
+{
+  "title": "Horizon Luna 6目标距离与速度预估精度提升",
+  "domain": "components",
+  "content": "文档通过“转向及横向移动目标”“目标进入视野”等场景说明，Luna 6对目标物距离和速度预估准确度提升。虽然未给出具体数值，但明确强调在动态目标横移、转向以及新出现目标的场景下，Luna 6相较Luna 3具有更好的距离与速度估计表现，有利于AEB、ACC、ICA等功能稳定性。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "距离估计",
+    "速度估计",
+    "目标跟踪",
+    "动态目标"
+  ],
+  "confidence": "medium"
+}

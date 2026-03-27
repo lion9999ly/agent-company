@@ -1,0 +1,17 @@
+{
+  "title": "Safe-Tec TYR 3 2025 smart ski helmet teardown Blue",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- **蓝牙对讲模块**：推测采用 **Bluetooth 5.2/5.3 SoC**，候选芯片含 **Qualcomm QCC305x/QCC517x、Nordic nRF53**；支持 **LE Audio/LC3**。  \n  - 对讲范围：点对点 **1.5–2 km**，Mesh中继 **5–8 km**  \n  - 群组规模：**10–20人**  \n  - 续航：纯对讲 **10–15h**\n- **音频系统**：强调 **骨传导** 或超薄耳罩扬声器方案，兼顾环境音感知；麦克风采用 **2–3颗 MEMS 阵列**，配合 **ENC/CVC、波束成形、AGC**。  \n  - 降噪能力：约 **20–30 dB**  \n  - 防护建议：**IPX5–IPX7**\n- **尾灯/灯控**：高亮 **SMD LED** + **恒流驱动/PWM调光**，支持 **常亮/快闪/慢闪/呼吸/智能刹车灯**；结合 **环境光传感器** 自动调光。  \n  - 亮度：**50–200 lm**  \n  - 可视距离：**200–500 m**\n- **传感器融合**：尾灯与 **加速度计** 共用，用于 **急减速识别**；碰撞SOS功能可推断依赖 **IMU + 蓝牙/手机链路**。\n\n**研发可借鉴点**\n- **模块复用**：IMU同时服务于刹车灯、碰撞检测、运动状态识别，降低BOM与功耗。\n- **安全优先音频设计**：骨传导/开放式音频比封闭耳机更适合骑行头盔。\n- **天线与结构协同**：头盔壳体、人体遮挡对RF影响大，需前置 **FPC/陶瓷天线布局仿真**。\n- **功耗平衡**：对讲、灯控、SOS均耗电，需强化 **PMIC、电池管理、场景化功耗策略**。\n\n**行业趋势**\n- 智能头盔市场增长快：文中引述 **2022年约",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Safe-Tec",
+    "ski helmet",
+    "Bluetooth intercom",
+    "rear light",
+    "SOS",
+    "teardown",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

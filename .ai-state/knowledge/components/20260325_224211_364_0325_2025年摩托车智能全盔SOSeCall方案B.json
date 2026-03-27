@@ -1,0 +1,19 @@
+{
+  "title": "0325_2025年摩托车智能全盔SOS/eCall方案：BG95+GNSS+IMU的可行架构与风险点",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2025年较可落地的SOS/eCall架构是“IMU碰撞检测 + GNSS定位 + 蜂窝回传”。三份来源一致指出，核心通信器件可选Quectel BG95：该模块支持LTE Cat M1、NB-IoT，并带2G EGPRS回退，且集成GNSS，适合头盔这类电池和空间都受限的设备。对全盔产品而言，BG95的价值在于减少BOM与布线复杂度，可同时承担定位与上报；供应商为移远通信（Quectel）。来源未给出统一单价，但按行业常见采购逻辑，BG95属于中低速蜂窝模组，不应按高带宽4G模组定价评估。若做量产，需向Quectel或其代理商询价，而不是参考消费电子零售价。",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "motorcycle-helmet",
+    "smart-helmet",
+    "eCall",
+    "SOS",
+    "Quectel-BG95",
+    "GNSS",
+    "IMU",
+    "crash-detection",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "Lumos Matrix smart bike helmet 2025 FCC ID teardow",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- **Lumos Matrix（2025）暂无公开FCC ID**；现有内容基于Lumos Matrix/Ultra及同类智能头盔的FCC资料做推断，**可用于研发预研，不可视为已发布规格**。\n- **核心架构**：BLE主板 + LED矩阵灯控 + IMU传感器 + 电池/充电管理。\n- **BLE SoC候选**：  \n  - Nordic **nRF52832/nRF52840**（BLE 5.x，ARM Cortex-M4F，低功耗；文中给出参考功耗：TX约**5.5mA**、RX约**5.4mA**、深睡约**0.3μA**）  \n  - STM **STM32WB**（MCU+BLE一体）  \n  适合头盔做**灯控、遥控器连接、App联动、OTA**。\n- **传感器融合**：IMU（加速度计/陀螺仪）用于**自动刹车灯、姿态/手势识别**；候选如 **Bosch BMI270、ST LSM6DSOX**。\n- **电池管理**：Li-Po + PMIC/充电IC（如TI BQ系列思路），接口倾向 **USB-C**；重点是**安全充电、电量监测、稳压供电**。\n- **LED矩阵设计**：后部可编程矩阵用于**转向灯/刹车灯/自定义图案**；可能采用**可寻址RGB SMD LED**（类似WS2812B思路）或专用驱动方案。研发重点：**高亮户外可视性、热管理、低功耗动画策略**。\n\n**技术趋势/行业变化**\n- 智能头盔正从“被动防护”转向**主动可见性+联网交互**：灯光信号、自动刹车、手机/遥控器联动成为标配方向。\n- **高集成低功耗SoC**、**多传感器融合**、**可编程灯效**是主流升级路径。\n- FCC公开资料（内部照片/方框图/测试报告）已成为**竞品逆向与器件选型**的重要情报源。\n\n**可借鉴设计理念*",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "竞品",
+    "Lumos",
+    "FCC ID",
+    "拆解",
+    "尾灯转向",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

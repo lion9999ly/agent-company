@@ -1,0 +1,19 @@
+{
+  "title": "智能骑行头盔量产主流方案（OmniVision/Knowles/TDK/歌尔）",
+  "domain": "components",
+  "content": "报告给出的最明确量产建议是：智能骑行头盔首发优先采用“超薄动圈扬声器 + 2~3颗高AOP数字MEMS麦克风 + OmniVision摄像头模组”的组合。对应主流款建议零售价为999–1999元，推荐器件为超薄动圈或歌尔骨传导单元、2~3颗Knowles/TDK数字MEMS、OmniVision 2MP/4MP + 舜宇/丘钛模组。该路线被认为在成本、可靠性、续航、量产风险之间最平衡，优于一开始就上纯骨传导、Sony高端影像或旗舰音频SoC的堆料方案。",
+  "source": "deep_research:audio_camera_suppliers",
+  "created_at": "2026-03-22",
+  "tags": [
+    "智能骑行头盔",
+    "量产方案",
+    "OmniVision",
+    "Knowles",
+    "TDK",
+    "歌尔",
+    "BOM",
+    "deep_research",
+    "audio_camera_suppliers"
+  ],
+  "confidence": "high"
+}

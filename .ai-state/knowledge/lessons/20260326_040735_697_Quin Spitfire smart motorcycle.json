@@ -1,0 +1,17 @@
+{
+  "title": "Quin Spitfire smart motorcycle helmet 2025 teardow",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- “Quin Spitfire 2025”并非已上市产品，原文为**预测性方案**，无真实拆解、无官方价格。\n- 预测配置：ARM低功耗SoC（提及 Snapdragon Wear/MediaTek 穿戴芯片方向），**8GB LPDDR5 + 64GB UFS 3.1**；**4000–6000mAh**锂聚合物电池，**8–12小时**续航，支持 **USB-C PD**，可能支持 **Qi无线充电**。\n- 传感器：**9轴IMU**（加速度计/陀螺仪/磁力计）+ **多星座GNSS**（GPS/GLONASS/Galileo/北斗）+ 气压/温度/环境光/生物传感器；**4麦克风阵列+ANC**。\n- 通讯：**Bluetooth 5.3/5.4**，支持 **LE Audio**、Mesh/DMC 车队通信；**Wi‑Fi 6E**；可选 **LTE/5G eSIM**；探索 **UWB** 近距配对/车机联动。\n- 显示/交互：**AR HUD**（预测至少720p）、AI语音控制、触觉反馈。\n\n**研发趋势**\n- 核心方向从“蓝牙对讲”升级为**安全+连接+显示一体化**：碰撞检测、SOS、导航/HUD、车机互联、摄像头证据链。\n- **多传感器融合+AI算法**成为碰撞检测关键，用于降低头盔跌落、急刹等误报。\n- **LE Audio、Mesh组网、eSIM独立联网、后视摄像头+HUD盲区提示**是高端化趋势。\n- 材料上强调**碳纤维/芳纶/玻纤复合壳体 + 多密度EPS**，兼顾轻量化与分区吸能。\n\n**可借鉴设计/商业模式**\n- **模块化**：后摄、通信、HUD、摄像头配件化，降低整机BOM并支持升级。\n- **事故服务闭环**：碰撞检测→倒计时取消→自动通知联系人/救援→上传位置与传感器数据。\n- **车机生态联动**",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Quin",
+    "motorcycle helmet",
+    "crash detection",
+    "SOS",
+    "Bluetooth",
+    "integration",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

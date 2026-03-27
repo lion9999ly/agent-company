@@ -1,0 +1,18 @@
+{
+  "title": "Himax 0.2~0.26英寸LCoS量产区间",
+  "domain": "components",
+  "content": "Himax 0.2~0.26\" LCoS 被定义为 V1 首选主线。CTO给出的行业可量产区间为：分辨率 1280×720 / 1920×1080，系统入眼亮度阴天/城市 1200~2500 nits、晴天可用目标 2500~4000 nits，单目 FOV 12°~20° 对角，光机模组重量 18~35g，面板本体功耗 0.05~0.2W，含 LED 光源/驱动/光学的显示模组功耗 1.2~2.8W，BOM 价格 80~180 美元/套光机。报告结论强调：只有实测入眼亮度稳定达到 2500 nits 以上、目标 3000 nits，LCoS 才适合作为 V1 量产方案。",
+  "source": "deep_research:auto_20260326_2",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Himax",
+    "LCoS",
+    "720p",
+    "1080p",
+    "功耗",
+    "BOM",
+    "deep_research",
+    "auto_20260326_2"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "深化:Luna 6 PCBA连接器生态：TE与MOLEX双供应商方",
+  "domain": "components",
+  "content": "**与智能骑行头盔研发相关摘要**\n\n1. **可直接借鉴的连接器方案**\n- **无线/传感器/HUD子板互连**：  \n  - TE **Fine Pitch B2B**：0.4/0.5mm pitch，10+Gbps，适合HUD、摄像头、AI/蓝牙/GPS模组小型化堆叠。  \n  - Molex **SlimStack**：0.4/0.5/0.635mm，堆叠高度0.6–30mm，适合头盔内部超薄结构。  \n- **电池/灯控/音频线束连接**：  \n  - TE **Micro-MaTch** 1.27mm、**CST-100** 2.5mm；  \n  - Molex **PicoBlade** 1.25mm、**CLIK-Mate** 1.25/2.0mm、**Micro-Fit 3.0**。  \n  适合LED灯控、电池管理、扬声器/麦克风、传感器线束。\n\n2. **关键参数与技术趋势**\n- **小型化趋势**：连接器间距向 **0.3/0.35/0.4mm** 演进，适合头盔轻量化、紧凑PCBA。\n- **高速化趋势**：B2B速率达 **10+Gbps**，高端系列可到 **28+Gbps/56+Gbps**；对HUD显示、AR视频链路、摄像头数据传输有参考价值。\n- **电源能力**：信号pin约 **0.3–1.0A**，电源pin约 **3–6A**，可覆盖头盔LED、音频功放、无线通信模组供电。\n- **RF/天线连接需求被明确提及**：适用于 **Bluetooth / Wi‑Fi / Cellular / GPS**，说明多无线模组头盔应重视阻抗匹配、低损耗、小型天线连接。\n\n3. **研发设计理念**\n- **双供应商策略（TE + Molex）**：适合智能头盔量产，降低单一连接器断供风险，增强议价能力，并便于不同版本（基础款/带HUD款）",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Luna 6",
+    "PCBA",
+    "TE",
+    "MOLEX",
+    "连接器供应链",
+    "night_deep"
+  ],
+  "confidence": "medium"
+}

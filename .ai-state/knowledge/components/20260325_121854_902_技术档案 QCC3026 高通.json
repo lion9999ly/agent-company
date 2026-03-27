@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] QCC3026 (高通)",
+  "domain": "components",
+  "content": "以下基于你给出的搜索结果整理，**只引用结果中明确出现的信息**，并对缺失项做“未见官方/搜索结果明确说明”的标注；同时结合芯片代际能力，给出对**智能摩托车全盔**场景的工程判断。\n\n---\n\n# Qualcomm QCC3026 完整技术档案\n\n## 1. 芯片定位与概述\n\n**QCC3026** 是 Qualcomm 面向 **TWS 真无线耳机、蓝牙耳机、可穿戴音频设备** 的低功耗蓝牙音频 SoC，发布时间约在 **2018–2019 年**。  \n其核心卖点是：\n\n- **Bluetooth 5.0**\n- **低功耗**\n- **TrueWireless Stereo / TWS Plus**\n- **aptX / AAC / SBC**\n- **集成 Kalimba DSP**\n- **cVc 通话降噪**\n\n但需要先给出一个关键结论：\n\n> **QCC3026 不是以“高性能集成 ANC”见长的芯片。**  \n> 搜索结果明确指出：**它本身不具备专用的高性能硬件级 ANC 模块**。如果某个产品宣称基于 QCC3026 实现 ANC，通常更可能是：\n> 1) 外挂独立 ANC 芯片；或  \n> 2) 用其 DSP 做有限的软件级降噪/环境音处理。\n\n---\n\n# 2. 基本参数\n\n## 2.1 蓝牙版本\n- **Bluetooth 5.0**\n\n搜索结果中多次明确提到 QCC3026 支持 **蓝牙 5.0**。\n\n## 2.2 支持编解码\n搜索结果明确提到支持：\n\n- **SBC**\n- **AAC**\n- **aptX**\n- **aptX HD（部分版本/部分实现）**\n\n### 关于 LC3\n- **未见支持 LC3 的证据**\n- 结合代际判断：QCC3026 属于 **BT 5.0 时代的经典音频 SoC**，并非 BLE Audio 时代产品，因此**通常不支持 LC3 / LE Audio 原生能力**\n\n结论可写为：\n\n| 编解码 | 支持情况 |\n|---|---|\n| SBC | 支持 |\n| AAC | 支持 |\n| aptX | 支持 |\n| aptX HD | 搜索结果称“部分版本/部分实现” |\n| LC3 | **不支持/至少搜索结果未见支持** |\n\n## 2.3 DSP 算力\n搜索结果只明确提到：\n\n- **集成 Kalimba DSP**\n- 用于音频处理、EQ、语音处理、基础降噪算法\n\n但**没有给出明确 MIPS / MHz / DSP TOPS 数值**。因此应严谨写为：\n\n- **DSP：集成 Qualcomm Kalimba DSP**\n- **算力数值：搜索结果未提供明确官方数值**\n\n---\n\n# 3. 降噪能力\n\n## 3.1 ANC 能力\n\n这是 QCC3026 档案里最重要的部分。\n\n### 结论\n> **QCC3026 本身不具备专用高性能硬件级 ANC。**\n\n搜索结果明确指出：\n\n- 缺乏专用 ANC 硬件\n- 没有 QCC5xxx 那类 dedicated ANC DSP / AFE\n- 若产品带 ANC，通常依赖 **外部 ANC 芯片**\n- 仅靠内部 DSP 可做的降噪能力有限，无法与专用 ANC 平台相比\n\n### ANC 档位\n由于芯片本身**不提供完整集成 ANC 平台**，因此：\n\n- **ANC 档位：芯片级无固定档位定义**\n- 若终端产品有“弱/中/强 ANC”或“通勤/室内/户外”等档位，**那是整机厂商+外挂 ANC 方案定义的，不是 Q",
+  "source": "kg_expand:audio_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "audio_soc",
+    "高通"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "0326_Cardo Packtalk Edge（摩托车头盔通讯器）DMC Gen2能力与供应链公开信息梳理",
+  "domain": "competitors",
+  "content": "Cardo Packtalk Edge是面向摩托车全盔/揭面盔的外置通讯器，不是自行车头盔产品，这一点需与部分“helmet mesh”泛化搜索结果明确区分。公开资料显示，Packtalk Edge于2022-2023周期上市，定位高端摩托车对讲，核心参数包括：DMC Gen2动态Mesh、Bluetooth 5.2、JBL 40mm扬声器、IP67防护、自然语音控制、Air Mount磁吸底座、USB-C充电与OTA升级。多来源一致提到其DMC Gen2支持最多15名骑手组网，单节点典型最远约1.6 km，整网在理想链式条件下约8 km。价格方面，公开市场常见单机版约US$389.95，双机版约US$699.95，属于与Sena高端Mesh产品正面竞争的价位带。\n\n关于拆解与供应商，现有3个来源都承认：没有可信的公开teardown可确认主控、射频前端、电池或PMIC的具体料号，因此不能把Qualcomm、NXP、ST或MediaTek等推测性名字当作已验证供应商。能相对确定的只有声学合作品牌JBL，以及整机级特征：主PCB、锂电池、RF天线、降噪麦克风、40mm扬声器、防水密封结构。对我们做智能摩托车头盔的启发是：Cardo把高价值点集中在网络协议稳定性、语音交互和安装体验，而不是公开堆料。\n\n认证层面，来源仅明确提到IP67；对FCC/CE/UKCA/Bluetooth SIG等合规，虽然作为量产无线消费电子通常应具备，但本次来源未给出证书编号，因此只能标注为“预期存在、待数据库核验”。这里存在信息缺口：一类来源把“供应商认证”写成行业最佳实践推断，另一类则直接说明无公开名单，二者并不矛盾，但都不足以支持BOM级采购判断。\n\n结论：Packtalk Edge的可验证竞争力在于DMC Gen2组网、JBL音频、IP67和成熟App/OTA闭环；其弱点是公开硬件透明度低，",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "Cardo",
+    "Packtalk Edge",
+    "DMC Gen2",
+    "摩托车头盔",
+    "Mesh对讲",
+    "JBL",
+    "IP67",
+    "Bluetooth 5.2",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

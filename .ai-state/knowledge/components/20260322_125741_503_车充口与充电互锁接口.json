@@ -1,0 +1,16 @@
+{
+  "title": "车充口与充电互锁接口",
+  "domain": "components",
+  "content": "车充口在两页中均有定义。第1页车充口接口包括C+、C-、(2)单线串口/485A、(1)充电互锁(P-)、(3)485B、(4)NC。第2页在CAN电池方案下，车充口还包含CAN-H、CAN-L、Charge-ID、NC(ADDR)、NC(Plug-in)。系统同时存在“充电互锁”“BMS_ACC”等信号，说明充电枪接入、充电识别、动力互锁和BMS唤醒之间存在联动逻辑。",
+  "source": "doc_import:NXT_T519-2000W(48V双总线+双包电池)整车逻辑图-20250725.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "车充口",
+    "充电互锁",
+    "C+",
+    "C-",
+    "P-",
+    "Charge-ID"
+  ],
+  "confidence": "high"
+}

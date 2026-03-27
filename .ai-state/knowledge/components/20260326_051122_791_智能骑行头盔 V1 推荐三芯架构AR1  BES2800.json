@@ -1,0 +1,19 @@
+{
+  "title": "智能骑行头盔 V1 推荐三芯架构：AR1 + BES2800 + 1–10 TOPS CV SoC",
+  "domain": "components",
+  "content": "报告最终建议头盔 V1 采用“轻量端侧感知 + 手机/车机协同”路线，而非车端域控缩小版。推荐三芯架构为：主控A 使用高通 AR1 或同级低功耗 AR SoC 负责 AR/HUD 与系统控制；主控B 使用恒玄 BES2800 或同级音频 AI 芯片负责音频/语音；主控C 使用低功耗 CV SoC，算力控制在 1–10 TOPS。V1 的 ADAS 仅应覆盖盲区光效提示、前向车距/碰撞风险提醒、车道偏移趋势提醒（谨慎），定位为提示级而非控制级。",
+  "source": "deep_research:enrich_83",
+  "created_at": "2026-03-26",
+  "tags": [
+    "AR1",
+    "BES2800",
+    "1-10 TOPS",
+    "CV SoC",
+    "HUD",
+    "提示级ADAS",
+    "手机协同",
+    "deep_research",
+    "enrich_83"
+  ],
+  "confidence": "high"
+}

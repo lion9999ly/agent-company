@@ -1,3 +1,25 @@
 {
-    "00-global-architecture.md": "fake_hash_123456789"
+  "00-global-architecture.md": "a682edbbce5df0a53785fc139c61f8c0a016e8618f596638d7942da4af8b1c9d",
+  "01-hitl-and-observability.md": "4ceefb62f682fa3f746f9c8de6fb48bd1595f3f83d7e1181a2896fbafc7d5591",
+  "01-quality-redlines.md": "5e7f86b0fae5c3829a3aef55b9c82ea11b67b2b18910740ba22e505c71f39f52",
+  "02-agent-prompts.md": "43219c9d8511cc0f66d0cc09ac6011faad850afbf2d5e5e95ce561f634d8f25d",
+  "02-core-code-list.md": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "02a-prompt-enforcement.md": "db6187c1a1c4a5c895786d25225d253af97e2f3bf73dfa1d96d9f3cd5c039e28",
+  "03-mcp-tools-registry.md": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "04-context-guidelines.md": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "05-document-standards.md": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "06-consensus-log.md": "abeadb132902cd616424d15ecbd904175ae087d78eb648afe82333bb05745a2c",
+  "07-architecture-consensus-20260317.md": "9f27d5f5953a0f16e4b0642a896958f1c7fb352a16561b7bc372cc29042d578b",
+  "07-continuous-improvement.md": "5d3d7a7221973098c291d2f3f446925522aff921acbf358ceeb78fbd45c1df7e",
+  "07-tool-chain-fallback.md": "e88aeeae9b00f867f97621333bb5d5f3fc67f49e392bdf81c29b775524d13210",
+  "08-cpo-critic-workflow.md": "5ebd8e141365d55931da5d6050f3c4948e9ac5a1d74a24c0f2bf455c7fc197d6",
+  "09-claude-permissions.md": "61d84c8d27493f6f58e444ec1bf62ed7a4232542dd9c28effc23982aac9ce00e",
+  "09-compact-hook-architecture.md": "52b73ba08ecabdc1fdbd5f2f7ca0322aaaa3d602d1406fbca5836dde0b794ecb",
+  "AGENTS.md": "51dab5d746cbf247fa2ff532f9cd37f7a1751c3b1ead67e8e717bc44c75691da",
+  "RULES.md": "82d5beb5915d213993d7329714bcdc5489a1663cc3c755c695361728d79ff11f",
+  "agents.yaml": "52a68c469fd0e2783ff983093b1971c4b1b9399e07780b7c7e85c3d867d441f1",
+  "agent_prompts.yaml": "b9f90220962019856d3b4b15e7c34e092fc7e11a99d6a439bc5fbfc09ec3794f",
+  "model_config.yaml": "e4ad57b0bc97f65bcf660550f8c4132964aa771dbee4b0a792ba7b4276ae9d32",
+  "model_registry.yaml": "1fd6b376ab8453944905ba38638474ec6e7561e69ffc11ad9c4b5a3b82c08949",
+  "search_api.yaml": "59524738af8497146716893a9647c1c66574adf5110d1f9cf03f15396d17c401"
 }

@@ -1,0 +1,19 @@
+{
+  "title": "Forcite MK1S 与 Sena Impulse 显示智能集成不能突破重量红线",
+  "domain": "components",
+  "content": "舒适度、重量、通风是智能头盔最容易牺牲的本质体验。报告提到 Sena Impulse 比普通头盔更重，长时间骑行会导致颈部疲劳；Forcite MK1S 约 1500–1600g，属于全盔中等偏重，长时间佩戴可能疲劳；Sena R1 / M1 EVO 还有头型适配差、压头问题，LIVALL 则被反馈重量感明显、通风不足、夏天闷热。基于这些反馈，研发建议把全盔重量尽量压到 <1650g，并让半盔/自行车盔尽量接近传统产品，否则用户会认为自己买的是“戴在头上的电子设备”而不是头盔。",
+  "source": "deep_research:user_pain_points",
+  "created_at": "2026-03-22",
+  "tags": [
+    "重量",
+    "舒适度",
+    "通风",
+    "Forcite MK1S",
+    "Sena Impulse",
+    "工业设计",
+    "佩戴体验",
+    "deep_research",
+    "user_pain_points"
+  ],
+  "confidence": "high"
+}

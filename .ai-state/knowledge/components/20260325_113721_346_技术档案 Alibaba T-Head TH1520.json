@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] Alibaba T-Head TH1520 (平头哥)",
+  "domain": "components",
+  "content": "以下档案**仅基于你提供的搜索结果整理**，不额外引入未给出的外部资料；因此凡搜索结果未明确写到的项目，一律标注 **“未查到”**，或注明 **“基于公开信息推断”**。\n\n---\n\n# Alibaba T-Head TH1520 完整技术档案\n\n## 1. 基本参数\n\n### 1.1 芯片定位\n- 厂商：**Alibaba / T-Head（阿里巴巴平头哥）**\n- 型号：**TH1520**\n- 类型：**高性能 RISC-V SoC**\n- 主要面向：\n  - 边缘计算\n  - AIoT\n  - 工业控制\n  - 多媒体终端\n  - NVR\n  - 智能显示/HMI\n  - 部分资料提到可用于智能座舱\n\n### 1.2 制程\n- **12nm FinFET**\n\n### 1.3 CPU 架构\n搜索结果里有两种表述：\n1. **4×玄铁 C910 + 1×玄铁 C906**\n2. 另一段简报只明确写了 **4×玄铁 C910**\n\n综合整理：\n- CPU ISA：**RISC-V RV64GCV**\n- 高性能核：**4× T-Head XuanTie C910**\n- 低功耗/管理核：**1× T-Head XuanTie C906**\n- 说明：C910 为**乱序执行**高性能核心，并支持 **RISC-V Vector 1.0 / RVV 1.0**\n- 备注：若严格按“有多少写多少”，则 **C906 的存在在搜索结果中有提及，但并非所有结果一致确认**\n\n### 1.4 CPU 主频\n- C910 主频：**最高 2.5 GHz**\n- C906 主频：**未查到**\n\n### 1.5 GPU 架构\n- GPU：**Imagination Technologies BXM-4-64**\n- 图形 API 支持（搜索结果给出）：\n  - **OpenGL ES 3.2**\n  - **Vulkan 1.2**\n  - **OpenCL 1.2**\n\n### 1.6 NPU 架构与算力\n- NPU：**集成 AI 加速器 / 自研 NPU（搜索结果提到“玄铁 C900 系列 NPU”）**\n- AI 算力：**4 TOPS（INT8）**\n\n### 1.7 视频能力\n- 视频解码：\n  - **8K@30fps H.264 / H.265 / AVS2 解码**\n  - **4K@60fps VP9 解码**\n- 视频编码：\n  - **4K@60fps H.264 / H.265 编码**\n- 另一段结果中也提到：\n  - **支持 4K H.264/H.265 编解码**\n- 综合看，较完整版本应以上述 8K/4K 能力为准，但由于来源均为搜索摘要，建议视为**公开资料口径**\n\n### 1.8 内存支持\n- **LPDDR4 / LPDDR4X**\n\n---\n\n## 2. 接口\n\n> 你要求按摄像头、显示、音频、无线分类列出。搜索结果未覆盖的部分标“未查到”。\n\n### 2.1 摄像头接口（CSI）\n- **MIPI CSI**\n- 支持情况：搜索结果写到“支持 MIPI CSI 接口，可连接多个高清摄像头”\n- CSI 路数/lane 数：**未查到**\n- ISP 规格：**未查到**\n\n### 2.2 显示接口（DSI / MIPI）\n- **MIPI DSI**\n- **HDMI 2.0**\n- 显示分辨率上限：**未查到**\n- 多屏支持：搜索结果提到“高分辨率显示输出、多屏支持”，但无明确参数\n\n### 2.3 音",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "平头哥"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,70 @@
+# 📋 模型API配置文件
+# @description: Multi-Agent异构模型阵列配置
+# @last_modified: 2026-03-16
+
+model_registry:
+  # === CPO 中枢层 ===
+  cpo:
+    provider: "openai"
+    model: "gpt-4o"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint: "${AZURE_OPENAI_ENDPOINT}"
+    purpose: "意图拆解、契约生成、结果汇总"
+    max_tokens: 4096
+    temperature: 0.1
+
+  # === CPO_Critic 评审层 (双模型阵列) ===
+  critic_gemini:
+    provider: "google"
+    model: "gemini-2.5-flash"
+    api_key: "AIzaSyCIpULNyI26SptD9OTfOXbfiK4uI9gqFXA"
+    purpose: "系统边界推演、大上下文一致性审查"
+    max_tokens: 8192
+    temperature: 0.1
+
+  critic_qwen:
+    provider: "alibaba"
+    model: "qwen-max"
+    api_key_env: "DASHSCOPE_API_KEY"
+    purpose: "硬件可行性、代码规范、供应链常识审查"
+    max_tokens: 4096
+    temperature: 0.1
+
+  # === CTO 研发层 ===
+  cto:
+    provider: "alibaba"
+    model: "qwen-max"
+    api_key_env: "DASHSCOPE_API_KEY"
+    purpose: "软硬件研发、代码生成、技术方案"
+    max_tokens: 8192
+    temperature: 0.2
+
+  # === CMO 市场层 ===
+  cmo:
+    provider: "alibaba"
+    model: "qwen-max"
+    api_key_env: "DASHSCOPE_API_KEY"
+    purpose: "市场调研、竞品分析、营销策略"
+    max_tokens: 8192
+    temperature: 0.3
+
+  # === 备用模型 ===
+  fallback:
+    provider: "anthropic"
+    model: "claude-sonnet-4-6"
+    api_key_env: "ANTHROPIC_API_KEY"
+    purpose: "主模型不可用时的备用"
+    max_tokens: 4096
+
+# === 评审规则 ===
+review_rules:
+  critic_pass_threshold: 8.0
+  require_dual_pass: true  # 必须双模型PASS
+  max_retry_count: 3
+
+# === 工具白名单 ===
+tool_whitelist:
+  cpo: ["web_search", "doc_read", "state_update"]
+  cto: ["code_execute", "file_write", "test_run", "web_search"]
+  cmo: ["web_search", "social_media", "database_query"]
+  critic: ["doc_read", "code_analyze", "web_search"]

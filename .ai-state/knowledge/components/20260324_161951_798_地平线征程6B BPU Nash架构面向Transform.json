@@ -1,0 +1,16 @@
+{
+  "title": "地平线征程6B BPU Nash架构：面向Transformer优化",
+  "domain": "components",
+  "content": "征程6B采用BPU Nash架构，明确面向Transformer优化，同时兼顾CNN与Transformer网络，在两类网络上均可获得更优FPS。相较征程3，J6B不仅提升通用算力，还强化了对新一代端到端模型和Transformer类网络的执行效率，是Luna 6算法升级的重要硬件基础。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "征程6B",
+    "BPU",
+    "Nash架构",
+    "Transformer",
+    "CNN",
+    "FPS"
+  ],
+  "confidence": "high"
+}

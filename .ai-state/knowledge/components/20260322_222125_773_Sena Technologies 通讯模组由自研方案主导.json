@@ -1,0 +1,18 @@
+{
+  "title": "Sena Technologies 通讯模组由自研方案主导",
+  "domain": "components",
+  "content": "关于 Sena 通讯模组“谁做”的问题，现有证据支持的结论是：模组方案、系统架构、固件、Mesh 协议和整机集成由 Sena Technologies, Inc. 自研/主导，Sena 本身就是 communication supplier。已知相关产品包括 Sena 50S、50C、60X、S1 EVO、R2 EVO，以及 Sena Phantom。底层蓝牙/音频 SoC 供应商未公开，市场推断可能是 Qualcomm/CSR、Airoha/MediaTek 或 Realtek，但没有拆解、FCC 或 BOM 证据，不能锁定具体芯片厂。",
+  "source": "deep_research:competitor_supply_chain",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Sena",
+    "通讯模组",
+    "Mesh",
+    "Bluetooth",
+    "自研方案",
+    "芯片未公开",
+    "deep_research",
+    "competitor_supply_chain"
+  ],
+  "confidence": "high"
+}

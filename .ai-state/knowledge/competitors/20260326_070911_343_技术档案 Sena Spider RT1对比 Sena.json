@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Sena Spider RT1（对比 Sena Impulse / Sena Stryker / Sena R2 EVO / Sena S1）",
+  "domain": "competitors",
+  "content": "以下为 **Sena Spider RT1 技术档案**，并重点对比 **Sena Impulse / Sena Stryker / Sena R2 EVO / Sena S1**。  \n我会先说明一个关键点：\n\n## 先纠正一个前提\n你给出的搜索结果里有一段“**Sena Spider RT1 是集成通信系统的头盔**”以及“**Sena Spider RT1 2026**”的描述，这部分是**不准确/带有假设性**的。  \n**真实存在的 Sena Spider RT1** 是一款 **摩托车头盔外置式通信器（Bluetooth + Mesh 通讯设备）**，不是头盔本体，也不是 Sena 官方已发布的“2026新型号”。\n\n因此，下面内容基于 **Sena Spider RT1 真实产品线信息** 与公开常见零售资料整理；个别价格会因地区、税费、促销而波动，我会注明“约”。\n\n---\n\n# 一、Sena Spider RT1 技术档案\n\n## 1. 产品定位\n**Sena Spider RT1** 是 Sena Spider 系列中的一款 **Mesh 2.0 为核心** 的摩托车通信器。  \n它的核心卖点是：\n\n- 以 **Mesh 对讲** 为主\n- 保留 **蓝牙连接手机/GPS/音乐** 能力\n- 使用 **Jog Dial 旋钮**，操作更适合戴手套\n- 价格通常低于 Sena 的高端一体化头盔产品\n\n它适合：\n- 已经有自己喜欢的头盔，不想买集成式智能头盔的人\n- 经常多人组队骑行、希望用 Mesh 的人\n- 想要 Sena 生态，但预算不想上到 Impulse / Stryker 的人\n\n---\n\n## 2. 核心规格参数\n\n> 注：不同地区零售页面对细节表述略有差异，以下为主流公开参数汇总。\n\n### 基本信息\n- **产品名称**：Sena Spider RT1\n- **产品类型**：头盔外置式摩托车通信器\n- **安装方式**：夹具/粘贴式安装到头盔侧面\n- **控制方式**：**Jog Dial 旋钮 + 按键**\n- **主要通信技术**：\n  - **Mesh Intercom 2.0**\n  - 蓝牙连接手机/导航/音乐设备\n\n### 对讲能力\n- **Mesh 模式**：\n  - **Open Mesh**：开放群组，多频道\n  - **Group Mesh**：私有群组\n- **Mesh 有效距离**：\n  - 单跳典型约 **2 km**\n  - 多人中继条件下可扩展更远（常见宣传可达约 **8 km**，需至少 6 名骑手、开阔环境）\n- **蓝牙对讲**：\n  - Spider RT1 的核心卖点是 Mesh，不是传统蓝牙多方对讲旗舰\n  - 实际购买时应以官方说明书/地区版页面为准；市场认知上它主要被视为 **M",
+  "source": "completeness_check",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "high"
+}

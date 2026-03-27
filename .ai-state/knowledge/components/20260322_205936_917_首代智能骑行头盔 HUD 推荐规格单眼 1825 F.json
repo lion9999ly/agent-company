@@ -1,0 +1,18 @@
+{
+  "title": "首代智能骑行头盔 HUD 推荐规格：单眼 18°–25° FOV，虚像距离 2–4m",
+  "domain": "components",
+  "content": "报告给出的产品定义建议是：首代产品应采用单眼 HUD、小 FOV 18°–25°、高亮、低信息密度，只显示导航箭头、速度、来电、危险警告。推荐量产方案为 Micro-OLED/LCoS + Freeform Prism / Birdbath，其中 Freeform Prism 优先，Birdbath 备选；目标虚像距离建议为 2–4m，并优先保证日间可视性。该建议同时呼应头盔电池常见容量 2000–4000mAh / 3.7V、续航目标 4–8 小时的约束，说明设计重点应放在清晰、稳定、低干扰导航提示，而不是大视场沉浸 AR。",
+  "source": "deep_research:optical_suppliers",
+  "created_at": "2026-03-22",
+  "tags": [
+    "产品定义",
+    "单眼HUD",
+    "FOV",
+    "虚像距离",
+    "续航",
+    "首代产品",
+    "deep_research",
+    "optical_suppliers"
+  ],
+  "confidence": "high"
+}

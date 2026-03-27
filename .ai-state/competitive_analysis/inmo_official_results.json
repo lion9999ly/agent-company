@@ -1,0 +1,98 @@
+{
+  "timestamp": "2026-03-16T19:45:42.195808",
+  "sources": [
+    {
+      "name": "INMO官网首页",
+      "url": "https://www.inmo.com",
+      "status": 200,
+      "products_found": 10,
+      "sample_text": [
+        "UbicaciónRentaVentaPreventa",
+        "MiembrosEntrar/Registro",
+        "VentaOportunidaddesde$2,480,000VentaOportunidadKumaru Suitesdesde$2,480,000Playa del Carmen, Q.R., MéxicoBeds:2Baths:2DepartamentosVer MásEditorAdminhace 3 añosEditorAdminhace 3 añosPreventaOportunida"
+      ],
+      "links": [
+        {
+          "href": "#",
+          "text": "Home"
+        },
+        {
+          "href": "#",
+          "text": "Home Splash"
+        },
+        {
+          "href": "/home-splash/?splash_type=image",
+          "text": "Splash Image"
+        },
+        {
+          "href": "/home-splash/?splash_type=slider",
+          "text": "Splash Slider"
+        },
+        {
+          "href": "#",
+          "text": "Properties"
+        },
+        {
+          "href": "#",
+          "text": "Grid layout"
+        },
+        {
+          "href": "#",
+          "text": "List Layout"
+        },
+        {
+          "href": "#",
+          "text": "With Map"
+        },
+        {
+          "href": "#",
+          "text": "Elementor"
+        },
+        {
+          "href": "#",
+          "text": "Property"
+        },
+        {
+          "href": "https://demo01.houzez.co/property/luxury-villa-with-pool/?is_full_width=1",
+          "text": "Property Layout Full Width"
+        },
+        {
+          "href": "#",
+          "text": "Realtor"
+        },
+        {
+          "href": "https://inmo.com/agent/michelle-ramirez/",
+          "text": "Agent Profile"
+        },
+        {
+          "href": "https://inmo.com/agency/all-american-real-estate/",
+          "text": "Agency Profile"
+        },
+        {
+          "href": "#",
+          "text": "Others"
+        },
+        {
+          "href": "https://demo01.houzez.co/404",
+          "text": "Page 404"
+        },
+        {
+          "href": "https://inmo.com/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "#elementor-action%3Aaction%3Dpopup%3Aopen%26settings%3DeyJpZCI6IjI2MDA2IiwidG9nZ2xlIjpmYWxzZX0%3D",
+          "text": "Buscar..."
+        },
+        {
+          "href": "https://inmo.agency",
+          "text": "Publicar Propiedad"
+        },
+        {
+          "href": "https://inmo.agency",
+          "text": "Contáctanos"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Journey 6B SoC总体规格与定位",
+  "domain": "components",
+  "content": "Journey® 6B 是面向 GSR 与 NCAP 的高集成车规 SoC。AI 算力 18 TOPS（BPU Nash，新型存储层级，支持更灵活神经网络如 transformer）；CPU 性能 23K DMIPS；ISP/相机带宽 0.64 Gpixel/s；vDSP 为 64 GFLOPS@FP32；视频编解码支持 H.264/265，4K@60FPS 或 5K@30FPS；接口含 2×4-lane MIPI-CSI RX + 1×2-lane TX、2×1GE + 1×100Mbps 以太网；内存支持 32bit LPDDR5/4x/4，带宽约 25GB/s；NVM 支持 XSPI NorFlash、Nand、eMMC。定位为高集成、低功耗车载智能视觉/ADAS 平台。",
+  "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Horizon Robotics",
+    "Journey 6B",
+    "SoC",
+    "ADAS",
+    "GSR",
+    "NCAP"
+  ],
+  "confidence": "high"
+}

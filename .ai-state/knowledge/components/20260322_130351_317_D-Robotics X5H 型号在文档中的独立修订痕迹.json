@@ -1,0 +1,15 @@
+{
+  "title": "D-Robotics X5H 型号在文档中的独立修订痕迹",
+  "domain": "components",
+  "content": "版本历史 0.86（2024-08-21）专门提到“Update the description of CPU frequency for X5H”以及“Update the part number and description for X5H”，说明 X5 系列中存在 X5H 这一具体型号，且其 CPU 频率与料号描述在文档中被单独修订。当前截取内容未给出 X5H 的完整规格、与 X5 的差异、价格或定位，但可确认 X5H 不是泛称，而是需要独立识别和校对参数的正式变体型号。",
+  "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "X5H",
+    "Part Number",
+    "CPU Frequency",
+    "型号",
+    "修订"
+  ],
+  "confidence": "high"
+}

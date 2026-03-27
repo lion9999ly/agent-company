@@ -1,0 +1,16 @@
+{
+  "title": "Astra双J6M域控J2连接器12路USS超声波雷达映射",
+  "domain": "components",
+  "content": "J2连接器定义12路USS，均为DSI3：Pin1 USS1(FLS)→USSFLS（左侧前长）；Pin2 USS2(FL)→USSFL（左前短）；Pin3 USS3(FLM)→USSFLM（左前中短）；Pin4 USS4(FRM)→USSFRM（右前中短）；Pin5 USS5(FR)→USSFR（右前短）；Pin10 USS6(FRS)→USSFRS（右侧前长）；Pin11 USS7(RRS)→USSRRS（右侧后长）；Pin12 USS8(RR)→USSRR（右后短）；Pin13 USS9(RRM)→USSRRM（右后中短）；Pin14 USS10(RLM)→USSRLM（左后中短）；Pin15 USS11(RL)→USSRL（左后短）；Pin16 USS12(RLS)→USSRLS（左侧后长）。",
+  "source": "doc_import:Astra双J6M域控 20250610 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Astra",
+    "J2",
+    "USS",
+    "DSI3",
+    "超声波雷达",
+    "2418384-6"
+  ],
+  "confidence": "high"
+}

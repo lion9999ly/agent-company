@@ -1,0 +1,16 @@
+{
+  "title": "Astra双J6M域控J1主连接器CAN网络分配",
+  "domain": "components",
+  "content": "J1低速信号连接器承担多路CAN接入：Pin1 CAN_1_H、Pin2 CAN_1_L，对应ADASA CAN，带唤醒CAN；Pin5 CAN_3_H、Pin6 CAN_3_L，对应FRM前RADAR CAN；Pin12 CAN_6_H、Pin13 CAN_6_L，对应RLRM左后RADAR CAN；Pin15 CAN_7_H、Pin16 CAN_7_L，对应RRRM右后RADAR CAN。其余多个Pin为NA。该分配说明域控至少直接接入前雷达、左后雷达、右后雷达及ADAS主CAN网络。",
+  "source": "doc_import:Astra双J6M域控 20250610 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Astra",
+    "J1",
+    "CANFD",
+    "雷达CAN",
+    "唤醒CAN",
+    "2418384-5"
+  ],
+  "confidence": "high"
+}

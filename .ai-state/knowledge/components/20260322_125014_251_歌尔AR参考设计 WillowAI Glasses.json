@@ -1,0 +1,16 @@
+{
+  "title": "歌尔AR参考设计 Willow：AI Glasses",
+  "domain": "components",
+  "content": "Willow是歌尔AI Glasses参考设计，同样采用AR1 SiP与1200万像素摄像头，支持多模态AI，但整机重量进一步降至40g。相较Wood2的57g，Willow更强调轻量化，适合日常佩戴型AI眼镜产品方向。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Willow",
+    "AI Glasses",
+    "AR1 SiP",
+    "1200万像素",
+    "多模态AI",
+    "40g"
+  ],
+  "confidence": "high"
+}

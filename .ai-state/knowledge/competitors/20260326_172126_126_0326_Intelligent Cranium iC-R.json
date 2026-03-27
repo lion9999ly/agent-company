@@ -1,0 +1,22 @@
+{
+  "title": "0326_Intelligent Cranium iC-R：智能摩托车全盔AR HUD与Goertek供应链可行性评估",
+  "domain": "competitors",
+  "content": "Intelligent Cranium iC-R 是由 Intelligent Cranium Helmets（ICH）推出的智能摩托车全盔项目，需与自行车头盔明确区分：其定位是 full-face motorcycle helmet，强调 AR HUD、后视摄像、盲点提示与碰撞预警，而非轻量化骑行头盔。现有原始来源显示，该项目最早于 2015-2016 年通过 Indiegogo 等众筹渠道启动，原计划 2017-2018 年交付，但后续长期延期；“2026 发布”在原始搜索结果中仅被描述为推测性目标年份，未见 Intelligent Cranium Helmets 官方确认，这是首个关键信息冲突点。技术上，iC-R 的核心卖点是 AR HUD。原始结果认为更适合采用“波导+微显示”路线，波导可能是衍射波导或反射波导，微显示则可能是 Micro-OLED、Micro-LED、LCoS 或 DLP 微投影；但搜索结果没有给出任何已确认的具体型号，如 IMX678、BES2800、QCC5181，也没有分辨率、亮度、FoV、功耗等硬参数，因此不能补写成已定规格。功能层面，来源较一致提到后视摄像头、盲点监测、蓝牙通信、Mesh 网络、语音控制、GPS 导航、碰撞预警；主动降噪、生物识别与健康监测也被提及，但更像愿景功能，量产可信度较低。材料与认证方面，当前给定原始结果未提供碳纤维牌号、整机重量、DOT/ECE 认证编号等具体数据。价格方面，原始搜索结果同样未出现明确零售价、众筹价或量产售价，无法补充为如“￥200-300”或“$15-25/颗”这类具体数字，只能判断其定位偏高端。供应链方面，歌尔股份（Goertek）被反复提及为潜在供应商，原因在于其在 AR/VR 光学模组、声学器件、微显示集成与整机 ODM 方面能力较强，理论上可承接波导模组、扬声器/麦克风及结构件；但原始结",
+  "source": "daily_deep",
+  "created_at": "2026-03-26",
+  "tags": [
+    "智能摩托车头盔",
+    "全盔",
+    "Intelligent Cranium",
+    "iC-R",
+    "AR HUD",
+    "波导",
+    "微显示",
+    "Goertek",
+    "歌尔股份",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

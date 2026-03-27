@@ -1,0 +1,13 @@
+{
+  "title": "Snapdragon AR1智能眼镜平台",
+  "domain": "components",
+  "content": "该文档介绍高通 Snapdragon AR1 Gen 1 平台，面向下一代智能眼镜，但其核心能力对智能骑行头盔的AR显示、影像记录、语音交互与无线连接研发具有较高参考价值。影像方面：集成 Qualcomm Spectra 双14-bit ISP，支持最高12MP计算摄影/HDR/人像拍照、6MP@30FPS视频、720p@120FPS慢动作、硬件EIS、防抖、自动曝光/白平衡、AI人脸检测与低照增强，适合骑行场景第一视角记录。显示方面：支持单目/双目显示、3DoF、双目1280×1280@60Hz，可用于头盔HUD通知、导航与告警叠加。AI方面：搭载Hexagon NPU，支持INT4/INT8，含Sensing Hub微型NPU，可做音频/传感器低功耗常开处理，适合语音唤醒、环境感知、视觉分析与实时翻译。音频方面：支持立体声、始终在线音频、最多8麦克风、降噪回声消除与蓝牙音频/通话。连接方面：FastConnect 7800支持Wi‑Fi 7/6、峰值5.8Gbps、蓝牙5.4、WPA3安全，适合直播、手机互联与外设连接。算力与系统：4核1.9GHz Kryo CPU、Adreno GPU、LPDDR4x 2100MHz。产品层面强调轻量化、优化热设计与低功耗，较符合骑行头盔对续航、重量和热舒适性的要求。局限是平台原生定位为智能眼镜，文档未涉及头盔级防护、GNSS、蜂窝通信或IMU细节。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-21",
+  "tags": [
+    "AR SoC",
+    "智能眼镜",
+    "低功耗影像"
+  ],
+  "confidence": "high"
+}

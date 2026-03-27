@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] Qualcomm S7 Pro (Qualcomm)",
+  "domain": "components",
+  "content": "以下档案**严格基于你给出的搜索结果整理**，不额外引入未在结果中出现的新来源。  \n先给结论：\n\n> **“Qualcomm S7 Pro”在本组搜索结果中，明确对应的是 `Qualcomm Snapdragon Sound S7 Pro Platform`，它是一颗/一套面向高端无线音频设备的音频平台，而不是手机/XR主SoC。**  \n> 因此，很多你要求的“CPU/GPU/NPU算力、CSI/DSI、Wi‑Fi/UWB、制程、主频、量产价格”等典型SoC级参数，**搜索结果未提供**，需要标注“未查到”。\n\n---\n\n# Qualcomm S7 Pro 完整技术档案\n\n## 0. 产品身份澄清\n\n- **正式指向**：Qualcomm Snapdragon Sound S7 Pro Platform\n- **产品类别**：高端无线音频平台\n- **官方面向设备**：\n  - 真无线耳机（TWS）\n  - 头戴式耳机\n  - 蓝牙音箱\n  - 游戏耳机/耳塞\n  - 商务会议音频设备\n  - 下一代智能音箱/条形音箱\n\n> 注意：  \n> 搜索结果中还出现了把“S7 Pro”误解为未来 Snapdragon 7 系列手机SoC、或未来 Wear 平台的推测内容，但这些都属于**假设性推测**，不能作为 Qualcomm S7 Pro 的正式技术档案依据。  \n> 因此本档案以**Snapdragon Sound S7 Pro Platform**为准。\n\n---\n\n## 1. 基本参数\n\n### 1.1 制程\n- **未查到**\n\n搜索结果只提到：\n- “采用先进的制程工艺和智能电源管理算法”\n- “相比前代平台可实现高达68%的功耗降低（某些特定任务下）”\n\n但**没有给出具体工艺节点**，如 6nm / 4nm / 22nm 等，因此只能标注未查到。\n\n---\n\n### 1.2 CPU / GPU / NPU 架构和算力\n\n#### CPU\n- **未查到**\n\n搜索结果没有给出CPU核心类型、数量、架构、频率。\n\n#### GPU\n- **未查到**\n\n作为音频平台，搜索结果未提及图形处理单元，也未给出任何显示渲染能力。\n\n#### NPU / AI引擎\n- **有AI引擎，但具体架构与算力未查到**\n- 已知信息：\n  - 集成**AI引擎**\n  - 支持**设备端机器学习**\n  - 用于：\n    - 自适应ANC\n    - 个性化音频\n    - 听力补偿\n    - 环境感知与动态音效调整\n\n#### 算力\n- **未查到**\n- 未提供 TOPS / GOPS / MACs 等指标。\n\n---\n\n### 1.3 主频\n- **未查到**\n\n---\n\n## 2. 接口\n\n由于 S7 Pro 在搜索结果中被描述为**无线音频平台**，不是通用计算SoC，因此很多传统SoC接口没有公开到。\n\n### 2.1 摄像头接口（CSI）\n- **未查到**\n\n搜索结果没有任何摄像头、ISP、MIPI CSI相关描述。\n\n---\n\n### 2.2 显示接口（DSI / MIPI）\n- **未查到**\n\n搜索结果没有显示输出、MIPI DSI、外接屏幕支持等信息。\n\n---\n\n### 2.3 音频接口（I2S / PDM）\n- **未查到**\n\n虽然它显然是音频平台，但搜索结果没有明确列出：\n- I2S\n- TDM\n- PCM\n- PDM\n- DMIC接口数量\n- DAC/ADC通道数\n\n因此只能标注未查到。\n\n---\n\n### 2.4",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "qualcomm"
+  ],
+  "confidence": "high"
+}

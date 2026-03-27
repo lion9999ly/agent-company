@@ -1,0 +1,16 @@
+{
+  "title": "Horizon Luna 6 Perception E2E模型效果提升",
+  "domain": "components",
+  "content": "Luna 6的Perception E2E Model将检测跟踪、预测和道路结构信息纳入统一模型，通过模型直出减少后处理。文档给出的量化结果为：感知稳定性提升15%，轨迹误差降低20%，鬼探头场景输出及时性提升50%。说明Luna 6在复杂动态场景中的感知一致性、轨迹估计精度和危险目标响应速度均优于Luna 3。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Luna 6",
+    "Perception E2E",
+    "检测跟踪",
+    "预测",
+    "道路结构",
+    "稳定性"
+  ],
+  "confidence": "high"
+}

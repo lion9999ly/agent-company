@@ -1,0 +1,15 @@
+{
+  "title": "Luna 6小域控视频与传感器接口架构",
+  "domain": "components",
+  "content": "从接口与引脚定义可还原整机感知架构：2组4 in 1 mini FAKRA共提供8路同轴资源，其中code A承载8M前视、DMS、IVI视频输出、DVR输出，code B承载4路3M 360camera（REAR/FRONT/LEFT/RIGHT）；主连接器提供USS-SUP-CH0/1/2及USS前后左右多路超声波信号；另配1个1000BASE以太网接口和5路CAN。该配置表明Luna 6小域控面向泊车/环视/座舱监控融合场景。",
+  "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "接口架构",
+    "GMSL",
+    "AVM",
+    "DMS",
+    "USS"
+  ],
+  "confidence": "high"
+}

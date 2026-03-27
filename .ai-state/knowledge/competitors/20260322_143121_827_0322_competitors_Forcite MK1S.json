@@ -1,0 +1,15 @@
+{
+  "title": "0322_competitors_Forcite MK1S HUD waveguide microdis...",
+  "domain": "competitors",
+  "content": "**相关产品/技术**\n1. **Forcite MK1S 智能摩托车头盔HUD**\n   - 功能：显示**速度、导航、危险警报**\n   - 显示特征：**单色（绿色/琥珀色）**，非全彩\n   - 光学方案：**波导+面罩投影**，强调不遮挡视线\n   - 研发含义：当前更偏“低信息量、高可读性、安全优先”的HUD，而非重AR叠加\n\n2. **潜在微显示技术路线**\n   - **MicroLED**：最匹配当前需求，优势是**超高亮度、低功耗、长寿命、适合户外阳光环境**；单色方案成熟度高  \n     - 代表供应商：**JBD**（单色MicroLED亮度可达**数百万尼特**）\n   - **OLED / Micro-OLED**：体积小、对比度高，但**强光下亮度劣势**明显  \n     - 供应商：Sony、eMagin(已被Samsung Display收购)、BOE、SeeYA\n   - **LCOS**：成熟、分辨率高，但需外部光源，**体积/效率不利于单色高亮HUD**\n     - 供应商：Himax、Kopin\n\n**技术趋势/行业变化**\n- 2026前后，骑行头盔HUD可能从**单色提示**升级到**更高亮度、轻量化、局部彩色AR**\n- **单色MicroLED + 波导**是近期最现实路线；**全彩MicroLED**仍受制于成本/良率\n- 波导侧，**衍射波导**追求大FOV，**反射波导**追求高亮度/高效率；骑行场景更重视**阳光可视性与安全冗余**\n\n**可借鉴设计理念**\n- 头盔HUD应优先显示**最少但最关键的信息**，避免认知负担\n- 采用**单色高亮+小视场**，比追求全彩大视场更适合量产骑行产品\n- 可考虑“**标准头盔平台 + 可升级HUD模组**”模式，降低整机迭代成本\n\n**供应链/拆解线索**\n- 若产品为**单色、高亮、紧凑光机**，优先排查**JBD类MicroLED**\n- 波导供应商可关注：**Lumus、Dispelix、DigiLens、Vuzix、WaveOptics**",
+  "source": "daily_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "forcite",
+    "HUD",
+    "2026",
+    "supplier",
+    "teardown"
+  ],
+  "confidence": "medium"
+}

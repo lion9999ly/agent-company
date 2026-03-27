@@ -1,0 +1,15 @@
+{
+  "title": "主动安全法规与评级目标：CIASI/IVISTA/C-NCAP/E-NCAP 路线",
+  "domain": "standards",
+  "content": "文档给出主动安全量产与法规评级绑定路线：近期目标覆盖CIASI-2023 G+、IVISTA-2023 G、C-NCAP 2024五星+、E-NCAP2023五星；中长期目标升级至E-NCAP2026-2028五星，并支撑组合辅助驾驶。功能演进上，前向从AEB/FCW/MEB、TLR/SAS、IHC/ADB扩展到通用障碍物、雨雪雾天；侧向从LDW/LKA/ELK、BSD/LCA/DOW扩展到ESA/AES；后向覆盖RCW/RCTA。",
+  "source": "doc_import:主动安全功能介绍 20251027 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "CIASI-2023 G+",
+    "IVISTA-2023 G",
+    "C-NCAP 2024",
+    "E-NCAP2023",
+    "E-NCAP2026-2028"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "0327_Sena 2025智能摩托车全盔趋势：Mesh 2.0 + Harman Kardon + ECE 22.06",
+  "domain": "competitors",
+  "content": "基于现有3个来源，Sena在2025年推出或延续销售“集成Mesh对讲、Harman Kardon音频、全盔设计、ECE 22.06认证”的智能摩托车头盔，判断为高概率事件，但需明确：目前来源中没有Sena正式发布“2025全新型号”的官方确认，更多是基于现有产品线推演。可作为直接参照的量产型号是Sena Impulse与Sena Stryker，两者均为摩托车全盔（不是自行车头盔，需与Sena自行车/运动头盔产品明确区分），并已被来源描述为集成Mesh与Harman Kardon、通过ECE 22.06。技术上，Sena Mesh 2.0是核心卖点：来源1称Group Mesh支持24名骑手、Open Mesh近乎无限人数、理想总距离8 km、单骑手间最远2 km；来源2则写Open Mesh 8 km、单骑手间1.6 km。这里存在轻微冲突，可能来自不同代际资料或口径差异，产品评估时应以具体型号说明书为准。音频方面，Sena自2021年起与Harman Kardon合作，已在50S/50R/50C及Impulse、Stryker上使用定制扬声器和麦克风，这意味着2025款若推出，大概率继续沿用该供应商方案。安全标准方面，ECE 22.06较22.05新增斜向冲击、附件安全等更严格测试，对“集成式智能头盔”尤其关键，因为通信模组、遮阳板、尾灯等附件都需纳入验证。来源虽未给出官方售价，但结合Sena高端智能全盔定位，Impulse/Stryker通常处于高端价格带，市场零售价大致可按US$499-699区间跟踪，供应商为Sena Technologies及其授权经销网络。对我们做智能摩托车全盔的启示是：一体化集成、22.06先行、Mesh稳定性、音频品牌联名，已成为高端竞品的明确路线；但在立项文档中必须避免把“2025新型号已发布”写成既成事实。",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Sena",
+    "智能摩托车头盔",
+    "全盔",
+    "Mesh 2.0",
+    "Harman Kardon",
+    "ECE 22.06",
+    "Impulse",
+    "Stryker",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

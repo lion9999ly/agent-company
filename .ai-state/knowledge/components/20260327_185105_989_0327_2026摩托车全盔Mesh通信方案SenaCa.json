@@ -1,0 +1,19 @@
+{
+  "title": "0327_2026摩托车全盔Mesh通信方案：Sena/Cardo与Qualcomm QCC、Nordic nRF54的供应链判断",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2026年Mesh通信主流仍将由Sena与Cardo两类专有协议主导，而非标准化蓝牙Mesh直接落地。需明确排除自行车头盔场景：自行车产品常用低功耗BLE广播或简化对讲，风噪、车速、全盔腔体声学与摩托车全盔差异很大，不能直接复用结论。现有公开信息显示，Sena Mesh 2.0宣称开放Mesh可支持24名骑手、群组模式可到64名，6人中继条件下总距离约8 km；Cardo DMC常见口径为最多15名骑手、总距离约8 km、单跳约1.6 km。这里存在来源差异：也有资料写Cardo 6人时每人间隔1 km达8 km，总体应视为“理想环境营销值”，量产设计不能直接按该链路预算。芯片层面，Qualcomm QCC30xx/QCC51xx系列更像成熟蓝牙音频SoC底座，优势是DSP、CVC类语音处理、aptX/LE Audio路线和较完整音频生态，适合做手机/TFT/导航/语音助手连接；但公开资料并未证明Sena或Cardo当前Mesh一定直接采用某一具体QCC型号，更多是“可能作为蓝牙音频与控制基座”。Nordic nRF54系列则代表2026年更值得跟踪的低功耗多协议方向，适合做BLE、Thread/802.15.4或自定义2.4 GHz控制面，但现有来源未给出其已被Sena/Cardo量产采用的明确型号与BOM。供应商层面，Sena与Cardo更像整机/协议方案商，而非开放标准模块商；若自研全盔，采购上更现实的是选择QCC类音频SoC+独立MCU/射频方案，而不是期待直接买到“Cardo模块”。价格方面，公开终端可作为反推：Cardo Packtalk Edge海外零售价通常约US$399.95/单机、双机约US$699.95；Sena 50S常见约US$339-359。结论：2026年若做高端摩托车全盔，优先评估“QCC音频主控+自有/合作Mesh协议”",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "摩托车全盔",
+    "Mesh通信",
+    "Sena",
+    "Cardo",
+    "Qualcomm QCC",
+    "Nordic nRF54",
+    "头盔对讲",
+    "供应链",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

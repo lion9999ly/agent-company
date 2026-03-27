@@ -1,0 +1,14 @@
+{
+  "title": "HCT APA/RPA安全指标：紧急接管率0.3%",
+  "domain": "components",
+  "content": "HCT APA/RPA紧急接管率为0.3%。结合竞品页可知，友商对应指标为2%。该数据表明HCT在泊车过程中的异常处理、障碍物识别和控制稳定性更优，用户需要人工干预的频率显著更低，是衡量泊车系统成熟度和可用性的关键安全指标。",
+  "source": "doc_import:Astra泊车功能介绍 20260302 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "安全指标",
+    "紧急接管率",
+    "APA",
+    "RPA"
+  ],
+  "confidence": "high"
+}

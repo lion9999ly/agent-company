@@ -1,0 +1,17 @@
+{
+  "title": "Bosch Rider Assistance适合做BSD/FCW接口与安全流程，不适合主导头盔整机",
+  "domain": "components",
+  "content": "报告将Bosch定位为ADAS/车联接口/功能安全流程合作方，而非头盔整机JDM。可迁移价值主要在摩托车BSD/FCW逻辑、车辆TFT/雷达数据接口定义、告警HMI策略、误报漏报管理、功能安全流程顾问能力。V1建议优先接入车辆TFT或原车BSD信号，前向预警只做风险提示级FCW，不做AEB式强依赖距离精测的逻辑，也不宣称车规主动安全等级，所有ADAS输出定义为视觉/音频提醒。报告引用Bosch公开研究口径称摩托车ABS可降低严重伤害事故率约25%，但提示该数字仍需二次核验来源与适用范围。",
+  "source": "deep_research:auto_20260327_3",
+  "created_at": "2026-03-27",
+  "tags": [
+    "Bosch",
+    "BSD",
+    "FCW",
+    "功能安全",
+    "车联接口",
+    "deep_research",
+    "auto_20260327_3"
+  ],
+  "confidence": "medium"
+}

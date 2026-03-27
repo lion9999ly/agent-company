@@ -1,0 +1,13 @@
+{
+  "title": "Journey 6E SIP芯片概览",
+  "domain": "components",
+  "content": "文档为地平线Horizon Robotics《Journey 6E SIP Datasheet》草案版，版本Rev.0.51，时间为2024年8月，修订记录更新至2024-09-30。该器件为处于开发中的SIP（System in Package）产品，厂商明确声明参数、规格和供货状态均可能变更或停产，实际应用需客户自行验证。当前提供内容主要是文档元信息与修订历史，尚未出现完整功能、算力、功耗、接口带宽、封装尺寸等核心技术参数。可确认的研发相关信息包括：1）产品名称为Journey 6E SIP，属于高集成芯片/模组类器件；2）文档持续更新了封装信息、引脚图、数字/模拟/电源引脚定义、绝对最大额定值、工作条件、DC特性、接口电气规范、接口时序、回流焊曲线等，说明该器件适合板级集成设计；3）修订中提到新增/更新可订购料号、封装外形、Pin Map、Power/Ground、Digital/Analog/Other Pin List，表明其硬件设计接口较复杂；4）新增回流焊曲线，说明面向量产装联。对智能骑行头盔研发的启示：该文档可作为高算力主控/视觉AI SoC候选器件的早期情报来源，但由于缺少性能、功耗、热设计和多媒体能力等关键数据，当前仅能作为器件跟踪信息，暂不足以直接支持头盔产品选型。",
+  "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
+  "created_at": "2026-03-21",
+  "tags": [
+    "Horizon Robotics",
+    "Journey 6E",
+    "SIP芯片"
+  ],
+  "confidence": "medium"
+}

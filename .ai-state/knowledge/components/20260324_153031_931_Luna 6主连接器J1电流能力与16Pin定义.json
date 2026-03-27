@@ -1,0 +1,16 @@
+{
+  "title": "Luna 6主连接器J1电流能力与16Pin定义",
+  "domain": "components",
+  "content": "主连接器J1规格注明：Maximum rating current，power pin最大额定电流3A。接口为16Pin，承担电源、加热电源、4路CAN及唤醒功能。该定义说明J1不仅是通信接口，也承担整机供电与加热回路，设计上需关注3A电流能力、线束压降与热设计。",
+  "source": "doc_import:Luna 6一体机 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 6",
+    "J1",
+    "16Pin",
+    "额定电流",
+    "电源接口",
+    "CAN"
+  ],
+  "confidence": "high"
+}

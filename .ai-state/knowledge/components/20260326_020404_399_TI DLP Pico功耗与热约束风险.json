@@ -1,0 +1,18 @@
+{
+  "title": "TI DLP Pico功耗与热约束风险",
+  "domain": "components",
+  "content": "TI DLP Pico 0.2\"/0.3\" DMD 的优势是白天强光可视性最好。CTO数据为：系统入眼亮度 2500~5000 nits，FOV 12°~22° 对角，光机模组重量 28~50g，显示模组功耗 2.0~4.5W，BOM 价格 120~250 美元/套光机；CDO数据为入眼亮度 4000–7000 nits、FOV 20–28°、重量 45–75g、功耗 2.0–4.0W。但报告指出其不适合作为 V1 量产主线：若 HUD 持续 3W，8 小时即消耗 24Wh，已逼近 3500mAh / 7.4V 电池总能量上限，同时热点集中在光源与 DMD 附近，更难满足贴脸区 <40℃ 的热目标。",
+  "source": "deep_research:auto_20260326_2",
+  "created_at": "2026-03-26",
+  "tags": [
+    "TI",
+    "DLP",
+    "Pico",
+    "DMD",
+    "热设计",
+    "续航",
+    "deep_research",
+    "auto_20260326_2"
+  ],
+  "confidence": "high"
+}

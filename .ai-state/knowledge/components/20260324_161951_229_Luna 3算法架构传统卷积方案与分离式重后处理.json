@@ -1,0 +1,16 @@
+{
+  "title": "Luna 3算法架构：传统卷积方案与分离式重后处理",
+  "domain": "components",
+  "content": "Luna 3采用传统卷积方案，整体为分离式重后处理算法架构，流程包括Perception Model、Post Processing、Tracking、Multi-Sensor Fusion等模块。该架构依赖较多后处理与模块串联，适合传统感知栈，但在稳定性、时延与整体体验上相较Luna 6的端到端方案存在提升空间。",
+  "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Luna 3",
+    "传统卷积",
+    "后处理",
+    "Tracking",
+    "Multi-Sensor Fusion",
+    "Perception"
+  ],
+  "confidence": "high"
+}

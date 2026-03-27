@@ -1,0 +1,20 @@
+{
+  "title": "0325_Bosch摩托车ARAS盲区预警与头盔集成：2025年对智能全盔的启示",
+  "domain": "components",
+  "content": "Bosch在摩托车ARAS（Advanced Rider Assistance Systems）上的核心已较明确：以77GHz毫米波雷达为基础，提供ACC自适应巡航、FCW前碰撞预警和BSD/BSA盲区预警。来源一致提到其雷达探测距离“通常可达160米”，并通过CAN总线接入整车ECU；量产落地车型包括Ducati Multistrada V4，以及KTM 1290 Super Adventure S、BMW R 1250 RT、Kawasaki Ninja H2 SX SE+等高端车。时间线上，来源一称Bosch自1995年累计为全球超1000万辆摩托车提供安全系统，来源三称其摩托车雷达自2019年开始量产，这两者并不冲突：前者覆盖ABS/MSC等安全系统，后者特指雷达ARAS。对我们做“智能摩托车全盔”最关键的不是重复车端BSD，而是把车端告警更高效地送到头盔内。现有量产方案多停留在仪表或后视镜LED，来源二还提到可通过Sena、Cardo等蓝牙通讯系统做语音播报，但未给出已与Bosch量产深度打通的头盔型号，说明2025年前后“Bosch雷达+头盔原生集成”仍偏生态整合机会，而非成熟标品。产品定义上必须明确排除自行车头盔路径：自行车常见方案偏低速视觉灯光提醒，缺少与摩托车77GHz雷达、ECU、CAN和高速场景匹配的功能安全要求，不能直接复用到全盔。商业上，来源一给出全球摩托车ADAS市场规模：2022年约1.5亿美元，2030年超10亿美元，CAGR超20%，说明高端安全件仍在快速渗透。对头盔侧的可行架构建议是：以全盔内置扬声器/骨传导做一级告警，左右定向音提示盲区；以边缘LED或小型HUD做二级确认；通信上优先蓝牙桥接车机，后续再评估与Bosch Tier1/整车厂做原生协议适配。价格方面，来源未提供Bosch雷达模组或整车选装的公开统一报价，属于信息缺口，应在竞",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "Bosch",
+    "摩托车ARAS",
+    "盲区预警",
+    "77GHz毫米波雷达",
+    "智能全盔",
+    "HUD",
+    "Sena",
+    "Cardo",
+    "Ducati Multistrada V4",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

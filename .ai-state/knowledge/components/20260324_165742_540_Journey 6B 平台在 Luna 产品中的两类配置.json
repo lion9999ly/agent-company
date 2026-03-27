@@ -1,0 +1,16 @@
+{
+  "title": "Journey® 6B 平台在 Luna 产品中的两类配置",
+  "domain": "components",
+  "content": "Journey® 6B在Luna产品中有两类典型配置：一类为1V~1V5R，用于高性能前视一体机，支持Active Safety与ICA+；另一类为5V5R12USS，用于行泊一体入门级域控，增加APA、RPA能力。该平台适合入门级和中低阶辅助驾驶量产，兼顾成本、法规与功能扩展。",
+  "source": "doc_import:智驾大陆 Astra 产品介绍 20260206 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Journey 6B",
+    "Luna",
+    "1V5R",
+    "5V5R12USS",
+    "主动安全",
+    "泊车"
+  ],
+  "confidence": "high"
+}

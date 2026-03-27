@@ -1,0 +1,16 @@
+{
+  "title": "E-NCAP 2026-2028 总体评分规则与Luna 6目标",
+  "domain": "standards",
+  "content": "文档给出E-NCAP 2026计算规则：①+②对应Safe Driving，③对应Crash Avoidance。5星门槛为：①+②>60分(2026)、70分(2027)、80分(2028)；③>70分(2026)、80分(2027)、80分(2028)。备注指出①中的60分实现对主机厂有依赖，需要配备舱内摄像头；②③是Luna 6的目标，目标为满足E-NCAP 5星。",
+  "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "E-NCAP",
+    "2026",
+    "2027",
+    "2028",
+    "Luna 6",
+    "5星"
+  ],
+  "confidence": "high"
+}

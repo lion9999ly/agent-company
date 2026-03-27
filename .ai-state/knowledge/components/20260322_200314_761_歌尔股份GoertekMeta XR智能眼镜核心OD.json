@@ -1,0 +1,29 @@
+{
+  "title": "歌尔股份（Goertek）：Meta XR/智能眼镜核心ODM与Qualcomm技术协同",
+  "domain": "components",
+  "content": "公司名称：歌尔股份（Goertek）。定位：全球领先消费电子ODM/OEM，覆盖智能眼镜、VR/AR设备、可穿戴整机与精密器件。核心能力：声学器件（麦克风、扬声器）、光学（镜头、相机/显示模组）、传感器、系统集成，强项是微型化、精密制造与复杂整机集成，适合智能骑行头盔延伸的AR/音频/传感方案。代工客户：Meta为高度确认核心客户，已知相关项目包括Meta Quest 2、Meta Quest Pro（2022年晚些时候发布），并被广泛认为参与Ray-Ban Stories底层硬件ODM。技术合作：Qualcomm并非整机客户，而是关键芯片/技术伙伴；歌尔围绕Snapdragon XR平台合作，文中提及XR2、XR2 Gen 2，并参与参考设计和前期联合开发。产能与供应能力：原文未给出具体产能数字，但明确指出歌尔因Meta Quest系列需求而持续扩充VR/AR产能并加大研发投入。报价水平：搜索结果未披露具体价格或代工报价。选型判断：若项目需要JDM/ODM一体化、XR SoC整合、光学+声学+传感器协同，歌尔属于高端优先级供应商。",
+  "source": "jdm_learning",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Goertek",
+    "歌尔股份",
+    "ODM",
+    "OEM",
+    "Meta",
+    "Qualcomm",
+    "Quest 2",
+    "Quest Pro",
+    "Ray-Ban Stories",
+    "Snapdragon XR2",
+    "XR2 Gen 2",
+    "智能眼镜",
+    "VR",
+    "AR",
+    "系统集成",
+    "光学模组",
+    "声学器件",
+    "传感器",
+    "jdm_study"
+  ],
+  "confidence": "high"
+}

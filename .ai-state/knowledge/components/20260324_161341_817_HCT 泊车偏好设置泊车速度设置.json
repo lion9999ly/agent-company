@@ -1,0 +1,14 @@
+{
+  "title": "HCT 泊车偏好设置：泊车速度设置",
+  "domain": "components",
+  "content": "文档列出泊车偏好设置中的“泊车速度设置”功能，Luna 6（J6B）与 Astra（J6M）均为 SOP(530)。该能力属于用户体验层配置项，允许用户对自动泊车执行速度进行偏好调节，与基础 APA/RPA 功能同步量产。",
+  "source": "doc_import:Luna 泊车功能介绍 20260302 CN.pptx",
+  "created_at": "2026-03-24",
+  "tags": [
+    "HCT",
+    "偏好设置",
+    "泊车速度",
+    "SOP(530)"
+  ],
+  "confidence": "medium"
+}

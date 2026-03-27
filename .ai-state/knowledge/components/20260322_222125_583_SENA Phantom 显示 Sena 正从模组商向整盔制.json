@@ -1,0 +1,17 @@
+{
+  "title": "SENA Phantom 显示 Sena 正从模组商向整盔制造延伸",
+  "domain": "components",
+  "content": "官方材料称 SENA Phantom 是“the first helmet fully designed and manufactured in our new state-of-the-art factory”，这意味着 Sena 已不只是通讯模组供应商，而是在向整盔制造延伸，并已具备自有新工厂进行完整设计制造的能力。该信息对供应链判断的价值在于：Sena 的角色正在从蓝牙/Mesh 通讯能力输出方，升级为可覆盖头盔整机设计制造的上游平台型厂商。不过本轮材料未给出工厂详细地址，仅有 AI 摘要提到 Seoul，该地点仍需进一步核实。",
+  "source": "deep_research:competitor_supply_chain",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Sena",
+    "Phantom",
+    "自有工厂",
+    "整盔制造",
+    "供应链延伸",
+    "deep_research",
+    "competitor_supply_chain"
+  ],
+  "confidence": "high"
+}

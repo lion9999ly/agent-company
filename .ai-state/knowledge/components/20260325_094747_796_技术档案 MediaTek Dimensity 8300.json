@@ -1,0 +1,14 @@
+{
+  "title": "[技术档案] MediaTek Dimensity 8300 (MediaTek)",
+  "domain": "components",
+  "content": "以下基于你提供的搜索结果整理，**仅使用结果中已出现的信息**，未出现的字段明确标注 **“未查到”**。同时我会从 **AR/XR/可穿戴 SoC 与智能头盔系统设计** 角度，补充适配性分析。\n\n---\n\n# MediaTek Dimensity 8300 完整技术档案\n\n## 0. 芯片概述\n\n- **芯片名称**：MediaTek Dimensity 8300 / 联发科 天玑 8300\n- **产品类型**：移动平台 / 智能手机 SoC\n- **发布时间**：**2023年11月**\n- **市场定位**：**高端中端 / 轻旗舰 / Premium Mid-Range 智能手机平台**\n- **主要目标**：以接近旗舰级的 CPU/GPU/AI 性能，服务中高端智能手机、游戏手机、AI增强型手机、影像手机\n\n---\n\n# 1. 基本参数\n\n## 1.1 制程\n\n- **制程工艺**：**台积电第二代 4nm**\n- 搜索结果中也提到更具体表述为：**TSMC N4P（4nm增强版）**\n- 说明：\n  - 搜索结果中“第二代4nm”和“N4P”均出现，可视为同一代优化型 4nm 工艺描述\n  - 属于 2023 年较先进的手机 SoC 工艺节点\n\n## 1.2 CPU 架构与主频\n\n- **CPU 架构**：**ARMv9 / ARMv9.2**\n- **CPU 核心配置**：**8核**\n  - **1 × Cortex-A715** 超大核，最高 **3.35GHz**\n  - **3 × Cortex-A715** 大核，最高 **3.2GHz**\n  - **4 × Cortex-A510** 能效核，最高 **2.2GHz**\n\n### CPU 性能相关\n- 相比天玑 8200：\n  - **CPU 峰值性能提升约 20%**\n  - **CPU 功耗降低约 30%**\n\n## 1.3 GPU 架构\n\n- **GPU**：**ARM Mali-G615 MC6**\n\n### GPU 性能相关\n- 相比天玑 8200：\n  - **GPU 峰值性能提升最高约 60%**\n  - **GPU 功耗降低约 55%**\n\n### 图形能力\n- 支持：\n  - **Vulkan 1.3**\n  - 最新图形 API（搜索结果笼统提及）\n  - 部分游戏增强/光追相关能力（搜索结果提到“部分支持 Ray Tracing”，但未给出官方明确级别）\n\n## 1.4 NPU / APU 架构与算力\n\n- **AI 处理器**：**MediaTek APU 780**\n- **AI 性能描述**：\n  - 相比前代 **APU 770**，**AI 性能提升约 2 倍**\n  - 能效提升约 **1 倍**\n- **端侧 AI 能力**：\n  - 支持 **生成式 AI**\n  - 支持 **大型语言模型（LLM）**\n  - 支持 **扩散模型（Diffusion Models）**\n- **NPU/APU 算力（TOPS）**：**未查到**\n  - 搜索结果没有给出明确 TOPS 数值\n\n## 1.5 ISP / 多媒体\n\n- **ISP**：搜索结果出现两种说法：\n  - **Imagiq 890**\n  - **Imagiq 780**\n- 由于搜索结果内部不一致，严格按结果整理为：\n  - **ISP 型号：存在冲突，未能唯一确认**\n- 已知 ISP 能力：\n  - **14-bit HDR 图像处理**\n  - **最高支持 ",
+  "source": "kg_expand:ar_xr_soc",
+  "created_at": "2026-03-25",
+  "tags": [
+    "knowledge_graph",
+    "tech_profile",
+    "ar_xr_soc",
+    "mediatek"
+  ],
+  "confidence": "high"
+}

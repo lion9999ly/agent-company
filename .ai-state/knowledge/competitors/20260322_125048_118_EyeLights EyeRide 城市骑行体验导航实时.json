@@ -1,0 +1,16 @@
+{
+  "title": "EyeLights EyeRide 城市骑行体验：导航、实时交通、音频与易配对",
+  "domain": "competitors",
+  "content": "用户反馈 EyeRide 特别适合城市骑行：无需把手机或 GPS 固定在车上即可获得精准导航，实时交通更新可持续显示。音频方面，扬声器被评价为“excellent”，音质好；安装设置简单，与手机配对顺畅。结论是其作为城市通勤/骑行辅助设备具有较高实用性，但文中未给出续航、价格等量化数据。",
+  "source": "doc_import:eyelights_competitor_analysis.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "EyeLights",
+    "EyeRide",
+    "urban riding",
+    "real-time traffic",
+    "audio",
+    "Bluetooth pairing"
+  ],
+  "confidence": "high"
+}

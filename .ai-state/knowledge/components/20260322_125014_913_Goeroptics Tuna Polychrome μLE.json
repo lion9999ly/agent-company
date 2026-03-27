@@ -1,0 +1,15 @@
+{
+  "title": "Goeroptics Tuna Polychrome μLED Xcube AR光机",
+  "domain": "components",
+  "content": "Tuna为Polychrome μLED Xcube方案，采用0.1英寸μLED显示，分辨率380×500，像素尺寸4μm/pixel。瞳孔尺寸3.3mm，FOV(D) 25°，光通量0.3lm@0.2W，@10%APL条件下测试。模组尺寸8.7×5.4×5.7mm，体积0.2cc，重量0.5g，适合极小型AR显示模组场景。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Goeroptics",
+    "Tuna",
+    "μLED",
+    "Xcube",
+    "0.2cc"
+  ],
+  "confidence": "high"
+}

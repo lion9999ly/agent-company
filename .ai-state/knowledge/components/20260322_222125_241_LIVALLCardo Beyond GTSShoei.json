@@ -1,0 +1,17 @@
+{
+  "title": "LIVALL、Cardo Beyond GTS、Shoei GT3 Smart 当前均缺硬证据",
+  "domain": "components",
+  "content": "本轮研究对 3 个对象给出的共同结论是“证据不足，不能写死”：LIVALL 未能锁定具体工厂名称或地址，虽然大概率是中国研发 + 中国制造；Cardo Beyond GTS 缺乏可靠原始证据，可能是未正式量产、非正式产品名或市场误传；Shoei GT3 Smart 仅有视频文件名“Shoei GT3 SMART.mp4”，无法解析内容，因此不能确认智能模组供应商是 Sena、Cardo 或其他公司。对决策的意义是：现阶段不能把这 3 个对象作为已验证供应链样本使用。",
+  "source": "deep_research:competitor_supply_chain",
+  "created_at": "2026-03-22",
+  "tags": [
+    "LIVALL",
+    "Cardo Beyond GTS",
+    "Shoei GT3 Smart",
+    "证据不足",
+    "供应链核实",
+    "deep_research",
+    "competitor_supply_chain"
+  ],
+  "confidence": "high"
+}

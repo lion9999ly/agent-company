@@ -1,0 +1,16 @@
+{
+  "title": "Eyelights Eye-Ride HUD 重置无效，故障恢复能力不足",
+  "domain": "lessons",
+  "content": "针对 Eye-Ride HUD 闪屏问题，用户明确表示“试过重置，但问题依旧”。这说明设备缺乏有效的用户侧故障恢复机制，或故障根因更偏向硬件层面。对于骑行电子设备，若常规重启/重置无法解决异常，将显著增加售后负担，并削弱用户对产品可靠性的判断。",
+  "source": "doc_import:Eyelights用户反馈分析报告.xlsx",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Eyelights",
+    "Eye-Ride HUD",
+    "重置无效",
+    "故障恢复",
+    "稳定性",
+    "ADVrider"
+  ],
+  "confidence": "medium"
+}

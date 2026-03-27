@@ -1,0 +1,14 @@
+{
+  "title": "Snapdragon AR1 Gen 1 Wi‑Fi 安全与协议支持",
+  "domain": "standards",
+  "content": "无线标准方面，FastConnect 7800 支持 802.11be、803.11ax、802.11ac、802.11a/b/g/n，并支持 WPA3-Enterprise、WPA3-Enhanced Open、WPA3 Easy Connect、WPA3-Personal。该组合说明平台在企业级与消费级智能眼镜连接场景中均具备较完整的协议与安全兼容性。",
+  "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "WPA3",
+    "802.11be",
+    "802.11ax",
+    "Wi-Fi security"
+  ],
+  "confidence": "medium"
+}

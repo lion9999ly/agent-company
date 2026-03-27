@@ -1,0 +1,21 @@
+{
+  "title": "0325_2025年ECE 22.06智能摩托车全盔HUD光学模块供应链要点",
+  "domain": "components",
+  "content": "面向智能摩托车全盔（非自行车头盔），2025年HUD集成的核心不是“单个模块拿认证”，而是模块集成后整盔通过ECE 22.06。三份来源一致指出：22.06自2023年1月生效后，对斜向冲击、更多冲击点、附件评估、视野与结构完整性要求更严，因此HUD模组必须控制尺寸、重量、边缘形态与安装位置，避免削弱壳体/缓冲层，也不能明显遮挡周边视野。可关注的上游供应商分三类：1）微显示：Sony、Kopin、eMagin（已被Samsung Display收购）主打Micro-OLED/LCoS；JBD、PlayNitride、Plessey（已被Compound Photonics收购）偏Micro-LED。来源认为Micro-LED更适合强光骑行场景，Micro-OLED在功耗、对比度和体积上更成熟。2）波导/光学：Lumus做反射式波导，优势是高亮度、大FOV；DigiLens、Dispelix、WaveOptics（已被Snap收购）做衍射波导，更薄更轻，但亮度均匀性可能弱。3）投影底层：Texas Instruments提供DLP Pico方案，适合做微投影光机。需注意，来源未给出可直接采购的“摩托车头盔专用HUD模组”型号与公开单价，说明该市场仍以定制合作为主，供应商多提供显示芯片、波导或光机参考设计，而非标准件。公开参数层面，来源仅明确了技术方向与标准约束，没有统一的亮度、FOV、功耗、重量数据；这本身就是风险信号：若供应商只强调AR眼镜指标，未说明整盔ECE 22.06集成验证，就不适合直接导入。价格方面，三份来源均未提供BOM或采购价，属于信息缺口。矛盾点在于：一份来源强调反射式波导更适合头盔HUD，另一份则把DLP/LCoS微投影列为更现实路径；这反映2025年行业尚未收敛，量产路线可能是“Micro-OLED/LCoS+紧凑光机”先落地，Micro-LED+波导作",
+  "source": "daily_deep",
+  "created_at": "2026-03-25",
+  "tags": [
+    "ECE 22.06",
+    "智能摩托车头盔",
+    "HUD",
+    "光学模块",
+    "Micro-OLED",
+    "Micro-LED",
+    "波导",
+    "Lumus",
+    "Kopin",
+    "Texas Instruments",
+    "dynamic"
+  ],
+  "confidence": "high"
+}

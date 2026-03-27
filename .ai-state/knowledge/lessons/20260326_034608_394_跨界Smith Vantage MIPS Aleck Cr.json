@@ -1,0 +1,12 @@
+{
+  "title": "跨界:Smith Vantage MIPS Aleck Crash",
+  "domain": "lessons",
+  "content": "**产品/技术基线**\n- **Smith Vantage MIPS**：集成 **MIPS** 旋转冲击防护、**Koroyd®** 蜂窝吸能材料、**Hybrid Shell** 混合壳体、**BOA® 360** 贴合系统、可调通风；耳垫预留第三方音频仓位。\n- **Aleck 006 / Nunchucks**：蓝牙 **5.0+**，**40mm** 级扬声器，集成麦克风，续航 **10–16h**，防护 **IPX4+**，支持 App 群组对讲。\n- **Aleck Crash Sensor**：基于 **加速度计+陀螺仪** 的碰撞检测，联动 App 倒计时后向紧急联系人发送 **GPS** 位置。\n\n**2026方向性技术趋势**\n- **高度一体化**：音频/蓝牙/DSP/传感器/电源管理整合到单 SoC/微型PCB，模块体积预计缩小 **30–50%**；从“插入式”转向耳垫/衬里原生集成。\n- **音频升级**：空间音频、**自适应ANC**、骨传导辅助、支持 **LDAC / aptX Adaptive / LE Audio(LC3)**。\n- **传感器融合**：碰撞检测从 IMU 升级到 **IMU+气压计+GPS+AI算法**，降低误报；可扩展 **PPG心率/血氧**。\n- **通信增强**：**LE Audio/Auracast** 多人共享，**UWB** 近距精准定位，甚至 **eSIM/5G** 或卫星求救辅助。\n- **电源趋势**：磁吸/Qi无线充电、智能BMS、续航目标 **20–30h**；关注固态电池、能量采集。\n\n**对智能骑行头盔的可借鉴点**\n- 采用“**安全+通信+娱乐**”三合一产品定义，而非单一蓝牙配件。\n- 结构上预留耳区/走线/天线/电池空间，避免后装破坏认证与舒适性。\n- 以 **App订阅/云端事故通",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-26",
+  "tags": [
+    "night_cross",
+    "跨界"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "歌尔Hearable关键技术：自适应ANC、心率检测与听力增强",
+  "domain": "components",
+  "content": "歌尔Hearable产品关键技术包括场景自适应ANC、自适应主动降噪适配、心率检测与听力增强。其心率检测方案采用小开窗设计（φ3mm）、单红外心率检测LED，功耗低于0.6mA；听力增强方面支持听力测试，并覆盖TWS和OWS听力增强技术。头戴算法还包括音效增强、语音增强、语音激活检测和语音唤醒。",
+  "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
+  "created_at": "2026-03-22",
+  "tags": [
+    "Hearable",
+    "ANC",
+    "心率检测",
+    "听力增强",
+    "低功耗",
+    "小开窗"
+  ],
+  "confidence": "high"
+}

@@ -1,0 +1,13 @@
+{
+  "title": "[浅档案] Nordic nRF5340",
+  "domain": "components",
+  "content": "Nordic nRF5340 是一款面向低功耗无线应用的双核 SoC（系统级芯片），主要用于物联网、可穿戴设备和无线音频等场景。它由挪威公司 **Nordic Semiconductor** 生产，是 Nordic 较高端的一款蓝牙/多协议芯片。\n\n主要参数方面，nRF5340 采用 **双 Arm Cortex-M33 内核**：应用核最高 **128 MHz**，网络核最高 **64 MHz**，适合把主业务和无线协议分开处理。芯片集成 **2.4 GHz 多协议无线**，支持 **Bluetooth 5.3 / BLE、Thread、Zigbee** 以及部分专有协议；内存大致为 **1 MB Flash + 512 KB RAM**（另有网络核专用存储资源）。它还提供 **PDM、I2S、SPI、I2C、UART、USB** 等外设，并支持 **TrustZone、安全启动** 等安全特性。参考资料里还提到其接收灵敏度可到 **-98 dBm**（BLE 1 Mbps），发射和接收功耗也较低。\n\n适用场景包括：**BLE Audio/LC3 音频设备、无线耳机、智能穿戴、工业物联网、智能家居网关、Mesh/组网通信设备** 等。总体看，它的优势是 **性能较强、协议支持丰富、低功耗且适合复杂无线任务**。如果用于头盔对讲、传感器网关或高端 BLE 设备，会比较合适。",
+  "source": "kg_expand:mesh_intercom",
+  "created_at": "2026-03-26",
+  "tags": [
+    "knowledge_graph",
+    "shallow",
+    "mesh_intercom"
+  ],
+  "confidence": "low"
+}

@@ -1,0 +1,20 @@
+{
+  "title": "OpenAI、GPT-4o、ChatGPT 与 Sora 的产品与能力调研",
+  "domain": "lessons",
+  "content": "内容系统梳理了 OpenAI 及其核心产品 GPT-4o、ChatGPT、Sora 的发布时间、能力特点与应用场景。重点包括 GPT-4o 的原生多模态、低延迟语音交互、视觉理解与多语言能力，ChatGPT 的对话式交互、快速用户增长与任务泛化能力，以及 Sora 的文本生成视频、长时视频一致性和物理世界建模。与智能骑行头盔项目虽非直接硬件相关，但在语音助手、人机交互、视觉理解、实时翻译、无障碍辅助、内容生成和产品体验设计方面具有明显借鉴价值，可为头盔的AI助手、骑行场景识别、语音控制和品牌功能规划提供参考。",
+  "source": "user_share:url",
+  "created_at": "2026-03-21",
+  "tags": [
+    "OpenAI",
+    "GPT-4o",
+    "ChatGPT",
+    "Sora",
+    "多模态AI",
+    "语音交互",
+    "视频生成",
+    "智能穿戴",
+    "用户体验",
+    "user_share"
+  ],
+  "confidence": "high"
+}
