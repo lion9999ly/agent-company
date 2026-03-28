@@ -1068,6 +1068,14 @@ def _try_generate_design_image(cdo_output: dict, reply_target: str, reply_type: 
 
 def _stream_langgraph(app, initial_state: dict, reply_target: str = None, reply_type: str = None, config: dict = None) -> dict:
     """LangGraph stream 模式执行，精简进度消息"""
+    # 确保 config 包含 thread_id（checkpoint 必须）
+    if config is None:
+        config = {}
+    if "configurable" not in config:
+        config["configurable"] = {}
+    if "thread_id" not in config["configurable"]:
+        config["configurable"]["thread_id"] = f"stream_{uuid.uuid4().hex[:8]}"
+
     # 只保留关键阶段的进度消息
     progress_map = {
         "cpo_plan": None,  # 不发送

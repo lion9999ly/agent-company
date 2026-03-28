@@ -108,7 +108,11 @@ def _call_langgraph(text: str, reply_target: str = None, reply_type: str = None)
             "metadata": {"task_id": f"task_{uuid.uuid4().hex[:8]}"}
         }
 
-        result = langgraph_app.invoke(initial_state)
+        # 添加 thread_id（checkpoint 必须）
+        task_id = f"task_{uuid.uuid4().hex[:8]}"
+        config = {"configurable": {"thread_id": task_id}}
+
+        result = langgraph_app.invoke(initial_state, config=config)
         synthesis = result.get("execution", {}).get("synthesis_output", "")
 
         # 保存记忆
