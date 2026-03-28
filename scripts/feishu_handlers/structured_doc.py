@@ -43,6 +43,112 @@ def _clean_json_text(text: str) -> str:
     return cleaned
 # ===== End Bug C fix =====
 
+# ===== A2: Anchor 读取逻辑 =====
+def _load_anchor():
+    """加载产品需求锚点文件，返回合并后的模块列表和配置"""
+    anchor_path = Path(__file__).resolve().parent.parent.parent / '.ai-state' / 'product_spec_anchor.yaml'
+    if not anchor_path.exists():
+        print("[Anchor] 未找到 product_spec_anchor.yaml，跳过锚点加载")
+        return None
+
+    try:
+        with open(anchor_path, 'r', encoding='utf-8') as f:
+            anchor = yaml.safe_load(f)
+        print(f"[Anchor] 已加载锚点文件: "
+              f"HUD {len(anchor.get('hud_modules', []))} 模块, "
+              f"App {len(anchor.get('app_modules', []))} 模块, "
+              f"跨端 {len(anchor.get('cross_cutting', []))} 模块")
+        return anchor
+    except Exception as e:
+        print(f"[Anchor] 加载失败: {e}")
+        return None
+
+
+def _merge_anchor_with_prompt(anchor: dict, prompt_modules: list) -> list:
+    """
+    将 anchor 中的模块与用户 prompt 解析出的模块合并。
+    anchor 为底线（保证不遗漏），prompt 为增量（可新增 anchor 没有的）。
+    返回去重后的完整模块名列表。
+    """
+    anchor_names = set()
+
+    # 从 anchor 提取所有模块名
+    for section in ['hud_modules', 'app_modules', 'cross_cutting']:
+        for mod in anchor.get(section, []):
+            name = mod.get('name', '')
+            if name:
+                anchor_names.add(name)
+
+    # 合并: anchor 全部保留 + prompt 中 anchor 没有的新增
+    prompt_set = set(prompt_modules)
+    new_from_prompt = prompt_set - anchor_names
+
+    merged = list(anchor_names) + list(new_from_prompt)
+
+    if new_from_prompt:
+        print(f"[Anchor] Prompt 新增 {len(new_from_prompt)} 个模块: {new_from_prompt}")
+
+    print(f"[Anchor] 合并后共 {len(merged)} 个模块")
+    return merged
+
+
+def _get_anchor_sub_features(anchor: dict, module_name: str) -> str:
+    """
+    获取 anchor 中某个模块的 sub_features 和 existing_l2，
+    拼接成字符串注入到 _gen_one 的 prompt 中。
+    """
+    for section in ['hud_modules', 'app_modules', 'cross_cutting']:
+        for mod in anchor.get(section, []):
+            if mod.get('name') == module_name:
+                parts = []
+
+                sub = mod.get('sub_features', [])
+                if sub:
+                    parts.append("【新增/重点功能】\n" + '\n'.join(f'- {s}' for s in sub))
+
+                existing = mod.get('existing_l2', [])
+                if existing:
+                    parts.append("【已有L2维度（保留并深化）】\n" + '\n'.join(f'- {e}' for e in existing))
+
+                notes = mod.get('notes', '')
+                if notes:
+                    parts.append(f"【设计备注】{notes}")
+
+                ref = mod.get('reference', '')
+                if ref:
+                    parts.append(f"【参考】{ref}")
+
+                return '\n'.join(parts)
+
+    return ''
+
+
+def _get_anchor_config(anchor: dict) -> dict:
+    """提取 anchor 中的配置项"""
+    config = {
+        'hud_columns': anchor.get('hud_table_columns', []),
+        'normalize_map': anchor.get('module_normalize', {}),
+        'separation_rules': anchor.get('separation_rules', []),
+        'languages': [],
+    }
+    # 提取多语言配置
+    for mod in anchor.get('cross_cutting', []):
+        if mod.get('name') == '多语言支持':
+            config['languages'] = mod.get('languages', [])
+            break
+    return config
+
+# 全局 anchor 缓存
+_ANCHOR_CACHE = None
+
+def get_cached_anchor():
+    """获取缓存的 anchor，避免重复加载"""
+    global _ANCHOR_CACHE
+    if _ANCHOR_CACHE is None:
+        _ANCHOR_CACHE = _load_anchor()
+    return _ANCHOR_CACHE
+# ===== End A2 =====
+
 PARALLEL_WORKERS = 4  # 并行生成线程数
 
 # 导出目录(项目固定路径,避免 tempfile 权限问题)
@@ -895,6 +1001,15 @@ body {{ font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f5f6fa; 
 .l3 .name {{ min-width: 160px; max-width: 220px; flex-shrink: 0; font-weight: 500; color: #333; }}
 .l3 .desc {{ flex: 1; min-width: 200px; color: #666; }}
 .l3 .acc {{ flex: 1; min-width: 200px; color: #4a9; font-size: 12px; }}
+/* B5: HUD 端新增 4 列样式 */
+.visual-output {{ flex: 1; min-width: 150px; color: #5a67d8; font-size: 12px; }}
+.display-priority {{ min-width: 60px; font-size: 11px; }}
+.display-priority.tag-critical {{ color: #c53030; font-weight: 700; }}
+.display-priority.tag-high {{ color: #b7791f; }}
+.display-priority.tag-medium {{ color: #276749; }}
+.display-priority.tag-low {{ color: #718096; }}
+.degradation {{ flex: 1; min-width: 150px; color: #e53e3e; font-size: 12px; }}
+.display-duration {{ min-width: 80px; color: #718096; font-size: 12px; }}
 .tag {{ display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; color: #fff; }}
 .tag-P0 {{ background: #FF4444; }}
 .tag-P1 {{ background: #FF8C00; }}
@@ -1028,7 +1143,7 @@ function buildTabs() {{
         section.className = 'section' + (idx === 0 ? ' active' : '');
 
         if (tab.type === 'tree') {{
-            section.innerHTML = buildTreeView(tab.id === 'hud' ? hudFeatures : appFeatures);
+            section.innerHTML = buildTreeView(tab.id === 'hud' ? hudFeatures : appFeatures, tab.id === 'hud');
         }} else {{
             section.innerHTML = buildTableView(tab.id);
         }}
@@ -1042,7 +1157,7 @@ function switchTab(id) {{
     window.scrollTo(0, 0);
 }}
 
-function buildTreeView(features) {{
+function buildTreeView(features, isHud = false) {{
     let html = '<div class="stats">';
     const counts = {{}};
     features.forEach(f => {{ counts[f.priority] = (counts[f.priority]||0) + 1; }});
@@ -1084,10 +1199,22 @@ function buildTreeView(features) {{
             const isDescEmpty = !desc || desc.includes('待生成') || desc.includes('待补充') || desc.length < 5;
             const descClass = isDescEmpty ? 'desc empty-desc' : 'desc';
             const descText = isDescEmpty ? '功能规划中' : desc;
+
+            // B5: HUD 端增加 4 个新字段
+            let extraFields = '';
+            if (isHud) {{
+                const dp = (f.display_priority || 'medium').toLowerCase();
+                extraFields = `
+                    <span class="visual-output">${{f.visual_output || ''}}</span>
+                    <span class="display-priority tag-${{dp}}">${{f.display_priority || ''}}</span>
+                    <span class="degradation">${{f.degradation || ''}}</span>
+                    <span class="display-duration">${{f.display_duration || ''}}</span>`;
+            }}
+
             l1Html += `<div class="l3" data-name="${{f.name}}" data-priority="${{f.priority}}">
                 <span class="name">${{tag}} ${{f.name}}</span>
                 <span class="${{descClass}}">${{descText}}</span>
-                <span class="acc">${{f.acceptance||''}}</span></div>`;
+                <span class="acc">${{f.acceptance||''}}</span>${{extraFields}}</div>`;
         }}
     }});
     if (currentL2) l1Html += '</div>';
@@ -1373,16 +1500,26 @@ def _gen_sheet5_button_mapping(gateway) -> List[Dict]:
         "目标 32-40 条.只输出 JSON 数组.\n"
     )
 
+    # B2: 诊断日志
+    print(f"[Button-Diag] prompt长度: {len(prompt)}")
+
     result = gateway.call_azure_openai("cpo", prompt,
         "只输出JSON数组.", "structured_doc")
+
+    # B2: 诊断日志
+    print(f"[Button-Diag] 响应长度: {len(result.get('response', '')) if result.get('success') else 0}")
+    print(f"[Button-Diag] 响应前200字: {result.get('response', '')[:200] if result.get('success') else 'EMPTY'}")
 
     if result.get("success"):
         json_match = re.search(r'\[[\s\S]*\]', result["response"])
         if json_match:
             try:
-                return json.loads(json_match.group())
-            except json.JSONDecodeError:
-                pass
+                data = json.loads(json_match.group())
+                print(f"[Button-Diag] 解析成功: {len(data)} 条")
+                return data
+            except json.JSONDecodeError as e:
+                print(f"[Button-Diag] JSON解析失败: {e}")
+    print("[Button-Diag] 生成失败,返回空列表")
     return []
 
 
@@ -1942,9 +2079,9 @@ def _score_module(items: list) -> int:
     return max(int(score), 0)
 
 
-# ===== Fix 4: 比较决策函数 =====
+# ===== Fix 4: 比较决策函数（改为抽样比质量）=====
 def _compare_decision(module_name: str, old_rows: list, new_rows: list, old_score: int, new_score: int) -> str:
-    """比较决策：新版必须显著更好才替换
+    """比较决策：使用抽样比质量替代总分比较
 
     Returns:
         'new': 使用新版
@@ -1967,17 +2104,17 @@ def _compare_decision(module_name: str, old_rows: list, new_rows: list, old_scor
         print(f"  OK {module_name}: 旧版空壳 (新{new_score})")
         return 'new'
 
-    # 都有内容 → 新版必须高出 5% 以上才替换
-    threshold = max(3, old_score * 0.05)
-    if new_score > old_score + threshold:
-        print(f"  OK {module_name}: 新版显著更好 ({old_score}->{new_score})")
+    # 都有内容 → 使用抽样比质量
+    decision = _sample_compare(old_rows, new_rows)
+
+    if decision == 'new':
+        print(f"  OK {module_name}: 新版质量更好 (抽样)")
         return 'new'
-    elif new_score < old_score - threshold:
-        print(f"  KEEP {module_name}: 旧版更好 ({old_score} vs 新{new_score})")
+    elif decision == 'keep':
+        print(f"  KEEP {module_name}: 旧版质量更好 (抽样)")
         return 'keep'
     else:
-        # 分数接近 → 合并两版的精华
-        print(f"  MERGE {module_name}: 分数接近 ({old_score} vs {new_score})，合并取优")
+        print(f"  MERGE {module_name}: 逐条取优")
         return 'merge'
 
 
@@ -2849,7 +2986,23 @@ def try_structured_doc_fast_track(
                         pass
             # ===== End Fix 8 =====
 
-            print(f"[FastTrack] 检测到 {total} 个一级功能,开始并行生成 ({PARALLEL_WORKERS} 路)")
+            # ===== A3: 加载 anchor 并合并模块列表 =====
+            anchor = get_cached_anchor()
+            if anchor:
+                prompt_module_names = [f['name'] for f in l1_features]
+                merged_names = _merge_anchor_with_prompt(anchor, prompt_module_names)
+
+                # 用 anchor 的归一化映射更新全局映射表
+                anchor_config = _get_anchor_config(anchor)
+                MODULE_NAME_NORMALIZE.update(anchor_config.get('normalize_map', {}))
+
+                # 更新 l1_features 为合并后的列表
+                l1_features = [{'name': name, 'module': name} for name in merged_names]
+                total = len(l1_features)
+                print(f"[FastTrack] 合并 anchor 后共 {total} 个一级功能,开始并行生成 ({PARALLEL_WORKERS} 路)")
+            else:
+                print(f"[FastTrack] 检测到 {total} 个一级功能,开始并行生成 ({PARALLEL_WORKERS} 路)")
+            # ===== End A3 =====
 
             # === 读取上一版版本快照 ===
             prev_items = []
@@ -3044,6 +3197,23 @@ def try_structured_doc_fast_track(
                         "- 数据管理(骑行数据导出、视频批量导出、账号注销)\n"
                     )
 
+                # ===== A4: 注入 anchor 的 sub_features =====
+                anchor_hint = ""
+                if anchor:
+                    anchor_hint = _get_anchor_sub_features(anchor, name)
+                    # 如果是拆解子模块，用父模块名查
+                    if not anchor_hint and '-' in name:
+                        parent_name = name.rsplit('-', 1)[0]
+                        anchor_hint = _get_anchor_sub_features(anchor, parent_name)
+
+                    if anchor_hint:
+                        anchor_hint = f"""
+
+【产品锚点要求 — 此模块必须覆盖以下功能点，不可遗漏】
+{anchor_hint}
+"""
+                # ===== End A4 =====
+
                 is_core = name in ["导航", "主动安全预警提示", "AI语音助手", "组队"]
 
                 batch_user_prompt = (
@@ -3051,6 +3221,7 @@ def try_structured_doc_fast_track(
                     f"模块归属:{module}\n"
                     f"{extra_hint}"
                     f"{kb_inject}\n"
+                    f"{anchor_hint}\n"
                 )
                 if kb_context:
                     batch_user_prompt += f"内部产品文档参考:\n{kb_context[:2000]}\n\n"
@@ -3459,7 +3630,8 @@ def try_structured_doc_fast_track(
                     elif decision == 'keep':
                         final_items.extend(old)
                     elif decision == 'merge':
-                        merged = _merge_two_versions(old, new)
+                        merged = _merge_best_of_both(old, new)
+                        print(f"  MERGE {mod_name}: 逐条取优 ({len(merged)}条)")
                         final_items.extend(merged)
                     # decision is None → 跳过该模块
 
@@ -3536,6 +3708,14 @@ def try_structured_doc_fast_track(
 
             # 跨模块一致性审计
             audit_issues = _cross_module_audit(items, extra_sheets if extra_sheets else {})
+
+            # B4: 一致性审计闭环 — 自动修复
+            if audit_issues:
+                print(f"[Audit] 发现 {len(audit_issues)} 个一致性问题")
+                try:
+                    audit_issues = _auto_fix_audit_issues(audit_issues, extra_sheets if extra_sheets else {}, gw)
+                except Exception as e:
+                    print(f"[Audit-Fix] 自动修复异常: {e}，跳过")
 
             # 并行生成文件
             try:
