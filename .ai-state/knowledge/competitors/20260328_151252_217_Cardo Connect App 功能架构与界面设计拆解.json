@@ -1,0 +1,14 @@
+{
+  "title": "Cardo Connect App 功能架构与界面设计拆解",
+  "domain": "competitors",
+  "content": "**知识条目：Cardo Connect App 功能架构与界面设计拆解**\n\nCardo Connect 是 **Cardo Systems** 为其摩托车蓝牙/网状通信设备提供的官方配套应用，核心服务对象包括 **Packtalk Edge、Packtalk Neo、Packtalk Custom、Packtalk Bold、Packtalk Black、Freecom 4x、Freecom 2x** 等型号。根据检索结果，App 的定位不是独立导航或骑行社区产品，而是围绕“设备控制中枢”展开，承担 **设备设置、固件更新、DMC 群组管理、音频控制、电池监控** 等任务。\n\n### 一、功能架构拆解\n\n从信息结构看，Cardo Connect 可拆为 5 个一级模块：\n\n1. **设备主页/状态层**  \n   负责显示已连接设备、蓝牙连接状态、电池状态、当前音频源等。检索结果明确提到 App 可进行 **电池状态实时监控**，并提供低电量提醒。  \n   设备续航方面，搜索结果给出：多数 **Packtalk 系列**可实现 **13 小时通话时间**，并支持快充，**充电 20 分钟可提供 2 小时通话时间**。\n\n2. **对讲通信层**  \n   这是 Cardo Connect 的核心。其一是 **DMC（Dynamic Mesh Communication）** 管理，其二是传统 **Bluetooth Intercom** 管理。  \n   - DMC 支持 **最多 15 名骑手**全双工对讲。  \n   - 单个骑手之间最大通信距离 **1.6 公里（1 英里）**。  \n   - 理想条件下，群组总覆盖可扩展至 **8 公里（5 英里）**。  \n   - 支持 **创建/加入群组、成员列表、Private Chat、DMC Bridge**。  \n   其中 DMC Bridge 的意义在于把非 DMC 蓝牙设备桥接进网状群组，体现了 App 在“异构设备兼容”上的配置价值。\n\n3. **音频与媒体层**  \n   App 提供音乐、电话、GPS 音频的统一控制，并支持 **并行音频（Parallel Audio）**。也就是说，对讲时可后台保留音乐或导航提示，并通过系统自动混音。  \n   搜索结果提到音频设置包括：  \n   - **EQ/音频配置文件**：如“标准”“低音增强”“人声增强”  \n   - **麦克风灵敏度**  \n   - **背景噪音抑制**  \n   - **AGC 自动音量控制**  \n   对于配备 **JBL** 音响单元的 Cardo 设备，这一层的调音价值更高。支持的音乐服务举例包括 **Spotify、Apple Music**。此外还有 **FM 收音机**扫描与预设管理。\n\n4. **语音控制层**  \n   Cardo 的自然语音控制以 **“Hey Cardo”** 为唤醒词，依赖 **Always-On Microphone、DSP、Voice Recognition Engine、Firmware Integration**。  \n   兼容型号方面，搜索结果明确指出主要覆盖 **Packtalk Bold、Packtalk Black、Packtalk Edge、Packtalk Custom、Packtalk Neo、Freecom 4x、Freecom 2x**。  \n   典型命令示例包括：  \n   - “**Hey Cardo, volume up**”  ",
+  "source": "overnight_deep_v3_breadth",
+  "created_at": "2026-03-28",
+  "tags": [
+    "app_teardown",
+    "competitor_app",
+    "cardo",
+    "breadth_v3"
+  ],
+  "confidence": "medium"
+}

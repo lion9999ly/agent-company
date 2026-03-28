@@ -1,0 +1,22 @@
+{
+  "title": "0328_Sena“Phantom”智能摩托车全盔（2025）可行性研判：Mesh/ANC/ENC/ECE 22.06",
+  "domain": "competitors",
+  "content": "截至给定来源，Sena官方尚未发布名为“Phantom”的智能摩托车头盔，因此该产品应视为基于Sena现有高端全盔路线（如 Impulse、Stryker）的推测性竞品条目，而非已上市SKU。需明确：这里讨论的是摩托车全盔，不是自行车头盔；ECE 22.06 也是摩托车头盔法规，不能与自行车头盔标准混用。若Sena在2025年推出 Phantom，其核心卖点大概率仍是自研 Mesh Intercom 2.0、集成式音频与降噪。来源一致指出 Mesh 支持 Group Mesh 24人，但对 Open Mesh 范围存在冲突：一处称“至少6名骑手、间隔1.6 km时总范围可达8 km”，另一处称“基础2 km、开放地形下6名骑手可扩展至8 km”；因此可判断 2 km 更像单段链路，8 km 为中继扩展总距离。ANC方面，来源称 Sena 已在高端智能头盔中集成 ANC，但同时又指出 Sena现有产品更成熟的是面向麦克风的降噪/Advanced Noise Control，因此“耳机级主动降噪是否已大规模成熟落地”存在不确定性；ENC则基本可视为标配，用于压制风噪和发动机噪声，提升通话清晰度。潜在器件供应链方面，Mesh协议与系统集成由 Sena 自研；无线/音频SoC 候选供应商包括 Qualcomm、MediaTek、Nordic Semiconductor，ANC/DSP方案可能来自 Qualcomm QCC51xx、Analog Devices、Cirrus Logic、STMicroelectronics；MEMS麦克风候选为 Knowles、歌尔股份。认证上，若 Phantom 面向欧洲销售，ECE 22.06 几乎是必需门槛，且比旧版 22.05 更强调多点冲击、旋转加速度与附件一致性，对集成对讲、电池、扬声器的全盔尤其关键。价格方面，来源未给出 Phantom",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Sena",
+    "Phantom",
+    "smart motorcycle helmet",
+    "full-face helmet",
+    "Mesh Intercom 2.0",
+    "ANC",
+    "ENC",
+    "ECE 22.06",
+    "Qualcomm",
+    "Knowles",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

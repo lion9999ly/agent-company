@@ -1,0 +1,19 @@
+{
+  "title": "0328_2026摩托车全盔通信趋势：Cardo DMC/Sena Mesh仍主导群组对讲，Bluetooth LE Audio更",
+  "domain": "components",
+  "content": "面向智能摩托车全盔，2026年通信模块大概率是“双栈”：专有Mesh负责多人对讲，Bluetooth LE Audio负责手机音频与跨品牌基础互联。现有公开资料显示，Cardo Packtalk系列的DMC（Dynamic Mesh Communication）通常宣称支持最多15名骑手、整组最远约8 km、单机间约1.6 km；Sena Mesh Intercom常见口径为最多24名骑手、整组约8 km。两者共同优势是自愈网络和掉线自动重连，明显优于传统蓝牙串链。需要注意：来源对Sena人数上限有不同版本，24人是常见营销口径，但不同代际/模式（Open Mesh、Group Mesh）可能不同，应标注为“型号相关”。\n\nLE Audio的价值在于LC3编解码器、更低功耗、多流音频和Auracast广播，但它本身不是DMC那种多跳、自愈、全双工群组Mesh协议，因此到2026年更可能成为底层音频标准，而非直接替代Cardo/Sena的专有组网。对全盔产品定义而言，这意味着主控SoC需同时处理Mesh语音、手机导航、音乐和本地降噪，硬件复杂度高于自行车头盔；若搜索结果涉及自行车头盔的开放式耳机或低速通勤场景，应明确排除，因为其风噪、续航、手套操作和高速稳定性要求与摩托车全盔不同。\n\n竞争格局上，Cardo与Sena仍是核心供应商。高端Mesh通信器零售价通常在US$299-399/单机、US$549-699/双机套装区间，典型对应Cardo Packtalk Edge与Sena 50S/同级Mesh产品。若做整盔集成，BOM关键件包括：双模蓝牙/LE Audio射频SoC、Mesh基带/协议栈授权、40 mm级扬声器、阵列麦克风、天线与电池。FCC备案/拆解通常最有价值的信息不是“是否支持Mesh”本身，而是射频模组供应商、天线布局、电池容量、充电功率和是否新增LE Aud",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "摩托车全盔",
+    "Mesh通信",
+    "Cardo",
+    "Sena",
+    "Bluetooth LE Audio",
+    "DMC",
+    "FCC",
+    "竞品分析",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

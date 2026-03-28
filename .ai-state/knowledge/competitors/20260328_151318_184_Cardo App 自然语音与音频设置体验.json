@@ -1,0 +1,14 @@
+{
+  "title": "Cardo App 自然语音与音频设置体验",
+  "domain": "competitors",
+  "content": "**知识条目：Cardo App 自然语音与音频设置体验**\n\nCardo App（官方名称通常为 **Cardo Connect**，支持 **iOS** 与 **Android**）是 Cardo Systems 摩托车蓝牙通信设备的核心控制入口。从搜索结果看，Cardo 在“自然语音”和“音频体验”上，主要依赖 **DSP（数字信号处理）**、**AGC（自动增益控制）**、JBL 联合调校的音频预设，以及 App 内的多项音频参数管理，而不是提供一个完全开放的多段手动均衡器。\n\n### 一、涉及品牌与型号\n已明确提到的品牌包括：\n\n- **Cardo Systems**\n- **JBL**（哈曼国际旗下品牌）\n\n已明确提到的设备型号包括：\n\n- **Packtalk Edge**\n- **Packtalk Custom**\n- **Freecom 4x**\n- **Freecom 2x**\n\n这些高端或较新型号在搜索结果中被指出可配备 **JBL 设计的 40mm 高清扬声器**。这是 Cardo 音频体验的重要硬件基础。\n\n### 二、Cardo App 的音频设置结构\nCardo Connect App 中可见的核心音频控制包括：\n\n1. **主音量控制（Master Volume）**  \n   用于调整整体输出音量。搜索结果未给出具体分级数值，因此精确档位为 **not found**。\n\n2. **独立音源音量控制（Independent Audio Source Volume）**  \n   App 可分别管理不同音源，如：\n   - 对讲\n   - 音乐\n   - 电话\n   - GPS 导航\n\n   搜索结果给出的示例参数是：  \n   - 音乐音量可设为 **80%**\n   - 对讲音量可设为 **100%**\n\n   这说明 Cardo 的体验重点在于“按场景分配优先级”，而不是单一总音量。\n\n3. **音频混合 / 音频叠加（Audio Mixing / Audio Overlay）**  \n   这是 Cardo 很关键的体验点：在对讲或电话进行时，背景音乐或导航仍可继续播放，但会按设定比例衰减。  \n   搜索结果只说明可调“背景音频音量”或“音频叠加级别”，但没有给出具体可选档位或百分比范围，因此详细参数为 **not found**。\n\n4. **语音提示音量（Voice Prompt Volume）**  \n   用于调整系统提示音，例如“电池电量低”“对讲已连接”。具体范围或默认值 **not found**。\n\n5. **自动音量控制（Automatic Volume Control, AVC）**  \n   部分 Cardo 型号支持根据环境噪音、车速、风噪自动调节输出音量。搜索结果说明其可能支持开关或敏感度调整，但具体敏感度等级、数值范围 **not found**。\n\n### 三、自然语音体验：降噪与风噪管理\nCardo 的“自然语音”体验并不只是语音助手意义上的自然交互，更核心的是骑行中语音传输是否清晰、是否能压住风噪。\n\n搜索结果明确指出，Cardo 使用：\n\n- **DSP（数字信号处理）**\n- **AGC（自动增益控制）**\n\n其工作逻辑是：\n- **DSP** 实时分析音频，尽量滤除风噪、发动机噪音、道路噪音，同时保留人声；\n- **AGC** 会在高速风噪增大时，自动降低麦克风灵敏度，并可能提高扬声器音量。\n\nApp 中与此最相关的可调项是 **麦克风灵敏度（Microphone ",
+  "source": "overnight_deep_v3_breadth",
+  "created_at": "2026-03-28",
+  "tags": [
+    "app_teardown",
+    "competitor_app",
+    "cardo",
+    "breadth_v3"
+  ],
+  "confidence": "medium"
+}

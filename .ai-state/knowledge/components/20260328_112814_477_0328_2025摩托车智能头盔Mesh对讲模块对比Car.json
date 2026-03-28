@@ -1,0 +1,23 @@
+{
+  "title": "0328_2025摩托车智能头盔Mesh对讲模块对比：Cardo Packtalk Edge vs Sena“60S”/50S v",
+  "domain": "components",
+  "content": "面向智能摩托车全盔选型，2025年Mesh对讲核心候选可归纳为Cardo Packtalk Edge、Sena旗舰Mesh机型，以及Midland BTR1 Advanced。先澄清：本条目讨论的是摩托车头盔外置/集成对讲模块，不是自行车头盔产品；若供应商页面混入自行车通信设备，应排除，因为风噪、续航、手套操作和高速稳定性要求完全不同。来源存在一处明显矛盾：其一直接写“Sena 60S”，其二指出Sena主流旗舰实际为50S/50R，说明“60S”在公开市场上并非已被充分验证的主流量产型号，因此Sena部分应以50S作为可采购对标，60S仅能视作命名假设。具体看，Cardo Packtalk Edge采用第二代DMC（Dynamic Mesh Communication），典型卖点是自愈网络、磁吸Air Mount、JBL 40mm扬声器、蓝牙5.2，官方常见参数为Mesh群组最多15人、标称最长约1.6 km车对车/整体约8 km群组覆盖，快充约20分钟可用2小时，整机续航约13小时，欧美零售价通常在US$389.95左右，供应商为Cardo Systems及RevZilla、Cycle Gear等。Sena 50S采用Mesh Intercom 2.0，提供Open Mesh与Group Mesh两种模式，Group Mesh最多24人，Open Mesh支持多频道开放接入；Harman Kardon音频是其核心卖点，蓝牙5平台，续航常见标称约9小时Mesh/14小时蓝牙，零售价多在US$349-369，供应商为Sena、RevZilla等。若后续真有“60S”，其定位大概率是50S后继，但当前来源未给出可核验型号参数。Midland BTR1 Advanced价格更友好，欧洲市场常见约€139-199，供应商包括Midland Europe及Motocard。它基于蓝",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "摩托车全盔",
+    "Mesh对讲",
+    "DMC",
+    "Cardo Packtalk Edge",
+    "Sena 50S",
+    "Sena 60S争议",
+    "Midland BTR1 Advanced",
+    "蓝牙5.0",
+    "蓝牙5.2",
+    "JBL",
+    "Harman Kardon",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

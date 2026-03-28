@@ -1,0 +1,14 @@
+{
+  "title": "CrossHelmet X1 App 功能与 360° 视觉体验",
+  "domain": "competitors",
+  "content": "**知识条目：CrossHelmet X1 App 功能与 360° 视觉体验**\n\nCrossHelmet 是日本品牌 **CrossHelmet, Inc.**（早期为 **Borderless, Inc.**）推出的智能摩托车头盔系列，其中核心型号为 **CrossHelmet X.1**，相关资料中也提到 **X1R** 用户手册。该产品的主要卖点是通过配套 **CrossHelmet App（iOS / Android）** 管理头盔的音频、后视摄像头与 HUD（Head-Up Display）显示功能，强调更强的环境感知与骑行安全。\n\n需要说明的是，基于现有搜索结果，**“360° 视觉体验”并未找到官方明确表述或完整 360° 全景参数**；已找到的具体数据是其后视摄像头提供**约 170° 广角视野**，因此更准确的描述应是“接近全景感的后方广角视觉辅助”，而不是严格意义上的 360° 全景成像。若要求“360°”的精确技术参数，当前结果应标记为 **not found**。\n\n### 一、支持的产品与品牌信息\n- **品牌**：CrossHelmet  \n- **公司**：CrossHelmet, Inc. / Borderless, Inc.  \n- **主要型号**：**CrossHelmet X.1**  \n- **相关手册型号**：**CrossHelmet X1R**  \n- **后续型号 X.2**：搜索结果提到开发受阻，具体参数与上市信息 **not found**\n\n### 二、App 的核心功能\nCrossHelmet App 是头盔的控制中心，主要功能包括：\n\n1. **后视摄像头与 HUD 管理**\n   - 头盔集成后视摄像头，画面实时投射到头盔内部 HUD。\n   - 已找到的具体视野参数为：**约 170° 广角视野**。\n   - App 可调节：\n     - **亮度（Brightness）**\n     - **对比度（Contrast）**\n     - **图像翻转 / 镜像（Image Flip / Mirroring）**\n   - 这些设置用于适应白天强光、夜间骑行及不同用户的视觉习惯。\n\n2. **环境声音控制（Environmental Sound Control）**\n   - 这是 CrossHelmet X.1 的重要差异化功能。\n   - App 允许用户调节外部环境声音进入头盔的程度，而不是简单地只开或只关降噪。\n   - 适用场景：\n     - 城市低速骑行：保留更多环境音\n     - 高速巡航：增强降噪，降低风噪和发动机噪音\n\n3. **主动降噪（ANC, Active Noise Cancellation）**\n   - X.1 集成 **ANC 主动降噪**，通过麦克风采集外部噪音，再由扬声器发出反相信号进行抵消。\n   - 主要针对：\n     - **风噪**\n     - **发动机噪音**\n     - **道路低频 / 中频噪音**\n   - 官方具体降噪分贝数据：**not found**\n   - 搜索结果仅提到行业常见预期约 **10–20 dB**，但这不是 CrossHelmet 官方实测值，因此不能视为该产品确定参数。\n\n4. **音频与系统管理**\n   - 音量控制：音乐、通话、导航、对讲\n   - 可能支持 **EQ 均衡器设置**\n   - **固件更新**\n   - **蓝牙连接管理**\n   - **导航集成**\n   - ",
+  "source": "overnight_deep_v3_breadth",
+  "created_at": "2026-03-28",
+  "tags": [
+    "app_teardown",
+    "competitor_app",
+    "crosshelmet",
+    "breadth_v3"
+  ],
+  "confidence": "medium"
+}

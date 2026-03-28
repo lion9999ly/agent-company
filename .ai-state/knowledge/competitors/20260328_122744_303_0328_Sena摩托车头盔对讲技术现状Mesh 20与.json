@@ -1,0 +1,20 @@
+{
+  "title": "0328_Sena摩托车头盔对讲技术现状：Mesh 2.0与Harman Kardon音频，而非已证实的“2026 Mesh 3.",
+  "domain": "competitors",
+  "content": "基于给定3个来源，当前可确认的信息是：Sena面向摩托车全盔/模块盔通讯系统的成熟方案仍以Mesh 2.0为主，尚无可靠官方证据证明“2026 Sena Mesh 3.0”已发布。来源1、2都明确指出“2026 Mesh 3.0”缺乏官方信息，因此任何将其写成既成事实的说法都应视为推测；但来源3却把Sena 50S、50R、50C、SRL-Mesh、Impulse、Stryker等直接归为“Mesh 3.0”，这与前两条冲突，需标注为信息矛盾。较稳妥的竞品结论是：Sena Technologies已在高端摩托车对讲产品中形成“Mesh互联+Harman Kardon音频”的组合，代表型号包括Sena 50S、50R、50C、SRL-Mesh、Spider ST1、Spider RT1，其中50S、50R、50C被原始结果明确点名为已采用Harman Kardon调校音频的高端型号。已知参数主要来自现有Mesh 2.0体系：Open Mesh可支持近乎无限用户，Group Mesh最多24人，多通道开放网络可切换9个频道；理想条件下，多骑手中继总距离可达8 km，单设备典型对讲距离约1.6 km。音频方面，Sena自2021年前后与Harman Kardon合作，卖点是定制扬声器与麦克风调校，提升人声清晰度、低频表现和风噪环境下的可懂度；原始结果仅提到“HD speakers”“高级降噪与语音增强”等方向，但未给出具体扬声器型号、麦克风型号、分贝指标或频响参数，因此不能补写类似42dB之类数据。价格方面，给定来源未提供Sena 50S、50R、50C、SRL-Mesh、Spider ST1/RT1的统一官方售价，也没有出现$15-25/颗或￥200-300这类BOM/零售价区间，因此应保持缺失，不做臆造。供应链与认证层面，来源1、2仅说明美国上市无线设备通常会有FCC认证文件",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Sena",
+    "摩托车头盔对讲",
+    "Mesh 2.0",
+    "Mesh 3.0",
+    "Harman Kardon",
+    "FCC",
+    "供应链",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

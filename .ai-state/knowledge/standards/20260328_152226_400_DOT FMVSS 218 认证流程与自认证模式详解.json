@@ -1,0 +1,13 @@
+{
+  "title": "DOT FMVSS 218 认证流程与自认证模式详解",
+  "domain": "standards",
+  "content": "**知识条目：DOT FMVSS 218 认证流程与自认证模式详解**\n\nDOT FMVSS 218 是美国 **NHTSA（National Highway Traffic Safety Administration）** 制定的摩托车头盔强制安全标准，全称为 **Federal Motor Vehicle Safety Standard No. 218, Motorcycle Helmets**。在美国市场销售的摩托车头盔，必须符合该标准。其最大特点不是“政府先发证再上市”，而是 **制造商自认证（Self-Certification）**：企业自行确认产品符合 FMVSS 218，再贴上 DOT 标识上市，NHTSA 通过市场抽检和执法追责进行监管。\n\n### 一、FMVSS 218 的核心测试项目\n\n根据搜索结果，FMVSS 218 主要覆盖以下性能要求：\n\n1. **冲击能量吸收（Impact Energy Attenuation）**  \n   评估头盔在碰撞中吸收能量、降低头部受伤风险的能力。\n\n2. **抗穿透性（Penetration Resistance）**  \n   评估头盔抵抗尖锐物穿透的能力。\n\n3. **保留系统强度（Retention System Strength）**  \n   即下巴带、D 环、快拆扣及其锚点的强度要求。\n\n4. **周边视野（Peripheral Vision）**  \n   头盔不能过度遮挡骑手视线。\n\n5. **标签要求（Labeling Requirements）**  \n   必须有符合规定的 DOT 标签和相关信息。\n\n### 二、自认证模式的流程\n\nFMVSS 218 采用的是 **制造商主责模式**，流程通常包括：\n\n**1. 设计与工程开发**  \n制造商先根据 FMVSS 218 要求进行结构设计，包括外壳、缓冲层、下巴带、锚点和眼口（eyeport）设计。\n\n**2. 内部或第三方测试**  \n企业可在自有实验室或委托第三方实验室进行测试，但即使使用第三方实验室，法律责任仍由制造商承担。搜索结果未提供具体实验室品牌、测试报价或服务价格，**not found**。\n\n**3. 确认合规并贴 DOT 标识**  \n只要制造商确认产品满足 FMVSS 218，即可在头盔上标注 DOT。这里的“DOT”并不等于政府逐一审批，也不是政府预先颁发证书。\n\n**4. 上市销售**  \n产品进入美国市场后，NHTSA 可进行抽检。\n\n**5. 抽检、处罚与召回**  \n若抽检不合格，企业可能面临处罚、停售、召回及法律责任。搜索结果未给出具体罚款金额，**not found**。\n\n### 三、FMVSS 218 中已给出的关键参数\n\n搜索结果提供了较明确的测试数据，尤其是保留系统和视野要求：\n\n#### 1. 保留系统测试（Section S5.6）\n- **动态加载测试**：  \n  保留系统需承受 **38 kg（约 84 lbs）** 载荷，持续 **2 分钟**，不得断裂或失效。\n- **静态加载测试**：  \n  在动态测试后，还需承受 **23 kg（约 50 lbs）** 载荷，持续 **5 分钟**，不得断裂或失效。\n- **滚脱测试（Roll-off Test）**：  \n  头盔在模拟事故拉扯条件下，不得从头模上滚脱。\n\n#### 2. 周边视野要求（Section S5.7）\n- **水平周边视野**：至少 **210°**\n- **垂直视野**：至少 **向上 ",
+  "source": "overnight_deep_v3_breadth",
+  "created_at": "2026-03-28",
+  "tags": [
+    "certification",
+    "dot",
+    "breadth_v3"
+  ],
+  "confidence": "medium"
+}

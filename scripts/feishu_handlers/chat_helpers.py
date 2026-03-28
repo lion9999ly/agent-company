@@ -1,0 +1,165 @@
+"""
+@description: 飞书消息通用工具 - send_reply、日志、token 管理
+@refactored_from: feishu_sdk_client.py
+@last_modified: 2026-03-28
+"""
+import os
+import sys
+import json
+import requests
+from pathlib import Path
+from datetime import datetime
+
+# 项目根目录
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from dotenv import load_dotenv
+load_dotenv(str(PROJECT_ROOT / ".env"))
+
+# === 配置 ===
+APP_ID = os.getenv("FEISHU_APP_ID", "")
+APP_SECRET = os.getenv("FEISHU_APP_SECRET", "")
+
+# === 日志文件 ===
+_LOG_FILE = PROJECT_ROOT / ".ai-state" / "feishu_debug.log"
+
+
+def log(msg: str):
+    """写入文件日志"""
+    try:
+        with open(_LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}\n")
+    except Exception:
+        pass
+    print(msg, flush=True)
+
+
+# === 回复上下文：群聊时用 chat_id，私聊时用 open_id ===
+_reply_context = {"target": None, "type": "open_id"}
+
+
+def set_reply_context(target: str, rtype: str):
+    """设置回复上下文"""
+    _reply_context["target"] = target
+    _reply_context["type"] = rtype
+
+
+def get_tenant_access_token() -> str:
+    """获取飞书 tenant_access_token"""
+    url = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal"
+    try:
+        resp = requests.post(url, json={"app_id": APP_ID, "app_secret": APP_SECRET}, timeout=10)
+        result = resp.json()
+        if result.get("tenant_access_token"):
+            return result["tenant_access_token"]
+        else:
+            log(f"[Token Error] {result}")
+            return ""
+    except Exception as e:
+        log(f"[Token Exception] {e}")
+        return ""
+
+
+def send_reply(target_id: str = None, text: str = "", id_type: str = None) -> bool:
+    """发送回复消息
+
+    如果不传参数，使用 _reply_context 中的默认值（群聊时自动回复到群里）
+
+    Args:
+        target_id: open_id（私聊）或 chat_id（群聊），None 时使用上下文
+        text: 回复内容
+        id_type: "open_id" 或 "chat_id"，None 时使用上下文
+
+    Returns:
+        bool: 是否发送成功
+    """
+    # 使用上下文默认值
+    if target_id is None:
+        target_id = _reply_context.get("target")
+    if id_type is None:
+        id_type = _reply_context.get("type", "open_id")
+
+    if not target_id:
+        log("  [回复失败: 无目标ID]")
+        return False
+
+    token = get_tenant_access_token()
+    if not token:
+        log("  [回复失败: 无法获取token]")
+        return False
+
+    url = f"https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type={id_type}"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "receive_id": target_id,
+        "msg_type": "text",
+        "content": json.dumps({"text": text})
+    }
+    try:
+        response = requests.post(url, headers=headers, json=data, timeout=10)
+        result = response.json()
+        if result.get("code") == 0:
+            log(f"  [回复成功: {id_type}]")
+            return True
+        else:
+            log(f"  [回复失败: {result}]")
+            return False
+    except Exception as e:
+        log(f"  [回复异常: {e}]")
+        return False
+
+
+def send_image_reply(target_id: str, image_bytes: bytes, id_type: str = "open_id") -> None:
+    """通过飞书发送图片消息"""
+    import base64 as b64
+    token = get_tenant_access_token()
+    if not token:
+        return
+    # 先上传图片到飞书
+    upload_url = "https://open.feishu.cn/open-apis/im/v1/images"
+    headers = {"Authorization": f"Bearer {token}"}
+    files = {"image": ("image.png", image_bytes, "image/png")}
+    data = {"image_type": "message"}
+    try:
+        resp = requests.post(upload_url, headers=headers, files=files, data=data, timeout=30)
+        result = resp.json()
+        if result.get("code") != 0:
+            log(f"  [图片上传失败: {result}]")
+            return
+        image_key = result["data"]["image_key"]
+        # 发送图片消息
+        msg_url = f"https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type={id_type}"
+        msg_data = {
+            "receive_id": target_id,
+            "msg_type": "image",
+            "content": json.dumps({"image_key": image_key})
+        }
+        msg_headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+        requests.post(msg_url, headers=msg_headers, json=msg_data, timeout=10)
+        log(f"  [图片发送成功: {id_type}]")
+    except Exception as e:
+        log(f"  [图片发送异常: {e}]")
+
+
+def get_session_id(open_id: str, chat_id: str) -> str:
+    """生成会话 ID（用于对话记忆）"""
+    if chat_id:
+        return f"chat_{chat_id}"
+    return f"user_{open_id}"
+
+
+# === 导出接口 ===
+__all__ = [
+    "log",
+    "send_reply",
+    "send_image_reply",
+    "get_tenant_access_token",
+    "set_reply_context",
+    "get_session_id",
+    "APP_ID",
+    "APP_SECRET",
+]

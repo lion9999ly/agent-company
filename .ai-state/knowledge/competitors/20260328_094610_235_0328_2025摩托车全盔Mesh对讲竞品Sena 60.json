@@ -1,0 +1,20 @@
+{
+  "title": "0328_2025摩托车全盔Mesh对讲竞品：Sena 60S与Cardo Packtalk Edge的LE Audio升级路径",
+  "domain": "competitors",
+  "content": "面向智能摩托车全盔，2025年最值得跟踪的不是“自行车头盔通信器”，而是可嵌入或外挂于全盔的摩托车Mesh对讲平台。现有搜索结果里，Cardo Packtalk Edge是已上市基准款，Sena 60S则更像2025年假设/传闻型号，需明确区分。Packtalk Edge由Cardo Systems供应，核心卖点是第二代DMC动态Mesh、JBL 40mm扬声器、蓝牙5.2、IP67，公开零售价通常在US$389.95左右（单机），Duo双机约US$699.95；官方宣称DMC最多支持15名骑手，最长约1.6 km点对点，多节点扩展可到约8 km。Sena现有成熟对标物其实是50S/50R，而非已被充分证实的60S；来源中提到“60S”与“Mesh 3.0”更多属于2025展望，不能当作已量产参数。这里存在明显信息冲突：一组来源把S7 Pro和Sena 60S都定义为“假设性”，另一组又称Qualcomm S7 Pro已于2023年末发布。较稳妥的判断是：高通S7 Pro平台真实存在于高端音频SoC路线中，但“已用于摩托车头盔对讲”暂无来源给出FCC型号、量产SKU或供应商落地证据。对产品规划而言，LE Audio比“某个具体芯片名”更关键。蓝牙LE Audio基于Bluetooth 5.2+，核心是LC3编码、Multi-Stream和Auracast广播音频，理论上可在更低功耗下提升语音清晰度，并改善全盔内左右声道同步与多人收听场景。但要注意：Auracast更适合单向广播，不等于可直接替代双向Mesh对讲，因此2025年高端摩托车头盔大概率仍是“专有Mesh/DMC + 蓝牙LE Audio”混合架构。FCC层面，任何在美国销售的头盔通信模块都需完成射频认证，但本次来源未给出Sena 60S或基于S7 Pro的具体FCC ID，因此不能写成“已获FCC认证”。结论：若",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "摩托车全盔",
+    "Mesh对讲",
+    "Cardo Packtalk Edge",
+    "Sena 60S",
+    "Qualcomm S7 Pro",
+    "Bluetooth LE Audio",
+    "FCC",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "0328_Shoei Opticson智能HUD全盔：供应链与量产进度存在信息冲突",
+  "domain": "competitors",
+  "content": "Shoei Opticson 是面向摩托车骑行场景的智能全盔概念，不是自行车头盔，这一点需与部分消费电子媒体常见的“智能头盔”泛称明确区分。基于现有3个来源，可确认其核心卖点是将 HUD 平视显示、导航、来电提醒、速度信息及后视影像整合进全盔视野，但量产时间、首秀时间和显示供应商仍存在明显冲突。来源1称 Opticson 于 2021 年 EICMA 亮相，且截至目前仍为概念产品，Shoei 未确认 2026 年上市，也未公开 Sony Semiconductor Solutions 为供应商；来源2则称其在 CES 2023 亮相，并把 Sony Semiconductor Solutions 描述为 Micro-OLED 显示技术与光学模块提供方，但未给出具体显示型号，也仅称目标商业化时间约为 2026 年；来源3又称其最早在 CES 2019 亮相，合作方是 NS West Inc.，且截至 2023 年末仍无正式售价与发布日期。也就是说，“Sony Semiconductor Solutions 是确定供应商”与“NS West Inc. 是显示模块合作方”两种说法互相矛盾，现阶段更稳妥的结论是：Shoei 尚未公开最终量产供应链。已披露功能层面，Opticson 更接近增强型 HUD，而非严格意义上可做空间锚定的 AR HUD；若未来升级为 AR HUD，还需 IMU、GPS、环境光传感器和更复杂光学波导/投影系统协同。参数方面，原始结果仅明确提到采用 Micro-OLED 路线、具备环境光传感器、支持蓝牙连接与后视摄像头，但没有出现 IMX678、BES2800、QCC5181、3000nits、42dB、1.65kg 等具体型号或数值。价格方面，3个来源均未给出官方定价，也没有出现 ￥200-300、$15-25/颗 这类可引用数据，因此无法确认市场售价。结合",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Shoei",
+    "Opticson",
+    "HUD",
+    "AR HUD",
+    "摩托车全盔",
+    "Sony",
+    "NS West",
+    "智能头盔",
+    "供应链",
+    "竞品分析",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

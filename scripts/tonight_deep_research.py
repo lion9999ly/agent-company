@@ -766,5 +766,132 @@ def run_all(progress_callback=None):
     return str(summary_path)
 
 
+def parse_research_tasks_from_md(md_path: str) -> list:
+    """从 markdown 文件解析研究任务
+
+    支持的格式：
+    - # 研究 A：标题 -> 解析为任务
+    - ## A.1 子任务标题 -> 解析为 searches
+    - goal 从 "研究目标" 部分提取
+    """
+    content = Path(md_path).read_text(encoding="utf-8")
+    tasks = []
+
+    # 匹配研究标题：# 研究 A：XXX 或 # 研究 B：XXX
+    research_pattern = re.compile(r'^# 研究 ([A-Z])：(.+)$', re.MULTILINE)
+
+    for match in research_pattern.finditer(content):
+        task_id = f"research_{match.group(1).lower()}"
+        title = match.group(2).strip()
+
+        # 提取该研究的完整内容（到下一个 # 研究 或文件结束）
+        start_pos = match.end()
+        next_match = research_pattern.search(content, start_pos)
+        end_pos = next_match.start() if next_match else len(content)
+        section_content = content[start_pos:end_pos]
+
+        # 提取目标（从 ## X.0 研究目标 部分）
+        goal_match = re.search(r'## [A-Z]\.0\s*(?:研究目标|分析目标)\s*\n([^\n]+(?:\n(?![#])[^\n]+)*)', section_content)
+        goal = goal_match.group(1).strip() if goal_match else f"深度研究：{title}"
+
+        # 提取 searches（从子任务标题 ## A.1.1 等）
+        searches = []
+
+        # 匹配子任务：### A.1.1 标题 或 ## A.1 标题
+        subtask_pattern = re.compile(r'^#{2,3}\s+[A-Z]\.\d+(?:\.\d+)?\s+(.+)$', re.MULTILINE)
+        for sub_match in subtask_pattern.finditer(section_content):
+            sub_title = sub_match.group(1).strip()
+            # 将子任务标题转换为搜索关键词
+            search_query = f"{sub_title} motorcycle helmet HUD specs parameters 2025 2026"
+            searches.append(search_query)
+
+        # 添加默认搜索词
+        if not searches:
+            searches = [
+                f"{title} motorcycle helmet HUD 2025 2026",
+                f"{title} optical display specifications",
+            ]
+
+        tasks.append({
+            "id": task_id,
+            "title": title,
+            "goal": goal,
+            "searches": searches[:10],  # 最多 10 个搜索
+            "source_file": str(md_path),
+        })
+
+    return tasks
+
+
+def run_research_from_file(md_path: str, progress_callback=None, task_ids: list = None):
+    """从 markdown 文件运行研究任务
+
+    Args:
+        md_path: 任务定义文件路径
+        progress_callback: 进度回调函数
+        task_ids: 指定运行的任务 ID 列表，如 ['research_a', 'research_b']；None 表示全部运行
+    """
+    tasks = parse_research_tasks_from_md(md_path)
+
+    if not tasks:
+        print(f"[Warning] 未从 {md_path} 解析到任务")
+        return None
+
+    # 过滤指定任务
+    if task_ids:
+        tasks = [t for t in tasks if t["id"] in task_ids]
+
+    if not tasks:
+        print(f"[Warning] 指定的 task_ids {task_ids} 未在文件中找到")
+        return None
+
+    print(f"\n{'#'*60}")
+    print(f"# 从文件运行深度研究: {md_path}")
+    print(f"# 共 {len(tasks)} 个任务")
+    print(f"# 开始时间: {time.strftime('%Y-%m-%d %H:%M')}")
+    print(f"{'#'*60}")
+
+    reports = []
+    for idx, task in enumerate(tasks, 1):
+        if progress_callback:
+            progress_callback(f"🔍 [{idx}/{len(tasks)}] 开始: {task['title']}")
+
+        report = deep_research_one(task, progress_callback=progress_callback)
+        reports.append({"id": task["id"], "title": task["title"], "report": report})
+        print(f"\n✅ {task['title']} 完成 ({len(report)} 字)")
+
+        if progress_callback:
+            progress_callback(f"✅ [{idx}/{len(tasks)}] {task['title']} ({len(report)}字)")
+
+        time.sleep(3)
+
+    # 汇总保存
+    md_name = Path(md_path).stem
+    summary_path = REPORT_DIR / f"{md_name}_summary_{time.strftime('%Y%m%d_%H%M')}.md"
+    summary = f"# {md_name} — 深度研究汇总\n\n"
+    summary += f"> 来源文件: {md_path}\n"
+    summary += f"> 生成时间: {time.strftime('%Y-%m-%d %H:%M')}\n\n"
+    for r in reports:
+        summary += f"\n---\n\n## {r['title']}\n\n{r['report']}\n"
+    summary_path.write_text(summary, encoding="utf-8")
+
+    print(f"\n{'#'*60}")
+    print(f"# 全部完成！")
+    print(f"# 报告: {summary_path}")
+    print(f"# 完成时间: {time.strftime('%Y-%m-%d %H:%M')}")
+    print(f"{'#'*60}")
+
+    return str(summary_path)
+
+
 if __name__ == "__main__":
-    run_all()
+    import sys
+
+    if len(sys.argv) > 1:
+        # 支持命令行参数：python tonight_deep_research.py path/to/tasks.md [task_ids...]
+        md_path = sys.argv[1]
+        task_ids = sys.argv[2:] if len(sys.argv) > 2 else None
+        run_research_from_file(md_path, task_ids=task_ids)
+    else:
+        # 默认运行内置任务
+        run_all()

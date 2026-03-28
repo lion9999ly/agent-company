@@ -1,0 +1,18 @@
+{
+  "title": "0328_Forcite MK1S智能摩托车头盔：HUD、碰撞检测与供应链线索",
+  "domain": "competitors",
+  "content": "Forcite MK1S是澳大利亚Forcite Helmets面向高端市场的智能摩托车全盔，公开资料显示其零售价通常在1000-1200美元区间，常见表述约为US$1,099；定位上属于摩托车头盔，不是自行车头盔，评估时应排除自行车HUD/骑行眼镜方案。MK1S延续碳纤维外壳路线，核心卖点是集成HUD、前置摄像头、蓝牙音频与碰撞检测。来源对HUD实现存在矛盾：一组资料称其为“微型投影/透明组合器”，另一组称“微型OLED显示屏，位于右眼下方”，说明公开信息未统一，较稳妥的结论是其采用近眼显示模组，在视野边缘呈现导航、限速、来电和危险提醒，而非大视场AR。",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "smart helmet",
+    "motorcycle helmet",
+    "HUD",
+    "crash detection",
+    "supplier",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

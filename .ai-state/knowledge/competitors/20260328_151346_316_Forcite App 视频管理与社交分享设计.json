@@ -1,0 +1,14 @@
+{
+  "title": "Forcite App 视频管理与社交分享设计",
+  "domain": "competitors",
+  "content": "**知识条目：Forcite App 视频管理与社交分享设计**\n\nForcite App 是 **Forcite** 智能摩托车头盔生态中的核心配套应用，主要服务于 **Forcite MK1S** 等型号的摄像、视频管理、导航与内容分享。基于检索结果，Forcite App 在“视频管理与社交分享设计”上呈现出“头盔端采集 + App端管理 + 手机系统级分享”的产品逻辑。\n\n### 1. 适配硬件与视频采集能力\n\n已检索到的明确型号为 **Forcite MK1S**。该型号集成摄像头，并可通过 App 调整录制参数。搜索结果给出的具体视频规格包括：\n\n- **4K @ 30fps**，通常对应 **3840 × 2160**\n- **2.7K @ 30fps**，通常对应 **2704 × 1520**\n- **1080p @ 60fps**，即 **1920 × 1080**\n- **1080p @ 30fps**，即 **1920 × 1080**\n\n关于摄像头描述，搜索结果同时出现了两种说法：\n- “**内置广角摄像头通常以 1080p @ 60fps 录制**”\n- “**MK1S 集成 4K 摄像头**”\n\n因此更稳妥的结论是：**Forcite MK1S 通过 App 可设置至少 4K/2.7K/1080p 多档分辨率与帧率；默认或常用录制规格可能为 1080p @ 60fps，但具体默认值 not found。**\n\n存储方面，视频先写入头盔内部 **MicroSD 卡**。检索结果提到“通常支持 **128GB 或 256GB**”，但未给出官方唯一确认值，因此可记录为：**MicroSD 容量支持 128GB/256GB（具体官方上限 not found）**。\n\n### 2. 视频下载与管理设计\n\nForcite App 的视频管理设计重点在于“从头盔到手机”的高效传输。搜索结果明确指出：\n\n- 手机与头盔通过 **Wi‑Fi 连接**\n- App 内可浏览头盔 SD 卡中的视频文件\n- 用户可选择下载完整视频或片段到手机本地存储\n\n这一设计说明 Forcite 没有采用蓝牙传输大视频文件，而是使用 **Wi‑Fi 直连**，以满足 **4K @ 30fps** 或 **1080p @ 60fps** 等高码率视频的传输需求。App 内提供“媒体库”式界面，用于预览、筛选、下载和本地管理素材。\n\n从交互设计角度看，这种方案的优点是：\n1. 头盔端负责采集与存储；\n2. App 端负责预览、下载、整理；\n3. 手机端负责后续编辑、发布与备份。\n\n### 3. 视频编辑与分享设计\n\n在分享链路上，Forcite App 提供的是“轻编辑 + 系统分享”模式。检索结果中明确提到 App 支持基础编辑工具，至少包括：\n\n- **剪辑（trimming）**\n\n但更高级的编辑能力，如滤镜、字幕、转场、模板、自动高光剪辑等，**not found**。\n\n分享方式上，Forcite App 调用手机原生分享机制：\n- iOS：**Share Sheet**\n- Android：**Share Intent**\n\n因此视频可直接分享到外部平台，包括：\n- **YouTube**\n- **Instagram**\n- **Facebook**\n- **TikTok**\n- **Twitter**\n- **WhatsApp**\n- **Telegram**\n- **Messenger**\n- **Google Drive**\n- **Dr",
+  "source": "overnight_deep_v3_breadth",
+  "created_at": "2026-03-28",
+  "tags": [
+    "app_teardown",
+    "competitor_app",
+    "forcite",
+    "breadth_v3"
+  ],
+  "confidence": "medium"
+}
