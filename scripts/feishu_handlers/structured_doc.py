@@ -437,6 +437,115 @@ def _write_sheet(ws, items: List[Dict]):
     for i, w in enumerate(widths):
         ws.column_dimensions[get_column_letter(i + 1)].width = w
 
+
+def _write_hud_sheet(ws, items: List[Dict]):
+    """写入 HUD Sheet（12列，含 HUD 专用字段）"""
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+    from openpyxl.utils import get_column_letter
+
+    # HUD 专用表头：增加 4 列
+    headers = ["功能ID", "L1功能", "L2功能", "L3功能", "优先级",
+               "交互方式", "描述", "验收标准", "关联功能", "备注",
+               "显示输出（视觉）", "显示优先级", "异常与降级", "显示时长"]
+
+    # 表头样式
+    header_font = Font(bold=True, color="FFFFFF", size=11)
+    header_fill = PatternFill(start_color="2F5496", end_color="2F5496", fill_type="solid")
+    thin_border = Border(
+        left=Side(style='thin'), right=Side(style='thin'),
+        top=Side(style='thin'), bottom=Side(style='thin')
+    )
+
+    for col, h in enumerate(headers, 1):
+        cell = ws.cell(row=1, column=col, value=h)
+        cell.font = header_font
+        cell.fill = header_fill
+        cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        cell.border = thin_border
+
+    # 优先级颜色
+    priority_fills = {
+        "P0": PatternFill(start_color="FF4444", end_color="FF4444", fill_type="solid"),
+        "P1": PatternFill(start_color="FF8C00", end_color="FF8C00", fill_type="solid"),
+        "P2": PatternFill(start_color="4CAF50", end_color="4CAF50", fill_type="solid"),
+        "P3": PatternFill(start_color="9E9E9E", end_color="9E9E9E", fill_type="solid"),
+    }
+    priority_fonts = {
+        "P0": Font(bold=True, color="FFFFFF"),
+        "P1": Font(bold=True, color="FFFFFF"),
+        "P2": Font(color="FFFFFF"),
+        "P3": Font(color="FFFFFF"),
+    }
+
+    # L1 行样式
+    l1_fill = PatternFill(start_color="D6E4F0", end_color="D6E4F0", fill_type="solid")
+    l1_font = Font(bold=True, size=11)
+    l2_font = Font(bold=True, size=10)
+
+    for row_idx, item in enumerate(items, 2):
+        level = item.get("level", "")
+        name = item.get("name", "")
+
+        # 防止 list/dict 写入 Excel 的辅助函数
+        def _safe_val(key):
+            v = item.get(key, "")
+            if isinstance(v, (list, dict)):
+                return ", ".join(str(x) for x in v) if isinstance(v, list) else str(v)
+            elif v is None:
+                return ""
+            return str(v) if v else ""
+
+        # 功能ID
+        ws.cell(row=row_idx, column=1, value=_safe_val("_id"))
+
+        # L1/L2/L3 分列填写
+        if level == "L1":
+            ws.cell(row=row_idx, column=2, value=name)
+        elif level == "L2":
+            ws.cell(row=row_idx, column=3, value=name)
+        elif level == "L3":
+            ws.cell(row=row_idx, column=4, value=name)
+
+        # 基础列（1-10）
+        ws.cell(row=row_idx, column=5, value=_safe_val("priority"))
+        ws.cell(row=row_idx, column=6, value=_safe_val("interaction"))
+        ws.cell(row=row_idx, column=7, value=_safe_val("description"))
+        ws.cell(row=row_idx, column=8, value=_safe_val("acceptance"))
+        ws.cell(row=row_idx, column=9, value=_safe_val("dependencies"))
+        ws.cell(row=row_idx, column=10, value=_safe_val("note"))
+
+        # HUD 专用列（11-14）
+        ws.cell(row=row_idx, column=11, value=_safe_val("visual_output"))
+        ws.cell(row=row_idx, column=12, value=_safe_val("display_priority"))
+        ws.cell(row=row_idx, column=13, value=_safe_val("degradation"))
+        ws.cell(row=row_idx, column=14, value=_safe_val("display_duration"))
+
+        # 样式
+        for col in range(1, 15):  # 14列
+            cell = ws.cell(row=row_idx, column=col)
+            cell.border = thin_border
+            cell.alignment = Alignment(vertical="center", wrap_text=True)
+
+        if level == "L1":
+            for col in range(1, 15):
+                ws.cell(row=row_idx, column=col).fill = l1_fill
+                ws.cell(row=row_idx, column=col).font = l1_font
+        elif level == "L2":
+            ws.cell(row=row_idx, column=3).font = l2_font
+
+        # 优先级颜色
+        p = item.get("priority", "").upper()
+        if p in priority_fills:
+            pc = ws.cell(row=row_idx, column=5)
+            pc.fill = priority_fills[p]
+            pc.font = priority_fonts[p]
+            pc.alignment = Alignment(horizontal="center", vertical="center")
+
+    # 列宽（14列）
+    widths = [16, 20, 24, 28, 8, 16, 36, 36, 20, 16, 24, 12, 20, 12]
+    for i, w in enumerate(widths):
+        ws.column_dimensions[get_column_letter(i + 1)].width = w
+
     ws.freeze_panes = "A2"
     ws.auto_filter.ref = f"A1:{get_column_letter(len(headers))}{len(items) + 1}"
 
@@ -2576,7 +2685,7 @@ def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, e
     ws_hud = wb.active
     ws_hud.title = "HUD及头盔端"
     if hud_items:
-        _write_sheet(ws_hud, hud_items)
+        _write_hud_sheet(ws_hud, hud_items)
 
     # Sheet 2: App 功能
     if app_items:
@@ -3248,6 +3357,34 @@ def try_structured_doc_fast_track(
 - 严格遵守此上限，超出部分不会被系统采纳
 """
                 # ===== End Fix 1 Step 1 =====
+
+                # ===== A5: HUD 端模块的分离规则和新增字段 =====
+                HUD_MODULE_SET = {
+                    "导航", "来电", "音乐", "消息", "AI语音助手", "Ai语音助手",
+                    "简易", "简易路线", "路线", "主动安全预警提示", "组队", "摄像状态",
+                    "胎温胎压", "开机动画", "速度", "设备状态", "显示队友位置", "头盔HUD",
+                    "实体按键交互", "氛围灯交互", "AI功能", "语音交互", "视觉交互", "多模态交互",
+                    "信息中岛", "自定义HUD显示", "SOS与紧急救援", "生命体征与疲劳监测", "场景模式",
+                }
+                is_hud_module = name in HUD_MODULE_SET or any(h in name for h in HUD_MODULE_SET)
+
+                if is_hud_module:
+                    batch_user_prompt += """
+
+【输出规则 — HUD端模块严格遵守】
+1. 纯App操作（历史数据查看、复杂设置、内容管理）不放此表，仅放App表
+2. 按键操作细节不在此表展开，用"支持按键操作"概述，具体放按键映射表
+3. 灯光效果不在此表展开，用"灯光联动提示"概述，具体放灯效定义表
+4. 语音指令不在此表展开，用"支持语音控制"概述，具体放语音指令表
+5. 本模块最多输出 18 条功能（L1+L2+L3 合计），P0/P1 优先
+
+【额外输出字段 — 每条L3功能必须包含】
+- visual_output: 该功能在HUD上的视觉呈现描述（如"左下角箭头卡片+距离数字"）
+- display_priority: 显示优先级（critical/high/medium/low），决定屏幕空间争抢时的排序
+- degradation: 异常时的降级方案（如"断连时显示最后缓存数据+灰色蒙层"）
+- display_duration: 显示时长（permanent/event_Ns/user_dismiss/auto_5s 等）
+"""
+                # ===== End A5 =====
 
                 batch_user_prompt += "\n只输出 JSON 数组."
 
