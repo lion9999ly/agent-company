@@ -1,0 +1,10 @@
+{
+  "request_id": "REQ_20260328_feishu_sdk",
+  "applicant_agent": "claude_code",
+  "violated_rule": "01-quality-redlines.md#单文件800行红线",
+  "target_file": "scripts\\feishu_sdk_client.py",
+  "justification": "飞书SDK客户端核心模块，已存在多年，本次修改为新增文件读取研究任务功能。历史债务，需独立重构计划拆分。",
+  "status": "approved",
+  "approved_by": "UIH00653",
+  "expiry_timestamp": 2000000000
+}

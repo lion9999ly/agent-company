@@ -681,7 +681,65 @@ def handle_rating(text: str, open_id: str, reply_target: str = None) -> bool:
                         else:
                             print(f"[Evolution] LLM 未输出 CHECK_RULE_JSON，跳过规则生成")
 
-                        send_reply(reply_target, f"🔍 已分析任务失败原因并记录为经验教训，下次类似任务会注意。")
+                        send_reply(reply_target, f"已分析任务失败原因并记录为经验教训，下次类似任务会注意。")
+
+                        # === Enhanced: Auto attribution analysis for D ratings ===
+                        if rating == "D":
+                            try:
+                                attribution_prompt = (
+                                    f"A R&D task received poor rating(D). Analyze root cause and categorize.\n\n"
+                                    f"User requirement: {task_goal[:500]}\n\n"
+                                    f"System output (summary): {synthesis[:1000]}\n\n"
+                                    f"Categorize from these dimensions (multi-select):\n"
+                                    f"1. KNOWLEDGE_GAP: Knowledge base lacks relevant data\n"
+                                    f"2. FORMAT_WRONG: Output format doesn't match user requirement\n"
+                                    f"3. GOAL_MISALIGN: Didn't align with user goal\n"
+                                    f"4. SPECULATIVE: Output too much speculative content\n"
+                                    f"5. INCOMPLETE: Missing explicitly requested content\n"
+                                    f"6. TOO_VERBOSE: Output too verbose, not concise\n"
+                                    f"7. WRONG_ROUTE: Used wrong processing path (e.g., should use fast track but used multi-agent)\n\n"
+                                    f"Output JSON: {{'causes':['cause1','cause2'],'fix_actions':['fix1','fix2'],'knowledge_gaps':['gap1']}}\n"
+                                    f"Only output JSON."
+                                )
+
+                                attribution = gw.call_azure_openai("cpo", attribution_prompt,
+                                    "Analyze failure causes. Only output JSON.", "failure_attribution")
+
+                                if attribution.get("success"):
+                                    import re as _re
+                                    try:
+                                        attr_result = _json.loads(_re.search(r'\{[\s\S]*\}', attribution["response"]).group())
+
+                                        causes = attr_result.get("causes", [])
+                                        knowledge_gaps = attr_result.get("knowledge_gaps", [])
+
+                                        print(f"[Evolution] D rating attribution: {causes}")
+
+                                        # If knowledge gap, auto trigger deep dive
+                                        if "KNOWLEDGE_GAP" in causes and knowledge_gaps:
+                                            try:
+                                                from scripts.self_test import auto_deep_dive_weak_areas
+                                                weak = [{"question": g, "domain": "components",
+                                                         "suggested_searches": [g]} for g in knowledge_gaps[:3]]
+                                                auto_deep_dive_weak_areas(weak)
+                                                print(f"[Evolution] Auto deep dive triggered for knowledge gaps: {knowledge_gaps}")
+                                            except ImportError:
+                                                print("[Evolution] self_test module not available for auto deep dive")
+
+                                        # Save attribution result for trend analysis
+                                        evolution_dir = Path(__file__).parent.parent / ".ai-state" / "evolution"
+                                        evolution_dir.mkdir(parents=True, exist_ok=True)
+                                        (evolution_dir / f"d_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json").write_text(
+                                            _json.dumps({"task": task_goal[:200], "causes": causes,
+                                                       "fixes": attr_result.get("fix_actions", []),
+                                                       "gaps": knowledge_gaps}, ensure_ascii=False, indent=2),
+                                            encoding="utf-8"
+                                        )
+                                    except Exception as parse_err:
+                                        print(f"[Evolution] Attribution parse failed: {parse_err}")
+                            except Exception as attr_err:
+                                print(f"[Evolution] Attribution analysis failed: {attr_err}")
+
                 except Exception as e:
                     print(f"[Evolution] 差评分析失败: {e}")
                     import traceback
@@ -1810,6 +1868,12 @@ def handle_message(event):
         message = event.event.message
         sender = event.event.sender
 
+        # 过滤机器人自己发的消息
+        sender_type = getattr(sender, 'sender_type', '')
+        if sender_type == 'app':
+            print("[Skip] 跳过机器人自己的消息")
+            return
+
         # 消息去重
         message_id = message.message_id
         if message_id in processed_ids:
@@ -2376,6 +2440,44 @@ def handle_message(event):
                         _long_task_running = False
                 threading.Thread(target=_run_tonight, daemon=True).start()
                 send_reply(reply_target, "[Tonight] Deep research queue started (10 tasks, ETA 60-90 min)...")
+            # ===== 新增：从文件读取研究任务 =====
+            elif "参考文件：" in text or "reference file:" in text.lower():
+                import re
+                # 提取文件路径
+                match = re.search(r'参考文件[：:]\s*([^\s\n]+)', text)
+                if not match:
+                    match = re.search(r'reference file[：:]\s*([^\s\n]+)', text, re.IGNORECASE)
+                if match:
+                    file_path = match.group(1).strip()
+                    # 支持相对路径和绝对路径
+                    if not file_path.startswith('/') and not file_path.startswith('D:'):
+                        file_path = str(Path(__file__).parent.parent / file_path)
+
+                    if Path(file_path).exists():
+                        def _run_from_file():
+                            global _long_task_running
+                            _long_task_running = True
+                            try:
+                                from scripts.tonight_deep_research import run_research_from_file
+                                report_path = run_research_from_file(
+                                    file_path,
+                                    progress_callback=lambda msg: send_reply(reply_target, msg)
+                                )
+                                if report_path:
+                                    send_reply(reply_target, f"[Research] 文件任务已完成！\n报告: {report_path}")
+                                else:
+                                    send_reply(reply_target, "[Research] 未解析到有效任务，请检查文件格式")
+                            except Exception as e:
+                                send_reply(reply_target, f"[Research] 执行失败: {e}")
+                            finally:
+                                _long_task_running = False
+                        threading.Thread(target=_run_from_file, daemon=True).start()
+                        send_reply(reply_target, f"[Research] 从文件启动研究: {Path(file_path).name}")
+                    else:
+                        send_reply(reply_target, f"[Research] 文件不存在: {file_path}")
+                else:
+                    send_reply(reply_target, "格式错误。正确格式：参考文件：docs/tasks/xxx.md")
+            # ===== End 新增 =====
             elif text.strip().startswith("研究 "):
                 topic = text.strip()[3:].strip()
                 if not topic:
@@ -2529,6 +2631,11 @@ def handle_message(event):
                     kwargs={"text": text, "reply_target": reply_target},
                     daemon=True
                 ).start()
+            # === 结构化文档快速通道（PRD/清单/表格不走多Agent）===
+            from scripts.feishu_handlers.structured_doc import try_structured_doc_fast_track
+            if try_structured_doc_fast_track(text, reply_target, reply_type, open_id, chat_id, send_reply):
+                return
+
             elif is_rd_task(text):
                 if _rd_task_running:
                     send_reply(reply_target, "⏳ 上一个研发任务还在执行中，请稍后再试")
@@ -2901,6 +3008,11 @@ def handle_message(event):
                     kwargs={"text": text, "reply_target": reply_target},
                     daemon=True
                 ).start()
+            # === 结构化文档快速通道（PRD/清单/表格不走多Agent）===
+            from scripts.feishu_handlers.structured_doc import try_structured_doc_fast_track
+            if try_structured_doc_fast_track(text, reply_target, reply_type, open_id, chat_id, send_reply):
+                return
+
             elif is_rd_task(text):
                 if _rd_task_running:
                     send_reply(reply_target, "⏳ 上一个研发任务还在执行中，请稍后再试")

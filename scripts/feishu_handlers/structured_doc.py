@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 """
 @description: 结构化文档快速通道 - PRD/清单/表格类需求不走多Agent
 @dependencies: model_gateway, knowledge_base, openpyxl
 @last_modified: 2026-03-27
 
-功能：
+功能:
 - 检测清单/表格/PRD类需求关键词
 - 单次LLM调用生成JSON结构
 - 导出Excel并发送到飞书
@@ -15,20 +16,71 @@ import re
 import os
 import tempfile
 import threading
+import yaml
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
+# ===== Bug C fix: 清洗 LLM 输出中的控制字符 =====
+def _clean_json_text(text: str) -> str:
+    """清洗 JSON 文本中的非法控制字符，保留正常换行"""
+    if not text:
+        return text
+    # 先提取 JSON 数组/对象部分
+    start = text.find('[')
+    end = text.rfind(']')
+    if start == -1 or end == -1:
+        start = text.find('{')
+        end = text.rfind('}')
+    if start != -1 and end != -1 and end > start:
+        text = text[start:end + 1]
+
+    # 处理 JSON 字符串值内部的非法控制字符
+    # 简单有效的方式：直接替换所有控制字符为空格（保留 \t \n \r）
+    cleaned = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', ' ', text)
+
+    return cleaned
+# ===== End Bug C fix =====
+
 PARALLEL_WORKERS = 4  # 并行生成线程数
 
-# 导出目录（项目固定路径，避免 tempfile 权限问题）
+# 导出目录(项目固定路径,避免 tempfile 权限问题)
 EXPORT_DIR = Path(__file__).resolve().parent.parent.parent / ".ai-state" / "exports"
 EXPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 # === 关键词检测 ===
 STRUCTURED_DOC_KEYWORDS = ["清单", "表格", "PRD", "Excel", "excel", "列表", "功能列表"]
-FULL_SPEC_KEYWORDS = ["规格书", "状态场景", "语音指令", "按键映射", "灯效", "6个Sheet", "完整PRD", "6Sheet"]
+FULL_SPEC_KEYWORDS = ["规格书", "状态场景", "语音指令", "按键映射", "灯效", "导航场景", "6个Sheet", "完整PRD", "6Sheet", "7Sheet", "用户故事", "测试用例", "页面映射", "开发任务", "全部Sheet"]
 MIN_TEXT_LENGTH = 50
+
+# ===== Fix 3: 模块名归一化映射 =====
+MODULE_NAME_NORMALIZE = {
+    # App 端归一化
+    'App-我的': '我的Tab',
+    '我的首页': '我的Tab',
+    '我的首页与个人中心': '我的Tab',
+    '我的首页与账户中心': '我的Tab',  # 新增
+    '我的': '我的Tab',
+    'App-社区': '社区Tab',
+    '社区': '社区Tab',
+    'App-商城': '商城',
+    'App-设备': '设备Tab',
+    '设备连接与管理': '设备Tab',
+    '设备控制与显示设置': '设备Tab',
+    '电量续航与固件维护': '设备Tab',
+    '设备 Tab': '设备Tab',  # 注意空格
+    # HUD 端归一化
+    '简易': '简易路线',
+    '路线': '简易路线',
+    'Ai语音助手': 'AI语音助手',
+    'ai语音助手': 'AI语音助手',
+}
+
+def _normalize_module_name(name: str) -> str:
+    """归一化模块名，统一变体"""
+    return MODULE_NAME_NORMALIZE.get(name, name)
+# ===== End Fix 3 =====
 
 
 def is_structured_doc_request(text: str) -> bool:
@@ -39,7 +91,7 @@ def is_structured_doc_request(text: str) -> bool:
 
 
 def is_full_spec_request(text: str) -> bool:
-    """判断是否需要完整规格书（6 Sheet）"""
+    """判断是否需要完整规格书(6 Sheet)"""
     if len(text) < MIN_TEXT_LENGTH:
         return False
     return any(kw in text for kw in FULL_SPEC_KEYWORDS)
@@ -49,7 +101,7 @@ def _extract_l1_from_user_text(text: str) -> List[Dict]:
     """从用户文本中提取一级功能列表"""
     features = []
 
-    # HUD 功能（拆分"简易"和"路线"为独立项）
+    # HUD 功能(拆分"简易"和"路线"为独立项)
     hud_names = [
         "导航", "来电", "音乐", "消息", "Ai语音助手", "AI语音助手",
         "简易",   # 简易模式/极简显示
@@ -62,16 +114,16 @@ def _extract_l1_from_user_text(text: str) -> List[Dict]:
         if name in text:
             features.append({"name": name, "module": "头盔HUD"})
 
-    # App Tab（4 个）- 独立匹配
+    # App Tab(4 个)- 独立匹配
     app_tabs = ["设备", "社区", "商城", "我的"]
     for tab in app_tabs:
         # 明确的 App-设备 格式
         if f"App-{tab}" in text or f"App的{tab}" in text or f"APP-{tab}" in text:
             features.append({"name": f"App-{tab}", "module": f"App-{tab}"})
         elif tab in text and ("App" in text or "APP" in text or "app" in text):
-            # 检查是否有独立的 tab（不在其他词中）
+            # 检查是否有独立的 tab(不在其他词中)
             if tab == "设备":
-                # 如果"设备"出现次数 > "设备状态"出现次数，说明有独立的"设备"
+                # 如果"设备"出现次数 > "设备状态"出现次数,说明有独立的"设备"
                 device_count = text.count("设备")
                 device_status_count = text.count("设备状态")
                 if device_count > device_status_count:
@@ -79,7 +131,7 @@ def _extract_l1_from_user_text(text: str) -> List[Dict]:
             else:
                 features.append({"name": f"App-{tab}", "module": f"App-{tab}"})
 
-    # 额外模块（AI 相关拆细）
+    # 额外模块(AI 相关拆细)
     extras = [
         ("AI功能", "AI功能"),
         ("语音交互", "AI功能"),
@@ -97,7 +149,7 @@ def _extract_l1_from_user_text(text: str) -> List[Dict]:
         if name in text:
             features.append({"name": name, "module": module})
 
-    # 额外匹配：用户可能分开写"简易"和"路线"
+    # 额外匹配:用户可能分开写"简易"和"路线"
     if "简易" in text and not any(f["name"] == "简易" for f in features):
         features.append({"name": "简易显示模式", "module": "头盔HUD"})
     if "路线" in text and not any(f["name"] == "路线" for f in features):
@@ -112,7 +164,7 @@ def _extract_l1_from_user_text(text: str) -> List[Dict]:
             seen.add(key)
             unique_features.append(f)
 
-    # 兜底：如果没有提取到，使用默认
+    # 兜底:如果没有提取到,使用默认
     if not unique_features:
         unique_features = [{"name": "完整功能", "module": "全部"}]
 
@@ -165,7 +217,7 @@ def _generate_ids(items: List[Dict]) -> List[Dict]:
 
 # === 模块名统一 ===
 def _normalize_module_names(items: List[Dict]) -> List[Dict]:
-    """统一模块名（大小写/变体合并）"""
+    """统一模块名(大小写/变体合并)"""
     name_map = {
         "Ai语音助手": "AI语音助手",
         "ai语音助手": "AI语音助手",
@@ -225,8 +277,17 @@ def _write_sheet(ws, items: List[Dict]):
         level = item.get("level", "")
         name = item.get("name", "")
 
+        # 防止 list/dict 写入 Excel 的辅助函数
+        def _safe_val(key):
+            v = item.get(key, "")
+            if isinstance(v, (list, dict)):
+                return ", ".join(str(x) for x in v) if isinstance(v, list) else str(v)
+            elif v is None:
+                return ""
+            return str(v) if v else ""
+
         # 功能ID
-        ws.cell(row=row_idx, column=1, value=item.get("_id", ""))
+        ws.cell(row=row_idx, column=1, value=_safe_val("_id"))
 
         # L1/L2/L3 分列填写
         if level == "L1":
@@ -236,13 +297,13 @@ def _write_sheet(ws, items: List[Dict]):
         elif level == "L3":
             ws.cell(row=row_idx, column=4, value=name)
 
-        # 其余列
-        ws.cell(row=row_idx, column=5, value=item.get("priority", ""))
-        ws.cell(row=row_idx, column=6, value=item.get("interaction", ""))
-        ws.cell(row=row_idx, column=7, value=item.get("description", ""))
-        ws.cell(row=row_idx, column=8, value=item.get("acceptance", ""))
-        ws.cell(row=row_idx, column=9, value=item.get("dependencies", ""))
-        ws.cell(row=row_idx, column=10, value=item.get("note", ""))
+        # 其余列（统一转 string）
+        ws.cell(row=row_idx, column=5, value=_safe_val("priority"))
+        ws.cell(row=row_idx, column=6, value=_safe_val("interaction"))
+        ws.cell(row=row_idx, column=7, value=_safe_val("description"))
+        ws.cell(row=row_idx, column=8, value=_safe_val("acceptance"))
+        ws.cell(row=row_idx, column=9, value=_safe_val("dependencies"))
+        ws.cell(row=row_idx, column=10, value=_safe_val("note"))
 
         # 样式
         for col in range(1, 11):
@@ -274,14 +335,123 @@ def _write_sheet(ws, items: List[Dict]):
     ws.auto_filter.ref = f"A1:{get_column_letter(len(headers))}{len(items) + 1}"
 
 
-# === 脑图HTML生成 ===
-def _generate_mindmap_html(items: List[Dict], title: str = "功能框架脑图") -> str:
-    """生成 HTML 脑图文件"""
+def _compare_prd_versions(old_path: str, new_path: str) -> str:
+    """对比两个版本的 PRD,生成变更清单"""
+    old = json.loads(Path(old_path).read_text(encoding="utf-8"))
+    new = json.loads(Path(new_path).read_text(encoding="utf-8"))
+
+    old_names = {(i["name"], i["level"]) for i in old.get("items", [])}
+    new_names = {(i["name"], i["level"]) for i in new.get("items", [])}
+
+    added = new_names - old_names
+    removed = old_names - new_names
+
+    # 优先级变更
+    old_priorities = {i["name"]: i.get("priority", "") for i in old.get("items", [])}
+    priority_changes = []
+    for item in new.get("items", []):
+        name = item["name"]
+        new_p = item.get("priority", "")
+        old_p = old_priorities.get(name, "")
+        if old_p and new_p and old_p != new_p:
+            priority_changes.append(f"{name}: {old_p} -> {new_p}")
+
+    report = (
+        f"PRD 版本对比\n"
+        f"旧版: {old.get('version', '?')} ({old.get('total_features', 0)} 条)\n"
+        f"新版: {new.get('version', '?')} ({new.get('total_features', 0)} 条)\n\n"
+        f"新增功能 ({len(added)} 条):\n" + "\n".join(f"  + {n} [{l}]" for n, l in sorted(added)[:20]) + "\n\n"
+        f"移除功能 ({len(removed)} 条):\n" + "\n".join(f"  - {n} [{l}]" for n, l in sorted(removed)[:20]) + "\n\n"
+        f"优先级变更 ({len(priority_changes)} 条):\n" + "\n".join(f"  ~ {c}" for c in priority_changes[:20]) + "\n"
+    )
+    return report
+
+
+def _write_generic_sheet(ws, items: List[Dict], headers: List[str], keys: List[str], widths: List[int]):
+    """通用 Sheet 写入函数"""
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+    from openpyxl.utils import get_column_letter
+
+    header_font = Font(bold=True, color="FFFFFF", size=11)
+    header_fill = PatternFill(start_color="2F5496", end_color="2F5496", fill_type="solid")
+    thin_border = Border(
+        left=Side(style='thin'), right=Side(style='thin'),
+        top=Side(style='thin'), bottom=Side(style='thin')
+    )
+
+    # 优先级颜色
+    priority_fills = {
+        "P0": PatternFill(start_color="FF4444", end_color="FF4444", fill_type="solid"),
+        "P1": PatternFill(start_color="FF8C00", end_color="FF8C00", fill_type="solid"),
+        "P2": PatternFill(start_color="4CAF50", end_color="4CAF50", fill_type="solid"),
+        "P3": PatternFill(start_color="9E9E9E", end_color="9E9E9E", fill_type="solid"),
+    }
+    priority_fonts = {
+        "P0": Font(bold=True, color="FFFFFF"),
+        "P1": Font(bold=True, color="FFFFFF"),
+        "P2": Font(color="FFFFFF"),
+        "P3": Font(color="FFFFFF"),
+    }
+
+    # 写表头
+    for col, h in enumerate(headers, 1):
+        cell = ws.cell(row=1, column=col, value=h)
+        cell.font = header_font
+        cell.fill = header_fill
+        cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        cell.border = thin_border
+
+    # 写数据
+    for row_idx, item in enumerate(items, 2):
+        for col, key in enumerate(keys, 1):
+            val = item.get(key, "")
+            # 防止 list/dict 写入 Excel
+            if isinstance(val, (list, dict)):
+                val = ", ".join(str(x) for x in val) if isinstance(val, list) else str(val)
+            elif val is None:
+                val = ""
+            cell = ws.cell(row=row_idx, column=col, value=str(val) if val else "")
+            cell.border = thin_border
+            cell.alignment = Alignment(vertical="center", wrap_text=True)
+
+            # 优先级颜色
+            if key == "priority" and str(val).upper() in priority_fills:
+                cell.fill = priority_fills[str(val).upper()]
+                cell.font = priority_fonts[str(val).upper()]
+                cell.alignment = Alignment(horizontal="center", vertical="center")
+
+    # 列宽
+    for i, w in enumerate(widths):
+        ws.column_dimensions[get_column_letter(i + 1)].width = w
+
+    # 冻结+筛选
+    ws.freeze_panes = "A2"
+    if items:
+        ws.auto_filter.ref = f"A1:{get_column_letter(len(headers))}{len(items) + 1}"
+
+
+# === 脑图 .xmind 生成（ZIP 格式）===
+def _generate_mindmap_xmind(items: List[Dict], title: str = "智能骑行头盔 V1 功能框架") -> bytes:
+    """生成 .xmind 格式脑图（ZIP 包含 content.json + metadata.json）"""
+    import uuid
+    from io import BytesIO
+    import zipfile
+
+    HUD_MODULES = {"导航", "来电", "音乐", "消息", "AI语音助手", "Ai语音助手",
+        "简易", "简易路线", "路线", "主动安全预警提示", "组队", "摄像状态",
+        "胎温胎压", "开机动画", "速度", "设备状态", "显示队友位置", "头盔HUD",
+        "实体按键交互", "氛围灯交互", "AI功能", "语音交互", "视觉交互", "多模态交互"}
+    APP_MODULES = {"App-设备", "App-社区", "App-商城", "App-我的"}
 
     # 构建树结构
-    tree = {}
-    current_l1 = ""
-    current_l2 = ""
+    groups = {
+        "HUD及头盔端": [],
+        "App端": [],
+        "系统与交互": [],
+    }
+
+    current_l1_node = None
+    current_l2_node = None
 
     for item in items:
         level = item.get("level", "")
@@ -289,66 +459,816 @@ def _generate_mindmap_html(items: List[Dict], title: str = "功能框架脑图")
         module = item.get("module", "")
         priority = item.get("priority", "")
 
-        if level == "L1":
-            current_l1 = name
-            if module not in tree:
-                tree[module] = {}
-            tree[module][name] = {"_priority": priority, "_children": {}}
-        elif level == "L2":
-            current_l2 = name
-            if module in tree and current_l1 in tree[module]:
-                tree[module][current_l1]["_children"][name] = {"_priority": priority, "_items": []}
-        elif level == "L3":
-            if module in tree and current_l1 in tree[module]:
-                children = tree[module][current_l1]["_children"]
-                if current_l2 in children:
-                    children[current_l2]["_items"].append({"name": name, "priority": priority})
+        if module in HUD_MODULES:
+            group = "HUD及头盔端"
+        elif module in APP_MODULES:
+            group = "App端"
+        else:
+            group = "系统与交互"
 
-    # 生成 HTML
+        label_text = f"{name} [{priority}]" if priority else name
+        node = {"id": str(uuid.uuid4()), "title": label_text, "children": {"attached": []}}
+
+        if level == "L1":
+            groups[group].append(node)
+            current_l1_node = node
+            current_l2_node = None
+        elif level == "L2" and current_l1_node:
+            current_l1_node["children"]["attached"].append(node)
+            current_l2_node = node
+        elif level == "L3" and current_l2_node:
+            current_l2_node["children"]["attached"].append(node)
+
+    # 构建 xmind content.json
+    root_node = {
+        "id": str(uuid.uuid4()),
+        "class": "topic",
+        "title": title,
+        "children": {"attached": []}
+    }
+
+    for group_name, group_items in groups.items():
+        if group_items:
+            group_node = {
+                "id": str(uuid.uuid4()),
+                "title": group_name,
+                "children": {"attached": group_items}
+            }
+            root_node["children"]["attached"].append(group_node)
+
+    content = [{
+        "id": str(uuid.uuid4()),
+        "class": "sheet",
+        "title": title,
+        "rootTopic": root_node,
+        "topicPositioning": "fixed"
+    }]
+
+    metadata = {
+        "creator": {"name": "Agent Company", "version": "1.0"},
+        "activeSheetId": content[0]["id"]
+    }
+
+    # Fix 7: 添加 manifest.json 以兼容 XMind 在线版
+    manifest = {
+        "file-entries": {
+            "content.json": {},
+            "metadata.json": {},
+            "manifest.json": {}
+        }
+    }
+
+    # 打包为 ZIP
+    buf = BytesIO()
+    with zipfile.ZipFile(buf, 'w', zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("content.json", json.dumps(content, ensure_ascii=False, indent=2))
+        zf.writestr("metadata.json", json.dumps(metadata, ensure_ascii=False, indent=2))
+        zf.writestr("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2))
+
+    return buf.getvalue()
+
+
+# === 脑图 .mm 生成(FreeMind XML 格式)===
+def _generate_mindmap_mm(items: List[Dict], title: str = "智能骑行头盔 V1 功能框架") -> str:
+    """生成 FreeMind .mm 格式脑图,无冗余层"""
+    import xml.etree.ElementTree as ET
+
+    root = ET.Element("map", version="1.0.1")
+    root_node = ET.SubElement(root, "node", TEXT=title)
+
+    # 按 L1 分组,跳过模块中间层
+    current_l1_node = None
+    current_l2_node = None
+
+    # 先按大类分组:HUD端 / App端 / 系统交互
+    hud_group = ET.SubElement(root_node, "node", TEXT="HUD及头盔端")
+    app_group = ET.SubElement(root_node, "node", TEXT="App端")
+    system_group = ET.SubElement(root_node, "node", TEXT="系统与交互")
+
+    HUD_MODULES = {"导航", "来电", "音乐", "消息", "AI语音助手", "Ai语音助手",
+        "简易", "简易路线", "路线", "主动安全预警提示", "组队", "摄像状态",
+        "胎温胎压", "开机动画", "速度", "设备状态", "显示队友位置", "头盔HUD"}
+    APP_MODULES = {"App-设备", "App-社区", "App-商城", "App-我的"}
+
+    for item in items:
+        level = item.get("level", "")
+        name = item.get("name", "")
+        module = item.get("module", "")
+        priority = item.get("priority", "")
+        label = f"{name} [{priority}]" if priority else name
+
+        # 选择父组
+        if module in HUD_MODULES:
+            parent_group = hud_group
+        elif module in APP_MODULES:
+            parent_group = app_group
+        else:
+            parent_group = system_group
+
+        if level == "L1":
+            current_l1_node = ET.SubElement(parent_group, "node", TEXT=label)
+            # P0 红色,P1 橙色,P2 绿色,P3 灰色
+            color = {"P0": "#FF4444", "P1": "#FF8C00", "P2": "#4CAF50", "P3": "#9E9E9E"}.get(priority, "")
+            if color:
+                current_l1_node.set("COLOR", color)
+            current_l2_node = None
+        elif level == "L2" and current_l1_node is not None:
+            current_l2_node = ET.SubElement(current_l1_node, "node", TEXT=label)
+        elif level == "L3" and current_l2_node is not None:
+            ET.SubElement(current_l2_node, "node", TEXT=label)
+
+    import io
+    tree = ET.ElementTree(root)
+    buf = io.BytesIO()
+    tree.write(buf, encoding="utf-8", xml_declaration=True)
+    return buf.getvalue().decode("utf-8")
+
+
+def _generate_mindmap_svg(items: List[Dict], title: str = "智能骑行头盔 V1 功能框架") -> str:
+    """生成交互式 HTML 脑图(D3.js,可展开折叠、缩放、拖拽)"""
+
+    # 构建树结构
+    tree = {"name": title, "children": []}
+
+    HUD_MODULES = {"导航", "来电", "音乐", "消息", "AI语音助手", "Ai语音助手",
+        "简易", "简易路线", "路线", "主动安全预警提示", "组队", "摄像状态",
+        "胎温胎压", "开机动画", "速度", "设备状态", "显示队友位置", "头盔HUD"}
+    APP_MODULES = {"App-设备", "App-社区", "App-商城", "App-我的"}
+
+    groups = {
+        "HUD及头盔端": {"name": "HUD及头盔端", "children": []},
+        "App端": {"name": "App端", "children": []},
+        "系统与交互": {"name": "系统与交互", "children": []},
+    }
+
+    current_l1 = None
+    current_l2 = None
+
+    for item in items:
+        level = item.get("level", "")
+        name = item.get("name", "")
+        module = item.get("module", "")
+        priority = item.get("priority", "")
+
+        if module in HUD_MODULES:
+            group = groups["HUD及头盔端"]
+        elif module in APP_MODULES:
+            group = groups["App端"]
+        else:
+            group = groups["系统与交互"]
+
+        node = {"name": f"{name} [{priority}]", "priority": priority, "children": []}
+
+        if level == "L1":
+            group["children"].append(node)
+            current_l1 = node
+            current_l2 = None
+        elif level == "L2" and current_l1:
+            current_l1["children"].append(node)
+            current_l2 = node
+        elif level == "L3" and current_l2:
+            current_l2["children"].append(node)
+
+    tree["children"] = [g for g in groups.values() if g["children"]]
+
+    # 生成 HTML+D3.js 可交互脑图（径向布局）
+    import json as _json
+    tree_json = _json.dumps(tree, ensure_ascii=False)
+
     html = f"""<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>{title}</title>
+<html><head><meta charset="utf-8">
+<title>{title}</title>
 <style>
-body {{ font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f5f5f5; padding: 20px; max-width: 1200px; margin: 0 auto; }}
-h1 {{ text-align: center; color: #2F5496; margin-bottom: 30px; }}
-.module {{ margin-bottom: 30px; background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
-.module-title {{ font-size: 18px; font-weight: bold; color: #fff; background: #2F5496;
-    padding: 8px 16px; border-radius: 6px; display: inline-block; margin-bottom: 12px; }}
-.l1 {{ margin-left: 20px; margin-bottom: 16px; }}
-.l1-title {{ font-size: 15px; font-weight: bold; color: #2F5496;
-    border-left: 4px solid #2F5496; padding-left: 10px; margin-bottom: 6px; }}
-.l2 {{ margin-left: 40px; margin-bottom: 8px; }}
-.l2-title {{ font-size: 13px; font-weight: bold; color: #555; margin-bottom: 4px; }}
-.l3 {{ margin-left: 60px; font-size: 12px; color: #777; line-height: 1.8; }}
-.tag {{ display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px;
-    color: #fff; margin-left: 6px; }}
+/* ===== 修复 D: 脑图布局修复 ===== */
+html, body {{ margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }}
+body {{ font-family: 'Microsoft YaHei', Arial, sans-serif; background: #fafbfc; }}
+svg {{ width: 100vw; height: 100vh; display: block; }}
+.node circle {{ fill: #fff; stroke: #2F5496; stroke-width: 2px; cursor: pointer; }}
+.node text {{ font-size: 11px; fill: #333; pointer-events: none; }}
+.link {{ fill: none; stroke: #ccc; stroke-width: 1.5px; }}
+#controls {{ position: fixed; top: 10px; left: 10px; z-index: 100; background: rgba(255,255,255,0.95);
+    padding: 8px 12px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }}
+button {{ margin: 0 4px; padding: 4px 10px; cursor: pointer; border: 1px solid #ccc;
+    border-radius: 4px; background: #f5f5f5; }}
+button:hover {{ background: #e0e0e0; }}
+</style>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+</head><body>
+<div id="controls">
+    <button onclick="expandAll()">全部展开</button>
+    <button onclick="collapseAll()">全部折叠</button>
+    <button onclick="fitToContent()">重置缩放</button>
+    <span style="margin-left:10px;color:#999;font-size:12px;">滚轮缩放 | 拖拽平移 | 点击展开/折叠</span>
+</div>
+<script>
+const treeData = {tree_json};
+
+// 使用窗口尺寸
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+// 动态计算 radius，根据节点数调整
+const nodeCount = d3.hierarchy(treeData).descendants().length;
+const radius = Math.max(300, Math.min(nodeCount * 2.5, Math.min(width, height) / 2.5));
+
+const svg = d3.select("body").append("svg")
+    .attr("width", width).attr("height", height)
+    .style("background", "#fafbfc");
+
+const zoomBehavior = d3.zoom()
+    .scaleExtent([0.05, 10])
+    .on("zoom", (e) => g.attr("transform", e.transform));
+
+svg.call(zoomBehavior);
+
+const g = svg.append("g")
+    .attr("transform", `translate(${{width/2}},${{height/2}})`);
+
+const tree = d3.tree()
+    .size([2 * Math.PI, radius])
+    .separation((a, b) => (a.parent === b.parent ? 1 : 2.5) / (a.depth + 1));
+
+const root = d3.hierarchy(treeData);
+
+// 初始只展开到第 2 层（不展开第 3 层，避免太密）
+root.descendants().forEach(d => {{
+    if (d.depth >= 2) {{ d._children = d.children; d.children = null; }}
+}});
+
+const priorityColor = {{"P0":"#FF4444","P1":"#FF8C00","P2":"#4CAF50","P3":"#9E9E9E"}};
+
+function radialPoint(d) {{
+    return [
+        d.y * Math.cos(d.x - Math.PI / 2),
+        d.y * Math.sin(d.x - Math.PI / 2)
+    ];
+}}
+
+function update(source) {{
+    const treeLayout = tree(root);
+    const nodes = root.descendants();
+    const links = root.links();
+
+    const node = g.selectAll("g.node").data(nodes, d => d.data.name + d.depth);
+
+    const nodeEnter = node.enter().append("g").attr("class", "node")
+        .attr("transform", d => `translate(${{radialPoint(d)}})`)
+        .on("click", (e, d) => {{ e.stopPropagation(); toggle(d); update(d); }});
+
+    nodeEnter.append("circle").attr("r", 5)
+        .style("fill", d => {{
+            const p = (d.data.priority || "").toUpperCase();
+            return priorityColor[p] || (d._children ? "#ddd" : "#fff");
+        }});
+
+    nodeEnter.append("text")
+        .attr("dy", "0.31em")
+        .attr("x", d => radialPoint(d)[0] < 0 ? -8 : 8)
+        .attr("text-anchor", d => radialPoint(d)[0] < 0 ? "end" : "start")
+        .text(d => d.data.name)
+        .style("font-size", d => d.depth === 0 ? "16px" : d.depth === 1 ? "13px" : "11px")
+        .style("font-weight", d => d.depth <= 1 ? "bold" : "normal");
+
+    node.merge(nodeEnter).transition().duration(300)
+        .attr("transform", d => `translate(${{radialPoint(d)}})`);
+
+    node.exit().remove();
+
+    const link = g.selectAll("path.link").data(links, d => d.target.data.name + d.target.depth);
+
+    link.enter().insert("path", "g").attr("class", "link")
+        .attr("d", d3.linkRadial().angle(d => d.x).radius(d => d.y));
+
+    link.transition().duration(300)
+        .attr("d", d3.linkRadial().angle(d => d.x).radius(d => d.y));
+
+    link.exit().remove();
+}}
+
+function toggle(d) {{
+    if (d.children) {{ d._children = d.children; d.children = null; }}
+    else {{ d.children = d._children; d._children = null; }}
+}}
+
+function expandAll() {{
+    root.descendants().forEach(d => {{
+        if (d._children) {{ d.children = d._children; d._children = null; }}
+    }});
+    update(root);
+}}
+
+function collapseAll() {{
+    root.descendants().forEach(d => {{
+        if (d.depth >= 1 && d.children) {{ d._children = d.children; d.children = null; }}
+    }});
+    update(root);
+}}
+
+function fitToContent() {{
+    const bbox = g.node().getBBox();
+    const padding = 80;
+    const contentWidth = bbox.width + padding * 2;
+    const contentHeight = bbox.height + padding * 2;
+    const svgWidth = window.innerWidth;
+    const svgHeight = window.innerHeight;
+
+    const scale = Math.min(
+        svgWidth / contentWidth,
+        svgHeight / contentHeight,
+        1.5
+    ) * 0.9;
+
+    const cx = bbox.x + bbox.width / 2;
+    const cy = bbox.y + bbox.height / 2;
+    const translateX = svgWidth / 2 - cx * scale;
+    const translateY = svgHeight / 2 - cy * scale;
+
+    svg.transition().duration(750).call(
+        zoomBehavior.transform,
+        d3.zoomIdentity.translate(translateX, translateY).scale(scale)
+    );
+}}
+
+update(root);
+
+// 初始化时自动 fit to content
+setTimeout(fitToContent, 300);
+
+// 窗口大小变化时重新适配
+window.addEventListener('resize', () => {{
+    svg.attr("width", window.innerWidth).attr("height", window.innerHeight);
+    setTimeout(fitToContent, 100);
+}});
+</script></body></html>"""
+
+    return html
+
+
+def _truncate_list(data: List[Dict], max_len: int = 120) -> List[Dict]:
+    """压缩数据列表:截断长文本字段,减少 HTML 体积（目标 < 400KB）"""
+    result = []
+    for item in data:
+        truncated = {}
+        for k, v in item.items():
+            if isinstance(v, str) and len(v) > max_len:
+                truncated[k] = v[:max_len] + "..."
+            elif isinstance(v, (list, dict)):
+                # list/dict 转 string 后截断
+                v_str = ", ".join(str(x) for x in v) if isinstance(v, list) else str(v)
+                truncated[k] = v_str[:max_len] + "..." if len(v_str) > max_len else v_str
+            elif v is None:
+                truncated[k] = ""
+            else:
+                truncated[k] = v
+        result.append(truncated)
+    return result
+
+
+def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None, title: str = "智能骑行头盔 V1 PRD 规格书") -> str:
+    """生成交互式 HTML PRD(可搜索、可筛选、可展开)"""
+    import json as _json
+
+    # 准备数据(压缩后减少 HTML体积)
+    all_data = {
+        "features": _truncate_list(items),
+        "state_scenarios": _truncate_list(extra_sheets.get("state", [])) if extra_sheets else [],
+        "voice_commands": _truncate_list(extra_sheets.get("voice", [])) if extra_sheets else [],
+        "button_mapping": _truncate_list(extra_sheets.get("button", [])) if extra_sheets else [],
+        "light_effects": _truncate_list(extra_sheets.get("light", [])) if extra_sheets else [],
+        "voice_nav": _truncate_list(extra_sheets.get("voice_nav", [])) if extra_sheets else [],
+        "user_stories": _truncate_list(extra_sheets.get("user_stories", [])) if extra_sheets else [],
+        "test_cases": _truncate_list(extra_sheets.get("test_cases", [])) if extra_sheets else [],
+        "page_mapping": _truncate_list(extra_sheets.get("page_mapping", [])) if extra_sheets else [],
+        "dev_tasks": _truncate_list(extra_sheets.get("dev_tasks", [])) if extra_sheets else [],
+    }
+
+    data_json = _json.dumps(all_data, ensure_ascii=False)
+
+    html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>{title}</title>
+<style>
+* {{ box-sizing: border-box; margin: 0; padding: 0; }}
+/* ===== 修复 A: 固定布局方案 ===== */
+html, body {{ margin: 0; padding: 0; height: 100%; overflow: hidden; }}
+body {{ font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f5f6fa; color: #333; }}
+.page-wrapper {{ display: flex; flex-direction: column; height: 100vh; }}
+.header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }}
+.header h1 {{ font-size: 20px; margin-bottom: 8px; padding: 12px 24px 0; }}
+.controls {{ padding: 12px 24px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }}
+.controls input {{ padding: 6px 12px; border: none; border-radius: 4px; width: 280px; font-size: 14px; }}
+.controls select {{ padding: 6px 10px; border: none; border-radius: 4px; font-size: 13px; }}
+.controls button {{ padding: 6px 14px; border: none; border-radius: 4px; cursor: pointer;
+    background: rgba(255,255,255,0.2); color: #fff; font-size: 13px; }}
+.controls button:hover {{ background: rgba(255,255,255,0.35); }}
+.tabs {{ display: flex; background: #fff; padding: 0 24px;
+    position: fixed; left: 0; right: 0; z-index: 999;
+    border-bottom: 1px solid #e0e0e0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); overflow-x: auto; }}
+.tab {{ padding: 12px 20px; color: #666; cursor: pointer; font-size: 14px;
+    border-bottom: 3px solid transparent; }}
+.tab.active {{ color: #2F5496; border-bottom-color: #2F5496; font-weight: 600; }}
+.tab .badge {{ background: #e8edf5; padding: 1px 8px; border-radius: 10px;
+    font-size: 11px; margin-left: 6px; color: #2F5496; }}
+.content {{ padding: 16px 24px; max-width: 1600px; margin-left: auto; margin-right: auto;
+    overflow-y: auto; }}
+.section {{ display: none; }}
+.section.active {{ display: block; }}
+.stats {{ display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }}
+.stat {{ background: #fff; padding: 12px 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }}
+.stat .num {{ font-size: 24px; font-weight: bold; color: #2F5496; }}
+.stat .label {{ font-size: 12px; color: #999; }}
+.tree-item {{ margin-left: 0; }}
+.l1 {{ background: #fff; margin-bottom: 8px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }}
+.l1-header {{ padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px;
+    background: #e8edf5; font-weight: bold; font-size: 15px; }}
+.l1-header:hover {{ background: #dce3f0; }}
+.l1-body {{ padding: 0 16px 12px; display: none; }}
+.l1-body.open {{ display: block; }}
+.l2 {{ margin: 8px 0 4px 12px; }}
+.l2-title {{ font-weight: bold; font-size: 14px; color: #2F5496; padding: 6px 0; cursor: pointer; }}
+.l2-body {{ margin-left: 12px; }}
+.l3 {{ margin-left: 24px; padding: 6px 0; font-size: 13px; color: #555;
+    border-bottom: 1px solid #f0f0f0; display: flex; gap: 12px; align-items: flex-start;
+    min-width: 200px; max-width: 100%; flex-wrap: wrap; }}
+.l3:last-child {{ border-bottom: none; }}
+.l3 .name {{ min-width: 160px; max-width: 220px; flex-shrink: 0; font-weight: 500; color: #333; }}
+.l3 .desc {{ flex: 1; min-width: 200px; color: #666; }}
+.l3 .acc {{ flex: 1; min-width: 200px; color: #4a9; font-size: 12px; }}
+.tag {{ display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; color: #fff; }}
 .tag-P0 {{ background: #FF4444; }}
 .tag-P1 {{ background: #FF8C00; }}
 .tag-P2 {{ background: #4CAF50; }}
 .tag-P3 {{ background: #9E9E9E; }}
-</style></head><body>
-<h1>{title}</h1>
-"""
+/* ===== 修复 C: 空内容行样式降级 ===== */
+.l1.empty-content {{ opacity: 0.6; border-left: 3px solid #ffd700; }}
+.l1.empty-content .l1-header::after {{
+    content: '待补充'; font-size: 11px; color: #999; background: #fff3cd;
+    padding: 2px 8px; border-radius: 4px; margin-left: auto; }}
+.l3.empty-desc {{ color: #999; font-style: italic; }}
+.l3.empty-desc::after {{ content: '（待补充）'; font-size: 11px; color: #bbb; margin-left: 4px; }}
+/* ===== 修复 B: 表格布局统一 ===== */
+.table-wrapper {{ width: 100%; overflow-x: auto; border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; background: #fff; }}
+table {{ width: 100%; min-width: 900px; border-collapse: collapse; table-layout: fixed; }}
+thead {{ position: sticky; top: 0; z-index: 50; }}
+th {{ background: #4a5568; color: #fff; padding: 10px 12px; text-align: left; font-size: 13px;
+    font-weight: 600; white-space: nowrap; border-bottom: 2px solid #2d3748; }}
+td {{ padding: 8px 12px; border-bottom: 1px solid #edf2f7; font-size: 13px; vertical-align: top;
+    word-wrap: break-word; overflow-wrap: break-word; }}
+tbody tr:nth-child(odd) {{ background: #fafbfc; }}
+tbody tr:hover {{ background: #f0f4ff; }}
+/* ===== 修复 E: 全局样式提升 ===== */
+.priority-tag {{ display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }}
+.priority-tag.p0 {{ background: #fed7d7; color: #c53030; }}
+.priority-tag.p1 {{ background: #fefcbf; color: #b7791f; }}
+.priority-tag.p2 {{ background: #c6f6d5; color: #276749; }}
+.priority-tag.p3 {{ background: #e2e8f0; color: #4a5568; }}
+.l1 {{ transition: box-shadow 0.2s ease, transform 0.2s ease; }}
+.l1:hover {{ box-shadow: 0 4px 12px rgba(0,0,0,0.12); transform: translateY(-1px); }}
+.l3:nth-child(odd) {{ background: #fafbfc; }}
+.l3:hover {{ background: #f0f4ff; }}
+.acc-value {{ color: #2b6cb0; font-weight: 600; }}
+.search-highlight {{ background: #fff3cd; padding: 0 2px; border-radius: 2px; }}
+.stats-bar {{ display: flex; gap: 16px; padding: 8px 24px;
+    background: rgba(255,255,255,0.1); font-size: 12px; color: rgba(255,255,255,0.85); }}
+.stats-bar .stat {{ display: flex; align-items: center; gap: 4px; }}
+.stats-bar .stat-value {{ font-weight: 700; color: #fff; }}
+.hidden {{ display: none !important; }}
+@media (max-width: 768px) {{
+    .header h1 {{ font-size: 16px; }}
+    .controls {{ flex-direction: column; }}
+    .controls input {{ width: 100%; }}
+    .tabs {{ overflow-x: auto; white-space: nowrap; padding: 0 10px; }}
+    .tab {{ padding: 10px 14px; font-size: 12px; }}
+    .content {{ padding: 10px 12px; }}
+    .l3 {{ flex-direction: column; gap: 4px; }}
+    .l3 .name {{ max-width: none; min-width: auto; }}
+    table {{ font-size: 12px; display: block; overflow-x: auto; }}
+    th, td {{ padding: 6px 8px; }}
+}}
+</style>
+</head><body>
 
-    for module_name, l1s in tree.items():
-        html += f'<div class="module"><span class="module-title">{module_name}</span>\n'
-        for l1_name, l1_data in l1s.items():
-            p = l1_data.get("_priority", "")
-            html += f'<div class="l1"><div class="l1-title">{l1_name} <span class="tag tag-{p}">{p}</span></div>\n'
-            for l2_name, l2_data in l1_data.get("_children", {}).items():
-                p2 = l2_data.get("_priority", "")
-                html += f'<div class="l2"><div class="l2-title">├ {l2_name} <span class="tag tag-{p2}">{p2}</span></div>\n'
-                l3_items = l2_data.get("_items", [])
-                if l3_items:
-                    html += '<div class="l3">'
-                    for l3 in l3_items:
-                        p3 = l3.get("priority", "")
-                        html += f'└ {l3["name"]} <span class="tag tag-{p3}">{p3}</span><br>\n'
-                    html += '</div>\n'
-                html += '</div>\n'
-            html += '</div>\n'
-        html += '</div>\n'
+<div class="header">
+    <h1>{title}</h1>
+    <div class="stats-bar" id="statsBar"></div>
+    <div class="controls">
+        <input type="text" id="search" placeholder="搜索功能名称..." oninput="filterAll()">
+        <select id="priorityFilter" onchange="filterAll()">
+            <option value="">全部优先级</option>
+            <option value="P0">P0 必做</option>
+            <option value="P1">P1 应有</option>
+            <option value="P2">P2 规划</option>
+            <option value="P3">P3 远期</option>
+        </select>
+        <button onclick="expandAllTrees()">全部展开</button>
+        <button onclick="collapseAllTrees()">全部折叠</button>
+    </div>
+</div>
 
-    html += "</body></html>"
+<div class="tabs" id="tabBar"></div>
+<div class="content" id="contentArea"></div>
+
+<script>
+const DATA = {data_json};
+
+const TAB_CONFIG = [
+    {{id: "hud", label: "HUD及头盔端", type: "tree"}},
+    {{id: "app", label: "App端", type: "tree"}},
+    {{id: "state", label: "状态场景对策", type: "table"}},
+    {{id: "voice", label: "语音指令表", type: "table"}},
+    {{id: "button", label: "按键映射表", type: "table"}},
+    {{id: "light", label: "灯效定义表", type: "table"}},
+    {{id: "voice_nav", label: "AI语音导航", type: "table"}},
+    {{id: "user_stories", label: "用户故事", type: "table"}},
+    {{id: "test_cases", label: "测试用例", type: "table"}},
+    {{id: "page_mapping", label: "页面映射", type: "table"}},
+    {{id: "dev_tasks", label: "开发任务", type: "table"}},
+];
+
+// 分组功能清单
+const HUD_MODULES = new Set(["导航","来电","音乐","消息","AI语音助手","Ai语音助手",
+    "简易","简易路线","路线","主动安全预警提示","组队","摄像状态","胎温胎压",
+    "开机动画","速度","设备状态","显示队友位置","头盔HUD",
+    "实体按键交互","氛围灯交互","AI功能","语音交互","视觉交互","多模态交互"]);
+
+const hudFeatures = DATA.features.filter(f => HUD_MODULES.has(f.module));
+const appFeatures = DATA.features.filter(f => !HUD_MODULES.has(f.module));
+
+function buildTabs() {{
+    const bar = document.getElementById('tabBar');
+    const content = document.getElementById('contentArea');
+
+    TAB_CONFIG.forEach((tab, idx) => {{
+        const el = document.createElement('div');
+        el.className = 'tab' + (idx === 0 ? ' active' : '');
+        el.dataset.target = tab.id;
+
+        let count = 0;
+        if (tab.id === 'hud') count = hudFeatures.length;
+        else if (tab.id === 'app') count = appFeatures.length;
+        else if (tab.id === 'state') count = DATA.state_scenarios.length;
+        else if (tab.id === 'voice') count = DATA.voice_commands.length;
+        else if (tab.id === 'button') count = DATA.button_mapping.length;
+        else if (tab.id === 'light') count = DATA.light_effects.length;
+        else if (tab.id === 'voice_nav') count = DATA.voice_nav.length;
+        else if (tab.id === 'user_stories') count = (DATA.user_stories || []).length;
+        else if (tab.id === 'test_cases') count = (DATA.test_cases || []).length;
+        else if (tab.id === 'page_mapping') count = (DATA.page_mapping || []).length;
+        else if (tab.id === 'dev_tasks') count = (DATA.dev_tasks || []).length;
+
+        el.innerHTML = `${{tab.label}}<span class="badge">${{count}}</span>`;
+        el.onclick = () => switchTab(tab.id);
+        bar.appendChild(el);
+
+        const section = document.createElement('div');
+        section.id = 'section-' + tab.id;
+        section.className = 'section' + (idx === 0 ? ' active' : '');
+
+        if (tab.type === 'tree') {{
+            section.innerHTML = buildTreeView(tab.id === 'hud' ? hudFeatures : appFeatures);
+        }} else {{
+            section.innerHTML = buildTableView(tab.id);
+        }}
+        content.appendChild(section);
+    }});
+}}
+
+function switchTab(id) {{
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.target === id));
+    document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === 'section-' + id));
+    window.scrollTo(0, 0);
+}}
+
+function buildTreeView(features) {{
+    let html = '<div class="stats">';
+    const counts = {{}};
+    features.forEach(f => {{ counts[f.priority] = (counts[f.priority]||0) + 1; }});
+    Object.entries(counts).sort().forEach(([p,c]) => {{
+        html += `<div class="stat"><div class="num">${{c}}</div><div class="label">${{p}}</div></div>`;
+    }});
+    html += `<div class="stat"><div class="num">${{features.length}}</div><div class="label">总计</div></div></div>`;
+
+    // 检测 L1 模块是否有实质内容（L2/L3 子节点）
+    const l1HasChildren = {{}};
+    features.forEach(f => {{
+        if (f.level === 'L1') l1HasChildren[f.name] = false;
+        if (f.level === 'L2' || f.level === 'L3') l1HasChildren[f.name] = true;
+    }});
+
+    let currentL1 = null, currentL2 = null;
+    let l1Html = '';
+
+    features.forEach(f => {{
+        const tag = `<span class="tag tag-${{f.priority}}">${{f.priority}}</span>`;
+        if (f.level === 'L1') {{
+            if (currentL2) {{ l1Html += '</div>'; currentL2 = null; }}
+            if (currentL1) l1Html += '</div></div>';
+            // 检查是否有子节点内容
+            const isEmpty = !l1HasChildren[f.name];
+            const l1Class = isEmpty ? 'l1 empty-content' : 'l1';
+            l1Html += `<div class="${{l1Class}}" data-name="${{f.name}}" data-priority="${{f.priority}}">
+                <div class="l1-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                    ${{tag}} ${{f.name}} <span style="color:#999;font-size:12px;margin-left:auto">${{f.interaction||''}}</span>
+                </div><div class="l1-body">`;
+            currentL1 = f; currentL2 = null;
+        }} else if (f.level === 'L2') {{
+            if (currentL2) l1Html += '</div>';
+            l1Html += `<div class="l2"><div class="l2-title" data-name="${{f.name}}" data-priority="${{f.priority}}">${{tag}} ${{f.name}}</div>`;
+            currentL2 = f;
+        }} else if (f.level === 'L3') {{
+            // 检查描述是否为空或待生成
+            const desc = f.description || '';
+            const isDescEmpty = !desc || desc.includes('待生成') || desc.includes('待补充') || desc.length < 5;
+            const descClass = isDescEmpty ? 'desc empty-desc' : 'desc';
+            const descText = isDescEmpty ? '功能规划中' : desc;
+            l1Html += `<div class="l3" data-name="${{f.name}}" data-priority="${{f.priority}}">
+                <span class="name">${{tag}} ${{f.name}}</span>
+                <span class="${{descClass}}">${{descText}}</span>
+                <span class="acc">${{f.acceptance||''}}</span></div>`;
+        }}
+    }});
+    if (currentL2) l1Html += '</div>';
+    if (currentL1) l1Html += '</div></div>';
+
+    return html + l1Html;
+}}
+
+function buildTableView(id) {{
+    let data, headers, keys, colWidths;
+    if (id === 'state') {{
+        data = DATA.state_scenarios;
+        headers = ['前置状态','场景/操作','执行状态','HUD提示','灯光','语音','App提示','周期'];
+        keys = ['pre_state','current','exec_state','hud','light','voice','app','cycle'];
+        colWidths = ['12%','14%','12%','14%','10%','14%','14%','10%'];
+    }} else if (id === 'voice') {{
+        data = DATA.voice_commands;
+        headers = ['分类','唤醒','用户说法','变体','系统动作','成功反馈','HUD反馈','失败反馈','优先级'];
+        keys = ['category','wake','user_says','variants','action','success_voice','success_hud','fail_feedback','priority'];
+        colWidths = ['10%','8%','14%','14%','14%','12%','10%','12%','6%'];
+    }} else if (id === 'button') {{
+        data = DATA.button_mapping;
+        headers = ['按键','场景','单击','双击','长按','组合键','反馈','备注'];
+        keys = ['button','scene','single_click','double_click','long_press','combo','feedback','note'];
+        colWidths = ['10%','12%','14%','14%','14%','14%','14%','8%'];
+    }} else if (id === 'light') {{
+        data = DATA.light_effects;
+        headers = ['场景','颜色','模式','频率','时长','优先级','备注'];
+        keys = ['trigger','color','mode','frequency','duration','priority','note'];
+        colWidths = ['14%','10%','12%','10%','10%','8%','26%'];
+    }} else if (id === 'voice_nav') {{
+        data = DATA.voice_nav;
+        headers = ['场景','触发','用户输入','AI动作','HUD显示','语音播报','灯光反馈','异常兜底','优先级','备注'];
+        keys = ['scene','trigger','user_input','ai_action','hud_display','voice_output','light_effect','fallback','priority','note'];
+        colWidths = ['10%','8%','12%','12%','12%','12%','10%','12%','6%','8%'];
+    }} else if (id === 'user_stories') {{
+        data = DATA.user_stories || [];
+        headers = ['功能名','角色','用户故事','验收条件','优先级'];
+        keys = ['feature','role','story','acceptance','priority'];
+        colWidths = ['16%','12%','30%','28%','14%'];
+    }} else if (id === 'test_cases') {{
+        data = DATA.test_cases || [];
+        headers = ['用例ID','功能名','标题','前置条件','步骤','预期结果','优先级'];
+        keys = ['case_id','feature','title','precondition','steps','expected','priority'];
+        colWidths = ['10%','14%','16%','14%','20%','18%','8%'];
+    }} else if (id === 'page_mapping') {{
+        data = DATA.page_mapping || [];
+        headers = ['页面','父页面','平台','功能','入口','优先级','备注'];
+        keys = ['page','parent','platform','features','entry','priority','note'];
+        colWidths = ['14%','12%','10%','20%','14%','8%','22%'];
+    }} else if (id === 'dev_tasks') {{
+        data = DATA.dev_tasks || [];
+        headers = ['任务ID','功能','描述','角色','工时','依赖','迭代','优先级','备注'];
+        keys = ['task_id','feature','task','assignee','effort_days','dependency','sprint','priority','note'];
+        colWidths = ['10%','12%','20%','10%','8%','12%','10%','6%','22%'];
+    }}
+
+    if (!data || data.length === 0) return '<p style="padding:20px;color:#999;">暂无数据</p>';
+
+    // 添加 colgroup 定义列宽
+    let colgroupHtml = '<colgroup>';
+    (colWidths || []).forEach(w => {{ colgroupHtml += `<col style="width:${{w}}">`; }});
+    colgroupHtml += '</colgroup>';
+
+    let html = '<div class="table-wrapper"><table>' + colgroupHtml + '<thead><tr>';
+    headers.forEach(h => {{ html += `<th>${{h}}</th>`; }});
+    html += '</tr></thead><tbody>';
+    data.forEach(row => {{
+        html += '<tr>';
+        keys.forEach(k => {{
+            let val = row[k] || '';
+            if (k === 'priority' && val) val = `<span class="tag tag-${{val}}">${{val}}</span>`;
+            html += `<td>${{val}}</td>`;
+        }});
+        html += '</tr>';
+    }});
+    html += '</tbody></table></div>';
+    return html;
+}}
+
+function filterAll() {{
+    const q = document.getElementById('search').value.toLowerCase();
+    const p = document.getElementById('priorityFilter').value;
+
+    document.querySelectorAll('.l1').forEach(el => {{
+        const name = (el.dataset.name || '').toLowerCase();
+        const priority = el.dataset.priority || '';
+        const matchQ = !q || name.includes(q) || el.textContent.toLowerCase().includes(q);
+        const matchP = !p || priority === p;
+        el.classList.toggle('hidden', !(matchQ && matchP));
+    }});
+
+    document.querySelectorAll('.l2, .l3').forEach(el => {{
+        const name = (el.dataset.name || '').toLowerCase();
+        const priority = el.dataset.priority || '';
+        const matchQ = !q || name.includes(q);
+        const matchP = !p || priority === p;
+        el.classList.toggle('hidden', !(matchQ && matchP));
+    }});
+
+    document.querySelectorAll('tbody tr').forEach(tr => {{
+        const text = tr.textContent.toLowerCase();
+        const matchQ = !q || text.includes(q);
+        const tagEl = tr.querySelector('.tag');
+        const rowP = tagEl ? tagEl.textContent.trim() : '';
+        const matchP = !p || rowP === p;
+        tr.classList.toggle('hidden', !(matchQ && matchP));
+    }});
+}}
+
+function expandAllTrees() {{
+    document.querySelectorAll('.l1-body').forEach(b => b.classList.add('open'));
+}}
+function collapseAllTrees() {{
+    document.querySelectorAll('.l1-body').forEach(b => b.classList.remove('open'));
+}}
+
+function updateHeaderHeight() {{
+    const header = document.querySelector('.header');
+    const tabs = document.querySelector('.tabs');
+    const content = document.querySelector('.content');
+
+    if (header && tabs && content) {{
+        const headerH = header.offsetHeight;
+        const tabsH = tabs.offsetHeight;
+        const totalH = headerH + tabsH;
+
+        // 设置 CSS 变量
+        document.documentElement.style.setProperty('--header-height', headerH + 'px');
+        document.documentElement.style.setProperty('--total-header-height', totalH + 'px');
+
+        // 更新 tabs 的 top 位置
+        tabs.style.top = headerH + 'px';
+
+        // 更新 content 的 margin-top 和高度
+        content.style.marginTop = totalH + 'px';
+        content.style.height = `calc(100vh - ${{totalH}}px)`;
+
+        // 更新表格表头的 sticky top
+        document.querySelectorAll('th').forEach(th => {{
+            th.style.top = '0';
+        }});
+    }}
+}}
+
+function updateStickyPositions() {{
+    updateHeaderHeight();
+}}
+
+function updateStatsBar() {{
+    const allFeatures = DATA.features;
+    const total = allFeatures.length;
+    const p0 = allFeatures.filter(f => f.priority === 'P0').length;
+    const p1 = allFeatures.filter(f => f.priority === 'P1').length;
+    const p2 = allFeatures.filter(f => f.priority === 'P2').length;
+    const p3 = allFeatures.filter(f => f.priority === 'P3').length;
+    const modules = new Set(allFeatures.map(f => f.module)).size;
+
+    const bar = document.getElementById('statsBar');
+    if (bar) {{
+        bar.innerHTML = `
+            <div class="stat">功能总数 <span class="stat-value">${{total}}</span></div>
+            <div class="stat">P0 <span class="stat-value">${{p0}}</span></div>
+            <div class="stat">P1 <span class="stat-value">${{p1}}</span></div>
+            <div class="stat">P2 <span class="stat-value">${{p2}}</span></div>
+            <div class="stat">P3 <span class="stat-value">${{p3}}</span></div>
+            <div class="stat">模块数 <span class="stat-value">${{modules}}</span></div>
+        `;
+    }}
+}}
+
+buildTabs();
+updateStatsBar();
+updateHeaderHeight();
+window.addEventListener('load', updateHeaderHeight);
+window.addEventListener('resize', updateHeaderHeight);
+
+const firstBody = document.querySelector('.l1-body');
+if (firstBody) firstBody.classList.add('open');
+</script></body></html>""";
+
     return html
 
 
@@ -357,33 +1277,33 @@ def _gen_sheet3_state_scenarios(gateway, kb_context: str = "", goal_text: str = 
     """生成 Sheet 3: 状态场景对策表"""
 
     prompt = (
-        "为智能摩托车全盔项目生成【状态场景对策表】。\n"
-        "输出 JSON 数组，每个元素格式：\n"
+        "为智能摩托车全盔项目生成【状态场景对策表】.\n"
+        "输出 JSON 数组,每个元素格式:\n"
         '{"pre_state":"前置状态","current":"当前状态/场景/操作",'
         '"exec_state":"执行状态","hud":"HUD提示内容",'
         '"light":"灯光提示(颜色+模式)","voice":"语音提示内容",'
         '"app":"App提示内容","cycle":"提示周期/时长"}\n\n'
-        "必须覆盖以下场景分类（每类至少5条）：\n"
-        "1. 开关机与启动：开机自检、关机确认、低电自动关机\n"
-        "2. 蓝牙连接：首次配对、自动回连、断连、回连成功、回连失败\n"
-        "3. 导航：开始导航、转向提醒、偏航重算、到达目的地、导航取消、GPS弱信号\n"
-        "4. 来电通话：来电提醒、接听、拒接、挂断、通话中断\n"
-        "5. 录制：开始录制、停止录制、存储满、过热降级、录制异常中断\n"
-        "6. 组队：创建队伍、加入队伍、掉队提醒、队友离线、退出队伍\n"
-        "7. 胎压：正常、低压警告、高温警告、传感器离线\n"
-        "8. 电量：充电中、低电量20%、极低电量10%、充电完成\n"
-        "9. 安全预警：前向碰撞、侧后来车、盲区占用、急弯减速\n"
-        "10. OTA：检测到新版本、下载中、升级中、升级成功、升级失败\n"
-        "11. SOS：疑似事故检测、倒计时确认、触发报警、误触取消\n"
-        "12. AI语音：唤醒成功、识别中、执行成功、识别失败、网络不可用\n\n"
-        "目标 60-80 条。只输出 JSON 数组。\n"
+        "必须覆盖以下场景分类(每类至少5条):\n"
+        "1. 开关机与启动:开机自检、关机确认、低电自动关机\n"
+        "2. 蓝牙连接:首次配对、自动回连、断连、回连成功、回连失败\n"
+        "3. 导航:开始导航、转向提醒、偏航重算、到达目的地、导航取消、GPS弱信号\n"
+        "4. 来电通话:来电提醒、接听、拒接、挂断、通话中断\n"
+        "5. 录制:开始录制、停止录制、存储满、过热降级、录制异常中断\n"
+        "6. 组队:创建队伍、加入队伍、掉队提醒、队友离线、退出队伍\n"
+        "7. 胎压:正常、低压警告、高温警告、传感器离线\n"
+        "8. 电量:充电中、低电量20%、极低电量10%、充电完成\n"
+        "9. 安全预警:前向碰撞、侧后来车、盲区占用、急弯减速\n"
+        "10. OTA:检测到新版本、下载中、升级中、升级成功、升级失败\n"
+        "11. SOS:疑似事故检测、倒计时确认、触发报警、误触取消\n"
+        "12. AI语音:唤醒成功、识别中、执行成功、识别失败、网络不可用\n\n"
+        "目标 60-80 条.只输出 JSON 数组.\n"
     )
 
     if kb_context:
-        prompt += f"\n参考内部文档：\n{kb_context[:2000]}\n"
+        prompt += f"\n参考内部文档:\n{kb_context[:2000]}\n"
 
     result = gateway.call_azure_openai("cpo", prompt,
-        "只输出JSON数组，不要其他文字。", "structured_doc")
+        "只输出JSON数组,不要其他文字.", "structured_doc")
 
     if result.get("success"):
         json_match = re.search(r'\[[\s\S]*\]', result["response"])
@@ -399,28 +1319,28 @@ def _gen_sheet4_voice_commands(gateway, kb_context: str = "") -> List[Dict]:
     """生成 Sheet 4: 语音指令表"""
 
     prompt = (
-        "为智能摩托车全盔项目生成【语音指令表】。\n"
-        "输出 JSON 数组，每个元素格式：\n"
+        "为智能摩托车全盔项目生成【语音指令表】.\n"
+        "输出 JSON 数组,每个元素格式:\n"
         '{"category":"指令分类","wake":"唤醒方式(唤醒词/按键/自动)",'
         '"user_says":"用户说法","variants":"常见变体说法(逗号分隔)",'
         '"action":"系统执行动作","success_voice":"成功语音反馈",'
         '"success_hud":"成功HUD反馈","fail_feedback":"失败反馈",'
         '"priority":"P0-P3","note":"备注"}\n\n'
-        "必须覆盖以下分类（每类至少5条指令）：\n"
-        "1. 导航控制：开始导航、取消导航、查询距离/时间、切换路线、回家\n"
-        "2. 通话控制：接听、拒接、挂断、回拨、打给XX\n"
-        "3. 音乐控制：播放、暂停、上一首、下一首、调大/小音量、静音\n"
-        "4. 录制控制：开始录制、停止录制、拍照、标记片段\n"
-        "5. 组队控制：创建队伍、加入队伍、退出队伍、呼叫队友\n"
-        "6. 设备查询：查电量、查存储、查胎压、查速度、查时间\n"
-        "7. 设置控制：调亮度、切模式、开/关降噪、开/关免打扰\n"
-        "8. 安全相关：紧急求救、取消报警\n\n"
-        "每条指令必须给出至少2个用户常见变体说法。\n"
-        "目标 40-60 条。只输出 JSON 数组。\n"
+        "必须覆盖以下分类(每类至少5条指令):\n"
+        "1. 导航控制:开始导航、取消导航、查询距离/时间、切换路线、回家\n"
+        "2. 通话控制:接听、拒接、挂断、回拨、打给XX\n"
+        "3. 音乐控制:播放、暂停、上一首、下一首、调大/小音量、静音\n"
+        "4. 录制控制:开始录制、停止录制、拍照、标记片段\n"
+        "5. 组队控制:创建队伍、加入队伍、退出队伍、呼叫队友\n"
+        "6. 设备查询:查电量、查存储、查胎压、查速度、查时间\n"
+        "7. 设置控制:调亮度、切模式、开/关降噪、开/关免打扰\n"
+        "8. 安全相关:紧急求救、取消报警\n\n"
+        "每条指令必须给出至少2个用户常见变体说法.\n"
+        "目标 40-60 条.只输出 JSON 数组.\n"
     )
 
     result = gateway.call_azure_openai("cpo", prompt,
-        "只输出JSON数组。", "structured_doc")
+        "只输出JSON数组.", "structured_doc")
 
     if result.get("success"):
         json_match = re.search(r'\[[\s\S]*\]', result["response"])
@@ -436,23 +1356,25 @@ def _gen_sheet5_button_mapping(gateway) -> List[Dict]:
     """生成 Sheet 5: 按键映射表"""
 
     prompt = (
-        "为智能摩托车全盔项目生成【实体按键映射表】。\n"
-        "头盔有以下按键：主按键(头盔侧面)、音量+键、音量-键、功能键(可选)。\n"
-        "输出 JSON 数组，每个元素格式：\n"
-        '{"button":"按键位置","single_click":"单击动作",'
-        '"double_click":"双击动作","long_press":"长按动作(>2秒)",'
-        '"combo":"组合键动作","scene":"当前场景(通用/导航中/通话中/录制中/组队中)",'
-        '"note":"备注"}\n\n'
-        "规则：\n"
-        "1. 每个按键在不同场景下可以有不同含义\n"
-        "2. 必须考虑：通用场景、导航中、通话中、录制中、组队中、音乐播放中\n"
-        "3. 骑行中戴手套操作，所以动作必须简单明确\n"
-        "4. 长按必须有确认反馈（震动或语音）\n\n"
-        "目标 20-30 条。只输出 JSON 数组。\n"
+        "为智能摩托车全盔项目生成【实体按键场景矩阵表】.\n"
+        "头盔有以下按键:主按键(侧面)、音量+键、音量-键、功能键(可选).\n"
+        "同一个按键在不同场景下动作不同.\n\n"
+        "输出 JSON 数组,每个元素代表一个按键在一个场景下的完整映射:\n"
+        '{"button":"按键位置","scene":"场景(通用/导航中/通话中/录制中/组队中/音乐播放中/来电响铃中/语音助手激活中)",'
+        '"single_click":"单击动作","double_click":"双击动作",'
+        '"long_press":"长按动作(>2秒)","combo":"组合键动作",'
+        '"feedback":"操作反馈(震动/语音/HUD/灯光)","note":"备注"}\n\n'
+        "规则:\n"
+        "1. 每个按键必须在所有 8 个场景下都有定义(4 按键 x 8 场景 = 32 条)\n"
+        "2. 同一操作在不同场景可以含义不同(如通用单击=播放暂停,导航中单击=确认路线)\n"
+        "3. 未定义的动作填'同通用'或'无'\n"
+        "4. 每条必须标明操作反馈方式\n"
+        "5. 骑行中戴手套操作,动作必须简单明确\n\n"
+        "目标 32-40 条.只输出 JSON 数组.\n"
     )
 
     result = gateway.call_azure_openai("cpo", prompt,
-        "只输出JSON数组。", "structured_doc")
+        "只输出JSON数组.", "structured_doc")
 
     if result.get("success"):
         json_match = re.search(r'\[[\s\S]*\]', result["response"])
@@ -468,28 +1390,28 @@ def _gen_sheet6_light_effects(gateway) -> List[Dict]:
     """生成 Sheet 6: 灯效定义表"""
 
     prompt = (
-        "为智能摩托车全盔项目生成【氛围灯灯效定义表】。\n"
-        "头盔有后部氛围灯带，支持 RGB 颜色和多种闪烁模式。\n"
-        "输出 JSON 数组，每个元素格式：\n"
+        "为智能摩托车全盔项目生成【氛围灯灯效定义表】.\n"
+        "头盔有后部氛围灯带,支持 RGB 颜色和多种闪烁模式.\n"
+        "输出 JSON 数组,每个元素格式:\n"
         '{"trigger":"触发场景","color":"灯光颜色(如红/蓝/绿/白/橙/紫)",'
         '"mode":"闪烁模式(常亮/慢闪/快闪/呼吸/流水/脉冲)",'
         '"frequency":"频率(Hz,常亮填0)","duration":"持续时长",'
         '"priority":"优先级(P0-P3,高优先级覆盖低优先级)",'
         '"note":"备注"}\n\n'
-        "必须覆盖：\n"
-        "1. 系统状态：开机、关机、充电中、充电完成、低电量、OTA中\n"
-        "2. 连接状态：蓝牙配对中、配对成功、断连、回连\n"
-        "3. 安全预警：前向碰撞(红快闪)、侧后来车(橙方向闪)、盲区(黄)\n"
-        "4. 通信提醒：来电(蓝呼吸)、消息(白单闪)、组队成功(绿)\n"
-        "5. 录制状态：录制中(红微亮)、录制暂停、录制异常\n"
-        "6. 骑行辅助：刹车灯效(红常亮)、转向灯效(橙流水)、掉队提醒\n"
-        "7. 特殊场景：SOS(红蓝交替快闪)、夜骑尾灯模式\n\n"
-        "灯效优先级规则：安全>通信>系统>装饰。\n"
-        "目标 25-35 条。只输出 JSON 数组。\n"
+        "必须覆盖:\n"
+        "1. 系统状态:开机、关机、充电中、充电完成、低电量、OTA中\n"
+        "2. 连接状态:蓝牙配对中、配对成功、断连、回连\n"
+        "3. 安全预警:前向碰撞(红快闪)、侧后来车(橙方向闪)、盲区(黄)\n"
+        "4. 通信提醒:来电(蓝呼吸)、消息(白单闪)、组队成功(绿)\n"
+        "5. 录制状态:录制中(红微亮)、录制暂停、录制异常\n"
+        "6. 骑行辅助:刹车灯效(红常亮)、转向灯效(橙流水)、掉队提醒\n"
+        "7. 特殊场景:SOS(红蓝交替快闪)、夜骑尾灯模式\n\n"
+        "灯效优先级规则:安全>通信>系统>装饰.\n"
+        "目标 25-35 条.只输出 JSON 数组.\n"
     )
 
     result = gateway.call_azure_openai("cpo", prompt,
-        "只输出JSON数组。", "structured_doc")
+        "只输出JSON数组.", "structured_doc")
 
     if result.get("success"):
         json_match = re.search(r'\[[\s\S]*\]', result["response"])
@@ -501,15 +1423,949 @@ def _gen_sheet6_light_effects(gateway) -> List[Dict]:
     return []
 
 
+def _gen_sheet7_voice_nav_scenarios(gateway) -> List[Dict]:
+    """生成 Sheet 7: AI语音导航场景表"""
+
+    prompt = (
+        "为智能摩托车全盔项目生成【AI语音导航场景定义表】.\n"
+        "头盔集成AI语音助手,支持语音导航控制、POI查询、路线规划.\n"
+        "输出 JSON 数组,每个元素格式:\n"
+        '{"scene":"场景名称","trigger":"触发条件","user_input":"用户输入(语音/按键/自动)",'
+        '"ai_action":"AI执行动作","hud_display":"HUD显示内容与样式",'
+        '"voice_output":"语音播报内容","light_effect":"灯光反馈",'
+        '"fallback":"异常兜底策略","priority":"P0-P3","note":"备注"}\n\n'
+        "必须覆盖:\n"
+        "1. 导航启动:开始导航、去某地、导航到XXX\n"
+        "2. 路线控制:重新规划、避开高速、最快路线、最短路线\n"
+        "3. POI查询:附近加油站、找餐厅、最近充电站、搜索便利店\n"
+        "4. 路况播报:前方路况、拥堵情况、事故提醒、封路信息\n"
+        "5. 导航暂停/继续:暂停导航、继续导航、取消导航\n"
+        "6. 途经点:添加途经点、绕道去某地、修改目的地\n"
+        "7. 特殊场景:偏离路线重新规划、到达提醒、剩余距离查询\n"
+        "8. 多模态协同:地图显示切换、HUD投影导航、语音播报开关\n\n"
+        "响应要简洁(骑行场景),ai_action要具体可执行.\n"
+        "目标 20-30 条.只输出 JSON 数组.\n"
+    )
+
+    result = gateway.call_azure_openai("cpo", prompt,
+        "只输出JSON数组.", "structured_doc")
+
+    if result.get("success"):
+        json_match = re.search(r'\[[\s\S]*\]', result["response"])
+        if json_match:
+            try:
+                return json.loads(json_match.group())
+            except json.JSONDecodeError:
+                pass
+    return []
+
+
+def _gen_user_stories(items: List[Dict], gateway) -> List[Dict]:
+    """基于功能清单生成用户故事"""
+
+    # 提取所有 L2 功能
+    l2_features = [i for i in items if i.get("level") == "L2"]
+    batch_size = 30
+
+    # 构建所有批次
+    batches = []
+    for start in range(0, len(l2_features), batch_size):
+        batches.append((l2_features[start:start + batch_size], start // batch_size))
+
+    def _gen_batch(batch_info):
+        batch, batch_idx = batch_info
+        features_text = "\n".join(
+            f"- {f.get('name', '')}({f.get('module', '')}): {f.get('description', '')}"
+            for f in batch
+        )
+        prompt = (
+            f"为以下功能生成用户故事(User Story).\n"
+            f"输出 JSON 数组,每个元素:\n"
+            f'{{"feature":"功能名","role":"用户角色","story":"作为[角色],我想要[功能],以便[价值]",'
+            f'"acceptance":"验收条件","priority":"P0-P3"}}\n\n'
+            f"角色库(选最合适的):通勤骑手、摩旅骑手、团骑领队、内容创作骑手、新手骑手、后台管理员\n\n"
+            f"功能列表:\n{features_text}\n\n"
+            f"每个功能一条故事.只输出 JSON."
+        )
+        result = gateway.call_azure_openai("cpo", prompt,
+            "生成用户故事.只输出JSON.", "structured_doc")
+        if result.get("success"):
+            json_match = re.search(r'\[[\s\S]*\]', result["response"])
+            if json_match:
+                try:
+                    return json.loads(json_match.group())
+                except json.JSONDecodeError:
+                    pass
+        return []
+
+    # 4 路并行处理所有批次
+    all_stories = []
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futs = {pool.submit(_gen_batch, b): i for i, b in enumerate(batches)}
+        for f in as_completed(futs):
+            all_stories.extend(f.result())
+
+    print(f"[UserStory] 生成 {len(all_stories)} 条用户故事")
+    return all_stories
+
+
+def _gen_test_cases(items: List[Dict], gateway) -> List[Dict]:
+    """基于 L3 验收标准生成测试用例"""
+
+    l3_features = [i for i in items if i.get("level") == "L3" and i.get("acceptance")]
+    batch_size = 30
+
+    # 构建所有批次
+    batches = []
+    for start in range(0, len(l3_features), batch_size):
+        batches.append((l3_features[start:start + batch_size], start // batch_size))
+
+    def _gen_batch(batch_info):
+        batch, batch_idx = batch_info
+        features_text = "\n".join(
+            f"- {f.get('name', '')}: 验收={f.get('acceptance', '')}"
+            for f in batch
+        )
+        prompt = (
+            f"为以下功能的验收标准生成测试用例.\n"
+            f"输出 JSON 数组,每个元素:\n"
+            f'{{"case_id":"TC-001","feature":"功能名","title":"用例标题",'
+            f'"precondition":"前置条件","steps":"操作步骤(分号分隔)",'
+            f'"expected":"预期结果","priority":"P0-P3"}}\n\n'
+            f"规则:\n"
+            f"- 每个功能 1-2 条用例(正常流程 + 异常流程)\n"
+            f"- 操作步骤要具体可执行\n"
+            f"- 预期结果要包含验收标准中的具体数字\n\n"
+            f"功能列表:\n{features_text}\n\n"
+            f"只输出 JSON."
+        )
+        result = gateway.call_azure_openai("cpo", prompt,
+            "生成测试用例.只输出JSON.", "structured_doc")
+        if result.get("success"):
+            json_match = re.search(r'\[[\s\S]*\]', result["response"])
+            if json_match:
+                try:
+                    cases = json.loads(json_match.group())
+                    for idx, c in enumerate(cases):
+                        c["case_id"] = f"TC-{batch_idx * batch_size + idx + 1:04d}"
+                    return cases
+                except json.JSONDecodeError:
+                    pass
+        return []
+
+    # 4 路并行处理所有批次
+    all_cases = []
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futs = {pool.submit(_gen_batch, b): i for i, b in enumerate(batches)}
+        for f in as_completed(futs):
+            all_cases.extend(f.result())
+
+    print(f"[TestCase] 生成 {len(all_cases)} 条测试用例")
+    return all_cases
+
+
+def _gen_page_mapping(items: List[Dict], gateway) -> List[Dict]:
+    """从功能清单生成页面→功能映射表"""
+
+    # 提取所有 note 中的页面信息
+    pages_mentioned = set()
+    for item in items:
+        note = item.get("note", "")
+        if note:
+            # 提取页面关键词
+            for page in re.findall(r'(骑行主界面|App-\S+|首次配对|设置页|导航页|录制页|组队页|商城\S*|社区\S*)', note):
+                pages_mentioned.add(page)
+
+    # 如果 note 中没有足够页面信息,让 LLM 生成
+    l1_l2 = [i for i in items if i.get("level") in ("L1", "L2")]
+    features_text = "\n".join(f"- {f.get('name', '')}({f.get('module', '')})" for f in l1_l2[:60])
+
+    prompt = (
+        f"基于以下智能摩托车全盔的功能列表,生成页面→功能映射表.\n"
+        f"输出 JSON 数组,每个元素代表一个页面:\n"
+        f'{{"page":"页面名","parent":"父页面(顶级填空)","platform":"HUD/App/系统",'
+        f'"features":"该页面包含的功能(逗号分隔)","entry":"入口方式(Tab/按钮/自动/语音)",'
+        f'"priority":"P0-P3","note":"备注"}}\n\n'
+        f"页面分类:\n"
+        f"- HUD 页面:骑行主界面、导航态、来电态、录制态、组队态、预警态、设置态\n"
+        f"- App 页面:设备Tab首页、社区Tab、商城Tab、我的Tab、导航页、录制管理、组队管理、设置页、配对引导页\n"
+        f"- 系统页面:开机自检、首次使用引导、权限申请、OTA升级\n\n"
+        f"功能列表:\n{features_text}\n\n"
+        f"目标 25-35 个页面.只输出 JSON."
+    )
+
+    result = gateway.call_azure_openai("cpo", prompt,
+        "生成页面映射.只输出JSON.", "structured_doc")
+
+    if result.get("success"):
+        json_match = re.search(r'\[[\s\S]*\]', result["response"])
+        if json_match:
+            try:
+                return json.loads(json_match.group())
+            except json.JSONDecodeError:
+                pass
+    return []
+
+
+def _gen_dev_tasks(items: List[Dict], gateway) -> List[Dict]:
+    """基于功能清单生成开发任务清单(含工时估算)"""
+
+    l2_features = [i for i in items if i.get("level") == "L2"]
+    batch_size = 30
+
+    # 构建所有批次
+    batches = []
+    for start in range(0, len(l2_features), batch_size):
+        batches.append((l2_features[start:start + batch_size], start // batch_size))
+
+    def _gen_batch(batch_info):
+        batch, batch_idx = batch_info
+        features_text = "\n".join(
+            f"- {f.get('name', '')}({f.get('module', '')}): {f.get('description', '')[:60]}"
+            for f in batch
+        )
+        prompt = (
+            f"为以下功能生成开发任务清单(含工时估算).\n"
+            f"输出 JSON 数组,每个元素:\n"
+            f'{{"task_id":"T-001","feature":"功能名","task":"任务描述",'
+            f'"assignee":"负责角色(前端/后端/嵌入式/算法/测试/设计)",'
+            f'"effort_days":"预估工时(天)","dependency":"前置依赖任务",'
+            f'"sprint":"建议迭代(Sprint1-MVP/Sprint2-增强/Sprint3-优化)",'
+            f'"priority":"P0-P3","note":"备注"}}\n\n'
+            f"工时估算规则:\n"
+            f"- 简单UI展示: 0.5-1天\n"
+            f"- 标准功能开发: 1-3天\n"
+            f"- 复杂交互/算法: 3-5天\n"
+            f"- 跨端联调: 2-3天\n"
+            f"- 每个 L2 功能拆成 1-3 个开发任务\n\n"
+            f"功能列表:\n{features_text}\n\n"
+            f"只输出 JSON."
+        )
+        result = gateway.call_azure_openai("cpo", prompt,
+            "生成开发任务.只输出JSON.", "structured_doc")
+        if result.get("success"):
+            json_match = re.search(r'\[[\s\S]*\]', result["response"])
+            if json_match:
+                try:
+                    tasks = json.loads(json_match.group())
+                    for idx, t in enumerate(tasks):
+                        t["task_id"] = f"T-{batch_idx * batch_size + idx + 1:04d}"
+                    return tasks
+                except json.JSONDecodeError:
+                    pass
+        return []
+
+    # 4 路并行处理所有批次
+    all_tasks = []
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futs = {pool.submit(_gen_batch, b): i for i, b in enumerate(batches)}
+        for f in as_completed(futs):
+            all_tasks.extend(f.result())
+
+    print(f"[DevTask] 生成 {len(all_tasks)} 条开发任务")
+    return all_tasks
+
+
+def _extract_data_points(kb_text: str, max_points: int = 15) -> str:
+    """从知识库全文中提取关键数据点（纯正则，不走 LLM）"""
+    import re as _re
+
+    points = set()
+
+    # 提取含数字+单位的句子片段
+    num_patterns = _re.findall(
+        r'[^。\n]{0,40}?\d+\.?\d*\s*(?:mm|cm|g|kg|mAh|W|V|Hz|dB|美元|元|USD|\$|%|nits|lux|fps|°|μm|TOPS|nm|GHz|MHz|MB|GB|TB|ms|秒|分钟|小时|天|个月|台|件|条|款|代|层|路|位|倍|次)[^。\n]{0,20}',
+        kb_text
+    )
+    for match in num_patterns[:20]:
+        clean = match.strip().strip('，,、；;：:')
+        if len(clean) > 10:
+            points.add(clean)
+
+    # 提取含型号的句子片段
+    model_patterns = _re.findall(
+        r'[^。\n]{0,30}?(?:[A-Z]{2,}\d{2,}|IMX\d+|QCC\d+|BES\d+|nRF\d+|AR[12]\s*Gen|BMI\d+|ICM-\d+|STM32|ESP32|MT\d{4}|BCM\d+|CS\d{4}|WM\d{4})[^。\n]{0,30}',
+        kb_text
+    )
+    for match in model_patterns[:10]:
+        clean = match.strip().strip('，,、；;：:')
+        if len(clean) > 8:
+            points.add(clean)
+
+    # 提取含品牌名的句子片段
+    brand_patterns = _re.findall(
+        r'[^。\n]{0,20}?(?:歌尔|立讯|舜宇|索尼|高通|联发科|博世|Qualcomm|Sony|Bosch|Nordic|Himax|JBD|Sena|Cardo|Forcite|LIVALL|EyeRide|CrossHelmet|GoPro|Insta360|TÜV|DEKRA|SGS)[^。\n]{0,30}',
+        kb_text
+    )
+    for match in brand_patterns[:10]:
+        clean = match.strip().strip('，,、；;：:')
+        if len(clean) > 8:
+            points.add(clean)
+
+    # 提取含认证标准的
+    cert_patterns = _re.findall(
+        r'[^。\n]{0,20}?(?:ECE\s*22\.0[56]|DOT\s*FMVSS|GB\s*811|FCC|CE|IP\d{2}|MIL-STD|Qi|BQB|SRRC)[^。\n]{0,30}',
+        kb_text
+    )
+    for match in cert_patterns[:5]:
+        clean = match.strip().strip('，,、；;：:')
+        if len(clean) > 8:
+            points.add(clean)
+
+    # 去重并截断
+    result = list(points)[:max_points]
+
+    if not result:
+        return ""
+
+    return "关键数据点：\n" + "\n".join(f"- {p}" for p in result)
+
+
+import random
+
+def _sample_compare(old_rows: list, new_rows: list, sample_size: int = 5) -> str:
+    """
+    抽样比质量：从新旧版各抽 N 条同名 L3 功能，逐条比较验收标准质量。
+    返回 'new' / 'keep' / 'merge'
+    """
+
+    def _ensure_str(val):
+        if isinstance(val, list):
+            return ', '.join(str(v) for v in val)
+        if isinstance(val, dict):
+            import json
+            return json.dumps(val, ensure_ascii=False)
+        if val is None:
+            return ''
+        return str(val)
+
+    def _quality_score_single(row: dict) -> float:
+        """单条功能的质量评分"""
+        score = 0
+
+        acc = _ensure_str(row.get('acceptance', ''))
+        desc = _ensure_str(row.get('description', ''))
+
+        # 验收标准质量（权重 60%）
+        import re
+        numbers = re.findall(r'\d+\.?\d*', acc)
+        if len(numbers) >= 2:
+            score += 6  # 有 2 个以上具体数字
+        elif len(numbers) >= 1:
+            score += 3
+
+        if any(unit in acc for unit in ['ms', 's', 'Hz', 'fps', 'dB', '%', '°', 'km', 'mAh', 'lux']):
+            score += 2  # 有工程单位
+
+        if '待验证' in acc or '待确认' in acc:
+            score -= 1
+
+        if len(acc) > 50:
+            score += 1  # 足够详细
+
+        # 描述质量（权重 20%）
+        if len(desc) > 30:
+            score += 2
+
+        # 优先级合理性（权重 10%）
+        priority = str(row.get('priority', ''))
+        if priority in ['P0', 'P1', 'P2', 'P3']:
+            score += 1
+
+        return score
+
+    # 构建同名功能映射
+    old_map = {}
+    for r in old_rows:
+        name = _ensure_str(r.get('name', ''))
+        if name:
+            old_map[name] = r
+
+    new_map = {}
+    for r in new_rows:
+        name = _ensure_str(r.get('name', ''))
+        if name:
+            new_map[name] = r
+
+    # 找到两版都有的同名功能
+    common_names = list(set(old_map.keys()) & set(new_map.keys()))
+
+    if not common_names:
+        # 没有重叠 → 比总条目数和平均质量
+        old_avg = sum(_quality_score_single(r) for r in old_rows) / max(len(old_rows), 1)
+        new_avg = sum(_quality_score_single(r) for r in new_rows) / max(len(new_rows), 1)
+        if new_avg > old_avg + 1:
+            return 'new'
+        elif old_avg > new_avg + 1:
+            return 'keep'
+        return 'merge'
+
+    # 抽样比较
+    sample = random.sample(common_names, min(sample_size, len(common_names)))
+
+    new_wins = 0
+    old_wins = 0
+
+    for name in sample:
+        old_score = _quality_score_single(old_map[name])
+        new_score = _quality_score_single(new_map[name])
+
+        if new_score > old_score:
+            new_wins += 1
+        elif old_score > new_score:
+            old_wins += 1
+        # 平局不计
+
+    # 判定
+    total_compared = new_wins + old_wins
+    if total_compared == 0:
+        return 'merge'  # 全部平局
+
+    if new_wins >= total_compared * 0.6:
+        return 'new'
+    elif old_wins >= total_compared * 0.6:
+        return 'keep'
+    else:
+        return 'merge'
+
+
+def _merge_best_of_both(old_rows: list, new_rows: list) -> list:
+    """逐条取验收标准更好的版本"""
+
+    def _ensure_str(val):
+        if isinstance(val, list):
+            return ', '.join(str(v) for v in val)
+        if isinstance(val, dict):
+            import json
+            return json.dumps(val, ensure_ascii=False)
+        if val is None:
+            return ''
+        return str(val)
+
+    old_map = {_ensure_str(r.get('name', '')): r for r in old_rows if r.get('name')}
+    new_map = {_ensure_str(r.get('name', '')): r for r in new_rows if r.get('name')}
+
+    merged = {}
+    all_names = set(old_map.keys()) | set(new_map.keys())
+
+    for name in all_names:
+        old_r = old_map.get(name)
+        new_r = new_map.get(name)
+
+        if old_r and not new_r:
+            merged[name] = old_r
+        elif new_r and not old_r:
+            merged[name] = new_r
+        else:
+            # 两者都有 → 比验收标准长度和具体度
+            old_acc = _ensure_str(old_r.get('acceptance', ''))
+            new_acc = _ensure_str(new_r.get('acceptance', ''))
+            import re
+            old_nums = len(re.findall(r'\d+', old_acc))
+            new_nums = len(re.findall(r'\d+', new_acc))
+            if new_nums > old_nums:
+                merged[name] = new_r
+            elif old_nums > new_nums:
+                merged[name] = old_r
+            else:
+                # 数字一样多 → 取更长的
+                merged[name] = new_r if len(new_acc) >= len(old_acc) else old_r
+
+    return list(merged.values())
+
+
+def _score_module(items: list) -> int:
+    """给一个模块的内容打分，用于对比两版取优（质量优先）"""
+    if not items:
+        return 0
+
+    # ===== Bug A fix: 确保所有待正则匹配的文本字段是 string =====
+    def _ensure_str(val):
+        if isinstance(val, list):
+            return ', '.join(str(v) for v in val)
+        if isinstance(val, dict):
+            import json
+            return json.dumps(val, ensure_ascii=False)
+        if val is None:
+            return ''
+        return str(val)
+
+    for row in items:
+        for key in ('acceptance', 'description', 'dependencies', 'interaction', 'name', 'priority'):
+            if key in row:
+                row[key] = _ensure_str(row[key])
+    # ===== End Bug A fix =====
+
+    l1 = sum(1 for i in items if i.get("level") == "L1")
+    l2 = sum(1 for i in items if i.get("level") == "L2")
+    l3 = sum(1 for i in items if i.get("level") == "L3")
+
+    # 空壳：有 L1 但没有 L2
+    if l1 > 0 and l2 == 0:
+        return 1
+
+    score = 0
+
+    # 结构完整性（权重 30%）
+    structure = min(l2 * 2 + l3 * 0.5, 30)
+    score += structure
+
+    # 验收标准质量（权重 50%）— 这是最重要的
+    for item in items:
+        acc = item.get("acceptance", "")
+        desc = item.get("description", "")
+
+        if not acc or acc == "[待生成]":
+            score -= 3  # 空验收严重扣分
+        elif "[待验证]" in acc:
+            score += 1  # 标注待验证比编造好
+        else:
+            # 检查是否有真实数据（不是编的整数）
+            import re
+            has_specific = bool(re.search(
+                r'\d+\.?\d*\s*(?:mm|cm|g|kg|mAh|W|V|Hz|dB|ms|秒|nits|lux|fps|°|GHz|MHz|Mbps|MB|GB)',
+                acc
+            ))
+            has_model = bool(re.search(r'[A-Z]{2,}\d{2,}|ECE|DOT|GB\s*\d+', acc))
+
+            if has_specific or has_model:
+                score += 3  # 有具体参数/认证引用
+            elif any(c.isdigit() for c in acc):
+                score += 1.5  # 有数字但可能是编的
+            else:
+                score += 0.5  # 有文字但无数据
+
+    # 描述完整性（权重 20%）
+    has_desc = sum(1 for i in items if len(i.get("description", "")) > 15)
+    score += min(has_desc * 0.5, 20)
+
+    return max(int(score), 0)
+
+
+# ===== Fix 4: 比较决策函数 =====
+def _compare_decision(module_name: str, old_rows: list, new_rows: list, old_score: int, new_score: int) -> str:
+    """比较决策：新版必须显著更好才替换
+
+    Returns:
+        'new': 使用新版
+        'keep': 保留旧版
+        'merge': 合并两版精华
+        None: 需要重新生成
+    """
+    # 两者都是空/失败 → 都不要
+    if old_score <= 1 and new_score <= 1:
+        print(f"  SKIP {module_name}: 新旧都是空壳 (旧{old_score}, 新{new_score})")
+        return None
+
+    # 新版是空/失败 → 保留旧版
+    if new_score <= 1:
+        print(f"  KEEP {module_name}: 新版空壳 (旧{old_score})")
+        return 'keep'
+
+    # 旧版是空/失败 → 用新版
+    if old_score <= 1:
+        print(f"  OK {module_name}: 旧版空壳 (新{new_score})")
+        return 'new'
+
+    # 都有内容 → 新版必须高出 5% 以上才替换
+    threshold = max(3, old_score * 0.05)
+    if new_score > old_score + threshold:
+        print(f"  OK {module_name}: 新版显著更好 ({old_score}->{new_score})")
+        return 'new'
+    elif new_score < old_score - threshold:
+        print(f"  KEEP {module_name}: 旧版更好 ({old_score} vs 新{new_score})")
+        return 'keep'
+    else:
+        # 分数接近 → 合并两版的精华
+        print(f"  MERGE {module_name}: 分数接近 ({old_score} vs {new_score})，合并取优")
+        return 'merge'
+
+
+def _merge_two_versions(old_rows: list, new_rows: list) -> list:
+    """合并两个版本，按 L3 功能名逐条取优"""
+    merged = []
+    seen_names = {}
+
+    # 先处理旧版
+    for row in old_rows:
+        name = row.get('name', '')
+        if name and name not in seen_names:
+            seen_names[name] = row
+
+    # 再处理新版，取优
+    for row in new_rows:
+        name = row.get('name', '')
+        if name in seen_names:
+            old_row = seen_names[name]
+            # 比较验收标准长度，取更完整的
+            if len(str(row.get('acceptance', ''))) > len(str(old_row.get('acceptance', ''))):
+                seen_names[name] = row
+        else:
+            seen_names[name] = row
+
+    return list(seen_names.values())
+# ===== End Fix 4 =====
+
+
+def _gen_one_with_gemini(feature: Dict, gateway) -> List[Dict]:
+    """降级到 Gemini 生成单个模块"""
+    name = feature["name"]
+    module = feature["module"]
+
+    try:
+        from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt
+    except ImportError:
+        search_knowledge = None
+        format_knowledge_for_prompt = None
+
+    # 使用数据点提取模式
+    kb_raw = ""
+    if search_knowledge:
+        for q in [f"{name} 技术参数", f"{name} 竞品", f"{name} 标准"]:
+            try:
+                entries = search_knowledge(q, limit=3)
+                if entries:
+                    kb_raw += format_knowledge_for_prompt(entries)[:1500] + "\n"
+            except Exception:
+                pass
+
+    # 从全文提取数据点（~200字），不灌全文
+    kb_data_points = _extract_data_points(kb_raw)
+    kb_inject = ""
+    if kb_data_points:
+        kb_inject = f"\n\n参考数据：\n{kb_data_points}\n"
+
+    print(f"  [KB-Gemini] {name}: 知识库原文 {len(kb_raw)} 字 -> 数据点 {len(kb_data_points)} 字")
+
+    extra_hint = ""
+    if "我的" in name:
+        extra_hint = "\n必须包含:帮助与反馈、关于设备、隐私与协议、数据管理。\n"
+
+    batch_prompt = (
+        f"为智能摩托车全盔项目生成'{name}'模块的功能清单.\n"
+        f"模块归属:{module}\n"
+        f"{extra_hint}{kb_inject}\n"
+        f"输出 JSON 数组,每个元素格式:\n"
+        f'{{"module":"{module}","level":"L1或L2或L3","parent":"父功能名",'
+        f'"name":"功能名称","priority":"P0-P3",'
+        f'"interaction":"交互方式","description":"描述",'
+        f'"acceptance":"验收标准(含数字)","dependencies":"关联功能","note":"备注"}}\n\n'
+        f"规则:第一条L1,下至少3个L2每个至少2个L3.验收标准基于知识库,无数据标[待验证].\n"
+        f"P0<=30% P1约40% P2约25%.只输出JSON."
+    )
+
+    try:
+        result = gateway.call_gemini("gemini_2_5_flash", batch_prompt,
+            "只输出JSON数组.", "structured_doc_fallback")
+
+        if not result.get("success"):
+            error_msg = result.get("error", "未知错误")
+            print(f"  [GenOne-Gemini] {name} Gemini 返回失败: {error_msg}")
+            return []
+
+        response = result.get("response", "")
+        if len(response) < 50:
+            print(f"  [GenOne-Gemini] {name} 响应太短: {len(response)} 字")
+            return []
+
+        json_match = re.search(r'\[[\s\S]*\]', response)
+        if not json_match:
+            print(f"  [GenOne-Gemini] {name} 无法提取 JSON，响应前200字: {response[:200]}")
+            return []
+
+        try:
+            # Bug C: 清洗控制字符
+            cleaned_json = _clean_json_text(json_match.group())
+            items = json.loads(cleaned_json)
+            # 防御：确保所有字段都是 string
+            for item in items:
+                for key in item:
+                    if isinstance(item[key], (list, dict)):
+                        item[key] = ", ".join(str(v) for v in item[key]) if isinstance(item[key], list) else str(item[key])
+                    elif item[key] is None:
+                        item[key] = ""
+            return items
+        except json.JSONDecodeError as je:
+            print(f"  [GenOne-Gemini] {name} JSON 解析失败: {je}")
+            print(f"  [GenOne-Gemini] {name} JSON 片段: {cleaned_json[:300]}")
+            return []
+
+    except Exception as e:
+        print(f"  [GenOne-Gemini] {name} 异常: {type(e).__name__}: {e}")
+        import traceback
+        traceback.print_exc()
+        return []
+
+
+def _gen_one_minimal(feature: Dict, gateway) -> List[Dict]:
+    """精简模式：最短 prompt，但仍包含知识库数据点"""
+    name = feature["name"]
+    module = feature["module"]
+
+    # 仍然搜知识库，但只取数据点
+    kb_raw = ""
+    try:
+        from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt
+        entries = search_knowledge(name, limit=3)
+        if entries:
+            kb_raw = format_knowledge_for_prompt(entries)[:1500]
+    except Exception:
+        pass
+
+    data_points = _extract_data_points(kb_raw)
+    kb_line = f"\n参考数据：{data_points}\n" if data_points else ""
+
+    prompt = (
+        f"生成「{name}」功能清单。模块：{module}。{kb_line}"
+        f"输出JSON数组：module/level(L1,L2,L3)/parent/name/priority/interaction/description/acceptance/dependencies/note。"
+        f"至少3个L2每个2个L3。只输出JSON。"
+    )
+
+    try:
+        result = gateway.call_azure_openai("cpo", prompt, "只输出JSON。", "structured_doc_minimal")
+
+        if result.get("success"):
+            json_match = re.search(r'\[[\s\S]*\]', result["response"])
+            if json_match:
+                try:
+                    # Bug C: 清洗控制字符
+                    cleaned_json = _clean_json_text(json_match.group())
+                    items = json.loads(cleaned_json)
+                    # 防御：确保所有字段都是 string
+                    for item in items:
+                        for key in item:
+                            if isinstance(item[key], (list, dict)):
+                                item[key] = ", ".join(str(v) for v in item[key]) if isinstance(item[key], list) else str(item[key])
+                            elif item[key] is None:
+                                item[key] = ""
+                    return items
+                except json.JSONDecodeError as je:
+                    print(f"  [GenOne-Minimal] {name} JSON 解析失败: {je}")
+        print(f"  [GenOne-Minimal] {name} 失败")
+    except Exception as e:
+        print(f"  [GenOne-Minimal] {name} 异常: {e}")
+    return []
+
+
+def _calibrate_priorities(all_items: List[Dict]) -> None:
+    """全局优先级校准:确保 P0<=25%"""
+    total = len(all_items)
+    if total == 0:
+        return
+
+    p0_count = sum(1 for i in all_items if i.get("priority") == "P0")
+    p0_ratio = p0_count / total
+
+    if p0_ratio <= 0.25:
+        print(f"[Calibrate] P0 占比 {p0_ratio:.0%},无需校准")
+        return
+
+    print(f"[Calibrate] P0 占比 {p0_ratio:.0%} > 25%,开始校准...")
+
+    CORE_MODULES = {"导航", "主动安全预警提示", "AI语音助手", "Ai语音助手",
+                    "组队", "设备状态", "摄像状态"}
+
+    p0_l3 = [i for i in all_items if i.get("priority") == "P0" and i.get("level") == "L3"]
+    target_demote = p0_count - int(total * 0.25)
+    demoted = 0
+
+    for item in p0_l3:
+        if demoted >= target_demote:
+            break
+        if item.get("module", "") not in CORE_MODULES:
+            item["priority"] = "P1"
+            demoted += 1
+
+    new_p0 = sum(1 for i in all_items if i.get("priority") == "P0")
+    print(f"[Calibrate] 降级 {demoted} 个 L3: P0 {p0_count}->{new_p0} ({new_p0/total:.0%})")
+
+
+def _cross_module_audit(all_items: List[Dict], extra_sheets: Dict) -> List[Dict]:
+    """跨模块一致性审计"""
+    issues = []
+
+    # 1. 只检查名称或描述明确包含"语音控制/语音指令/语音操作"的 L2
+    voice_commands = extra_sheets.get("voice", [])
+    voice_texts = " ".join(str(vc) for vc in voice_commands).lower()
+
+    for item in all_items:
+        name = item.get("name", "")
+        desc = item.get("description", "")
+
+        is_voice_control = any(kw in name + desc for kw in
+            ["语音控制", "语音指令", "语音操作", "语音发起", "语音查询", "语音切换"])
+
+        if is_voice_control and item.get("level") == "L2":
+            has_match = any(
+                name[:4].lower() in str(vc).lower()
+                for vc in voice_commands
+            )
+            if not has_match:
+                issues.append({
+                    "type": "功能-语音不一致",
+                    "issue": f"「{name}」含语音控制功能，但语音指令表无对应",
+                    "module": item.get("module", "")
+                })
+
+    # 2. 状态场景 vs 灯效交叉检查
+    light_triggers = {le.get("trigger", "").lower() for le in extra_sheets.get("light", [])}
+    for sc in extra_sheets.get("state", []):
+        light = sc.get("light", "")
+        scene = sc.get("current", "")
+        if light and light != "无" and scene[:6].lower() not in " ".join(light_triggers):
+            issues.append({"type": "场景-灯效不一致",
+                "issue": f"状态场景 '{scene[:30]}' 有灯光提示但灯效表无对应",
+                "module": "灯效"})
+
+    # 3. 模块级 P0 占比过高
+    p0_by_mod = {}
+    total_by_mod = {}
+    for item in all_items:
+        mod = item.get("module", "")
+        total_by_mod[mod] = total_by_mod.get(mod, 0) + 1
+        if item.get("priority") == "P0":
+            p0_by_mod[mod] = p0_by_mod.get(mod, 0) + 1
+    for mod, p0 in p0_by_mod.items():
+        total = total_by_mod.get(mod, 1)
+        if p0 / total > 0.5:
+            issues.append({"type": "优先级失衡",
+                "issue": f"'{mod}' P0 占比 {p0/total:.0%} ({p0}/{total}),建议降级",
+                "module": mod})
+
+    # 4. [待生成][待验证] 统计
+    pending_gen = sum(1 for i in all_items if "[待生成]" in i.get("description", ""))
+    pending_verify = sum(1 for i in all_items if "[待验证]" in i.get("acceptance", ""))
+    if pending_gen > 0:
+        issues.append({"type": "生成不完整",
+            "issue": f"{pending_gen} 个模块标记[待生成],需重新触发", "module": "全局"})
+    if pending_verify > 5:
+        issues.append({"type": "验收待验证",
+            "issue": f"{pending_verify} 个功能标记[待验证],建议补充知识库后重新生成", "module": "全局"})
+
+    if issues:
+        print(f"\n[Audit] 发现 {len(issues)} 个一致性问题:")
+        for iss in issues[:15]:
+            print(f"  ! [{iss['type']}] {iss['issue'][:60]}")
+    else:
+        print("[Audit] 一致性检查通过 OK")
+
+    # 保存供下次迭代使用
+    try:
+        audit_path = EXPORT_DIR.parent / "prd_audit_issues.json"
+        audit_path.parent.mkdir(parents=True, exist_ok=True)
+        audit_path.write_text(json.dumps(issues, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception:
+        pass
+
+    return issues
+
+
+# ===== Fix 6: 一致性审计自我迭代闭环 =====
+def _auto_fix_audit_issues(audit_issues: list, sheets_data: dict, gateway) -> list:
+    """针对可自动修复的审计问题，自动补生成缺失条目"""
+    if not audit_issues:
+        return []
+
+    fixable = []
+    manual = []
+    for issue in audit_issues:
+        issue_type = issue.get('type', '')
+        if '功能-语音不一致' in issue_type or '场景-灯效不一致' in issue_type:
+            fixable.append(issue)
+        else:
+            manual.append(issue)
+
+    if not fixable:
+        print(f"  [Audit-Fix] 无可自动修复的问题")
+        return manual
+
+    print(f"  [Audit-Fix] 发现 {len(fixable)} 个可自动修复问题")
+
+    voice_gaps = [i for i in fixable if '语音' in i.get('type', '')]
+    light_gaps = [i for i in fixable if '灯效' in i.get('type', '')]
+
+    if voice_gaps and 'voice' in sheets_data:
+        missing_features = [i.get('feature_name', '') for i in voice_gaps if i.get('feature_name')]
+        if missing_features:
+            prompt = f"为以下功能生成语音指令表条目(JSON数组): {', '.join(missing_features[:5])}。字段:category,wake,user_says,action,success_voice。"
+            try:
+                result = gateway.call_azure_openai("cpo", prompt, "只输出JSON数组。", "audit_fix", max_tokens=1500)
+                if result.get("success"):
+                    json_match = re.search(r'\[[\s\S]*\]', result.get("response", ""))
+                    if json_match:
+                        new_rows = json.loads(_clean_json_text(json_match.group()))
+                        if new_rows:
+                            sheets_data['voice'].extend(new_rows)
+                            print(f"  [Audit-Fix] 语音表补充 {len(new_rows)} 条")
+            except Exception as e:
+                print(f"  [Audit-Fix] 语音补充失败: {e}")
+
+    if light_gaps and 'light' in sheets_data:
+        missing_scenes = [i.get('scene_name', '') for i in light_gaps if i.get('scene_name')]
+        if missing_scenes:
+            prompt = f"为以下场景生成灯效定义条目(JSON数组): {', '.join(missing_scenes[:5])}。字段:trigger,color,mode,frequency,duration,priority。"
+            try:
+                result = gateway.call_azure_openai("cpo", prompt, "只输出JSON数组。", "audit_fix", max_tokens=1500)
+                if result.get("success"):
+                    json_match = re.search(r'\[[\s\S]*\]', result.get("response", ""))
+                    if json_match:
+                        new_rows = json.loads(_clean_json_text(json_match.group()))
+                        if new_rows:
+                            sheets_data['light'].extend(new_rows)
+                            print(f"  [Audit-Fix] 灯效表补充 {len(new_rows)} 条")
+            except Exception as e:
+                print(f"  [Audit-Fix] 灯效补充失败: {e}")
+
+    print(f"  [Audit-Fix] 完成。剩余 {len(manual)} 个需人工确认")
+    return manual
+# ===== End Fix 6 =====
+
+
+# ===== Fix 2: 移除[待生成]占位行 =====
+def _remove_placeholder_rows(rows: list, prev_version_map: dict = None) -> list:
+    """移除生成失败的占位行，用上一版数据或最小骨架替代"""
+    if prev_version_map is None:
+        prev_version_map = {}
+
+    cleaned = []
+    for row in rows:
+        desc = str(row.get('description', ''))
+        if '待生成' in desc or '生成失败' in desc:
+            # 尝试从上一版获取该模块的数据
+            module_name = row.get('module') or row.get('name', '')
+            prev_rows = prev_version_map.get(module_name, [])
+            if prev_rows:
+                cleaned.extend(prev_rows)
+                print(f"  [Fallback] {module_name}: 用上一版 {len(prev_rows)} 条替代")
+            else:
+                # 上一版也没有 → 生成最小骨架
+                skeleton = {
+                    **row,
+                    'description': f'{module_name}模块（待详细展开）',
+                    'acceptance': '待下一版本迭代补充',
+                    'level': 'L1',
+                }
+                cleaned.append(skeleton)
+                print(f"  [Skeleton] {module_name}: 生成最小骨架")
+        else:
+            cleaned.append(row)
+    return cleaned
+# ===== End Fix 2 =====
+
+
 # === Excel 导出 ===
-def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str) -> str:
-    """导出功能清单到 Excel 文件（HUD端 + App端 双 Sheet）"""
+def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, extra_sheets: Dict = None, audit_issues: List[Dict] = None, version_info: Dict = None) -> str:
+    """导出功能清单到 Excel 文件(支持 6 个 Sheet)
+
+    Args:
+        version_info: 可选的版本信息字典，包含 prev_version, new_modules, updated_modules 等
+    """
     try:
         from openpyxl import Workbook
         from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
         from openpyxl.utils import get_column_letter
     except ImportError:
-        print("[FastTrack] openpyxl 未安装，降级使用 CSV")
+        print("[FastTrack] openpyxl 未安装,降级使用 CSV")
         csv_path = EXPORT_DIR / f"{filename_prefix}.csv"
         with open(csv_path, "w", encoding="utf-8-sig") as f:
             headers = ["功能ID", "L1功能", "L2功能", "L3功能", "优先级",
@@ -536,12 +2392,46 @@ def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str) -
     # 模块名统一
     items = _normalize_module_names(items)
 
+    # Fix 2: 移除[待生成]占位行
+    items = _remove_placeholder_rows(items)
+
     # 生成功能ID
     items = _generate_ids(items)
 
-    # 分组：HUD端 vs App端
-    hud_items = [i for i in items if not i.get("module", "").startswith("App-")]
-    app_items = [i for i in items if i.get("module", "").startswith("App-")]
+    # 按功能归属分三组
+    HUD_MODULES = {
+        "导航", "来电", "音乐", "消息", "AI语音助手", "Ai语音助手",
+        "简易", "简易路线", "路线", "主动安全预警提示", "组队",
+        "摄像状态", "胎温胎压", "开机动画", "速度", "设备状态",
+        "显示队友位置", "头盔HUD"
+    }
+
+    APP_MODULES = {
+        "App-设备", "App-社区", "App-商城", "App-我的"
+    }
+
+    # 系统/交互模块归 HUD Sheet(因为主要在头盔端执行)
+    SYSTEM_MODULES = {
+        "实体按键交互", "氛围灯交互", "AI功能", "语音交互",
+        "视觉交互", "多模态交互"
+    }
+
+    # 用户侧模块归 App Sheet
+    USER_MODULES = {
+        "身份认证", "用户学习", "产品介绍", "设备互联", "设备配对流程"
+    }
+
+    hud_items = [i for i in items if i.get("module", "") in HUD_MODULES or i.get("module", "") in SYSTEM_MODULES]
+    app_items = [i for i in items if i.get("module", "") in APP_MODULES or i.get("module", "") in USER_MODULES]
+
+    # 兜底:未匹配的按名称判断
+    matched = set(i.get("name") for i in hud_items + app_items)
+    for i in items:
+        if i.get("name") not in matched:
+            if "App" in i.get("module", ""):
+                app_items.append(i)
+            else:
+                hud_items.append(i)
 
     wb = Workbook()
 
@@ -556,9 +2446,145 @@ def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str) -
         ws_app = wb.create_sheet("App端")
         _write_sheet(ws_app, app_items)
 
+    # Sheet 3-6: 额外 Sheet
+    if extra_sheets:
+        if extra_sheets.get("state"):
+            ws3 = wb.create_sheet("状态场景对策")
+            _write_generic_sheet(ws3, extra_sheets["state"],
+                ["前置状态", "当前状态/场景/操作", "执行状态", "HUD提示", "灯光提示", "语音提示", "App提示", "提示周期"],
+                ["pre_state", "current", "exec_state", "hud", "light", "voice", "app", "cycle"],
+                [16, 24, 16, 28, 20, 28, 28, 14])
+
+        if extra_sheets.get("voice"):
+            ws4 = wb.create_sheet("语音指令表")
+            _write_generic_sheet(ws4, extra_sheets["voice"],
+                ["指令分类", "唤醒方式", "用户说法", "常见变体", "系统动作", "成功语音反馈", "成功HUD反馈", "失败反馈", "优先级", "备注"],
+                ["category", "wake", "user_says", "variants", "action", "success_voice", "success_hud", "fail_feedback", "priority", "note"],
+                [14, 12, 20, 24, 24, 24, 20, 20, 8, 16])
+
+        if extra_sheets.get("button"):
+            ws5 = wb.create_sheet("按键映射表")
+            _write_generic_sheet(ws5, extra_sheets["button"],
+                ["按键位置", "场景", "单击", "双击", "长按", "组合键", "操作反馈", "备注"],
+                ["button", "scene", "single_click", "double_click", "long_press", "combo", "feedback", "note"],
+                [14, 16, 20, 20, 20, 20, 18, 16])
+
+        if extra_sheets.get("light"):
+            ws6 = wb.create_sheet("灯效定义表")
+            _write_generic_sheet(ws6, extra_sheets["light"],
+                ["触发场景", "灯光颜色", "闪烁模式", "频率Hz", "持续时长", "优先级", "备注"],
+                ["trigger", "color", "mode", "frequency", "duration", "priority", "note"],
+                [24, 12, 16, 10, 14, 8, 20])
+
+        # Sheet 7: AI语音导航场景
+        if extra_sheets.get("voice_nav"):
+            ws7 = wb.create_sheet("AI语音导航场景")
+            _write_generic_sheet(ws7, extra_sheets["voice_nav"],
+                ["场景名称", "触发条件", "用户输入", "AI执行动作", "HUD显示", "语音播报", "灯光反馈", "异常兜底", "优先级", "备注"],
+                ["scene", "trigger", "user_input", "ai_action", "hud_display", "voice_output", "light_effect", "fallback", "priority", "note"],
+                [18, 20, 18, 24, 24, 24, 16, 24, 8, 16])
+
+        # Sheet 8: 用户故事
+        if extra_sheets.get("user_stories"):
+            ws_story = wb.create_sheet("用户故事")
+            _write_generic_sheet(ws_story, extra_sheets["user_stories"],
+                ["功能名", "用户角色", "用户故事", "验收条件", "优先级"],
+                ["feature", "role", "story", "acceptance", "priority"],
+                [24, 14, 50, 36, 8])
+
+        # Sheet 9: 测试用例
+        if extra_sheets.get("test_cases"):
+            ws_tc = wb.create_sheet("测试用例")
+            _write_generic_sheet(ws_tc, extra_sheets["test_cases"],
+                ["用例ID", "功能名", "用例标题", "前置条件", "操作步骤", "预期结果", "优先级"],
+                ["case_id", "feature", "title", "precondition", "steps", "expected", "priority"],
+                [12, 20, 24, 24, 36, 30, 8])
+
+        # Sheet 10: 页面映射表
+        if extra_sheets.get("page_mapping"):
+            ws_page = wb.create_sheet("页面映射表")
+            _write_generic_sheet(ws_page, extra_sheets["page_mapping"],
+                ["页面名", "父页面", "平台", "包含功能", "入口方式", "优先级", "备注"],
+                ["page", "parent", "platform", "features", "entry", "priority", "note"],
+                [20, 16, 10, 40, 16, 8, 20])
+
+        # Sheet 11: 开发任务
+        if extra_sheets.get("dev_tasks"):
+            ws_dev = wb.create_sheet("开发任务")
+            _write_generic_sheet(ws_dev, extra_sheets["dev_tasks"],
+                ["任务ID", "功能名", "任务描述", "负责角色", "预估工时(天)", "前置依赖", "建议迭代", "优先级", "备注"],
+                ["task_id", "feature", "task", "assignee", "effort_days", "dependency", "sprint", "priority", "note"],
+                [10, 20, 30, 14, 12, 20, 16, 8, 16])
+
+    # 版本信息 Sheet
+    ws_ver = wb.create_sheet("版本信息")
+
+    # ===== Fix 5: 版本信息自动升版 =====
+    prev_version = version_info.get("prev_version", "") if version_info else ""
+    # 自动递增版本号
+    if prev_version:
+        # 从 "V1.0" 提取数字，+0.1
+        match = re.search(r'V?(\d+)\.(\d+)', prev_version)
+        if match:
+            major, minor = int(match.group(1)), int(match.group(2))
+            new_version = f"V{major}.{minor + 1}"
+        else:
+            new_version = "V1.1"
+    else:
+        new_version = "V1.0"
+
+    # 生成 changelog
+    changelog_items = []
+    if version_info:
+        if version_info.get('new_modules'):
+            changelog_items.append(f"新增模块: {', '.join(version_info['new_modules'][:5])}")
+        if version_info.get('updated_modules'):
+            changelog_items.append(f"更新模块: {', '.join(version_info['updated_modules'][:5])}")
+    changelog_items.append(f"功能总数: {len(items)} 条")
+    if audit_issues:
+        changelog_items.append(f"一致性问题: {len(audit_issues)} 个")
+    changelog_text = '; '.join(changelog_items) if changelog_items else '首版生成'
+    # ===== End Fix 5 =====
+
+    ver_data = [
+        ["项目", "智能骑行头盔 V1"],
+        ["版本", new_version],
+        ["生成时间", datetime.now().strftime("%Y-%m-%d %H:%M:%S")],
+        ["功能总数", len(items)],
+        ["HUD端功能", len(hud_items)],
+        ["App端功能", len(app_items)],
+        ["P0功能数", sum(1 for i in items if i.get("priority") == "P0")],
+        ["P1功能数", sum(1 for i in items if i.get("priority") == "P1")],
+        ["P2功能数", sum(1 for i in items if i.get("priority") == "P2")],
+        ["P3功能数", sum(1 for i in items if i.get("priority") == "P3")],
+        ["状态场景数", len(extra_sheets.get("state", [])) if extra_sheets else 0],
+        ["语音指令数", len(extra_sheets.get("voice", [])) if extra_sheets else 0],
+        ["按键映射数", len(extra_sheets.get("button", [])) if extra_sheets else 0],
+        ["灯效定义数", len(extra_sheets.get("light", [])) if extra_sheets else 0],
+        ["导航场景数", len(extra_sheets.get("voice_nav", [])) if extra_sheets else 0],
+        [],
+        ["本次主要改动", changelog_text],
+    ]
+    for row_idx, row_data in enumerate(ver_data, 1):
+        for col_idx, val in enumerate(row_data, 1):
+            cell = ws_ver.cell(row=row_idx, column=col_idx, value=val)
+            if col_idx == 1:
+                cell.font = Font(bold=True)
+    ws_ver.column_dimensions['A'].width = 16
+    ws_ver.column_dimensions['B'].width = 30
+
+    # Sheet 13: 一致性审计(如果有)
+    if audit_issues:
+        ws_audit = wb.create_sheet("一致性审计")
+        _write_generic_sheet(ws_audit, audit_issues,
+            ["问题类型", "问题描述", "关联模块"],
+            ["type", "issue", "module"],
+            [16, 60, 16])
+
     # 保存
     xlsx_path = EXPORT_DIR / f"{filename_prefix}.xlsx"
     wb.save(xlsx_path)
+    print(f"[Export] Excel {wb.sheetnames}: {xlsx_path}")
     return str(xlsx_path)
 
 
@@ -626,7 +2652,7 @@ def _send_file_to_feishu(reply_target: str, file_path: str, reply_type: str) -> 
         print(f"[File] file_key: {file_key[:30]}...")
 
         # 发送文件消息
-        # 转换 reply_type：open_id/chat_id
+        # 转换 reply_type:open_id/chat_id
         id_type = "chat_id" if reply_type == "chat_id" else "open_id"
 
         send_resp = requests.post(
@@ -724,15 +2750,15 @@ def try_structured_doc_fast_track(
         reply_type: 回复类型 (open_id / chat_id)
         open_id: 用户 Open ID
         chat_id: 群聊 Chat ID
-        send_reply_func: 发送回复的函数（可选，默认使用飞书 API）
+        send_reply_func: 发送回复的函数(可选,默认使用飞书 API)
 
     Returns:
-        bool: True 表示走了快速通道，False 表示继续走原有逻辑
+        bool: True 表示走了快速通道,False 表示继续走原有逻辑
     """
     if not is_structured_doc_request(text):
         return False
 
-    print(f"[FastTrack] 检测到结构化文档需求，走快速通道")
+    print(f"[FastTrack] 检测到结构化文档需求,走快速通道")
 
     # 发送回复的函数
     def _send_reply(msg: str, rt: str = None, rtype: str = None):
@@ -770,7 +2796,7 @@ def try_structured_doc_fast_track(
             except Exception as e:
                 print(f"[FastTrack] 发送回复失败: {e}")
 
-    _send_reply("📋 检测到结构化文档需求，正在生成...")
+    _send_reply("📋 检测到结构化文档需求,正在生成...")
 
     def _process_in_background():
         try:
@@ -778,6 +2804,11 @@ def try_structured_doc_fast_track(
             from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt, KB_ROOT
 
             gw = get_model_gateway()
+
+            # 检测是否需要完整规格书(6 Sheet)
+            is_full_spec = is_full_spec_request(text)
+            if is_full_spec:
+                print("[FastTrack] 完整规格书模式(6 Sheet)")
 
             # 搜知识库找内部文档
             kb_entries = search_knowledge(text, limit=10)
@@ -792,160 +2823,869 @@ def try_structured_doc_fast_track(
                 except:
                     pass
 
-            # 分批 LLM 调用：按一级功能逐个生成
+            # 分批 LLM 调用:按一级功能逐个生成
             l1_features = _extract_l1_from_user_text(text)
             total = len(l1_features)
 
-            print(f"[FastTrack] 检测到 {total} 个一级功能，开始并行生成 ({PARALLEL_WORKERS} 路)")
+            # ===== Fix 8: KB 驱动功能补全检查 =====
+            KNOWN_FEATURES_FROM_KB = [
+                '视频水印',  # 自定义水印（品牌/时间/GPS/速度叠加）
+                '照片水印',
+            ]
+            module_names = {f['name'] for f in l1_features}
+            for feature in KNOWN_FEATURES_FROM_KB:
+                if not any(feature in m for m in module_names):
+                    # 检查知识库中是否有相关条目
+                    try:
+                        from src.tools.knowledge_base import search_knowledge
+                        kb_hits = search_knowledge(feature, limit=1)
+                        if kb_hits:
+                            # 追加到相关模块（如摄像状态）
+                            if '摄像' in module_names or '摄像状态' in module_names:
+                                print(f"  [AutoComplete] 知识库有 {feature}，将追加到摄像状态模块")
+                            else:
+                                print(f"  [AutoComplete] 知识库有 {feature}，建议在 prompt 中提及")
+                    except Exception:
+                        pass
+            # ===== End Fix 8 =====
+
+            print(f"[FastTrack] 检测到 {total} 个一级功能,开始并行生成 ({PARALLEL_WORKERS} 路)")
+
+            # === 读取上一版版本快照 ===
+            prev_items = []
+            prev_by_module = {}  # {module_name: [items]}
+
+            versions_dir = EXPORT_DIR.parent / "prd_versions"
+            if versions_dir.exists():
+                latest_files = sorted(versions_dir.glob("prd_v_*.json"), reverse=True)
+                if latest_files:
+                    try:
+                        prev = json.loads(latest_files[0].read_text(encoding="utf-8"))
+                        prev_items = prev.get("items", [])
+                        prev_version = prev.get("version", "")
+
+                        # 按 L1 模块分组上一版数据
+                        current_l1 = ""
+                        for item in prev_items:
+                            if item.get("level") == "L1":
+                                current_l1 = item.get("name", "")
+                            if current_l1:
+                                if current_l1 not in prev_by_module:
+                                    prev_by_module[current_l1] = []
+                                prev_by_module[current_l1].append(item)
+
+                        print(f"[SmartIterate] 上一版: {prev_version} ({len(prev_items)} 条, {len(prev_by_module)} 模块)")
+                    except Exception as e:
+                        print(f"[SmartIterate] 读取上一版失败: {e}")
 
             all_items = []
             batch_system_prompt = (
-                "你是智能摩托车全盔项目的产品经理。你必须且只输出一个 JSON 数组。\n"
-                "不要输出任何 markdown、解释文字、标题、分隔线。\n"
-                "只输出以 [ 开头、以 ] 结尾的 JSON 数组。\n\n"
-                "每个元素格式：\n"
+                "你是智能摩托车全盔项目的产品经理.你必须且只输出一个 JSON 数组.\n"
+                "不要输出任何 markdown、解释文字、标题、分隔线.\n"
+                "只输出以 [ 开头、以 ] 结尾的 JSON 数组.\n\n"
+                "每个元素格式:\n"
                 '{"module":"模块名","level":"L1或L2或L3","parent":"父功能名(L1填空)","name":"功能名称",'
                 '"priority":"P0或P1或P2或P3","interaction":"HUD/语音/按键/App/灯光",'
                 '"description":"一句话描述","acceptance":"可测试验收标准(含数字)",'
                 '"dependencies":"关联功能","note":"备注"}\n\n'
-                "规则：\n"
+                "规则:\n"
                 "1. 第一条是该模块的 L1\n"
-                "2. L1 下至少 3 个 L2，每个 L2 至少 2 个 L3\n"
-                "3. 验收标准必须可测试，含具体数字\n"
+                "2. L1 下至少 3 个 L2,每个 L2 至少 2 个 L3\n"
+                "3. 验收标准必须可测试,含具体数字\n"
                 "4. 你补充的功能在 note 标注[补充]\n"
                 "5. 优先级只用 P0/P1/P2/P3\n"
-                "6. 优先级分布：P0≤30%，P1占30-40%，P2占20-30%，P3占5-10%\n"
-                "7. P0=不做就不能发售。P1=发售应有但可OTA补。P2=V2规划。P3=远期愿景\n"
-                "8. 不要把所有功能都标P0，只有真正阻碍发售的才是P0\n"
+                "6. 优先级分布:P0≤30%,P1占30-40%,P2占20-30%,P3占5-10%\n"
+                "7. P0=不做就不能发售.P1=发售应有但可OTA补.P2=V2规划.P3=远期愿景\n"
+                "8. 不要把所有功能都标P0,只有真正阻碍发售的才是P0\n"
             )
+
+            # ===== Bug B: 复杂模块自动拆解 =====
+            def _estimate_complexity(module_name: str, kb_data_points: str, prev_version_rows: list = None) -> list:
+                """
+                判断模块是否需要拆解。返回子模块名列表。
+                如果不需要拆解，返回 [module_name] 本身（单元素列表）。
+                """
+                reasons = []
+
+                # 信号1: 知识库数据点超过 700 字 → 说明涉及面广
+                if len(kb_data_points) >= 700:
+                    reasons.append('kb_dense')
+
+                # 信号2: 上一版该模块条目数 >= 25
+                if prev_version_rows and len(prev_version_rows) >= 25:
+                    reasons.append('prev_large')
+
+                # 信号3: 模块名本身暗示复杂性
+                COMPLEX_MODULES = {"AI语音助手", "主动安全预警提示", "导航", "组队", "设备状态"}
+                if module_name in COMPLEX_MODULES:
+                    reasons.append('known_complex')
+
+                # 需要至少 2 个信号才触发拆解
+                if len(reasons) < 2:
+                    return [module_name]
+
+                # === 自动拆解逻辑 ===
+                # 按通用维度拆 3 份
+                default_splits = [
+                    f"{module_name}-核心功能",
+                    f"{module_name}-交互与状态",
+                    f"{module_name}-异常与边界",
+                ]
+                print(f"  [AutoSplit] {module_name} 拆解为 {len(default_splits)} 个子模块: {reasons}")
+                return default_splits
+
+            def _merge_sub_modules(parent_name: str, sub_results: list) -> list:
+                """
+                将多个子模块的生成结果合并回父模块，去重。
+                """
+                merged = []
+                seen_names = set()
+
+                for sub_rows in sub_results:
+                    if not sub_rows:
+                        continue
+                    for row in sub_rows:
+                        # 统一挂回父模块
+                        if row.get('level') == 'L1':
+                            row['name'] = parent_name
+                            row['module'] = parent_name
+                        else:
+                            row['module'] = parent_name
+
+                        # 按 name+level 去重
+                        name = row.get('name', '')
+                        level = row.get('level', '')
+                        key = (name, level)
+                        if key not in seen_names:
+                            seen_names.add(key)
+                            merged.append(row)
+
+                print(f"  [Merge] {parent_name}: {sum(len(r) for r in sub_results if r)} 条合并去重为 {len(merged)} 条")
+                return merged
+            # ===== End Bug B =====
+
+            # ===== Fix 1 Step 3: KB 子模块差异化检索 =====
+            def _build_kb_query(module_name: str) -> str:
+                """为拆解子模块构建差异化的 KB 检索关键词"""
+                if '-' not in module_name:
+                    return module_name
+
+                parent, suffix = module_name.rsplit('-', 1)
+
+                # 子维度到检索关键词的映射
+                suffix_keywords = {
+                    '核心功能': f'{parent} 核心 功能 规格 参数 指标',
+                    '核心': f'{parent} 核心 功能 规格 参数 指标',
+                    '交互与状态': f'{parent} 交互 HUD 语音 按键 状态 反馈 显示',
+                    '交互': f'{parent} 交互 HUD 语音 按键 状态 反馈 显示',
+                    '异常与边界': f'{parent} 异常 断连 降级 故障 恢复 兜底 边界 低电量',
+                    '异常': f'{parent} 异常 断连 降级 故障 恢复 兜底 边界 低电量',
+                    '边界': f'{parent} 异常 断连 降级 故障 恢复 兜底 边界 低电量',
+                }
+
+                return suffix_keywords.get(suffix, module_name)
+            # ===== End Fix 1 Step 3 =====
 
             # 单模块生成函数
             def _gen_one(feature: Dict) -> List[Dict]:
                 """生成单个 L1 模块的功能清单"""
-                # 判断是否为核心模块（需更深展开）
-                core_modules = ["导航", "主动安全预警提示", "AI语音助手", "组队"]
-                is_core = feature['name'] in core_modules
+                name = feature['name']
+                module = feature['module']
+
+                # === 知识库注入：提取数据点模式 ===
+                # Fix 1 Step 3: 对拆解子模块使用差异化检索
+                kb_base_query = _build_kb_query(name)
+                kb_queries = [
+                    f"{kb_base_query} 技术参数 方案",
+                    f"{kb_base_query} 竞品",
+                    f"{kb_base_query} 认证 标准",
+                ]
+
+                CORE_MODULES = {"导航", "主动安全预警提示", "AI语音助手", "Ai语音助手",
+                                "组队", "摄像状态", "胎温胎压", "设备状态"}
+
+                if name in CORE_MODULES:
+                    kb_queries.extend([f"{name} 用户需求", f"{name} 功耗 续航"])
+
+                kb_raw = ""
+                try:
+                    from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt
+                    for q in kb_queries:
+                        try:
+                            entries = search_knowledge(q, limit=3)
+                            if entries:
+                                kb_raw += format_knowledge_for_prompt(entries)[:2000] + "\n"
+                        except Exception:
+                            pass
+                except ImportError:
+                    pass
+
+                # 从全文提取数据点（~200字），不灌全文（~3000字）
+                kb_data_points = _extract_data_points(kb_raw)
+
+                kb_inject = ""
+                if kb_data_points:
+                    kb_inject = (
+                        f"\n\n## 项目知识库数据（验收标准必须参考这些真实数据）\n"
+                        f"{kb_data_points}\n"
+                        f"基于以上数据填写验收标准。知识库无相关数据的标注[待验证]。\n"
+                    )
+
+                print(f"  [KB] {name}: 知识库原文 {len(kb_raw)} 字 -> 数据点 {len(kb_data_points)} 字")
+
+                # "我的"Tab 额外指示
+                extra_hint = ""
+                if "我的" in name:
+                    extra_hint = (
+                        "\n该模块除了账号与设置外,必须包含以下 L2:\n"
+                        "- 帮助与反馈(FAQ、在线客服、反馈提交)\n"
+                        "- 关于设备(SN、固件版本、保修状态、使用时长统计)\n"
+                        "- 隐私与协议(隐私政策、用户协议、数据授权管理)\n"
+                        "- 数据管理(骑行数据导出、视频批量导出、账号注销)\n"
+                    )
+
+                is_core = name in ["导航", "主动安全预警提示", "AI语音助手", "组队"]
 
                 batch_user_prompt = (
-                    f"为智能摩托车全盔项目生成「{feature['name']}」模块的功能清单。\n"
-                    f"模块归属：{feature['module']}\n\n"
+                    f"为智能摩托车全盔项目生成'{name}'模块的功能清单.\n"
+                    f"模块归属:{module}\n"
+                    f"{extra_hint}"
+                    f"{kb_inject}\n"
                 )
                 if kb_context:
-                    batch_user_prompt += f"内部产品文档参考：\n{kb_context[:2000]}\n\n"
+                    batch_user_prompt += f"内部产品文档参考:\n{kb_context[:2000]}\n\n"
                 if goal_text:
-                    batch_user_prompt += f"产品目标：\n{goal_text[:300]}\n\n"
+                    batch_user_prompt += f"产品目标:\n{goal_text[:300]}\n\n"
 
                 # 添加优化规则
                 batch_user_prompt += (
-                    f"规则：\n"
-                    f"- 模块名必须和「{feature['name']}」完全一致，不允许大小写变体或缩写\n"
-                    f"- 生成功能时考虑关联页面/场景，在note列标注（如'骑行主界面'、'App-设备Tab'）\n"
+                    f"规则:\n"
+                    f"- 模块名必须和'{name}'完全一致,不允许大小写变体或缩写\n"
+                    f"- 生成功能时考虑关联页面/场景,在note列标注(如'骑行主界面'、'App-设备Tab')\n"
+                    f"- 验收标准必须基于知识库中的真实参数,没有数据的标注[待验证]\n"
                 )
                 if is_core:
-                    batch_user_prompt += f"- 这是核心卖点模块，至少展开5个L2，每个L2至少3个L3\n"
+                    batch_user_prompt += f"- 这是核心卖点模块,至少展开5个L2,每个L2至少3个L3\n"
 
-                batch_user_prompt += "\n只输出 JSON 数组。"
+                # ===== Fix 1 Step 1: 输出数量硬约束 =====
+                batch_user_prompt += """
+【输出数量硬约束】
+- 本模块最多输出 18 条功能（含 L1/L2/L3 所有层级合计）
+- 如果功能点超过 18 条，优先保留 P0 和 P1，P2/P3 可精简合并
+- 每条功能的 description 字段限 80 字以内
+- 每条功能的 acceptance 字段限 120 字以内
+- 严格遵守此上限，超出部分不会被系统采纳
+"""
+                # ===== End Fix 1 Step 1 =====
 
-                result = gw.call_azure_openai(
-                    "cpo", batch_user_prompt, batch_system_prompt,
-                    "structured_doc", max_tokens=4096
-                )
+                batch_user_prompt += "\n只输出 JSON 数组."
 
-                if result.get("success"):
-                    response = result["response"]
+                try:
+                    result = gw.call_azure_openai(
+                        "cpo", batch_user_prompt, batch_system_prompt,
+                        "structured_doc", max_tokens=4096
+                    )
+
+                    if not result.get("success"):
+                        error_msg = result.get("error", "未知错误")
+                        print(f"  [GenOne] {name} LLM 返回失败: {error_msg}")
+                        print(f"  [GenOne] {name} prompt 长度: {len(batch_user_prompt)} 字")
+                        return []
+
+                    response = result.get("response", "")
+                    if len(response) < 50:
+                        print(f"  [GenOne] {name} 响应太短: {len(response)} 字")
+                        return []
+
                     json_match = re.search(r'\[[\s\S]*\]', response)
-                    if json_match:
+                    if not json_match:
+                        print(f"  [GenOne] {name} 无法提取 JSON，响应前200字: {response[:200]}")
+                        return []
+
+                    try:
+                        # Bug C: 清洗控制字符
+                        cleaned_json = _clean_json_text(json_match.group())
+                        items = json.loads(cleaned_json)
+                        # 防御：确保所有字段都是 string
+                        for item in items:
+                            for key in item:
+                                if isinstance(item[key], (list, dict)):
+                                    item[key] = ", ".join(str(v) for v in item[key]) if isinstance(item[key], list) else str(item[key])
+                                elif item[key] is None:
+                                    item[key] = ""
+                        return items
+                    except json.JSONDecodeError as je:
+                        print(f"  [GenOne] {name} JSON 解析失败: {je}")
+                        # 二次尝试: strict=False 模式
                         try:
-                            return json.loads(json_match.group())
-                        except json.JSONDecodeError:
-                            pass
-                return []
+                            items = json.loads(cleaned_json, strict=False)
+                            for item in items:
+                                for key in item:
+                                    if isinstance(item[key], (list, dict)):
+                                        item[key] = ", ".join(str(v) for v in item[key]) if isinstance(item[key], list) else str(item[key])
+                                    elif item[key] is None:
+                                        item[key] = ""
+                            print(f"  [GenOne] {name} JSON 解析成功(strict=False)")
+                            return items
+                        except json.JSONDecodeError as e2:
+                            print(f"  [GenOne] {name} JSON 二次解析失败: {e2}")
+                            print(f"  [GenOne] {name} JSON 片段: {cleaned_json[:300]}")
+                            return []
+
+                except Exception as e:
+                    print(f"  [GenOne] {name} 异常: {type(e).__name__}: {e}")
+                    print(f"  [GenOne] {name} prompt 长度: {len(batch_user_prompt)} 字")
+                    import traceback
+                    traceback.print_exc()
+                    return []
 
             # 并行生成
             done_count = 0
+
+            # Bug B: 复杂模块自动拆解
+            def _gen_one_with_split(feature: Dict) -> tuple:
+                """生成单个模块，复杂模块自动拆解"""
+                name = feature['name']
+                prev_rows = prev_by_module.get(name, [])
+
+                # 计算知识库数据点（用于复杂度判断）
+                kb_dp = ""
+                try:
+                    from src.tools.knowledge_base import search_knowledge
+                    entries = search_knowledge(name, limit=5)
+                    if entries:
+                        from src.tools.knowledge_base import format_knowledge_for_prompt
+                        kb_raw = format_knowledge_for_prompt(entries)[:3000]
+                        kb_dp = _extract_data_points(kb_raw)
+                except Exception:
+                    pass
+
+                # 判断是否需要拆解
+                sub_modules = _estimate_complexity(name, kb_dp, prev_rows)
+
+                if len(sub_modules) == 1:
+                    # 不需要拆解，正常生成
+                    result = _gen_one(feature)
+                    return name, result, False
+                else:
+                    # 拆解模式：为每个子模块创建 feature 并行生成
+                    sub_results = []
+                    sub_features = [{"name": sub_name, "module": sub_name} for sub_name in sub_modules]
+
+                    with ThreadPoolExecutor(max_workers=3) as sub_pool:
+                        sub_futures = {sub_pool.submit(_gen_one, sf): sf for sf in sub_features}
+                        for sf in as_completed(sub_futures):
+                            sf_info = sub_futures[sf]
+                            try:
+                                sub_result = sf.result()
+                                if sub_result:
+                                    sub_results.append(sub_result)
+                            except Exception as e:
+                                print(f"  [AutoSplit] 子模块 {sf_info['name']} 失败: {e}")
+
+                    if sub_results:
+                        merged = _merge_sub_modules(name, sub_results)
+                        return name, merged, True
+                    else:
+                        # 拆解失败，退回普通生成
+                        result = _gen_one(feature)
+                        return name, result, False
+
             with ThreadPoolExecutor(max_workers=PARALLEL_WORKERS) as pool:
-                futures = {pool.submit(_gen_one, f): f for f in l1_features}
+                futures = {pool.submit(_gen_one_with_split, f): f for f in l1_features}
                 for future in as_completed(futures):
                     feature = futures[future]
-                    batch = future.result()
-                    done_count += 1
-                    if batch:
-                        all_items.extend(batch)
-                        print(f"  ✅ [{done_count}/{total}] {feature['name']}: +{len(batch)} 条")
-                    else:
-                        print(f"  ❌ [{done_count}/{total}] {feature['name']}: 失败")
+                    try:
+                        name, batch, was_split = future.result()
+                        done_count += 1
+                        if batch:
+                            all_items.extend(batch)
+                            split_tag = " [拆解]" if was_split else ""
+                            print(f"  ✅ [{done_count}/{total}] {name}: +{len(batch)} 条{split_tag}")
+                        else:
+                            print(f"  ❌ [{done_count}/{total}] {feature['name']}: 失败")
+                    except Exception as e:
+                        done_count += 1
+                        print(f"  ❌ [{done_count}/{total}] {feature['name']}: {e}")
 
             print(f"[FastTrack] 完成: {len(all_items)} 条功能 ({done_count} 个模块)")
 
-            # 检查失败的模块并重试
-            success_names = set()
+            # 检测哪些 L1 没有生成成功（同时检查 name 和 module 字段）
+            generated_names = set()
             for item in all_items:
-                # 从生成的条目中提取模块名
-                mod = item.get("module", "") or item.get("parent", "")
-                if mod:
-                    success_names.add(mod)
+                if item.get("level") == "L1":
+                    generated_names.add(item.get("name", ""))
+                    generated_names.add(item.get("module", ""))
 
-            failed_features = [f for f in l1_features if f["name"] not in success_names]
+            failed_features = [
+                f for f in l1_features
+                if f["name"] not in generated_names
+                and f.get("module", "") not in generated_names
+            ]
+
+            print(f"[Retry] 已生成标识: {generated_names}")
+            if failed_features:
+                print(f"[Retry] 真正失败: {[f['name'] for f in failed_features]}")
 
             if failed_features:
-                print(f"[FastTrack] {len(failed_features)} 个模块失败，重试中...")
-                for feature in failed_features:
-                    batch = _gen_one(feature)
-                    if batch:
-                        all_items.extend(batch)
-                        print(f"  ✅ [重试] {feature['name']}: +{len(batch)} 条")
-                    else:
-                        print(f"  ❌ [重试] {feature['name']}: 仍然失败")
+                print(f"[Retry] {len(failed_features)} 个模块失败，并行重试...")
+                import time as _time
 
-            # 合并后去重：同名功能只保留第一条
-            seen = set()
+                def _retry_one(feature):
+                    name = feature["name"]
+
+                    # ===== Fix 1 Step 2: 截断失败检测，走拆解路径 =====
+                    # 先判断是否因输出过长截断失败（检查知识库复杂度）
+                    kb_dp_len = 0
+                    try:
+                        from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt
+                        entries = search_knowledge(name, limit=5)
+                        if entries:
+                            kb_raw = format_knowledge_for_prompt(entries)[:3000]
+                            kb_dp = _extract_data_points(kb_raw)
+                            kb_dp_len = len(kb_dp)
+                    except Exception:
+                        pass
+
+                    # 复杂模块：KB数据点长或之前已判定为复杂 → 走拆解
+                    prev_rows = prev_by_module.get(name, [])
+                    if kb_dp_len >= 700 or (prev_rows and len(prev_rows) >= 25):
+                        print(f"  [Retry] {name}: 因复杂/截断失败，改用拆解模式 (KB={kb_dp_len}字)")
+                        sub_modules = [
+                            f"{name}-核心功能",
+                            f"{name}-交互与状态",
+                            f"{name}-异常与边界",
+                        ]
+                        sub_results = []
+                        for sub_name in sub_modules:
+                            sub_feature = {"name": sub_name, "module": sub_name}
+                            try:
+                                sub_batch = _gen_one_minimal(sub_feature, gw)
+                                if sub_batch and len(sub_batch) > 1:
+                                    sub_results.append(sub_batch)
+                                    print(f"    [Split] {sub_name}: +{len(sub_batch)} 条")
+                            except Exception as e:
+                                print(f"    [Split] {sub_name} 失败: {e}")
+
+                        if sub_results:
+                            merged = _merge_sub_modules(name, sub_results)
+                            for item in merged:
+                                item["note"] = (item.get("note", "") + " [拆解重试]").strip()
+                            return name, merged
+                        else:
+                            print(f"  [Retry] {name}: 拆解重试失败，退回精简模式")
+                    # ===== End Fix 1 Step 2 =====
+
+                    # 策略 1：先用精简 prompt 试（完整 prompt 已经失败过了）
+                    print(f"  [Retry] {name}: 精简模式...")
+                    try:
+                        batch = _gen_one_minimal(feature, gw)
+                        if batch and len(batch) > 1:
+                            for item in batch:
+                                item["note"] = (item.get("note", "") + " [精简生成]").strip()
+                            return name, batch
+                    except Exception as e:
+                        print(f"  [Retry] {name} 精简失败: {e}")
+
+                    # 策略 2：等 10 秒后完整 prompt 重试一次
+                    _time.sleep(10)
+                    print(f"  [Retry] {name}: 完整模式重试...")
+                    try:
+                        batch = _gen_one(feature)
+                        if batch and len(batch) > 1:
+                            return name, batch
+                    except Exception as e:
+                        print(f"  [Retry] {name} 完整重试失败: {e}")
+
+                    # 策略 3：Gemini 降级
+                    print(f"  [Retry] {name}: Gemini 降级...")
+                    try:
+                        batch = _gen_one_with_gemini(feature, gw)
+                        if batch and len(batch) > 1:
+                            return name, batch
+                    except Exception as e:
+                        print(f"  [Retry] {name} Gemini 失败: {e}")
+
+                    return name, None
+
+                with ThreadPoolExecutor(max_workers=4) as pool:
+                    futs = {pool.submit(_retry_one, f): f for f in failed_features}
+                    for future in as_completed(futs):
+                        feature = futs[future]
+                        name, batch = future.result()
+                        if batch:
+                            all_items.extend(batch)
+                            print(f"  ✅ [Retry] {name}: +{len(batch)} 条")
+                        elif name in prev_by_module and len(prev_by_module[name]) > 1:
+                            all_items.extend(prev_by_module[name])
+                            print(f"  ⏪ [兜底] {name}: 保留上一版 ({len(prev_by_module[name])} 条)")
+                        else:
+                            all_items.append({
+                                "module": feature["module"] if feature["name"] == name else name,
+                                "level": "L1", "parent": "", "name": name,
+                                "priority": "P0", "interaction": "",
+                                "description": "[待生成] 多次尝试失败",
+                                "acceptance": "[待生成]", "dependencies": "", "note": ""
+                            })
+                            print(f"  ❌ [放弃] {name}: 标记为[待生成]")
+
+            # 去重:同名+同层级只保留第一条(不管模块名)
+            seen_names = set()
             unique_items = []
             for item in all_items:
-                key = (item.get("module", ""), item.get("name", ""), item.get("level", ""))
-                if key not in seen:
-                    seen.add(key)
+                key = (item.get("name", "").strip(), item.get("level", ""))
+                if key not in seen_names:
+                    seen_names.add(key)
                     unique_items.append(item)
                 else:
-                    print(f"  [去重] 跳过: {item.get('module')}/{item.get('name')}")
+                    print(f"  [去重] {item.get('name')}")
 
-            print(f"[FastTrack] 去重: {len(all_items)} → {len(unique_items)}")
+            if len(unique_items) < len(all_items):
+                print(f"[FastTrack] 去重: {len(all_items)} -> {len(unique_items)}")
             all_items = unique_items
 
+            # === 空壳 L1 检测与补救 ===
+            l1_child_count = {}  # {l1_name: child_count}
+            current_l1 = ""
+            for item in all_items:
+                if item.get("level") == "L1":
+                    current_l1 = item.get("name", "")
+                    if current_l1 not in l1_child_count:
+                        l1_child_count[current_l1] = 0
+                elif item.get("level") in ("L2", "L3") and current_l1:
+                    l1_child_count[current_l1] = l1_child_count.get(current_l1, 0) + 1
+
+            empty_l1s = [name for name, count in l1_child_count.items() if count == 0]
+
+            if empty_l1s:
+                print(f"\n[QA] 发现 {len(empty_l1s)} 个空壳 L1: {empty_l1s}")
+
+                for l1_name in empty_l1s:
+                    feature = next((f for f in l1_features if f["name"] == l1_name), None)
+                    if not feature:
+                        continue
+
+                    # 先检查上一版有没有
+                    if l1_name in prev_by_module and len(prev_by_module[l1_name]) > 1:
+                        # 上一版有内容，直接用上一版
+                        all_items = [i for i in all_items if not (i.get("level") == "L1" and i.get("name") == l1_name)]
+                        all_items.extend(prev_by_module[l1_name])
+                        print(f"  [空壳补救] {l1_name}: 用上一版 ({len(prev_by_module[l1_name])} 条)")
+                    else:
+                        # 上一版也没有，用精简模式生成
+                        print(f"  [空壳补救] {l1_name}: 精简模式生成...")
+                        batch = _gen_one_minimal(feature, gw)
+                        if batch and len(batch) > 1:
+                            all_items = [i for i in all_items if not (i.get("level") == "L1" and i.get("name") == l1_name)]
+                            all_items.extend(batch)
+                            print(f"  OK [空壳补救] {l1_name}: +{len(batch)} 条")
+                        else:
+                            print(f"  X [空壳补救] {l1_name}: 仍然失败")
+
+            # === 逐模块对比取优 ===
+            if prev_by_module:
+                print(f"\n[Compare] 逐模块对比取优...")
+
+                # ===== Fix 3 Step 2: 按归一化名称分组 =====
+                from collections import defaultdict
+                normalized_groups = defaultdict(list)
+                for item in all_items:
+                    module = item.get('module') or item.get('name', '')
+                    norm_name = _normalize_module_name(module)
+                    item['module'] = norm_name  # 统一模块名
+                    normalized_groups[norm_name].append(item)
+
+                # 同名模块合并去重
+                all_items = []
+                for norm_name, group_rows in normalized_groups.items():
+                    if len(group_rows) <= 1:
+                        all_items.extend(group_rows)
+                        continue
+
+                    # 按 name(L3功能名) 去重，保留验收标准更完整的那条
+                    seen = {}
+                    for row in group_rows:
+                        key = row.get('name', '')
+                        if key in seen:
+                            # 比较质量，保留更好的
+                            old_acc = str(seen[key].get('acceptance', ''))
+                            new_acc = str(row.get('acceptance', ''))
+                            if len(new_acc) > len(old_acc):
+                                seen[key] = row
+                        else:
+                            seen[key] = row
+
+                    deduped = list(seen.values())
+                    print(f"  [Normalize] {norm_name}: {len(group_rows)} 条合并去重为 {len(deduped)} 条")
+                    all_items.extend(deduped)
+                # ===== End Fix 3 Step 2 =====
+
+                # 按 L1 分组新版数据
+                new_by_module = {}
+                current_l1 = ""
+                for item in all_items:
+                    if item.get("level") == "L1":
+                        current_l1 = item.get("name", "")
+                    if current_l1:
+                        if current_l1 not in new_by_module:
+                            new_by_module[current_l1] = []
+                        new_by_module[current_l1].append(item)
+
+                # 逐模块对比
+                final_items = []
+                all_module_names = set(list(prev_by_module.keys()) + list(new_by_module.keys()))
+
+                for mod_name in all_module_names:
+                    old = prev_by_module.get(mod_name, [])
+                    new = new_by_module.get(mod_name, [])
+
+                    try:
+                        old_score = _score_module(old)
+                    except Exception as e:
+                        print(f"  [Score] 旧版评分异常: {e}, 默认0分")
+                        old_score = 0
+
+                    try:
+                        new_score = _score_module(new)
+                    except Exception as e:
+                        print(f"  [Score] 新版评分异常: {e}, 默认0分")
+                        new_score = 0
+
+                    # Fix 4: 使用比较决策函数
+                    decision = _compare_decision(mod_name, old, new, old_score, new_score)
+
+                    if decision == 'new':
+                        final_items.extend(new)
+                    elif decision == 'keep':
+                        final_items.extend(old)
+                    elif decision == 'merge':
+                        merged = _merge_two_versions(old, new)
+                        final_items.extend(merged)
+                    # decision is None → 跳过该模块
+
+                all_items = final_items
+                print(f"[Compare] 最终: {len(all_items)} 条")
+
             if not all_items:
-                _send_reply("生成失败：所有批次均未生成有效内容")
+                _send_reply("生成失败:所有批次均未生成有效内容")
                 return
+
+            # 全局优先级校准
+            _calibrate_priorities(all_items)
 
             items = all_items
 
-            # 导出 Excel
+            # ========== 如果是完整规格书,并行生成 Sheet 3-6 ==========
+            extra_sheets = None
+            early_mindmap_result = {"mm": None, "svg": None}  # 预初始化供非完整模式使用
+
+            if is_full_spec:
+                print("[FastTrack] 完整规格书模式:并行生成所有额外 Sheet")
+                _send_reply("📋 功能清单已完成,正在生成状态对策/语音/按键/灯效/导航场景/用户故事/测试用例/页面映射/开发任务...")
+
+                extra_sheets = {}
+
+                # 脑图早期生成线程(与第一批并行)
+                # early_mindmap_result 已在外层初始化
+
+                def _early_gen_mindmap():
+                    try:
+                        early_mindmap_result["mm"] = _generate_mindmap_mm(items, "智能骑行头盔 V1 功能框架")
+                        early_mindmap_result["svg"] = _generate_mindmap_svg(items, "智能骑行头盔 V1 功能框架")
+                        print("[FastTrack] 脑图早期生成完成")
+                    except Exception as e:
+                        print(f"[FastTrack] 脑图早期生成失败: {e}")
+
+                mindmap_thread = threading.Thread(target=_early_gen_mindmap, daemon=True)
+                mindmap_thread.start()
+
+                # 第一批:4 路并行(不依赖功能清单) + 脑图线程已在后台运行
+                with ThreadPoolExecutor(max_workers=4) as pool:
+                    futures = {
+                        pool.submit(_gen_sheet3_state_scenarios, gw, kb_context, goal_text): "state",
+                        pool.submit(_gen_sheet4_voice_commands, gw, kb_context): "voice",
+                        pool.submit(_gen_sheet5_button_mapping, gw): "button",
+                        pool.submit(_gen_sheet6_light_effects, gw): "light",
+                    }
+                    for future in as_completed(futures):
+                        name = futures[future]
+                        data = future.result()
+                        extra_sheets[name] = data
+                        print(f"  ✅ {name}: {len(data)} 条")
+
+                # 等待脑图早期生成完成
+                mindmap_thread.join(timeout=30)
+
+                # 第二批:5 路并行(依赖功能清单 items)
+                with ThreadPoolExecutor(max_workers=5) as pool:
+                    futures2 = {
+                        pool.submit(_gen_sheet7_voice_nav_scenarios, gw): "voice_nav",
+                        pool.submit(_gen_user_stories, items, gw): "user_stories",
+                        pool.submit(_gen_test_cases, items, gw): "test_cases",
+                        pool.submit(_gen_page_mapping, items, gw): "page_mapping",
+                        pool.submit(_gen_dev_tasks, items, gw): "dev_tasks",
+                    }
+                    for future in as_completed(futures2):
+                        name = futures2[future]
+                        data = future.result()
+                        extra_sheets[name] = data
+                        print(f"  ✅ {name}: {len(data)} 条")
+
+                total_extra = sum(len(v) for v in extra_sheets.values())
+                print(f"[FastTrack] 额外 Sheet 完成: {total_extra} 条")
+
+            # 跨模块一致性审计
+            audit_issues = _cross_module_audit(items, extra_sheets if extra_sheets else {})
+
+            # 并行生成文件
             try:
                 task_id = f"{hash(text) % 100000:05d}"
-                xlsx_path = _export_to_excel(items, f"prd_{task_id}", text[:50])
-                print(f"[FastTrack] Excel: {xlsx_path}")
 
-                # 发送 Excel 文件
-                file_sent = _send_file_to_feishu(reply_target, xlsx_path, reply_type)
+                # === 并行生成 4 个文件（Excel、xmind、mindmap HTML、PRD HTML）===
+                file_results = {}
 
-                # 生成脑图 HTML
+                # 获取早期生成的脑图结果（如果有）
+                early_mm = early_mindmap_result.get("mm")
+                early_svg = early_mindmap_result.get("svg")
+
+                def _make_excel():
+                    return _export_to_excel(items, f"prd_{task_id}", text[:50],
+                                           extra_sheets=extra_sheets, audit_issues=audit_issues)
+
+                def _make_xmind():
+                    data = _generate_mindmap_xmind(items, "智能骑行头盔 V1 功能框架")
+                    path = EXPORT_DIR / f"mindmap_{task_id}.xmind"
+                    path.write_bytes(data)
+                    return str(path)
+
+                def _make_mindmap_html():
+                    if early_svg:
+                        content = early_svg
+                    else:
+                        content = _generate_mindmap_svg(items, "智能骑行头盔 V1 功能框架")
+                    path = EXPORT_DIR / f"mindmap_{task_id}.html"
+                    path.write_text(content, encoding="utf-8")
+                    return str(path)
+
+                def _make_prd_html():
+                    content = _generate_interactive_prd_html(items, extra_sheets, "智能骑行头盔 V1 PRD 规格书")
+                    path = EXPORT_DIR / f"prd_interactive_{task_id}.html"
+                    path.write_text(content, encoding="utf-8")
+                    return str(path)
+
+                with ThreadPoolExecutor(max_workers=4) as gen_pool:
+                    f_excel = gen_pool.submit(_make_excel)
+                    f_xmind = gen_pool.submit(_make_xmind)
+                    f_mindmap = gen_pool.submit(_make_mindmap_html)
+                    f_prd = gen_pool.submit(_make_prd_html)
+
+                    try:
+                        file_results["excel"] = f_excel.result()
+                        print(f"  ✅ Excel: {file_results['excel']}")
+                    except Exception as e:
+                        print(f"[File] Excel 生成失败: {e}")
+                    try:
+                        file_results["xmind"] = f_xmind.result()
+                        print(f"  ✅ XMind: {file_results['xmind']}")
+                    except Exception as e:
+                        print(f"[File] XMind 生成失败: {e}")
+                    try:
+                        file_results["mindmap_html"] = f_mindmap.result()
+                        print(f"  ✅ Mindmap HTML: {file_results['mindmap_html']}")
+                    except Exception as e:
+                        print(f"[File] 脑图HTML 生成失败: {e}")
+                    try:
+                        file_results["prd_html"] = f_prd.result()
+                        print(f"  ✅ PRD HTML: {file_results['prd_html']}")
+                    except Exception as e:
+                        print(f"[File] PRD HTML 生成失败: {e}")
+
+                print(f"[FastTrack] {len(file_results)} 个文件并行生成完成")
+
+                # 写入 .mm 文件（FreeMind 格式）
+                if early_mm:
+                    mm_path = EXPORT_DIR / f"mindmap_{task_id}.mm"
+                    mm_path.write_text(early_mm, encoding="utf-8")
+                    file_results["mm"] = str(mm_path)
+                    print(f"  ✅ .mm 文件: {mm_path}")
+                else:
+                    try:
+                        mm_content = _generate_mindmap_mm(items, "智能骑行头盔 V1 功能框架")
+                        mm_path = EXPORT_DIR / f"mindmap_{task_id}.mm"
+                        mm_path.write_text(mm_content, encoding="utf-8")
+                        file_results["mm"] = str(mm_path)
+                        print(f"  ✅ .mm 文件: {mm_path}")
+                    except Exception as e:
+                        print(f"[File] .mm 生成失败: {e}")
+
+                # 保存版本快照
                 try:
-                    mindmap_html = _generate_mindmap_html(items, "智能骑行头盔 V1 功能框架")
-                    mindmap_path = EXPORT_DIR / f"mindmap_{task_id}.html"
-                    mindmap_path.write_text(mindmap_html, encoding="utf-8")
-                    print(f"[FastTrack] 脑图: {mindmap_path}")
-                    _send_file_to_feishu(reply_target, str(mindmap_path), reply_type)
+                    versions_dir = EXPORT_DIR.parent / "prd_versions"
+                    versions_dir.mkdir(parents=True, exist_ok=True)
+
+                    version_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+                    snapshot = {
+                        "version": version_id,
+                        "timestamp": datetime.now().isoformat(),
+                        "total_features": len(items),
+                        "l1_count": sum(1 for i in items if i.get("level") == "L1"),
+                        "l2_count": sum(1 for i in items if i.get("level") == "L2"),
+                        "l3_count": sum(1 for i in items if i.get("level") == "L3"),
+                        "priority_dist": {p: sum(1 for i in items if i.get("priority") == p) for p in ["P0", "P1", "P2", "P3"]},
+                        "items": items,
+                        "extra_sheets_counts": {k: len(v) for k, v in (extra_sheets or {}).items()},
+                        "file_paths": file_results,
+                    }
+
+                    snap_path = versions_dir / f"prd_v_{version_id}.json"
+                    snap_path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
+                    print(f"[Version] 版本快照已保存: {version_id}")
                 except Exception as e:
-                    print(f"[FastTrack] 脑图生成失败: {e}")
+                    print(f"[Version] 保存失败: {e}")
+
+                # === 并行发送所有文件到飞书 ===
+                send_files = []
+                if file_results.get("excel"):
+                    send_files.append(("Excel", file_results["excel"]))
+                if file_results.get("xmind"):
+                    send_files.append(("XMind脑图", file_results["xmind"]))
+                if file_results.get("mindmap_html"):
+                    send_files.append(("交互脑图", file_results["mindmap_html"]))
+                if file_results.get("prd_html"):
+                    send_files.append(("交互PRD", file_results["prd_html"]))
+                if file_results.get("mm"):
+                    send_files.append(("FreeMind脑图", file_results["mm"]))
+
+                def _send_one(name_path):
+                    name, path = name_path
+                    try:
+                        ok = _send_file_to_feishu(reply_target, path, reply_type)
+                        return name, ok
+                    except Exception as e:
+                        print(f"[Send] {name} 失败: {e}")
+                        return name, False
+
+                sent_results = {}
+                with ThreadPoolExecutor(max_workers=5) as send_pool:
+                    futs = {send_pool.submit(_send_one, sf): sf[0] for sf in send_files}
+                    for f in as_completed(futs):
+                        name, ok = f.result()
+                        sent_results[name] = ok
+                        print(f"  {'✅' if ok else '❌'} {name} 发送{'成功' if ok else '失败'}")
+
+                file_sent = sent_results.get("Excel", False)
 
                 if file_sent:
                     summary = _format_items_as_tree(items)
                     _send_reply(
-                        f"📊 功能PRD清单已生成（{len(items)} 条），Excel + 脑图已发送。\n\n预览：\n{summary[:3000]}"
+                        f"📊 功能PRD清单已生成({len(items)} 条),Excel + 脑图已发送.\n\n预览:\n{summary[:3000]}"
                     )
                 else:
-                    # 文件发送失败，发树形摘要
+                    # 文件发送失败,发树形摘要
                     summary = _format_items_as_tree(items)
-                    _send_reply(f"📋 功能PRD清单（{len(items)} 条）：\n\n{summary[:4000]}")
-                    _send_reply(f"⚠️ 文件发送失败，Excel 已保存服务器: {xlsx_path}")
+                    _send_reply(f"📋 功能PRD清单({len(items)} 条):\n\n{summary[:4000]}")
+                    excel_path = file_results.get("excel", "未生成")
+                    _send_reply(f"⚠️ 文件发送失败,Excel 已保存服务器: {excel_path}")
 
             except Exception as e:
                 print(f"[FastTrack] Excel 失败: {e}")
@@ -953,7 +3693,7 @@ def try_structured_doc_fast_track(
                 traceback.print_exc()
                 # 降级发树形摘要
                 summary = _format_items_as_tree(items)
-                _send_reply(f"📋 功能清单（{len(items)} 条）：\n\n{summary[:4000]}")
+                _send_reply(f"📋 功能清单({len(items)} 条):\n\n{summary[:4000]}")
 
         except Exception as e:
             print(f"[FastTrack] 异常: {e}")
@@ -979,7 +3719,7 @@ if __name__ == "__main__":
     test_texts = [
         "帮我生成智能头盔的功能清单",
         "这是一个短文本",
-        "请输出PRD表格，包含HUD显示、语音交互、按键控制等功能模块",
+        "请输出PRD表格,包含HUD显示、语音交互、按键控制等功能模块",
     ]
 
     for t in test_texts:
