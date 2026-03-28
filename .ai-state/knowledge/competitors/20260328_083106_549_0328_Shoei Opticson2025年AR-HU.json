@@ -1,0 +1,22 @@
+{
+  "title": "0328_Shoei Opticson：2025年AR-HUD智能摩托车全盔项目与供应链争议",
+  "domain": "competitors",
+  "content": "Shoei Opticson是面向摩托车骑行场景的智能全盔项目，定位不是自行车头盔，这一点需与部分AR骑行头显/自行车盔方案明确区分。公开信息显示，Shoei最早在CES等场合展示Opticson概念，目标上市时间集中在2025年前后；来源一致认为其核心卖点是近眼HUD/AR显示，可在视野内叠加速度、导航、来电提醒等信息，减少低头看仪表的频次。已披露的产品方向包括蓝牙连接手机、透明显示、尽量维持Shoei高端全盔的安全与配重标准。价格方面，现阶段仍无Shoei官方定价，来源给出的市场预估为1500-2500美元，属于高端智能头盔区间，但应标注为“媒体预测”而非正式售价。\n\n供应链信息存在明显矛盾：来源1和来源3称核心近眼显示模块由Sony Semiconductor Solutions提供，技术路线偏向Micro-OLED；来源2则明确写为美国DigiLens提供AR波导显示。两种说法对应的是不同层级供应关系也有可能：Sony偏显示器件，DigiLens偏波导/光学显示方案，但在现有材料中没有足够证据确认最终量产版到底采用Sony微型OLED、DigiLens波导，还是二者组合。因此，若做竞品研判，应把“显示供应商未最终证实”列为风险项，而不能直接写成Sony Honda Mobility供货。尤其需要澄清：Sony Honda Mobility是索尼与本田的电动车合资公司，公开资料并未证明其是Opticson的头盔AR供应商。\n\n从产品启示看，Opticson代表的是“高端摩托车全盔+近眼显示”的路线，而非简单外挂式HUD。对我们这类智能摩托车全盔产品，关键对标参数应聚焦：显示模组体积与重量、日间亮度、视场角、功耗、与ECE/JIS/Snell等认证兼容性，以及整盔重心变化。当前公开资料缺少具体型号、分辨率、亮度、续航和整盔重量，这说明2025年前后即便上市，也可能先以日",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Shoei",
+    "Opticson",
+    "智能摩托车头盔",
+    "全盔",
+    "HUD",
+    "AR显示",
+    "Near-eye Display",
+    "Sony Semiconductor Solutions",
+    "DigiLens",
+    "2025竞品",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

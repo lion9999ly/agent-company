@@ -1,0 +1,16 @@
+{
+  "title": "onsemi AR0144AT + Ambarella CV25 helmet rearview c",
+  "domain": "lessons",
+  "content": "**结构化摘要（面向智能骑行头盔研发）**\n\n1. **可落地方案/器件选型**\n- **图像传感器：onsemi AR0144AT**\n  - 1/4\" CMOS，**1.2MP（1280×960）**，**3.0µm像素**，**全局快门**，全分辨率**60fps**，MIPI CSI-2，紧凑CSP封装，常见为**AEC-Q100车规**。\n  - 研发价值：适合头盔后视/电子后视镜，能显著降低高速骑行时的拖影、倾斜和卷帘畸变。\n- **主控SoC：Ambarella CV25**\n  - 集成**ISP + H.264/H.265编码 + AI加速 + 去畸变引擎**，AI算力约**1 TOPS**，支持MIPI CSI-2输入、MIPI DSI/HDMI显示、SD/eMMC存储、外接Wi‑Fi/BT模块。\n  - 研发价值：适合做**低延迟后视显示 + 本地录像 + 后续AI升级**的一体化头盔视觉平台。\n\n2. **关键技术参数/系统能力**\n- **低延迟目标**：端到端建议**<100ms**，理想**<50ms**；该组合依靠**全局快门 + 60fps + 硬件ISP/去畸变/编码**有机会实现。\n- **HDR能力**：AR0144AT多重曝光/WDR + CV25 HDR融合，适合**逆光、隧道出入口、夜间车灯炫光**场景。\n- **去畸变**：CV25支持广角/鱼眼镜头实时校正，适配**150°–180°FOV**后视镜头，提升距离判断准确性。\n- **录制能力**：支持**显示流+录制流双码流**，如显示可低延迟720p60，录制可高质量1280×960。\n\n3. **技术趋势/行业启示**\n- 头盔视觉系统正从“单纯运动相机”转向**安全型e-mirror平台**：强调**低延迟、HDR、去畸变、全天候可视**。\n- **车规级传感器 + 低",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "camera",
+    "onsemi",
+    "Ambarella",
+    "rearview",
+    "low latency",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

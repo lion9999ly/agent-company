@@ -1,0 +1,16 @@
+{
+  "title": "Kask Moebius Limelight 2025 2026 smart urban helme",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- **Kask Moebius Limelight 2025/2026（预测版）**：从“集成尾灯城市盔”升级为**智能城市骑行头盔**。  \n- **照明系统**：后灯扩展为**前白灯+侧向警示灯**；支持**环境光自适应、刹车感应、转向指示、多灯效模式**。  \n- **连接与交互**：以**BLE**为核心，配套 **Kask Connect App**，支持**灯光配置、电量显示、OTA、骑行记录、跌倒报警/紧急联系人**；可扩展**语音助手**。  \n- **传感器融合**：核心为**IMU（加速度计+陀螺仪）**，用于**跌倒检测、刹车灯触发、头部姿态/手势识别**；另有**环境光传感器**，可选磁力计。  \n- **芯片/模组选型方向**：低功耗MCU/蓝牙SoC 指向 **Nordic nRF52/nRF52840、STM32、ESP32**；适合智能灯控+BLE+OTA一体化方案。  \n- **电源/BMS**：**Li-Po 1000–2000mAh**，续航预测 **8–15h**；**USB-C** 充电，带**过充/过放/过流/短路保护**与低电量节能策略。  \n- **结构材料**：**PC外壳+EPS内衬+模内成型**，预留电子仓/走线槽；可集成**MIPS或类似旋转冲击层**；光学件采用**PC/PMMA光导/扩散件**，FPC连接分布式LED。  \n- **防护与认证**：强调 **Kask WG11 旋转冲击协议**，并需满足**FCC（无线发射）**与**Bluetooth SIG**合规；防水目标 **IPX4+**。  \n\n**趋势/可借鉴点**\n- 城市头盔正从“被动防护”转向**主动可见性+连接安全**。  \n- **灯光、传感器、BLE、App、OTA** 成为智能骑行头盔标配路线。  \n- 设计上可",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Kask",
+    "urban helmet",
+    "lighting",
+    "FCC",
+    "Bluetooth",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

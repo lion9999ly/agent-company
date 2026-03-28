@@ -1,0 +1,21 @@
+{
+  "title": "0328_2025智能摩托车全盔SOS/eCall方案：Snapdragon Wear + Bosch IMU + Quectel",
+  "domain": "components",
+  "content": "面向2025年智能摩托车全盔，较可落地的SOS/eCall架构是“Qualcomm Snapdragon Wear主控 + Bosch 6轴IMU + Quectel GNSS/LTE Cat-1通信”。需明确：这里讨论的是摩托车全盔，不是自行车头盔；自行车产品常用BLE+手机代拨，抗风噪、续航、法规和高速碰撞阈值都不同，不能直接复用。主控侧，来源均指向Snapdragon W5/W5+ Gen 1一类可穿戴SoC，其中W5+ Gen 1采用4nm工艺，来源称相对前代可实现约50%功耗下降、2倍性能提升，适合在盔体内持续运行碰撞算法、语音链路和电源管理。传感器侧，Bosch BMI270/BMI323这类IMU可提供3轴加速度计+3轴陀螺仪，用于识别高g冲击、翻滚、长时间静止和头部姿态异常；其价值不只是“测撞击”，更在于区分摔车、急刹、头盔跌落等误报场景。定位与蜂窝侧，来源虽未给出唯一型号，但Quectel可选多星座GNSS模块与LTE Cat-1模块组合，支持GPS/GLONASS/Galileo/北斗；Cat-1的优势是成本、覆盖和功耗平衡优于高阶LTE，足以承载MSD最小数据集、短信/数据上报及双向语音触发。供应商层面，Qualcomm负责SoC，Bosch负责IMU，Quectel负责GNSS与蜂窝模组。价格方面，3个来源未提供头盔整机BOM或模组单价，因此无法可靠给出2025量产采购价，这一点应标注为信息缺口。功能流程通常为：IMU检测异常冲击→主控做多传感器融合与置信度判断→给用户5-30秒取消窗口→GNSS取坐标→通过LTE Cat-1向112/PSAP或预设联系人发送告警，并建立语音。来源间存在两点不确定：其一，是否到2025年“成为高端头盔标准配置”属于趋势判断，不是已证实事实；其二，欧盟汽车eCall自2018年强制，但摩托车eCall是否会在2025年",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "摩托车全盔",
+    "eCall",
+    "SOS",
+    "碰撞检测",
+    "Qualcomm",
+    "Snapdragon Wear",
+    "Bosch IMU",
+    "Quectel",
+    "GNSS",
+    "LTE Cat-1",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

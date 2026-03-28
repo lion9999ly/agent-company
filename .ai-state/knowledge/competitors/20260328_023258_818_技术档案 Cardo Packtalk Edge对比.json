@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Cardo Packtalk Edge（对比 Cardo Packtalk Pro / Cardo Beyond GTS）",
+  "domain": "competitors",
+  "content": "以下内容基于**截至 2026-03 可公开核验的信息 + 行业常识整理**。先说结论：\n\n- **Cardo Packtalk Edge** 仍然是非常强的“高端通用型”摩托车头盔通讯器，核心卖点是  \n  **DMC Gen 2 网状对讲、磁吸 Air Mount、40mm JBL、自然语音控制、IP67、防水、OTA 更新**。\n- 如果和 **Cardo Packtalk Pro** 比：\n  - **Edge 更好**：通常更便宜，性价比更高；功能已足够覆盖绝大多数双人/小队骑行。\n  - **Edge 更差**：音频硬件、部分高级功能、安全功能（尤其碰撞检测）通常不如 Pro。\n  - **适用场景**：Edge 更适合“想要旗舰通信体验，但不一定要最顶配音频/安全功能”的用户。\n- 如果和 **Cardo Beyond GTS** 比：\n  - **Edge 更好**：通用性更强、适配头盔更广、零售渠道更成熟、通常更适合非 BMW 生态用户。\n  - **Edge 更差**：如果 Beyond GTS 是面向特定 BMW 车型/系统深度集成的 OEM 方案，那么在 **BMW 原厂生态整合** 上，Edge 往往不如它“原生”。\n  - **适用场景**：Edge 适合跨品牌摩托、跨头盔、跨车队使用；Beyond GTS 更适合 BMW 原厂生态用户。\n\n---\n\n# 1. Cardo Packtalk Edge 技术档案\n\n## 1.1 产品定位\n\n- 品牌：**Cardo Systems**\n- 产品线：**Packtalk**\n- 型号：**Packtalk Edge**\n- 定位：**旗舰级通用摩托车蓝牙 / Mesh 对讲系统**\n- 典型用户：\n  - 摩旅用户\n  - 编队骑行用户\n  - 双人骑行（骑手+乘客）\n  - 需要手机/导航/TFT 多设备连接的用户\n  - 希望兼顾音质、稳定性、安装便利性的高端用户\n\n---\n\n## 1.2 核心参数总表\n\n> 注：不同地区包装、固件版本、促销套装可能略有差异。\n\n| 项目 | Cardo Packtalk Edge |\n|---|---|\n| 通讯架构 | **DMC Gen 2 + Bluetooth** |\n| 蓝牙版本 | **Bluetooth 5.2** |\n| Mesh 群组人数 | **最多 15 名骑手** |\n| DMC 单设备典型距离 | **约 1.6 km / 1 mi** |\n| DMC 群组总距离 | **最高约 8 km / 5 mi**（理想条件） |\n| 蓝牙对讲距离 | 通常约 **1.2 km / 0.75 mi** 级别（视环境） |\n| 扬声器 | **JBL 40 mm HD speakers** |\n| 麦克风 | 有线麦 / 软杆麦（",
+  "source": "completeness_check",
+  "created_at": "2026-03-28",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "medium"
+}

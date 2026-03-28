@@ -1,0 +1,18 @@
+{
+  "title": "Nextchip APACHE4：成本备选但量产确定性弱于 CV25",
+  "domain": "components",
+  "content": "报告将 Nextchip APACHE4 定位为基础到中阶 ADAS 的成本备选方案，而非 V1 首选。公开资料有限，其功耗通常被推测为数瓦级，芯片价格预计 10–25 美元，表面上比 CV25 更便宜。但报告强调，对头盔产品而言，低成本不是第一优先级，低误报和高可信才是；若算法成熟度、工具链、量产支持和误报调优能力不足，便宜芯片会被更高的调试、验证和售后成本吞掉。因此 APACHE4 适合作为对照验证对象，不应承担 V1 主方案角色。",
+  "source": "deep_research:auto_20260328_2",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Nextchip",
+    "APACHE4",
+    "成本",
+    "量产风险",
+    "误报",
+    "备选方案",
+    "deep_research",
+    "auto_20260328_2"
+  ],
+  "confidence": "medium"
+}

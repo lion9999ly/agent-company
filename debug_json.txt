@@ -1,0 +1,20 @@
+[R&D] Done: 请输出头盔项目HUD和App的软件功能PRD清单，用于给UIUX设计公司和软件研...
+
+[
+  {
+    "module": "HUD",
+    "level": "L1",
+    "parent": "",
+    "name": "HUD显示系统",
+    "priority": "P0",
+    "description": "提供骑行中低干扰、高可读的核心信息显示能力，支撑导航与安全提醒。",
+    "acceptance": "在白天10000lux与夜间环境下均可显示；骑行时核心信息区域无遮挡主视野，用户可在3秒内识别当前导航方向与车速信息。",
+    "note": "基于产品目标中HUD导航为核心卖点；三份Agent原文缺失，按量产目标做统一决策。[KNOWLEDGE_GAP]"
+  },
+  {
+    "module": "HUD",
+    "level": "L2",
+    "parent": "HUD显示系统",
+    "name": "导航显示",
+    "priority": "P0",
+    "descri

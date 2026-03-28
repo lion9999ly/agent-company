@@ -1,0 +1,22 @@
+{
+  "title": "0328_Jarvish X-AR智能摩托车全盔：HUD波导/微显示供应链与FCC可得信息评估",
+  "domain": "components",
+  "content": "Jarvish X-AR是面向摩托车骑行的智能全盔，不是自行车头盔；若检索中出现bike helmet/ cycling helmet资料，应明确排除，因为其安全标准、风噪、供电和HUD集成空间均不同。基于现有3个来源，可确认Jarvish曾公开展示X-AR概念，核心卖点包括AR HUD、语音控制、前后摄像头、导航与事故检测，但“2026款”及其FCC拆解目前并无公开实证。来源1、2都指出：2026属于未来时间点，尚不存在可核验的FCC teardown，这一点应视为当前最可靠结论。\n\n组件层面，X-AR所需HUD通常由“微显示器+光学引擎+波导”组成。来源1、2列出的潜在微显示供应商包括Himax（LCoS）、Kopin（OLED/LCoS）、eMagin/Applied Materials（高亮OLED）、Sony Semiconductor Solutions、BOE，以及JBD（MicroLED，来源2提及）；潜在波导供应商包括Lumus、Dispelix、WaveOptics（已被Snap收购）、Vuzix。需要强调：这些只是行业候选，并非Jarvish已公开确认的BOM。若后续做竞品拆解，应优先关注HUD模组丝印、FPC编码、光机尺寸和驱动IC，而不是仅凭宣传图判断供应商。\n\n已知产品级参数在来源间存在轻微不一致：来源3称X-AR约于2019年在Indiegogo众筹、2020年开始交付，重量约1.4kg，续航4-5小时；来源1仅给出“早期版本通常采用高通Snapdragon平台”的推测，未给出重量和续航。价格方面，本轮来源未提供2026款官方售价，因此不能硬性下结论；若引用历史众筹信息，需单独标注为早期价格而非2026量产价。安全标准方面，来源3提到DOT/ECE，但未给出具体认证编号，仍需以销售地区证书为准。\n\n对我方智能摩托车全盔产品的启示是：第一，HUD",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Jarvish",
+    "X-AR",
+    "摩托车全盔",
+    "HUD",
+    "波导",
+    "微显示器",
+    "FCC",
+    "LCoS",
+    "OLED",
+    "供应链",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

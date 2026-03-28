@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Sena SRL3（对比 Sena S1 / R2 EVO / Impulse / Stryker）",
+  "domain": "competitors",
+  "content": "以下是 **Sena SRL3 技术档案**，并重点与 **Sena S1 / R2 EVO / Impulse / Stryker** 做对比。  \n我会尽量把“**具体参数、价格、已知客户、优劣势、适用场景**”都放进去，同时对明显有争议或不同渠道口径不一致的参数做标注。\n\n---\n\n# 1. 产品定位总览\n\n## Sena SRL3 是什么\n**Sena SRL3** 是一套**为特定 SHOEI 头盔定制的内嵌式蓝牙 + Mesh 对讲系统**，不是一顶独立头盔。  \n它的核心卖点不是“通用性”，而是：\n\n- **与 SHOEI 指定头盔高度一体化**\n- **外观几乎无外挂感**\n- **保留头盔空气动力学与静音表现**\n- **支持 Sena Mesh 对讲**\n- **面向高端摩旅 / 通勤 / 长途用户**\n\n## 兼容头盔\nSRL3 主要面向以下 SHOEI 型号：\n\n- **SHOEI Neotec II**\n- **SHOEI GT-Air II**\n- **SHOEI J-Cruise II**\n\n这点非常关键：  \n**SRL3 的优势建立在“你已经拥有或准备购买上述 SHOEI 头盔”这个前提上。**\n\n---\n\n# 2. Sena SRL3 技术档案\n\n## 2.1 基本信息\n\n| 项目 | 规格/说明 |\n|---|---|\n| 产品名称 | Sena SRL3 |\n| 产品类型 | 头盔内嵌式摩托车通信系统 |\n| 发布代际 | SRL 系列第三代 |\n| 适配品牌 | SHOEI |\n| 适配头盔 | Neotec II / GT-Air II / J-Cruise II |\n| 通信方式 | Bluetooth + Mesh Intercom |\n| 蓝牙版本 | Bluetooth 5.0 |\n| 控制方式 | 机身按键 + 语音指令 + 手机 App |\n| App | Sena Motorcycles App |\n| 固件升级 | 支持 |\n\n---\n\n## 2.2 对讲与连接参数\n\n> 不同地区资料对蓝牙对讲距离有时写 1.2 km，有时写 2.0 km；Sena 官方不同产品页/经销页存在口径差异。以下按较常见、较保守口径列出，并注明争议。\n\n### Mesh Intercom\n| 项目 | 参数 |\n|---|---|\n| Mesh 类型 | Open Mesh + Group Mesh |\n| Open Mesh 频道 | 9 个频道 |\n| Open Mesh 人数 | 理论上近乎无限/大规模开放加入 |\n| Group Mesh 人数 | 最多 24 人 |\n| Mesh 单跳距离 | 最远约 1.6 km（开阔地） |\n| Mesh 扩展距离 | 最远约 8 km（需至少 6 名骑手中继、开阔地） |",
+  "source": "completeness_check",
+  "created_at": "2026-03-28",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "medium"
+}

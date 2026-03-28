@@ -1,0 +1,16 @@
+{
+  "title": "Kask Urban R latest 2025 2026 smart urban cycling ",
+  "domain": "lessons",
+  "content": "**结论**：未发现“Kask Urban R latest 2025/2026 smart urban cycling helmet”已发布的真实新品信息；原文为**趋势推测/概念方案**，可提炼为研发参考。\n\n### 1) 可用于产品定义的功能/参数\n- **智能LED面罩/HUD**：微型LED或透明OLED；显示导航、速度、来电、电量；可结合**电致变色/光致变色**实现自动调光、防眩。\n- **灯光系统**：面罩边缘/头盔后部LED灯带，支持**转向灯、刹车灯、常亮警示**。\n- **连接能力**：建议 **Bluetooth 5.2/5.3**，支持多设备连接、LE Audio、语音助手、可能的Mesh对讲。\n- **传感器融合**：IMU用于碰撞检测/姿态识别/手势控制；环境光传感器联动显示与灯光；可加GNSS实现轨迹、防盗、导航。\n- **音频系统**：耳部超薄扬声器 + MEMS降噪麦克风。\n- **电池/续航**：推测 **Li-Po 800–1500mAh，8–15小时**；**USB-C快充**，可选**Qi无线充电**。\n- **防护**：建议 **IPX4+**。\n\n### 2) 可能的芯片/器件选型线索\n- **MCU**：STM32H7 / NXP i.MX RT\n- **蓝牙SoC**：Qualcomm QCC / Nordic nRF53\n- **IMU**：Bosch BMI270 / ST LSM6DSOX\n- **GNSS**：u-blox M10\n- **麦克风**：Knowles SiSonic\n- **结构材料**：PC外壳或碳纤复材 + 多密度EPS；保留**WG11旋转冲击保护**思路。\n\n### 3) 技术趋势/设计启发\n- 高端城市盔正从“被动防护”转向**安全+通信+导航+可视化**一体化。\n- **电子模块嵌入EP",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "竞品",
+    "Kask",
+    "城市头盔",
+    "LED",
+    "蓝牙",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

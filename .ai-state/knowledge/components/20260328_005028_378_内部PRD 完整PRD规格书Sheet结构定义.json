@@ -1,0 +1,14 @@
+{
+  "title": "[内部PRD] 完整PRD规格书Sheet结构定义",
+  "domain": "components",
+  "content": "\n完整 PRD 规格书包含 6 个 Sheet：\n\nSheet 1: HUD及头盔端功能清单\nSheet 2: App端功能清单  \nSheet 3: 状态场景对策表（前置状态→场景→HUD/灯光/语音/App四通道反馈）\nSheet 4: 语音指令表（指令分类→用户说法→系统动作→成功/失败反馈）\nSheet 5: 按键映射表（按键位置→单击/双击/长按→场景→动作）\nSheet 6: 灯效定义表（触发场景→颜色→模式→频率→优先级）\n\n触发关键词：规格书、状态场景、语音指令、按键映射、灯效、完整PRD、6个Sheet\n",
+  "source": "user_defined",
+  "created_at": "2026-03-28",
+  "tags": [
+    "internal",
+    "prd",
+    "product_definition",
+    "spec_template"
+  ],
+  "confidence": "medium"
+}

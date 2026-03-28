@@ -1,0 +1,16 @@
+{
+  "title": "Goertek bone conduction actuator + Qualcomm QCC517",
+  "domain": "lessons",
+  "content": "**1. 参考设计/器件**\n- **Goertek骨传导执行器 + Qualcomm QCC5171 aptX Voice** 智能头盔开放式通话参考设计。定位：面向OEM的开放式音频/通话方案，适合骑行头盔集成。\n- **QCC5171关键参数**：支持 **aptX Voice 32kHz采样率** 宽带语音；支持 **cVc降噪/回声消除**；支持 **Bluetooth LE Audio/LC3/Auracast/Multi-Stream**；**蓝牙5.3**；双核32位处理器+可编程DSP；QCC5100系列相较前代**功耗最高降68%**。\n- **骨传导执行器特性**：高转换效率、宽频响、低失真、小型轻量，适合头盔有限空间。  \n- **价格**：原文未给出器件或整机价格。\n\n**2. 对智能骑行头盔研发的直接启发**\n- **音频系统设计趋势**：从“封闭耳机”转向**开放式骨传导**，兼顾通话/导航与环境音感知，安全性更适合骑行场景。\n- **芯片选型方向**：优先选支持 **LE Audio + aptX Voice + cVc** 的蓝牙音频SoC，兼顾低功耗、高清通话、未来扩展（多设备/广播音频）。\n- **系统架构建议**：骨传导输出 + **多麦克风阵列** + 风噪抑制算法，重点优化高速骑行风噪、发动机噪声下的双向通话。\n- **续航/BMS启发**：低功耗SoC可显著延长头盔续航，适合加入灯控、导航播报、语音助手等功能而不明显牺牲电池寿命。\n\n**3. 商业模式/产品策略**\n- **参考设计模式**可缩短研发周期、降低集成风险，适合头盔厂商快速推出智能化SKU。\n- 可面向 **骑行/工业安全帽/户外运动** 做平台化复用，提升研发摊销效率。\n\n**4. 行业趋势**\n- 智能头盔市场：2022年约 **5亿美元**，2030年预计 *",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "bone conduction",
+    "Goertek",
+    "Qualcomm",
+    "open-ear audio",
+    "reference design",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

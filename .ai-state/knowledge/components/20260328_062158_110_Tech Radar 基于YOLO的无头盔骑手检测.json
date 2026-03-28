@@ -1,0 +1,18 @@
+{
+  "title": "[Tech Radar] 基于YOLO的无头盔骑手检测",
+  "domain": "components",
+  "content": "该项目是一个智能计算机视觉系统，利用YOLO算法实现对未佩戴头盔摩托车骑手的实时检测。对于智能摩托车全盔项目，其核心技术——基于YOLO的实时目标检测和计算机视觉能力，可直接应用于开发头盔内置的ADAS功能。例如，用于识别前方车辆、行人、车道线或潜在危险，从而提升骑行安全性和辅助驾驶体验，是ADAS模块的重要技术参考。\n\n来源: https://github.com/iashwanikumar/HelmetLessBikerDetection",
+  "source": "platform_monitor:https://github.com/iashwanikumar/HelmetLessBikerDetection",
+  "created_at": "2026-03-28",
+  "tags": [
+    "ADAS",
+    "计算机视觉",
+    "YOLO",
+    "实时检测",
+    "安全",
+    "目标识别",
+    "platform_monitor",
+    "tech_radar"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,12 @@
+{
+  "title": "跨界:Forcite MK1S + Harman Kardon +",
+  "domain": "lessons",
+  "content": "**结构化摘要（面向智能骑行头盔研发）**\n\n1. **概念产品方向**\n- 目标形态：Forcite MK1S 平台 + Harman Kardon 音频 + Qualcomm Snapdragon Ride 边缘AI，定位“ADAS+HUD+音频+互联”一体化智能头盔。\n- 说明：原文为**概念性拆解，非官方已发布产品**，参数多为趋势推演，适合做研发路线参考，不可直接视为量产规格。\n\n2. **可提炼的关键技术参数**\n- **结构/材料**：碳纤维复合材料；现有MK1S约**1.5kg**，目标可压到**1.4kg以下**；强调空气动力学与电子散热协同设计。\n- **安全认证**：明确瞄准**ECE 22.06 / DOT / Snell**级别，说明高端智能头盔需在加装电子模块后仍满足主流认证。\n- **视觉系统**：前/后摄像头，推演规格 **4K@60fps、150°广角**，兼顾行车记录与ADAS视觉输入。\n- **AI/芯片**：Snapdragon Ride Flex SoC 精简版思路，推演算力 **20–50 TOPS**，功耗 **10–20W**；适合做传感器融合、语音、ADAS推理。\n- **传感器融合**：IMU、GPS/GNSS、环境光，外加微型雷达/超声波、摄像头、V2X模块；功能覆盖 BSD/FCW/LDW/TSR/疲劳监测。\n- **音频系统**：Harman Kardon 定制扬声器；频响 **20Hz–20kHz**、失真 **<0.5%**；ANC降噪 **20–30dB**；**2–4个MEMS麦克风**，SNR **65dB+**；支持**空间音频**与**蓝牙LE Audio/LC3**。\n- **HUD**：LCoS/DLP + 光波导；亮度 **5000–10000 nit**，分辨率 **800×480**，FOV ",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "night_cross",
+    "跨界"
+  ],
+  "confidence": "medium"
+}

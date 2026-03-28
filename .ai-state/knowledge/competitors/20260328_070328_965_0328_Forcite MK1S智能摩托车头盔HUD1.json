@@ -1,0 +1,22 @@
+{
+  "title": "0328_Forcite MK1S智能摩托车头盔：HUD、1080p相机与安全系统供应链研判",
+  "domain": "competitors",
+  "content": "Forcite MK1S是澳大利亚Forcite Helmets推出的智能摩托车全盔，不是自行车头盔；其设计前提是满足摩托车场景下的高速、防护与法规要求，这一点与常见自行车智能头盔有本质差异，不能混用对标。基于现有公开信息，MK1S实际上市时间为2023年末至2024年初，并非“2025款”；若按地区销售，价格约为US$1299 / £1299 / A$1999。已知核心配置包括：集成HUD、前置1080p 60fps摄像头、蓝牙连接、导航/限速/危险提醒，以及配套Forcite App。来源对HUD技术表述存在矛盾：一类说法称其为“专有LED投影系统”，另一类则推测可能采用LCoS、DLP Pico或micro-OLED微显示方案；由于缺乏公开拆解，具体显示器件型号无法确认，应视为未证实。摄像头部分相对明确，公开资料集中指向前置1080p@60fps，但图像传感器供应商仅能推测为Sony IMX系列或OmniVision OV系列，镜头应为广角模组，服务于行车记录与事故取证。安全系统方面，来源一致认为其依赖IMU（加速度计+陀螺仪）、GPS/GNSS、环境光传感器、麦克风和主控SoC，实现碰撞检测、道路危险预警、导航提示和亮度自适应。潜在芯片/部件供应链可按行业常见组合推断：HUD微投影可能涉及Texas Instruments（DLP）、Himax或Sony（LCoS/微显示）；传感器与MCU/接口器件可能来自STMicroelectronics、Analog Devices；复合材料外壳原料可能来自Toray、Hexcel、Teijin。需要强调，以上供应商均非Forcite官方确认。对竞品研究的启示是：MK1S的差异化不在“堆参数”，而在把HUD、相机和危险提醒压缩进碳纤维全盔形态，同时控制重量、散热、抗震和ECE/DOT等认证风险。其短板也明显：公开拆解缺失，说明",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Forcite",
+    "MK1S",
+    "智能摩托车头盔",
+    "全盔",
+    "HUD",
+    "1080p60fps",
+    "行车记录",
+    "IMU",
+    "供应链推测",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

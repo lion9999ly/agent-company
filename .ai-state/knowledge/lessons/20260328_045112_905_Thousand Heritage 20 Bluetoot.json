@@ -1,0 +1,16 @@
+{
+  "title": "Thousand Heritage 2.0 Bluetooth helmet 2026 connec",
+  "domain": "lessons",
+  "content": "**产品/技术要点（预测性信息）**\n- 假想产品：**Thousand Heritage 2.0**，定位2026年互联智能骑行头盔。\n- 通讯：**Bluetooth 5.2+**，支持低功耗音频、多设备连接、车把**BLE遥控器**；可扩展ANT+/Mesh对讲。\n- 芯片/器件建议：蓝牙SoC提及 **Nordic nRF5340、Qualcomm QCC**；IMU提及 **Bosch BMI270、ST LSM6DSOX**；GNSS提及 **u-blox M10**。\n- 碰撞检测：采用**IMU+冲击/应变传感器+气压计+GPS**的多传感器融合，结合阈值+模式识别/边缘AI；误报抑制机制含**30–60秒取消倒计时**。\n- 灯光系统：集成前白/后红LED，后灯约**50–200 lm**，前灯约**200–800 lm**；支持**转向灯、自动刹车灯、环境光自适应**。\n- 音频：倾向**骨传导**+降噪麦克风阵列，兼顾环境音感知与语音助手/通话。\n- 电源：**1000–2500mAh Li-Po**，**USB-C快充**，续航约**8–15h**（全功能）/ **20h+**（基础灯光）；提到**无线充电线圈可选**。\n- 材料/结构：**PC或碳纤维外壳 + EPS/EPP多密度内衬 + In-Mold工艺**；旋转防护集成**MIPS/WaveCel/SPIN**；防护等级预期**IPX5–IPX7**。\n\n**研发趋势/可借鉴方向**\n- 从“被动防护”转向**主动安全**：碰撞识别、自动求救、刹车/转向灯联动。\n- **传感器融合+边缘AI**成为核心能力，重点在误报率、低功耗、实时性。\n- **车把遥控+App+语音**的多模交互更适合骑行场景。\n- **eSIM独立求救**是潜在升级方向，可减少对手机依赖。\n- 设计上强调**轻量化、重",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Thousand",
+    "urban helmet",
+    "connected",
+    "teardown",
+    "crash detection",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

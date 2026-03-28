@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Cardo Spirit HD（对比 Cardo Packtalk Pro / Cardo Beyond GTS）",
+  "domain": "competitors",
+  "content": "以下内容基于**Cardo 官方已公开零售产品线**与行业常见渠道信息整理；其中 **Cardo Spirit HD / Packtalk Pro** 为明确存在的零售型号。  \n而 **“Cardo Beyond GTS”并不是我能确认到的 Cardo 官方标准零售型号**，更像是经销商命名、地区渠道名、或某个 OEM/联名/车厂定制系统的俗称。  \n因此：\n\n- **Spirit HD / Packtalk Pro：按已知公开资料给出**\n- **Beyond GTS：只能做“高概率身份判断 + 谨慎对比”**，不能把它当作一个已被 Cardo 官方完整发布并有统一规格书的标准型号\n\n---\n\n# Cardo Spirit HD 技术档案\n\n## 1. 产品定位\n\n**Cardo Spirit HD** 是 Cardo 面向入门到中端市场的蓝牙头盔通讯器，核心卖点是：\n\n- 价格低于 Packtalk 系列\n- 适合 **单人骑行、骑手+乘客、两车小范围通联**\n- 保留了 Cardo 的基础体验：\n  - 防水\n  - App 管理\n  - OTA 更新\n  - 40mm HD 扬声器\n  - 通用蓝牙互联\n\n它不是 DMC Mesh 机型，**本质上是“蓝牙对讲机”而不是“网状组网对讲机”**。\n\n---\n\n## 2. 关键规格参数\n\n> 注：不同地区套装、年份、零售页面表述会略有差异，以下为主流公开参数汇总。\n\n## 2.1 通讯与连接\n\n- **蓝牙版本**：Bluetooth 5.2\n- **对讲类型**：Bluetooth Intercom\n- **最大对讲人数**：**2 人**\n- **最大对讲距离**：**约 600 米 / 0.4 英里**\n  - 理想空旷环境下\n  - 实际城市/山路/车流环境通常更短\n- **通用互联**：支持与其他品牌蓝牙耳机/对讲设备配对\n- **双设备连接**：支持手机 / GPS 等蓝牙设备连接\n\n## 2.2 音频\n\n- **扬声器**：**40mm HD Speakers**\n- **自动音量调节**：支持\n- **音乐共享**：支持\n- **FM 收音机**：支持\n- **语音助手支持**：可调用手机侧 Siri / Google Assistant\n- **JBL 调音/扬声器**：**通常不作为 Spirit HD 的核心卖点**\n  - 这点与 Packtalk 高端线有明显差异\n\n## 2.3 电池与充电\n\n- **通话/工作时间**：**最长约 13 小时**\n- **待机时间**：**约 10 天**\n- **充电时间**：**约 2 小时**\n- **快充**：**充电 20 分钟约可用 2 小时**\n- **接口**：USB-C\n\n## 2.4 结构与防护\n\n- **防护等级**：*",
+  "source": "completeness_check",
+  "created_at": "2026-03-28",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "medium"
+}

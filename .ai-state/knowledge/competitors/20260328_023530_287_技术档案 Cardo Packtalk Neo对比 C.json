@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Cardo Packtalk Neo（对比 Cardo Packtalk Pro / Cardo Beyond GTS）",
+  "domain": "competitors",
+  "content": "以下内容基于**截至目前公开可核验资料**整理。先给结论：\n\n- **Cardo Packtalk Neo** 本质上是 **Packtalk Edge 平台的“非磁吸、价格更低版本”**，核心通信能力非常强，适合大多数摩旅、组队骑行用户。\n- 相比你提到的 **Cardo Packtalk Pro**：  \n  - 如果“Pro”指的是 **2024/2025 新款 Packtalk Pro**，那么 **Pro 整体定位高于 Neo**，在传感器/安全功能、音频细节、附件配置上通常更强。  \n  - 如果有人把“Pro”误称为旧款旗舰，那要小心，Cardo 历史上主流旗舰长期是 **Bold / Black / Edge / Pro** 这条线，不同代际差异很大。\n- **Cardo Beyond GTS** 不是 Cardo 面向大众零售市场的标准主力型号，公开资料明显少于 Neo / Edge / Pro；它更像**特定渠道/联名/定制体系中的型号**。因此能确认的参数有限，不能像 Neo 那样做完全同等粒度的公开参数核对。若你需要，我可以继续单独做一版“Beyond GTS 资料溯源表”。\n\n---\n\n# 1. Cardo Packtalk Neo 技术档案\n\n## 1.1 产品定位\n- 品牌：**Cardo Systems**\n- 型号：**Packtalk Neo**\n- 类别：摩托车头盔蓝牙/DMC Mesh 对讲系统\n- 市场定位：**中高端 Mesh 对讲主力款**\n- 核心卖点：\n  - **DMC Gen 2 动态网状通信**\n  - **JBL 40mm 扬声器**\n  - **蓝牙 5.2**\n  - **自然语音控制**\n  - **IP67 防护**\n  - 相比 Edge 更便宜，但保留大部分核心通信能力\n\n---\n\n## 1.2 核心通信参数\n\n### DMC Mesh\n- 技术：**DMC Gen 2**\n- 最大群组：**最多 15 名骑手**\n- 群组总距离：**最长约 8 km**  \n  > 官方常见表述为“up to 5 miles / 8 km”，通常是理想条件下群组总覆盖，不是任意两人稳定 8 km。\n- 两机点对点典型距离：**约 1.6 km**\n- 特性：\n  - 自愈网络\n  - 掉线自动重连\n  - 群组管理更方便\n  - 比传统蓝牙链式组网稳定\n\n### 蓝牙\n- 版本：**Bluetooth 5.2**\n- 蓝牙对讲：**最长约 1.2 km**\n- 并行连接：\n  - 手机\n  - GPS\n  - 其他蓝牙耳机/对讲设备（兼容模式）\n- 支持：\n  - 通话\n  - 音乐\n  - 导航\n  - 语音助手\n\n---\n\n## 1.3 音频系统\n- 扬声器：**JBL 40mm 高清扬声器**\n-",
+  "source": "completeness_check",
+  "created_at": "2026-03-28",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "medium"
+}

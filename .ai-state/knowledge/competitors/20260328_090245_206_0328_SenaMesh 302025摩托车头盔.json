@@ -1,0 +1,18 @@
+{
+  "title": "0328_Sena“Mesh 3.0（2025）”摩托车头盔对讲：公开信息缺失下的竞品研判",
+  "domain": "competitors",
+  "content": "截至给定来源，Sena并无已公开、可核验的“2025 Mesh 3.0”正式产品，因此不能把它当作已上市竞品写成确定事实。原始搜索结果明确指出：截至2024年末/2025年初，Sena官方尚未发布任何名为“Mesh 3.0”或对应“2025 Sena Mesh 3.0”的产品信息，相关“供应商模块拆解”与具体芯片、供应链数据也不存在公开可用事实。三份来源一致表明，Sena当前公开成熟平台仍是Mesh 2.0，已知品牌与机型包括Sena 50S、50R、50C，以及与头盔品牌合作的集成方案，如Shoei SRL-Mesh、Shoei SRL2/SRL3、Schuberth SC2，另有集成式头盔产品如Sena Impulse、Stryker被用于说明其现有技术路线。可确认的公开参数主要来自Mesh 2.0：开放Mesh可分9个频道，群组Mesh通常支持24名骑手；单机间典型距离约2 km，6人中继下总距离可扩展到约8 km；Mesh续航常见区间约8-12小时。关于具体型号、具体参数和价格，原始搜索结果并未提供诸如QCC5181、BES2800、IMX678、3000nits、42dB、1.65kg、$15-25/颗或￥200-300这类可核验数据，因此不能擅自补入。对于ECE 22.06，来源强调它是摩托车头盔安全标准，而非对讲机模块标准；无论是外挂式对讲机如50S/50R，还是集成式方案如SRL系列、SC2、Impulse、Stryker，其与头盔的集成方式都必须确保不影响头盔结构完整性、冲击吸收性能及附件安全性。这里必须强调，我们研究对象是智能摩托车全盔，不是自行车头盔；来源讨论均围绕motorcycle helmet intercom，未涉及自行车头盔方案，二者在法规、冲击能量和附件集成要求上不可混用。",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Sena",
+    "Mesh 2.0",
+    "motorcycle helmet",
+    "ECE 22.06",
+    "intercom",
+    "SRL-Mesh",
+    "Schuberth SC2",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

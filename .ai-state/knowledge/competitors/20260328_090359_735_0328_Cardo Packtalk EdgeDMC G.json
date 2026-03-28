@@ -1,0 +1,21 @@
+{
+  "title": "0328_Cardo Packtalk Edge（DMC Gen2）在摩托车全盔中的集成格局：2025年供应商与兼容性",
+  "domain": "competitors",
+  "content": "Cardo Packtalk Edge 是面向摩托车头盔的旗舰通信器，核心为 DMC Gen2 网状通信，支持最多 15 名骑手全双工对讲；单骑手间标称距离 1.6 km，群组总距离 8 km；配 40 mm JBL 扬声器、蓝牙 5.2、IP67 防护、OTA 升级与磁吸 Air Mount。来源一致认为其仍是 2025 年高端摩托车通信主流方案。零售价在不同市场通常约 USD 399.95（单机）/ USD 699.95（双机），但不同渠道会有波动。需明确：这里讨论的是摩托车全盔/模块盔集成，不适用于自行车头盔，后者在安装空间、风噪、法规和麦克风布置上均不同。\n\n从“集成供应商”看，真正与 Cardo 技术深度绑定的头盔品牌里，Schuberth 最值得关注。来源 2 提到 Schuberth C5、S3、E2 可配 SC2，且 SC2 被描述为“基于 Cardo Packtalk Edge 技术开发”，这意味着其更像 OEM 深度集成方案：头盔预留天线、扬声器、麦克风和侧边模块位，外观与风阻优于外挂式。若做智能全盔竞品分析，Schuberth 可视为“头盔厂 + 通信方案商”协同的代表供应商。\n\n第二类是“Cardo Ready/高度兼容”品牌。来源 1 明确点名 Klim，尤其 Krios Pro 被描述为对 Packtalk Edge 有专门安装位，接近半集成体验；这类品牌不是把主机做成原厂电子件，而是在壳体、EPS 与内衬中预留扬声器腔、走线槽和夹座空间，降低安装复杂度。AGV、Bell 也被提到具备较好第三方兼容性，但证据强度弱于 Schuberth 与 Klim。\n\n存在一处明显矛盾：来源 2 将 HJC 列为可能合作方，但同时承认 SMART HJC 通常与 Sena 或其他方案绑定；来源 1 也强调行业里“直接工厂预装 Cardo 的案例相对较少”。因此",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Cardo",
+    "Packtalk Edge",
+    "DMC Gen2",
+    "摩托车全盔",
+    "Mesh通信",
+    "Schuberth",
+    "Klim",
+    "头盔集成",
+    "SC2",
+    "竞品分析",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

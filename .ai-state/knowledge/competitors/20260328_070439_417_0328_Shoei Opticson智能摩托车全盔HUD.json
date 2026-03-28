@@ -1,0 +1,22 @@
+{
+  "title": "0328_Shoei Opticson智能摩托车全盔：HUD概念明确，但2026量产与Sony/SHM供应链暂无证据",
+  "domain": "competitors",
+  "content": "Shoei Opticson是面向摩托车的智能全盔概念，不是自行车头盔；若参考到自行车HUD头盔案例，应明确排除，因为其认证、抗冲击和高速风噪场景完全不同。现有3个来源对Opticson时间线存在明显矛盾：来源1称其以“Shoei IT-HL/Opticson”在2022年EICMA亮相，并提到Shoei曾以2024年日本上市为目标；来源2、3则称其最早在2019年CES以概念形式展示。基于这些信息，较稳妥的结论是：Opticson至少在2019-2022年间持续以概念/原型身份公开出现，但截至目前没有可靠公开证据证明其会在2026年正式量产。技术上，3个来源一致指向其核心为HUD，而非成熟AR：显示方式是微型投影+头盔内半透明combiner，位置通常在骑手右下视野，显示车速、导航箭头、来电、电量等；来源2还提到后视摄像头画面可进入HUD。价格方面，仅来源1给出高端区间预测，为1500-2500美元，但这不是Shoei官方定价，应标注为媒体/行业估算。供应链方面，搜索词中的Sony Honda Mobility容易造成误解。来源2明确指出Sony Honda Mobility是索尼与本田于2022年成立的电动车合资公司，主品牌为Afeela，业务聚焦EV，不涉及摩托车头盔；因此“Shoei Opticson是Sony Honda Mobility供应商”这一说法不成立。进一步说，关于Opticson HUD/AR显示模组是否由Sony供应，3个来源都没有给出公开证据，也没有出现具体面板型号、光机参数、分辨率、视场角、亮度、续航或整盔重量等关键BOM级数据。对我们做智能摩托车全盔的启示是：一，HUD比“真AR”更现实，先做低干扰信息投射；二，若无明确量产节点和供应商披露，不能把概念展品当成熟竞品；三，竞品监测应重点追踪Shoei后续是否公布ECE/DOT认证、量产型号、续航",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Shoei",
+    "Opticson",
+    "smart motorcycle helmet",
+    "HUD",
+    "AR",
+    "Sony Honda Mobility",
+    "Afeela",
+    "Sena",
+    "Cardo",
+    "full-face helmet",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

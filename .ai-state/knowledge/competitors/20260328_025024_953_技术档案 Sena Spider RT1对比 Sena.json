@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Sena Spider RT1（对比 Sena S1 / R2 EVO / Impulse / Stryker）",
+  "domain": "competitors",
+  "content": "以下内容基于你给出的搜索结果，并结合 Sena 现有产品线的公开常识做整理。  \n先说结论：\n\n1. **“Sena Spider RT1”这个型号本身存在较大命名不确定性。**  \n   公开市场上更常见的是 **Sena Spider ST1**（三键）和 **Sena Spider RT1**（Jog Dial 旋钮版）这对产品；但不同地区、渠道、年份资料会混用、误写，且你给出的搜索结果里也出现了“RT1 是集成式”“RT1 是夹装式”两种互相冲突的描述。  \n2. 因此，下面我会把它当作 **Spider 系列中的 RT1 版本：主打 Mesh、价格更低、功能比 50 系列更精简** 来做技术档案。  \n3. **凡是我无法从你提供材料中100%确认的参数，我会明确标注“需二次核验”**，避免把不确定信息写成确定事实。  \n4. 你要求的“**具体参数、价格、已知客户**”我会给出，但其中 **价格和客户案例会按“公开零售/典型用户群/公开合作对象”层级表达**，因为 Spider RT1 并不像企业级设备那样有大量公开“客户名单”。  \n\n---\n\n# Sena Spider RT1 技术档案\n\n## 1. 产品身份与定位\n\n**产品名：** Sena Spider RT1  \n**品牌：** Sena  \n**产品类别：** 摩托车头盔蓝牙/网状对讲通讯器  \n**核心定位：**  \n- Sena Mesh 2.0 的**入门/中端普及型**设备  \n- 面向希望使用 **Mesh 群组对讲**、但不想支付 Impulse / Stryker / 50 系列高价的用户  \n- 适合 **多人编队骑行**，不适合把“蓝牙对讲兼容性”当核心诉求的用户\n\n**产品线位置：**  \n- 比 **S1 / R2 EVO** 更偏“摩托车外挂通讯器”  \n- 比 **Impulse / Stryker** 更便宜、更轻量，但集成度和音频规格通常更低  \n- 与 Spider ST1 同属 Spider 系列，主打 **Mesh-only 思路**\n\n---\n\n## 2. 核心卖点\n\n1. **Mesh 2.0 对讲**\n   - 支持 Open Mesh / Group Mesh\n   - 适合多人骑行\n   - 自组网能力优于传统蓝牙链式对讲\n\n2. **价格门槛低于高端 Sena Mesh 头盔**\n   - 用更低预算获得 Sena Mesh 生态入口\n\n3. **操作更直接**\n   - Spider 系列通常强调简化操作逻辑\n   - RT1 常被视为更适合戴手套盲操的版本\n\n4. **支持手机/GPS/音乐等蓝牙连接**\n   - 虽然是 Mesh-only 对讲思路，但仍可连接手机等设备\n\n---\n\n## 3. 关键技术规格\n\n> 注：以下参数",
+  "source": "completeness_check",
+  "created_at": "2026-03-28",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,22 @@
+{
+  "title": "0328_Cardo Packtalk Edge（摩托车全盔通讯器）与“2025 DMC Gen 2拆解”信息边界",
+  "domain": "competitors",
+  "content": "针对“2025 Cardo Dynamic Mesh Communication Gen 2 / Packtalk Edge 芯片组、天线拆解”的检索，3个来源结论基本一致：截至现有公开信息，Cardo Systems并未正式发布名为“Packtalk Edge Gen 2”或“DMC Gen 2”的摩托车头盔通讯产品，因此不存在可核验的官方拆解、芯片型号或天线BOM。可确认的现售基线产品是Cardo Packtalk Edge（2022年上市），定位为摩托车全盔/揭面盔通讯器，而非自行车头盔设备，这一点对我们智能摩托车头盔产品线尤为关键。当前Packtalk Edge公开参数包括：支持DMC网状通信，最多15名骑手组网；单节点典型距离约1.6公里（1英里）；蓝牙5.2；JBL 40mm扬声器；IP67防护；约13小时通话续航；USB-C充电；磁吸式Air Mount底座；支持OTA升级。来源中对芯片供应商仅给出推测，可能涉及Qualcomm、高通系无线SoC或其他音频/连接芯片厂，但没有任何来源提供可验证的具体料号，因此在竞品数据库中应标注为“芯片组未知，未拆解证实”。天线方面，来源普遍推断其为2.4GHz内部集成天线，可能是PCB/FPC/PIFA或陶瓷天线，且可能采用多天线分集以提升DMC稳定性，但同样缺乏FCC拆机图或第三方拆解证据。价格方面，本次3个来源未给出明确零售价；结合市场常见销售形态，Packtalk Edge通常以Single/Duo套装由Cardo及RevZilla、Cycle Gear、Amazon等摩托车装备渠道销售，但由于本题来源未提供价格数字，不能写入确定值。矛盾点在于：来源1将当前Packtalk Edge的DMC称为“Gen 1”，并预测2025年可能升级到20-30人、2公里以上；来源3则指出Edge相较Bold已属更先进一代DMC能力，",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Cardo",
+    "Packtalk Edge",
+    "摩托车头盔",
+    "DMC",
+    "Mesh Intercom",
+    "Bluetooth 5.2",
+    "JBL 40mm",
+    "IP67",
+    "Air Mount",
+    "竞品分析",
+    "dynamic",
+    "speculative"
+  ],
+  "confidence": "medium"
+}

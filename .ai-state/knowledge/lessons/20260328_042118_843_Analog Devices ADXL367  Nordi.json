@@ -1,0 +1,16 @@
+{
+  "title": "Analog Devices ADXL367 + Nordic nRF52840 smart hel",
+  "domain": "lessons",
+  "content": "**1. 关键器件/参数（可直接用于头盔方案选型）**  \n- **ADI ADXL367 三轴MEMS加速度计**：超低功耗，**0.97µA@100Hz ODR**；唤醒模式**270nA**；待机**10nA**。**14位分辨率**，量程**±2g/±4g/±8g**，**512B FIFO**（约170组样本），支持**SPI/I2C**，温度**-40~125°C**。适合头盔**跌倒/碰撞检测、运动传感**。  \n- **Nordic nRF52840 蓝牙5多协议SoC**：**Cortex-M4F 64MHz**，**1MB Flash + 256KB RAM**；支持**BLE 5**（长距离、2Mbps、扩展广播）、Thread/Zigbee/ANT；功耗约**1.5µA(System ON idle)**、**0.4µA(System OFF)**；集成**DC-DC**，适合**蓝牙通信、传感器融合、紧急告警**。  \n- 原文**未给出价格**。  \n\n**2. 可借鉴的产品设计思路**  \n- **事件驱动超低功耗架构**：由ADXL367常开监测，利用**活动/非活动检测 + FIFO + 中断唤醒**，仅在异常运动时唤醒nRF52840，显著延长头盔续航。  \n- **动态采样策略**：静止时低ODR（如12.5/25Hz），骑行时中ODR，疑似碰撞时切高ODR，适合智能头盔在**续航与识别精度**间平衡。  \n- **手机协同商业模式**：头盔端只做本地检测与BLE连接，借助手机App完成**短信/电话/GPS位置上报**，可降低头盔BOM与蜂窝通信成本。  \n\n**3. 技术趋势/行业启示**  \n- 智能头盔正从“蓝牙音频配件”转向“**安全感知终端**”，核心能力是**运动传感器融合 + 低功耗算法 + BLE连接**。  \n- *",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "fall detection",
+    "ADXL367",
+    "Nordic",
+    "low power",
+    "algorithm",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

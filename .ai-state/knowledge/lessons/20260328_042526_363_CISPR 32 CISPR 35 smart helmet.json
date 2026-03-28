@@ -1,0 +1,16 @@
+{
+  "title": "CISPR 32 CISPR 35 smart helmet multimedia Bluetoot",
+  "domain": "lessons",
+  "content": "**标准/法规要点**\n- **CISPR 32:2015+AMD1:2019 / EN 55032:2015+A11:2020**：多媒体设备发射标准，已整合替代旧 **CISPR 13/22**。智能骑行头盔因集成蓝牙、音频、摄像头、显示/导航，明确可按 **MME（多媒体设备）** 管理。\n- **CISPR 35:2016 / EN 55035:2017**：多媒体设备抗扰度标准，已整合替代旧 **CISPR 20/24**。\n- 头盔面向消费/公共场景，通常按 **Class B** 设计，限值比 Class A 更严，研发阶段应直接按住宅环境目标预留裕量。\n\n**关键测试参数**\n- **CISPR 32 发射**：传导发射 **9 kHz–30 MHz**；辐射发射 **30 MHz–6 GHz**（上限与最高工作频率相关）。\n- **CISPR 35 抗扰度**：  \n  - ESD：接触 **±4 kV**，空气 **±8 kV**  \n  - 辐射抗扰：**80 MHz–6 GHz，3/10 V/m**  \n  - EFT：电源口 **±1 kV**，信号口 **±0.5 kV**  \n  - Surge：电源口 **±0.5/±1 kV**  \n  - 传导抗扰：**150 kHz–80 MHz，3/10 V**  \n  - 工频磁场：**3 A/m**\n- 关键功能如 **蓝牙通信、导航/HUD、录像、语音/音频**，建议目标至少满足 **判据A/B**，避免测试中断链或需重启。\n\n**对智能骑行头盔研发的直接启示**\n- 主要EMC风险源：**蓝牙2.4GHz模块、摄像头/MIPI高速线、音频功放、MCU/SoC时钟、DC-DC、电池管理、GPS天线、FPC/线缆**。\n- 设计重点：  \n  1) **芯片/模块选型**优先低EMI电源与高集成蓝",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "CISPR 32",
+    "CISPR 35",
+    "EMC",
+    "multimedia",
+    "Bluetooth",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

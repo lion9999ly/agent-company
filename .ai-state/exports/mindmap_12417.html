@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>智能骑行头盔 V1 功能框架</title>
+<style>
+body { font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f5f5f5; padding: 20px; max-width: 1200px; margin: 0 auto; }
+h1 { text-align: center; color: #2F5496; margin-bottom: 30px; }
+.module { margin-bottom: 30px; background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.module-title { font-size: 18px; font-weight: bold; color: #fff; background: #2F5496;
+    padding: 8px 16px; border-radius: 6px; display: inline-block; margin-bottom: 12px; }
+.l1 { margin-left: 20px; margin-bottom: 16px; }
+.l1-title { font-size: 15px; font-weight: bold; color: #2F5496;
+    border-left: 4px solid #2F5496; padding-left: 10px; margin-bottom: 6px; }
+.l2 { margin-left: 40px; margin-bottom: 8px; }
+.l2-title { font-size: 13px; font-weight: bold; color: #555; margin-bottom: 4px; }
+.l3 { margin-left: 60px; font-size: 12px; color: #777; line-height: 1.8; }
+.tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px;
+    color: #fff; margin-left: 6px; }
+.tag-P0 { background: #FF4444; }
+.tag-P1 { background: #FF8C00; }
+.tag-P2 { background: #4CAF50; }
+.tag-P3 { background: #9E9E9E; }
+</style></head><body>
+<h1>智能骑行头盔 V1 功能框架</h1>
+<div class="module"><span class="module-title">音乐</span>
+<div class="l1"><div class="l1-title">音乐 <span class="tag tag-P1">P1</span></div>
+<div class="l2"><div class="l2-title">├ 播放控制 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 播放/暂停 <span class="tag tag-P0">P0</span><br>
+└ 上一首/下一首 <span class="tag tag-P0">P0</span><br>
+└ 断连后控制置灰 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 信息展示 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 歌曲名与播放状态显示 <span class="tag tag-P1">P1</span><br>
+└ 播放进度显示 <span class="tag tag-P2">P2</span><br>
+└ 来源应用标识 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 音量与混音 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 音乐音量调节 <span class="tag tag-P1">P1</span><br>
+└ 导航/来电打断降音 <span class="tag tag-P0">P0</span><br>
+└ 最大音量安全限制 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 语音与按键交互 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 语音控制音乐 <span class="tag tag-P1">P1</span><br>
+└ 按键快捷控制音乐 <span class="tag tag-P1">P1</span><br>
+└ 按键自定义映射 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 连接与兼容 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 蓝牙媒体连接 <span class="tag tag-P0">P0</span><br>
+└ 主流音乐App兼容 <span class="tag tag-P1">P1</span><br>
+└ 异常重连恢复 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 播放模式扩展 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 随机/单曲循环切换 <span class="tag tag-P2">P2</span><br>
+└ 收藏歌曲快捷操作 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">来电</span>
+<div class="l1"><div class="l1-title">来电 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 来电提醒 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 来电信息HUD弹窗 <span class="tag tag-P0">P0</span><br>
+└ 来电语音播报 <span class="tag tag-P1">P1</span><br>
+└ 来电氛围灯提醒 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 来电处理 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 按键接听/拒接 <span class="tag tag-P0">P0</span><br>
+└ 语音接听/拒接 <span class="tag tag-P1">P1</span><br>
+└ 一键静音来电铃声 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 通话中显示与控制 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 通话状态HUD显示 <span class="tag tag-P1">P1</span><br>
+└ 按键挂断通话 <span class="tag tag-P0">P0</span><br>
+└ 语音挂断通话 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 安全与免打扰 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 高速骑行简化提醒 <span class="tag tag-P1">P1</span><br>
+└ 免打扰白名单设置 <span class="tag tag-P2">P2</span><br>
+└ 主动预警期间来电降级 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 记录与设置 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 未接来电记录同步 <span class="tag tag-P2">P2</span><br>
+└ 来电提醒开关与音量设置 <span class="tag tag-P1">P1</span><br>
+└ 联系人名称显示隐私模式 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">消息</span>
+<div class="l1"><div class="l1-title">消息 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 消息接入与同步 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 通知权限引导 <span class="tag tag-P0">P0</span><br>
+└ 多消息源接入 <span class="tag tag-P1">P1</span><br>
+└ 连接中断后消息恢复 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ HUD消息提醒 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 横幅提醒展示 <span class="tag tag-P0">P0</span><br>
+└ 提醒优先级避让 <span class="tag tag-P1">P1</span><br>
+└ 氛围灯联动提醒 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 消息阅读与管理 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 最近消息列表 <span class="tag tag-P1">P1</span><br>
+└ 已读未读状态管理 <span class="tag tag-P1">P1</span><br>
+└ 消息自动清理 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 骑行安全交互 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 语音播报消息摘要 <span class="tag tag-P1">P1</span><br>
+└ 按键快速忽略 <span class="tag tag-P1">P1</span><br>
+└ 静默模式联动 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 回复与快捷操作 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 预设快捷回复 <span class="tag tag-P2">P2</span><br>
+└ 语音转文字回复 <span class="tag tag-P3">P3</span><br>
+└ 稍后在App处理 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 隐私与设置 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 摘要隐藏与脱敏 <span class="tag tag-P1">P1</span><br>
+└ 消息白名单设置 <span class="tag tag-P2">P2</span><br>
+└ 播报开关与时段设置 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">导航</span>
+<div class="l1"><div class="l1-title">导航 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 路线发起与同步 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ App选点发起导航 <span class="tag tag-P0">P0</span><br>
+└ 语音发起目的地导航 <span class="tag tag-P1">P1</span><br>
+└ 最近目的地快捷恢复 <span class="tag tag-P1">P1</span><br>
+└ 导航会话断连恢复 <span class="tag tag-P0">P0</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ HUD引导显示 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 转向箭头与距离提示 <span class="tag tag-P0">P0</span><br>
+└ 当前道路名称显示 <span class="tag tag-P1">P1</span><br>
+└ 到达时间与剩余里程 <span class="tag tag-P1">P1</span><br>
+└ 复杂路口放大提示 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 语音播报与交互 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 关键转向语音播报 <span class="tag tag-P0">P0</span><br>
+└ 播报音量跟随车速调节 <span class="tag tag-P2">P2</span><br>
+└ 语音控制暂停与继续导航 <span class="tag tag-P1">P1</span><br>
+└ 静音模式切换 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 偏航与重规划 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 偏航自动识别 <span class="tag tag-P0">P0</span><br>
+└ 自动重规划路线 <span class="tag tag-P0">P0</span><br>
+└ 重规划结果提示 <span class="tag tag-P1">P1</span><br>
+└ 手动重新规划入口 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 路线偏好与避让策略 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 避开高速设置 <span class="tag tag-P1">P1</span><br>
+└ 避开收费设置 <span class="tag tag-P1">P1</span><br>
+└ 优先大路设置 <span class="tag tag-P2">P2</span><br>
+└ 路线预览与方案切换 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 异常场景与安全降级 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ GPS信号弱提示 <span class="tag tag-P0">P0</span><br>
+└ 网络异常降级提示 <span class="tag tag-P1">P1</span><br>
+└ 手机电量过低导航风险提示 <span class="tag tag-P2">P2</span><br>
+└ 导航结束与到达提示 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 导航设置与个性化 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ HUD导航信息密度设置 <span class="tag tag-P2">P2</span><br>
+└ 播报频率设置 <span class="tag tag-P2">P2</span><br>
+└ 距离单位设置 <span class="tag tag-P3">P3</span><br>
+└ 夜间高对比导航样式 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">路线</span>
+<div class="l1"><div class="l1-title">路线 <span class="tag tag-P1">P1</span></div>
+<div class="l2"><div class="l2-title">├ 路线展示 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 下一动作提示 <span class="tag tag-P0">P0</span><br>
+└ 剩余里程与时间 <span class="tag tag-P1">P1</span><br>
+└ 路线进度条 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 路线同步 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 导航发起同步 <span class="tag tag-P0">P0</span><br>
+└ 断连重连恢复 <span class="tag tag-P1">P1</span><br>
+└ 后台保活同步 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 路线交互控制 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 语音查询下一步 <span class="tag tag-P1">P1</span><br>
+└ 按键静音与恢复播报 <span class="tag tag-P1">P1</span><br>
+└ 结束路线导航 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 异常与降级处理 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 定位信号弱提示 <span class="tag tag-P1">P1</span><br>
+└ 路线偏航重算提示 <span class="tag tag-P1">P1</span><br>
+└ 导航服务不可用提示 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">简易</span>
+<div class="l1"><div class="l1-title">简易路线 <span class="tag tag-P1">P1</span></div>
+<div class="l2"><div class="l2-title">├ 路线发起与同步 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ App一键开始简易路线 <span class="tag tag-P0">P0</span><br>
+└ 语音发起目的地导航 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ HUD简化引导显示 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 下一动作箭头显示 <span class="tag tag-P0">P0</span><br>
+└ 剩余距离与到达时间显示 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 转向提醒策略 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 分段式转向预提醒 <span class="tag tag-P1">P1</span><br>
+└ 复杂路口强化提示 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 偏航与重规划 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 偏航检测提示 <span class="tag tag-P1">P1</span><br>
+└ 自动重规划简易路线 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 骑行中低干扰模式 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 仅保留关键导航元素 <span class="tag tag-P2">P2</span><br>
+└ 按键快速切换显示密度 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">摄像状态</span>
+<div class="l1"><div class="l1-title">摄像状态 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 录制状态显示 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 录制中图标与计时 <span class="tag tag-P0">P0</span><br>
+└ 待机未录制状态 <span class="tag tag-P1">P1</span><br>
+└ 录制开始/停止确认提示 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 存储与时长提示 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 剩余存储空间显示 <span class="tag tag-P1">P1</span><br>
+└ 预计剩余录制时长 <span class="tag tag-P2">P2</span><br>
+└ 存储不足预警 <span class="tag tag-P0">P0</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 异常与保护提示 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 摄像头故障提示 <span class="tag tag-P0">P0</span><br>
+└ 过热保护提示 <span class="tag tag-P1">P1</span><br>
+└ 权限/连接异常提示 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 拍摄模式状态 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 普通录制模式显示 <span class="tag tag-P1">P1</span><br>
+└ 紧急锁定视频标记 <span class="tag tag-P1">P1</span><br>
+└ 照片抓拍状态提示 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 联动控制与回看入口 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ App实时同步摄像状态 <span class="tag tag-P2">P2</span><br>
+└ 最近视频生成入口提示 <span class="tag tag-P2">P2</span><br>
+└ 语音查询摄像状态 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">组队</span>
+<div class="l1"><div class="l1-title">组队 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 队伍创建与加入 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 创建队伍 <span class="tag tag-P0">P0</span><br>
+└ 邀请码加入 <span class="tag tag-P1">P1</span><br>
+└ 附近队友邀请 <span class="tag tag-P2">P2</span><br>
+└ 语音加入队伍 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 队伍状态展示 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 队伍人数与在线状态 <span class="tag tag-P0">P0</span><br>
+└ 队长标识展示 <span class="tag tag-P1">P1</span><br>
+└ 队伍名称与头像 <span class="tag tag-P2">P2</span><br>
+└ 组队状态灯效提示 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 骑行协同提醒 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 掉队提醒 <span class="tag tag-P1">P1</span><br>
+└ 集合提醒 <span class="tag tag-P1">P1</span><br>
+└ 等待队友提示 <span class="tag tag-P2">P2</span><br>
+└ 队伍解散提醒 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 队伍管理 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 转让队长 <span class="tag tag-P1">P1</span><br>
+└ 移除成员 <span class="tag tag-P1">P1</span><br>
+└ 主动退出队伍 <span class="tag tag-P0">P0</span><br>
+└ 队伍静音模式 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 位置与同步 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 成员位置上报 <span class="tag tag-P0">P0</span><br>
+└ 前后台同步保活 <span class="tag tag-P0">P0</span><br>
+└ 弱网降级显示 <span class="tag tag-P1">P1</span><br>
+└ 断线重连 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 安全与隐私 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 入队审批 <span class="tag tag-P1">P1</span><br>
+└ 位置共享开关 <span class="tag tag-P1">P1</span><br>
+└ 匿名昵称显示 <span class="tag tag-P2">P2</span><br>
+└ 历史队伍记录 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">主动安全预警提示</span>
+<div class="l1"><div class="l1-title">主动安全预警提示 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 后向来车风险预警 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 后方快速接近识别 <span class="tag tag-P0">P0</span><br>
+└ 左右侧接近方向提示 <span class="tag tag-P1">P1</span><br>
+└ 高危逼近升级告警 <span class="tag tag-P0">P0</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 盲区变道风险预警 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 变道意图识别 <span class="tag tag-P1">P1</span><br>
+└ 左侧盲区占用提醒 <span class="tag tag-P0">P0</span><br>
+└ 右侧盲区占用提醒 <span class="tag tag-P0">P0</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 前向碰撞风险预警 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 车距过近提醒 <span class="tag tag-P1">P1</span><br>
+└ 前车急减速预警 <span class="tag tag-P0">P0</span><br>
+└ 静态障碍物碰撞提醒 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 道路环境风险预警 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 急弯减速提醒 <span class="tag tag-P1">P1</span><br>
+└ 湿滑路面风险提醒 <span class="tag tag-P2">P2</span><br>
+└ 施工与异物区域提醒 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 预警交互与分级策略 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 三级风险分层显示 <span class="tag tag-P1">P1</span><br>
+└ 语音播报频控 <span class="tag tag-P1">P1</span><br>
+└ 一键静音与恢复 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 预警记录与复盘 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 事件日志记录 <span class="tag tag-P1">P1</span><br>
+└ 预警片段联动视频 <span class="tag tag-P2">P2</span><br>
+└ 风险热力统计 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 系统自检与降级保护 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 传感器遮挡检测 <span class="tag tag-P0">P0</span><br>
+└ 低电量能力降级提醒 <span class="tag tag-P0">P0</span><br>
+└ 高温与故障安全退出 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">胎温胎压</span>
+<div class="l1"><div class="l1-title">胎温胎压 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 数据接入与绑定 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 前后轮传感器绑定 <span class="tag tag-P0">P0</span><br>
+└ 连接状态识别 <span class="tag tag-P1">P1</span><br>
+└ 多车切换下的传感器映射 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ HUD实时显示 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 主界面卡片显示 <span class="tag tag-P0">P0</span><br>
+└ 按键切换详情视图 <span class="tag tag-P1">P1</span><br>
+└ 语音播报当前胎况 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 异常预警 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 低压/高压阈值预警 <span class="tag tag-P0">P0</span><br>
+└ 高温预警 <span class="tag tag-P1">P1</span><br>
+└ 快速漏气识别 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 设置与校准 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 单位切换 <span class="tag tag-P1">P1</span><br>
+└ 预警阈值设置 <span class="tag tag-P1">P1</span><br>
+└ 传感器数据校准 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 历史记录与分析 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 单次骑行趋势曲线 <span class="tag tag-P2">P2</span><br>
+└ 异常事件日志 <span class="tag tag-P2">P2</span><br>
+└ 保养建议提示 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">开机动画</span>
+<div class="l1"><div class="l1-title">开机动画 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 启动展示流程 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 品牌Logo展示 <span class="tag tag-P1">P1</span><br>
+└ 主界面自动跳转 <span class="tag tag-P0">P0</span><br>
+└ 启动进度提示 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 安全与状态校验 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 低电量启动提示 <span class="tag tag-P0">P0</span><br>
+└ 故障拦截提示 <span class="tag tag-P0">P0</span><br>
+└ 传感器自检结果提示 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 个性化与配置 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 动画开关设置 <span class="tag tag-P1">P1</span><br>
+└ 主题样式选择 <span class="tag tag-P2">P2</span><br>
+└ 欢迎语显示 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 交互控制与异常恢复 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 按键跳过动画 <span class="tag tag-P1">P1</span><br>
+└ 启动失败重试 <span class="tag tag-P1">P1</span><br>
+└ 语音播报启动状态 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">速度</span>
+<div class="l1"><div class="l1-title">速度 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 实时速度显示 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 大字号数字速度 <span class="tag tag-P0">P0</span><br>
+└ 速度单位显示 <span class="tag tag-P1">P1</span><br>
+└ 静止归零逻辑 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 速度数据处理 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 手机GPS速度接入 <span class="tag tag-P0">P0</span><br>
+└ 速度滤波与防抖 <span class="tag tag-P1">P1</span><br>
+└ 速度源异常降级 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 超速提醒 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 超速阈值设置 <span class="tag tag-P1">P1</span><br>
+└ HUD超速视觉提醒 <span class="tag tag-P1">P1</span><br>
+└ 语音与灯光联动提醒 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 速度状态扩展信息 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 加减速趋势指示 <span class="tag tag-P2">P2</span><br>
+└ 本次骑行最高速度 <span class="tag tag-P2">P2</span><br>
+└ 平均速度统计 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">设备状态</span>
+<div class="l1"><div class="l1-title">设备状态 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 电源与续航状态 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 实时电量显示 <span class="tag tag-P0">P0</span><br>
+└ 低电量分级预警 <span class="tag tag-P0">P0</span><br>
+└ 充电状态识别 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 连接状态管理 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 手机连接状态显示 <span class="tag tag-P0">P0</span><br>
+└ 外设连接状态汇总 <span class="tag tag-P1">P1</span><br>
+└ 断连异常提醒 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 故障与健康诊断 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 开机自检结果展示 <span class="tag tag-P0">P0</span><br>
+└ 故障码与故障说明 <span class="tag tag-P1">P1</span><br>
+└ 严重故障禁用提醒 <span class="tag tag-P0">P0</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 系统版本与维护 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 软件版本信息展示 <span class="tag tag-P1">P1</span><br>
+└ 存储空间状态 <span class="tag tag-P2">P2</span><br>
+└ 一键导出诊断日志 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">显示队友位置</span>
+<div class="l1"><div class="l1-title">显示队友位置 <span class="tag tag-P1">P1</span></div>
+<div class="l2"><div class="l2-title">├ 队友位置采集与同步 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 队友实时坐标上报 <span class="tag tag-P0">P0</span><br>
+└ 队友位置数据下发 <span class="tag tag-P0">P0</span><br>
+└ 定位失效状态标记 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ HUD位置呈现 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 相对方向箭头显示 <span class="tag tag-P1">P1</span><br>
+└ 队友距离数值显示 <span class="tag tag-P1">P1</span><br>
+└ 多队友聚合显示 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 异常与安全提示 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 队友掉队提醒 <span class="tag tag-P1">P1</span><br>
+└ 队友离线提醒 <span class="tag tag-P1">P1</span><br>
+└ 超距阈值自定义 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 交互与控制 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 显示开关与模式切换 <span class="tag tag-P1">P1</span><br>
+└ 语音查询指定队友位置 <span class="tag tag-P2">P2</span><br>
+└ App显示偏好设置 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 隐私与权限管理 <span class="tag tag-P3">P3</span></div>
+<div class="l3">└ 位置共享总开关 <span class="tag tag-P2">P2</span><br>
+└ 仅队内可见限制 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">App-商城</span>
+<div class="l1"><div class="l1-title">商城 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 商品浏览 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 商城首页推荐 <span class="tag tag-P1">P1</span><br>
+└ 分类与筛选 <span class="tag tag-P1">P1</span><br>
+└ 商品详情展示 <span class="tag tag-P0">P0</span><br>
+└ 商品搜索 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 下单支付 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 加入购物车 <span class="tag tag-P0">P0</span><br>
+└ 收货地址管理 <span class="tag tag-P1">P1</span><br>
+└ 优惠券与促销结算 <span class="tag tag-P1">P1</span><br>
+└ 在线支付 <span class="tag tag-P0">P0</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 订单服务 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 订单列表与详情 <span class="tag tag-P1">P1</span><br>
+└ 取消订单 <span class="tag tag-P1">P1</span><br>
+└ 物流跟踪 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 售后服务 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 退货退款申请 <span class="tag tag-P1">P1</span><br>
+└ 换货申请 <span class="tag tag-P2">P2</span><br>
+└ 售后进度查询 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 用户资产与营销 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 优惠券中心 <span class="tag tag-P2">P2</span><br>
+└ 商品收藏 <span class="tag tag-P2">P2</span><br>
+└ 活动会场 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">App-社区</span>
+<div class="l1"><div class="l1-title">社区 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 内容浏览 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 推荐信息流 <span class="tag tag-P0">P0</span><br>
+└ 关注信息流 <span class="tag tag-P1">P1</span><br>
+└ 同城内容 <span class="tag tag-P2">P2</span><br>
+└ 帖子详情页 <span class="tag tag-P0">P0</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 互动 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 点赞 <span class="tag tag-P1">P1</span><br>
+└ 评论与回复 <span class="tag tag-P1">P1</span><br>
+└ 收藏 <span class="tag tag-P2">P2</span><br>
+└ 分享 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 用户主页 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 个人资料展示 <span class="tag tag-P1">P1</span><br>
+└ 作品列表 <span class="tag tag-P1">P1</span><br>
+└ 关注与粉丝列表 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 发布 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 图文发布 <span class="tag tag-P0">P0</span><br>
+└ 视频发布 <span class="tag tag-P1">P1</span><br>
+└ 关联骑行记录发布 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 内容治理 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 发布前后内容审核 <span class="tag tag-P0">P0</span><br>
+└ 举报 <span class="tag tag-P1">P1</span><br>
+└ 黑名单与屏蔽 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 发现与搜索 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 关键词搜索 <span class="tag tag-P2">P2</span><br>
+└ 热门话题 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">App-我的</span>
+<div class="l1"><div class="l1-title">我的首页 <span class="tag tag-P1">P1</span></div>
+<div class="l2"><div class="l2-title">├ 账号与身份 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 登录注册 <span class="tag tag-P0">P0</span><br>
+└ 个人资料 <span class="tag tag-P1">P1</span><br>
+└ 账号安全 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 设置中心 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 通知设置 <span class="tag tag-P1">P1</span><br>
+└ 权限管理 <span class="tag tag-P0">P0</span><br>
+└ 通用设置 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 帮助与客服 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 帮助中心 <span class="tag tag-P1">P1</span><br>
+└ 问题反馈 <span class="tag tag-P1">P1</span><br>
+└ 售后与客服入口 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 关于与法律 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 关于我们 <span class="tag tag-P2">P2</span><br>
+└ 隐私与协议 <span class="tag tag-P0">P0</span><br>
+└ 版本信息 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 隐私管理 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 授权记录查询 <span class="tag tag-P1">P1</span><br>
+└ 账号注销 <span class="tag tag-P0">P0</span><br>
+└ 数据导出申请 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 会员与权益 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 权益展示 <span class="tag tag-P2">P2</span><br>
+└ 积分明细 <span class="tag tag-P2">P2</span><br>
+└ 活动资格 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">AI功能</span>
+<div class="l1"><div class="l1-title">AI功能 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 语音交互 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 语音唤醒 <span class="tag tag-P0">P0</span><br>
+└ 导航语音控制 <span class="tag tag-P0">P0</span><br>
+└ 跨功能语音控制 <span class="tag tag-P1">P1</span><br>
+└ 离线基础语音包 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 视觉交互 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 后向车辆识别预警 <span class="tag tag-P0">P0</span><br>
+└ 盲区风险提示 <span class="tag tag-P1">P1</span><br>
+└ 骑行目标追踪 <span class="tag tag-P2">P2</span><br>
+└ 危险场景事件标记 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 多模态感知 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 急加速急减速识别 <span class="tag tag-P1">P1</span><br>
+└ 骑手疲劳提醒 <span class="tag tag-P1">P1</span><br>
+└ 跌倒事件识别 <span class="tag tag-P0">P0</span><br>
+└ 第三方传感器融合 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ AI内容服务 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 骑行摘要生成 <span class="tag tag-P1">P1</span><br>
+└ AI高光片段推荐 <span class="tag tag-P2">P2</span><br>
+└ 语音骑行问答 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">视觉交互</span>
+<div class="l1"><div class="l1-title">视觉交互 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ ADAS安全感知 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 后向来车提醒 <span class="tag tag-P0">P0</span><br>
+└ 侧后方盲区提醒 <span class="tag tag-P1">P1</span><br>
+└ 前向碰撞风险提示 <span class="tag tag-P1">P1</span><br>
+└ 风险等级分层显示 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 目标追踪 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 队友目标锁定 <span class="tag tag-P1">P1</span><br>
+└ 前车跟踪框显示 <span class="tag tag-P2">P2</span><br>
+└ 目标丢失重捕 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ HUD视觉呈现 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 告警图标标准化 <span class="tag tag-P1">P1</span><br>
+└ 目标框与方向箭头叠加 <span class="tag tag-P1">P1</span><br>
+└ 显示简洁模式 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 视觉数据与回看 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 风险事件截图留存 <span class="tag tag-P2">P2</span><br>
+└ 事件时间轴回看 <span class="tag tag-P2">P2</span><br>
+└ 事件导出分享 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 视觉系统状态管理 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 摄像头遮挡检测 <span class="tag tag-P1">P1</span><br>
+└ 低照度能力降级提示 <span class="tag tag-P1">P1</span><br>
+└ 算法异常自动重启 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">语音交互</span>
+<div class="l1"><div class="l1-title">语音交互 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 语音唤醒与会话控制 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 默认唤醒词识别 <span class="tag tag-P0">P0</span><br>
+└ 自定义唤醒词设置 <span class="tag tag-P2">P2</span><br>
+└ 按键唤醒语音 <span class="tag tag-P1">P1</span><br>
+└ 会话超时与退出 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 导航语音控制 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 目的地发起导航 <span class="tag tag-P0">P0</span><br>
+└ 回家/回公司快捷导航 <span class="tag tag-P1">P1</span><br>
+└ 路线切换与重规划 <span class="tag tag-P1">P1</span><br>
+└ 取消导航 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 骑行常用语音指令 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 来电接听与拒接 <span class="tag tag-P1">P1</span><br>
+└ 音乐播放控制 <span class="tag tag-P1">P1</span><br>
+└ 音量调节 <span class="tag tag-P1">P1</span><br>
+└ 查询设备电量 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 语音反馈与异常处理 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 识别结果确认反馈 <span class="tag tag-P1">P1</span><br>
+└ 未识别与重试引导 <span class="tag tag-P1">P1</span><br>
+└ 离线/断网降级提示 <span class="tag tag-P2">P2</span><br>
+└ 高风险指令二次确认 <span class="tag tag-P0">P0</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 语音设置与数据管理 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 语音功能总开关 <span class="tag tag-P1">P1</span><br>
+└ 语言与播报音色设置 <span class="tag tag-P2">P2</span><br>
+└ 语音日志上传与问题反馈 <span class="tag tag-P2">P2</span><br>
+└ 个性化指令学习 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">实体按键交互</span>
+<div class="l1"><div class="l1-title">实体按键交互 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 基础按键输入 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 单击/双击/长按识别 <span class="tag tag-P0">P0</span><br>
+└ 按键去抖与误触过滤 <span class="tag tag-P0">P0</span><br>
+└ 按键事件优先级仲裁 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 骑行核心控制 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 导航快捷操作 <span class="tag tag-P1">P1</span><br>
+└ 音乐快捷操作 <span class="tag tag-P1">P1</span><br>
+└ 来电接听与挂断 <span class="tag tag-P1">P1</span><br>
+└ 语音助手唤起键 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 安全与锁定机制 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 骑行中高风险操作锁定 <span class="tag tag-P0">P0</span><br>
+└ 按键锁定/解锁 <span class="tag tag-P1">P1</span><br>
+└ 紧急功能保留通道 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 反馈与可学习性 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 按键操作即时反馈 <span class="tag tag-P1">P1</span><br>
+└ 按键功能自定义映射 <span class="tag tag-P2">P2</span><br>
+└ 新手按键教程 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 系统与维护能力 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 按键自检与故障上报 <span class="tag tag-P2">P2</span><br>
+└ 按键配置恢复默认 <span class="tag tag-P2">P2</span><br>
+└ 按键宏与场景联动 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">多模态交互</span>
+<div class="l1"><div class="l1-title">多模态交互 <span class="tag tag-P1">P1</span></div>
+<div class="l2"><div class="l2-title">├ 交互输入融合 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 多源输入事件总线 <span class="tag tag-P0">P0</span><br>
+└ 输入优先级仲裁 <span class="tag tag-P0">P0</span><br>
+└ 骑行中误触抑制 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 传感器感知交互 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 头部姿态识别 <span class="tag tag-P1">P1</span><br>
+└ 心率异常提醒联动 <span class="tag tag-P1">P1</span><br>
+└ 急加速急减速状态触发 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 多通道反馈编排 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 安全事件分级反馈 <span class="tag tag-P0">P0</span><br>
+└ 导航与来电冲突降噪 <span class="tag tag-P1">P1</span><br>
+└ 夜间低干扰反馈模式 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 场景化快捷交互 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 导航快捷确认/取消 <span class="tag tag-P1">P1</span><br>
+└ 来电快速接听/拒接 <span class="tag tag-P1">P1</span><br>
+└ 音乐与消息快捷处理 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 个性化与学习 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 交互偏好配置中心 <span class="tag tag-P2">P2</span><br>
+└ 常用指令快捷短语 <span class="tag tag-P2">P2</span><br>
+└ 自适应反馈强度学习 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 可靠性与安全机制 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 语音失效按键兜底 <span class="tag tag-P0">P0</span><br>
+└ 断连与重连状态提示 <span class="tag tag-P1">P1</span><br>
+└ 交互日志与问题回溯 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">身份认证</span>
+<div class="l1"><div class="l1-title">身份认证 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 账号注册与登录 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 手机号注册 <span class="tag tag-P0">P0</span><br>
+└ 验证码登录 <span class="tag tag-P0">P0</span><br>
+└ 密码登录[补充] <span class="tag tag-P1">P1</span><br>
+└ 第三方账号登录[补充] <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 游客模式 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 游客进入 <span class="tag tag-P1">P1</span><br>
+└ 游客权限范围 <span class="tag tag-P1">P1</span><br>
+└ 游客转正式账号 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 账号安全 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 短信验证码防刷 <span class="tag tag-P0">P0</span><br>
+└ 异地登录提醒[补充] <span class="tag tag-P2">P2</span><br>
+└ 登录设备管理[补充] <span class="tag tag-P2">P2</span><br>
+└ 退出登录 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 账号找回与绑定 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 忘记密码重置[补充] <span class="tag tag-P1">P1</span><br>
+└ 手机号换绑[补充] <span class="tag tag-P2">P2</span><br>
+└ 账号注销 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 认证状态与跨端同步 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 登录态持久化 <span class="tag tag-P1">P1</span><br>
+└ 设备绑定前登录校验 <span class="tag tag-P0">P0</span><br>
+└ 云端数据归属同步[补充] <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">氛围灯交互</span>
+<div class="l1"><div class="l1-title">氛围灯交互 <span class="tag tag-P1">P1</span></div>
+<div class="l2"><div class="l2-title">├ 基础状态灯效 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 开关机灯效 <span class="tag tag-P0">P0</span><br>
+└ 连接状态灯效 <span class="tag tag-P1">P1</span><br>
+└ 电量与充电灯效 <span class="tag tag-P0">P0</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 安全预警灯效 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 碰撞/盲区预警灯效 <span class="tag tag-P0">P0</span><br>
+└ 急减速警示灯效 <span class="tag tag-P1">P1</span><br>
+└ 故障异常警示灯效 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 骑行意图表达 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 转向提示灯效 <span class="tag tag-P1">P1</span><br>
+└ 临停/双闪灯效 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 消息与事件提醒 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 来电提醒灯效 <span class="tag tag-P2">P2</span><br>
+└ 消息/组队提醒灯效 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 个性化与配置管理 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 亮度与主题配置 <span class="tag tag-P1">P1</span><br>
+└ 场景开关与免打扰 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 联动与系统策略 <span class="tag tag-P3">P3</span></div>
+<div class="l3">└ 灯效优先级仲裁 <span class="tag tag-P3">P3</span><br>
+└ 环境自适应亮度 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">用户学习</span>
+<div class="l1"><div class="l1-title">用户学习 <span class="tag tag-P1">P1</span></div>
+<div class="l2"><div class="l2-title">├ 首次使用引导 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 新手欢迎与功能概览 <span class="tag tag-P1">P1</span><br>
+└ 权限申请引导 <span class="tag tag-P0">P0</span><br>
+└ HUD校准教学 <span class="tag tag-P0">P0</span><br>
+└ 基础交互试用 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 功能教程中心 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 图文教程 <span class="tag tag-P1">P1</span><br>
+└ 短视频教程 <span class="tag tag-P2">P2</span><br>
+└ 按场景分类学习 <span class="tag tag-P1">P1</span><br>
+└ 功能搜索 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 任务式学习 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 基础上手任务 <span class="tag tag-P1">P1</span><br>
+└ 语音指令练习 <span class="tag tag-P1">P1</span><br>
+└ 骑行前安全检查清单 <span class="tag tag-P0">P0</span><br>
+└ 进阶功能挑战 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 情境化提示学习 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 首次功能触发提示 <span class="tag tag-P1">P1</span><br>
+└ 误操作纠正提示 <span class="tag tag-P1">P1</span><br>
+└ 骑行中安全学习限制 <span class="tag tag-P0">P0</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 学习记录与反馈 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 学习进度记录 <span class="tag tag-P2">P2</span><br>
+└ 教程有用性反馈 <span class="tag tag-P2">P2</span><br>
+└ 学习成就激励 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">设备互联</span>
+<div class="l1"><div class="l1-title">设备互联 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 头盔与手机互联 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 蓝牙扫描与发现 <span class="tag tag-P0">P0</span><br>
+└ 蓝牙配对与绑定 <span class="tag tag-P0">P0</span><br>
+└ 自动重连 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 连接状态与异常处理 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 连接状态显示 <span class="tag tag-P1">P1</span><br>
+└ 断连告警与恢复引导 <span class="tag tag-P1">P1</span><br>
+└ 连接日志导出 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ Wi-Fi传输 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ Wi-Fi直连建立 <span class="tag tag-P1">P1</span><br>
+└ 媒体文件传输 <span class="tag tag-P1">P1</span><br>
+└ 传输队列与进度管理 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 第三方设备绑定 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 胎压计绑定 <span class="tag tag-P1">P1</span><br>
+└ 摩托车设备绑定 <span class="tag tag-P2">P2</span><br>
+└ 运动相机绑定 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 多设备管理 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 已绑定设备列表 <span class="tag tag-P2">P2</span><br>
+└ 主设备切换 <span class="tag tag-P2">P2</span><br>
+└ 设备解绑与恢复出厂解绑 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 互联安全与权限 <span class="tag tag-P3">P3</span></div>
+<div class="l3">└ 配对确认码校验 <span class="tag tag-P3">P3</span><br>
+└ 传输权限授权 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">设备配对流程</span>
+<div class="l1"><div class="l1-title">设备配对流程 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 首次配对引导 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 首次开机自动进入配对态 <span class="tag tag-P0">P0</span><br>
+└ 配对步骤可视化提示 <span class="tag tag-P1">P1</span><br>
+└ 配对前权限与条件检查 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 头盔与手机配对 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 蓝牙设备发现与列表展示 <span class="tag tag-P0">P0</span><br>
+└ 配对码确认与安全绑定 <span class="tag tag-P0">P0</span><br>
+└ 绑定成功后的主从关系建立 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 自动回连与多设备管理 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 主手机自动回连 <span class="tag tag-P1">P1</span><br>
+└ 已绑定设备列表与优先级设置 <span class="tag tag-P1">P1</span><br>
+└ 语音触发回连 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 第三方设备绑定 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 胎压计绑定 <span class="tag tag-P1">P1</span><br>
+└ 运动相机绑定 <span class="tag tag-P2">P2</span><br>
+└ 车辆设备绑定 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 配对状态反馈 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ HUD状态提示 <span class="tag tag-P1">P1</span><br>
+└ 灯光状态编码 <span class="tag tag-P1">P1</span><br>
+└ 语音播报结果反馈 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 异常处理与恢复 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 配对超时与重试 <span class="tag tag-P0">P0</span><br>
+└ 低电量禁止配对 <span class="tag tag-P0">P0</span><br>
+└ 解绑与恢复出厂配对信息 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">产品介绍</span>
+<div class="l1"><div class="l1-title">产品介绍 <span class="tag tag-P1">P1</span></div>
+<div class="l2"><div class="l2-title">├ 品牌与产品概览 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 品牌故事展示 <span class="tag tag-P2">P2</span><br>
+└ 核心卖点摘要 <span class="tag tag-P1">P1</span><br>
+└ 适用场景说明 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 功能说明 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ HUD功能说明 <span class="tag tag-P0">P0</span><br>
+└ 交互方式说明 <span class="tag tag-P1">P1</span><br>
+└ 安全能力说明 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 使用指南 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 首次使用流程说明 <span class="tag tag-P0">P0</span><br>
+└ 佩戴与安全须知 <span class="tag tag-P0">P0</span><br>
+└ 日常操作教程 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 规格与兼容信息 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 硬件规格参数 <span class="tag tag-P1">P1</span><br>
+└ 手机与系统兼容性 <span class="tag tag-P1">P1</span><br>
+└ 第三方设备兼容清单 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 购买与服务信息 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 版本与套装说明 <span class="tag tag-P2">P2</span><br>
+└ 保修与售后政策 <span class="tag tag-P1">P1</span><br>
+└ 常见问题FAQ <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+<div class="module"><span class="module-title">AI语音助手</span>
+<div class="l1"><div class="l1-title">AI语音助手 <span class="tag tag-P0">P0</span></div>
+<div class="l2"><div class="l2-title">├ 语音唤醒与会话控制 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 默认唤醒词识别 <span class="tag tag-P0">P0</span><br>
+└ 按键一键唤醒 <span class="tag tag-P1">P1</span><br>
+└ 打断与结束会话 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 骑行核心指令 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 导航语音控制 <span class="tag tag-P0">P0</span><br>
+└ 来电语音控制 <span class="tag tag-P0">P0</span><br>
+└ 音乐语音控制 <span class="tag tag-P1">P1</span><br>
+└ 消息语音播报与处理 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 语义理解与容错 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 同义词意图识别 <span class="tag tag-P1">P1</span><br>
+└ 模糊指令澄清 <span class="tag tag-P1">P1</span><br>
+└ 未识别指令兜底反馈 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 反馈与播报机制 <span class="tag tag-P1">P1</span></div>
+<div class="l3">└ 监听状态HUD提示 <span class="tag tag-P1">P1</span><br>
+└ 执行结果语音反馈 <span class="tag tag-P1">P1</span><br>
+└ 失败原因与重试提示 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 设置与个性化 <span class="tag tag-P2">P2</span></div>
+<div class="l3">└ 语音播报开关与音量设置 <span class="tag tag-P1">P1</span><br>
+└ 唤醒词开关 <span class="tag tag-P2">P2</span><br>
+└ 语言与口音适配设置 <span class="tag tag-P2">P2</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 异常与降级处理 <span class="tag tag-P0">P0</span></div>
+<div class="l3">└ 离线基础指令可用 <span class="tag tag-P0">P0</span><br>
+└ 连接异常提示 <span class="tag tag-P1">P1</span><br>
+└ 麦克风故障检测 <span class="tag tag-P1">P1</span><br>
+</div>
+</div>
+<div class="l2"><div class="l2-title">├ 数据与隐私管理 <span class="tag tag-P3">P3</span></div>
+<div class="l3">└ 语音数据授权管理 <span class="tag tag-P2">P2</span><br>
+└ 本地日志清除 <span class="tag tag-P3">P3</span><br>
+└ 隐私说明展示 <span class="tag tag-P3">P3</span><br>
+</div>
+</div>
+</div>
+</div>
+</body></html>

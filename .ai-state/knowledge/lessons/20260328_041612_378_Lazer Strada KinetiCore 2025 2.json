@@ -1,0 +1,16 @@
+{
+  "title": "Lazer Strada KinetiCore 2025 2026 smart cycling he",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- **Lazer Strada KinetiCore 2025/2026（推测型前瞻产品）**：核心卖点为 **KinetiCore一体化旋转冲击防护** + **集成LED转向/刹车灯** + **App连接**。尚未正式发布，现有信息多为基于Lazer技术路线的推测。\n- **KinetiCore**：在EPS内直接做“可控形变区”，相较外挂式旋转防护方案，更利于**减重、通风、为电子件预留空间**，适合智能头盔电子集成。\n- **LED系统**：后部高亮广角LED，可能扩展侧/前辅助灯；参考竞品 **Lumos Ultra亮度约60流明**。支持**转向灯、自动刹车灯、环境光自适应亮度**。\n- **电子架构推测**：  \n  - MCU：**Nordic nRF52** / **STM32L** 级低功耗方案  \n  - 传感器：**6轴IMU**（如 **Bosch BMI270 / ST LSM6DSOX**）  \n  - 定位：**u-blox M8** 级GNSS  \n  - 电池：**LiPo 500–1500mAh**，竞品常见 **1100mAh、4–10h续航**  \n  - 通讯：**BLE**，可选 **ANT+**  \n  - 充电：**USB-C**，可能演进到**磁吸充电**  \n  - 防护：建议 **IPX4+**\n\n**研发趋势**\n- 智能骑行头盔从“被动防护”转向“**主动可见性+事故感知+连接服务**”。\n- **传感器融合**成为标配方向：IMU用于**刹车识别、摔车检测、手势识别**；结合GPS实现**SOS定位**。\n- **轻量化结构与电子集成协同设计**是关键，避免因加电池/PCB破坏重心、通风和佩戴舒适性。\n- **骨传导音频、语音控制、OTA升级**有望成为高端款差异化点。\n\n**可借鉴设",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Lazer",
+    "KinetiCore",
+    "cycling helmet",
+    "LED",
+    "teardown",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

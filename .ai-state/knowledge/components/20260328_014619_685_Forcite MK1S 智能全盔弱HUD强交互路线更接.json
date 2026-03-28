@@ -1,0 +1,17 @@
+{
+  "title": "Forcite MK1S 智能全盔：弱HUD/强交互路线更接近量产现实",
+  "domain": "components",
+  "content": "报告将 Forcite MK1S 视为 V1 最可借鉴路线：其采用“弱显示、强交互、强记录”策略，而非大视场 AR HUD。公开价格约 USD 1,000–1,300，重量常见约 1.55–1.75kg（不确定），说明在 ECE 22.06 约束下，控制显示复杂度比追求沉浸式 HUD 更有利于认证、量产和舒适性。对产品决策的直接含义是：V1 应优先做提示型 HUD、音频和记录能力，而不是重 AR 平台。",
+  "source": "deep_research:auto_20260328_1",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Forcite MK1S",
+    "HUD",
+    "量产",
+    "ECE 22.06",
+    "竞品对标",
+    "deep_research",
+    "auto_20260328_1"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Cardo Freecom 4X（对比 Cardo Packtalk Pro / Cardo Beyond GTS）",
+  "domain": "competitors",
+  "content": "以下为基于公开已知信息与行业常识整理的 **Cardo Freecom 4X 技术档案**，并重点对比 **Cardo Packtalk Pro** 与 **Cardo Beyond GTS**。  \n说明：你给的“2026预测版 Freecom 4X”内容里混入了大量推测，我下面会**严格区分“已知/公开可确认”与“推测/不采信”**。对价格与客户也会注明“官方建议零售价/市场成交价区间/已知合作对象”。\n\n---\n\n# Cardo Freecom 4X 技术档案\n\n## 1. 产品定位\n\n**Cardo Freecom 4X** 是 Cardo 面向中高端用户的 **蓝牙对讲耳机**，核心卖点是：\n\n- 4人蓝牙对讲\n- JBL 40mm 扬声器\n- Live Intercom 自动重连\n- 自然语音控制\n- IP67 防护\n- 相比 Packtalk 系列更便宜、更简单、更适合小队伍\n\n它不是 DMC/Mesh 机型，**本质上是高规格蓝牙机**，适合：\n\n- 单人骑行\n- 骑手+乘客\n- 2~4人固定小队\n- 不需要大规模组网的用户\n\n---\n\n## 2. 核心参数总表\n\n> 以下参数以 Freecom 4X 已知公开规格为主，个别市场包装差异可能存在。\n\n| 项目 | Cardo Freecom 4X |\n|---|---|\n| 产品类型 | 摩托车蓝牙通讯系统 |\n| 通讯技术 | Bluetooth 5.2 |\n| 对讲方式 | 蓝牙对讲（Live Intercom） |\n| 最大对讲人数 | 4人 |\n| 最大对讲距离 | 最远约 1.2 km（理想条件） |\n| 扬声器 | JBL 40mm 高清扬声器 |\n| 音频特性 | JBL 调音、自动音量、音乐串流 |\n| 麦克风 | 有线麦/杆麦，视头盔类型安装 |\n| 语音控制 | 支持 Natural Voice Operation |\n| 电池续航 | 最长约 13 小时通话 |\n| 快充 | 充电约20分钟，通话约2小时 |\n| 充电接口 | USB-C |\n| 防护等级 | IP67 |\n| OTA升级 | 支持 |\n| 手机App | Cardo Connect |\n| 通用配对 | 支持与其他品牌蓝牙设备配对 |\n| 安装方式 | 夹具/粘贴底座 |\n| 适配头盔 | 全盔、揭面盔、部分3/4盔 |\n\n---\n\n## 3. 详细技术规格\n\n## 3.1 通讯系统\n\n### 蓝牙版本\n- **Bluetooth 5.2**\n\n### 对讲能力\n- **最多 4 人**\n- 官方主打 **Live Intercom**\n  - 这是 Cardo 在蓝牙机型上的自动重连方案\n  - 某个成员暂时掉线后，恢复到范围内可自动重连\n- 最大距离通常标称：\n  - **两台之间最远约 1.2 公",
+  "source": "completeness_check",
+  "created_at": "2026-03-28",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "medium"
+}

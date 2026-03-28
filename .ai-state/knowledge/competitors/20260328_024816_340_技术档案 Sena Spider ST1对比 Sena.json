@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Sena Spider ST1（对比 Sena S1 / R2 EVO / Impulse / Stryker）",
+  "domain": "competitors",
+  "content": "以下是 **Sena Spider ST1 技术档案**，并重点与 **Sena S1 / R2 EVO / Impulse / Stryker** 做对比。  \n我会尽量把“已确认参数”和“需要谨慎看待的信息”分开写，避免把不同产品线（头盔一体机 vs 外挂对讲）混淆。\n\n---\n\n# 一、结论先看\n\n## Spider ST1 是什么\n**Sena Spider ST1** 是一款 **外挂式摩托车 Mesh 对讲机**，定位偏 **入门到中端**，核心卖点是：\n\n- **支持 Sena Mesh Intercom**\n- **价格比高端旗舰低很多**\n- **保留 Sena 经典 Jog Dial 大旋钮，戴手套操作友好**\n- **适合“主要用 Mesh 群骑、对音质和高端功能要求没那么极致”的用户**\n\n它不是一体式智能头盔，而是安装在普通摩托车头盔上的通信模块。\n\n---\n\n## 和 S1 / R2 EVO / Impulse / Stryker 的一句话区别\n\n- **Spider ST1**：外挂式对讲机，主打 **Mesh + 性价比**\n- **S1 / R2 EVO**：**自行车/骑行头盔一体式**通信产品，不是摩托车外挂对讲的直接同类\n- **Impulse / Stryker**：**摩托车全盔一体式智能头盔**，定位明显更高，集成度更高，通常音频/舒适性/整合度更强，但价格也高很多\n\n---\n\n# 二、Sena Spider ST1 技术档案\n\n## 1) 产品定位\n- **产品类型**：摩托车头盔外挂式通信系统\n- **品牌**：Sena\n- **系列定位**：Spider 系列中的入门/中端 Mesh 机型\n- **典型用途**：\n  - 摩托车群骑对讲\n  - 手机通话\n  - GPS 导航播报\n  - 音乐播放\n- **核心通信方式**：\n  - **Mesh Intercom**\n  - 蓝牙连接手机/导航设备\n\n---\n\n## 2) 关键规格参数\n\n> 注：不同地区页面、不同年份固件/包装版本，个别数字可能有轻微差异。以下以 Sena 公开资料和常见零售规格为主。\n\n### 通信与连接\n- **Mesh Intercom**：支持\n- **Mesh 模式**：\n  - **Open Mesh**：开放频道模式\n  - **Group Mesh**：私有群组模式\n- **Open Mesh 频道数**：通常为 **9 个频道**\n- **Group Mesh 容量**：通常 **最多 24 名骑手**\n- **Open Mesh 参与人数**：官方常表述为“几乎无限/virtually limitless”\n- **蓝牙版本**：**Bluetooth 5.2**\n- **蓝牙用途**：\n  - 手机配对\n  - 音乐",
+  "source": "completeness_check",
+  "created_at": "2026-03-28",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "0328_Sena Impulse 全盔：集成 Mesh 2.0 与 Harman Kardon 音频的摩托车智能头盔",
+  "domain": "competitors",
+  "content": "Sena Impulse 是面向摩托车骑行的全盔（full-face motorcycle helmet），不是自行车头盔；若检索结果混入 bicycle helmet，应明确排除。现有来源显示，Sena Impulse 为 Sena 品牌集成式智能全盔，首款产品于 2022 年发布，2022 年末至 2023 年上市，定位为 Sena 高端旗舰之一，核心卖点是内置 Sena Mesh 2.0 对讲与 Harman Kardon 音频系统。已公开参数包括：复合玻璃纤维壳体、DOT/ECE 认证、内置遮阳镜、支持 Pinlock 防雾片、蓝牙 5.0、Open Mesh/Group Mesh 双模式。Mesh 2.0 方面，单节点间典型最远 2 km，6 名骑手中继时总距离可扩展到 8 km；Open Mesh 号称“几乎无限”人数，Group Mesh 最多 24 人。续航在来源中未完全一致，但一组结果给出蓝牙约 12 小时、Mesh 约 8 小时，这与 Sena 50 系列公开口径接近，可作为参考而非最终确认。Harman Kardon 部分，来源一致认为其提供定制扬声器与麦克风，并通过 Sena App 提供 EQ 调节，重点提升高速风噪环境下的人声清晰度。具体芯片型号、麦克风型号、扬声器单元规格、降噪分贝数等，原始搜索结果未提供，因此不能补充为 IMX678、BES2800、QCC5181、42dB 等具体数据。价格方面，原始搜索结果明确未给出官方 MSRP，也没有 ￥200-300 或 $15-25/颗 这类可对应整机或器件的可靠报价，因此仍需标注缺失；只能确认其处于 Sena 高端集成全盔价位带。关于 teardown、BOM 与 supplier，三组来源都明确指出：不存在“2026 Sena Impulse”公开拆解，也没有可验证的物料清单或供应商名单。最多只",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Sena",
+    "Impulse",
+    "全盔",
+    "摩托车头盔",
+    "Mesh 2.0",
+    "Harman Kardon",
+    "蓝牙5.0",
+    "竞品分析",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

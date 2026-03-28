@@ -1,0 +1,16 @@
+{
+  "title": "Lumos Kickstart 2026 smart cycling helmet teardown",
+  "domain": "lessons",
+  "content": "**产品/技术要点**\n- **Lumos Kickstart 2026（假设性拆解）**：智能骑行头盔，核心模块含**后置转向灯/刹车灯、前灯、BLE SoC、电池包、IMU、环境光传感器、USB-C充电**。\n- **后灯/转向灯**：预测采用**Micro-LED或COB LED阵列**，支持**动态箭头转向**、**自动刹车灯**；目标**180°以上广角可视**、亮度“数百流明”级，并可基于环境光自动调光。\n- **电池包**：**LiPo 1200–2000mAh**，1–2节电芯；带**BMS**（过充/过放/过流/温度保护、Fuel Gauge、均衡）；**USB-C**充电，可能支持**USB PD快充**；续航预测**10–18小时**。\n- **主控/蓝牙**：候选SoC包括**Nordic nRF5340、ESP32-C3/H2、Silicon Labs、Dialog**；支持**Bluetooth 5.x/潜在6.0**、OTA、低功耗、远距连接，潜在支持**Mesh**与**LE Audio**。\n- **传感器融合**：**IMU（加速度计+陀螺仪）**用于减速识别/刹车灯；环境光传感器用于自适应亮度；预测可扩展**手势识别、触觉反馈**。\n\n**研发趋势**\n- 智能头盔从“被动防护”转向“**主动可见性+联网交互**”：灯控、转向、刹车提醒、App/遥控器联动。\n- **高集成低功耗**是主线：BLE SoC整合MCU+无线，配合高效LED与BMS提升续航。\n- **AI/ML边缘化**：未来SoC可能集成轻量AI加速，用于**跌落检测、姿态分析**。\n- **结构轻量化+防护升级**：PC/复材外壳、**多密度EPS**、**MIPS**、更高**IPX6–IPX7**防水。\n\n**可借鉴设计/商业模式**\n- 以**遥控器+B​​LE头",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Lumos",
+    "smart cycling helmet",
+    "teardown",
+    "lighting",
+    "BLE",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,16 @@
+{
+  "title": "Quin Smart Helmet system 2025 retrofit crash senso",
+  "domain": "lessons",
+  "content": "**产品/技术提炼**\n- **Quin 2025 retrofit crash sensor module**：当前**未正式发布**，属基于Quin现有能力的推测性方案；Quin现阶段以**头盔厂商集成**和**Sena通信系统集成**为主。\n- 预期核心功能：**碰撞检测+自动SOS**，通过**BLE连接手机**，调用手机网络发送**GPS定位**与紧急联系人通知；支持**30–60秒误报取消倒计时**。\n- 预期硬件方案：**6轴/9轴传感器融合**（3轴加速度计+3轴陀螺仪，可选磁力计/气压计）；候选器件包括 **Bosch BMI270/BMI323、ST LSM6DSOX**。参数示例：加速度量程 **±2g~±16g**，陀螺仪 **±250~±2000 dps**，采样率可达**kHz级**。\n- 主控/通信：低功耗 **ARM Cortex-M MCU**，候选 **Nordic nRF52（集成BLE）/ STM32L / NXP Kinetis**；蓝牙建议 **5.0+**。\n- 电源/BMS：**LiPo 100–300mAh**，续航目标**数天到一周**；USB-C充电；PMIC候选 **TI BQ系列/ADI ADP系列**，需支持过充/过放/过流保护。\n- 结构设计：目标尺寸约 **50×30×15mm**、重量 **<50g**；外壳 **PC/ABS**；安装可用 **3M VHB**、卡扣或磁吸底座；防护目标 **IPX6/IPX7**；LED状态指示+物理按键。\n\n**技术趋势/行业变化**\n- 从“整盔智能化”向**后装模块化**延伸，降低用户换盔门槛，扩大存量头盔市场。\n- **AI/ML碰撞识别**成为差异化重点，核心是降低“跌落/颠簸/急刹”误报。\n- 智能头盔生态正与**通信系统、App、云端紧急服务**深度绑定，而非",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Quin",
+    "竞品",
+    "传感器模块",
+    "摩托车",
+    "自行车",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

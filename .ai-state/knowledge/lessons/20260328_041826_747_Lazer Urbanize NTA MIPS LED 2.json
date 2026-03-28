@@ -1,0 +1,16 @@
+{
+  "title": "Lazer Urbanize NTA MIPS LED 2.0 2026 smart helmet ",
+  "domain": "lessons",
+  "content": "**产品/技术要点（多为预测性信息）**\n- **Lazer Urbanize NTA MIPS LED 2.0 2026**：定位高端城市/e-bike智能头盔，核心卖点为 **NTA 8776 + MIPS + 集成LED 2.0 + 防盗 + 智能面罩**。\n- **照明系统**：前灯预测 **500–800 lm**，后灯 **150–300 lm**；支持**环境光自适应调光**、**IMU自动刹车灯**、转向灯（头部动作/把控器/App联动）。\n- **防盗/定位**：集成**多频GNSS（GPS/GLONASS/Galileo/北斗）** + **LTE‑M/NB‑IoT**，支持移动告警、声光报警、App追踪、数字锁定/远程禁用。\n- **智能面罩**：光致变色、防雾、防刮；高端版本可能加入**边缘AR投影HUD**。\n- **连接/音频**：**蓝牙5.3/5.4 LE Audio**、可选Wi‑Fi；骨传导扬声器、多麦降噪、语音助手。\n- **主控/传感器**：低功耗 **ARM Cortex‑M MCU**，可能带AI加速；传感器含**6/9轴IMU、环境光、震动**。\n\n**标准法规/安全**\n- **NTA 8776**：面向电助力车头盔，较 **EN 1078** 要求更高；文中给出冲击测试速度参考：**EN 1078 5.42 m/s**，**NTA 8776约6.2 m/s**，且覆盖区域更大。\n- **MIPS**：强调斜向冲击下的旋转力防护，预测采用更轻薄的 **MIPS Integra/Air**。\n\n**可借鉴研发方向**\n- **传感器融合**：IMU + 环境光 + GNSS + 蜂窝，实现刹车识别、自动灯控、防盗追踪、碰撞报警。\n- **高集成电子架构**：主PCB集成 **蓝牙/蜂窝/GNSS/PMIC/存储**，适合智能头盔",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-28",
+  "tags": [
+    "Lazer",
+    "NTA8776",
+    "urban helmet",
+    "visor",
+    "teardown",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

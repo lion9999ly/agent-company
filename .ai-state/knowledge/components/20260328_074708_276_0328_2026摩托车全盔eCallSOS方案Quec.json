@@ -1,0 +1,20 @@
+{
+  "title": "0328_2026摩托车全盔eCall/SOS方案：Quectel Cat-1+GNSS 与 Nordic nRF9160的取舍",
+  "domain": "components",
+  "content": "面向智能摩托车全盔（非自行车头盔），2026年可行的eCall/SOS碰撞检测架构主要有两条：一是Quectel蜂窝+GNSS分立方案，二是Nordic nRF9160高度集成方案。需先明确差异：来源中提到的可穿戴/骑行场景有部分适用于自行车头盔，但摩托车全盔必须额外满足ECE 22.06整盔安全、抗冲击后电子件固定、风噪下语音呼叫、雨淋振动与更高车速误报控制，这与自行车头盔产品约束明显不同。",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "摩托车全盔",
+    "eCall",
+    "SOS",
+    "Quectel",
+    "Nordic nRF9160",
+    "GNSS",
+    "LTE Cat-1",
+    "ECE 22.06",
+    "认证",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

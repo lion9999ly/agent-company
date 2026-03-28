@@ -1,0 +1,13 @@
+{
+  "title": "[技术档案] Sena 50S（对比 Sena S1 / R2 EVO / Impulse / Stryker）",
+  "domain": "competitors",
+  "content": "以下是 **Sena 50S 技术档案**，并重点与 **Sena S1 / R2 EVO / Impulse / Stryker** 做对比。  \n先给结论：**50S 是“高端独立式摩托车通讯器”，核心优势是可装在任意兼容头盔上、Mesh 2.0 强、操作成熟；核心劣势是它不是一体化头盔，安装与外观不如 Impulse / Stryker，且与自行车头盔 S1 / R2 EVO 不属于同一使用场景。**\n\n---\n\n# 1. 产品定位总览\n\n| 型号 | 产品类型 | 主要场景 | 核心通信 | 典型用户 |\n|---|---|---|---|---|\n| **Sena 50S** | 独立式摩托车蓝牙/Mesh 对讲器 | 摩托车通勤、摩旅、组队骑行 | Mesh 2.0 + Bluetooth 5.0 | 已有头盔、想升级通信系统的摩托车用户 |\n| **Sena Impulse** | 集成通信的模块化摩托车头盔 | 摩旅、通勤、长途、需要揭面便利 | Mesh 2.0 + Bluetooth | 想一步到位买“头盔+对讲”的用户 |\n| **Sena Stryker** | 集成通信的全盔摩托车头盔 | 高速、长途、偏重静音与防护 | Mesh 2.0 + Bluetooth | 偏好全盔、一体化方案的用户 |\n| **Sena S1** | 集成通信的自行车头盔 | 公路车/城市骑行 | 蓝牙对讲 | 自行车骑友、城市通勤 |\n| **Sena R2 EVO** | 集成通信的自行车头盔 | 公路车/休闲骑行 | 蓝牙对讲 | 预算更敏感的自行车用户 |\n\n---\n\n# 2. Sena 50S 技术档案\n\n## 2.1 基本信息\n- **产品名称**：Sena 50S\n- **类别**：摩托车头盔外置式通信系统\n- **定位**：Sena 50 系列旗舰之一\n- **适配方式**：夹装/粘贴安装到大多数摩托车头盔\n- **主要卖点**：\n  - Mesh 2.0\n  - Harman Kardon 音频系统（后期版本/套件）\n  - 旋钮 + 按键操作\n  - 快充\n  - 适合多人组队骑行\n\n## 2.2 关键参数\n\n> 注：不同销售批次、地区套装可能略有差异，以下为主流公开规格汇总。\n\n| 项目 | Sena 50S |\n|---|---|\n| 无线协议 | **Bluetooth 5.0** |\n| Mesh | **Mesh 2.0** |\n| 蓝牙对讲人数 | 最多 **4 人** |\n| 蓝牙对讲距离 | 最远约 **2 km**（开阔环境） |\n| Open Mesh | 几乎不限人数，**9 个频道** |\n| Group Mesh | 最多约 **24 人** |\n| Mesh 最远距离 | 最远约 **8 km**（通常需至",
+  "source": "completeness_check",
+  "created_at": "2026-03-28",
+  "tags": [
+    "knowledge_graph",
+    "gap_fill",
+    "auto_completeness"
+  ],
+  "confidence": "medium"
+}

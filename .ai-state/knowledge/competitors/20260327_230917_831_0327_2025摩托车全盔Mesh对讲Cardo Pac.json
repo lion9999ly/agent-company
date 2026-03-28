@@ -1,0 +1,21 @@
+{
+  "title": "0327_2025摩托车全盔Mesh对讲：Cardo Packtalk Edge（DMC）对比Sena旗舰Mesh方案",
+  "domain": "competitors",
+  "content": "面向智能摩托车全盔集成时，2025年高端Mesh对讲核心仍是Cardo与Sena两条路线。需先明确：本条目仅讨论摩托车头盔对讲，不适用于自行车头盔；自行车产品常用开放式耳机、低风噪场景和更小电池，安装空间、法规与降噪需求均不同。现有来源中“ Sena 60S ”并无可靠落地型号信息，更像对Sena下一代旗舰的泛称，因此可核实对标对象应是Sena 50S/50R/C系列，而非已确认上市的“60S”。\n\nCardo Packtalk Edge是当前DMC代表型号，公开参数集中且一致：蓝牙5.2，支持DMC动态Mesh，最多15名骑手，全双工通话；单机标称距离1.6 km，6人以上群组总跨度可达8 km；主打JBL 40 mm扬声器、OTA无线升级与磁吸Air Mount底座。市场零售价通常在US$389.95单机、US$699.95双机附近，供应商为以色列Cardo Systems。对全盔厂商而言，Edge优势在于连接恢复快、老用户口碑稳定、磁吸底座利于模块化装配，但其生态更封闭，深度兼容主要围绕Cardo自家DMC网络。\n\nSena侧，来源把“Mesh 3.0”与50系列并提，但存在表述混用：已被广泛验证的是50S/50R采用Mesh Intercom平台，含Open Mesh与Group Mesh两种模式；Group Mesh最多24人，Open Mesh为多频道开放网络，单机标称距离约2 km，6人以上总跨度同样可到8 km。50S常见零售价约US$339-359，50R约US$329-349，供应商为美国/韩国背景的Sena Technologies。音频部分通常配Harman Kardon调音单元。对OEM全盔集成的价值在于群组规模更大、开放频道更适合车队活动，但初始建组逻辑比Cardo更复杂。\n\n三份来源的主要矛盾点有两处：第一，Sena技术被称为“Mesh 3.0",
+  "source": "daily_deep",
+  "created_at": "2026-03-27",
+  "tags": [
+    "摩托车全盔",
+    "Mesh对讲",
+    "Cardo",
+    "Packtalk Edge",
+    "Sena 50S",
+    "DMC",
+    "Group Mesh",
+    "Open Mesh",
+    "JBL",
+    "Harman Kardon",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}

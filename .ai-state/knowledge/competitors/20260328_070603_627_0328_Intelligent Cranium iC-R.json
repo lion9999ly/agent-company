@@ -1,0 +1,21 @@
+{
+  "title": "0328_Intelligent Cranium iC-R：摩托车智能全盔的HUD/后视摄像头/ADAS专利与供应链研判",
+  "domain": "competitors",
+  "content": "Intelligent Cranium iC-R 是面向摩托车骑行的智能全盔，不是自行车头盔；若检索中出现 bicycle helmet 方案，应明确排除，因为其法规、冲击标准与高速风噪/供电设计完全不同。现有来源显示，iC-R 在 2015-2017 年间以概念产品受到关注，核心卖点包括后视摄像头、HUD、蓝牙与潜在 ADAS；但“2025 iC-R”这一说法与公开信息存在冲突：一组来源认为 2025 年仍可作为调研对象，另一组则明确指出项目 Kickstarter 未成功、官网已失效，产品大概率停滞或废弃，因此 2025 并无可验证量产型号，这是当前最大矛盾点。\n\n专利层面，公开检索可关联到 Intelligent Cranium LLC 的系统集成类专利，而非底层传感器专利，典型包括 US10064402B2（Modular helmet system）、US10463091B2（Helmet with integrated display system）和 US10806132B2（Helmet with integrated display system and method of use）。这说明其知识产权重点在“把摄像头、显示、电池、交互集成进全盔”的结构与使用方法，而不是自研 CMOS 或微显示芯片。\n\n供应链方面，来源没有给出 iC-R 的已签约量产供应商，因此只能做高可信度推断：后视/ADAS 摄像头的图像传感器潜在供应商通常会是 Sony、OmniVision、onsemi、Samsung 这类厂商；HUD 微显示与光学链路则可能来自 Kopin、Vuzix、Lumus 等生态。需要强调，这些是“潜在技术/器件来源”，不是已证实的 iC-R 直接供货名单。价格方面，来源同样未提供 iC-R 最终零售价，仅能确认其曾以高端智能摩托车头盔定位进入市场讨论，",
+  "source": "daily_deep",
+  "created_at": "2026-03-28",
+  "tags": [
+    "摩托车全盔",
+    "智能头盔",
+    "HUD",
+    "后视摄像头",
+    "ADAS",
+    "Intelligent Cranium",
+    "iC-R",
+    "专利",
+    "供应链",
+    "竞品分析",
+    "dynamic"
+  ],
+  "confidence": "medium"
+}
