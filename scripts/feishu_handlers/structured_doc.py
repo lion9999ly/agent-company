@@ -1590,6 +1590,30 @@ def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None,
     """生成交互式 HTML PRD(可搜索、可筛选、可展开)"""
     import json as _json
 
+    # Bug 2 修复: 使用 anchor 的 placement 进行分流
+    if anchor:
+        module_placement = _build_module_placement(anchor)
+    else:
+        module_placement = {}
+
+    hud_features = []
+    app_features = []
+    for item in items:
+        module_name = item.get("module", "")
+        target = module_placement.get(module_name, '')
+        if not target:
+            # 兜底推断
+            if any(kw in module_name for kw in ['Tab', 'App-', '商城', '社区', '通知', '用户成就', '新手', '身份', '权限', '部件识别', '消息同步', '多语言', '恢复出厂']):
+                target = 'app'
+            else:
+                target = 'hud'
+        if target == 'hud':
+            hud_features.append(item)
+        else:
+            app_features.append(item)
+
+    print(f"[HTML] HUD 功能: {len(hud_features)}, App 功能: {len(app_features)}")
+
     # 准备数据(压缩后减少 HTML体积)
     # B5: 添加用户旅程和 AI 场景数据
     user_journeys = _generate_user_journeys(anchor) if anchor else []
@@ -1597,6 +1621,8 @@ def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None,
 
     all_data = {
         "features": _truncate_list(items),
+        "hud_features": _truncate_list(hud_features),
+        "app_features": _truncate_list(app_features),
         "state_scenarios": _truncate_list(extra_sheets.get("state", [])) if extra_sheets else [],
         "voice_commands": _truncate_list(extra_sheets.get("voice", [])) if extra_sheets else [],
         "button_mapping": _truncate_list(extra_sheets.get("button", [])) if extra_sheets else [],
@@ -1783,14 +1809,9 @@ const TAB_CONFIG = [
     {{id: "ai_scenarios", label: "主动AI场景", type: "table"}},
 ];
 
-// 分组功能清单
-const HUD_MODULES = new Set(["导航","来电","音乐","消息","AI语音助手","Ai语音助手",
-    "简易","简易路线","路线","主动安全预警提示","组队","摄像状态","胎温胎压",
-    "开机动画","速度","设备状态","显示队友位置","头盔HUD",
-    "实体按键交互","氛围灯交互","AI功能","语音交互","视觉交互","多模态交互"]);
-
-const hudFeatures = DATA.features.filter(f => HUD_MODULES.has(f.module));
-const appFeatures = DATA.features.filter(f => !HUD_MODULES.has(f.module));
+// Bug 2 修复: 使用服务端预分流的数据，替代静态过滤
+const hudFeatures = DATA.hud_features || [];
+const appFeatures = DATA.app_features || [];
 
 function buildTabs() {{
     const bar = document.getElementById('tabBar');
@@ -2547,8 +2568,12 @@ def _gen_dev_tasks(items: List[Dict], gateway) -> List[Dict]:
             f"- 简单UI展示: 0.5-1天\n"
             f"- 标准功能开发: 1-3天\n"
             f"- 复杂交互/算法: 3-5天\n"
-            f"- 跨端联调: 2-3天\n"
-            f"- 每个 L2 功能拆成 1-3 个开发任务\n\n"
+            f"- 跨端联调: 2-3天\n\n"
+            f"【Bug 5 修复: 任务数量要求】\n"
+            f"- 每个 L2 功能拆成 2-4 个开发任务（不是1-3个）\n"
+            f"- 每个 L1 模块至少生成 5 条开发任务\n"
+            f"- 优先级为 P0/P1 的功能必须拆成 3 个以上任务\n"
+            f"- 总任务数应接近功能总数的 1.5-2 倍\n\n"
             f"功能列表:\n{features_text}\n\n"
             f"只输出 JSON."
         )
@@ -3009,7 +3034,7 @@ def _gen_one_with_gemini(feature: Dict, gateway) -> List[Dict]:
 
 
 def _gen_one_minimal(feature: Dict, gateway) -> List[Dict]:
-    """精简模式：最短 prompt，但仍包含知识库数据点"""
+    """精简模式：最短 prompt，但仍包含知识库数据点和 anchor 核心功能点"""
     name = feature["name"]
     module = feature["module"]
 
@@ -3026,8 +3051,19 @@ def _gen_one_minimal(feature: Dict, gateway) -> List[Dict]:
     data_points = _extract_data_points(kb_raw)
     kb_line = f"\n参考数据：{data_points}\n" if data_points else ""
 
+    # Bug 4 Layer 2: 精简模式也注入 anchor 的必须功能点
+    anchor_hint = ""
+    anchor_obj = get_cached_anchor()
+    if anchor_obj:
+        hint = _get_anchor_sub_features(anchor_obj, name)
+        if hint:
+            # 只取功能名（去掉括号里的说明），限 200 字
+            names_only = re.sub(r'（[^）]+）|\([^)]+\)', '', hint)
+            names_only = names_only[:200]
+            anchor_hint = f"\n必须包含：{names_only}"
+
     prompt = (
-        f"生成「{name}」功能清单。模块：{module}。{kb_line}"
+        f"生成「{name}」功能清单。模块：{module}。{kb_line}{anchor_hint}"
         f"输出JSON数组：module/level(L1,L2,L3)/parent/name/priority/interaction/description/acceptance/dependencies/note。"
         f"至少3个L2每个2个L3。只输出JSON。"
     )
@@ -3830,6 +3866,21 @@ def try_structured_doc_fast_track(
                             print(f"[SmartIterate] 检测到全量重生成指令，跳过 Compare，使用纯新版")
                             prev_items = []
                             prev_by_module = {}
+
+                        # Bug 3 修复: 对旧版数据归一化
+                        if prev_by_module and anchor:
+                            normalize_map = anchor.get('module_normalize', {})
+                            normalize_map.update(MODULE_NAME_NORMALIZE)
+                            normalized_prev = {}
+                            for mod_name, rows in prev_by_module.items():
+                                normalized_name = normalize_map.get(mod_name, mod_name)
+                                for row in rows:
+                                    row['module'] = normalize_map.get(row.get('module', ''), row.get('module', ''))
+                                if normalized_name not in normalized_prev:
+                                    normalized_prev[normalized_name] = []
+                                normalized_prev[normalized_name].extend(rows)
+                            prev_by_module = normalized_prev
+                            print(f"[Normalize-Pre] 旧版数据归一化: {len(prev_by_module)} 模块")
                     except Exception as e:
                         print(f"[SmartIterate] 读取上一版失败: {e}")
 
@@ -3861,6 +3912,28 @@ def try_structured_doc_fast_track(
                 如果不需要拆解，返回 [module_name] 本身（单元素列表）。
                 """
                 reasons = []
+
+                # Bug 4 Layer 1: depth:deep 的模块强制拆解
+                is_deep = False
+                if anchor:
+                    for section in ['hud_modules', 'app_modules', 'cross_cutting']:
+                        for mod in anchor.get(section, []):
+                            if mod.get('name') == module_name and mod.get('depth') == 'deep':
+                                is_deep = True
+                                reasons.append('depth_deep')
+                                break
+                        if is_deep:
+                            break
+
+                if is_deep:
+                    # 深度模块直接拆解，不需要其他信号
+                    default_splits = [
+                        f"{module_name}-核心功能",
+                        f"{module_name}-交互与状态",
+                        f"{module_name}-异常与边界",
+                    ]
+                    print(f"  [AutoSplit] {module_name} 是深度模块，主动拆解")
+                    return default_splits
 
                 # 信号1: 知识库数据点超过 700 字 → 说明涉及面广
                 if len(kb_data_points) >= 700:
