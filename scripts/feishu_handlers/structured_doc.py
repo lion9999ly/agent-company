@@ -2363,7 +2363,7 @@ if (firstBody) firstBody.classList.add('open');
     let mermaidReady = false;
     function tryInit() {{
         if (typeof mermaid !== 'undefined' && !mermaidReady) {{
-            mermaid.initialize({{ startOnLoad: false, theme: 'neutral', flowchart: {{ useMaxWidth: true }} }});
+            mermaid.initialize({{ startOnLoad: false, theme: 'neutral', securityLevel: 'loose', flowchart: {{ useMaxWidth: true, htmlLabels: false }} }});
             mermaidReady = true;
         }}
     }}
