@@ -79,14 +79,29 @@ def _merge_anchor_with_prompt(anchor: dict, prompt_modules: list) -> list:
             if name:
                 anchor_names.add(name)
 
-    # 合并: anchor 全部保留 + prompt 中 anchor 没有的新增
+    # 获取归一化映射
+    normalize_map = anchor.get('module_normalize', {}) if anchor else {}
+
+    # 合并: anchor 全部保留 + prompt 中 anchor 没有的新增（先归一化）
     prompt_set = set(prompt_modules)
     new_from_prompt = prompt_set - anchor_names
 
-    merged = list(anchor_names) + list(new_from_prompt)
+    # Round 8 Fix 4: 对 prompt 新增模块名应用归一化映射
+    normalized_new = set()
+    for name in new_from_prompt:
+        normalized_name = normalize_map.get(name, name)
+        if normalized_name not in anchor_names:
+            normalized_new.add(normalized_name)
+        # 如果归一化后已在 anchor 中，说明是变体名，不需要新增
 
     if new_from_prompt:
+        # 打印归一化前后的差异（调试用）
+        normalized_diff = [n for n in new_from_prompt if normalize_map.get(n, n) != n]
+        if normalized_diff:
+            print(f"[Anchor] 归一化变体名: {normalized_diff}")
         print(f"[Anchor] Prompt 新增 {len(new_from_prompt)} 个模块: {new_from_prompt}")
+
+    merged = list(anchor_names) + list(normalized_new)
 
     print(f"[Anchor] 合并后共 {len(merged)} 个模块")
     return merged
@@ -2040,7 +2055,7 @@ function switchTab(id) {{
     // 如果是流程图/旅程图 tab，触发 Mermaid 渲染
     if (id === 'flow' || id === 'journey') {{
         if (typeof mermaid !== 'undefined') {{
-            setTimeout(() => mermaid.run(), 100);
+            setTimeout(() => mermaid.init(undefined, '.mermaid'), 100);
         }}
     }}
 }}
@@ -2154,7 +2169,8 @@ function toggleFlowBody(idx) {{
         body.style.display = 'block';
         toggle.textContent = '折叠';
         if (typeof mermaid !== 'undefined') {{
-            try {{ mermaid.run({{ nodes: body.querySelectorAll('.mermaid') }}); }} catch(e) {{}}
+            const mermaidDivs = body.querySelectorAll('.mermaid:not([data-processed])');
+            if (mermaidDivs.length > 0) {{ try {{ mermaid.init(undefined, mermaidDivs); }} catch(e) {{}} }}
         }}
     }} else {{
         body.style.display = 'none';
@@ -2357,20 +2373,20 @@ if (firstBody) firstBody.classList.add('open');
 </script>
 
 <!-- Mermaid.js for flow diagrams -->
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
 <script>
 (function() {{
     let mermaidReady = false;
     function tryInit() {{
         if (typeof mermaid !== 'undefined' && !mermaidReady) {{
-            mermaid.initialize({{ startOnLoad: false, theme: 'neutral', securityLevel: 'loose', flowchart: {{ useMaxWidth: true, htmlLabels: false }} }});
+            mermaid.initialize({{ startOnLoad: false, theme: 'neutral', securityLevel: 'loose', flowchart: {{ useMaxWidth: true }} }});
             mermaidReady = true;
         }}
     }}
     function renderFlows() {{
         tryInit();
         if (mermaidReady) {{
-            try {{ mermaid.run({{ querySelector: '.mermaid' }}); }} catch(e) {{ console.error(e); }}
+            try {{ mermaid.init(undefined, '.mermaid'); }} catch(e) {{ console.error(e); }}
         }} else {{
             document.querySelectorAll('.mermaid').forEach(el => {{
                 el.style.cssText = 'background:#f7f7f7;padding:16px;font-family:monospace;font-size:12px;white-space:pre-wrap;border:1px solid #ddd;border-radius:4px;';
@@ -2388,7 +2404,10 @@ if (firstBody) firstBody.classList.add('open');
         if (body.style.display === 'none') {{
             body.style.display = 'block';
             tog.textContent = 'Hide';
-            if (mermaidReady) {{ try {{ mermaid.run({{ nodes: body.querySelectorAll('.mermaid') }}); }} catch(e) {{}} }}
+            if (mermaidReady) {{
+                const mermaidDivs = body.querySelectorAll('.mermaid:not([data-processed])');
+                if (mermaidDivs.length > 0) {{ try {{ mermaid.init(undefined, mermaidDivs); }} catch(e) {{}} }}
+            }}
         }} else {{
             body.style.display = 'none';
             tog.textContent = 'Show';
@@ -4499,8 +4518,37 @@ def try_structured_doc_fast_track(
                     if finish_reason == "length":
                         usage = result.get("usage", {})
                         print(f"  [TruncGuard] ⚠️ {name} 输出被截断 (tokens={usage.get('completion_tokens', '?')})")
-                        # 不再重试，标记为需要 AutoSplit
-                        return []  # 返回空会触发上层的 AutoSplit 重试
+                        # Round 8 Fix 6: 先尝试精简 prompt 重试，失败才走 AutoSplit
+                        print(f"  [TruncGuard] {name}: 尝试精简模式重试...")
+                        minimal_prompt = (
+                            f"生成「{name}」功能清单。模块：{name}。\n"
+                            f"输出 JSON 数组：module/level(L1,L2,L3)/parent/name/priority/interaction/description/acceptance/dependencies/note。\n"
+                            f"至少 2 个 L2，每个 L2 至少 2 个 L3。只输出 JSON。"
+                        )
+                        try:
+                            minimal_result = gw.call_azure_openai(
+                                "cpo", minimal_prompt, "只输出JSON。",
+                                "structured_doc_minimal", max_tokens=4096
+                            )
+                            if minimal_result.get("success"):
+                                minimal_resp = minimal_result.get("response", "")
+                                json_match = re.search(r'\[[\s\S]*\]', minimal_resp)
+                                if json_match:
+                                    try:
+                                        cleaned_json = _clean_json_text(json_match.group())
+                                        items = json.loads(cleaned_json)
+                                        if items and len(items) > 1:
+                                            for item in items:
+                                                item["note"] = (item.get("note", "") + " [精简重试]").strip()
+                                            print(f"  [TruncGuard] {name}: 精简重试成功 → {len(items)} 条")
+                                            return items
+                                    except Exception as e:
+                                        print(f"  [TruncGuard] {name}: 精简重试 JSON 解析失败: {e}")
+                        except Exception as e:
+                            print(f"  [TruncGuard] {name}: 精简重试失败: {e}")
+                        # 精简重试失败，返回空触发 AutoSplit
+                        print(f"  [TruncGuard] {name}: 精简重试失败，触发 AutoSplit")
+                        return []
 
                     response = result.get("response", "")
                     if len(response) < 50:
