@@ -2550,9 +2550,9 @@ def _gen_user_stories(items: List[Dict], gateway) -> List[Dict]:
                     pass
         return []
 
-    # 4 路并行处理所有批次
+    # 8 路并行处理所有批次
     all_stories = []
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    with ThreadPoolExecutor(max_workers=8) as pool:
         futs = {pool.submit(_gen_batch, b): i for i, b in enumerate(batches)}
         for f in as_completed(futs):
             all_stories.extend(f.result())
@@ -2605,9 +2605,9 @@ def _gen_test_cases(items: List[Dict], gateway) -> List[Dict]:
                     pass
         return []
 
-    # 4 路并行处理所有批次
+    # 8 路并行处理所有批次
     all_cases = []
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    with ThreadPoolExecutor(max_workers=8) as pool:
         futs = {pool.submit(_gen_batch, b): i for i, b in enumerate(batches)}
         for f in as_completed(futs):
             all_cases.extend(f.result())
@@ -2723,9 +2723,9 @@ def _gen_dev_tasks(items: List[Dict], gateway) -> List[Dict]:
                     pass
         return []
 
-    # 4 路并行处理所有批次
+    # 8 路并行处理所有批次
     all_tasks = []
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    with ThreadPoolExecutor(max_workers=8) as pool:
         futs = {pool.submit(_gen_batch, b): i for i, b in enumerate(batches)}
         for f in as_completed(futs):
             all_tasks.extend(f.result())
@@ -4392,6 +4392,19 @@ def try_structured_doc_fast_track(
             # 并行生成
             done_count = 0
 
+            # ===== Speed 2: 提前启动独立 Sheet（不依赖功能表）=====
+            independent_futures = {}
+            independent_pool = ThreadPoolExecutor(max_workers=6)
+            independent_futures['light'] = independent_pool.submit(_gen_sheet6_light_effects, gw)
+            independent_futures['button'] = independent_pool.submit(_gen_sheet5_button_mapping, gw)
+            independent_futures['voice'] = independent_pool.submit(_gen_sheet4_voice_commands, gw, kb_context)
+            independent_futures['voice_nav'] = independent_pool.submit(_gen_sheet7_voice_nav_scenarios, gw)
+            if anchor and anchor.get('flow_diagrams'):
+                independent_futures['flow'] = independent_pool.submit(_generate_flow_diagrams, anchor, gw)
+            if anchor and anchor.get('user_journeys'):
+                independent_futures['journey'] = independent_pool.submit(_generate_user_journeys, anchor)
+            print(f"[FastTrack] 已提前启动 {len(independent_futures)} 个独立 Sheet")
+
             # Bug B: 复杂模块自动拆解
             def _gen_one_with_split(feature: Dict) -> tuple:
                 """生成单个模块，复杂模块自动拆解"""
@@ -4558,7 +4571,7 @@ def try_structured_doc_fast_track(
 
                     return name, None
 
-                with ThreadPoolExecutor(max_workers=4) as pool:
+                with ThreadPoolExecutor(max_workers=8) as pool:
                     futs = {pool.submit(_retry_one, f): f for f in failed_features}
                     for future in as_completed(futs):
                         feature = futs[future]
@@ -4758,10 +4771,23 @@ def try_structured_doc_fast_track(
             early_mindmap_result = {"mm": None, "svg": None}  # 预初始化供非完整模式使用
 
             if is_full_spec:
-                print("[FastTrack] 完整规格书模式:并行生成所有额外 Sheet")
+                print("[FastTrack] 完整规格书模式:收集提前启动的 Sheet + 生成依赖型 Sheet")
                 _send_reply("📋 功能清单已完成,正在生成状态对策/语音/按键/灯效/导航场景/用户故事/测试用例/页面映射/开发任务...")
 
                 extra_sheets = {}
+
+                # 收集提前启动的独立 Sheet 结果
+                for name, future in independent_futures.items():
+                    try:
+                        data = future.result(timeout=300)
+                        extra_sheets[name] = data
+                        print(f"  ✅ {name} (提前): {len(data) if data else 0} 条")
+                    except Exception as e:
+                        print(f"  ❌ {name} (提前): {e}")
+                        extra_sheets[name] = []
+
+                # 关闭独立 Sheet 线程池
+                independent_pool.shutdown(wait=False)
 
                 # 脑图早期生成线程(与第一批并行)
                 # early_mindmap_result 已在外层初始化
@@ -4777,13 +4803,14 @@ def try_structured_doc_fast_track(
                 mindmap_thread = threading.Thread(target=_early_gen_mindmap, daemon=True)
                 mindmap_thread.start()
 
-                # 第一批:4 路并行(不依赖功能清单) + 脑图线程已在后台运行
-                with ThreadPoolExecutor(max_workers=4) as pool:
+                # 只启动依赖功能表的 Sheet: state, user_stories, test_cases, page_mapping, dev_tasks
+                with ThreadPoolExecutor(max_workers=5) as pool:
                     futures = {
                         pool.submit(_gen_sheet3_state_scenarios, gw, kb_context, goal_text): "state",
-                        pool.submit(_gen_sheet4_voice_commands, gw, kb_context): "voice",
-                        pool.submit(_gen_sheet5_button_mapping, gw): "button",
-                        pool.submit(_gen_sheet6_light_effects, gw): "light",
+                        pool.submit(_gen_user_stories, items, gw): "user_stories",
+                        pool.submit(_gen_test_cases, items, gw): "test_cases",
+                        pool.submit(_gen_page_mapping, items, gw): "page_mapping",
+                        pool.submit(_gen_dev_tasks, items, gw): "dev_tasks",
                     }
                     for future in as_completed(futures):
                         name = futures[future]
@@ -4793,23 +4820,6 @@ def try_structured_doc_fast_track(
 
                 # 等待脑图早期生成完成
                 mindmap_thread.join(timeout=30)
-
-                # 第二批:5 路并行(依赖功能清单 items)
-                with ThreadPoolExecutor(max_workers=5) as pool:
-                    futures2 = {
-                        pool.submit(_gen_sheet7_voice_nav_scenarios, gw): "voice_nav",
-                        pool.submit(_gen_user_stories, items, gw): "user_stories",
-                        pool.submit(_gen_test_cases, items, gw): "test_cases",
-                        pool.submit(_gen_page_mapping, items, gw): "page_mapping",
-                        pool.submit(_gen_dev_tasks, items, gw): "dev_tasks",
-                    }
-                    if anchor and anchor.get('flow_diagrams'):
-                        futures2[pool.submit(_generate_flow_diagrams, anchor, gw)] = "flow_diagrams"
-                    for future in as_completed(futures2):
-                        name = futures2[future]
-                        data = future.result()
-                        extra_sheets[name] = data
-                        print(f"  ✅ {name}: {len(data)} 条")
 
                 total_extra = sum(len(v) for v in extra_sheets.values())
                 print(f"[FastTrack] 额外 Sheet 完成: {total_extra} 条")
