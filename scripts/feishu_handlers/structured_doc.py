@@ -238,7 +238,6 @@ def _normalize_all_rows(rows: list, normalize_map: dict, anchor: dict = None) ->
         groups[row.get('module', 'unknown')].append(row)
 
     deduped = []
-    MAX_PER_MODULE = 50
 
     for module_name, group_rows in groups.items():
         # 按 name (L3功能名) 去重
@@ -256,33 +255,11 @@ def _normalize_all_rows(rows: list, normalize_map: dict, anchor: dict = None) ->
 
         deduped_list = list(seen.values())
 
-        # Bug 3: 模块行数封顶普遍化 - 对所有模块普遍执行截断
-        # 检查模块是否有自定义上限（从 anchor 的 notes 中读取）
-        custom_max = MAX_PER_MODULE
-        if anchor:
-            for section in ['hud_modules', 'app_modules', 'cross_cutting']:
-                for mod in anchor.get(section, []):
-                    if mod.get('name') == module_name:
-                        notes = str(mod.get('notes', ''))
-                        max_match = re.search(r'最多\s*(\d+)\s*条', notes)
-                        if max_match:
-                            custom_max = int(max_match.group(1))
-                        break
+        # 修复 2: 去掉硬截断，只去重。超 80 行警告
+        if len(deduped_list) > 80:
+            print(f"  [Normalize] ⚠️ {module_name}: {len(deduped_list)} 条，内容较多，建议人工审视")
 
-        cap = min(custom_max, MAX_PER_MODULE)
-
-        if len(deduped_list) > cap:
-            def _row_quality(r):
-                acc = str(r.get('acceptance', ''))
-                nums = len(re.findall(r'\d+', acc))
-                level_bonus = {'L1': 100, 'L2': 50, 'L3': 0}.get(r.get('level', 'L3'), 0)
-                return level_bonus + nums * 3 + len(acc)
-
-            deduped_list.sort(key=_row_quality, reverse=True)
-            trimmed = len(deduped_list) - cap
-            deduped_list = deduped_list[:cap]
-            print(f"  [Normalize] {module_name}: 截断 {trimmed} 条 (保留质量最高的 {cap} 条)")
-
+        # 不再截断，直接添加
         deduped.extend(deduped_list)
 
     original = len(rows)
@@ -296,13 +273,18 @@ def _normalize_all_rows(rows: list, normalize_map: dict, anchor: dict = None) ->
 # ===== 强制归一化函数 — 确保写入时名称正确 =====
 def _force_normalize(rows: list, normalize_map: dict) -> list:
     """强制重命名 module 字段，确保写入时名称正确"""
+    # 确保 normalize_map 的 key 都是 stripped string
+    clean_map = {str(k).strip(): str(v).strip() for k, v in normalize_map.items()}
+
     renamed_count = 0
     for row in rows:
-        for key in ['module', 'L1功能', 'l1_module', 'name']:
-            val = row.get(key, '')
-            if val and str(val) in normalize_map:
-                row[key] = normalize_map[str(val)]
+        # 检查所有可能包含模块名的字段
+        for key in ['module', 'L1功能', 'l1', 'name']:
+            val = str(row.get(key, '')).strip()
+            if val and val in clean_map:
+                row[key] = clean_map[val]
                 renamed_count += 1
+
     if renamed_count:
         print(f"[ForceNormalize] 重命名 {renamed_count} 个字段")
     return rows
@@ -1962,19 +1944,24 @@ function buildTabs() {{
         el.dataset.target = tab.id;
 
         let count = 0;
-        if (tab.id === 'hud') count = hudFeatures.length;
-        else if (tab.id === 'app') count = appFeatures.length;
-        else if (tab.id === 'state') count = DATA.state_scenarios.length;
-        else if (tab.id === 'voice') count = DATA.voice_commands.length;
-        else if (tab.id === 'button') count = DATA.button_mapping.length;
-        else if (tab.id === 'light') count = DATA.light_effects.length;
-        else if (tab.id === 'voice_nav') count = DATA.voice_nav.length;
-        else if (tab.id === 'user_stories') count = (DATA.user_stories || []).length;
-        else if (tab.id === 'test_cases') count = (DATA.test_cases || []).length;
-        else if (tab.id === 'page_mapping') count = (DATA.page_mapping || []).length;
-        else if (tab.id === 'dev_tasks') count = (DATA.dev_tasks || []).length;
-        else if (tab.id === 'journey') count = (DATA.user_journeys || []).length;
-        else if (tab.id === 'ai_scenarios') count = (DATA.ai_scenarios || []).length;
+        try {{
+            if (tab.id === 'hud') count = (hudFeatures || []).length;
+            else if (tab.id === 'app') count = (appFeatures || []).length;
+            else if (tab.id === 'state') count = (DATA.state_scenarios || []).length;
+            else if (tab.id === 'voice') count = (DATA.voice_commands || []).length;
+            else if (tab.id === 'button') count = (DATA.button_mapping || []).length;
+            else if (tab.id === 'light') count = (DATA.light_effects || []).length;
+            else if (tab.id === 'voice_nav') count = (DATA.voice_nav || []).length;
+            else if (tab.id === 'user_stories') count = (DATA.user_stories || []).length;
+            else if (tab.id === 'test_cases') count = (DATA.test_cases || []).length;
+            else if (tab.id === 'page_mapping') count = (DATA.page_mapping || []).length;
+            else if (tab.id === 'dev_tasks') count = (DATA.dev_tasks || []).length;
+            else if (tab.id === 'journey') count = (DATA.user_journeys || []).length;
+            else if (tab.id === 'ai_scenarios') count = (DATA.ai_scenarios || []).length;
+            else if (tab.id === 'flow') count = (DATA.flow_diagrams || []).length;
+        }} catch(e) {{
+            console.error('[PRD] count 计算错误:', tab.id, e);
+        }}
 
         el.innerHTML = `${{tab.label}}<span class="badge">${{count}}</span>`;
         el.onclick = () => switchTab(tab.id);
@@ -1985,13 +1972,20 @@ function buildTabs() {{
         section.className = 'tab-content' + (idx === 0 ? ' active' : '');
         section.dataset.tab = tab.id;
 
-        if (tab.type === 'tree') {{
-            section.innerHTML = buildTreeView(tab.id === 'hud' ? hudFeatures : appFeatures, tab.id === 'hud');
-        }} else if (tab.type === 'flow') {{
-            section.innerHTML = buildFlowView();
-        }} else {{
-            section.innerHTML = buildTableView(tab.id);
+        // ★★★ 关键修复：try-catch 包裹，防止单个 Tab 出错导致整页空白 ★★★
+        try {{
+            if (tab.type === 'tree') {{
+                section.innerHTML = buildTreeView(tab.id === 'hud' ? hudFeatures : appFeatures, tab.id === 'hud');
+            }} else if (tab.type === 'flow') {{
+                section.innerHTML = buildFlowView();
+            }} else {{
+                section.innerHTML = buildTableView(tab.id);
+            }}
+        }} catch(e) {{
+            console.error('[PRD] Tab "' + tab.id + '" 渲染错误:', e);
+            section.innerHTML = '<div style="padding:40px;text-align:center;color:#c00;">⚠️ 渲染错误: ' + (e.message || e) + '<br>请按 F12 查看 Console 详情</div>';
         }}
+
         content.appendChild(section);
     }});
 }}
