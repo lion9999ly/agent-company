@@ -272,18 +272,24 @@ def _normalize_all_rows(rows: list, normalize_map: dict, anchor: dict = None) ->
 
 # ===== 强制归一化函数 — 确保写入时名称正确 =====
 def _force_normalize(rows: list, normalize_map: dict) -> list:
-    """强制重命名 module 字段，确保写入时名称正确"""
-    # 确保 normalize_map 的 key 都是 stripped string
-    clean_map = {str(k).strip(): str(v).strip() for k, v in normalize_map.items()}
+    """强制重命名 module 字段，使用模糊匹配（去除空格）"""
+    # 构建清洁的映射表（strip + 统一空格）
+    clean_map = {}
+    for k, v in normalize_map.items():
+        clean_key = str(k).strip().replace(' ', '')
+        clean_map[clean_key] = str(v).strip()
 
     renamed_count = 0
     for row in rows:
         # 检查所有可能包含模块名的字段
         for key in ['module', 'L1功能', 'l1', 'name']:
             val = str(row.get(key, '')).strip()
-            if val and val in clean_map:
-                row[key] = clean_map[val]
-                renamed_count += 1
+            clean_val = val.replace(' ', '')
+            if clean_val and clean_val in clean_map:
+                new_val = clean_map[clean_val]
+                if new_val != val:
+                    row[key] = new_val
+                    renamed_count += 1
 
     if renamed_count:
         print(f"[ForceNormalize] 重命名 {renamed_count} 个字段")
@@ -2077,7 +2083,7 @@ function cleanMermaid(code) {{
     code = code.replace(/：/g, ':');
     code = code.replace(/"/g, '"').replace(/"/g, '"');
     if (!code.trim().startsWith('graph') && !code.trim().startsWith('flowchart')) {{
-        code = 'graph TD\n' + code;
+        code = 'graph TD\\n' + code;
     }}
     return code;
 }}
@@ -2760,7 +2766,7 @@ def _gen_dev_tasks(items: List[Dict], gateway) -> List[Dict]:
             f"- 每个 L2 功能拆成 2-4 个开发任务（不是1-3个）\n"
             f"- 每个 L1 模块至少生成 5 条开发任务\n"
             f"- 优先级为 P0/P1 的功能必须拆成 3 个以上任务\n"
-            f"- 总任务数应接近功能总数的 1.5-2 倍\n\n"
+            f"- 总任务数目标：不少于 700 条（功能总数约 500，开发任务应为 1.5 倍）\n\n"
             f"功能列表:\n{features_text}\n\n"
             f"只输出 JSON."
         )
@@ -2787,6 +2793,45 @@ def _gen_dev_tasks(items: List[Dict], gateway) -> List[Dict]:
 
     print(f"[DevTask] 生成 {len(all_tasks)} 条开发任务")
     return all_tasks
+
+
+def _cross_validate(all_rows: List[Dict], sheets_data: Dict) -> List[str]:
+    """跨 Sheet 交叉验证，检查覆盖率和一致性"""
+    issues = []
+
+    # 1. P0 功能 → 测试用例覆盖
+    p0_names = set(r.get('name', '') for r in all_rows if r.get('priority') == 'P0')
+    tc_names = set()
+    for tc in sheets_data.get('test_cases', []):
+        tc_names.add(str(tc.get('功能名', tc.get('feature', tc.get('name', '')))))
+    uncovered_p0 = p0_names - tc_names
+    if uncovered_p0 and len(uncovered_p0) > 3:
+        issues.append(f"[P0-测试] {len(uncovered_p0)} 个 P0 功能无测试用例覆盖")
+
+    # 2. 功能模块 → 开发任务对应
+    all_modules = set(r.get('module', r.get('L1功能', r.get('name', ''))) for r in all_rows if r.get('level') in ('L1', 'L2'))
+    dev_modules = set()
+    for dt in sheets_data.get('dev_tasks', []):
+        dev_modules.add(str(dt.get('功能名', dt.get('feature', dt.get('module', ''))))
+    uncovered_modules = all_modules - dev_modules
+    if uncovered_modules and len(uncovered_modules) > 5:
+        issues.append(f"[功能-开发] {len(uncovered_modules)} 个模块无开发任务")
+
+    # 3. 用户故事 vs 功能数量检查
+    story_count = len(sheets_data.get('user_stories', []))
+    feature_count = len(all_rows)
+    ratio = story_count / max(feature_count, 1)
+    if ratio < 0.2:
+        issues.append(f"[用户故事] 仅 {story_count} 条（功能的 {ratio:.0%}），偏少")
+
+    if issues:
+        print(f"\n[CrossValidate] 发现 {len(issues)} 个交叉问题:")
+        for issue in issues:
+            print(f"  ! {issue}")
+    else:
+        print(f"\n[CrossValidate] ✅ 跨 Sheet 一致性检查通过")
+
+    return issues
 
 
 def _extract_data_points(kb_text: str, max_points: int = 15) -> str:
@@ -3296,8 +3341,17 @@ def _calibrate_priorities(all_items: List[Dict]) -> None:
 
     print(f"[Calibrate] P0 占比 {p0_ratio:.0%} > 25%,开始校准...")
 
-    CORE_MODULES = {"导航", "主动安全预警提示", "AI语音助手", "Ai语音助手",
-                    "组队", "设备状态", "摄像状态"}
+    # Round 5 Fix 6: 豁免核心安全模块（不参与降级）
+    P0_EXEMPT_MODULES = {
+        '主动安全预警提示',  # 安全核心
+        'SOS与紧急救援',     # 安全核心
+        '佩戴检测与电源管理', # 硬件安全
+        '导航',              # 产品核心卖点
+        '组队',              # 产品核心卖点
+        '设备状态',           # 基础功能
+        'AI语音助手', 'Ai语音助手',  # AI 核心
+        '摄像状态',          # 核心功能
+    }
 
     p0_l3 = [i for i in all_items if i.get("priority") == "P0" and i.get("level") == "L3"]
     target_demote = p0_count - int(total * 0.25)
@@ -3306,7 +3360,7 @@ def _calibrate_priorities(all_items: List[Dict]) -> None:
     for item in p0_l3:
         if demoted >= target_demote:
             break
-        if item.get("module", "") not in CORE_MODULES:
+        if item.get("module", "") not in P0_EXEMPT_MODULES:
             item["priority"] = "P1"
             demoted += 1
 
@@ -4560,49 +4614,42 @@ def try_structured_doc_fast_track(
                 def _retry_one(feature):
                     name = feature["name"]
 
-                    # ===== Fix 1 Step 2: 截断失败检测，走拆解路径 =====
-                    # 先判断是否因输出过长截断失败（检查知识库复杂度）
-                    kb_dp_len = 0
-                    try:
-                        from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt
-                        entries = search_knowledge(name, limit=5)
-                        if entries:
-                            kb_raw = format_knowledge_for_prompt(entries)[:3000]
-                            kb_dp = _extract_data_points(kb_raw)
-                            kb_dp_len = len(kb_dp)
-                    except Exception:
-                        pass
+                    # ===== Round 5 Fix 3: 失败先拆分再精简 =====
+                    # 策略 0：先尝试 AutoSplit（保留完整上下文，比精简质量高）
+                    print(f"  [Retry] {name}: 拆分重试...")
+                    sub_modules = [
+                        f"{name}-核心功能",
+                        f"{name}-交互与状态",
+                        f"{name}-异常与边界",
+                    ]
+                    sub_results = []
+                    split_success = True
+                    for sub_name in sub_modules:
+                        sub_feature = {"name": sub_name, "module": sub_name}
+                        try:
+                            # 使用 _gen_one（完整 prompt），而非精简
+                            sub_batch = _gen_one(sub_feature)
+                            if sub_batch and len(sub_batch) > 1:
+                                sub_results.append(sub_batch)
+                                print(f"    [Split] {sub_name}: +{len(sub_batch)} 条")
+                            else:
+                                print(f"    [Split] {sub_name}: 空结果")
+                                split_success = False
+                        except Exception as e:
+                            print(f"    [Split] {sub_name} 失败: {e}")
+                            split_success = False
 
-                    # 复杂模块：KB数据点长或之前已判定为复杂 → 走拆解
-                    prev_rows = prev_by_module.get(name, [])
-                    if kb_dp_len >= 700 or (prev_rows and len(prev_rows) >= 25):
-                        print(f"  [Retry] {name}: 因复杂/截断失败，改用拆解模式 (KB={kb_dp_len}字)")
-                        sub_modules = [
-                            f"{name}-核心功能",
-                            f"{name}-交互与状态",
-                            f"{name}-异常与边界",
-                        ]
-                        sub_results = []
-                        for sub_name in sub_modules:
-                            sub_feature = {"name": sub_name, "module": sub_name}
-                            try:
-                                sub_batch = _gen_one_minimal(sub_feature, gw)
-                                if sub_batch and len(sub_batch) > 1:
-                                    sub_results.append(sub_batch)
-                                    print(f"    [Split] {sub_name}: +{len(sub_batch)} 条")
-                            except Exception as e:
-                                print(f"    [Split] {sub_name} 失败: {e}")
+                    if sub_results:
+                        merged = _merge_sub_modules(name, sub_results)
+                        for item in merged:
+                            item["note"] = (item.get("note", "") + " [拆解重试]").strip()
+                        print(f"  [Retry] {name}: 拆分成功 → {len(merged)} 条")
+                        return name, merged
+                    else:
+                        print(f"  [Retry] {name}: 拆分失败，降级精简模式...")
+                    # ===== End Round 5 Fix 3 =====
 
-                        if sub_results:
-                            merged = _merge_sub_modules(name, sub_results)
-                            for item in merged:
-                                item["note"] = (item.get("note", "") + " [拆解重试]").strip()
-                            return name, merged
-                        else:
-                            print(f"  [Retry] {name}: 拆解重试失败，退回精简模式")
-                    # ===== End Fix 1 Step 2 =====
-
-                    # 策略 1：先用精简 prompt 试（完整 prompt 已经失败过了）
+                    # 策略 1：拆分失败后，用精简 prompt（完整 prompt 已经失败过了）
                     print(f"  [Retry] {name}: 精简模式...")
                     try:
                         batch = _gen_one_minimal(feature, gw)
@@ -4886,6 +4933,9 @@ def try_structured_doc_fast_track(
 
                 total_extra = sum(len(v) for v in extra_sheets.values())
                 print(f"[FastTrack] 额外 Sheet 完成: {total_extra} 条")
+
+                # Round 5 Fix 5: 跨 Sheet 交叉验证
+                cross_issues = _cross_validate(items, extra_sheets)
 
             # 跨模块一致性审计
             audit_issues = _cross_module_audit(items, extra_sheets if extra_sheets else {})
