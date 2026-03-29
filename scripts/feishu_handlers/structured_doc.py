@@ -457,7 +457,7 @@ def _cross_sheet_consistency_check(feature_rows: list, sheets_data: dict) -> dic
     return gaps
 # ===== End 修复 4 =====
 
-PARALLEL_WORKERS = 4  # 并行生成线程数
+PARALLEL_WORKERS = 8  # 并行生成线程数（从4提升到8以提速）
 
 # 导出目录(项目固定路径,避免 tempfile 权限问题)
 EXPORT_DIR = Path(__file__).resolve().parent.parent.parent / ".ai-state" / "exports"
