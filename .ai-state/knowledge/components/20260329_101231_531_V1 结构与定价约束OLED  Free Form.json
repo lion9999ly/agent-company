@@ -1,0 +1,18 @@
+{
+  "title": "V1 结构与定价约束（OLED + Free Form）",
+  "domain": "components",
+  "content": "报告给出可直接用于产品规划的 V1 边界：结构团队应按 OLED + Free Form 的光机厚度 12–25 mm、模组重量 35–80 g 预留头盔空间；商业团队应按光学显示链路 BOM 80–180 美元、整机零售价 499–899 美元建立初步定价模型。与此同时，V1 产品边界被限定为单目 HUD，不做复杂 AR 贴地标注，不追求超大 FOV，不追求全彩炫技，而是优先保证可读性、舒适性、稳定性和量产性。这些约束意味着 V1 的决策重点是工程收敛和交付成功率，而非外观未来感。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "结构约束",
+    "定价",
+    "BOM",
+    "单目HUD",
+    "产品边界",
+    "工程收敛",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

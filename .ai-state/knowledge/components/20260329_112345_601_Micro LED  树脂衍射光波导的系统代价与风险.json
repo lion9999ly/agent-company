@@ -1,0 +1,17 @@
+{
+  "title": "Micro LED + 树脂衍射光波导的系统代价与风险",
+  "domain": "components",
+  "content": "路线 B 虽然可实现 1.5–3 mm 波导片厚度、10×8 mm 眼盒和 20–28° FOV，但其系统代价明显更高：面板亮度需达到 5e5–1e6 nits，量产可行区间为 2e5–2e6 nits，才能在低效率波导后实现 1000–3000 nits 到眼亮度；模组功耗为 1.5–3.5 W，BOM 为 180–400 美元。报告同时指出其存在亮度均匀性、彩虹纹、眼盒一致性、树脂黄变/翘曲/雾化、量产良率等高风险，因此不适合作为 V1 默认路线。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "Micro LED",
+    "衍射波导",
+    "高亮度",
+    "风险",
+    "成本",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,19 @@
+{
+  "title": "智能骑行头盔 V1 单目HUD参数边界",
+  "domain": "components",
+  "content": "V1 的 HUD 被定义为提示型 HUD，只做单目，不做双目，不做大 FOV AR。推荐参数为：Micro-OLED 或 LCoS，分辨率 640×400 ~ 1280×720，入眼等效亮度 1500–3000 nits，FOV 12°–20°，刷新率 60Hz，光机重量目标 25–45g，模组 BOM 约 $80–180。报告指出，若升级为双目 HUD 或大 FOV AR 波导，将至少增加 30–60g 重量，并带来光学标定复杂、IPD 适配困难、功耗上升、装调良率下降和成本显著上升等量产风险。",
+  "source": "deep_research:research_c",
+  "created_at": "2026-03-29",
+  "tags": [
+    "HUD",
+    "单目显示",
+    "Micro-OLED",
+    "LCoS",
+    "FOV",
+    "BOM",
+    "量产风险",
+    "deep_research",
+    "research_c"
+  ],
+  "confidence": "medium"
+}

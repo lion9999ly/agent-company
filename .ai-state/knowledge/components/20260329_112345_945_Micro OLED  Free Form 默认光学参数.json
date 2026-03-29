@@ -1,0 +1,17 @@
+{
+  "title": "Micro OLED + Free Form 默认光学参数",
+  "domain": "components",
+  "content": "针对 HUD Demo 滑块，报告给出可直接落地的默认值：FOV 20°、VID 8 m、到眼亮度 1200 nits、眼盒 8×6 mm、分辨率 1024×768、单目显示、单色/有限彩色、高对比 UI。其量产可行区间包括：FOV 15–25°、VID 5–20 m、到眼亮度 500–2000 nits、眼盒 6×4~10×8 mm、模组功耗 1.2–2.5 W、光机体积 8–15 cc。这组参数被认为最符合 0.5 秒内一瞥可读和中央视野零遮挡目标。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "默认参数",
+    "FOV",
+    "VID",
+    "亮度",
+    "眼盒",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

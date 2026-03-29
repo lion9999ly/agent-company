@@ -1,0 +1,17 @@
+{
+  "title": "720p 单目 HUD 中央区域占用上限",
+  "domain": "components",
+  "content": "针对中心主卡片式方案 A，CTO 给出明确否决阈值：在 20° FOV 下，中央安全可用区建议不超过总显示面积 15–20%；若中心卡片宽度超过视场宽度 30%，用户会明显感知遮挡；对应 720p HUD，中心主卡片建议不超过 220×140 px。该结论直接说明中心区只能用于短时、强优先级、低频事件，如危险警报、AI 唤醒反馈、关键转向瞬时强化提示，不适合作为 V1 常驻主架构。",
+  "source": "deep_research:research_b",
+  "created_at": "2026-03-29",
+  "tags": [
+    "方案A",
+    "中心卡片",
+    "20°FOV",
+    "720p",
+    "遮挡风险",
+    "deep_research",
+    "research_b"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Micro-OLED + Free-form（V1 默认方案）",
+  "domain": "components",
+  "content": "报告明确建议头盔 HUD 的 V1 默认技术路线采用 Micro-OLED + Free-form combiner，用于“最接近量产现实”的 Demo 参数基线。推荐默认参数为：分辨率 1024×768、FOV 18° 对角、虚像距离 2.5 m、入眼亮度 1200 nits、Eye box 8×8 mm、透过率 85%、光机体积 8–15 cc、光学效率 15%–30%、BOM（光学+显示）$80–150。该路线被认为在 6–12 个月内更容易打样、迭代和认证，且更适合白天可读、功耗与热可控、供应链可落地的首代目标。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "Micro-OLED",
+    "Free-form",
+    "V1",
+    "HUD",
+    "量产参数",
+    "BOM",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

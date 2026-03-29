@@ -1,0 +1,18 @@
+{
+  "title": "Micro LED + 树脂衍射光波导（V2 预研，不作为 V1 锚点）",
+  "domain": "components",
+  "content": "Micro LED + 树脂衍射光波导的量产级参数区间为：0.13\"–0.25\" Micro LED 微显示，分辨率 640×480 / 800×600 / 1280×720，面板亮度 100,000–1,000,000+ nits，但这是源亮度而非眼前亮度；出瞳亮度 500–1,500 nits，总光效仅 0.1%–1.5%，FOV 对角 20°–30%，建议默认 24°，眼盒 6×4 mm 到 10×8 mm，建议默认 8×6 mm，虚像距离 3–7 m，建议默认 4 m，透过率 80%+，刷新率 60–120 Hz。虽然模组更轻薄，但报告明确不建议其作为 V1 默认参数锚点。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "Micro LED",
+    "波导",
+    "V2",
+    "光效",
+    "轻薄",
+    "预研",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔HUD技术路线：推荐Micro LED + 树脂衍射光波导",
+  "domain": "components",
+  "content": "报告明确指出，对于智能骑行头盔HUD，推荐优先选择“Micro LED + 树脂衍射光波导”作为主技术路线。该方案在峰值亮度（可达10,000 nits甚至更高）、透光率（>85%）、轻薄化（光机有机会压缩至3cc以内，镜片厚度控制在2mm以下）、Eyebox宽容度与安全冗余方面更符合骑行头盔的第一性原理要求，能确保在强光下看得见、不遮挡视野、佩戴舒适且碰撞安全。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "Micro LED",
+    "树脂衍射光波导",
+    "HUD",
+    "技术路线",
+    "骑行头盔",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

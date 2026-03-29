@@ -1,0 +1,19 @@
+{
+  "title": "HUD 硬性设计约束：中心遮挡 0%，P-CRITICAL/P-URGENT 抢占 <150ms",
+  "domain": "components",
+  "content": "报告给出可直接用于验收的硬指标：核心前视区中心遮挡面积必须为 0%；高优先级抢占切换中，P-CRITICAL / P-URGENT 必须 <150ms；单次扫视理解时间要求 S1 ≤0.5s、S3 ≤0.35s；同时可感知元素数要求 S1 ≤4、S2 ≤3、S3 ≤2。这些指标与“中央视野零遮挡、一瞥可读、最少信息量、速度自适应、容错与降级”原则形成闭环，可直接作为 HUD 布局、状态机和多模态分流策略的设计与测试门槛。",
+  "source": "deep_research:research_b",
+  "created_at": "2026-03-29",
+  "tags": [
+    "设计约束",
+    "中心遮挡",
+    "抢占时延",
+    "S1",
+    "S2",
+    "S3",
+    "验收指标",
+    "deep_research",
+    "research_b"
+  ],
+  "confidence": "medium"
+}

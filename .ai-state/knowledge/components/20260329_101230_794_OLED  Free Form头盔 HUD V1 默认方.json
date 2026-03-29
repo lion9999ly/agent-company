@@ -1,0 +1,18 @@
+{
+  "title": "OLED + Free Form（头盔 HUD V1 默认方案）",
+  "domain": "components",
+  "content": "报告明确裁决：头盔 HUD 的 V1 量产导向方案采用 OLED + Free Form 自由曲面，Micro LED + 树脂衍射光波导仅作为 V2 预研路线。直接用于 Demo 的默认参数包为：FOV 21°、虚像距离 3 m、眼盒 10×8 mm、出瞳亮度 500 nits、分辨率 1280×720、刷新率 60 Hz，显示策略为单色优先，绿/白 + 少量警示色。该组合被定义为最接近“可量产、可交付、可收敛”的工程默认值，而非追求更激进但难兑现的演示参数。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "OLED",
+    "Free Form",
+    "HUD",
+    "V1",
+    "默认参数",
+    "量产",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

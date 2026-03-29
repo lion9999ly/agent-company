@@ -1,0 +1,18 @@
+{
+  "title": "智能骑行头盔HUD V1产品策略：单色/双色Micro LED聚焦核心安全信息",
+  "domain": "components",
+  "content": "建议智能骑行头盔HUD的V1产品采用“单色/双色 Micro LED + 树脂衍射光波导”方案，聚焦“保命信息 + 核心导航”。功能范围应保留碰撞预警、危险提醒、极简导航箭头与距离、速度显示、低电量告警等高优先级信息，剔除消息预览、音乐信息等低优先级内容，并将其转为语音播报。建议V1参数为亮度10,000 nits，FOV 20°，透光率>85%，色彩为单色高亮青或青+红双色。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "产品策略",
+    "V1",
+    "Micro LED",
+    "树脂衍射光波导",
+    "功能定义",
+    "安全",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "EyeRide / BMW ConnectedRide Smartglasses 硬件基线",
+  "domain": "components",
+  "content": "报告用竞品定义了 V1 HUD 的现实硬件边界：EyeRide 为 20° FOV、720p、3000 nits、BT5.0、标称续航 8–12h，但真实用户反馈可低于 2h，售价 $500–700；BMW ConnectedRide Smartglasses 约 140g、续航 10h、售价约 €690。基于此，团队判断自研 V1 大概率落在单目显示、有效 FOV 15–22°、分辨率 640×360 ~ 1280×720、亮度 2000–4000 nits。这意味着中心区域不能长期占用，HUD 只能承载低密度关键提示，而非高密度 UI。",
+  "source": "deep_research:research_b",
+  "created_at": "2026-03-29",
+  "tags": [
+    "EyeRide",
+    "BMW",
+    "FOV",
+    "亮度",
+    "续航",
+    "竞品基线",
+    "deep_research",
+    "research_b"
+  ],
+  "confidence": "medium"
+}

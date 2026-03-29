@@ -1,0 +1,18 @@
+{
+  "title": "Micro-LED + 树脂衍射光波导（V2 验证方案）",
+  "domain": "components",
+  "content": "报告将 Micro-LED + 树脂衍射光波导定义为 V2 或高阶轻薄化验证路线，而非 V1 默认值。量产级对标参数为：分辨率 640×480、FOV 16°、虚像距离 2.0 m、入眼亮度 1000 nits、Eye box 10×8 mm、透过率 82%、光学效率 0.1%–1%、BOM $180–400。其主要问题是光学效率仅 0.1%–1%，即使目标入眼亮度为 1000 nits，系统端也需要更高发光功率，带来热、功耗、均匀性、耦合/出耦公差和良率风险，因此不适合作为首代默认方案。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "Micro-LED",
+    "波导",
+    "V2",
+    "光学效率",
+    "轻薄化",
+    "成本",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,18 @@
+{
+  "title": "HUD V1 推荐方案：B 三分区固定布局",
+  "domain": "components",
+  "content": "报告给出的当前阶段最优工程决策是 B：三分区固定布局，用于 HUD Demo 与 V1 视觉架构骨架。其量化表现为加权总分 4.02，仅次于 D 的 4.34，但在 15–20°FOV、720p 级微显示条件下更稳妥；实现复杂度 2、测试复杂度 2、20°FOV 适配风险 2。B 的元素容量满足 S1/S2/S3 的 4/3/2，上高速 S3 时自动退化为“速度 + 导航箭头”2 元素，符合 S3 ≤0.35s 单次扫视理解时间和同时可感知元素数 ≤2 的硬约束。",
+  "source": "deep_research:research_b",
+  "created_at": "2026-03-29",
+  "tags": [
+    "HUD",
+    "布局方案",
+    "V1",
+    "三分区固定布局",
+    "15–20°FOV",
+    "720p",
+    "deep_research",
+    "research_b"
+  ],
+  "confidence": "medium"
+}

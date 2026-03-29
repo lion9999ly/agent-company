@@ -1,0 +1,17 @@
+{
+  "title": "智能骑行头盔HUD V1不建议采用OLED + 自由曲面方案",
+  "domain": "components",
+  "content": "报告明确不建议将“OLED + 自由曲面”作为智能骑行头盔HUD的V1主路线。该方案峰值亮度通常仅1000–2000 nits，在户外强光下可视性不足；棱镜透光率约40%–60%，体积较大（往往需要15cc以上空间），容易在视野中形成明显存在感和固定遮挡，且对头盔外形、重量分布和风噪控制不友好，与骑行场景核心需求存在结构性冲突。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "OLED",
+    "自由曲面",
+    "HUD",
+    "技术风险",
+    "骑行头盔",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

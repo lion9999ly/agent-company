@@ -1,0 +1,17 @@
+{
+  "title": "波导路线V2量产前验证门槛",
+  "domain": "components",
+  "content": "报告给出路线 B 进入量产候选前的硬性验证门槛：85°C / 85%RH 500h、UV 老化 300h、跌落 / 振动后 MTF 与耦合效率衰减 <10%、白天户外 100k lux 下到眼亮度仍 >1000 nits，并要求彩虹纹主观评分达标。只有满足这些条件，Micro LED + 树脂衍射光波导才具备从技术展示走向量产候选的基础，因此该路线更适合 V2 或高配版本评估。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "V2验证",
+    "可靠性",
+    "100k lux",
+    "MTF",
+    "耐候性",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}

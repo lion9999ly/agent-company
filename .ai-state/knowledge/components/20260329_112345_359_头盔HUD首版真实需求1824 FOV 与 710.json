@@ -1,0 +1,17 @@
+{
+  "title": "头盔HUD首版真实需求：18–24° FOV 与 7–10 m 虚像距离",
+  "domain": "components",
+  "content": "报告从显示原则反推首版 HUD 的真实需求：由于 S1/S2/S3 速度档信息密度上限仅约为 4 / 3 / 2 个元素，且高速 S3 仅保留速度、导航箭头、安全预警、SOS、极低电量，因此不需要 30° 以上大视场。对于箭头 + 距离 + 数字 + 告警图标，18–24° 对角 FOV 已足够；虚像距离以 7–10 m 为更现实的首版折中区间。决策重点应从追求大 FOV 转向保证稳定可见与快速识读。",
+  "source": "deep_research:research_a",
+  "created_at": "2026-03-29",
+  "tags": [
+    "FOV需求",
+    "VID需求",
+    "显示原则",
+    "安全场景",
+    "信息密度",
+    "deep_research",
+    "research_a"
+  ],
+  "confidence": "medium"
+}
