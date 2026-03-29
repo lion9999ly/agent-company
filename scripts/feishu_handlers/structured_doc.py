@@ -250,7 +250,22 @@ def _normalize_all_rows(rows: list, normalize_map: dict) -> list:
                     seen[name] = row
             else:
                 seen[name] = row
-        deduped.extend(seen.values())
+
+        deduped_list = list(seen.values())
+
+        # 修复 6: 防膨胀 - 合并后超过 50 条的模块，按质量排序截断
+        if len(deduped_list) > 50:
+            def _row_quality(r):
+                acc = str(r.get('acceptance', ''))
+                nums = len(re.findall(r'\d+', acc))
+                return nums * 3 + len(acc)
+
+            deduped_list.sort(key=_row_quality, reverse=True)
+            trimmed = len(deduped_list) - 50
+            deduped_list = deduped_list[:50]
+            print(f"  [Normalize] {module_name}: 截断 {trimmed} 条 (保留质量最高的 50 条)")
+
+        deduped.extend(deduped_list)
 
     original = len(rows)
     final = len(deduped)
@@ -313,6 +328,116 @@ def _backfill_hud_columns(hud_rows: list) -> list:
     print(f"[Backfill] HUD新列回填: {filled_count}/{len(hud_rows)} 行")
     return hud_rows
 # ===== End A3 =====
+
+# ===== 修复 1: 版本信息继承上一版 =====
+def _get_previous_version_info(prd_versions_dir: str = None) -> dict:
+    """读取上一版的版本号和功能统计，用于递增和 changelog"""
+    if prd_versions_dir is None:
+        prd_versions_dir = str(EXPORT_DIR.parent / "prd_versions")
+
+    if not os.path.exists(prd_versions_dir):
+        return {}
+
+    # 找最新的版本快照目录（按时间戳排序）
+    try:
+        snapshots = sorted(os.listdir(prd_versions_dir), reverse=True)
+    except Exception:
+        return {}
+
+    if not snapshots:
+        return {}
+
+    latest = snapshots[0]  # 如 20260329_010055
+
+    # 尝试读取上一版的版本信息
+    version_info_path = os.path.join(prd_versions_dir, latest, 'version_info.json')
+    if os.path.exists(version_info_path):
+        try:
+            with open(version_info_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            pass
+
+    # 兜底：从快照目录名推断时间，版本号从 V1.0 开始
+    return {
+        'version': 'V1.0',
+        'snapshot': latest,
+        'total_features': 0,
+    }
+# ===== End 修复 1 =====
+
+# ===== 修复 4: 跨 Sheet 一致性引擎 =====
+def _cross_sheet_consistency_check(feature_rows: list, sheets_data: dict) -> dict:
+    """
+    扫描所有功能条目，检查是否需要在其他 Sheet 中有对应条目。
+    返回需要补生成的条目列表。
+    """
+    gaps = {
+        'voice': [],   # 缺少的语音指令
+        'light': [],   # 缺少的灯效定义
+        'test': [],    # 缺少的测试用例
+    }
+
+    # 已有的语音指令关键词
+    existing_voice = set()
+    for v in sheets_data.get('voice', []):
+        key = str(v.get('user_says', v.get('user_say', v.get('用户说法', ''))))
+        if key:
+            existing_voice.add(key[:10])
+
+    # 已有的灯效场景
+    existing_light = set()
+    for l in sheets_data.get('light', []):
+        key = str(l.get('trigger', l.get('触发场景', '')))
+        if key:
+            existing_light.add(key[:10])
+
+    # 已有的测试用例覆盖的功能名
+    existing_test_features = set()
+    for t in sheets_data.get('test_cases', []):
+        key = str(t.get('feature_name', t.get('feature', t.get('功能名', ''))))
+        if key:
+            existing_test_features.add(key[:10])
+
+    for row in feature_rows:
+        name = str(row.get('name', ''))
+        desc = str(row.get('description', ''))
+        interaction = str(row.get('interaction', ''))
+        module = str(row.get('module', ''))
+
+        # 检查语音指令覆盖
+        if any(kw in desc or kw in interaction for kw in ['语音控制', '语音', '声控', '语音唤醒']):
+            if not any(name[:6] in v for v in existing_voice):
+                gaps['voice'].append({
+                    'feature_name': name,
+                    'module': module,
+                    'context': desc[:50]
+                })
+
+        # 检查灯效覆盖
+        if any(kw in desc or kw in interaction for kw in ['灯光', '灯效', '闪烁', '常亮']):
+            if not any(name[:6] in l for l in existing_light):
+                gaps['light'].append({
+                    'feature_name': name,
+                    'module': module,
+                    'context': desc[:50]
+                })
+
+        # 检查测试用例覆盖（每个 P0 功能至少应有测试用例）
+        priority = str(row.get('priority', ''))
+        if priority == 'P0' and not any(name[:6] in t for t in existing_test_features):
+            gaps['test'].append({
+                'feature_name': name,
+                'module': module,
+            })
+
+    # 汇报
+    for sheet_name, gap_list in gaps.items():
+        if gap_list:
+            print(f"  [Consistency] {sheet_name}: 发现 {len(gap_list)} 个功能缺少对应条目")
+
+    return gaps
+# ===== End 修复 4 =====
 
 PARALLEL_WORKERS = 4  # 并行生成线程数
 
@@ -1508,14 +1633,16 @@ body {{ font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f5f6fa; 
 .controls button:hover {{ background: rgba(255,255,255,0.35); }}
 .tabs {{ display: flex; background: #fff; padding: 0 24px;
     position: fixed; left: 0; right: 0; z-index: 999;
-    border-bottom: 1px solid #e0e0e0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); overflow-x: auto; }}
+    border-bottom: 1px solid #e0e0e0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); overflow-x: auto;
+    -webkit-overflow-scrolling: touch; }}
 .tab {{ padding: 12px 20px; color: #666; cursor: pointer; font-size: 14px;
-    border-bottom: 3px solid transparent; }}
+    border-bottom: 3px solid transparent; flex-shrink: 0; white-space: nowrap; }}
+.tab:hover {{ color: #2F5496; background: #f7f8ff; }}
 .tab.active {{ color: #2F5496; border-bottom-color: #2F5496; font-weight: 600; }}
 .tab .badge {{ background: #e8edf5; padding: 1px 8px; border-radius: 10px;
     font-size: 11px; margin-left: 6px; color: #2F5496; }}
 .content {{ padding: 16px 24px; max-width: 1600px; margin-left: auto; margin-right: auto;
-    overflow-y: auto; }}
+    margin-top: 160px; overflow-y: auto; height: calc(100vh - 160px); -webkit-overflow-scrolling: touch; }}
 .section {{ display: none; }}
 .section.active {{ display: block; }}
 .stats {{ display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }}
@@ -1711,7 +1838,15 @@ function buildTabs() {{
 function switchTab(id) {{
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.target === id));
     document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === 'section-' + id));
-    window.scrollTo(0, 0);
+    // 滚动到内容区顶部
+    const content = document.querySelector('.content');
+    if (content) content.scrollTop = 0;
+    // 如果是流程图/旅程图 tab，触发 Mermaid 渲染
+    if (id === 'flow' || id === 'journey') {{
+        if (typeof mermaid !== 'undefined') {{
+            setTimeout(() => mermaid.run(), 100);
+        }}
+    }}
 }}
 
 function buildTreeView(features, isHud = false) {{
@@ -1959,7 +2094,13 @@ function updateStatsBar() {{
 buildTabs();
 updateStatsBar();
 updateHeaderHeight();
-window.addEventListener('load', updateHeaderHeight);
+// 修复 2: 确保在 DOM 完全加载后执行
+document.addEventListener('DOMContentLoaded', function() {{
+    setTimeout(updateHeaderHeight, 100);
+}});
+window.addEventListener('load', function() {{
+    setTimeout(updateHeaderHeight, 200);
+}});
 window.addEventListener('resize', updateHeaderHeight);
 
 const firstBody = document.querySelector('.l1-body');
@@ -2338,18 +2479,30 @@ def _gen_page_mapping(items: List[Dict], gateway) -> List[Dict]:
     l1_l2 = [i for i in items if i.get("level") in ("L1", "L2")]
     features_text = "\n".join(f"- {f.get('name', '')}({f.get('module', '')})" for f in l1_l2[:60])
 
+    # 修复 7: 扩充页面映射表 prompt
     prompt = (
         f"基于以下智能摩托车全盔的功能列表,生成页面→功能映射表.\n"
         f"输出 JSON 数组,每个元素代表一个页面:\n"
         f'{{"page":"页面名","parent":"父页面(顶级填空)","platform":"HUD/App/系统",'
         f'"features":"该页面包含的功能(逗号分隔)","entry":"入口方式(Tab/按钮/自动/语音)",'
         f'"priority":"P0-P3","note":"备注"}}\n\n'
-        f"页面分类:\n"
-        f"- HUD 页面:骑行主界面、导航态、来电态、录制态、组队态、预警态、设置态\n"
-        f"- App 页面:设备Tab首页、社区Tab、商城Tab、我的Tab、导航页、录制管理、组队管理、设置页、配对引导页\n"
-        f"- 系统页面:开机自检、首次使用引导、权限申请、OTA升级\n\n"
-        f"功能列表:\n{features_text}\n\n"
-        f"目标 25-35 个页面.只输出 JSON."
+        f"【App 端页面要求】每个 Tab 至少有：首页 + 2-3 个二级页面 + 关键三级页面\n"
+        f"- 设备Tab: 设备首页/蓝牙配对页/设备详情页/骑行轨迹列表/轨迹详情/行车记录列表/视频播放页/摄像参数设置/部件信息页/HUD布局设置/场景模式设置\n"
+        f"- 相册Tab: 相册首页/照片详情/视频播放/水印编辑/批量导出\n"
+        f"- 社区Tab: 社区首页/帖子详情/发布页/个人主页/粉丝列表/等级说明\n"
+        f"- AI Tab: AI首页/AI对话/AI剪片编辑/AI内容搜索结果/AI旅行总结/AI骑行摘要\n"
+        f"- 我的Tab: 我的首页/账号信息编辑/通用设置/通知设置/帮助FAQ/反馈提交/关于设备/隐私政策/数据管理/多语言设置\n"
+        f"- 通知中心: 通知列表/通知详情\n"
+        f"- 商城: 商城首页/商品详情/购物车/订单确认/支付/订单列表/订单详情/报修工单提交/工单详情/工单列表\n"
+        f"- 其他: 登录注册页/权限申请引导页/首次配对引导页/新手教学流程(多步)/用户成就页/成就详情\n\n"
+        f"【HUD 端页面要求】HUD 不是传统页面，但有不同的'显示状态/卡片组合':\n"
+        f"- 主驾驶视图/导航视图/来电视图/音乐视图/组队视图/消息视图/简易模式视图\n"
+        f"- 信息中岛各状态\n"
+        f"- 各场景模式的 HUD 布局\n\n"
+        f"每行包含: 页面名、父页面、平台(App/HUD)、包含功能、入口方式、优先级、备注\n\n"
+        f"目标: App 至少 50 个页面 + HUD 至少 10 个视图 = 60+ 条\n\n"
+        f"功能模块列表:\n{features_text}\n\n"
+        f"只输出 JSON."
     )
 
     result = gateway.call_azure_openai("cpo", prompt,
@@ -3668,6 +3821,15 @@ def try_structured_doc_fast_track(
                                 prev_by_module[current_l1].append(item)
 
                         print(f"[SmartIterate] 上一版: {prev_version} ({len(prev_items)} 条, {len(prev_by_module)} 模块)")
+
+                        # 修复 8: 全量重生成机制提示
+                        if len(prev_items) > 1200:
+                            print(f"[SmartIterate] ⚠️ 上一版 {len(prev_items)} 条，建议做一次全量重生成以清理历史残留")
+                        # 检测用户 prompt 是否请求全量重生成
+                        if '全量' in text or 'clean' in text.lower() or '重生成' in text:
+                            print(f"[SmartIterate] 检测到全量重生成指令，跳过 Compare，使用纯新版")
+                            prev_items = []
+                            prev_by_module = {}
                     except Exception as e:
                         print(f"[SmartIterate] 读取上一版失败: {e}")
 
@@ -3878,8 +4040,26 @@ def try_structured_doc_fast_track(
                 if is_core:
                     batch_user_prompt += f"- 这是核心卖点模块,至少展开5个L2,每个L2至少3个L3\n"
 
-                # ===== Fix 1 Step 1: 输出数量硬约束 =====
-                batch_user_prompt += """
+                # 修复 5: 根据 depth 调整输出约束
+                module_depth = 'normal'
+                parent_name = name.rsplit('-', 1)[0] if '-' in name else name
+                if anchor:
+                    for section in ['hud_modules', 'app_modules', 'cross_cutting']:
+                        for mod in anchor.get(section, []):
+                            if mod.get('name') == name or mod.get('name') == parent_name:
+                                module_depth = mod.get('depth', 'normal')
+                                break
+
+                if module_depth == 'deep':
+                    output_limit = """
+【输出要求 — 深度模块】
+- 本模块最多输出 30 条功能（含 L1/L2/L3 所有层级）
+- 每条验收标准必须包含至少 1 个具体数字指标（时间ms/s、百分比%、距离m/km、次数、大小MB等）
+- 禁止使用"应支持"、"需提供"等模糊表述，必须量化
+- 如果无法确定具体数值，标注为 [需实测:预估值XXX] 而非 [待验证]
+"""
+                else:
+                    output_limit = """
 【输出数量硬约束】
 - 本模块最多输出 18 条功能（含 L1/L2/L3 所有层级合计）
 - 如果功能点超过 18 条，优先保留 P0 和 P1，P2/P3 可精简合并
@@ -3887,7 +4067,8 @@ def try_structured_doc_fast_track(
 - 每条功能的 acceptance 字段限 120 字以内
 - 严格遵守此上限，超出部分不会被系统采纳
 """
-                # ===== End Fix 1 Step 1 =====
+                batch_user_prompt += output_limit
+                # ===== End 修复 5 =====
 
                 # ===== A5: HUD 端模块的分离规则和新增字段 =====
                 HUD_MODULE_SET = {
@@ -4293,10 +4474,27 @@ def try_structured_doc_fast_track(
                     # Fix 4: 使用比较决策函数
                     decision = _compare_decision(mod_name, old, new, old_score, new_score)
 
+                    # 修复 3: Compare KEEP/NEW 时吸收对方独有功能
                     if decision == 'new':
                         final_items.extend(new)
+                        # 扫描旧版中新版没有的功能，追加
+                        new_names = {str(r.get('name', '')) for r in new if r.get('name')}
+                        old_only = [r for r in old if str(r.get('name', '')) not in new_names and r.get('name')]
+                        if old_only:
+                            final_items.extend(old_only)
+                            print(f"  OK+ {mod_name}: 新版更好 + 保留旧版 {len(old_only)} 条独有功能")
                     elif decision == 'keep':
+                        # 保留旧版全部内容
                         final_items.extend(old)
+                        # 但扫描新版中旧版没有的 L3 功能名，追加进去
+                        old_names = {str(r.get('name', '')) for r in old if r.get('name')}
+                        new_only = [r for r in new if str(r.get('name', '')) not in old_names and r.get('name')]
+                        if new_only:
+                            final_items.extend(new_only)
+                            new_names_list = [str(r.get('name', ''))[:20] for r in new_only[:5]]
+                            print(f"  KEEP+ {mod_name}: 旧版更好 + 吸收 {len(new_only)} 条新增功能 ({', '.join(new_names_list)}...)")
+                        else:
+                            print(f"  KEEP {mod_name}: 旧版质量更好 (抽样)")
                     elif decision == 'merge':
                         merged = _merge_best_of_both(old, new)
                         print(f"  MERGE {mod_name}: 逐条取优 ({len(merged)}条)")
@@ -4304,6 +4502,16 @@ def try_structured_doc_fast_track(
                     # decision is None → 跳过该模块
 
                 all_items = final_items
+
+                # 修复 6: Compare 后再归一化一次（处理 KEEP 带入的旧名称）
+                if anchor:
+                    normalize_map = anchor.get('module_normalize', {})
+                else:
+                    normalize_map = {}
+                normalize_map.update(MODULE_NAME_NORMALIZE)
+                all_items = _normalize_all_rows(all_items, normalize_map)
+                print(f"[Normalize-Post] Compare 后归一化: {len(all_items)} 条")
+
                 print(f"[Compare] 最终: {len(all_items)} 条")
 
             if not all_items:
