@@ -221,9 +221,10 @@ def _build_module_placement(anchor: dict) -> dict:
 # ===== End A1 =====
 
 # ===== A2: 全量归一化（含旧版继承数据） =====
-def _normalize_all_rows(rows: list, normalize_map: dict) -> list:
+def _normalize_all_rows(rows: list, normalize_map: dict, anchor: dict = None) -> list:
     """对所有行的 module 字段做归一化，然后合并同名模块去重"""
     from collections import defaultdict
+    import re
 
     # Step 1: 归一化 module 名
     for row in rows:
@@ -237,6 +238,8 @@ def _normalize_all_rows(rows: list, normalize_map: dict) -> list:
         groups[row.get('module', 'unknown')].append(row)
 
     deduped = []
+    MAX_PER_MODULE = 50
+
     for module_name, group_rows in groups.items():
         # 按 name (L3功能名) 去重
         seen = {}
@@ -253,17 +256,32 @@ def _normalize_all_rows(rows: list, normalize_map: dict) -> list:
 
         deduped_list = list(seen.values())
 
-        # 修复 6: 防膨胀 - 合并后超过 50 条的模块，按质量排序截断
-        if len(deduped_list) > 50:
+        # Bug 3: 模块行数封顶普遍化 - 对所有模块普遍执行截断
+        # 检查模块是否有自定义上限（从 anchor 的 notes 中读取）
+        custom_max = MAX_PER_MODULE
+        if anchor:
+            for section in ['hud_modules', 'app_modules', 'cross_cutting']:
+                for mod in anchor.get(section, []):
+                    if mod.get('name') == module_name:
+                        notes = str(mod.get('notes', ''))
+                        max_match = re.search(r'最多\s*(\d+)\s*条', notes)
+                        if max_match:
+                            custom_max = int(max_match.group(1))
+                        break
+
+        cap = min(custom_max, MAX_PER_MODULE)
+
+        if len(deduped_list) > cap:
             def _row_quality(r):
                 acc = str(r.get('acceptance', ''))
                 nums = len(re.findall(r'\d+', acc))
-                return nums * 3 + len(acc)
+                level_bonus = {'L1': 100, 'L2': 50, 'L3': 0}.get(r.get('level', 'L3'), 0)
+                return level_bonus + nums * 3 + len(acc)
 
             deduped_list.sort(key=_row_quality, reverse=True)
-            trimmed = len(deduped_list) - 50
-            deduped_list = deduped_list[:50]
-            print(f"  [Normalize] {module_name}: 截断 {trimmed} 条 (保留质量最高的 50 条)")
+            trimmed = len(deduped_list) - cap
+            deduped_list = deduped_list[:cap]
+            print(f"  [Normalize] {module_name}: 截断 {trimmed} 条 (保留质量最高的 {cap} 条)")
 
         deduped.extend(deduped_list)
 
@@ -837,6 +855,57 @@ def _write_hud_sheet(ws, items: List[Dict]):
         ws.column_dimensions[get_column_letter(i + 1)].width = w
 
 
+# === Mermaid 代码清洗函数 ===
+def _clean_mermaid_code(code: str) -> str:
+    """清洗 Mermaid 代码，修复常见语法问题"""
+    import re
+
+    if not code:
+        return 'graph TD\n    A[空流程图] --> B[请重新生成]'
+
+    # 移除 markdown 代码块标记
+    code = code.strip()
+    if code.startswith('```'):
+        code = code.split('\n', 1)[1] if '\n' in code else code
+    code = code.replace('```mermaid', '').replace('```', '').strip()
+
+    # 确保以 graph 开头
+    if not code.startswith('graph') and not code.startswith('flowchart'):
+        code = 'graph TD\n' + code
+
+    # 替换中文标点
+    code = code.replace('（', '(').replace('）', ')')
+    code = code.replace('【', '[').replace('】', ']')
+    code = code.replace('：', ':').replace('；', ';')
+    code = code.replace('"', '"').replace('"', '"')
+    code = code.replace(''', "'").replace(''', "'")
+
+    # Mermaid 节点中不能有裸的 < > & 字符
+    lines = code.split('\n')
+    cleaned = []
+    for line in lines:
+        stripped = line.strip()
+        # 跳过纯箭头行和 style 行
+        if stripped.startswith('style') or stripped.startswith('classDef'):
+            cleaned.append(line)
+            continue
+        # 在 [] () {} 内的文字中转义
+        line = re.sub(r'\[([^\]]*)<([^\]]*)\]', r'[\1&lt;\2]', line)
+        line = re.sub(r'\[([^\]]*)>([^\]]*)\]', r'[\1&gt;\2]', line)
+        cleaned.append(line)
+
+    code = '\n'.join(cleaned)
+
+    # 移除连续空行
+    code = re.sub(r'\n\s*\n', '\n', code)
+
+    # 修复箭头格式
+    code = re.sub(r'--\s+>', '-->', code)
+    code = re.sub(r'==\s+>', '==>', code)
+
+    return code.strip()
+
+
 def _generate_flow_diagrams(anchor: dict, gateway) -> list:
     """
     基于 anchor 中的 flow_diagrams 配置，调用 LLM 生成 Mermaid 流程图代码。
@@ -901,7 +970,7 @@ def _generate_flow_diagrams(anchor: dict, gateway) -> list:
                     'name': name,
                     'trigger': trigger,
                     'scope': scope,
-                    'mermaid_code': code,
+                    'mermaid_code': _clean_mermaid_code(code),
                     'steps_count': len(must_include),
                     'exceptions_count': len(exceptions),
                 })
@@ -921,6 +990,7 @@ def _write_flow_sheet(wb, flow_diagrams: list):
         return
 
     from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+    from openpyxl.utils import get_column_letter
 
     ws = wb.create_sheet('关键流程')
 
@@ -1349,6 +1419,12 @@ def _generate_mindmap_mm(items: List[Dict], title: str = "智能骑行头盔 V1 
 def _generate_mindmap_svg(items: List[Dict], title: str = "智能骑行头盔 V1 功能框架") -> str:
     """生成交互式 HTML 脑图(D3.js,可展开折叠、缩放、拖拽)"""
 
+    # P3: 过滤研发条目（脑图只展示用户可见功能）
+    filtered_items = [r for r in items if '[研发]' not in str(r.get('note', ''))]
+    if len(filtered_items) < len(items):
+        print(f"  [Mindmap] 过滤 {len(items) - len(filtered_items)} 条研发条目")
+    items = filtered_items
+
     # 构建树结构
     tree = {"name": title, "children": []}
 
@@ -1425,13 +1501,9 @@ button:hover {{ background: #e0e0e0; }}
 <script>
 const treeData = {tree_json};
 
-// 使用窗口尺寸
+// Bug 5: 改为水平树状布局
 const width = window.innerWidth;
 const height = window.innerHeight;
-
-// 动态计算 radius，根据节点数调整
-const nodeCount = d3.hierarchy(treeData).descendants().length;
-const radius = Math.max(300, Math.min(nodeCount * 2.5, Math.min(width, height) / 2.5));
 
 const svg = d3.select("body").append("svg")
     .attr("width", width).attr("height", height)
@@ -1444,27 +1516,21 @@ const zoomBehavior = d3.zoom()
 svg.call(zoomBehavior);
 
 const g = svg.append("g")
-    .attr("transform", `translate(${{width/2}},${{height/2}})`);
+    .attr("transform", `translate(100,${{height/2}})`);
 
+// 水平树布局
 const tree = d3.tree()
-    .size([2 * Math.PI, radius])
-    .separation((a, b) => (a.parent === b.parent ? 1 : 2.5) / (a.depth + 1));
+    .nodeSize([30, 250])  // [垂直间距, 水平间距]
+    .separation((a, b) => a.parent === b.parent ? 1 : 1.5);
 
 const root = d3.hierarchy(treeData);
 
-// 初始只展开到第 2 层（不展开第 3 层，避免太密）
+// 初始只展开到第 2 层
 root.descendants().forEach(d => {{
     if (d.depth >= 2) {{ d._children = d.children; d.children = null; }}
 }});
 
 const priorityColor = {{"P0":"#FF4444","P1":"#FF8C00","P2":"#4CAF50","P3":"#9E9E9E"}};
-
-function radialPoint(d) {{
-    return [
-        d.y * Math.cos(d.x - Math.PI / 2),
-        d.y * Math.sin(d.x - Math.PI / 2)
-    ];
-}}
 
 function update(source) {{
     const treeLayout = tree(root);
@@ -1474,7 +1540,7 @@ function update(source) {{
     const node = g.selectAll("g.node").data(nodes, d => d.data.name + d.depth);
 
     const nodeEnter = node.enter().append("g").attr("class", "node")
-        .attr("transform", d => `translate(${{radialPoint(d)}})`)
+        .attr("transform", d => `translate(${{d.y}},${{d.x}})`)
         .on("click", (e, d) => {{ e.stopPropagation(); toggle(d); update(d); }});
 
     nodeEnter.append("circle").attr("r", 5)
@@ -1485,24 +1551,28 @@ function update(source) {{
 
     nodeEnter.append("text")
         .attr("dy", "0.31em")
-        .attr("x", d => radialPoint(d)[0] < 0 ? -8 : 8)
-        .attr("text-anchor", d => radialPoint(d)[0] < 0 ? "end" : "start")
+        .attr("x", d => d.children ? -8 : 8)
+        .attr("text-anchor", d => d.children ? "end" : "start")
         .text(d => d.data.name)
         .style("font-size", d => d.depth === 0 ? "16px" : d.depth === 1 ? "13px" : "11px")
         .style("font-weight", d => d.depth <= 1 ? "bold" : "normal");
 
     node.merge(nodeEnter).transition().duration(300)
-        .attr("transform", d => `translate(${{radialPoint(d)}})`);
+        .attr("transform", d => `translate(${{d.y}},${{d.x}})`);
 
     node.exit().remove();
 
     const link = g.selectAll("path.link").data(links, d => d.target.data.name + d.target.depth);
 
     link.enter().insert("path", "g").attr("class", "link")
-        .attr("d", d3.linkRadial().angle(d => d.x).radius(d => d.y));
+        .attr("d", d3.linkHorizontal()
+            .x(d => d.y)
+            .y(d => d.x));
 
     link.transition().duration(300)
-        .attr("d", d3.linkRadial().angle(d => d.x).radius(d => d.y));
+        .attr("d", d3.linkHorizontal()
+            .x(d => d.y)
+            .y(d => d.x));
 
     link.exit().remove();
 }}
@@ -1618,8 +1688,8 @@ def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None,
     else:
         normalize_map = {}
     normalize_map.update(MODULE_NAME_NORMALIZE)
-    hud_features = _normalize_all_rows(hud_features, normalize_map)
-    app_features = _normalize_all_rows(app_features, normalize_map)
+    hud_features = _normalize_all_rows(hud_features, normalize_map, anchor)
+    app_features = _normalize_all_rows(app_features, normalize_map, anchor)
     print(f"[Normalize-HTML] 分流后: HUD {len(hud_features)}, App {len(app_features)}")
 
     print(f"[HTML] HUD 功能: {len(hud_features)}, App 功能: {len(app_features)}")
@@ -1947,13 +2017,25 @@ function buildTreeView(features, isHud = false) {{
     return html + l1Html;
 }}
 
+function cleanMermaid(code) {{
+    code = (code || '').replace(/```mermaid/g, '').replace(/```/g, '');
+    code = code.replace(/（/g, '(').replace(/）/g, ')');
+    code = code.replace(/【/g, '[').replace(/】/g, ']');
+    code = code.replace(/：/g, ':');
+    code = code.replace(/"/g, '"').replace(/"/g, '"');
+    if (!code.trim().startsWith('graph') && !code.trim().startsWith('flowchart')) {{
+        code = 'graph TD\n' + code;
+    }}
+    return code;
+}}
+
 function buildFlowView() {{
     const flows = DATA.flow_diagrams || [];
     if (!flows.length) return '<p style="padding:20px;color:#999;">暂无流程图数据</p>';
 
     let html = '';
     flows.forEach((f, i) => {{
-        const mermaidCode = f.mermaid_code || '';
+        const mermaidCode = cleanMermaid(f.mermaid_code || '');
         const desc = f.description || f.trigger || '';
         html += `
             <div class="flow-card">
@@ -3405,7 +3487,7 @@ def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, e
     else:
         normalize_map = {}
     normalize_map.update(MODULE_NAME_NORMALIZE)  # 合并代码中的硬编码映射
-    items = _normalize_all_rows(items, normalize_map)
+    items = _normalize_all_rows(items, normalize_map, anchor)
 
     # A1: 构建模块归属映射
     if anchor:
@@ -4221,6 +4303,31 @@ def try_structured_doc_fast_track(
 """
                 # ===== End A5 =====
 
+                # P2: 注入 anchor 的 separation_rules
+                if anchor and anchor.get('separation_rules'):
+                    rules_text = '\n'.join([f"- {r['rule']}：{r.get('detail','')}" for r in anchor['separation_rules']])
+                    batch_user_prompt += f"\n\n【分离规则 — 必须遵守】\n{rules_text}"
+
+                # P2: 注入模块 notes（边界说明）
+                if anchor:
+                    for section in ['hud_modules', 'app_modules', 'cross_cutting']:
+                        for mod in anchor.get(section, []):
+                            if mod.get('name') == name and mod.get('notes'):
+                                batch_user_prompt += f"\n\n【本模块边界说明】{mod['notes']}"
+                                break
+
+                # P4: note 字段标注角色
+                batch_user_prompt += """
+
+【角色标注规则 — 每条功能的 note 字段必须遵守】
+每条功能的 note 字段必须以 [设计] 或 [研发] 开头：
+- [设计] = 用户可见的功能、界面、交互（产品/设计师关注）
+- [研发] = 降级策略、异常处理、规则引擎、性能边界（研发工程师关注）
+示例:
+  "note": "[设计] HUD显示转弯箭头和距离"
+  "note": "[研发] 信号丢失时切换离线缓存路线"
+"""
+
                 batch_user_prompt += "\n只输出 JSON 数组."
 
                 try:
@@ -4632,7 +4739,7 @@ def try_structured_doc_fast_track(
                 else:
                     normalize_map = {}
                 normalize_map.update(MODULE_NAME_NORMALIZE)
-                all_items = _normalize_all_rows(all_items, normalize_map)
+                all_items = _normalize_all_rows(all_items, normalize_map, anchor)
                 print(f"[Normalize-Post] Compare 后归一化: {len(all_items)} 条")
 
                 print(f"[Compare] 最终: {len(all_items)} 条")
@@ -4785,21 +4892,21 @@ def try_structured_doc_fast_track(
 
                 print(f"[FastTrack] {len(file_results)} 个文件并行生成完成")
 
-                # 写入 .mm 文件（FreeMind 格式）
-                if early_mm:
-                    mm_path = EXPORT_DIR / f"mindmap_{task_id}.mm"
-                    mm_path.write_text(early_mm, encoding="utf-8")
-                    file_results["mm"] = str(mm_path)
-                    print(f"  ✅ .mm 文件: {mm_path}")
-                else:
-                    try:
-                        mm_content = _generate_mindmap_mm(items, "智能骑行头盔 V1 功能框架")
-                        mm_path = EXPORT_DIR / f"mindmap_{task_id}.mm"
-                        mm_path.write_text(mm_content, encoding="utf-8")
-                        file_results["mm"] = str(mm_path)
-                        print(f"  ✅ .mm 文件: {mm_path}")
-                    except Exception as e:
-                        print(f"[File] .mm 生成失败: {e}")
+                # Bug 4: 停止生成 .mm 文件（已注释）
+                # if early_mm:
+                #     mm_path = EXPORT_DIR / f"mindmap_{task_id}.mm"
+                #     mm_path.write_text(early_mm, encoding="utf-8")
+                #     file_results["mm"] = str(mm_path)
+                #     print(f"  ✅ .mm 文件: {mm_path}")
+                # else:
+                #     try:
+                #         mm_content = _generate_mindmap_mm(items, "智能骑行头盔 V1 功能框架")
+                #         mm_path = EXPORT_DIR / f"mindmap_{task_id}.mm"
+                #         mm_path.write_text(mm_content, encoding="utf-8")
+                #         file_results["mm"] = str(mm_path)
+                #         print(f"  ✅ .mm 文件: {mm_path}")
+                #     except Exception as e:
+                #         print(f"[File] .mm 生成失败: {e}")
 
                 # 保存版本快照
                 try:
@@ -4836,8 +4943,9 @@ def try_structured_doc_fast_track(
                     send_files.append(("交互脑图", file_results["mindmap_html"]))
                 if file_results.get("prd_html"):
                     send_files.append(("交互PRD", file_results["prd_html"]))
-                if file_results.get("mm"):
-                    send_files.append(("FreeMind脑图", file_results["mm"]))
+                # Bug 4: 停止发送 .mm 文件（已注释）
+                # if file_results.get("mm"):
+                #     send_files.append(("FreeMind脑图", file_results["mm"]))
 
                 def _send_one(name_path):
                     name, path = name_path
