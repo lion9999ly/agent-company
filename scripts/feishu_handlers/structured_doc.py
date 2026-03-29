@@ -96,27 +96,53 @@ def _get_anchor_sub_features(anchor: dict, module_name: str) -> str:
     """
     获取 anchor 中某个模块的 sub_features 和 existing_l2，
     拼接成字符串注入到 _gen_one 的 prompt 中。
+    B3: 强化提醒语气
+    B4: 拆解子模块过滤 existing_l2 避免撞 4096
     """
+    # B4: 检测是否是拆解子模块
+    is_split = '-' in module_name
+    parent_name = module_name.rsplit('-', 1)[0] if is_split else module_name
+    suffix = module_name.rsplit('-', 1)[1] if is_split else ''
+
     for section in ['hud_modules', 'app_modules', 'cross_cutting']:
         for mod in anchor.get(section, []):
-            if mod.get('name') == module_name:
+            if mod.get('name') == parent_name or mod.get('name') == module_name:
                 parts = []
 
                 sub = mod.get('sub_features', [])
                 if sub:
-                    parts.append("【新增/重点功能】\n" + '\n'.join(f'- {s}' for s in sub))
+                    # B3: 更强的指令语气
+                    parts.append("【⚠️ 以下功能点必须全部出现在输出中，缺一不可 ⚠️】")
+                    for i, s in enumerate(sub, 1):
+                        parts.append(f'{i}. {s}')
+                    parts.append(f"\n以上 {len(sub)} 个功能点中的每一个，至少对应输出 1 条 L2 或 L3 功能。如果某个功能点未出现在你的输出中，视为不合格。")
 
                 existing = mod.get('existing_l2', [])
                 if existing:
-                    parts.append("【已有L2维度（保留并深化）】\n" + '\n'.join(f'- {e}' for e in existing))
+                    if is_split:
+                        # B4: 拆解子模块：只保留相关的 existing_l2（最多 5 条）
+                        suffix_keywords = {
+                            '核心功能': ['核心', '功能', '规格', '展示', '显示', '控制'],
+                            '交互与状态': ['交互', '状态', '反馈', 'HUD', '语音', '按键'],
+                            '异常与边界': ['异常', '降级', '故障', '恢复', '边界', '兜底', '低电'],
+                        }
+                        keywords = suffix_keywords.get(suffix, [])
+                        filtered = [e for e in existing if any(kw in e for kw in keywords)]
+                        if not filtered:
+                            filtered = existing[:5]  # 兜底取前5
+                        parts.append(f"\n【相关L2维度（仅 {suffix} 相关）】")
+                        parts.append(', '.join(filtered[:5]))
+                    else:
+                        parts.append("\n【已有L2维度（保留并深化，但优先级低于上述必须功能点）】")
+                        parts.append(', '.join(existing))
 
                 notes = mod.get('notes', '')
                 if notes:
-                    parts.append(f"【设计备注】{notes}")
+                    parts.append(f"\n【设计备注】{notes}")
 
                 ref = mod.get('reference', '')
                 if ref:
-                    parts.append(f"【参考】{ref}")
+                    parts.append(f"\n【参考】{ref}")
 
                 return '\n'.join(parts)
 
@@ -812,7 +838,138 @@ def _write_flow_sheet(wb, flow_diagrams: list):
     print(f"  OK Flow Sheet: {len(flow_diagrams)} diagrams")
 
     ws.freeze_panes = "A2"
-    ws.auto_filter.ref = f"A1:{get_column_letter(len(headers))}{len(items) + 1}"
+    if flow_diagrams:
+        ws.auto_filter.ref = f"A1:{get_column_letter(len(headers))}{len(flow_diagrams) + 1}"
+
+
+# ===== B5: 用户旅程和 AI 场景表 =====
+def _generate_user_journeys(anchor: dict) -> list:
+    """
+    基于 anchor 中的 user_journeys 配置，生成 Mermaid journey 图。
+    不需要调 LLM — 数据已经在 anchor 中结构化了，直接拼 Mermaid 语法。
+    """
+    journey_configs = anchor.get('user_journeys', [])
+    if not journey_configs:
+        print("[UserJourney] anchor 中无用户旅程配置，跳过")
+        return []
+
+    print(f"[UserJourney] 开始生成 {len(journey_configs)} 个角色旅程图...")
+
+    results = []
+
+    for j in journey_configs:
+        role = j.get('role', '')
+        persona = j.get('persona', '')
+        stages = j.get('journey', [])
+
+        # 拼 Mermaid journey 语法
+        lines = [f'journey', f'    title {role}']
+
+        for stage in stages:
+            stage_name = stage.get('stage', '')
+            touchpoints = stage.get('touchpoints', [])
+            lines.append(f'    section {stage_name}')
+
+            for i, tp in enumerate(touchpoints):
+                # journey 语法: 任务名: 满意度(1-5): 角色
+                # 用阶段位置模拟满意度递增（前期低=学习成本，后期高=获得价值）
+                score = min(5, 3 + (i // 2))
+                # 简化触点文本（去掉括号内容，限长）
+                tp_short = tp.split('（')[0].split('(')[0][:25]
+                lines.append(f'        {tp_short}: {score}: {role.split("（")[0]}')
+
+        mermaid_code = '\n'.join(lines)
+
+        total_touchpoints = sum(len(s.get('touchpoints', [])) for s in stages)
+
+        results.append({
+            'role': role,
+            'persona': persona,
+            'mermaid_code': mermaid_code,
+            'stages_count': len(stages),
+            'touchpoints_count': total_touchpoints,
+        })
+
+        print(f"  ✅ {role}: {len(stages)} 阶段, {total_touchpoints} 触点")
+
+    print(f"[UserJourney] 完成: {len(results)} 个角色旅程")
+    return results
+
+
+def _write_journey_sheet(wb, journeys: list):
+    """写入用户旅程 Sheet"""
+    if not journeys:
+        return
+
+    ws = wb.create_sheet('用户旅程')
+
+    headers = ['角色', '画像', '阶段数', '触点数', 'Mermaid代码']
+    from openpyxl.styles import Font, PatternFill, Alignment
+
+    header_fill = PatternFill('solid', fgColor='5A67D8')
+    header_font = Font(bold=True, color='FFFFFF', size=11)
+
+    for col, header in enumerate(headers, 1):
+        cell = ws.cell(row=1, column=col, value=header)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = Alignment(horizontal='center')
+
+    for i, j in enumerate(journeys, 2):
+        ws.cell(row=i, column=1, value=j['role'])
+        ws.cell(row=i, column=2, value=j['persona'])
+        ws.cell(row=i, column=3, value=j['stages_count'])
+        ws.cell(row=i, column=4, value=j['touchpoints_count'])
+        cell = ws.cell(row=i, column=5, value=j['mermaid_code'])
+        cell.alignment = Alignment(wrap_text=True)
+
+    ws.column_dimensions['A'].width = 25
+    ws.column_dimensions['B'].width = 40
+    ws.column_dimensions['C'].width = 8
+    ws.column_dimensions['D'].width = 8
+    ws.column_dimensions['E'].width = 80
+
+    print(f"  ✅ 用户旅程 Sheet: {len(journeys)} 个角色")
+
+
+def _write_ai_scenarios_sheet(wb, anchor: dict):
+    """写入主动AI场景 Sheet"""
+    scenarios = anchor.get('ai_proactive_scenarios', [])
+    if not scenarios:
+        return
+
+    ws = wb.create_sheet('主动AI场景')
+
+    headers = ['场景名称', '触发条件', '系统动作', '所需数据', '用户控制']
+    from openpyxl.styles import Font, PatternFill, Alignment
+
+    header_fill = PatternFill('solid', fgColor='38A169')
+    header_font = Font(bold=True, color='FFFFFF', size=11)
+
+    for col, header in enumerate(headers, 1):
+        cell = ws.cell(row=1, column=col, value=header)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = Alignment(horizontal='center')
+
+    for i, s in enumerate(scenarios, 2):
+        ws.cell(row=i, column=1, value=s.get('scenario', ''))
+        ws.cell(row=i, column=2, value=s.get('trigger', ''))
+        ws.cell(row=i, column=3, value=s.get('action', ''))
+        data_needed = s.get('data_needed', [])
+        ws.cell(row=i, column=4, value=', '.join(data_needed) if isinstance(data_needed, list) else str(data_needed))
+        ws.cell(row=i, column=5, value=s.get('user_control', ''))
+        # 每列自动换行
+        for col in range(1, 6):
+            ws.cell(row=i, column=col).alignment = Alignment(wrap_text=True, vertical='top')
+
+    ws.column_dimensions['A'].width = 22
+    ws.column_dimensions['B'].width = 45
+    ws.column_dimensions['C'].width = 45
+    ws.column_dimensions['D'].width = 30
+    ws.column_dimensions['E'].width = 30
+
+    print(f"  ✅ 主动AI场景 Sheet: {len(scenarios)} 个场景")
 
 
 def _compare_prd_versions(old_path: str, new_path: str) -> str:
@@ -1304,11 +1461,15 @@ def _truncate_list(data: List[Dict], max_len: int = 120) -> List[Dict]:
     return result
 
 
-def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None, title: str = "智能骑行头盔 V1 PRD 规格书") -> str:
+def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None, title: str = "智能骑行头盔 V1 PRD 规格书", anchor: dict = None) -> str:
     """生成交互式 HTML PRD(可搜索、可筛选、可展开)"""
     import json as _json
 
     # 准备数据(压缩后减少 HTML体积)
+    # B5: 添加用户旅程和 AI 场景数据
+    user_journeys = _generate_user_journeys(anchor) if anchor else []
+    ai_scenarios = anchor.get('ai_proactive_scenarios', []) if anchor else []
+
     all_data = {
         "features": _truncate_list(items),
         "state_scenarios": _truncate_list(extra_sheets.get("state", [])) if extra_sheets else [],
@@ -1321,6 +1482,8 @@ def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None,
         "page_mapping": _truncate_list(extra_sheets.get("page_mapping", [])) if extra_sheets else [],
         "dev_tasks": _truncate_list(extra_sheets.get("dev_tasks", [])) if extra_sheets else [],
         "flow_diagrams": extra_sheets.get("flow_diagrams", []) if extra_sheets else [],
+        "user_journeys": user_journeys,
+        "ai_scenarios": ai_scenarios,
     }
 
     data_json = _json.dumps(all_data, ensure_ascii=False)
@@ -1488,6 +1651,9 @@ const TAB_CONFIG = [
     {{id: "page_mapping", label: "页面映射", type: "table"}},
     {{id: "dev_tasks", label: "开发任务", type: "table"}},
     {{id: "flow", label: "关键流程", type: "flow"}},
+    // B5: 新增用户旅程和AI场景Tab
+    {{id: "journey", label: "用户旅程", type: "table"}},
+    {{id: "ai_scenarios", label: "主动AI场景", type: "table"}},
 ];
 
 // 分组功能清单
@@ -1520,6 +1686,8 @@ function buildTabs() {{
         else if (tab.id === 'test_cases') count = (DATA.test_cases || []).length;
         else if (tab.id === 'page_mapping') count = (DATA.page_mapping || []).length;
         else if (tab.id === 'dev_tasks') count = (DATA.dev_tasks || []).length;
+        else if (tab.id === 'journey') count = (DATA.user_journeys || []).length;
+        else if (tab.id === 'ai_scenarios') count = (DATA.ai_scenarios || []).length;
 
         el.innerHTML = `${{tab.label}}<span class="badge">${{count}}</span>`;
         el.onclick = () => switchTab(tab.id);
@@ -1631,9 +1799,10 @@ function buildTableView(id) {{
         colWidths = ['10%','12%','14%','14%','14%','14%','14%','8%'];
     }} else if (id === 'light') {{
         data = DATA.light_effects;
-        headers = ['场景','颜色','模式','频率','时长','优先级','备注'];
-        keys = ['trigger','color','mode','frequency','duration','priority','note'];
-        colWidths = ['14%','10%','12%','10%','10%','8%','26%'];
+        // B2: 增加 "作用灯区" 列
+        headers = ['场景','颜色','模式','频率','时长','灯区','优先级','备注'];
+        keys = ['trigger','color','mode','frequency','duration','lamp_zone','priority','note'];
+        colWidths = ['12%','8%','10%','8%','10%','12%','8%','22%'];
     }} else if (id === 'voice_nav') {{
         data = DATA.voice_nav;
         headers = ['场景','触发','用户输入','AI动作','HUD显示','语音播报','灯光反馈','异常兜底','优先级','备注'];
@@ -1659,6 +1828,18 @@ function buildTableView(id) {{
         headers = ['任务ID','功能','描述','角色','工时','依赖','迭代','优先级','备注'];
         keys = ['task_id','feature','task','assignee','effort_days','dependency','sprint','priority','note'];
         colWidths = ['10%','12%','20%','10%','8%','12%','10%','6%','22%'];
+    }} else if (id === 'journey') {{
+        // B5: 用户旅程表
+        data = DATA.user_journeys || [];
+        headers = ['角色','画像','阶段数','触点数','Mermaid代码'];
+        keys = ['role','persona','stages_count','touchpoints_count','mermaid_code'];
+        colWidths = ['18%','30%','8%','8%','36%'];
+    }} else if (id === 'ai_scenarios') {{
+        // B5: AI场景表
+        data = DATA.ai_scenarios || [];
+        headers = ['场景名称','触发条件','系统动作','所需数据','用户控制'];
+        keys = ['scenario','trigger','action','data_needed','user_control'];
+        colWidths = ['18%','25%','25%','18%','14%'];
     }}
 
     if (!data || data.length === 0) return '<p style="padding:20px;color:#999;">暂无数据</p>';
@@ -1963,24 +2144,27 @@ def _gen_sheet5_button_mapping(gateway) -> List[Dict]:
 def _gen_sheet6_light_effects(gateway) -> List[Dict]:
     """生成 Sheet 6: 灯效定义表"""
 
+    # B2: 增加 lamp_zone 字段
     prompt = (
         "为智能摩托车全盔项目生成【氛围灯灯效定义表】.\n"
-        "头盔有后部氛围灯带,支持 RGB 颜色和多种闪烁模式.\n"
+        "头盔有多区域氛围灯:后脑勺灯(制动/转向/后向告警)、眼下方灯(状态/通知反馈)、隐私灯(录像指示).\n"
         "输出 JSON 数组,每个元素格式:\n"
         '{"trigger":"触发场景","color":"灯光颜色(如红/蓝/绿/白/橙/紫)",'
         '"mode":"闪烁模式(常亮/慢闪/快闪/呼吸/流水/脉冲)",'
         '"frequency":"频率(Hz,常亮填0)","duration":"持续时长",'
         '"priority":"优先级(P0-P3,高优先级覆盖低优先级)",'
+        '"lamp_zone":"作用灯区(后脑勺灯/眼下方灯/双灯区/隐私灯)",'
         '"note":"备注"}\n\n'
         "必须覆盖:\n"
         "1. 系统状态:开机、关机、充电中、充电完成、低电量、OTA中\n"
         "2. 连接状态:蓝牙配对中、配对成功、断连、回连\n"
-        "3. 安全预警:前向碰撞(红快闪)、侧后来车(橙方向闪)、盲区(黄)\n"
-        "4. 通信提醒:来电(蓝呼吸)、消息(白单闪)、组队成功(绿)\n"
-        "5. 录制状态:录制中(红微亮)、录制暂停、录制异常\n"
-        "6. 骑行辅助:刹车灯效(红常亮)、转向灯效(橙流水)、掉队提醒\n"
-        "7. 特殊场景:SOS(红蓝交替快闪)、夜骑尾灯模式\n\n"
+        "3. 安全预警:前向碰撞(红快闪,后脑勺灯)、侧后来车(橙方向闪,后脑勺灯)、盲区(黄,后脑勺灯)\n"
+        "4. 通信提醒:来电(蓝呼吸,眼下方灯)、消息(白单闪,眼下方灯)、组队成功(绿,双灯区)\n"
+        "5. 录制状态:录制中(红微亮,隐私灯)、录制暂停、录制异常\n"
+        "6. 骑行辅助:刹车灯效(红常亮,后脑勺灯)、转向灯效(橙流水,后脑勺灯)、掉队提醒\n"
+        "7. 特殊场景:SOS(红蓝交替快闪,双灯区)、夜骑尾灯模式\n\n"
         "灯效优先级规则:安全>通信>系统>装饰.\n"
+        "lamp_zone 必须明确标注,不漏.\n"
         "目标 25-35 条.只输出 JSON 数组.\n"
     )
 
@@ -2928,11 +3112,12 @@ def _remove_placeholder_rows(rows: list, prev_version_map: dict = None) -> list:
 
 
 # === Excel 导出 ===
-def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, extra_sheets: Dict = None, audit_issues: List[Dict] = None, version_info: Dict = None, flow_diagrams: list = None) -> str:
+def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, extra_sheets: Dict = None, audit_issues: List[Dict] = None, version_info: Dict = None, flow_diagrams: list = None, anchor: dict = None) -> str:
     """导出功能清单到 Excel 文件(支持 6 个 Sheet)
 
     Args:
         version_info: 可选的版本信息字典，包含 prev_version, new_modules, updated_modules 等
+        anchor: B5: 用于生成用户旅程和 AI 场景表
     """
     try:
         from openpyxl import Workbook
@@ -3051,10 +3236,11 @@ def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, e
 
         if extra_sheets.get("light"):
             ws6 = wb.create_sheet("灯效定义表")
+            # B2: 增加 "作用灯区" 列
             _write_generic_sheet(ws6, extra_sheets["light"],
-                ["触发场景", "灯光颜色", "闪烁模式", "频率Hz", "持续时长", "优先级", "备注"],
-                ["trigger", "color", "mode", "frequency", "duration", "priority", "note"],
-                [24, 12, 16, 10, 14, 8, 20])
+                ["触发场景", "灯光颜色", "闪烁模式", "频率Hz", "持续时长", "作用灯区", "优先级", "备注"],
+                ["trigger", "color", "mode", "frequency", "duration", "lamp_zone", "priority", "note"],
+                [24, 12, 16, 10, 14, 14, 8, 20])
 
         # Sheet 7: AI语音导航场景
         if extra_sheets.get("voice_nav"):
@@ -3164,6 +3350,13 @@ def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, e
     # Sheet 14: 关键流程(如果有)
     if flow_diagrams:
         _write_flow_sheet(wb, flow_diagrams)
+
+    # B5: Sheet 15/16: 用户旅程和 AI 场景(如果有 anchor)
+    if anchor:
+        user_journeys = _generate_user_journeys(anchor)
+        if user_journeys:
+            _write_journey_sheet(wb, user_journeys)
+        _write_ai_scenarios_sheet(wb, anchor)
 
     # 保存
     xlsx_path = EXPORT_DIR / f"{filename_prefix}.xlsx"
@@ -4209,7 +4402,7 @@ def try_structured_doc_fast_track(
                     flow_data = extra_sheets.get('flow_diagrams', []) if extra_sheets else []
                     return _export_to_excel(items, f"prd_{task_id}", text[:50],
                                            extra_sheets=extra_sheets, audit_issues=audit_issues,
-                                           flow_diagrams=flow_data)
+                                           flow_diagrams=flow_data, anchor=anchor)
 
                 def _make_xmind():
                     data = _generate_mindmap_xmind(items, "智能骑行头盔 V1 功能框架")
@@ -4227,7 +4420,7 @@ def try_structured_doc_fast_track(
                     return str(path)
 
                 def _make_prd_html():
-                    content = _generate_interactive_prd_html(items, extra_sheets, "智能骑行头盔 V1 PRD 规格书")
+                    content = _generate_interactive_prd_html(items, extra_sheets, "智能骑行头盔 V1 PRD 规格书", anchor)
                     path = EXPORT_DIR / f"prd_interactive_{task_id}.html"
                     path.write_text(content, encoding="utf-8")
                     return str(path)
