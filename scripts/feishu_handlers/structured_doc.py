@@ -293,6 +293,20 @@ def _normalize_all_rows(rows: list, normalize_map: dict, anchor: dict = None) ->
     return deduped
 # ===== End A2 =====
 
+# ===== 强制归一化函数 — 确保写入时名称正确 =====
+def _force_normalize(rows: list, normalize_map: dict) -> list:
+    """强制重命名 module 字段，确保写入时名称正确"""
+    renamed_count = 0
+    for row in rows:
+        for key in ['module', 'L1功能', 'l1_module', 'name']:
+            val = row.get(key, '')
+            if val and str(val) in normalize_map:
+                row[key] = normalize_map[str(val)]
+                renamed_count += 1
+    if renamed_count:
+        print(f"[ForceNormalize] 重命名 {renamed_count} 个字段")
+    return rows
+
 # ===== A3: HUD 新 4 列回填 =====
 def _backfill_hud_columns(hud_rows: list) -> list:
     """为缺少 HUD 新 4 列的行填充默认值"""
@@ -1091,16 +1105,23 @@ def _generate_user_journeys(anchor: dict) -> list:
     return results
 
 
-def _write_journey_sheet(wb, journeys: list):
-    """写入用户旅程 Sheet"""
-    if not journeys:
+def _write_journey_sheet(wb, journeys: list, anchor: dict = None):
+    """写入用户旅程 Sheet — 结构化表格，每个触点一行"""
+    if not anchor:
         return
+
+    journey_configs = anchor.get('user_journeys', [])
+    if not journey_configs:
+        print("[UserJourney] anchor 中无用户旅程配置，跳过")
+        return
+
+    from openpyxl.utils import get_column_letter
+    from openpyxl.styles import Font, PatternFill, Alignment
 
     ws = wb.create_sheet('用户旅程')
 
-    headers = ['角色', '画像', '阶段数', '触点数', 'Mermaid代码']
-    from openpyxl.styles import Font, PatternFill, Alignment
-
+    # 表头
+    headers = ['角色', '画像', '阶段', '触点', '阶段序号', '触点序号']
     header_fill = PatternFill('solid', fgColor='5A67D8')
     header_font = Font(bold=True, color='FFFFFF', size=11)
 
@@ -1110,19 +1131,41 @@ def _write_journey_sheet(wb, journeys: list):
         cell.font = header_font
         cell.alignment = Alignment(horizontal='center')
 
-    for i, j in enumerate(journeys, 2):
-        ws.cell(row=i, column=1, value=j['role'])
-        ws.cell(row=i, column=2, value=j['persona'])
-        ws.cell(row=i, column=3, value=j['stages_count'])
-        ws.cell(row=i, column=4, value=j['touchpoints_count'])
-        cell = ws.cell(row=i, column=5, value=j['mermaid_code'])
-        cell.alignment = Alignment(wrap_text=True)
+    # 数据行 — 从 anchor 直接读取结构化数据
+    row_idx = 2
+    for j in journey_configs:
+        role = j.get('role', '')
+        persona = j.get('persona', '')
+        stages = j.get('journey', [])
 
+        for s_idx, stage in enumerate(stages, 1):
+            stage_name = stage.get('stage', '')
+            touchpoints = stage.get('touchpoints', [])
+
+            for t_idx, tp in enumerate(touchpoints, 1):
+                ws.cell(row=row_idx, column=1, value=role)
+                ws.cell(row=row_idx, column=2, value=persona)
+                ws.cell(row=row_idx, column=3, value=stage_name)
+                ws.cell(row=row_idx, column=4, value=tp)
+                ws.cell(row=row_idx, column=5, value=s_idx)
+                ws.cell(row=row_idx, column=6, value=t_idx)
+
+                # 每行设置对齐
+                for col in range(1, 7):
+                    ws.cell(row=row_idx, column=col).alignment = Alignment(vertical='top', wrap_text=True)
+
+                row_idx += 1
+
+    # 列宽
     ws.column_dimensions['A'].width = 25
-    ws.column_dimensions['B'].width = 40
-    ws.column_dimensions['C'].width = 8
-    ws.column_dimensions['D'].width = 8
-    ws.column_dimensions['E'].width = 80
+    ws.column_dimensions['B'].width = 35
+    ws.column_dimensions['C'].width = 15
+    ws.column_dimensions['D'].width = 45
+    ws.column_dimensions['E'].width = 8
+    ws.column_dimensions['F'].width = 8
+
+    total_rows = row_idx - 2
+    print(f"  ✅ 用户旅程 Sheet: {len(journey_configs)} 角色, {total_rows} 行")
 
     print(f"  ✅ 用户旅程 Sheet: {len(journeys)} 个角色")
 
@@ -1696,7 +1739,23 @@ def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None,
 
     # 准备数据(压缩后减少 HTML体积)
     # B5: 添加用户旅程和 AI 场景数据
-    user_journeys = _generate_user_journeys(anchor) if anchor else []
+    # 修复 4: 用户旅程改为结构化数据
+    journey_data = []
+    if anchor:
+        for j in anchor.get('user_journeys', []):
+            role = j.get('role', '')
+            persona = j.get('persona', '')
+            stages = []
+            for stage in j.get('journey', []):
+                stages.append({
+                    'stage': stage.get('stage', ''),
+                    'touchpoints': stage.get('touchpoints', [])
+                })
+            journey_data.append({
+                'role': role,
+                'persona': persona,
+                'stages': stages
+            })
     ai_scenarios = anchor.get('ai_proactive_scenarios', []) if anchor else []
 
     all_data = {
@@ -1712,8 +1771,8 @@ def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None,
         "test_cases": _truncate_list(extra_sheets.get("test_cases", [])) if extra_sheets else [],
         "page_mapping": _truncate_list(extra_sheets.get("page_mapping", [])) if extra_sheets else [],
         "dev_tasks": _truncate_list(extra_sheets.get("dev_tasks", [])) if extra_sheets else [],
-        "flow_diagrams": extra_sheets.get("flow_diagrams", []) if extra_sheets else [],
-        "user_journeys": user_journeys,
+        "flow_diagrams": extra_sheets.get("flow", []) if extra_sheets else [],
+        "user_journeys": journey_data,
         "ai_scenarios": ai_scenarios,
     }
 
@@ -2071,28 +2130,28 @@ function toggleFlowBody(idx) {{
 function buildTableView(id) {{
     let data, headers, keys, colWidths;
     if (id === 'state') {{
-        data = DATA.state_scenarios;
+        data = DATA.state_scenarios || [];
         headers = ['前置状态','场景/操作','执行状态','HUD提示','灯光','语音','App提示','周期'];
         keys = ['pre_state','current','exec_state','hud','light','voice','app','cycle'];
         colWidths = ['12%','14%','12%','14%','10%','14%','14%','10%'];
     }} else if (id === 'voice') {{
-        data = DATA.voice_commands;
+        data = DATA.voice_commands || [];
         headers = ['分类','唤醒','用户说法','变体','系统动作','成功反馈','HUD反馈','失败反馈','优先级'];
         keys = ['category','wake','user_says','variants','action','success_voice','success_hud','fail_feedback','priority'];
         colWidths = ['10%','8%','14%','14%','14%','12%','10%','12%','6%'];
     }} else if (id === 'button') {{
-        data = DATA.button_mapping;
+        data = DATA.button_mapping || [];
         headers = ['按键','场景','单击','双击','长按','组合键','反馈','备注'];
         keys = ['button','scene','single_click','double_click','long_press','combo','feedback','note'];
         colWidths = ['10%','12%','14%','14%','14%','14%','14%','8%'];
     }} else if (id === 'light') {{
-        data = DATA.light_effects;
+        data = DATA.light_effects || [];
         // B2: 增加 "作用灯区" 列
         headers = ['场景','颜色','模式','频率','时长','灯区','优先级','备注'];
         keys = ['trigger','color','mode','frequency','duration','lamp_zone','priority','note'];
         colWidths = ['12%','8%','10%','8%','10%','12%','8%','22%'];
     }} else if (id === 'voice_nav') {{
-        data = DATA.voice_nav;
+        data = DATA.voice_nav || [];
         headers = ['场景','触发','用户输入','AI动作','HUD显示','语音播报','灯光反馈','异常兜底','优先级','备注'];
         keys = ['scene','trigger','user_input','ai_action','hud_display','voice_output','light_effect','fallback','priority','note'];
         colWidths = ['10%','8%','12%','12%','12%','12%','10%','12%','6%','8%'];
@@ -2128,6 +2187,8 @@ function buildTableView(id) {{
         headers = ['场景名称','触发条件','系统动作','所需数据','用户控制'];
         keys = ['scenario','trigger','action','data_needed','user_control'];
         colWidths = ['18%','25%','25%','18%','14%'];
+    }} else {{
+        data = [];
     }}
 
     if (!data || data.length === 0) return '<p style="padding:20px;color:#999;">暂无数据</p>';
@@ -3516,6 +3577,16 @@ def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, e
 
     print(f"[Placement] 分流结果: HUD {len(hud_items)} 条, App {len(app_items)} 条")
 
+    # 修复 1: 强制归一化，确保写入时名称正确
+    hud_items = _force_normalize(hud_items, normalize_map)
+    app_items = _force_normalize(app_items, normalize_map)
+
+    # 验证归一化结果
+    hud_modules = set(r.get('module', r.get('L1功能', '')) for r in hud_items)
+    app_modules = set(r.get('module', r.get('L1功能', '')) for r in app_items)
+    print(f"[ForceNormalize] HUD 模块: {sorted(hud_modules)}")
+    print(f"[ForceNormalize] App 模块: {sorted(app_modules)}")
+
     # A3: HUD 新 4 列回填
     hud_items = _backfill_hud_columns(hud_items)
 
@@ -3674,9 +3745,7 @@ def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, e
 
     # B5: Sheet 15/16: 用户旅程和 AI 场景(如果有 anchor)
     if anchor:
-        user_journeys = _generate_user_journeys(anchor)
-        if user_journeys:
-            _write_journey_sheet(wb, user_journeys)
+        _write_journey_sheet(wb, [], anchor)  # 修复 4: 直接从 anchor 读取结构化数据
         _write_ai_scenarios_sheet(wb, anchor)
 
     # 保存
@@ -4847,7 +4916,7 @@ def try_structured_doc_fast_track(
                 early_svg = early_mindmap_result.get("svg")
 
                 def _make_excel():
-                    flow_data = extra_sheets.get('flow_diagrams', []) if extra_sheets else []
+                    flow_data = extra_sheets.get('flow', []) if extra_sheets else []
                     return _export_to_excel(items, f"prd_{task_id}", text[:50],
                                            extra_sheets=extra_sheets, audit_issues=audit_issues,
                                            flow_diagrams=flow_data, anchor=anchor)
