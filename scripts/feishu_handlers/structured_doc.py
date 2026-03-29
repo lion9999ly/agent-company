@@ -1612,6 +1612,16 @@ def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None,
         else:
             app_features.append(item)
 
+    # Bug 3 修复: 分流后归一化（防止分流带入旧名称）
+    if anchor:
+        normalize_map = anchor.get('module_normalize', {})
+    else:
+        normalize_map = {}
+    normalize_map.update(MODULE_NAME_NORMALIZE)
+    hud_features = _normalize_all_rows(hud_features, normalize_map)
+    app_features = _normalize_all_rows(app_features, normalize_map)
+    print(f"[Normalize-HTML] 分流后: HUD {len(hud_features)}, App {len(app_features)}")
+
     print(f"[HTML] HUD 功能: {len(hud_features)}, App 功能: {len(app_features)}")
 
     # 准备数据(压缩后减少 HTML体积)
@@ -1934,6 +1944,45 @@ function buildTreeView(features, isHud = false) {{
     if (currentL1) l1Html += '</div></div>';
 
     return html + l1Html;
+}}
+
+function buildFlowView() {{
+    const flows = DATA.flow_diagrams || [];
+    if (!flows.length) return '<p style="padding:20px;color:#999;">暂无流程图数据</p>';
+
+    let html = '';
+    flows.forEach((f, i) => {{
+        const mermaidCode = f.mermaid_code || '';
+        const desc = f.description || f.trigger || '';
+        html += `
+            <div class="flow-card">
+                <div class="flow-header" onclick="toggleFlowBody(${{i}})">
+                    <span class="flow-title">${{f.name || '流程图' + i}}</span>
+                    <span class="flow-meta">${{desc}}</span>
+                    <span class="flow-toggle">展开</span>
+                </div>
+                <div class="flow-body" id="flow-body-${{i}}" style="display:none;">
+                    <div class="mermaid">${{mermaidCode}}</div>
+                </div>
+            </div>`;
+    }});
+    return html;
+}}
+
+function toggleFlowBody(idx) {{
+    const body = document.getElementById('flow-body-' + idx);
+    const header = body.previousElementSibling;
+    const toggle = header.querySelector('.flow-toggle');
+    if (body.style.display === 'none') {{
+        body.style.display = 'block';
+        toggle.textContent = '折叠';
+        if (typeof mermaid !== 'undefined') {{
+            try {{ mermaid.run({{ nodes: body.querySelectorAll('.mermaid') }}); }} catch(e) {{}}
+        }}
+    }} else {{
+        body.style.display = 'none';
+        toggle.textContent = '展开';
+    }}
 }}
 
 function buildTableView(id) {{
