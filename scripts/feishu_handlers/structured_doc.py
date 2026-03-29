@@ -478,8 +478,8 @@ MODULE_NAME_NORMALIZE = {
     '我的首页与个人中心': '我的Tab',
     '我的首页与账户中心': '我的Tab',  # 新增
     '我的': '我的Tab',
-    'App-社区': '社区Tab',
-    '社区': '社区Tab',
+    'App-社区': '社区',
+    '社区Tab': '社区',  # Fix 2: 修正方向，将社区Tab归一化为社区
     'App-商城': '商城',
     'App-设备': '设备Tab',
     '设备连接与管理': '设备Tab',
@@ -882,6 +882,14 @@ def _clean_mermaid_code(code: str) -> str:
     code = code.replace('"', '"').replace('"', '"')
     code = code.replace(''', "'").replace(''', "'")
 
+    # Fix 1: 统一 HTML 转义
+    code = code.replace('&lt;br/&gt;', '<br/>')
+    code = code.replace('&amp;lt;br/&amp;gt;', '<br/>')
+
+    # Fix 1: 去掉节点标签内的 <br/>[xxx] 标注 → " - xxx"
+    code = re.sub(r'<br/>\[([^\]]+)\]', r' - \1', code)
+    code = re.sub(r'<br/>\(([^)]+)\)', r' - \1', code)
+
     # Mermaid 节点中不能有裸的 < > & 字符
     lines = code.split('\n')
     cleaned = []
@@ -894,6 +902,21 @@ def _clean_mermaid_code(code: str) -> str:
         # 在 [] () {} 内的文字中转义
         line = re.sub(r'\[([^\]]*)<([^\]]*)\]', r'[\1&lt;\2]', line)
         line = re.sub(r'\[([^\]]*)>([^\]]*)\]', r'[\1&gt;\2]', line)
+
+        # Fix 1: 修复嵌套方括号 A[xxx[yyy]] → A[xxx - yyy]
+        # 匹配节点定义行并修复嵌套方括号
+        if re.match(r'\s*\w+\[', stripped):
+            # 找到第一个 [ 后的内容
+            bracket_match = re.search(r'\[', stripped)
+            if bracket_match:
+                bracket_start = bracket_match.start()
+                content = stripped[bracket_start + 1:]
+                # 检查是否有嵌套 [ 且不是最后的 ]
+                if '[' in content[:-1]:
+                    # 将嵌套的 [] 替换为 ()
+                    content = re.sub(r'\[([^\]]*)\]', r'(\1)', content)
+                    line = stripped[:bracket_start + 1] + content
+
         cleaned.append(line)
 
     code = '\n'.join(cleaned)
@@ -1763,6 +1786,18 @@ def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None,
         "user_journeys": journey_data,
         "ai_scenarios": ai_scenarios,
     }
+
+    # Fix 4: 一致性校验 - 确保 features = hud_features + app_features
+    total = len(all_data.get('features', []))
+    hud_count = len(all_data.get('hud_features', []))
+    app_count = len(all_data.get('app_features', []))
+    if total != hud_count + app_count:
+        print(f"[ConsistCheck] ⚠️ features({total}) ≠ hud({hud_count}) + app({app_count}), 差{total - hud_count - app_count}条")
+        # 强制修正
+        all_data['features'] = all_data['hud_features'] + all_data['app_features']
+        print(f"[ConsistCheck] 已修正 features = {len(all_data['features'])}")
+    else:
+        print(f"[ConsistCheck] ✅ features={total} = hud({hud_count}) + app({app_count})")
 
     data_json = _json.dumps(all_data, ensure_ascii=False)
 
@@ -4458,6 +4493,14 @@ def try_structured_doc_fast_track(
                         print(f"  [GenOne] {name} LLM 返回失败: {error_msg}")
                         print(f"  [GenOne] {name} prompt 长度: {len(batch_user_prompt)} 字")
                         return []
+
+                    # Fix 3: 截断检测
+                    finish_reason = result.get("finish_reason", "")
+                    if finish_reason == "length":
+                        usage = result.get("usage", {})
+                        print(f"  [TruncGuard] ⚠️ {name} 输出被截断 (tokens={usage.get('completion_tokens', '?')})")
+                        # 不再重试，标记为需要 AutoSplit
+                        return []  # 返回空会触发上层的 AutoSplit 重试
 
                     response = result.get("response", "")
                     if len(response) < 50:
