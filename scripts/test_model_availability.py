@@ -1,4 +1,5 @@
 """逐个测试 model_registry 中所有模型的可用性"""
+import os
 import sys
 from pathlib import Path
 
