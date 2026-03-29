@@ -1,12 +1,13 @@
 """
 @description: JDM供应商选型深度研究 - 完整研究报告生成
 @dependencies: src.utils.model_gateway, src.tools.knowledge_base, src.tools.tool_registry
-@last_modified: 2026-03-26
+@last_modified: 2026-03-29
 """
 import json
 import time
 import re
 import sys
+import yaml
 from pathlib import Path
 from datetime import datetime
 
@@ -19,6 +20,324 @@ from src.utils.progress_heartbeat import ProgressHeartbeat
 
 registry = ToolRegistry()
 gateway = get_model_gateway()
+
+
+# ============================================================
+# 模型路由辅助函数 —— 深度研究专用模型分层配置
+# ============================================================
+# 注意：不使用 Claude 系列模型
+
+def _get_model_for_role(role: str) -> str:
+    """深度研究流程中，各角色使用的模型"""
+    role_model_map = {
+        "CTO": "o3",                      # 最强推理，技术参数分析
+        "CMO": "o3_deep_research",        # 深度研究专用模型
+        "CDO": "gemini_3_1_pro",          # 多模态强，适合设计分析
+        "CPO": "o3",                      # 整合需要强推理
+    }
+    return role_model_map.get(role.upper(), "gpt_5_4")
+
+
+def _get_model_for_task(task_type: str) -> str:
+    """各任务环节使用的模型"""
+    task_model_map = {
+        "discovery": "gemini_2_5_flash",          # 发现层：轻量快速
+        "query_generation": "gemini_2_5_flash",   # 搜索词生成：轻量
+        "data_extraction": "gemini_2_5_flash",    # 结构化提取：中等
+        "role_assign": "gemini_2_5_flash",        # 角色分配：简单JSON
+        "synthesis": "o3",                        # 整合：强推理
+        "re_synthesis": "o3",                     # 重整合：强推理
+        "final_synthesis": "o3",                  # 最终整合：强推理
+        "critic_challenge": "gemini_3_1_pro",     # Critic挑战：强推理
+        "knowledge_extract": "gemini_2_5_flash",  # 知识提取：轻量
+        "fix": "gpt_5_4",                         # 修复：中等模型
+        "cdo_fix": "gemini_2_5_pro",              # CDO修复：Gemini稳定版
+    }
+    return task_model_map.get(task_type, "gpt_5_4")
+
+
+def _call_model(model_name: str, prompt: str, system_prompt: str = None, task_type: str = "general") -> dict:
+    """统一的模型调用入口，根据模型名自动选择调用方式"""
+    cfg = gateway.models.get(model_name)
+    if not cfg:
+        return {"success": False, "error": f"Unknown model: {model_name}"}
+
+    if cfg.provider == "google":
+        return gateway.call_gemini(model_name, prompt, system_prompt, task_type)
+    elif cfg.provider == "azure_openai":
+        return gateway.call_azure_openai(model_name, prompt, system_prompt, task_type)
+    else:
+        return gateway.call(model_name, prompt, system_prompt, task_type)
+
+
+# ============================================================
+# 专家框架匹配与知识库检索
+# ============================================================
+
+def _match_expert_framework(task_goal: str, task_title: str) -> dict:
+    """根据任务关键词匹配专家框架"""
+    config_path = Path(__file__).parent.parent / "src" / "config" / "expert_frameworks.yaml"
+    if not config_path.exists():
+        return {}
+
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            frameworks = yaml.safe_load(f)
+    except:
+        return {}
+
+    combined_text = task_goal + " " + task_title
+
+    best_match = None
+    best_score = 0
+
+    for name, fw in frameworks.items():
+        if name == 'general_research':
+            continue
+        score = sum(1 for kw in fw.get('match_keywords', []) if kw in combined_text)
+        if score > best_score:
+            best_score = score
+            best_match = name
+
+    if best_match and best_score > 0:
+        return frameworks[best_match]
+    return frameworks.get('general_research', {})
+
+
+def _get_kb_context_enhanced(task_goal: str, task_title: str) -> str:
+    """从知识库检索与任务相关的高质量知识条目（增强版）"""
+    queries = []
+    # 从任务目标提取关键词
+    # 提取中文关键词
+    keywords = re.findall(r'[\u4e00-\u9fff]{2,6}', task_goal)[:10]
+    # 提取英文技术词
+    tech_terms = re.findall(r'[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*|[A-Z]{2,}', task_goal)[:5]
+
+    queries = keywords[:5] + tech_terms[:3] + [task_title]
+
+    all_entries = []
+    seen_ids = set()
+
+    for q in queries:
+        # 从 KB_ROOT 目录检索
+        for f in KB_ROOT.rglob("*.json"):
+            try:
+                data = json.loads(f.read_text(encoding="utf-8"))
+                content = data.get("content", "")
+                t = data.get("title", "")
+                tags = data.get("tags", [])
+                confidence = data.get("confidence", "")
+
+                # 关键词匹配
+                if q.lower() in t.lower() or q.lower() in content[:500].lower():
+                    entry_id = str(f)
+                    if entry_id not in seen_ids:
+                        seen_ids.add(entry_id)
+                        all_entries.append({
+                            "title": t,
+                            "content": content[:500],
+                            "confidence": confidence,
+                            "tags": tags
+                        })
+            except:
+                continue
+
+    # 按 confidence 排序，取 top 15
+    conf_order = {"authoritative": 3, "high": 2, "medium": 1, "low": 0}
+    all_entries.sort(key=lambda x: conf_order.get(x.get('confidence', ''), 0), reverse=True)
+    top_entries = all_entries[:15]
+
+    if not top_entries:
+        return ""
+
+    result = ""
+    for entry in top_entries:
+        result += f"\n[KB] {entry['title']}: {entry['content'][:300]}"
+
+    return result[:3000]
+
+
+# ============================================================
+# 结构化数据提取 Schema
+# ============================================================
+
+OPTICAL_BENCHMARK_SCHEMA = {
+    "product": "string - 产品名称",
+    "manufacturer": "string - 制造商",
+    "product_type": "string - helmet_integrated / clip_on / smartglasses",
+    "display_tech": {"value": "string|null", "source": "string", "confidence": "high|medium|low"},
+    "fov_diagonal_deg": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "fov_horizontal_deg": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "resolution": {"value": "string|null", "source": "string", "confidence": "high|medium|low"},
+    "brightness_panel_nits": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "brightness_eye_nits": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "eye_box_mm": {"value": "string|null", "source": "string", "confidence": "high|medium|low"},
+    "virtual_image_distance_m": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "battery_hours": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "weight_g": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "price_usd": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "display_position": {"value": "string|null - right_eye/left_eye/binocular/visor", "source": "string", "confidence": "high|medium|low"},
+    "status": "string - on_sale / announced / prototype / discontinued",
+    "notable_issues": "string|null - 已知问题或用户投诉",
+    "data_gaps": ["string - 哪些参数搜不到"]
+}
+
+LAYOUT_ANALYSIS_SCHEMA = {
+    "product": "string",
+    "hud_position": {"value": "string|null - 描述显示区域在视野中的位置", "source": "string", "confidence": "high|medium|low"},
+    "info_layout": {"value": "string|null - 全屏/分区/单角/多角/底部条", "source": "string", "confidence": "high|medium|low"},
+    "simultaneous_elements": {"value": "number|null - 同时显示最多几个信息元素", "source": "string", "confidence": "high|medium|low"},
+    "priority_mechanism": {"value": "string|null - 信息优先级切换方式", "source": "string", "confidence": "high|medium|low"},
+    "direction_indication": {"value": "string|null - 是否支持方向指示（预警方向）", "source": "string", "confidence": "high|medium|low"}
+}
+
+HARDWARE_LAYOUT_SCHEMA = {
+    "product": "string",
+    "button_count": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "button_position": {"value": "string|null", "source": "string", "confidence": "high|medium|low"},
+    "battery_position": {"value": "string|null", "source": "string", "confidence": "high|medium|low"},
+    "battery_capacity_mah": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "camera_position": {"value": "string|null", "source": "string", "confidence": "high|medium|low"},
+    "camera_specs": {"value": "string|null", "source": "string", "confidence": "high|medium|low"},
+    "total_weight_g": {"value": "number|null", "source": "string", "confidence": "high|medium|low"},
+    "charging_port": {"value": "string|null", "source": "string", "confidence": "high|medium|low"},
+    "led_light_position": {"value": "string|null", "source": "string", "confidence": "high|medium|low"},
+    "certification": {"value": "string|null", "source": "string", "confidence": "high|medium|low"}
+}
+
+GENERAL_SCHEMA = {
+    "topic": "string",
+    "key_findings": [{"finding": "string", "source": "string", "confidence": "high|medium|low"}],
+    "data_gaps": ["string"]
+}
+
+
+def _extract_structured_data(raw_text: str, task_type: str, topic: str) -> dict:
+    """从搜索结果中提取结构化数据点"""
+    # 根据任务类型选择提取 schema
+    if "光学" in task_type or "optics" in task_type.lower() or "对标" in task_type:
+        schema = OPTICAL_BENCHMARK_SCHEMA
+    elif "布局" in task_type or "layout" in task_type.lower():
+        schema = LAYOUT_ANALYSIS_SCHEMA
+    elif "硬件" in task_type or "hardware" in task_type.lower():
+        schema = HARDWARE_LAYOUT_SCHEMA
+    else:
+        schema = GENERAL_SCHEMA
+
+    prompt = f"""从以下搜索结果中提取结构化数据。
+
+提取规则：
+1. 只提取搜索结果中明确包含的数据，不要推测
+2. 搜不到的字段填 null
+3. 每个有值的字段必须附 source（URL 或文章标题）
+4. confidence: high=官方spec/实测数据, medium=官方宣称/评测引用, low=推算/间接推断
+
+Schema:
+{json.dumps(schema, ensure_ascii=False, indent=2)}
+
+搜索主题: {topic}
+搜索结果:
+{raw_text[:4000]}
+
+只输出 JSON，不要其他内容。"""
+
+    result = _call_model(_get_model_for_task("data_extraction"), prompt, task_type="data_extraction")
+
+    if result.get("success"):
+        try:
+            resp = result["response"].strip()
+            resp = re.sub(r'^```json\s*', '', resp)
+            resp = re.sub(r'\s*```$', '', resp)
+            return json.loads(resp)
+        except:
+            return None
+    return None
+
+
+def _generate_targeted_queries(task_spec_text: str, base_queries: list) -> list:
+    """从任务 spec 中提取竞品名和参数字段，生成精准搜索词"""
+    prompt = f"""分析以下研究任务规格书，提取出：
+1. 所有需要对标的具体产品/竞品名称
+2. 需要收集的具体参数字段
+
+然后为每个产品生成 2-3 个精准的搜索查询，每个查询聚焦于该产品的具体参数。
+
+任务规格书（节选）：
+{task_spec_text[:3000]}
+
+输出格式（JSON）：
+{{
+  "products": ["产品1", "产品2", ...],
+  "params": ["参数1", "参数2", ...],
+  "targeted_queries": [
+    "产品1 参数1 参数2 specs",
+    "产品2 参数1 参数2 review",
+    ...
+  ]
+}}
+
+只输出 JSON，不要其他内容。"""
+
+    result = _call_model(_get_model_for_task("query_generation"), prompt, task_type="query_generation")
+
+    if result.get("success"):
+        try:
+            resp = result["response"].strip()
+            resp = re.sub(r'^```json\s*', '', resp)
+            resp = re.sub(r'\s*```$', '', resp)
+            data = json.loads(resp)
+            targeted = data.get("targeted_queries", [])
+            # targeted_queries 优先执行，base_queries 作为补充
+            return targeted + base_queries
+        except:
+            return base_queries
+    return base_queries
+
+
+def _run_expert_analysis_in_slices(role: str, structured_data_list: list, system_prompt: str,
+                                    user_prompt_template: str, model_name: str) -> list:
+    """将结构化数据分组，每组独立让专家模型处理"""
+    if not structured_data_list:
+        return []
+
+    # 按产品类型分组
+    groups = {}
+    for item in structured_data_list:
+        product_type = item.get('product_type', item.get('topic', 'general'))
+        if product_type not in groups:
+            groups[product_type] = []
+        groups[product_type].append(item)
+
+    # 如果分组太少（<2），按数量均分
+    if len(groups) <= 1:
+        items = list(structured_data_list)
+        mid = len(items) // 2
+        if mid > 0:
+            groups = {"group_1": items[:mid], "group_2": items[mid:]}
+        else:
+            groups = {"group_1": items}
+
+    partial_outputs = []
+    for group_name, group_items in groups.items():
+        group_data = json.dumps(group_items, ensure_ascii=False, indent=2)
+
+        user_prompt = user_prompt_template + f"""
+
+## 本轮分析的数据（{group_name}，共 {len(group_items)} 条）
+{group_data}
+
+请只针对这批数据给出分析。其他批次由同一流程的其他轮次处理，最后会统一整合。"""
+
+        result = _call_model(model_name, user_prompt, system_prompt, task_type=f"deep_research_{role.lower()}")
+        if result.get("success"):
+            partial_outputs.append({
+                "group": group_name,
+                "output": result["response"],
+                "items_count": len(group_items)
+            })
+            print(f"  [{role} {group_name}] {len(result['response'])} chars")
+
+    return partial_outputs
 
 # ==========================================
 # 三原则：所有 Agent 必须遵循的思维准则
@@ -122,17 +441,29 @@ RESEARCH_TASKS = [
 ]
 
 
-def deep_research_one(task: dict, progress_callback=None) -> str:
-    """对一个任务做深度研究，返回完整报告"""
+def deep_research_one(task: dict, progress_callback=None, constraint_context: str = None) -> str:
+    """对一个任务做深度研究，返回完整报告
+
+    Args:
+        task: 任务字典，包含 id, title, goal, searches
+        progress_callback: 进度回调函数
+        constraint_context: 约束文件内容，注入到研究 prompt 中
+    """
     task_id = task["id"]
     title = task["title"]
     goal = task["goal"]
     searches = task.get("searches", [])
 
+    # 如果有约束文件内容，注入到 goal 中
+    if constraint_context:
+        goal = f"{goal}\n\n【研究约束】\n{constraint_context}"
+
     print(f"\n{'='*60}")
     print(f"[Deep Research] {title}")
-    print(f"[Goal] {goal}")
+    print(f"[Goal] {goal[:200]}...")
     print(f"[Sources] {len(searches)} searches")
+    if constraint_context:
+        print(f"[Constraints] 附带约束文件")
     print(f"{'='*60}")
 
     if progress_callback:
@@ -184,7 +515,7 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
             f"最多 5 个。不要输出与骑行头盔无关的搜索词。\n\n"
             f"{disc_result['data'][:3000]}"
         )
-        disc_llm = gateway.call_azure_openai("cpo", discover_prompt, "只输出 JSON 数组。", "discovery")
+        disc_llm = _call_model(_get_model_for_task("discovery"), discover_prompt, "只输出 JSON 数组。", "discovery")
         if disc_llm.get("success"):
             resp = disc_llm["response"].strip()
             resp = re.sub(r'^```json\s*', '', resp)
@@ -315,7 +646,7 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
         f"如果任务偏技术，CDO 可以不参与。如果任务偏商业/用户，CTO 可以精简参与。"
     )
 
-    role_result = gateway.call_azure_openai("cpo", role_prompt, "只输出 JSON 数组。", "role_assign")
+    role_result = _call_model(_get_model_for_task("role_assign"), role_prompt, "只输出 JSON 数组。", "role_assign")
     roles = ["CTO", "CMO"]  # 默认
     if role_result.get("success"):
         try:
@@ -379,7 +710,7 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
             f"5. 如果某些功能风险高，建议分阶段实现，而不是砍掉\n"
             f"6. 输出 1000-1500 字\n"
         )
-        cto_result = gateway.call_azure_openai("cto", cto_prompt,
+        cto_result = _call_model(_get_model_for_role("CTO"), cto_prompt,
             "你是资深技术合伙人，输出专业的技术分析。", "deep_research_cto")
         if cto_result.get("success"):
             agent_outputs["CTO"] = cto_result["response"]
@@ -403,7 +734,7 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
             f"5. 如果市场风险高，建议如何分阶段验证，而不是放弃方向\n"
             f"6. 输出 1000-1500 字\n"
         )
-        cmo_result = gateway.call_azure_openai("cmo", cmo_prompt,
+        cmo_result = _call_model(_get_model_for_role("CMO"), cmo_prompt,
             "你是资深市场合伙人，输出专业的商业分析。", "deep_research_cmo")
         if cmo_result.get("success"):
             agent_outputs["CMO"] = cmo_result["response"]
@@ -426,7 +757,7 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
             f"4. 如果设计约束导致某些功能难以首代实现，建议分阶段路径\n"
             f"5. 输出 800-1200 字\n"
         )
-        cdo_result = gateway.call_azure_openai("cdo", cdo_prompt,
+        cdo_result = _call_model(_get_model_for_role("CDO"), cdo_prompt,
             "你是资深设计合伙人，输出专业的设计分析。", "deep_research_cdo")
         if cdo_result.get("success"):
             agent_outputs["CDO"] = cdo_result["response"]
@@ -440,7 +771,7 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
             f"## 知识库\n{kb_material}\n## 材料\n{source_material}\n"
             f"写一份 2000-3000 字的完整研究报告。"
         )
-        fallback = gateway.call_azure_openai("cpo", synthesis_prompt_fallback,
+        fallback = _call_model("o3", synthesis_prompt_fallback,
             "你是资深研发顾问。", "deep_research_fallback")
         report = fallback.get("response", "报告生成失败") if fallback.get("success") else "报告生成失败"
     else:
@@ -450,26 +781,37 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
             agent_section += f"\n\n### {role} 分析\n{output}"
 
         synthesis_prompt = (
-            f"你是智能骑行头盔项目的产品VP（CPO），负责整合团队各视角并做最终裁决。\n\n"
+            f"你是智能骑行头盔项目的高级技术整合分析师。你的输出目标不是'给出推荐'，而是'提供决策支撑'。\n\n"
             f"{THINKING_PRINCIPLES}\n"
             f"特别注意：如果团队某个角色在解决 XY 问题（表面问题而非真正问题），你必须指出并纠正。\n\n"
             f"## 产品定义锚点（最高优先级）\n"
-            f"用户已确定的产品方向不可更改。你可以建议功能分V1/V2，但不能替用户换产品品类。\n"
-            f"如果团队某个角色的分析偏离了用户的产品定义（比如用户定义的是摩托车头盔，"
-            f"某角色建议改做自行车头盔），你必须纠正这个偏差。\n\n"
+            f"用户已确定的产品方向不可更改。你可以建议功能分V1/V2，但不能替用户换产品品类。\n\n"
             f"## 研究任务\n{title}\n\n"
             f"## 目标\n{goal}\n\n"
             f"## 团队各视角分析\n{agent_section}\n\n"
-            f"## 你的任务\n"
-            f"1. 整合以上 {len(agent_outputs)} 个角色的分析，写一份 2500-3500 字的综合研究报告\n"
-            f"2. 如果各角色观点有冲突，明确标注冲突点并给出你的裁决和理由\n"
-            f"3. 如果某角色的分析偏离了用户的产品定义，指出来并纠正\n"
-            f"4. 报告结构：执行摘要 → 核心分析 → 冲突与裁决 → 明确结论与行动建议\n"
-            f"5. 保留各角色分析中的所有具体数据（型号、参数、价格）\n"
-            f"6. 最后必须有一个明确的'一句话决策'\n"
+            f"## 输出要求（严格遵守）\n\n"
+            f"### 一、数据对比表\n"
+            f"- 必须包含每个数据点的来源和 confidence\n"
+            f"- 未公开的数据标注 null，不要填推测值\n"
+            f"- 如果有推算值，单独列一列标注推算方法\n\n"
+            f"### 二、候选方案（2-3 个）\n"
+            f"- 每个方案附完整的 pros/cons\n"
+            f"- 每个 pros/cons 必须有量化依据\n"
+            f"- 不要只说'成本更低'，要说'BOM 低 40-60%，约 $80-180 vs $180-400'\n\n"
+            f"### 三、关键分歧点（不超过 5 个）\n"
+            f"- 方案之间的核心分歧，每个分歧点用一句话概括\n"
+            f"- 每个分歧点附：支持 A 方案的证据 vs 支持 B 方案的证据\n\n"
+            f"### 四、需要决策者判断的问题\n"
+            f"- 列出 3-5 个你无法替决策者回答的问题\n"
+            f"- 每个问题附上你能提供的背景信息\n"
+            f"- 格式：'[决策点] 问题描述。背景：xxx'\n\n"
+            f"### 五、数据缺口\n"
+            f"- 本次研究中哪些关键数据没有找到\n"
+            f"- 建议通过什么渠道补充（供应商询价 / 竞品拆机 / 专利检索 / 行业报告）\n\n"
+            f"你不要替用户做最终选择。用户的价值是定义 Why，你的价值是把 How 的选项和代价摆清楚。\n"
         )
 
-        synthesis_result = gateway.call_azure_openai("cpo", synthesis_prompt,
+        synthesis_result = _call_model(_get_model_for_task("synthesis"), synthesis_prompt,
             "你是产品VP，整合团队分析并裁决。", "deep_research_synthesis")
 
         if not synthesis_result.get("success"):
@@ -480,7 +822,7 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
                 f"{agent_section[:8000]}\n\n"
                 f"要求：有执行摘要、有明确结论、保留所有具体数据。"
             )
-            retry_result = gateway.call_azure_openai("cpo", retry_prompt,
+            retry_result = _call_model(_get_model_for_task("synthesis"), retry_prompt,
                 "整合团队分析。", "synthesis_retry")
             if retry_result.get("success"):
                 report = retry_result["response"]
@@ -501,39 +843,40 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
                     f"## 其他角色要点\n{other_highlights}\n\n"
                     f"要求：有执行摘要、有明确结论。"
                 )
-                expand_result = gateway.call_azure_openai("cpo", expand_prompt,
+                expand_result = _call_model("gpt_5_4", expand_prompt,
                     "写研究报告。", "synthesis_expand")
                 report = expand_result.get("response", agent_section) if expand_result.get("success") else agent_section
                 print(f"  [Synthesis Expand] {len(report)} chars")
         else:
             report = synthesis_result["response"]
 
-            # Step 5: Critic 评审
+            # Step 5: Critic 挑战（挑战者模式）
             critic_prompt = (
-                f"你是研发质量评审专家。你的评审方法是苏格拉底追问，而不是简单打分。\n\n"
-                f"## 思维准则\n"
-                f"1. 第一性原理：这个报告是否从用户的真正需求出发？还是在解决一个 XY 问题？\n"
-                f"2. 奥卡姆剃刀：报告中有没有不必要的复杂度？能不能更简洁直接？\n"
-                f"3. 苏格拉底追问：每个关键结论，追问一层——证据充分吗？有替代方案吗？失败风险是什么？\n\n"
+                f"你的职责不是打分，而是提出最尖锐、最有建设性的挑战问题。\n\n"
                 f"## 任务目标\n{goal}\n\n"
                 f"## 报告（{len(report)}字）\n{report[:8000]}\n\n"
-                f"## 评审要求\n"
-                f"对每个参与角色（{', '.join(agent_outputs.keys())}）回答：\n"
-                f"1. 这个角色是否在解决真正的问题？还是跑偏了？\n"
-                f"2. 分析中有没有可以砍掉的冗余？\n"
-                f"3. 关键结论的证据是否充分？缺了什么具体数据？\n"
-                f"4. 有没有被忽略的更优替代方案？\n\n"
+                f"## 挑战规则\n"
+                f"1. 找出分析中最薄弱的 3 个论点，每个提出一个具体的反驳或追问\n"
+                f"2. 反驳必须基于知识库数据、搜索到的事实、或明显的逻辑漏洞，不能泛泛说'建议加强'\n"
+                f"3. 特别关注：\n"
+                f"   - 数据来源的可靠性（confidence 标注是否合理？有没有把推测当事实？）\n"
+                f"   - 缺失的关键视角（有没有忽略某个重要的竞品/约束/风险？）\n"
+                f"   - 结论与数据的一致性（数据说 A，结论却选了 B？）\n"
+                f"4. 如果分析质量已经足够好，指出 1-2 个可以进一步深化的方向\n\n"
+                f"## 输出格式\n"
+                f"[挑战1] \"你说 X，但 Y 数据/事实显示 Z。请解释这个矛盾或修正结论。\"\n"
+                f"[挑战2] \"你没有考虑 A 因素，而 A 可能导致 B 后果。请补充分析。\"\n"
+                f"[挑战3] \"这个结论的核心依据 confidence 只有 0.5-0.6，不足以作为决策依据。你有什么补强方案？\"\n\n"
+                f"不要输出 PASS/REJECT 评分。只输出挑战问题。\n"
                 f"输出 JSON：\n"
-                f'{{\"overall\": \"PASS或NEEDS_FIX\", '
-                f'\"issues\": [{{\"role\": \"CTO/CMO/CDO\", \"problem\": \"具体问题\", \"fix\": \"具体修复建议\"}}]}}\n'
-                f"如果报告有具体数据和明确结论且回答了核心问题，overall 为 PASS。\n"
-                f"只有在发现 XY 问题、关键数据缺失、或结论无法支撑决策时才 NEEDS_FIX。"
+                f'{{\"challenges\": ["挑战1内容", "挑战2内容", "挑战3内容"], \"overall\": \"PASS或NEEDS_FIX\"}}\n'
+                f"如果没有发现实质性缺陷，overall 为 PASS。"
             )
 
-            critic_result = gateway.call_azure_openai("cpo", critic_prompt, "只输出 JSON。", "critic_review")
+            critic_result = _call_model(_get_model_for_task("critic_challenge"), critic_prompt, "只输出 JSON。", "critic_review")
 
             needs_fix = False
-            fix_instructions = {}
+            challenges_list = []
 
             if critic_result.get("success"):
                 try:
@@ -542,67 +885,84 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
                     resp = re.sub(r'\s*```$', '', resp)
                     critic_data = json.loads(resp)
 
-                    if critic_data.get("overall") == "NEEDS_FIX" and critic_data.get("issues"):
+                    challenges_list = critic_data.get("challenges", [])
+
+                    if critic_data.get("overall") == "NEEDS_FIX" and challenges_list:
                         needs_fix = True
-                        for issue in critic_data["issues"]:
-                            role = issue.get("role", "")
-                            if role in agent_outputs:
-                                fix_instructions[role] = {
-                                    "problem": issue.get("problem", ""),
-                                    "fix": issue.get("fix", ""),
-                                    "previous_output": agent_outputs[role]
-                                }
-                        print(f"  [Critic] NEEDS_FIX: {list(fix_instructions.keys())}")
+                        print(f"  [Critic] NEEDS_FIX: {len(challenges_list)} challenges")
                         if progress_callback:
-                            progress_callback(f"  Critic: needs fix for {list(fix_instructions.keys())}")
+                            progress_callback(f"  Critic: {len(challenges_list)} challenges to address")
                     else:
                         print(f"  [Critic] PASS")
 
                 except Exception as e:
                     print(f"  [Critic] Parse failed: {e}")
 
-            # Step 6: 定向修复（最多 1 轮）
-            if needs_fix and fix_instructions:
-                fixed_outputs = dict(agent_outputs)  # 复制，保留合格的
+            # Step 6: 针对挑战进行回应（挑战回应模式）
+            if needs_fix and challenges_list:
+                challenge_responses = []
 
-                for role, instruction in fix_instructions.items():
-                    fix_prompt = (
-                        f"你是智能骑行头盔项目的{role}。\n"
-                        f"你上一版分析被评审发现以下问题：\n"
-                        f"问题：{instruction['problem']}\n"
-                        f"修复建议：{instruction['fix']}\n\n"
-                        f"你的上一版输出：\n{instruction['previous_output']}\n\n"
-                        f"请修复上述问题，输出改进后的完整分析（1000-1500字）。\n"
-                        f"重点补充评审指出的缺失内容，保留上一版中没问题的部分。"
+                for i, challenge in enumerate(challenges_list[:3]):  # 最多处理3个挑战
+                    # 判断是否需要额外搜索
+                    needs_search = "数据" in challenge or "证据" in challenge or "来源" in challenge or "补充" in challenge
+
+                    extra_data = ""
+                    if needs_search:
+                        # 从挑战问题中提取搜索关键词
+                        extract_kw_prompt = f"从以下挑战问题中提取 1-2 个搜索关键词：\n{challenge}\n只输出关键词，空格分隔"
+                        kw_result = _call_model("gemini_2_5_flash", extract_kw_prompt, task_type="query_generation")
+
+                        if kw_result.get("success"):
+                            extra_query = kw_result["response"].strip()
+                            if extra_query:
+                                # 执行补充搜索
+                                search_result = registry.call("deep_research", extra_query)
+                                if search_result.get("success") and len(search_result.get("data", "")) > 100:
+                                    extra_data = f"\n\n## 针对此挑战的补充搜索结果\n{search_result['data'][:2000]}"
+
+                    # 让主角色回应挑战
+                    primary_role = list(agent_outputs.keys())[0] if agent_outputs else "CTO"
+                    response_prompt = (
+                        f"Critic 对你的分析提出了以下挑战：\n\n"
+                        f"{challenge}\n\n"
+                        f"{extra_data}\n\n"
+                        f"请直接回应这个挑战。如果 Critic 说得对，承认并修正你的结论。如果 Critic 的挑战不成立，用数据反驳。"
                     )
 
-                    role_key = role.lower()
-                    fix_result = gateway.call_azure_openai(role_key, fix_prompt,
-                        f"你是{role}，修复评审指出的问题。", f"deep_research_fix_{role_key}")
+                    response_model = _get_model_for_role(primary_role)
+                    response_result = _call_model(response_model, response_prompt, task_type=f"challenge_response_{i}")
 
-                    if fix_result.get("success"):
-                        fixed_outputs[role] = fix_result["response"]
-                        print(f"  [Fix {role}] {len(fix_result['response'])} chars")
+                    if response_result.get("success"):
+                        challenge_responses.append({
+                            "challenge": challenge,
+                            "response": response_result["response"],
+                            "extra_search": bool(extra_data)
+                        })
+                        print(f"  [Challenge {i+1}] responded")
 
-                # 重新整合
-                fixed_section = ""
-                for role, output in fixed_outputs.items():
-                    fixed_section += f"\n\n### {role} 分析（修复后）\n{output}"
+                # 最终整合（带挑战和回应）
+                if challenge_responses:
+                    challenge_dialogue = ""
+                    for r in challenge_responses:
+                        challenge_dialogue += f"\n[挑战] {r['challenge']}\n[回应] {r['response']}\n"
 
-                re_synthesis_prompt = (
-                    f"你是产品VP（CPO）。以下是团队修复后的分析。\n"
-                    f"请重新整合为一份 2500-3500 字的综合报告。\n"
-                    f"保留所有具体数据，给出明确结论。\n\n"
-                    f"## 任务\n{title}\n## 目标\n{goal}\n\n"
-                    f"## 团队分析{fixed_section}\n"
-                )
+                    final_prompt = (
+                        f"以下是一份技术研究的完整过程：\n\n"
+                        f"## 初始分析报告\n{report[:6000]}\n\n"
+                        f"## Critic 挑战与专家回应\n{challenge_dialogue}\n\n"
+                        f"请基于初始报告和挑战对话，输出最终版报告。\n"
+                        f"要求：\n"
+                        f"1. 挑战中被证实的问题，必须在最终报告中修正\n"
+                        f"2. 挑战中补充的新数据，必须整合进来\n"
+                        f"3. 仍然遵守决策支撑输出格式（数据表+方案+分歧点+决策问题+数据缺口）\n"
+                        f"4. 在报告末尾添加'Critic 挑战记录'小节，记录每个挑战和处理结果\n\n"
+                        f"任务目标：{goal}"
+                    )
 
-                re_result = gateway.call_azure_openai("cpo", re_synthesis_prompt,
-                    "整合修复后的团队分析。", "deep_research_re_synthesis")
-
-                if re_result.get("success"):
-                    report = re_result["response"]
-                    print(f"  [Re-Synthesis] {len(report)} chars")
+                    final_result = _call_model(_get_model_for_task("final_synthesis"), final_prompt, task_type="final_synthesis")
+                    if final_result.get("success"):
+                        report = final_result["response"]
+                        print(f"  [Final Synthesis] {len(report)} chars")
 
             # 附加 Critic 评审意见到报告末尾
             if critic_result.get("success"):
@@ -634,8 +994,8 @@ def deep_research_one(task: dict, progress_callback=None) -> str:
         f"报告：\n{report[:6000]}"
     )
 
-    extract_result = gateway.call_azure_openai(
-        "cpo", extract_prompt,
+    extract_result = _call_model(
+        _get_model_for_task("knowledge_extract"), extract_prompt,
         "只输出 JSON 数组。",
         "deep_research_extract"
     )
@@ -823,13 +1183,14 @@ def parse_research_tasks_from_md(md_path: str) -> list:
     return tasks
 
 
-def run_research_from_file(md_path: str, progress_callback=None, task_ids: list = None):
+def run_research_from_file(md_path: str, progress_callback=None, task_ids: list = None, constraint_context: str = None):
     """从 markdown 文件运行研究任务
 
     Args:
         md_path: 任务定义文件路径
         progress_callback: 进度回调函数
         task_ids: 指定运行的任务 ID 列表，如 ['research_a', 'research_b']；None 表示全部运行
+        constraint_context: 约束文件内容，注入到每个研究任务的 prompt 中
     """
     tasks = parse_research_tasks_from_md(md_path)
 
@@ -856,7 +1217,7 @@ def run_research_from_file(md_path: str, progress_callback=None, task_ids: list 
         if progress_callback:
             progress_callback(f"🔍 [{idx}/{len(tasks)}] 开始: {task['title']}")
 
-        report = deep_research_one(task, progress_callback=progress_callback)
+        report = deep_research_one(task, progress_callback=progress_callback, constraint_context=constraint_context)
         reports.append({"id": task["id"], "title": task["title"], "report": report})
         print(f"\n✅ {task['title']} 完成 ({len(report)} 字)")
 
