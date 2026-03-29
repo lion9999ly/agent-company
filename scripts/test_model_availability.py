@@ -1,7 +1,13 @@
 """逐个测试 model_registry 中所有模型的可用性"""
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# 项目根目录
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from dotenv import load_dotenv
+load_dotenv(str(PROJECT_ROOT / ".env"))
 
 from src.utils.model_gateway import get_model_gateway
 
