@@ -1679,8 +1679,8 @@ body {{ font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f5f6fa; 
     font-size: 11px; margin-left: 6px; color: #2F5496; }}
 .content {{ padding: 16px 24px; max-width: 1600px; margin-left: auto; margin-right: auto;
     margin-top: 160px; overflow-y: auto; height: calc(100vh - 160px); -webkit-overflow-scrolling: touch; }}
-.section {{ display: none; }}
-.section.active {{ display: block; }}
+.tab-content {{ display: none; }}
+.tab-content.active {{ display: block; }}
 .stats {{ display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }}
 .stat {{ background: #fff; padding: 12px 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }}
 .stat .num {{ font-size: 24px; font-weight: bold; color: #2F5496; }}
@@ -1853,7 +1853,8 @@ function buildTabs() {{
 
         const section = document.createElement('div');
         section.id = 'section-' + tab.id;
-        section.className = 'section' + (idx === 0 ? ' active' : '');
+        section.className = 'tab-content' + (idx === 0 ? ' active' : '');
+        section.dataset.tab = tab.id;
 
         if (tab.type === 'tree') {{
             section.innerHTML = buildTreeView(tab.id === 'hud' ? hudFeatures : appFeatures, tab.id === 'hud');
@@ -1868,7 +1869,7 @@ function buildTabs() {{
 
 function switchTab(id) {{
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.target === id));
-    document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === 'section-' + id));
+    document.querySelectorAll('.tab-content').forEach(s => s.classList.toggle('active', s.dataset.tab === id));
     // 滚动到内容区顶部
     const content = document.querySelector('.content');
     if (content) content.scrollTop = 0;
