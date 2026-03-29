@@ -671,6 +671,42 @@ class ModelGateway:
             result = resp.json()
             latency_ms = int((time.time() - start_time) * 1000)
 
+            # === Bug1 Fix: 404/部署名不匹配 显式告警 ===
+            if resp.status_code == 404:
+                error_msg = (
+                    f"[MODEL_404] {model_name} (deployment={deployment_name}) "
+                    f"返回 404。请检查 Azure portal 确认实际部署名。"
+                    f"\n  URL: {url[:120]}"
+                    f"\n  Response: {str(result)[:200]}"
+                )
+                print(error_msg)
+                # 尝试推送飞书告警（best effort）
+                try:
+                    from scripts.feishu_handlers.text_router import reply_target
+                    reply_target(f"⚠️ 模型 404\n{model_name} deployment={deployment_name}\n请检查 Azure 部署名", target="alert")
+                except Exception:
+                    pass  # 告警失败不影响主流程
+                return {
+                    "success": False,
+                    "error": error_msg,
+                    "status_code": 404,
+                    "model": model_name,
+                    "deployment": deployment_name
+                }
+
+            if resp.status_code >= 400 and resp.status_code != 404:
+                error_msg = (
+                    f"[MODEL_ERROR] {model_name} status={resp.status_code}: "
+                    f"{str(result)[:300]}"
+                )
+                print(error_msg)
+                return {
+                    "success": False,
+                    "error": error_msg,
+                    "status_code": resp.status_code,
+                    "model": model_name
+                }
+
             # === 诊断日志（定位空响应根因）===
             print(f"  [Azure-Diag] task={task_type}")
             print(f"  [Azure-Diag] status={resp.status_code}")

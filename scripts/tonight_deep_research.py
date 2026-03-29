@@ -441,6 +441,121 @@ RESEARCH_TASKS = [
 ]
 
 
+def _run_critic_challenge(report: str, goal: str, agent_outputs: dict,
+                          progress_callback=None) -> str:
+    """对报告执行 Critic 挑战，返回修正后的报告"""
+    if len(report) < 500:
+        print("  [Critic] 报告太短，跳过挑战")
+        return report
+
+    print("  [L5] 开始 Critic 挑战...")
+
+    critic_prompt = (
+        f"你的职责不是打分，而是提出最尖锐、最有建设性的挑战问题。\n\n"
+        f"## 任务目标\n{goal}\n\n"
+        f"## 报告（{len(report)}字）\n{report[:8000]}\n\n"
+        f"## 挑战规则\n"
+        f"1. 找出分析中最薄弱的 3 个论点，每个提出一个具体的反驳或追问\n"
+        f"2. 反驳必须基于知识库数据、搜索到的事实、或明显的逻辑漏洞，不能泛泛说'建议加强'\n"
+        f"3. 特别关注：\n"
+        f"   - 数据来源的可靠性（confidence 标注是否合理？有没有把推测当事实？）\n"
+        f"   - 缺失的关键视角（有没有忽略某个重要的竞品/约束/风险？）\n"
+        f"   - 结论与数据的一致性（数据说 A，结论却选了 B？）\n"
+        f"4. 如果分析质量已经足够好，指出 1-2 个可以进一步深化的方向\n\n"
+        f"## 输出格式\n"
+        f"输出 JSON：\n"
+        f'{{"challenges": ["挑战1内容", "挑战2内容", "挑战3内容"], "overall": "PASS或NEEDS_FIX"}}\n'
+    )
+
+    critic_result = _call_model(
+        _get_model_for_task("critic_challenge"), critic_prompt,
+        "只输出 JSON。", "critic_review"
+    )
+
+    if not critic_result.get("success"):
+        print(f"  [Critic] 调用失败: {critic_result.get('error', '')[:100]}")
+        return report
+
+    needs_fix = False
+    challenges_list = []
+
+    try:
+        resp = critic_result["response"].strip()
+        resp = re.sub(r'^```json\s*', '', resp)
+        resp = re.sub(r'\s*```$', '', resp)
+        critic_data = json.loads(resp)
+        challenges_list = critic_data.get("challenges", [])
+
+        if critic_data.get("overall") == "NEEDS_FIX" and challenges_list:
+            needs_fix = True
+            print(f"  [Critic] NEEDS_FIX: {len(challenges_list)} challenges")
+        else:
+            print(f"  [Critic] PASS")
+    except Exception as e:
+        print(f"  [Critic] Parse failed: {e}")
+        # 仍附加原始 critic 输出
+        report += f"\n\n---\n## Critic Review\n{critic_result['response'][:1000]}"
+        return report
+
+    # 如果需要修复，执行挑战回应流程
+    if needs_fix and challenges_list:
+        challenge_responses = []
+
+        for i, challenge in enumerate(challenges_list[:3]):
+            needs_search = any(kw in challenge for kw in ["数据", "证据", "来源", "补充"])
+            extra_data = ""
+
+            if needs_search:
+                kw_result = _call_model("gemini_2_5_flash",
+                    f"从以下挑战问题中提取 1-2 个搜索关键词：\n{challenge}\n只输出关键词，空格分隔",
+                    task_type="query_generation")
+                if kw_result.get("success"):
+                    extra_query = kw_result["response"].strip()
+                    if extra_query:
+                        search_result = registry.call("deep_research", extra_query)
+                        if search_result.get("success") and len(search_result.get("data", "")) > 100:
+                            extra_data = f"\n\n## 针对此挑战的补充搜索结果\n{search_result['data'][:2000]}"
+
+            primary_role = list(agent_outputs.keys())[0] if agent_outputs else "CTO"
+            response_model = _get_model_for_role(primary_role)
+            response_result = _call_model(response_model,
+                f"Critic 对你的分析提出了以下挑战：\n\n{challenge}\n\n{extra_data}\n\n"
+                f"请直接回应这个挑战。如果 Critic 说得对，承认并修正你的结论。",
+                task_type=f"challenge_response_{i}")
+
+            if response_result.get("success"):
+                challenge_responses.append({
+                    "challenge": challenge,
+                    "response": response_result["response"],
+                    "extra_search": bool(extra_data)
+                })
+                print(f"  [Challenge {i+1}] responded")
+
+        if challenge_responses:
+            challenge_dialogue = ""
+            for r in challenge_responses:
+                challenge_dialogue += f"\n[挑战] {r['challenge']}\n[回应] {r['response']}\n"
+
+            final_result = _call_model(
+                _get_model_for_task("final_synthesis"),
+                f"以下是一份技术研究的完整过程：\n\n"
+                f"## 初始分析报告\n{report[:6000]}\n\n"
+                f"## Critic 挑战与专家回应\n{challenge_dialogue}\n\n"
+                f"请基于初始报告和挑战对话，输出最终版报告。\n"
+                f"要求：挑战中被证实的问题必须修正；新数据必须整合；\n"
+                f"仍然遵守决策支撑输出格式；末尾添加'Critic 挑战记录'小节。\n\n"
+                f"任务目标：{goal}",
+                task_type="final_synthesis"
+            )
+            if final_result.get("success"):
+                report = final_result["response"]
+                print(f"  [Final Synthesis] {len(report)} chars")
+
+    # 附加 Critic 评审意见
+    report += f"\n\n---\n## Critic Review\n{critic_result['response'][:1000]}"
+    return report
+
+
 def deep_research_one(task: dict, progress_callback=None, constraint_context: str = None) -> str:
     """对一个任务做深度研究，返回完整报告
 
@@ -571,6 +686,26 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
     if not all_sources:
         return f"# {title}\n\n调研失败：所有搜索均无结果"
 
+    # Step 1.5: 结构化提取 —— 从搜索结果中提取结构化数据点
+    print(f"  [L3.A] 开始结构化提取...")
+    structured_data_list = []
+    task_type_hint = task.get("goal", "") + " " + title
+    for src in all_sources:
+        extracted = _extract_structured_data(
+            raw_text=src["content"],
+            task_type=task_type_hint,
+            topic=src["query"]
+        )
+        if extracted:
+            structured_data_list.append(extracted)
+    print(f"  [L3.A] 提取完成: {len(structured_data_list)}/{len(all_sources)} 成功")
+
+    # 将结构化数据序列化，附加到搜索材料中供 Agent 使用
+    structured_dump = ""
+    if structured_data_list:
+        structured_dump = "\n\n## 结构化提取数据\n"
+        structured_dump += json.dumps(structured_data_list, ensure_ascii=False, indent=2)[:6000]
+
     # Step 2: 读取知识库中已有的相关知识（内部文档优先）
     kb_context = ""
     internal_context = ""
@@ -689,13 +824,40 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
     # Step 3.5: 各 Agent 并行分析
     agent_outputs = {}
 
-    source_material = source_dump[:12000]  # 搜索材料
+    # Step 3.4: 匹配专家框架
+    expert_fw = _match_expert_framework(goal, title)
+    expert_role = expert_fw.get("role", "")
+    expert_pitfalls = expert_fw.get("known_pitfalls", [])
+    expert_criteria = expert_fw.get("evaluation_criteria", [])
+
+    expert_injection = ""
+    if expert_role:
+        expert_injection += f"\n## 你的专家背景\n{expert_role}\n"
+    if expert_pitfalls:
+        expert_injection += f"\n## 已知陷阱（必须检查）\n"
+        for i, p in enumerate(expert_pitfalls, 1):
+            expert_injection += f"{i}. {p}\n"
+    if expert_criteria:
+        expert_injection += f"\n## 评估标准\n"
+        for i, c in enumerate(expert_criteria, 1):
+            expert_injection += f"{i}. {c}\n"
+
+    if expert_injection:
+        print(f"  [ExpertFW] 匹配到专家框架，注入 {len(expert_injection)} 字")
+
+    source_material = source_dump[:10000]  # 搜索材料
+    if structured_dump:
+        source_material += structured_dump[:4000]  # 附加结构化数据
     kb_material = kb_context[:2000]  # 知识库
 
     if "CTO" in roles:
         cto_prompt = (
             f"你是智能骑行头盔项目的技术合伙人（CTO）。\n"
             f"你拥有顶尖的技术判断力，不会泛泛而谈，每个判断都有具体数据支撑。\n"
+            f"{expert_injection}\n"
+            f"## 结构化数据（优先使用）\n"
+            f"以下是从搜索结果中提取的结构化数据点，每个字段附有 source 和 confidence。\n"
+            f"优先基于这些数据做分析，原始搜索材料作为补充参考。\n\n"
             f"{anchor_instruction}\n"
             f"{THINKING_PRINCIPLES}\n"
             f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
@@ -720,6 +882,7 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         cmo_prompt = (
             f"你是智能骑行头盔项目的市场合伙人（CMO）。\n"
             f"你拥有敏锐的商业判断力，能识别伪需求，每个判断都基于数据或逻辑推演。\n"
+            f"{expert_injection}\n"
             f"{anchor_instruction}\n"
             f"{THINKING_PRINCIPLES}\n"
             f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
@@ -744,6 +907,7 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         cdo_prompt = (
             f"你是智能骑行头盔项目的设计合伙人（CDO）。\n"
             f"你懂工程约束，用设计语言表达品牌战略。\n"
+            f"{expert_injection}\n"
             f"{anchor_instruction}\n"
             f"{THINKING_PRINCIPLES}\n"
             f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
@@ -850,123 +1014,8 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         else:
             report = synthesis_result["response"]
 
-            # Step 5: Critic 挑战（挑战者模式）
-            critic_prompt = (
-                f"你的职责不是打分，而是提出最尖锐、最有建设性的挑战问题。\n\n"
-                f"## 任务目标\n{goal}\n\n"
-                f"## 报告（{len(report)}字）\n{report[:8000]}\n\n"
-                f"## 挑战规则\n"
-                f"1. 找出分析中最薄弱的 3 个论点，每个提出一个具体的反驳或追问\n"
-                f"2. 反驳必须基于知识库数据、搜索到的事实、或明显的逻辑漏洞，不能泛泛说'建议加强'\n"
-                f"3. 特别关注：\n"
-                f"   - 数据来源的可靠性（confidence 标注是否合理？有没有把推测当事实？）\n"
-                f"   - 缺失的关键视角（有没有忽略某个重要的竞品/约束/风险？）\n"
-                f"   - 结论与数据的一致性（数据说 A，结论却选了 B？）\n"
-                f"4. 如果分析质量已经足够好，指出 1-2 个可以进一步深化的方向\n\n"
-                f"## 输出格式\n"
-                f"[挑战1] \"你说 X，但 Y 数据/事实显示 Z。请解释这个矛盾或修正结论。\"\n"
-                f"[挑战2] \"你没有考虑 A 因素，而 A 可能导致 B 后果。请补充分析。\"\n"
-                f"[挑战3] \"这个结论的核心依据 confidence 只有 0.5-0.6，不足以作为决策依据。你有什么补强方案？\"\n\n"
-                f"不要输出 PASS/REJECT 评分。只输出挑战问题。\n"
-                f"输出 JSON：\n"
-                f'{{\"challenges\": ["挑战1内容", "挑战2内容", "挑战3内容"], \"overall\": \"PASS或NEEDS_FIX\"}}\n'
-                f"如果没有发现实质性缺陷，overall 为 PASS。"
-            )
-
-            critic_result = _call_model(_get_model_for_task("critic_challenge"), critic_prompt, "只输出 JSON。", "critic_review")
-
-            needs_fix = False
-            challenges_list = []
-
-            if critic_result.get("success"):
-                try:
-                    resp = critic_result["response"].strip()
-                    resp = re.sub(r'^```json\s*', '', resp)
-                    resp = re.sub(r'\s*```$', '', resp)
-                    critic_data = json.loads(resp)
-
-                    challenges_list = critic_data.get("challenges", [])
-
-                    if critic_data.get("overall") == "NEEDS_FIX" and challenges_list:
-                        needs_fix = True
-                        print(f"  [Critic] NEEDS_FIX: {len(challenges_list)} challenges")
-                        if progress_callback:
-                            progress_callback(f"  Critic: {len(challenges_list)} challenges to address")
-                    else:
-                        print(f"  [Critic] PASS")
-
-                except Exception as e:
-                    print(f"  [Critic] Parse failed: {e}")
-
-            # Step 6: 针对挑战进行回应（挑战回应模式）
-            if needs_fix and challenges_list:
-                challenge_responses = []
-
-                for i, challenge in enumerate(challenges_list[:3]):  # 最多处理3个挑战
-                    # 判断是否需要额外搜索
-                    needs_search = "数据" in challenge or "证据" in challenge or "来源" in challenge or "补充" in challenge
-
-                    extra_data = ""
-                    if needs_search:
-                        # 从挑战问题中提取搜索关键词
-                        extract_kw_prompt = f"从以下挑战问题中提取 1-2 个搜索关键词：\n{challenge}\n只输出关键词，空格分隔"
-                        kw_result = _call_model("gemini_2_5_flash", extract_kw_prompt, task_type="query_generation")
-
-                        if kw_result.get("success"):
-                            extra_query = kw_result["response"].strip()
-                            if extra_query:
-                                # 执行补充搜索
-                                search_result = registry.call("deep_research", extra_query)
-                                if search_result.get("success") and len(search_result.get("data", "")) > 100:
-                                    extra_data = f"\n\n## 针对此挑战的补充搜索结果\n{search_result['data'][:2000]}"
-
-                    # 让主角色回应挑战
-                    primary_role = list(agent_outputs.keys())[0] if agent_outputs else "CTO"
-                    response_prompt = (
-                        f"Critic 对你的分析提出了以下挑战：\n\n"
-                        f"{challenge}\n\n"
-                        f"{extra_data}\n\n"
-                        f"请直接回应这个挑战。如果 Critic 说得对，承认并修正你的结论。如果 Critic 的挑战不成立，用数据反驳。"
-                    )
-
-                    response_model = _get_model_for_role(primary_role)
-                    response_result = _call_model(response_model, response_prompt, task_type=f"challenge_response_{i}")
-
-                    if response_result.get("success"):
-                        challenge_responses.append({
-                            "challenge": challenge,
-                            "response": response_result["response"],
-                            "extra_search": bool(extra_data)
-                        })
-                        print(f"  [Challenge {i+1}] responded")
-
-                # 最终整合（带挑战和回应）
-                if challenge_responses:
-                    challenge_dialogue = ""
-                    for r in challenge_responses:
-                        challenge_dialogue += f"\n[挑战] {r['challenge']}\n[回应] {r['response']}\n"
-
-                    final_prompt = (
-                        f"以下是一份技术研究的完整过程：\n\n"
-                        f"## 初始分析报告\n{report[:6000]}\n\n"
-                        f"## Critic 挑战与专家回应\n{challenge_dialogue}\n\n"
-                        f"请基于初始报告和挑战对话，输出最终版报告。\n"
-                        f"要求：\n"
-                        f"1. 挑战中被证实的问题，必须在最终报告中修正\n"
-                        f"2. 挑战中补充的新数据，必须整合进来\n"
-                        f"3. 仍然遵守决策支撑输出格式（数据表+方案+分歧点+决策问题+数据缺口）\n"
-                        f"4. 在报告末尾添加'Critic 挑战记录'小节，记录每个挑战和处理结果\n\n"
-                        f"任务目标：{goal}"
-                    )
-
-                    final_result = _call_model(_get_model_for_task("final_synthesis"), final_prompt, task_type="final_synthesis")
-                    if final_result.get("success"):
-                        report = final_result["response"]
-                        print(f"  [Final Synthesis] {len(report)} chars")
-
-            # 附加 Critic 评审意见到报告末尾
-            if critic_result.get("success"):
-                report += f"\n\n---\n## Critic Review\n{critic_result['response'][:1000]}"
+    # === Step 5: Critic 挑战（所有路径统一执行）===
+    report = _run_critic_challenge(report, goal, agent_outputs, progress_callback)
 
     # Step 4: 保存报告到文件
     report_path = REPORT_DIR / f"{task_id}_{time.strftime('%Y%m%d_%H%M')}.md"
@@ -1225,6 +1274,70 @@ def run_research_from_file(md_path: str, progress_callback=None, task_ids: list 
             progress_callback(f"✅ [{idx}/{len(tasks)}] {task['title']} ({len(report)}字)")
 
         time.sleep(3)
+
+    # === 跨研究一致性校验 ===
+    if len(reports) >= 2:
+        print(f"\n  [ConsistencyCheck] 检查 {len(reports)} 份报告的结论一致性...")
+
+        # 提取每份报告的关键结论
+        conclusions = ""
+        for r in reports:
+            conclusions += f"\n\n### {r['title']}\n{r['report'][:2000]}"
+
+        consistency_prompt = (
+            f"以下是同一个项目（智能骑行头盔）的 {len(reports)} 份研究报告的结论部分。\n\n"
+            f"请检查它们之间是否存在自相矛盾：\n"
+            f"1. 研究 A 推荐方案 X，但研究 B 推荐方案 Y？\n"
+            f"2. 研究 A 说某参数为 P，研究 B 说同一参数为 Q？\n"
+            f"3. 同一产品在不同报告中被不同评价？\n\n"
+            f"输出 JSON：\n"
+            f'{{"contradictions": [{{"report_a": "标题", "report_b": "标题", '
+            f'"description": "矛盾描述", "severity": "high/medium/low"}}], '
+            f'"consistent": true/false}}\n\n'
+            f"如果没有发现矛盾，contradictions 为空数组，consistent 为 true。\n\n"
+            f"{conclusions}"
+        )
+
+        check_result = _call_model(
+            _get_model_for_task("critic_challenge"),
+            consistency_prompt,
+            "只输出 JSON。",
+            "consistency_check"
+        )
+
+        if check_result.get("success"):
+            try:
+                resp = check_result["response"].strip()
+                resp = re.sub(r'^```json\s*', '', resp)
+                resp = re.sub(r'\s*```$', '', resp)
+                check_data = json.loads(resp)
+
+                contradictions = check_data.get("contradictions", [])
+                if contradictions:
+                    print(f"  [ConsistencyCheck] ⚠️ 发现 {len(contradictions)} 个矛盾:")
+                    for c in contradictions:
+                        print(f"    - [{c.get('severity','?')}] {c.get('description','')[:100]}")
+
+                    # 将矛盾信息附加到汇总报告中
+                    contradiction_section = "\n\n---\n## ⚠️ 跨研究一致性问题\n\n"
+                    for c in contradictions:
+                        contradiction_section += (
+                            f"- **[{c.get('severity','')}]** {c.get('report_a','')} vs {c.get('report_b','')}：\n"
+                            f"  {c.get('description','')}\n\n"
+                        )
+                    # 附加到最后一份报告的末尾
+                    reports[-1]["report"] += contradiction_section
+
+                    if progress_callback:
+                        progress_callback(
+                            f"⚠️ 一致性检查：发现 {len(contradictions)} 个跨报告矛盾，已记录在汇总中"
+                        )
+                else:
+                    print(f"  [ConsistencyCheck] ✅ 无矛盾")
+            except Exception as e:
+                print(f"  [ConsistencyCheck] 解析失败: {e}")
+        else:
+            print(f"  [ConsistencyCheck] 调用失败: {check_result.get('error', '')[:100]}")
 
     # 汇总保存
     md_name = Path(md_path).stem
