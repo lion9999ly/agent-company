@@ -28,30 +28,43 @@ gateway = get_model_gateway()
 # 注意：不使用 Claude 系列模型
 
 def _get_model_for_role(role: str) -> str:
-    """深度研究流程中，各角色使用的模型"""
+    """深度研究流程中，各角色使用的模型
+
+    分工原则：
+    - CTO/CPO 用 gpt_5_4（最强推理，核心决策）
+    - CMO 用 gemini_3_pro（独立视角，避免同模型自说自话）
+    - CDO 用 gemini_3_1_pro（最新旗舰，多模态强）
+    """
     role_model_map = {
-        "CTO": "o3",                      # 最强推理，技术参数分析
-        "CMO": "o3_deep_research",        # 深度研究专用模型
-        "CDO": "gemini_3_1_pro",          # 多模态强，适合设计分析
-        "CPO": "o3",                      # 整合需要强推理
+        "CTO": "gpt_5_4",
+        "CMO": "gemini_3_pro",
+        "CDO": "gemini_3_1_pro",
+        "CPO": "gpt_5_4",
     }
     return role_model_map.get(role.upper(), "gpt_5_4")
 
 
 def _get_model_for_task(task_type: str) -> str:
-    """各任务环节使用的模型"""
+    """各任务环节使用的模型
+
+    分层原则：
+    - 轻量任务 → gemini_2_5_flash（快且便宜）
+    - 核心推理/整合 → gpt_5_4（最强可用）
+    - 评审/挑战 → gemini_3_1_pro（独立视角，不能用同一个模型审自己）
+    - 修复/补充 → gemini_2_5_pro（稳定可靠，成本适中）
+    """
     task_model_map = {
-        "discovery": "gemini_2_5_flash",          # 发现层：轻量快速
-        "query_generation": "gemini_2_5_flash",   # 搜索词生成：轻量
-        "data_extraction": "gemini_2_5_flash",    # 结构化提取：中等
-        "role_assign": "gemini_2_5_flash",        # 角色分配：简单JSON
-        "synthesis": "o3",                        # 整合：强推理
-        "re_synthesis": "o3",                     # 重整合：强推理
-        "final_synthesis": "o3",                  # 最终整合：强推理
-        "critic_challenge": "gemini_3_1_pro",     # Critic挑战：强推理
-        "knowledge_extract": "gemini_2_5_flash",  # 知识提取：轻量
-        "fix": "gpt_5_4",                         # 修复：中等模型
-        "cdo_fix": "gemini_2_5_pro",              # CDO修复：Gemini稳定版
+        "discovery": "gemini_2_5_flash",
+        "query_generation": "gemini_2_5_flash",
+        "data_extraction": "gemini_2_5_flash",
+        "role_assign": "gemini_2_5_flash",
+        "synthesis": "gpt_5_4",
+        "re_synthesis": "gpt_5_4",
+        "final_synthesis": "gpt_5_4",
+        "critic_challenge": "gemini_3_1_pro",
+        "knowledge_extract": "gemini_2_5_flash",
+        "fix": "gemini_2_5_pro",
+        "cdo_fix": "gemini_2_5_pro",
     }
     return task_model_map.get(task_type, "gpt_5_4")
 
@@ -935,7 +948,7 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
             f"## 知识库\n{kb_material}\n## 材料\n{source_material}\n"
             f"写一份 2000-3000 字的完整研究报告。"
         )
-        fallback = _call_model("o3", synthesis_prompt_fallback,
+        fallback = _call_model("gpt_5_4", synthesis_prompt_fallback,
             "你是资深研发顾问。", "deep_research_fallback")
         report = fallback.get("response", "报告生成失败") if fallback.get("success") else "报告生成失败"
     else:
