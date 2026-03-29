@@ -149,6 +149,145 @@ def get_cached_anchor():
     return _ANCHOR_CACHE
 # ===== End A2 =====
 
+# ===== A1: 模块归属映射（基于 anchor） =====
+def _build_module_placement(anchor: dict) -> dict:
+    """
+    根据 anchor 的 section 分类，决定每个模块写入 HUD表 还是 App表。
+    返回 {module_name: 'hud' | 'app'}
+    """
+    placement = {}
+
+    # HUD 端模块
+    for mod in anchor.get('hud_modules', []):
+        name = mod.get('name', '')
+        if name:
+            placement[name] = 'hud'
+
+    # App 端模块
+    for mod in anchor.get('app_modules', []):
+        name = mod.get('name', '')
+        if name:
+            placement[name] = 'app'
+
+    # 跨端模块：根据性质分配
+    cross_to_hud = {'AI功能', '语音交互', '视觉交互', '多模态交互', '实体按键交互', '氛围灯交互'}
+    cross_to_app = {'多语言支持', '手机系统权限管理', '部件识别与兼容性管理'}
+
+    for mod in anchor.get('cross_cutting', []):
+        name = mod.get('name', '')
+        if name:
+            if name in cross_to_hud:
+                placement[name] = 'hud'
+            elif name in cross_to_app:
+                placement[name] = 'app'
+            else:
+                # 默认：如果名字含 Tab/App/手机/商城/社区 → app，否则 hud
+                if any(kw in name for kw in ['Tab', 'App', '手机', '商城', '社区', '通知', '用户成就', '用户学习', '新手', '身份', '权限']):
+                    placement[name] = 'app'
+                else:
+                    placement[name] = 'hud'
+
+    hud_count = sum(1 for v in placement.values() if v == 'hud')
+    app_count = sum(1 for v in placement.values() if v == 'app')
+    print(f"[Placement] HUD: {hud_count} 模块, App: {app_count} 模块")
+
+    return placement
+# ===== End A1 =====
+
+# ===== A2: 全量归一化（含旧版继承数据） =====
+def _normalize_all_rows(rows: list, normalize_map: dict) -> list:
+    """对所有行的 module 字段做归一化，然后合并同名模块去重"""
+    from collections import defaultdict
+
+    # Step 1: 归一化 module 名
+    for row in rows:
+        module = row.get('module', '')
+        if module in normalize_map:
+            row['module'] = normalize_map[module]
+
+    # Step 2: 按归一化后的 module 分组去重
+    groups = defaultdict(list)
+    for row in rows:
+        groups[row.get('module', 'unknown')].append(row)
+
+    deduped = []
+    for module_name, group_rows in groups.items():
+        # 按 name (L3功能名) 去重
+        seen = {}
+        for row in group_rows:
+            name = str(row.get('name', ''))
+            if name in seen:
+                # 保留验收标准更长的
+                old_acc = str(seen[name].get('acceptance', ''))
+                new_acc = str(row.get('acceptance', ''))
+                if len(new_acc) > len(old_acc):
+                    seen[name] = row
+            else:
+                seen[name] = row
+        deduped.extend(seen.values())
+
+    original = len(rows)
+    final = len(deduped)
+    if original != final:
+        print(f"[NormalizeAll] {original} → {final} 条 (去重 {original - final})")
+
+    return deduped
+# ===== End A2 =====
+
+# ===== A3: HUD 新 4 列回填 =====
+def _backfill_hud_columns(hud_rows: list) -> list:
+    """为缺少 HUD 新 4 列的行填充默认值"""
+    filled_count = 0
+
+    for row in hud_rows:
+        changed = False
+
+        # 显示输出（视觉）
+        if not row.get('visual_output') or len(str(row.get('visual_output', ''))) < 3:
+            interaction = str(row.get('interaction', ''))
+            name = str(row.get('name', ''))
+            if 'HUD' in interaction or 'HUD' in name:
+                row['visual_output'] = 'HUD卡片/图标显示'
+            elif '语音' in interaction:
+                row['visual_output'] = '无视觉输出（纯语音）'
+            elif '按键' in interaction:
+                row['visual_output'] = 'HUD操作反馈'
+            elif '灯' in interaction or '灯' in name:
+                row['visual_output'] = '灯效反馈'
+            else:
+                row['visual_output'] = 'HUD状态提示'
+            changed = True
+
+        # 显示优先级
+        if not row.get('display_priority') or len(str(row.get('display_priority', ''))) < 2:
+            priority = str(row.get('priority', 'P2'))
+            priority_map = {'P0': 'critical', 'P1': 'high', 'P2': 'medium', 'P3': 'low'}
+            row['display_priority'] = priority_map.get(priority, 'medium')
+            changed = True
+
+        # 异常与降级
+        if not row.get('degradation') or len(str(row.get('degradation', ''))) < 3:
+            row['degradation'] = '功能不可用时隐藏对应卡片，不影响其他功能'
+            changed = True
+
+        # 显示时长
+        if not row.get('display_duration') or len(str(row.get('display_duration', ''))) < 2:
+            name = str(row.get('name', ''))
+            if any(kw in name for kw in ['预警', '告警', '提醒', '通知', '来电']):
+                row['display_duration'] = 'event_5s'
+            elif any(kw in name for kw in ['速度', '导航', '电量', '状态']):
+                row['display_duration'] = 'permanent'
+            else:
+                row['display_duration'] = 'user_dismiss'
+            changed = True
+
+        if changed:
+            filled_count += 1
+
+    print(f"[Backfill] HUD新列回填: {filled_count}/{len(hud_rows)} 行")
+    return hud_rows
+# ===== End A3 =====
+
 PARALLEL_WORKERS = 4  # 并行生成线程数
 
 # 导出目录(项目固定路径,避免 tempfile 权限问题)
@@ -547,7 +686,7 @@ def _write_hud_sheet(ws, items: List[Dict]):
         ws.column_dimensions[get_column_letter(i + 1)].width = w
 
 
-def _generate_flow_diagrams(anchor: dict) -> list:
+def _generate_flow_diagrams(anchor: dict, gateway) -> list:
     """
     基于 anchor 中的 flow_diagrams 配置，调用 LLM 生成 Mermaid 流程图代码。
     返回 [{name, mermaid_code, description}, ...]
@@ -592,11 +731,11 @@ def _generate_flow_diagrams(anchor: dict) -> list:
 """
 
         try:
-            result = _call_llm(
-                prompt=prompt,
-                task_name="flow_diagram",
-                max_tokens=3000
+            # B1: 使用正确的 LLM 调用方式
+            result_obj = gateway.call_azure_openai(
+                "cpo", prompt, "只输出Mermaid代码。", "flow_diagram", max_tokens=3000
             )
+            result = result_obj.get("response", "") if result_obj.get("success") else ""
 
             if result:
                 # 提取 mermaid 代码（去掉可能的 ```mermaid ``` 包裹）
@@ -2833,40 +2972,46 @@ def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, e
     # 生成功能ID
     items = _generate_ids(items)
 
-    # 按功能归属分三组
-    HUD_MODULES = {
-        "导航", "来电", "音乐", "消息", "AI语音助手", "Ai语音助手",
-        "简易", "简易路线", "路线", "主动安全预警提示", "组队",
-        "摄像状态", "胎温胎压", "开机动画", "速度", "设备状态",
-        "显示队友位置", "头盔HUD"
-    }
+    # 按 anchor 动态分流（替代静态列表）
+    anchor = get_cached_anchor()
 
-    APP_MODULES = {
-        "App-设备", "App-社区", "App-商城", "App-我的"
-    }
+    # A2: 全量归一化（含旧版继承数据）
+    if anchor:
+        normalize_map = anchor.get('module_normalize', {})
+    else:
+        normalize_map = {}
+    normalize_map.update(MODULE_NAME_NORMALIZE)  # 合并代码中的硬编码映射
+    items = _normalize_all_rows(items, normalize_map)
 
-    # 系统/交互模块归 HUD Sheet(因为主要在头盔端执行)
-    SYSTEM_MODULES = {
-        "实体按键交互", "氛围灯交互", "AI功能", "语音交互",
-        "视觉交互", "多模态交互"
-    }
+    # A1: 构建模块归属映射
+    if anchor:
+        module_placement = _build_module_placement(anchor)
+    else:
+        module_placement = {}
 
-    # 用户侧模块归 App Sheet
-    USER_MODULES = {
-        "身份认证", "用户学习", "产品介绍", "设备互联", "设备配对流程"
-    }
+    hud_items = []
+    app_items = []
 
-    hud_items = [i for i in items if i.get("module", "") in HUD_MODULES or i.get("module", "") in SYSTEM_MODULES]
-    app_items = [i for i in items if i.get("module", "") in APP_MODULES or i.get("module", "") in USER_MODULES]
-
-    # 兜底:未匹配的按名称判断
-    matched = set(i.get("name") for i in hud_items + app_items)
     for i in items:
-        if i.get("name") not in matched:
-            if "App" in i.get("module", ""):
-                app_items.append(i)
+        module_name = i.get("module", "")
+        # 查归属，未找到的默认按名字推断
+        target = module_placement.get(module_name, '')
+        if not target:
+            # 兜底推断
+            if any(kw in module_name for kw in ['Tab', 'App-', '商城', '社区', '通知', '用户成就', '新手', '身份', '权限', '部件识别', '消息同步', '多语言', '恢复出厂']):
+                target = 'app'
             else:
-                hud_items.append(i)
+                target = 'hud'
+
+        if target == 'hud':
+            hud_items.append(i)
+        else:
+            app_items.append(i)
+
+    print(f"[Placement] 分流结果: HUD {len(hud_items)} 条, App {len(app_items)} 条")
+
+    # A3: HUD 新 4 列回填
+    hud_items = _backfill_hud_columns(hud_items)
 
     wb = Workbook()
 
@@ -4028,7 +4173,7 @@ def try_structured_doc_fast_track(
                         pool.submit(_gen_dev_tasks, items, gw): "dev_tasks",
                     }
                     if anchor and anchor.get('flow_diagrams'):
-                        futures2[pool.submit(_generate_flow_diagrams, anchor)] = "flow_diagrams"
+                        futures2[pool.submit(_generate_flow_diagrams, anchor, gw)] = "flow_diagrams"
                     for future in as_completed(futures2):
                         name = futures2[future]
                         data = future.result()
