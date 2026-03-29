@@ -2812,7 +2812,7 @@ def _cross_validate(all_rows: List[Dict], sheets_data: Dict) -> List[str]:
     all_modules = set(r.get('module', r.get('L1功能', r.get('name', ''))) for r in all_rows if r.get('level') in ('L1', 'L2'))
     dev_modules = set()
     for dt in sheets_data.get('dev_tasks', []):
-        dev_modules.add(str(dt.get('功能名', dt.get('feature', dt.get('module', ''))))
+        dev_modules.add(str(dt.get('功能名', dt.get('feature', dt.get('module', '')))))
     uncovered_modules = all_modules - dev_modules
     if uncovered_modules and len(uncovered_modules) > 5:
         issues.append(f"[功能-开发] {len(uncovered_modules)} 个模块无开发任务")
