@@ -116,8 +116,8 @@ model_registry:
   # o3-deep-research - 深度研究
   o3_deep_research:
     provider: "azure_openai"
-    model: "o3-deep-research-2025-06-26"
-    deployment: "o3-deep-research-2025-06-26"
+    model: "o3-deep-research"
+    deployment: "o3-deep-research-2"
     api_key_env: "AZURE_OPENAI_API_KEY"
     endpoint_env: "AZURE_OPENAI_ENDPOINT"
     purpose: "深度研究、市场分析、竞品调研"
