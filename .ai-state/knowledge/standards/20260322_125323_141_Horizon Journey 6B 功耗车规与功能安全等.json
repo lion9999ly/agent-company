@@ -10,7 +10,8 @@
     "AEC-Q100",
     "ASIL-B",
     "ASIL-D",
-    "FIPS140-3"
+    "FIPS140-3",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -7,7 +7,11 @@
   "tags": [
     "CAN总线",
     "BT/NFC/GPS",
-    "TFT仪表"
+    "TFT仪表",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high",
+  "_usage_count": 12,
+  "_last_used": "2026-03-30T00:50:59.906764",
+  "_first_used": "2026-03-28T15:02:29.680683"
 }

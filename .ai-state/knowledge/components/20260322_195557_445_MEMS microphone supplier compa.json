@@ -1,21 +1,22 @@
 {
   "title": "MEMS microphone supplier comparison：Knowles / TDK InvenSense / Goertek",
   "domain": "components",
-  "content": "公司名称：Knowles、TDK InvenSense、歌尔股份。核心能力：Knowles为MEMS麦克风先驱，SiSonic™系列覆盖模拟、PDM、I2S接口，强调高SNR、高AOP、低功耗与高可靠性，适合高端手机、TWS、汽车与工业；TDK InvenSense依托TDK材料与制造体系，具备传感器融合与SmartSound™平台能力，主打高性能+成本平衡，适合汽车、工业及主流消费电子；歌尔具备MEMS芯片设计、封装、测试到整机组装的垂直整合能力，并与ODM/OEM协同，适合大批量消费电子项目。代工客户/品牌关系：Knowles面向苹果、三星等高端客户；TDK产品进入主流智能手机与TWS品牌；歌尔与苹果、华为、小米长期合作，是AirPods重要供应商。报价水平：原文未给出具体单价，仅显示Knowles偏高端，TDK强调竞争性价格，歌尔成本竞争力最强。产能规模：歌尔具备庞大自动化产线和大批量交付能力；Knowles、TDK未披露具体产能数字。技术参数：文中仅明确高SNR、高AOP、低功耗、多模式、模拟/PDM/I2S接口，未提供具体dB、mA等数值。时间与数字：Knowles成立于1946年，InvenSense成立于2003年、2017年被TDK收购，歌尔成立于2001年；Yole提到市场增长至2028年。",
+  "content": "标题：MEMS microphone supplier comparison：Knowles / TDK InvenSense / Goertek\n\n公司名称：**Knowles（楼氏电子）**、**TDK InvenSense（TDK旗下）**、**歌尔股份（Goertek）**。  \nKnowles总部位于**美国伊利诺伊州伊塔斯卡**，是MEMS麦克风先驱，核心品牌为**SiSonic™**；TDK InvenSense总部信息在资料中指向**美国加利福尼亚州圣何塞**；歌尔股份为中国声学与精密制造龙头，具备从MEMS器件到整机装配的垂直整合能力。\n\n在产品与技术上，Knowles已公开的典型型号包括 **SPH0641LU4H-1、SPH0655LM4H-1、SPH0688LR5H-1**。其公开参数范围较完整：**SNR约64 dB至70 dB+**，**AOP约120 dB SPL至135 dB SPL**，典型灵敏度可见**-38 dBV（模拟）**或**-26 dBFS（数字）**，**功耗约150 µA至600 µA**，典型封装尺寸可到 **2.75 × 1.85 × 0.9 mm**，部分防护型号可达 **IP57/IP58**。这些数据说明Knowles更偏向高SNR、高AOP、低功耗和高可靠性，适合高端手机、TWS、汽车、工业与医疗场景。\n\nTDK InvenSense依托TDK材料与制造体系，兼具传感器融合与平台化能力。搜索结果中明确提到其产品线包括 **ICS-407xx系列（模拟输出）** 以及 **ICS-406xx/ICS-407xx系列（数字PDM输出）**。但本次结果未给出可直接核实的单一型号详细参数，因此只能确认其定位为**高性能与成本平衡**，主要面向**汽车、工业及主流消费电子**，不能补充未经结果明确给出的SNR、AOP、电流或单价数字。\n\n歌尔股份方面，搜索结果明确其优势在于**MEMS芯片设计、封装、测试到整机组装**的一体化能力，适合**大批量消费电子项目**。客户/品牌关系中，资料明确提到歌尔与**苹果、华为、小米**长期合作，并且是**AirPods重要供应商**。但本次搜索结果未提供歌尔MEMS麦克风的具体公开型号、SNR/AOP/功耗或单颗报价，因此不宜补写具体数值。\n\n客户与品牌关系方面，Knowles面向**苹果、三星、华为**等高端客户；TDK产品进入主流智能手机与TWS品牌；歌尔则深度绑定**苹果、华为、小米**等大客户。  \n价格方面，搜索结果仅能确认：**Knowles定价相对较高，属于高端市场；TDK强调成本效益；歌尔成本竞争力最强**。但**未见可核实的“$15-25/颗”这类具体单价**，因此不能编造。  \n产能方面，也仅能确认歌尔拥有**庞大自动化产线和大批量交付能力**，而K",
   "source": "jdm_learning",
   "created_at": "2026-03-22",
   "tags": [
-    "MEMS麦克风",
-    "Knowles",
+    "jdm_study",
     "TDK InvenSense",
+    "MEMS麦克风",
     "Goertek",
-    "ODM供应商",
+    "Knowles",
+    "高SNR",
     "JDM选型",
+    "PDM/I2S",
     "苹果供应链",
     "TWS耳机",
-    "高SNR",
-    "PDM/I2S",
-    "jdm_study"
+    "ODM供应商",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

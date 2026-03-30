@@ -1,7 +1,7 @@
 """
 @description: 一夜知识库质量大修 - 去伪存真、补深补全、重建决策树
 @dependencies: src.tools.knowledge_base, src.utils.model_gateway, scripts.knowledge_graph_expander
-@last_modified: 2026-03-25
+@last_modified: 2026-03-26
 """
 import json
 import re
@@ -9,6 +9,7 @@ import gc
 import sys
 import time
 import hashlib
+import psutil
 from pathlib import Path
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -19,12 +20,31 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from dotenv import load_dotenv
 load_dotenv()
 
-from src.utils.model_gateway import get_model_gateway
+from src.utils.model_gateway import get_model_gateway, call_for_search, call_for_refine
 from src.tools.knowledge_base import (
     add_knowledge, add_report, search_knowledge,
     get_knowledge_stats, KB_ROOT
 )
 from src.tools.tool_registry import get_tool_registry
+from src.utils.progress_heartbeat import ProgressHeartbeat
+
+
+# ==========================================
+# 动态并行度（Phase 2.4）
+# ==========================================
+def _get_optimal_workers() -> int:
+    """根据系统负载动态调整并行度"""
+    try:
+        cpu_pct = psutil.cpu_percent(interval=0.5)
+        mem_pct = psutil.virtual_memory().percent
+        if cpu_pct < 50 and mem_pct < 70:
+            return 8   # 空闲：跑满
+        elif cpu_pct < 80 and mem_pct < 85:
+            return 4   # 中等负载：正常
+        else:
+            return 2   # 高负载：保守
+    except Exception:
+        return 4  # psutil 不可用时默认 4
 
 
 def log(msg: str, notify_func=None):
@@ -39,7 +59,7 @@ def log(msg: str, notify_func=None):
 def phase_summary(phase_name: str, stats: dict, notify_func=None):
     """阶段完成总结（一定推送飞书）"""
     msg = (
-        f"✅ {phase_name} 完成\n"
+        f"[OK] {phase_name} 完成\n"
         f"处理: {stats.get('processed', 0)} 条\n"
         f"改善: {stats.get('improved', 0)} 条\n"
         f"删除: {stats.get('deleted', 0)} 条\n"
@@ -185,12 +205,39 @@ def phase2_speculative_cleanup(notify_func=None) -> dict:
 
 
 # ==========================================
-# Phase 3: 浅条目批量深化
+# Phase 3: 浅条目批量深化（并行版 + 多Agent深度研究）
 # ==========================================
+def _deepen_one(entry, registry, gateway):
+    """深化单条浅条目（子线程运行）"""
+    data = entry["data"]
+    title = data.get("title", "")
+    content = data.get("content", "")
+
+    if not title or len(title) < 5:
+        return None
+
+    # 并行搜索多个维度
+    queries = [
+        f"{title} 详细参数 技术规格 datasheet 2026",
+        f"{title} specifications features comparison",
+    ]
+
+    search_data = ""
+    for q in queries:
+        result = registry.call("deep_research", q)
+        if result.get("success") and len(result.get("data", "")) > 200:
+            search_data += f"\n---\n{result['data'][:3000]}"
+
+    if len(search_data) < 300:
+        return None
+
+    return {"entry": entry, "search_data": search_data}
+
+
 def phase3_deepen_shallow(notify_func=None) -> dict:
-    """浅条目（<200字）批量深化：搜索补充具体数据"""
+    """浅条目（<200字）批量深化：并行搜索 + 分级处理"""
     start = time.time()
-    log("Phase 3: 浅条目深化开始", notify_func)
+    log("Phase 3: 浅条目深化开始（并行搜索 + 多Agent分级）", notify_func)
 
     gateway = get_model_gateway()
     registry = get_tool_registry()
@@ -210,67 +257,130 @@ def phase3_deepen_shallow(notify_func=None) -> dict:
         except:
             continue
 
-    log(f"  发现 {len(shallow_entries)} 条浅条目需要深化")
+    log(f"  发现 {len(shallow_entries)} 条浅条目")
 
+    # 不再限制数量，处理全部
+    batch = shallow_entries
+    log(f"  本轮处理 {len(batch)} 条")
+
+    PARALLEL_WORKERS = 4
     improved = 0
-    failed = 0
 
-    for i, entry in enumerate(shallow_entries):
+    # 阶段 A：并行搜索
+    log("  阶段A: 并行搜索中...")
+    search_results = []
+    with ThreadPoolExecutor(max_workers=PARALLEL_WORKERS) as pool:
+        futures = {pool.submit(_deepen_one, entry, registry, gateway): entry for entry in batch}
+        for future in as_completed(futures):
+            result = future.result()
+            if result:
+                search_results.append(result)
+
+    log(f"  搜索完成: {len(search_results)}/{len(batch)} 条有结果")
+
+    # 阶段 B：串行提炼（LLM 推理质量要求高）
+    log("  阶段B: 串行提炼中...")
+    for i, item in enumerate(search_results):
+        entry = item["entry"]
+        search_data = item["search_data"]
         data = entry["data"]
         title = data.get("title", "")
         content = data.get("content", "")
+        tags = data.get("tags", [])
 
-        if not title or len(title) < 5:
-            continue
+        # 分级：技术档案/芯片/方案 走多Agent，其他走单LLM
+        is_deep_topic = any(kw in title.lower() or kw in ' '.join(tags).lower()
+                           for kw in ["技术档案", "tech_profile", "knowledge_graph", "芯片", "soc",
+                                      "传感器", "光学", "决策树", "方案"])
 
-        # 搜索补充
-        query = f"{title} 详细参数 技术规格 datasheet 2026"
-        search_result = registry.call("deep_research", query)
+        if is_deep_topic and len(content) < 100:
+            # 走多Agent深度研究
+            try:
+                from scripts.tonight_deep_research import deep_research_one
+                task = {
+                    "id": f"deepen_{i}",
+                    "title": f"深化: {title}",
+                    "goal": f"补充 {title} 的完整技术参数、竞品对比、适配度评估",
+                    "searches": [
+                        f"{title} datasheet specifications 2026",
+                        f"{title} vs comparison alternatives",
+                        f"{title} 参数 价格 供应商 2026",
+                    ]
+                }
+                report = deep_research_one(task)
+                if len(report) > len(content) + 200:
+                    data["content"] = report[:2000]
+                    data["tags"] = list(set(tags + ["night_deepened", "overhaul_deepened", "multi_agent"]))
+                    data["confidence"] = "high"
+                    entry["path"].write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+                    improved += 1
+                    print(f"  ✅ [多Agent] {title[:40]} ({len(report)}字)")
+                    continue
+            except Exception as e:
+                print(f"  ⚠️ [多Agent失败] {title[:40]}: {e}，降级到单LLM")
 
-        if search_result.get("success") and len(search_result.get("data", "")) > 300:
-            # 用 LLM 深化
-            deepen_prompt = (
-                f"以下知识条目内容太浅（仅{len(content)}字），请深化到 400-800 字。\n"
-                f"必须补充具体数据（型号、参数、价格、供应商名）。\n"
-                f"如果搜索结果中没有具体数据，保持原文不要编造。\n\n"
-                f"当前标题：{title}\n当前内容：{content}\n\n"
-                f"搜索结果：\n{search_result['data'][:4000]}"
-            )
-
-            result = gateway.call_azure_openai("cpo", deepen_prompt,
-                "深化知识条目，补充具体数据。", "kb_deepen")
-
-            if result.get("success") and len(result.get("response", "")) > len(content) + 100:
-                data["content"] = result["response"][:1200]
-                data["tags"] = list(set(data.get("tags", []) + ["night_deepened", "overhaul_deepened"]))
-                data["confidence"] = "medium" if data.get("confidence") == "low" else data.get("confidence", "medium")
-                entry["path"].write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-                improved += 1
-            else:
-                failed += 1
-        else:
-            failed += 1
+        # 单LLM快速补充（原有逻辑作为fallback）
+        deepen_prompt = (
+            f"以下知识条目内容太浅（仅{len(content)}字），请深化到 400-800 字。\n"
+            f"必须补充具体数据（型号、参数、价格、供应商名）。\n"
+            f"如果搜索结果中没有具体数据，保持原文不要编造。\n\n"
+            f"当前标题：{title}\n当前内容：{content}\n\n"
+            f"搜索结果：\n{search_data[:4000]}"
+        )
+        # === Phase 2.3: 提炼用 GPT-5.4 ===
+        result = call_for_refine(deepen_prompt, "深化知识条目，补充具体数据。", "kb_deepen")
+        if result.get("success") and len(result.get("response", "")) > len(content) + 100:
+            data["content"] = result["response"][:1200]
+            data["tags"] = list(set(tags + ["night_deepened", "overhaul_deepened"]))
+            entry["path"].write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            improved += 1
 
         if (i + 1) % 20 == 0:
-            print(f"  进度: {i+1}/{len(shallow_entries)}, 成功: {improved}, 失败: {failed}")
+            print(f"  进度: {i+1}/{len(search_results)}, 成功: {improved}")
             gc.collect()
 
-        time.sleep(1)  # 控制 API 调用频率
+        time.sleep(0.5)  # 减少等待时间
 
     duration = (time.time() - start) / 60
-    stats = {"processed": len(shallow_entries), "improved": improved, "deleted": 0, "duration_min": duration}
+    stats = {"processed": len(batch), "improved": improved, "deleted": 0, "duration_min": duration}
     phase_summary("Phase 3: 浅条目深化", stats, notify_func)
     gc.collect()
     return stats
 
 
 # ==========================================
-# Phase 4: 无数据条目补充
+# Phase 4: 无数据条目补充（并行版 + 多Agent深度研究）
 # ==========================================
+def _enrich_one(entry, registry, gateway):
+    """补充单条无数据条目（子线程运行）"""
+    data = entry["data"]
+    title = data.get("title", "")
+
+    if not title or len(title) < 5:
+        return None
+
+    # 并行搜索多个维度
+    queries = [
+        f"{title} 具体参数 型号 规格 价格 供应商",
+        f"{title} specifications datasheet 2026",
+    ]
+
+    search_data = ""
+    for q in queries:
+        result = registry.call("deep_research", q)
+        if result.get("success") and len(result.get("data", "")) > 200:
+            search_data += f"\n---\n{result['data'][:3000]}"
+
+    if len(search_data) < 300:
+        return None
+
+    return {"entry": entry, "search_data": search_data}
+
+
 def phase4_enrich_no_data(notify_func=None) -> dict:
-    """给没有具体数据（型号/参数/价格）的条目补充数据"""
+    """给没有具体数据（型号/参数/价格）的条目补充数据：并行搜索 + 分级处理"""
     start = time.time()
-    log("Phase 4: 无数据条目补充开始", notify_func)
+    log("Phase 4: 无数据条目补充开始（并行搜索 + 多Agent分级）", notify_func)
 
     gateway = get_model_gateway()
     registry = get_tool_registry()
@@ -305,55 +415,104 @@ def phase4_enrich_no_data(notify_func=None) -> dict:
 
     log(f"  发现 {len(no_data_entries)} 条无数据条目")
 
-    # 限制每晚处理量，避免 API 耗尽
-    batch = no_data_entries[:200]
-    log(f"  本轮处理前 {len(batch)} 条")
+    # 删除200条限制，处理全部
+    batch = no_data_entries
+    log(f"  本轮处理 {len(batch)} 条")
 
+    PARALLEL_WORKERS = 4
     improved = 0
 
-    for i, entry in enumerate(batch):
+    # 阶段 A：并行搜索
+    log("  阶段A: 并行搜索中...")
+    search_results = []
+    with ThreadPoolExecutor(max_workers=PARALLEL_WORKERS) as pool:
+        futures = {pool.submit(_enrich_one, entry, registry, gateway): entry for entry in batch}
+        for future in as_completed(futures):
+            result = future.result()
+            if result:
+                search_results.append(result)
+
+    log(f"  搜索完成: {len(search_results)}/{len(batch)} 条有结果")
+
+    # 阶段 B：串行提炼（LLM 推理质量要求高）
+    log("  阶段B: 串行提炼中...")
+    for i, item in enumerate(search_results):
+        entry = item["entry"]
+        search_data = item["search_data"]
         data = entry["data"]
         title = data.get("title", "")
         content = data.get("content", "")
+        tags = data.get("tags", [])
 
-        # 搜索补充数据
-        query = f"{title} 具体参数 型号 规格 价格 供应商"
-        search_result = registry.call("deep_research", query)
+        # 分级：技术档案/芯片/方案 走多Agent，其他走单LLM
+        is_deep_topic = any(kw in title.lower() or kw in ' '.join(tags).lower()
+                           for kw in ["技术档案", "tech_profile", "knowledge_graph", "芯片", "soc",
+                                      "传感器", "光学", "决策树", "方案"])
 
-        if search_result.get("success") and len(search_result.get("data", "")) > 200:
-            enrich_prompt = (
-                f"以下知识条目缺少具体数据。请基于搜索结果补充：\n"
-                f"- 具体型号（如 IMX678、BES2800、QCC5181）\n"
-                f"- 具体参数（如 3000nits、42dB、1.65kg）\n"
-                f"- 具体价格（如 $15-25/颗）\n"
-                f"- 具体公司/品牌名\n\n"
-                f"标题：{title}\n原内容：{content[:500]}\n\n"
-                f"搜索结果：\n{search_result['data'][:3000]}\n\n"
-                f"输出补充数据后的完整内容（500-800字），不要编造数据。"
-            )
-
-            result = gateway.call_azure_openai("cpo", enrich_prompt,
-                "补充具体数据，不要编造。", "kb_enrich")
-
-            if result.get("success") and len(result.get("response", "")) > len(content):
+        if is_deep_topic and len(content) < 150:
+            # 走多Agent深度研究
+            try:
+                from scripts.tonight_deep_research import deep_research_one
+                task = {
+                    "id": f"enrich_{i}",
+                    "title": f"补充数据: {title}",
+                    "goal": f"为 {title} 补充具体型号、参数、价格、供应商信息",
+                    "searches": [
+                        f"{title} datasheet specifications 2026",
+                        f"{title} 价格 供应商 采购",
+                    ]
+                }
+                report = deep_research_one(task)
                 # 验证确实补充了数据
-                new_content = result["response"]
                 has_new_data = bool(re.search(
                     r'\d+\.?\d*\s*(mm|cm|g|kg|mAh|W|V|Hz|dB|美元|元|USD|\$|%|nits)',
-                    new_content
+                    report
                 ))
-
-                if has_new_data:
-                    data["content"] = new_content[:1200]
-                    data["tags"] = list(set(data.get("tags", []) + ["overhaul_enriched"]))
+                if has_new_data and len(report) > len(content) + 200:
+                    data["content"] = report[:2000]
+                    data["tags"] = list(set(tags + ["overhaul_enriched", "multi_agent"]))
+                    data["confidence"] = "high"
                     entry["path"].write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
                     improved += 1
+                    print(f"  ✅ [多Agent] {title[:40]} ({len(report)}字)")
+                    continue
+            except Exception as e:
+                print(f"  ⚠️ [多Agent失败] {title[:40]}: {e}，降级到单LLM")
+
+        # 单LLM快速补充（原有逻辑作为fallback）
+        enrich_prompt = (
+            f"以下知识条目缺少具体数据。请基于搜索结果补充：\n"
+            f"- 具体型号（如 IMX678、BES2800、QCC5181）\n"
+            f"- 具体参数（如 3000nits、42dB、1.65kg）\n"
+            f"- 具体价格（如 $15-25/颗）\n"
+            f"- 具体公司/品牌名\n\n"
+            f"标题：{title}\n原内容：{content[:500]}\n\n"
+            f"搜索结果：\n{search_data[:3000]}\n\n"
+            f"输出补充数据后的完整内容（500-800字），不要编造数据。"
+        )
+
+        # === Phase 2.3: 提炼用 GPT-5.4 ===
+        result = call_for_refine(enrich_prompt, "补充具体数据，不要编造。", "kb_enrich")
+
+        if result.get("success") and len(result.get("response", "")) > len(content):
+            # 验证确实补充了数据
+            new_content = result["response"]
+            has_new_data = bool(re.search(
+                r'\d+\.?\d*\s*(mm|cm|g|kg|mAh|W|V|Hz|dB|美元|元|USD|\$|%|nits)',
+                new_content
+            ))
+
+            if has_new_data:
+                data["content"] = new_content[:1200]
+                data["tags"] = list(set(data.get("tags", []) + ["overhaul_enriched"]))
+                entry["path"].write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+                improved += 1
 
         if (i + 1) % 30 == 0:
-            print(f"  进度: {i+1}/{len(batch)}, 成功补充: {improved}")
+            print(f"  进度: {i+1}/{len(search_results)}, 成功补充: {improved}")
             gc.collect()
 
-        time.sleep(1)
+        time.sleep(0.5)
 
     duration = (time.time() - start) / 60
     stats = {"processed": len(batch), "improved": improved, "deleted": 0, "duration_min": duration}
@@ -416,12 +575,12 @@ def phase6_deep_dive(notify_func=None) -> dict:
 
 
 # ==========================================
-# Phase 7: 决策树重建
+# Phase 7: 决策树重建（多Agent讨论版）
 # ==========================================
 def phase7_rebuild_decision_trees(notify_func=None) -> dict:
-    """基于清理后的知识库重建所有决策树"""
+    """基于清理后的知识库重建所有决策树（多Agent讨论）"""
     start = time.time()
-    log("Phase 7: 决策树重建开始", notify_func)
+    log("Phase 7: 决策树重建开始（多Agent讨论）", notify_func)
 
     gateway = get_model_gateway()
 
@@ -461,6 +620,50 @@ def phase7_rebuild_decision_trees(notify_func=None) -> dict:
 
         log(f"  生成决策树: {domain_key} ({len(profiles)} 份档案)")
 
+        # 用多Agent流程生成决策树
+        try:
+            from scripts.tonight_deep_research import deep_research_one
+
+            profiles_text = "\n---\n".join(profiles[:15])
+            task = {
+                "id": f"tree_{domain_key}",
+                "title": f"{domain_key} 选型决策树",
+                "goal": (
+                    f"基于以下 {len(profiles)} 份技术档案，生成智能摩托车全盔项目的 {domain_key} 选型决策树。"
+                    f"按场景分支推荐，每个推荐要有参数依据和风险标注。"
+                ),
+                "searches": []  # 不需要额外搜索，直接用已有档案
+            }
+
+            # 调用多Agent讨论生成决策树
+            report = deep_research_one(task)
+
+            if len(report) > 500:
+                # 先删除旧的决策树
+                for f in KB_ROOT.rglob("*.json"):
+                    try:
+                        d = json.loads(f.read_text(encoding="utf-8"))
+                        if "decision_tree" in d.get("tags", []) and domain_key in d.get("tags", []):
+                            f.unlink()
+                    except:
+                        continue
+
+                # 存新的
+                add_report(
+                    title=f"[决策树] {domain_key} 选型指南（多Agent讨论）",
+                    domain="components",
+                    content=report,
+                    tags=["knowledge_graph", "decision_tree", domain_key, "multi_agent", "overhaul_rebuilt"],
+                    source=f"overhaul:rebuild_tree:{domain_key}",
+                    confidence="high"
+                )
+                trees_built += 1
+                print(f"  ✅ [多Agent] {domain_key} 决策树生成完成 ({len(report)}字)")
+                continue
+        except Exception as e:
+            print(f"  ⚠️ [多Agent失败] {domain_key}: {e}，降级到单LLM")
+
+        # 降级：单LLM生成（原有逻辑）
         decision_prompt = (
             f"你是智能摩托车全盔项目的技术总监。\n"
             f"以下是 {domain_key} 领域的 {len(profiles)} 份技术档案。\n\n"
@@ -473,8 +676,8 @@ def phase7_rebuild_decision_trees(notify_func=None) -> dict:
             f"技术档案：\n" + "\n---\n".join(profiles[:15])
         )
 
-        result = gateway.call_azure_openai("cpo", decision_prompt,
-            "生成简洁实用的选型决策树。", "rebuild_decision_tree")
+        # === Phase 2.3: 决策树用 GPT-5.4 ===
+        result = call_for_refine(decision_prompt, "生成简洁实用的选型决策树。", "rebuild_decision_tree")
 
         if result.get("success") and len(result.get("response", "")) > 500:
             # 先删除旧的决策树

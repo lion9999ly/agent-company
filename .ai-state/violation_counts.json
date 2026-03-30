@@ -1,3 +1,8 @@
 {
-  "file_lines": 1
+  "file_lines": 5,
+  "function_lines": 42,
+  "nesting_depth": 36,
+  "dangerous_eval": 2,
+  "dangerous_exec": 2,
+  "dangerous_system": 2
 }

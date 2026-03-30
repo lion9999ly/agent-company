@@ -1,14 +1,17 @@
 {
   "title": "Snapdragon AR1 Gen 1 拍照能力：12 MP HDR 与人像模式",
   "domain": "components",
-  "content": "该平台的拍照能力聚焦智能眼镜场景，支持最高 12 MP 照片拍摄，并明确支持 computational HDR 与 portrait mode。官方强调可实现 vivid colors and clarity，适合随手记录场景。结合双 14-bit ISP、自动曝光、自动白平衡与低光增强算法，Snapdragon AR1 Gen 1 旨在提升眼镜端照片质量与可用性。",
+  "content": "Snapdragon AR1 Gen 1 的拍照能力面向智能眼镜“第一视角记录”场景，官方已明确给出两项核心规格：**最高支持 12 MP 照片拍摄**，以及 **1080p 60fps 视频录制**。在成像链路上，它采用 **双 14-bit ISP**，并支持 **computational HDR** 与 **portrait mode（人像模式）**，这意味着平台不仅能完成基础拍摄，还能通过多帧合成和算法优化提升高反差场景下的可用性。以 12 MP 计算，常见输出分辨率约为 **4000×3000**，已足够覆盖日常随手拍、社交分享和眼镜端视觉记录需求。\n\n从画质机制看，AR1 Gen 1 依赖 ISP 与算法协同，官方提到可实现更好的 **vivid colors and clarity**。其中，**自动曝光（AE）**、**自动白平衡（AWB）**、低光增强和 HDR 合成，是提升照片稳定性的关键。HDR 尤其适合室内逆光、户外强光阴影并存等场景，可在高光不过曝的同时保留暗部细节。人像模式则通常依赖主体分割与背景虚化算法，适合近距离人物或物体拍摄，但高通公开资料仅说明“支持 portrait mode”，**并未披露虚化强度、景深精度或具体 AI 算力数值**，因此不宜进一步推断。\n\n在供应链和价格方面，现有搜索结果**没有给出 Snapdragon AR1 Gen 1 芯片单价、模组报价、传感器配套型号或具体供应商名单**。可确认的供应商只有**高通（Qualcomm）**本身，即该平台的芯片提供方；但关于搭配何种 12 MP CMOS、是否采用 Sony、OmniVision 或三星传感器，以及整机 BOM 成本，搜索结果均无明确数据，因此这里保持原信息，不做编造。\n\n综合来看，Snapdragon AR1 Gen 1 的相机定位不是替代手机主摄，而是在**低功耗、轻量化眼镜**中提供“够用且稳定”的拍照体验。已知硬指标包括：**12 MP 照片、1080p@60fps 视频、双 14-bit ISP、HDR、人像模式**；这些参数说明它更强调实时处理和佩戴设备可用性，而非超高像素或旗舰级多摄系统。",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "12MP",
+    "photo capture",
     "computational HDR",
+    "12MP",
+    "internal",
     "portrait mode",
-    "photo capture"
+    "overhaul_deepened",
+    "night_deepened"
   ],
   "confidence": "high"
 }

@@ -1,15 +1,17 @@
 {
   "title": "D-Robotics X5 产品目录结构：ISP 图像信号处理器",
   "domain": "components",
-  "content": "目录中 1.3.7 为 Image Signal Processing（ISP），表明 X5 集成图像信号处理器，用于原始传感器数据处理。ISP 通常承担去马赛克、降噪、白平衡、曝光控制、色彩校正、HDR 等任务，是摄像头成像质量的核心。当前截取内容未提供像素吞吐、支持传感器规格、HDR 路数或算法细节，但可确认 ISP 是 X5 视觉链路中的核心模块，与视频输入、VSE、GDC 和编码器形成完整图像处理流水线。",
+  "content": "标题：D-Robotics X5 产品目录结构：ISP 图像信号处理器\n\n目录中 1.3.7 为 Image Signal Processing（ISP），可确认 X5 集成了图像信号处理器，负责将图像传感器输出的 Raw 数据转换为可用于显示、编码和视觉算法处理的图像。结合同目录中视频输入、VSE、GDC 和编码器等模块名称，可以判断 ISP 处于 X5 视觉链路前段，是成像与后续视频处理的关键环节。\n\n但基于当前给出的搜索结果，**没有检索到 D-Robotics X5 ISP 的公开具体型号、像素吞吐、支持的传感器型号、HDR 路数、位宽、帧率、算法版本或供应商信息**。搜索结果还明确提示：目前公开市场上**没有名为“D-Robotics”的知名公司或“D-Robotics X5”产品线的详细 ISP 规格资料**。因此，以下内容只能基于目录结构做保守描述，**不能补充 IMX678、BES2800、QCC5181 这类具体型号，也不能补充 3000nits、42dB、1.65kg、$15-25/颗 这类具体参数或价格**，因为现有搜索结果未提供这些数据。\n\n从功能定位看，ISP 通常承担去马赛克、降噪、自动曝光（AE）、自动白平衡（AWB）、色彩校正、镜头阴影校正、坏点校正、HDR 合成、锐化等任务。这意味着 X5 的 ISP 很可能与摄像头输入模块协同，先完成基础画质处理，再把结果送往 VSE、GDC 或编码器模块。不过，**当前搜索结果没有给出其支持 Bayer/RGBIR、Rolling Shutter/Global Shutter、10bit/12bit/14bit Raw、4K/8K 分辨率、MIPI CSI-2 lane 数、DOL-HDR 路数等任何可量化指标**。\n\n在公司与品牌层面，现有搜索结果中唯一明确出现的名称只有 **“D-Robotics”**，但同时指出该名称及 **“D-Robotics X5”** 缺乏可核验的公开产品资料。因此，无法进一步确认其 ISP 是否来自 **Sony、OmniVision、onsemi、SmartSens、Altek、Arm Mali-C55/C71** 等行业常见相关厂商，也无法确认是否绑定某个具体传感器品牌或 ISP IP 供应商。\n\n综上，当前能够可靠补充的信息只有：**X5 目录中确实包含 ISP 模块，且其角色是原始图像处理核心，位于完整视觉流水线前端。** 至于用户要求的**具体型号、具体参数、具体价格、具体品牌名**，本次提供的搜索结果中均**没有可验证数据**，因此不应编造或擅自补充。若需进一步完善该条目，建议补充 X5 官方产品手册、芯片 datasheet、开发者文档或官网页面截图。",
   "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "ISP",
-    "Image Signal Processing",
     "X5",
+    "Image Signal Processing",
+    "internal",
+    "目录",
     "视觉",
-    "目录"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

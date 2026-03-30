@@ -1,5 +1,9 @@
 # 📋 行为边界审计日志模块 (Behavior Boundary Logger)
 """
+@description: 记录和审计Agent行为，确保行为边界合规，防止Agent学习人类闲聊、越权操作、边界漂移
+@dependencies: json, hashlib, datetime, pathlib, dataclasses, enum, threading
+@last_modified: 2026-03-18
+
 核心职责：记录和审计Agent行为，确保行为边界合规。
 
 参考：虎嗅文章《Multi-Agent协作的三大陷阱》

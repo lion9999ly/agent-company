@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 
-from src.graph.router import cmo_marketer_node
+from src.graph.router import cmo_strategist
 
 
 def test_cmo_node():
@@ -44,11 +44,11 @@ def test_cmo_node():
     }
 
     print(f"\n[输入] 任务: {test_state['sub_tasks']['test_task_002']['task_description']}")
-    print("\n[调用] cmo_marketer_node...")
+    print("\n[调用] cmo_strategist...")
     print("-" * 60)
 
     # 调用CMO节点
-    result = cmo_marketer_node(test_state)
+    result = cmo_strategist(test_state)
 
     print("-" * 60)
     print("\n[输出结果]")

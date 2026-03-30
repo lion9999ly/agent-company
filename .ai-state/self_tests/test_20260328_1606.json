@@ -1,0 +1,246 @@
+{
+  "timestamp": "2026-03-28T16:06:30.555082",
+  "avg_score": 1.8,
+  "pass_rate": 6.7,
+  "total_questions": 15,
+  "weak_count": 13,
+  "results": [
+    {
+      "question": "对比 Sena Motorcycles App、Cardo Connect App、Forcite Ride App、LIVALL Riding App、EyeRide HUD App 与 CrossHelmet X1 App 的信息架构，请列出各自一级导航数量、核心功能模块数量，以及设备配对入口所在层级，并据此判断哪一款最适合作为智能头盔 App 首版 IA 参考。",
+      "domain": "competitor",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "No relevant data found in knowledge base\n\n知识库中虽提到 **Sena Motorcycles / Sena 50S（Bluetooth 5.0、Mesh 2.0、约349美元）**、**Cardo Systems**、**Forcite**、**LIVALL**、**EyeRide HUD（约€399–€499）**、**CrossHelmet X1**"
+    },
+    {
+      "question": "如果要设计智能头盔 App 的首次使用引导，请比较 Sena、Cardo、Forcite 三款 App 在“配对→校准→权限→试骑”链路中的步骤数、权限弹窗数量、平均完成时长和中断点数量，选择转化率风险最低的方案并说明原因。",
+      "domain": "user experience",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "No relevant data found in knowledge base.\n\n知识库里有与智能头盔用户痛点、PRD基线、竞品供应链相关的信息，但**没有提供 Sena、Cardo、Forcite 三款 App 在“配对→校准→权限→试骑”链路中的可量化对比数据**，包括：\n\n- **步骤数**\n- **权限弹窗数量**\n- **平均完成时长**\n- **中断点数量**\n\n因此，无法基于知识"
+    },
+    {
+      "question": "针对 OTA 升级体验，请比较 Sena App 与 Cardo App 的设备管理页面中可支持的设备型号数量、固件升级入口点击层级、升级前电量门槛、升级失败后的恢复机制数量，并判断哪种方案更适合多 SKU 智能头盔产品线。",
+      "domain": "software/hardware",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "No relevant data found in knowledge base.\n\n知识库中虽有关于 **Sena / Cardo 通讯方案、设备生态、智能头盔 App 架构** 的研究，但未提供你问题所要求的可量化 OTA 对比数据，包括：\n\n- **Sena App 与 Cardo App 设备管理页可支持的设备型号数量**\n- **固件升级入口点击层级**\n- **升级前电量门槛**\n- "
+    },
+    {
+      "question": "在组队骑行与 Mesh 对讲场景下，请对 Sena App 与 Cardo App 的建队流程进行量化比较：建队步骤数、最大群组人数、角色类型数量、异常状态提示数量，以及骑行中切换频道所需点击次数，并选择更适合高频骑行社交场景的交互方案。",
+      "domain": "communication UX",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "No relevant data found in knowledge base\n\n知识库中虽有 **Sena Mesh Intercom / Mesh 2.0**、**Cardo DMC**、以及“蓝牙 vs Mesh 对讲”的方向性结论，但**没有提供**你要求的可量化 App 交互数据，包括：\n\n- **Sena App 建队步骤数**\n- **Cardo App 建队步骤数**\n- **最"
+    },
+    {
+      "question": "如果智能头盔需要支持语音控制，请基于 Cardo App 自然语音体验与骑行中语音交互设计原则，列出至少 3 个竞品的语音唤醒词、支持指令类别数量、单轮反馈时长、失败重试次数上限，并据此确定首版语音指令集规模。",
+      "domain": "voice interaction",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "No relevant data found in knowledge base.\n\n知识库中虽提到与语音相关的方向与原则，但没有提供你要求的可量化竞品数据，尤其缺少以下关键字段，无法据此列出“至少 3 个竞品”的完整对比表：  \n- **语音唤醒词**  \n- **支持指令类别数量**  \n- **单轮反馈时长**  \n- **失败重试次数上限**\n\n知识库里能确认的仅有这些相关信息：  \n1."
+    },
+    {
+      "question": "针对 HUD 显示设计，请比较 EyeRide HUD、CrossHelmet X1 以及汽车 HUD 迁移方案在导航信息层级数量、单屏元素数量、关键字体尺寸范围、夜间/强光模式对比度参数上的差异，并选择适合摩托车高速骑行场景的显示密度上限。",
+      "domain": "HUD/UI",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "基于知识库，**可直接确认的数据主要来自 EyeRide HUD 与 CrossHelmet X1；“汽车 HUD 迁移方案”缺少可核实的具体显示参数**，因此不能完整做三者定量对比。\n\n**1) EyeRide HUD**\n- 型号：**EyeLights EyeRide HUD**\n- 已知显示相关参数：**20° FOV、720p（1280×720）、亮度约 2800–3000 nits、虚"
+    },
+    {
+      "question": "在 HUD 告警优先级设计中，请基于“安全>导航>通信>娱乐”原则，给出至少 4 类典型事件的触发阈值、显示时长、遮挡级别和声音/灯光联动方式，并判断哪些事件必须中断当前导航显示。",
+      "domain": "safety interaction",
+      "score": 8,
+      "reason": "missing brand",
+      "answer_preview": "基于知识库“**安全>导航>通信>娱乐**”原则，可这样定义 HUD 告警优先级。相关硬件基础可依托 **9轴IMU（3轴加速度计+3轴陀螺仪+3轴磁力计）**、**GPS/北斗**、蓝牙音频，以及知识库建议的 **Micro-LED + 波导 HUD**；通信芯片候选可参考 **Nordic nRF5340（1MB Flash / 512KB RAM，BLE 5.4）**。\n\n### 1) 碰撞"
+    },
+    {
+      "question": "如果要为戴手套骑行设计实体按键，请比较至少 3 个竞品或参考设备在按键数量、按键间距、凸起高度、长按/短按功能分配数量、触觉反馈类型上的参数，并选择最适合冬季厚手套盲操的硬件方案。",
+      "domain": "hardware interaction",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "基于知识库，**可直接引用的“实体按键”参数数据非常有限**；未见竞品公开给出“按键间距、凸起高度、长按/短按功能分配数量、触觉反馈类型”的完整规格。**因此无法做严格参数级横向对比**。但可基于已知控制方式与使用场景给出结论：\n\n### 可参考竞品/设备\n1. **EyeRide HUD（EyeLights）**  \n   - 控制方式：**App/遥控控制**  \n   - 连接：**Blue"
+    },
+    {
+      "question": "针对头盔氛围灯/状态灯设计，请比较 LIVALL 等具备安全灯效能力的产品在灯区数量、可见角度、亮度档位、刹车/转向/配对状态编码数量上的实现，并判断首版产品是否需要独立后向警示灯模组。",
+      "domain": "hardware/safety",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "知识库未给出你要求的完整量化对比数据（如**灯区数量、可见角度、亮度档位、状态编码数量**的逐项参数）。能确认的只有以下几点：\n\n- **LIVALL BH62 Neo / MT1 Neo 2024**：集成**后部LED警示/转向/刹车灯**，并支持**蓝牙通话/音乐、对讲、跌倒检测、SOS报警**。  \n- 市场趋势中，**Lumos、Livall**类方案已集成**前后LED、转向灯、刹车灯"
+    },
+    {
+      "question": "若计划在欧盟上市带蓝牙/Wi-Fi/UWB 的智能头盔，请列出 ECE 22.06、CE-RED、FCC、UN38.3 各自的测试项数量、典型认证费用区间、平均周期、是否可并行推进，并据此制定最短上市认证路径。",
+      "domain": "certification",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "基于知识库，可给出**部分**认证路径数据；但“**各自测试项数量**”与 **CE-RED/FCC/UN38.3 的完整费用区间、平均周期**，知识库**未完整提供**。因此不能补造。  \n\n**已知数据：**  \n- **ECE 22.06**  \n  - 关键测试范围：新增**斜向冲击**、扩展**高速+低速冲击**、附件联测（**蓝牙模块、摄像头、HUD**需随整盔评估）。  \n  - 典"
+    },
+    {
+      "question": "请基于 ECE 22.06 Annex 8 对电子附件的要求，比较‘外置摄像头模组’、‘侧边蓝牙对讲模组’、‘HUD 光学模组’三种方案在突出尺寸、安装位置限制、脱落风险测试要求和对冲击测试的影响，并选择认证风险最低的集成方式。",
+      "domain": "certification/hardware",
+      "score": 6,
+      "reason": "missing model, missing brand",
+      "answer_preview": "基于知识库，三种方案的认证风险可这样比较：\n\n1. **外置摄像头模组**  \n- **突出尺寸/外形**：Annex 9强调外部突出量应“**尽可能小**”，且外露件**最小圆角半径通常 2 mm**。摄像头通常最容易形成突出物。  \n- **安装位置限制**：不得造成“snagging”钩挂风险；若安装在壳体外表面，会增加旋转伤害风险。  \n- **脱落风险测试**：需满足约**50 daN（"
+    },
+    {
+      "question": "如果产品同时考虑欧洲、美国和中国市场，请比较 ECE 22.06、DOT FMVSS 218、GB 811-2022/3C 在测试项目数量、是否第三方强制认证、样品数量、认证费用、周期上的差异，并决定首批量产应优先覆盖哪些市场。",
+      "domain": "regulation/market",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "基于知识库，三地差异可确认的只有部分项：\n\n- **ECE 22.06（欧洲）**  \n  - **测试项目/点位**：知识库明确有**斜向冲击**、更多冲击点；给出“**新增7个冲击点**”“测试点由约**5个提升到12个**”“至少**12个**”等表述。还提到冲击速度 **6 m/s、7.5 m/s、8.2 m/s**，斜向冲击 **45°**，旋转加速度通常 **<10,400 rad/s"
+    },
+    {
+      "question": "针对内置锂电池智能头盔，请列出 UN38.3 所需 8 项测试中与头盔运输最相关的项目、每项样品数量、电池容量限制、运输文件要求，并判断 5000mAh 与 8000mAh 两种方案在国际空运上的风险差异。",
+      "domain": "battery/compliance",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "基于知识库，**与内置锂电智能头盔国际运输最相关的 UN 38.3 信息只有“需做 UN 38.3”这一层级**；知识库**未提供**你要求的 **UN38.3“8项测试逐项名称、每项样品数量、容量限制、运输文件细则”**。因此这些细项不能编造，需明确说：**No relevant data found in knowledge base**。\n\n可确认的数据如下：\n\n1. **适用产品范围** "
+    },
+    {
+      "question": "若目标进入高端赛道或专业骑行市场，请比较 Snell M2020、FIM FRHPhe 与 ECE 22.06 在冲击测试速度、测试点数量、旋转加速度要求、认证费用和品牌溢价影响上的差异，并判断是否值得为高配版追加认证。",
+      "domain": "certification/strategy",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "面向高端赛道/专业骑行市场，三者差异可概括为：\n\n- **ECE 22.06**：当前量产市场核心门槛，**2021年生效**。知识库明确给出其新增 **多点随机冲击**、**低速 6 m/s / 高速 8.2 m/s 冲击**、**斜向冲击**、**附件安全测试**，对蓝牙、HUD、摄像头支架、灯控附件等智能模组约束很强；同时要求兼顾**旋转加速度管理**。适合大多数高端公路/运动骑行产品。\n-"
+    },
+    {
+      "question": "为了定义骑行记录与社区功能优先级，请比较 Forcite Ride、Strava、Relive、Rever 在记录维度数量、视频叠加数据种类、自动生成内容时长、分享渠道数量、付费订阅价格上的数据，并选择首版最值得做的 3 个功能。",
+      "domain": "product strategy",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "answer_preview": "基于知识库，**只有 Forcite Ride 有部分相关数据**；对 **Strava、Relive、Rever** 的“记录维度数量、视频叠加数据种类、自动生成内容时长、分享渠道数量、付费订阅价格”**未提供**。因此无法做完整横向量化对比。**No relevant data found in knowledge base**（针对 Strava / Relive / Rever 具体指标）"
+    }
+  ],
+  "weak_areas": [
+    {
+      "question": "对比 Sena Motorcycles App、Cardo Connect App、Forcite Ride App、LIVALL Riding App、EyeRide HUD App 与 CrossHelmet X1 App 的信息架构，请列出各自一级导航数量、核心功能模块数量，以及设备配对入口所在层级，并据此判断哪一款最适合作为智能头盔 App 首版 IA 参考。",
+      "domain": "competitor",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "对比 Sena Motorcycles App、Cardo Connect App、Forcite Ride App、LIVALL Riding App、EyeRide HUD App 与 CrossHelmet X1 App 的信息架构，请列出各自一级导航数量、核心功能模块数量，以及设备配对入口所在层级，并据此判断哪一款最适合作为智能头盔 App 首版 IA 参考。 specific data parameters models",
+        "competitor specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "如果要设计智能头盔 App 的首次使用引导，请比较 Sena、Cardo、Forcite 三款 App 在“配对→校准→权限→试骑”链路中的步骤数、权限弹窗数量、平均完成时长和中断点数量，选择转化率风险最低的方案并说明原因。",
+      "domain": "user experience",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "如果要设计智能头盔 App 的首次使用引导，请比较 Sena、Cardo、Forcite 三款 App 在“配对→校准→权限→试骑”链路中的步骤数、权限弹窗数量、平均完成时长和中断点数量，选择转化率风险最低的方案并说明原因。 specific data parameters models",
+        "user experience specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "针对 OTA 升级体验，请比较 Sena App 与 Cardo App 的设备管理页面中可支持的设备型号数量、固件升级入口点击层级、升级前电量门槛、升级失败后的恢复机制数量，并判断哪种方案更适合多 SKU 智能头盔产品线。",
+      "domain": "software/hardware",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "针对 OTA 升级体验，请比较 Sena App 与 Cardo App 的设备管理页面中可支持的设备型号数量、固件升级入口点击层级、升级前电量门槛、升级失败后的恢复机制数量，并判断哪种方案更适合多 SKU 智能头盔产品线。 specific data parameters models",
+        "software/hardware specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "在组队骑行与 Mesh 对讲场景下，请对 Sena App 与 Cardo App 的建队流程进行量化比较：建队步骤数、最大群组人数、角色类型数量、异常状态提示数量，以及骑行中切换频道所需点击次数，并选择更适合高频骑行社交场景的交互方案。",
+      "domain": "communication UX",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "在组队骑行与 Mesh 对讲场景下，请对 Sena App 与 Cardo App 的建队流程进行量化比较：建队步骤数、最大群组人数、角色类型数量、异常状态提示数量，以及骑行中切换频道所需点击次数，并选择更适合高频骑行社交场景的交互方案。 specific data parameters models",
+        "communication UX specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "如果智能头盔需要支持语音控制，请基于 Cardo App 自然语音体验与骑行中语音交互设计原则，列出至少 3 个竞品的语音唤醒词、支持指令类别数量、单轮反馈时长、失败重试次数上限，并据此确定首版语音指令集规模。",
+      "domain": "voice interaction",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "如果智能头盔需要支持语音控制，请基于 Cardo App 自然语音体验与骑行中语音交互设计原则，列出至少 3 个竞品的语音唤醒词、支持指令类别数量、单轮反馈时长、失败重试次数上限，并据此确定首版语音指令集规模。 specific data parameters models",
+        "voice interaction specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "针对 HUD 显示设计，请比较 EyeRide HUD、CrossHelmet X1 以及汽车 HUD 迁移方案在导航信息层级数量、单屏元素数量、关键字体尺寸范围、夜间/强光模式对比度参数上的差异，并选择适合摩托车高速骑行场景的显示密度上限。",
+      "domain": "HUD/UI",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "针对 HUD 显示设计，请比较 EyeRide HUD、CrossHelmet X1 以及汽车 HUD 迁移方案在导航信息层级数量、单屏元素数量、关键字体尺寸范围、夜间/强光模式对比度参数上的差异，并选择适合摩托车高速骑行场景的显示密度上限。 specific data parameters models",
+        "HUD/UI specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "如果要为戴手套骑行设计实体按键，请比较至少 3 个竞品或参考设备在按键数量、按键间距、凸起高度、长按/短按功能分配数量、触觉反馈类型上的参数，并选择最适合冬季厚手套盲操的硬件方案。",
+      "domain": "hardware interaction",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "如果要为戴手套骑行设计实体按键，请比较至少 3 个竞品或参考设备在按键数量、按键间距、凸起高度、长按/短按功能分配数量、触觉反馈类型上的参数，并选择最适合冬季厚手套盲操的硬件方案。 specific data parameters models",
+        "hardware interaction specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "针对头盔氛围灯/状态灯设计，请比较 LIVALL 等具备安全灯效能力的产品在灯区数量、可见角度、亮度档位、刹车/转向/配对状态编码数量上的实现，并判断首版产品是否需要独立后向警示灯模组。",
+      "domain": "hardware/safety",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "针对头盔氛围灯/状态灯设计，请比较 LIVALL 等具备安全灯效能力的产品在灯区数量、可见角度、亮度档位、刹车/转向/配对状态编码数量上的实现，并判断首版产品是否需要独立后向警示灯模组。 specific data parameters models",
+        "hardware/safety specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "若计划在欧盟上市带蓝牙/Wi-Fi/UWB 的智能头盔，请列出 ECE 22.06、CE-RED、FCC、UN38.3 各自的测试项数量、典型认证费用区间、平均周期、是否可并行推进，并据此制定最短上市认证路径。",
+      "domain": "certification",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "若计划在欧盟上市带蓝牙/Wi-Fi/UWB 的智能头盔，请列出 ECE 22.06、CE-RED、FCC、UN38.3 各自的测试项数量、典型认证费用区间、平均周期、是否可并行推进，并据此制定最短上市认证路径。 specific data parameters models",
+        "certification specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "如果产品同时考虑欧洲、美国和中国市场，请比较 ECE 22.06、DOT FMVSS 218、GB 811-2022/3C 在测试项目数量、是否第三方强制认证、样品数量、认证费用、周期上的差异，并决定首批量产应优先覆盖哪些市场。",
+      "domain": "regulation/market",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "如果产品同时考虑欧洲、美国和中国市场，请比较 ECE 22.06、DOT FMVSS 218、GB 811-2022/3C 在测试项目数量、是否第三方强制认证、样品数量、认证费用、周期上的差异，并决定首批量产应优先覆盖哪些市场。 specific data parameters models",
+        "regulation/market specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "针对内置锂电池智能头盔，请列出 UN38.3 所需 8 项测试中与头盔运输最相关的项目、每项样品数量、电池容量限制、运输文件要求，并判断 5000mAh 与 8000mAh 两种方案在国际空运上的风险差异。",
+      "domain": "battery/compliance",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "针对内置锂电池智能头盔，请列出 UN38.3 所需 8 项测试中与头盔运输最相关的项目、每项样品数量、电池容量限制、运输文件要求，并判断 5000mAh 与 8000mAh 两种方案在国际空运上的风险差异。 specific data parameters models",
+        "battery/compliance specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "若目标进入高端赛道或专业骑行市场，请比较 Snell M2020、FIM FRHPhe 与 ECE 22.06 在冲击测试速度、测试点数量、旋转加速度要求、认证费用和品牌溢价影响上的差异，并判断是否值得为高配版追加认证。",
+      "domain": "certification/strategy",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "若目标进入高端赛道或专业骑行市场，请比较 Snell M2020、FIM FRHPhe 与 ECE 22.06 在冲击测试速度、测试点数量、旋转加速度要求、认证费用和品牌溢价影响上的差异，并判断是否值得为高配版追加认证。 specific data parameters models",
+        "certification/strategy specifications comparison 2025 2026"
+      ]
+    },
+    {
+      "question": "为了定义骑行记录与社区功能优先级，请比较 Forcite Ride、Strava、Relive、Rever 在记录维度数量、视频叠加数据种类、自动生成内容时长、分享渠道数量、付费订阅价格上的数据，并选择首版最值得做的 3 个功能。",
+      "domain": "product strategy",
+      "score": 1,
+      "reason": "Knowledge base missing",
+      "suggested_searches": [
+        "为了定义骑行记录与社区功能优先级，请比较 Forcite Ride、Strava、Relive、Rever 在记录维度数量、视频叠加数据种类、自动生成内容时长、分享渠道数量、付费订阅价格上的数据，并选择首版最值得做的 3 个功能。 specific data parameters models",
+        "product strategy specifications comparison 2025 2026"
+      ]
+    }
+  ]
+}

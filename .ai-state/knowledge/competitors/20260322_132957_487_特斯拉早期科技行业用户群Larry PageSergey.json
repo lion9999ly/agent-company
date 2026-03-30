@@ -1,15 +1,19 @@
 {
   "title": "特斯拉早期科技行业用户群：Larry Page、Sergey Brin、Jeff Skoll、马斯克等",
   "domain": "competitors",
-  "content": "科技行业精英与企业家构成特斯拉早期用户核心。谷歌联合创始人 Larry Page 和 Sergey Brin 既是早期投资人，也是首批用户；eBay 前总裁 Jeff Skoll、PayPal 的埃隆·马斯克等也在列。该群体具备高技术敏感度、资本影响力和舆论传播力，帮助特斯拉在硅谷形成“科技精英座驾”认知，并通过投资、试用和公开背书强化品牌可信度。",
+  "content": "**特斯拉早期科技行业用户群：Larry Page、Sergey Brin、Jeff Skoll、马斯克等**\n\n特斯拉在创业早期的重要用户群，确实集中于硅谷科技行业的创始人、投资人和高管，包括 **Google（谷歌）** 联合创始人 **Larry Page、Sergey Brin**，**eBay** 前总裁、**Skoll Foundation** 创始人 **Jeff Skoll**，以及特斯拉投资人兼高管 **Elon Musk**。这一群体不仅消费能力强，也具备媒体影响力和行业背书能力。\n\n这些人早期接触和购买的核心车型是 **Tesla Roadster（2008–2012）**。公开资料显示，Roadster 是特斯拉首款量产车，基于 **Lotus Cars（路特斯）Elise** 底盘深度改造。其主要版本包括 **Roadster 1.5、Roadster 2.0、Roadster 2.5**，以及高性能版 **Roadster Sport**。其中普通版最大功率约 **215kW（288hp）**、最大扭矩 **375Nm**，**0-60mph 加速 3.9 秒**；Sport 版提升至 **225kW（302hp）**、**400Nm**，**0-60mph 约 3.7 秒**。最高时速约 **201km/h（125mph）**。\n\n在续航和电池方面，Roadster 采用约 **53kWh** 电池组，由约 **6,831 节 18650 锂离子电芯**构成，电芯供应商为 **Panasonic（松下）**。EPA 续航约 **244 英里（393 公里）**，在当时属于极具突破性的纯电跑车水平。车辆整备质量约 **1,238kg**，车身尺寸约 **3,946mm × 1,873mm × 1,127mm**，轴距 **2,330mm**。在 **240V/70A** 条件下，充满电约需 **3.5 小时**。\n\n价格方面，Tesla Roadster 在美国上市初期售价大致为 **9.8万–10.9万美元**，而 **Roadster Sport** 价格可达 **12.85万美元**。这一定价决定了其早期用户主要来自高净值、愿意承担技术风险的科技精英群体。马斯克本人拥有著名的 **Roadster VIN 001**；而 Larry Page、Sergey Brin、Jeff Skoll 等人则被广泛视为 Roadster 的早期支持者和车主，部分属于首批预订用户或“**Signature 100**”相关群体。\n\n从产业链看，Roadster 的底盘和部分制造依赖 **Lotus Cars**，电池电芯来自 **Panasonic**，而电驱和电力电子技术早期与 **AC Propulsion** 的技术路线密切相关，再由",
   "source": "doc_import:特斯拉早期用户.pdf",
   "created_at": "2026-03-22",
   "tags": [
+    "Jeff Skoll",
+    "overhaul_light",
+    "Elon Musk",
+    "internal",
     "科技精英",
+    "night_deepened",
     "Larry Page",
     "Sergey Brin",
-    "Jeff Skoll",
-    "Elon Musk"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

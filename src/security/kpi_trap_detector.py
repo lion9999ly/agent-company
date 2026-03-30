@@ -1,5 +1,9 @@
 # 🎯 KPI陷阱检测模块 (KPI Trap Detector)
 """
+@description: 检测Agent为达成KPI而走捷径的行为模式，防止"表面达标"而非"实质达标"
+@dependencies: re, dataclasses, enum, typing
+@last_modified: 2026-03-18
+
 核心职责：检测Agent为达成KPI而走捷径的行为模式。
 
 参考：虎嗅文章《Multi-Agent协作的三大陷阱》

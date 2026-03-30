@@ -27,7 +27,7 @@ from enum import Enum
 
 # === 配置 ===
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = PROJECT_ROOT / "src"
 AI_ARCH_DIR = PROJECT_ROOT / ".ai-architecture"
 SYNC_REPORT_FILE = PROJECT_ROOT / ".ai-state" / "sync_report.json"
@@ -132,17 +132,27 @@ def parse_docstring(docstring: str) -> dict[str, Optional[str]]:
 
 
 def extract_docstring(content: str) -> Optional[str]:
-    """提取文件顶部Docstring"""
-    content = content.lstrip()
+    """提取文件顶部Docstring，支持跳过开头的注释行"""
+    lines = content.split('\n')
+    # 跳过开头的注释行和空行
+    start_idx = 0
+    while start_idx < len(lines):
+        line = lines[start_idx].strip()
+        if line and not line.startswith('#'):
+            break
+        start_idx += 1
 
-    if content.startswith('"""'):
-        end_idx = content.find('"""', 3)
+    # 从第一个非注释非空行开始查找
+    remaining = '\n'.join(lines[start_idx:]).lstrip()
+
+    if remaining.startswith('"""'):
+        end_idx = remaining.find('"""', 3)
         if end_idx != -1:
-            return content[3:end_idx].strip()
-    elif content.startswith("'''"):
-        end_idx = content.find("'''", 3)
+            return remaining[3:end_idx].strip()
+    elif remaining.startswith("'''"):
+        end_idx = remaining.find("'''", 3)
         if end_idx != -1:
-            return content[3:end_idx].strip()
+            return remaining[3:end_idx].strip()
 
     return None
 

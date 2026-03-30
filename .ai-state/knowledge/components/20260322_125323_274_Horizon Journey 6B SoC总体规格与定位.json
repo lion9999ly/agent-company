@@ -10,7 +10,8 @@
     "SoC",
     "ADAS",
     "GSR",
-    "NCAP"
+    "NCAP",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -1,14 +1,17 @@
 {
   "title": "Snapdragon AR1 Gen 1 GPU：Adreno 与稀疏 AR 内容生成",
   "domain": "components",
-  "content": "GPU 采用 Qualcomm Adreno GPU，支持 power-efficient sparse AR content generation，并兼容 OpenGL ES 3.2 与 Vulkan 1.1。该定位说明其图形能力主要服务于轻量 AR 叠加、通知显示和基础图形渲染，而非复杂 6DoF 高负载图形场景。",
+  "content": "Snapdragon AR1 Gen 1 的 GPU 采用 Qualcomm Adreno GPU，官方已明确其支持 **power-efficient sparse AR content generation**，并兼容 **OpenGL ES 3.2** 与 **Vulkan 1.1**。从产品定位看，这颗 GPU 不是面向高负载 6DoF 沉浸式图形，而是服务于轻量级 AR 眼镜场景，例如通知叠加、导航箭头、文本卡片、简单 2D/3D UI 和基础图形合成。公开资料还显示，Snapdragon AR1 Gen 1 由 **Qualcomm Technologies, Inc.** 于 **2023 年**发布，属于面向“智能眼镜”而非头显的专用平台。\n\n就可确认的规格而言，搜索结果中没有给出这颗 Adreno GPU 的**具体型号编号、核心数量、主频、FLOPS、显存带宽**等数据，因此这些参数不能补充或推断。能够确认的是，它支持的图形 API 为 **OpenGL ES 3.2** 和 **Vulkan 1.1**，这意味着开发者可利用较成熟的移动图形生态来实现低功耗渲染管线，并优先优化少量几何体、有限纹理和低延迟合成，而不是复杂光照、大场景网格或高多边形实时渲染。\n\n在商业信息方面，公开搜索结果同样**没有提供该芯片的单价、批量采购价格、分销商名称或现货供应商报价**，因此不能补充价格与供应渠道数据。现阶段可写明的供应商只有芯片平台提供方 **Qualcomm / Qualcomm Technologies**。综合来看，AR1 Gen 1 的 Adreno GPU 强调的是“能效优先”的稀疏 AR 内容生成能力：把有限算力集中用于稳定显示、快速叠加和基础交互体验，而非承担复杂空间计算图形负载。这也解释了其更适合轻便眼镜形态，而不是面向高端 XR 头显的重度图形应用。",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Adreno GPU",
-    "AR content",
     "OpenGL ES 3.2",
-    "Vulkan 1.1"
+    "AR content",
+    "internal",
+    "overhaul_deepened",
+    "Vulkan 1.1",
+    "night_deepened",
+    "Adreno GPU"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

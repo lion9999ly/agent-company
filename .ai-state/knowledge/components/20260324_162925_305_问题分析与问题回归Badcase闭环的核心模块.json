@@ -1,15 +1,18 @@
 {
   "title": "问题分析与问题回归：Badcase闭环的核心模块",
   "domain": "components",
-  "content": "文档将Case回传、Case可视化分析、问题分析、问题分类、问题回归作为Badcase回归闭环的关键环节。模型或软件评测中发现的问题通过Case回传进入平台，经过可视化分析和分类后，驱动数据生产、模型优化与版本更新，最终通过软件评测和全量测试验证修复效果。",
+  "content": "文档将 **Case 回传、Case 可视化分析、问题分析、问题分类、问题回归** 作为 Badcase 闭环的核心链路：评测中发现的问题先回传平台，再通过可视化分析与分类定位根因，随后驱动数据生产、模型优化和版本更新，最后通过软件评测与全量测试验证修复效果。结合搜索结果，可进一步明确其方法论：**问题分析** 的目标是完成根因定位（Root Cause Analysis, RCA）、影响范围评估和优先级排序；**问题回归** 的目标是验证修复是否生效，并确认没有引入新的缺陷，从而真正形成“发现—分析—修复—验证—沉淀”的闭环。\n\n从搜索结果看，Badcase 平台可落地到一组明确的软件工具与厂商。**缺陷跟踪与事件管理** 可采用 **Atlassian 的 Jira Software**，搜索结果给出其 **Standard 版价格为 $7.50/用户/月起**；也可采用 **Microsoft 的 Azure DevOps**，其 **付费版价格为 $6/用户/月起**，并提供 **5 用户免费额度**。在企业级 IT 服务管理场景中，**ServiceNow 的 ITSM** 也可用于问题管理与变更管理，搜索结果仅给出 **通常 $100+/用户/月**，且说明为**定制报价**。\n\n在 **日志分析与可观测性** 方面，搜索结果列出了 **Splunk Enterprise**、**Elastic 的 ELK Stack**、**Datadog Log Management**、**Prometheus + Grafana**、**New Relic** 和 **Cisco 的 AppDynamics**。其中，**Splunk Enterprise** 的价格按数据量计费，搜索结果给出 **通常 $150+/GB/天起**；**Datadog Log Management** 给出了更具体的计费参数：**$0.10/GB ingested**，以及 **$1.70/million log events scanned**。**Prometheus + Grafana** 为开源组合，搜索结果明确为**免费**，云服务则按资源计费。**New Relic** 的价格区间为 **$25-$100+/主机/月**，**AppDynamics** 为**定制报价**，通常 **$100+/主机/月**。\n\n在 **可视化分析与报告** 环节，可使用 **Salesforce 的 Tableau** 和 **Microsoft Power BI**。搜索结果显示，**Tableau Creator** 的价格为 **$70/用户/月起**；**Power BI Pro** 为 **$10/用户/月**，桌面版免费。这些工具可承载 Badcase 的多维分析",
   "source": "doc_import:数据闭环介绍 20260119 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "问题分析",
-    "问题回归",
-    "Badcase",
     "Case回传",
-    "可视化分析"
+    "问题回归",
+    "问题分析",
+    "overhaul_deepened",
+    "Badcase",
+    "可视化分析",
+    "night_deepened",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

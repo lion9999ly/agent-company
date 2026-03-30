@@ -31,8 +31,14 @@ def check_file(file_path: Path) -> Dict:
     checker = CodeChecker(str(file_path), content)
     result = checker.check_all()
 
+    # 安全获取相对路径
+    try:
+        relative_path = str(file_path.relative_to(PROJECT_ROOT))
+    except ValueError:
+        relative_path = str(file_path)
+
     return {
-        "file": str(file_path.relative_to(PROJECT_ROOT)),
+        "file": relative_path,
         "passed": result.passed,
         "violations": [
             {"type": v.type, "message": v.message, "line": v.line}

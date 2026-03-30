@@ -8,7 +8,12 @@
     "Solos AirGo Vision",
     "AI拍摄眼镜",
     "2183元",
-    "34g"
+    "34g",
+    "night_deepened",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high",
+  "_usage_count": 12,
+  "_last_used": "2026-03-30T00:49:19.292000",
+  "_first_used": "2026-03-28T15:01:03.716370"
 }

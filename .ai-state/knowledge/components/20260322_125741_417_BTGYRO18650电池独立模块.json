@@ -10,7 +10,8 @@
     "18650",
     "独立工作",
     "CAN1",
-    "CAN2"
+    "CAN2",
+    "internal"
   ],
   "confidence": "high"
 }

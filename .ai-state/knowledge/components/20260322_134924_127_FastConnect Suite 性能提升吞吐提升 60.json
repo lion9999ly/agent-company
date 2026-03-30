@@ -1,15 +1,18 @@
 {
   "title": "FastConnect Suite 性能提升：吞吐提升 60%，时延降低 50%",
   "domain": "components",
-  "content": "文档注明，在支持最新 FastConnect Suite 的情况下，用户可通过 Wi‑Fi 7、Wi‑Fi 6E 与 Bluetooth（qualified against Bluetooth Core 5.4）获得无卡顿共享 XR 体验。相较前代 FastConnect，吞吐量提升 60%，时延降低 50%。这对智能眼镜直播、远程协作和实时交互尤为关键。",
+  "content": "文档指出，在支持最新 FastConnect Suite 的前提下，终端可借助 **Wi‑Fi 7、Wi‑Fi 6E** 与 **Bluetooth（qualified against Bluetooth Core 5.4）** 实现更稳定的 XR 共享体验，并宣称**相较前代 FastConnect，吞吐提升 60%，时延降低 50%**。这一改进对智能眼镜直播、远程协作、实时交互等场景尤为关键：更高吞吐意味着可承载更高码率的视频流、更多并发数据通道；更低时延则直接改善画面同步、语音回传和交互响应，减少眩晕感与卡顿感。\n\n从搜索结果可提取的具体数据看，现有资料明确提到 Oracle FastConnect 当前**最高可提供 100 Gbps 端口速度**，并支持 **1 Gbps、10 Gbps、100 Gbps** 等连接档位；在对未来规格的分析中，还提到可能扩展到 **200 Gbps、400 Gbps**，接口类型涉及 **100GBASE-LR4/SR4、400GBASE-DR4/FR4（QSFP-DD）**，MTU 可到 **9000 字节**，可用性目标为 **99.99%**。不过，这些 **200/400 Gbps、0.5–1 ms、20–50 ms、0.0001% 丢包率** 等数值在搜索结果中被明确标注为**基于趋势的推断或模拟规格**，并非已发布的官方 FastConnect Suite 数据手册，因此不能直接当作该条目的确定参数。\n\n就无线侧而言，原文已给出较明确的协议代际信息：**Wi‑Fi 7、Wi‑Fi 6E、Bluetooth Core 5.4**。但搜索结果**没有提供具体芯片型号、终端型号、官方售价或供应商名单**，因此不宜补充诸如某一模组价格、某家供应商报价等信息，以免造成编造。综合现有可核实内容，这一条目的可靠扩展应聚焦于：FastConnect Suite 面向 XR 场景的价值，在于通过新一代 Wi‑Fi 与蓝牙协同，把链路能力提升转化为更流畅的端到端体验；而“吞吐提升 60%、时延降低 50%”是当前可确认的核心结论。至于更细的**型号、价格、供应商名**，本次搜索结果未给出，建议保持原文口径，待官方数据手册或产品发布页披露后再补充。",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "FastConnect Suite",
-    "throughput",
     "latency",
     "Wi-Fi 7",
-    "XR"
+    "XR",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
+    "FastConnect Suite",
+    "throughput"
   ],
   "confidence": "high"
 }

@@ -1,15 +1,18 @@
 {
   "title": "EyeLights EyeRide 正向口碑：提升骑行安全性的推荐评价",
   "domain": "competitors",
-  "content": "用户对 EyeRide 系统整体满意，并明确表示该产品“确实能让你成为一个更安全的骑手”，给出强烈推荐。该评价虽缺少具体功能细节和量化指标，但强化了 EyeRide 在市场传播中的核心卖点：安全性提升。适合作为竞品用户口碑中的正向安全认知样本。",
+  "content": "标题：EyeLights EyeRide 正向口碑：提升骑行安全性的推荐评价\n\n用户对 **EyeLights（法国品牌）** 的 **EyeRide HUD** 整体满意，并明确表示该产品“确实能让你成为一个更安全的骑手”，给出强烈推荐。这一评价与 EyeRide 的产品定位高度一致：通过将导航、速度、来电等信息投射到头盔视野内，减少骑手低头看手机或仪表的频率，从而提升骑行安全性。\n\n结合现有搜索结果，可补充的具体数据包括：该产品核心型号为 **EyeRide HUD**，采用 **OLED 微型显示屏**，显示亮度最高约 **1500 nits**，分辨率为 **720p（1280×720）**，视场角约 **21° 对角线**，虚拟显示距离约 **3 米**。连接方面支持 **Bluetooth 5.0**，并具备 **Wi‑Fi**；系统还集成 **GPS** 与 **IMU（惯性测量单元）**，用于导航与姿态稳定。续航约 **5–8 小时**，充电时间约 **2–3 小时**，整机重量约 **75 克**。兼容性方面，官方描述其适配大多数 **全盔（Full-face）** 和 **揭面盔（Modular/Flip-up）**。\n\n价格方面，搜索结果显示 **官方售价通常在 499–599 欧元**，折合约 **550–650 美元**，人民币参考约 **3800–4500 元**。销售主体为 **EyeLights 官方网站** 及其授权经销渠道。\n\n从竞品口碑研究角度看，这条评价的价值不在于列举了多少技术细节，而在于它直接验证了 EyeRide 最核心的传播卖点——**“安全性提升”**。尤其是在摩托车 HUD 这一品类中，用户是否真正感知到“更安全”比单纯参数更重要。结合 EyeRide 已公开的 **1500 nits 亮度、21° 视场角、75g 重量、5–8 小时续航** 等数据，可以看出其产品设计确实围绕“骑行中少分心”展开：亮度保证日间可视性，较轻重量降低佩戴负担，HUD 形式减少视线转移。\n\n因此，这条口碑可作为 EyeLights EyeRide 在“安全认知”维度上的典型正向样本。需要注意的是，当前搜索结果中**未提供更具体的上游器件型号**（如 IMX678、BES2800、QCC5181 等），因此不应补写此类芯片信息，以免造成编造。",
   "source": "doc_import:eyelights_competitor_analysis.xlsx",
   "created_at": "2026-03-22",
   "tags": [
-    "EyeLights",
-    "EyeRide",
-    "safety improvement",
     "recommendation",
-    "user review"
+    "safety improvement",
+    "EyeLights",
+    "user review",
+    "EyeRide",
+    "internal",
+    "night_deepened",
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

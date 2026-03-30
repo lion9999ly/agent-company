@@ -1,17 +1,18 @@
 {
   "title": "LIVALL、Cardo Beyond GTS、Shoei GT3 Smart 当前均缺硬证据",
   "domain": "components",
-  "content": "本轮研究对 3 个对象给出的共同结论是“证据不足，不能写死”：LIVALL 未能锁定具体工厂名称或地址，虽然大概率是中国研发 + 中国制造；Cardo Beyond GTS 缺乏可靠原始证据，可能是未正式量产、非正式产品名或市场误传；Shoei GT3 Smart 仅有视频文件名“Shoei GT3 SMART.mp4”，无法解析内容，因此不能确认智能模组供应商是 Sena、Cardo 或其他公司。对决策的意义是：现阶段不能把这 3 个对象作为已验证供应链样本使用。",
+  "content": "本轮研究对 3 个对象的结论仍应维持“**证据不足，不能写死**”，但可补充已检索到的**明确品牌名、可核实型号、参数与价格区间**，以便界定边界。首先，**LIVALL（利瓦尔）**可确认是实际运营品牌，官网为 **LIVALL**，公开产品中能检索到的具体型号包括**BH51M Neo**（自行车智能头盔）以及资料中被提及的**MC1 / MC1 Pro**（摩托车智能头盔说法）。现有搜索结果能支持的功能参数包括：**蓝牙 5.0 或更高版本**、**10–15 小时续航**、**重量约 1600–1800g**、带 **LED 警示灯 / 转向灯 / SOS 碰撞报警**，价格区间约 **人民币 2000–4000 元**（约 **250–550 美元**）；BH51M Neo 价格约 **人民币 800–1500 元**。但**未检索到具体工厂名称、制造地址、核心芯片型号（如 QCC5181 / BES2800）或摄像头传感器型号（如 IMX678）**，因此只能写成“LIVALL 为中国品牌、公开信息显示其产品大概率为中国研发与制造”，**不能写死具体代工厂**。\n\n其次，**Cardo Systems** 是可确认的公司/品牌名，但搜索结果显示，**“Cardo Beyond GTS”并不是 Cardo 官方公开产品线中可核实的正式型号**。Cardo 当前可明确对应的具体型号是 **Packtalk Edge、Packtalk Neo、Packtalk Custom、Freecom 4x、Freecom 2x**。其中可补充的硬数据是：**Packtalk Edge** 支持 **DMC Gen 2** 网状通信，最多 **15 名骑手**，单人通信距离约 **1.6 公里**、群组总范围约 **8 公里**，采用 **蓝牙 5.2**，**IP67** 防护，通话续航约 **13 小时**，单机价格约 **人民币 2500–3000 元**（约 **350–400 美元**）。但这些数据**只能证明 Cardo 的真实产品能力**，**不能反推“Beyond GTS”真实存在**；因此“Beyond GTS”仍应标注为**缺乏可靠原始证据，可能是未正式量产、非正式产品名或市场误传**。\n\n最后，**Shoei** 是可确认品牌，但**“Shoei GT3 Smart”** 目前仍只有一个视频文件名线索：**“Shoei GT3 SMART.mp4”**。在无法解析视频内容、也没有官网页面、说明书、认证文件或媒体评测佐证的情况下，**不能确认其是否为正式上市型号**，更**不能确认智能模组供应商是 Sena、Cardo 或其他公司**。因此，这 3 个对象中，只有 **LIVALL、Cardo Systems、Shoei** 作为品牌名可确认；",
   "source": "deep_research:competitor_supply_chain",
   "created_at": "2026-03-22",
   "tags": [
-    "LIVALL",
-    "Cardo Beyond GTS",
     "Shoei GT3 Smart",
     "证据不足",
+    "competitor_supply_chain",
     "供应链核实",
+    "Cardo Beyond GTS",
+    "LIVALL",
     "deep_research",
-    "competitor_supply_chain"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

@@ -55,7 +55,7 @@ for model_name, expected_provider in test_models:
 
 print("\n" + "=" * 60)
 
-# === 探测 o3 / gpt-5.3 实际 deployment 名称 ===
+# === 探测 Azure 全量模型 ===
 import requests
 
 endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT", "").rstrip("/")
@@ -63,41 +63,67 @@ api_key = os.environ.get("AZURE_OPENAI_API_KEY", "")
 api_version = "2024-12-01-preview"
 
 if not endpoint or not api_key:
-    print("\n⚠️ AZURE_OPENAI_ENDPOINT 或 AZURE_OPENAI_API_KEY 未设置")
+    print("\nAZURE_OPENAI_ENDPOINT or AZURE_OPENAI_API_KEY not set")
 else:
-    # 常见 o3 deployment 命名模式
-    o3_candidates = [
+    # o3 系列扩展探测
+    o3_candidates_extended = [
+        # 原有
         "o3", "o3-mini", "o3-2025-04-16", "o3-mini-2025-01-31",
         "o3-2025-01-31", "o3-preview", "o3-mini-high",
         "o3-pro", "o3-pro-2025-06-10",
         "o3-deep-research", "o3-deep-research-2025-06-26",
+        # 新增：更多可能的命名
+        "o3-2025-06-26", "o3-mini-2025-04-16",
+        "o3-deep-research-preview",
+        "o3-2026", "o3-latest",
+        # Azure 有时用全小写或带版本后缀
+        "o3mini", "o3-mini-latest",
     ]
 
-    gpt53_candidates = [
-        "gpt-5.3-chat-2026-03-03", "gpt-53", "gpt-5-3", "gpt53",
-        "gpt-5.3", "gpt-5.3-chat", "gpt5-3",
+    gpt_candidates_extended = [
+        "gpt-5.4", "gpt-5.3", "gpt-5.3-chat-2026-03-03",
+        "gpt-5", "gpt-5.0", "gpt-5-turbo",
+        "gpt-4o", "gpt-4o-mini", "gpt-4o-2024-08-06",
+        "gpt-4", "gpt-4-turbo", "gpt-4-32k",
+        "gpt-4o-mini-2024-07-18",
+        "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano",
+        "gpt-4o-2024-11-20",
     ]
 
-    # 额外：探测其他可能已部署的模型
-    other_candidates = [
-        "gpt-4o", "gpt-4o-mini", "gpt-4", "gpt-4-turbo",
-        "gpt-4o-2024-08-06", "gpt-4o-mini-2024-07-18",
+    other_candidates_extended = [
+        # o1 系列
         "o1", "o1-mini", "o1-preview",
-        "deepseek-r1", "DeepSeek-R1", "deepseek-v3",
+        "o1-2024-12-17", "o1-mini-2024-09-12",
+        # Claude via Azure
         "claude-opus-4-6", "claude-sonnet-4-6",
-        "grok-4-fast-reasoning",
+        "claude-3-5-sonnet", "claude-3-opus",
+        # DeepSeek via Azure
+        "DeepSeek-R1", "deepseek-r1", "DeepSeek-V3", "DeepSeek-V3.2",
+        # Llama via Azure
         "Llama-4-Maverick-17B-128E-Instruct-FP8",
-        "qwen-3-32b",
+        "meta-llama-3.1-405b-instruct",
+        "meta-llama-3.1-70b-instruct",
+        # Qwen via Azure
+        "qwen-3-32b", "Qwen2.5-72B-Instruct",
+        # Grok
+        "grok-4-fast-reasoning", "grok-3",
+        # Phi
+        "Phi-4", "Phi-3.5-mini-instruct",
+        # Mistral
+        "Mistral-large-2411", "mistral-small-2503",
+        # DALL-E / Whisper
+        "dall-e-3", "whisper",
     ]
 
     all_candidates = (
-        [("o3系列", c) for c in o3_candidates] +
-        [("gpt-5.3系列", c) for c in gpt53_candidates] +
-        [("其他模型", c) for c in other_candidates]
+        [("o3", c) for c in o3_candidates_extended] +
+        [("gpt", c) for c in gpt_candidates_extended] +
+        [("other", c) for c in other_candidates_extended]
     )
 
     print(f"\n{'='*60}")
-    print(f"探测 Azure deployments (endpoint: {endpoint[:50]}...)")
+    print(f"Extended Azure probe ({len(all_candidates)} candidates)")
+    print(f"Endpoint: {endpoint[:50]}...")
     print(f"{'='*60}")
 
     found = []
@@ -113,22 +139,22 @@ else:
             if resp.status_code == 404:
                 pass  # 不存在，静默跳过
             elif resp.status_code == 200:
-                print(f"  ✅ [{group}] deployment={dep_name} → 200 OK")
+                print(f"  OK [{group}] {dep_name}")
                 found.append(dep_name)
             else:
                 # 非 404 非 200，可能是权限/配额问题，但至少说明 deployment 存在
-                print(f"  ⚠️ [{group}] deployment={dep_name} → {resp.status_code}: {resp.text[:100]}")
+                print(f"  {resp.status_code} [{group}] {dep_name}")
                 found.append(f"{dep_name} (status={resp.status_code})")
         except requests.exceptions.Timeout:
-            print(f"  ⏳ [{group}] deployment={dep_name} → timeout (可能存在但慢)")
+            print(f"  TIMEOUT [{group}] {dep_name}")
         except Exception as e:
             pass  # 网络错误，跳过
 
     print(f"\n{'='*60}")
     if found:
-        print(f"发现 {len(found)} 个可用 deployment:")
+        print(f"Found {len(found)} available deployments:")
         for d in found:
-            print(f"  → {d}")
+            print(f"  -> {d}")
     else:
-        print("未发现额外 deployment。可能 Azure 上只部署了 gpt-5.4。")
+        print("No additional deployments found.")
     print(f"{'='*60}")

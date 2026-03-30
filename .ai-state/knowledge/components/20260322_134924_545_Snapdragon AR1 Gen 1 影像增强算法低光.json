@@ -1,13 +1,16 @@
 {
   "title": "Snapdragon AR1 Gen 1 影像增强算法：低光、时域滤波与色差校正",
   "domain": "components",
-  "content": "平台提供多项图像质量增强能力，包括 Mega Low-Light Photo Capture、Motion Compensated Temporal Filtering、Smart ASF（改善对齐与 halo control）以及 LCAC（广角色差校正）。这些算法面向智能眼镜小型摄像头模组的成像短板，重点提升低光、运动场景和广角镜头画质。",
+  "content": "Snapdragon AR1 Gen 1 面向智能眼镜这类小型摄像头模组，官方公开资料强调其 ISP 侧提供多项图像质量增强能力，包括 **Mega Low-Light Photo Capture**、**Motion Compensated Temporal Filtering**、**Smart ASF** 和 **LCAC（Lateral Chromatic Aberration Correction，广角色差校正）**。这些能力主要针对眼镜产品常见的硬件短板：传感器尺寸小、镜头口径受限、广角镜头边缘画质下降，以及运动场景下噪声和拖影更明显。\n\n就已公开信息看，条目中能确认的具体型号只有 **Qualcomm Snapdragon AR1 Gen 1**，供应商为 **Qualcomm（高通）**。在算法层面，官方公开名称可明确列出为：**Mega Low-Light Photo Capture**（低光拍摄增强）、**Motion Compensated Temporal Filtering**（运动补偿时域滤波）、**Smart ASF**（自适应锐化/对齐与 halo control）以及 **LCAC**（广角色差校正）。其中，Motion Compensated Temporal Filtering 的核心思路是利用帧间运动估计进行时域降噪，尽量在降低噪点的同时减少运动物体边缘重影；Smart ASF 则更偏向细节增强与伪影控制，尤其是改善锐化后常见的 halo（光晕）问题；LCAC 主要用于修正广角镜头边缘区域常见的横向色差，减少高反差边缘出现紫边、绿边。\n\n需要注意的是，搜索结果**没有给出**这些算法的公开数值参数，例如支持的传感器型号、处理位深、降噪强度档位、延迟毫秒数、功耗数据，也**没有提供** Snapdragon AR1 Gen 1 的公开单价、模组报价或指定供应商名单。因此不能补充诸如“处理延迟 5 ms”“支持 12-bit RAW”“单价 30 美元”之类数据，以免编造。现阶段能确认的“具体数据”仅限于平台型号 **AR1 Gen 1** 及上述算法名称本身。\n\n从应用价值看，这套算法组合的意义在于：低光增强负责提升暗光可用性，时域滤波改善视频连续帧噪声表现，Smart ASF 在小镜头成像偏软时补偿细节，同时控制过锐化伪影，LCAC 则针对广角镜头边缘色散做校正。对于智能眼镜这类强调轻量化、低功耗和实时预览的设备，这些 ISP 算法比单纯堆高像素更关键，直接影响第一视角拍摄、视频通话和环境感知体验。",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "Mega Low-Light",
-    "MCTF",
     "Smart ASF",
+    "internal",
+    "overhaul_deepened",
+    "MCTF",
+    "night_deepened",
     "LCAC",
     "imaging"
   ],

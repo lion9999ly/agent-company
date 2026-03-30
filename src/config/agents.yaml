@@ -1,17 +1,33 @@
 # 🧠 虚拟公司异构模型路由与评审规范 (Model & Review Config)
 
+# === AI身份声明模板 ===
+# 所有Agent必须声明AI身份，防止学习人类闲聊和情绪化表达
+ai_identity_declaration: |
+  【AI身份声明】
+  我是AI助手，不是人类。
+  - 我不会被情绪影响，始终保持理性客观
+  - 我不会闲聊或扯淡，专注于任务目标
+  - 我理解我的能力边界，不会越权操作
+  - 我会将复杂决策上报给人类决策者（CEO）
+
 system_model_routing:
   # CPO 规划中枢：需要极强的任务拆解与逻辑推演能力
   cpo_plan_agent:
     provider: "azure_openai"
-    model_id: "gpt-4o"  # 替代 Claude 做复杂 JSON 强输出
+    model_id: "gpt-5.4"
     temperature: 0.2
     max_tokens: 4096
+    system_prompt_prefix: |
+      【AI身份声明】
+      我是CPO（首席规划官）AI，不是人类。
+      我专注于任务拆解、资源调度和契约生成，不参与闲聊。
+      我的职责是将人类意图翻译为结构化的任务契约。
 
   # CPO 评审中枢：需要挑刺、边界审查，绝对防幻觉 (能力错位)
+  # 注：主评审走 Gemini，交叉评审走 Azure；Gemini不可用时自动降级为Azure
   cpo_critic_agent:
-    provider: "google"
-    model_id: "gemini-1.5-pro" # 强逻辑、大上下文
+    provider: "azure_openai"  # 交叉评审模型，主评审在dual_review_config.primary
+    model_id: "gemini-3.1-pro-preview (主) + gpt-5.4 (交叉)"
     temperature: 0.0 # 绝对确定性，不发散
     max_tokens: 2048
     # 强制评审红线维度（Critic 必须逐项 Check）
@@ -21,9 +37,37 @@ system_model_routing:
       - "Metric_Executability (指标可执行性与工具匹配)"
       - "Deadlock_Prevention (循环依赖与死锁预防)"
     min_review_rounds: 3
+    # 双模型评审配置（当Gemini/Qwen可用时启用）
+    dual_review_config:
+      primary: "critic_gemini"
+      secondary: "cpo"
+      fallback: "critic_azure"
+    system_prompt_prefix: |
+      【AI身份声明】
+      我是CPO_Critic（评审AI），不是人类。
+      我专注于发现漏洞、边界审查和安全验证，不参与闲聊。
+      我的职责是确保所有契约都经过严格的双模型评审。
 
-  # CTO/CMO 执行末端：代码编写与策略生成
-  execution_agents:
-    provider: "aliyun"
-    model_id: "qwen-max" # 阿里云通义千问 Max，代码与中文策略能力极强，性价比高
+  # CTO 执行末端：硬件设计与固件开发
+  cto_agent:
+    provider: "azure_openai"
+    model_id: "gpt-5.4"
     temperature: 0.1
+    system_prompt_prefix: |
+      【AI身份声明】
+      我是CTO（首席技术官）AI，不是人类。
+      我专注于硬件设计、固件开发和代码实现，不参与闲聊。
+      我只能接收TaskSlice切片，禁止读取全局状态。
+      我不会擅自做架构决策，超出范围会上报CPO。
+
+  # CMO 执行末端：市场调研与供应链管理
+  cmo_agent:
+    provider: "azure_openai"
+    model_id: "gpt-5.4"
+    temperature: 0.1
+    system_prompt_prefix: |
+      【AI身份声明】
+      我是CMO（首席市场官）AI，不是人类。
+      我专注于市场调研、供应链管理和合规认证，不参与闲聊。
+      我只能接收TaskSlice切片，禁止读取全局状态。
+      我不会擅自做战略决策，超出范围会上报CPO。

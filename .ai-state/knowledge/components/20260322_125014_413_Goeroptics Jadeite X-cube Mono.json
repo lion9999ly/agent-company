@@ -1,15 +1,18 @@
 {
   "title": "Goeroptics Jadeite X-cube Monogreen μLED AR光机",
   "domain": "components",
-  "content": "Jadeite为X-cube架构的Monogreen μLED光机，采用0.13英寸G-μLED显示，分辨率640×480，像素尺寸4μm。瞳孔尺寸3.3mm，FOV(D) 30°，光通量1.2lm@0.4W，25%APL条件下测试。模组尺寸6.7×4.8×6.1mm，体积仅0.15cc，重量0.3g，是文档中最小型化的AR光机之一。",
+  "content": "Jadeite 是歌尔光学（Goeroptics）面向 AR 眼镜的小型化光机方案之一，这款 **Jadeite X-cube Monogreen μLED AR 光机** 采用 **X-cube 架构** 与 **单绿色（Monogreen）μLED** 显示路线，核心显示器件为 **0.13 英寸 G-μLED 微显示屏**，**分辨率 640×480**，**像素尺寸 4μm**。从已给出的公开参数看，其目标非常明确：在尽可能小的体积内实现可用于近眼显示的亮度、视场角和能效平衡。\n\n具体指标方面，该光机的 **瞳孔尺寸为 3.3mm**，**对角视场角 FOV(D) 为 30°**，在 **25% APL** 条件下，系统可实现 **1.2lm 光通量**，对应 **功耗 0.4W**。按这一组数据估算，其光效约为 **3 lm/W**。模组外形尺寸仅 **6.7×4.8×6.1mm**，总体积约 **0.15cc**，重量仅 **0.3g**。以 AR 光机模组标准衡量，这一尺寸和重量已经属于极高集成度水平，尤其适合对前框空间、鼻梁配重和整机散热都极为敏感的轻量化 AR 眼镜。\n\n从架构理解，X-cube 方案通常用于紧凑型光路折叠与色光管理，而本产品采用 Monogreen 设计，意味着其并非全彩显示光机，而是优先利用人眼对绿色波段较高的敏感度，在较低功耗下获得更高感知亮度。这类方案常见于信息提示、工业辅助、运动数据叠加等场景，也可作为后续全彩系统中的单色通道验证平台。现有信息中，已明确的型号级数据只有 **Jadeite X-cube Monogreen μLED AR 光机** 这一名称，以及上述尺寸、分辨率、功耗和光学参数。\n\n需要说明的是，关于该产品的 **供应商名称**，搜索结果中仅能确认其归属为 **Goeroptics（歌尔光学）**；而 **μLED 芯片供应商、驱动 IC 型号、波导配套厂商、单价或批量采购价格**，当前搜索结果并未提供可靠公开数据，因此不能补充编造。综合现有资料，Jadeite X-cube Monogreen μLED AR 光机的核心价值在于：以 **0.15cc / 0.3g** 的超小体积，实现 **640×480、30° FOV、1.2lm@0.4W** 的近眼显示输出，是一款明显面向超轻量 AR 终端的小型化单绿 μLED 光机。",
   "source": "doc_import:Alpha Labs Introduction for 20251216-hori_con.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Goeroptics",
-    "Jadeite",
-    "X-cube",
     "Monogreen μLED",
-    "0.15cc"
+    "X-cube",
+    "Jadeite",
+    "0.15cc",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
+    "Goeroptics"
   ],
   "confidence": "high"
 }

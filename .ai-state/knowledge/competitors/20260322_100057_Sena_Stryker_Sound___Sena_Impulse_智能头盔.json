@@ -1,15 +1,19 @@
 {
   "title": "Sena Stryker Sound / Sena Impulse 智能头盔",
   "domain": "competitors",
-  "content": "文档将“Sena Stryker Sound/ Sena Impulse”并列列出，反映 Sena 在智能头盔方向的两款竞品。适合作为同品牌同赛道对比条目。原文未提供两者价格、Mesh/蓝牙规格、音频品牌、续航、重量等参数；可保留品牌 Sena 与型号 Stryker Sound、Impulse。",
+  "content": "Sena **Stryker** 与 **Impulse** 可作为 Sena 同品牌、同赛道的两款智能头盔对比条目。根据公开资料，二者都属于集成通信系统头盔，且核心通信平台一致：均由 **Sena Technologies, Inc.** 推出，集成 **Bluetooth 5.0**、**Mesh Intercom 2.0** 与 **Harman Kardon** 调校的扬声器/麦克风系统。对讲能力方面，**Open Mesh** 支持“几乎无限”用户接入，**Group Mesh** 最多 **24 人**，官方标称在至少 **6 名骑手** 条件下最远可达 **8 km**；传统 **Bluetooth Intercom** 最多支持 **4 人**，距离约 **1.6 km**。音频与功能方面，两者均支持 **Advanced Noise Control™**、语音指令、手机数字助理、**FM 收音机 76–108 MHz**，并可保存 **10 个预设电台**。续航方面，内置**锂聚合物电池**在蓝牙对讲下约 **18 小时**、Mesh 对讲约 **11 小时**，充电时间约 **2.5 小时**；快充 **20 分钟** 可提供约 **2 小时 Mesh** 或约 **3 小时蓝牙对讲**。\n\n两者差异主要在头盔形态与部分硬件配置。**Sena Stryker** 是**全盔（full-face）**，采用 **Composite Fiberglass Shell**（复合玻纤外壳）、多密度 **EPS** 内衬、**Double D-Ring** 双 D 扣，并带有**集成 LED 尾灯**；尺码覆盖 **XS–XXL**，公开资料给出的重量约 **1700 g（M 码）**。安全认证方面，搜索结果显示其具备 **DOT** 与 **ECE** 认证。价格方面，公开零售渠道中 **Stryker** 常见售价约 **599–649 美元**，销售渠道包括 **Sena 官网**、**RevZilla**、**Cycle Gear**、**J&P Cycles** 及亚马逊等。\n\n**Sena Impulse** 则是**揭面盔/模块化头盔（modular / flip-up）**，同样采用复合玻纤外壳、多密度 EPS 内衬，并集成 Harman Kardon 音频与 Sena Mesh/蓝牙通信系统。现有搜索结果未提供其明确整盔重量、快拆结构细节或统一零售价区间，因此这些数据不补充。可以确认的是，Impulse 与 Stryker 在通信、音频、续航和 FM 功能上基本一致，但产品定位上更强调揭面结构带来的便利性。若作为知识条目，可明确写为：**Stryker = Sena 的智能全盔代表；Impulse = Sena 的智能模块化头盔代",
   "source": "doc_import:Project X 竞品分析.xlsx",
   "created_at": "2026-03-22",
   "tags": [
     "Sena",
-    "Stryker Sound",
+    "摩托车通信",
+    "internal",
+    "overhaul_deepened",
     "Impulse",
     "智能头盔",
-    "摩托车通信"
+    "night_deepened",
+    "Stryker Sound",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

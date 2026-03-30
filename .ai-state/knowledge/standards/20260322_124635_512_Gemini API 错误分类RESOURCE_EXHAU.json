@@ -1,15 +1,18 @@
 {
   "title": "Gemini API 错误分类：RESOURCE_EXHAUSTED 与 429 对应关系",
   "domain": "standards",
-  "content": "该记录表明 Gemini API 在配额耗尽场景下使用 HTTP 429，并在错误体中返回 status=RESOURCE_EXHAUSTED。details 中包含 Help、QuotaFailure、RetryInfo 三类结构化信息，可用于程序化处理：Help 提供文档链接，QuotaFailure 给出超限指标与维度，RetryInfo 给出可重试时间。适合纳入统一异常处理规范。",
+  "content": "Gemini API 在“配额/速率耗尽”场景下，协议层与语义层是分开的：**HTTP/REST 接口返回 HTTP `429 Too Many Requests`**，而错误体中的标准状态字段通常是 **`status: \"RESOURCE_EXHAUSTED\"`**。其中 `RESOURCE_EXHAUSTED` 对应 **gRPC Status Code 8**，`429` 则是 HTTP 客户端错误码，这种映射符合 Google API 常见错误模型，也便于在 gRPC 与 REST 两种调用方式间统一异常处理。\n\n从现有资料可确认，错误详情 `details` 中常见三类结构化对象：**`google.rpc.Help`、`google.rpc.QuotaFailure`、`google.rpc.RetryInfo`**。其中，`Help` 用于给出文档链接；`QuotaFailure` 用于指出具体超限项及维度，例如项目、区域、方法或配额指标；`RetryInfo` 用于给出建议等待时间，适合驱动自动退避重试。搜索结果还明确提到 **HTTP 头 `Retry-After`** 可能出现，格式可为秒数或 HTTP 日期，例如 `Retry-After: 60`。这意味着客户端可同时读取 **HTTP 429 + `Retry-After` + JSON 中 `status=RESOURCE_EXHAUSTED` + `details`**，形成统一的限流处理链路。\n\n需要注意，搜索结果中虽然举了若干示例数据，如 **QPS 60、TPM 250,000、并发 100、日请求 1,000,000**，但这些只是说明性示例，并非已核实的 Gemini API 官方固定配额，因此**不应当作为知识条目的确定参数写入**。同样，搜索结果未提供可核验的**具体模型名、官方价格、供应商报价**；唯一可明确的供应商主体只有 **Google / Google Cloud / Gemini API**。因此本条目可补充的确定性“具体数据”仅包括：**HTTP 状态码 429、gRPC 状态码 8、标准名 `RESOURCE_EXHAUSTED`、相关规范 RFC 6585（429 定义）**，以及结构化错误类型名。\n\n工程实践上，建议把这类错误归入“**可重试限流错误**”而非普通业务失败：优先解析 `RetryInfo` 或 `Retry-After`，采用指数退避与抖动；若 `QuotaFailure` 指向长期配额不足，则应转人工扩容或配额申请，而不是无限重试。适合纳入统一异常处理规范。",
   "source": "doc_import:20260318-175916.jpg",
   "created_at": "2026-03-22",
   "tags": [
+    "Google RPC",
     "RESOURCE_EXHAUSTED",
-    "HTTP 429",
-    "错误处理",
     "API异常",
-    "Google RPC"
+    "internal",
+    "错误处理",
+    "overhaul_deepened",
+    "night_deepened",
+    "HTTP 429"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

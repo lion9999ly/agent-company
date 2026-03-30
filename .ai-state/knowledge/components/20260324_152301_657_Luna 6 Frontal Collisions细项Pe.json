@@ -10,7 +10,8 @@
     "Bicyclist",
     "Crossing",
     "Turning",
-    "Longitudinal"
+    "Longitudinal",
+    "night_deepened"
   ],
   "confidence": "medium"
 }

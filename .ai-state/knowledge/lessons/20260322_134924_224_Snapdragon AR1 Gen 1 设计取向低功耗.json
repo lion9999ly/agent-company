@@ -1,14 +1,17 @@
 {
   "title": "Snapdragon AR1 Gen 1 设计取向：低功耗、轻量化与散热优化",
   "domain": "lessons",
-  "content": "官方强调 Snapdragon AR1 Gen 1 针对 lightweight、battery-efficient smart glasses 优化，采用 advanced process node 与 optimized package，以兼顾外观设计、佩戴舒适性与续航。该信息反映出平台设计重点是可穿戴设备的热设计与功耗控制，而非单纯追求峰值性能。",
+  "content": "Snapdragon AR1 Gen 1 的设计取向确实不是“堆峰值性能”，而是围绕智能眼镜的现实约束做系统级优化。高通在 2023 年发布该平台时，明确将其定位为面向 **lightweight、battery-efficient smart glasses** 的专用方案，并强调采用 **advanced process node** 与 **optimized package**，目标是兼顾外观、佩戴舒适性与续航。与面向头显的 **Snapdragon XR2 Gen 2** 不同，AR1 Gen 1 更适合日常佩戴型眼镜，而非高算力沉浸式设备。\n\n从公开可核实的规格看，AR1 Gen 1 支持 **双目显示（binocular displays）**，可连接 **3 个摄像头**，并支持拍摄 **1200 万像素照片** 与 **600 万像素视频**。连接能力方面，平台支持 **Wi‑Fi 7** 与 **Bluetooth 5.3**，这说明其设计重点之一是把部分计算、联网与内容获取能力高效接入眼镜形态，而不是完全依赖本地高热量渲染。高通还提到，该平台可支持关键 AI 体验，如视觉搜索、实时翻译与语音助手，这类任务通常更依赖低功耗 AI/ISP 管线与稳定连接，而非持续高负载 GPU。\n\n在终端落地上，公开合作方包括 **Meta、XREAL、Lenovo、OPPO、Rokid、Thundercomm、Goertek、Pegatron、QONOQ** 等，说明供应链已覆盖品牌厂商与 ODM/OEM。以消费端产品为例，采用该平台的 **Ray‑Ban Meta smart glasses** 市场售价常见为 **US$299 起**（不同镜框和镜片版本价格更高），这也反映 AR1 Gen 1 面向的是可规模化消费级智能眼镜，而不是高价专业头显。\n\n不过，关于用户要求的更细数据，如 **具体制程节点（如 4nm/6nm）**、**封装尺寸**、**TDP/典型功耗**、**CPU/GPU/NPU 型号与频率**、**芯片单价**、**独立供应商报价**，现有搜索结果与高通公开材料中并未给出明确数值，因此不能编造。基于现有公开信息，能够确认的是：Snapdragon AR1 Gen 1 的核心价值在于通过更先进制程与封装、有限但够用的影像与连接规格，以及面向眼镜形态的热设计约束，优先实现“轻、久戴、不烫、可量产”的产品平衡。",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "power efficiency",
-    "thermals",
+    "smart glasses design",
     "lightweight",
-    "smart glasses design"
+    "thermals",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened"
   ],
   "confidence": "high"
 }

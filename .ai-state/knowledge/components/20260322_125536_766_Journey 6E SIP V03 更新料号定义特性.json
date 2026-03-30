@@ -1,17 +1,22 @@
 {
   "title": "Journey 6E SIP V0.3 更新：料号定义、特性表、封装与回流焊曲线增强",
   "domain": "components",
-  "content": "V0.3（2024-05-13）更新范围较广：Section 2 更新 Figure 2-1 J6E SIP Part Number Definitions；Section 3 更新 Table 3-1 features；Section 4.2 更新 Table 4-1 Package Information；Section 4.3 更新引脚图；Section 4.4.1 更新电源/地引脚表；Section 4.4.2 更新数字引脚表；Section 4.5 更新封装外形图；Section 8 新增 Figure 8-1 J6E SIP Reflow Profile。说明封装与制造信息开始完善。",
+  "content": "V0.3（2024-05-13）更新范围较广：Section 2 更新 Figure 2-1《J6E SIP Part Number Definitions》；Section 3 更新 Table 3-1《features》；Section 4.2 更新 Table 4-1《Package Information》；Section 4.3 更新引脚图；Section 4.4.1 更新电源/地引脚表；Section 4.4.2 更新数字引脚表；Section 4.5 更新封装外形图；Section 8 新增 Figure 8-1《J6E SIP Reflow Profile》。从这些变更可判断，文档重点已从早期功能描述，扩展到料号规则、封装尺寸、引脚定义及制造工艺约束，说明封装与量产导入相关信息正在完善。\n\n基于现有搜索结果，**无法补充该条目的具体型号、具体参数、具体价格及具体公司/品牌名**。原因是搜索结果已明确指出：**“Journey 6E SIP V0.3”并非公开市场上的标准产品型号**，更可能是某公司内部项目代号、定制化 SiP 模块，或尚未定型的工程样品；因此目前**没有可公开核验的真实规格、料号、供应商或报价信息**。\n\n可确认的信息只有以下几点：  \n1. **产品名称/代号：** Journey 6E SIP V0.3。  \n2. **产品形态：** SIP，即 **System-in-Package（系统级封装）**。  \n3. **版本时间：** **2024-05-13**。  \n4. **更新章节：** Section 2、Section 3、Section 4.2、Section 4.3、Section 4.4.1、Section 4.4.2、Section 4.5、Section 8。  \n5. **新增制造信息：** 明确新增了 **回流焊曲线（Reflow Profile）**，表明文档开始覆盖 SMT/封装装配要求。  \n\n需要特别说明的是，用户要求补充的这几类信息——例如**具体型号**（如 IMX678、BES2800、QCC5181）、**具体参数**（如 3000nits、42dB、1.65kg）、**具体价格**（如 $15–25/颗）、**具体公司/品牌名**——在当前搜索结果中**均未出现**，因此不能据此填写。若强行补充，只能属于推测或行业示例，不符合“不要编造数据”的要求。\n\n因此，补充后的知识条目应写为：**J6E SIP V0.3 于 2024-05-13 进行了较大范围修订，新增并完善了料号定义、特性表、封装信息、引脚定义、封装外形图以及回流焊曲线等内容，显示该 SiP 文档已开始覆盖封装与制造导入层面的关键信息；但截至当前公开搜索结果，尚无可核验的具体芯片型号、封装尺寸数值、电气参数、价格区间或",
   "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "V0.3",
-    "2024-05-13",
-    "Part Number",
+    "overhaul_enriched",
     "Features",
     "Package",
+    "Reflow Profile",
     "Pin List",
-    "Reflow Profile"
+    "internal",
+    "V0.3",
+    "Part Number",
+    "2024-05-13"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 34,
+  "_last_used": "2026-03-30T00:48:55.806848",
+  "_first_used": "2026-03-29T00:29:18.685631"
 }

@@ -8,7 +8,8 @@
     "HPU3501A01IQNXMA",
     "Default Voltage",
     "Power Sequence",
-    "Master"
+    "Master",
+    "internal"
   ],
   "confidence": "high"
 }

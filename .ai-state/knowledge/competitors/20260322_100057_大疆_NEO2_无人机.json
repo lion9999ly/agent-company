@@ -9,7 +9,9 @@
     "NEO2",
     "无人机",
     "大疆",
-    "影像设备"
+    "影像设备",
+    "night_deepened",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

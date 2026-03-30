@@ -1,14 +1,17 @@
 {
   "title": "快速Demo工具组合：Pencil免费版 + Cursor Pro",
   "domain": "components",
-  "content": "快速Demo工具方案为Pencil（免费）+ Cursor Pro，文档提供Cursor定价链接https://cursor.com/pricing。该组合用于快速原型或演示验证，其中Pencil明确为免费工具，Cursor Pro用于提升生成和开发协同效率，但文档未列出Cursor Pro具体价格。",
+  "content": "快速 Demo 工具组合可写为 **Pencil（免费）+ Cursor Pro**，但基于现有搜索结果，二者成熟度差异很大。**Pencil Project** 是开源 GUI 原型工具，搜索结果仅给出其“**最后一次稳定更新约在 2015–2017 年**”的信息，并提到可参考的历史版本如 **3.1.0**；同时明确指出其开发已停止多年，缺少云协作、实时同步、响应式设计、现代 UI 库与 AI 集成，因此在 2026 语境下适用性很低。关于价格，搜索结果只确认 **Pencil 为免费工具**，但**未提供官网供应商名称、下载渠道或商业报价**，因此不能补充更多价格数据。\n\n**Cursor Pro** 方面，原文已给出定价页链接：**https://cursor.com/pricing**。搜索结果确认它是一款**基于 Visual Studio Code 构建的 AI 代码编辑器**，定位是通过 AI 提升编码、调试、重构和文档生成效率，适合把静态原型快速推进到可运行 Demo。搜索结果列出的能力包括：支持**跨文件/跨项目推理**、生成前后端代码、辅助调试、自动文档生成，并支持主流语言与框架，如 **Python、JavaScript、TypeScript、Go、Rust、Java、C#**，以及 **React、Vue、Angular、Next.js、Spring Boot、Django**。平台层面，搜索结果给出其可运行于 **Windows、macOS、Linux**。不过，**Cursor Pro 的具体价格、套餐额度、模型调用上限、供应商法定名称**，搜索结果均未给出；原文也明确说明“文档未列出 Cursor Pro 具体价格”，因此这里不能编造数值。\n\n综合来看，这一组合更适合“**低成本验证**”而非“现代团队协作型 Demo”。**Pencil 免费版**可用于最基础的线框草图，成本为 **0 元**；**Cursor Pro**则承担把想法转成前端页面、接口样例和可运行代码的任务。其优点是投入低、上手快；缺点是前端原型环节明显落后，尤其当项目需要多人协作、组件复用或响应式展示时，Pencil 会成为短板。若严格依据现有资料，本条目中目前能确认的具体数据只有：**Pencil 历史版本 3.1.0、开发停滞时间约 2015–2017 年、价格为免费；Cursor 提供官方定价页链接，支持 Windows/macOS/Linux 及多种主流语言框架。**",
   "source": "doc_import:X：2年智能规划.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "Pencil",
     "Cursor Pro",
     "快速Demo",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
     "AI工具"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

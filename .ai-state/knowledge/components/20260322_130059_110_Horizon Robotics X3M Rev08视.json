@@ -1,16 +1,21 @@
 {
   "title": "Horizon Robotics X3M Rev.0.8：视频编解码/网络接口、DDR 引脚与 ESD/电气规格修正",
   "domain": "components",
-  "content": "Rev.0.8（2020-07-20）新增 video codec/network interface 描述，修正 SPI/Memory visibility typo、DDR pin list、DDR interface timing、ESD table 以及 electrical specifications。该版本表明 X3M 的高速接口和可靠性参数在中期仍有较大修订，特别是 DDR 引脚与时序修正会直接影响 PCB 布线和内存稳定性，ESD 与电气规格修正则影响器件防护和认证设计。",
+  "content": "Rev.0.8（2020-07-20）新增 **video codec** 与 **network interface** 描述，并修正 **SPI/Memory visibility** typo、**DDR pin list**、**DDR interface timing**、**ESD table** 及 **electrical specifications**。就公开可核实信息看，芯片具体公司为**地平线机器人（Horizon Robotics）**，对应产品线通常称 **征程 3 / Journey 3**，面向 AIoT/视觉场景。公开资料能确认其量产代际具备 **5 TOPS** 级 AI 算力、典型功耗约 **2.5W**，并支持多路摄像头接入；但针对 **X3M Rev.0.8** 这一早期修订版，厂商未公开逐项列出“修正前后”的 DDR 引脚编号、时序数值、ESD 等级或电气阈值，因此这些关键数字**不能据现有搜索结果补写**。\n\n从已公开的 SoC 能力范围看，Rev.0.8 新增的视频编解码/网络接口描述，反映的是芯片手册在中期开始补全多媒体与连接能力说明。公开介绍通常可确认其支持智能摄像头/NVR/边缘视觉类应用，但**未见可核实的 Rev.0.8 专属编解码参数**，例如“**H.265 4K@30fps**”“几路 1080p 编解码”或“**10/100/1000Mbps Ethernet MAC**”是否写入该版手册，搜索结果没有给出原文截图或表格，因此不宜写成确定值。类似地，网络接口部分虽然行业上常见 **RGMII、PCIe、USB、SDIO** 等配置，但若无 Rev.0.8 文档页证，不能当作该版本已确认规格。\n\n此次修订中最关键的是 **DDR pin list** 与 **DDR interface timing**。这类内容直接关系到 **LPDDR4/LPDDR4X**（若该芯片实际采用此类内存）布线拓扑、等长控制、时钟/数据组匹配以及 SI 裕量；一旦引脚表或时序窗口有误，可能导致 PCB 重布、训练失败、稳定性下降甚至量产风险。不过，搜索结果没有提供具体如 **tCK、tDQSQ、VDDQ、电压容差、走线长度差** 等数字，也没有给出修正后的 pin name/pin number 对照表。\n\n关于 **ESD table** 与 **electrical specifications**，可以确认它们影响器件防护、接口可靠性和认证设计，但公开搜索结果同样**没有给出 HBM/CDM 等级**，也没有提供诸如 **I/O 电压 1.8V/3.3V**、绝对最大额定值、输入高低电平阈值等具体数值。因此，本条目目前能补充的可靠数据仅包括：**公司名 Horizon Robotics（地平线机器人）**、产",
   "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "Rev0.8",
-    "Video codec",
-    "Network interface",
-    "DDR pin list",
     "ESD",
-    "Electrical specs"
+    "Electrical specs",
+    "overhaul_enriched",
+    "Video codec",
+    "internal",
+    "Network interface",
+    "DDR pin list"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 12,
+  "_last_used": "2026-03-30T00:48:12.570310",
+  "_first_used": "2026-03-29T00:29:51.035451"
 }

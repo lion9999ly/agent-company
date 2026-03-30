@@ -1,15 +1,16 @@
 {
   "title": "MOLEX 208244-0200 4 in 1 mini FAKRA code A连接器",
   "domain": "components",
-  "content": "4 in 1 mini FAKRA code A连接器供应商为MOLEX，零件号208244-0200，颜色Black，数量1。接口描述为Mini FAKRA interface。该接口为4路同轴聚合连接器，用于GMSL视频链路。页面定义其用途为“接前视”，4个Pin分别承载FRONT-CAM-GMSL-A、DMS-GMSL-B、AVM-VIDEO-GMSL-OUT1、DVR-GMSL-OUT，分别连接8M camera、DMS、IVI、DVR。适合前视、座舱监控及视频输出复用。",
+  "content": "MOLEX **208244-0200** 是 **Molex** 的一款 **4 in 1 Mini-FAKRA II Code A** 板端连接器，归属 **208244 Series**。从搜索结果可补充的具体信息看，该器件属于 **PCB Receptacle（板载插座）**，为**直角（Right-Angle）**、**表面贴装（SMT）**、**非密封（Unsealed）**结构，颜色为 **Black**，单体集成 **4 路同轴通道**，接口描述为 **Mini FAKRA interface**。原页面中定义其用途为“接前视”，4 个 Pin 分别承载 **FRONT-CAM-GMSL-A、DMS-GMSL-B、AVM-VIDEO-GMSL-OUT1、DVR-GMSL-OUT**，对应连接 **8M camera、DMS、IVI、DVR**，适合前视、座舱监控及视频输出复用等车载视频链路场景。  \n\n在电气参数方面，搜索结果给出的明确数据包括：**阻抗 50 Ohms**，**频率范围 DC 至 6 GHz**；**VSWR** 为 **DC–3 GHz：1.3 Max.，3–6 GHz：1.5 Max.**；**插入损耗** 为 **DC–3 GHz：0.3 dB Max.，3–6 GHz：0.5 dB Max.**；**绝缘电阻 1000 MΩ Min.**；**耐压 500V AC (RMS)**；**额定电流 0.5A**。这些参数说明其主要面向高速射频/视频信号传输，而非大电流供电。  \n\n机械与结构参数方面，该型号为 **4 circuits** 设计，内部单元**间距 6.00 mm**，**配合高度 2.00 mm**；**插入力 30N Max.**，**拔出力 5N Min.**，**插拔寿命 25 次循环（Min.）**。材料方面，外壳为**高温热塑性塑料**，搜索结果注明通常为 **LCP**，并符合 **UL 94V-0**；触点基材为**黄铜或磷青铜**，接触区**镀金**、焊接区**镀锡**；屏蔽壳为**黄铜镀镍**。  \n\n环境适应性方面，搜索结果给出的工作温度范围为 **-40°C 至 +105°C**，并注明满足汽车场景下的湿热、振动、冲击等要求，且**符合 RoHS**。包装方式为 **Tray（托盘）**。  \n\n需要特别说明的是，用户要求补充“具体价格”，但本次提供的搜索结果中**没有出现 208244-0200 的明确单价、批量价格区间或分销商报价**，因此不能补充价格数据，以免编造。综合来看，**Molex 208244-0200** 的核心价值在于以 **4 合 1 Mini-FAKRA II** 形式，在紧凑空间内实现 **GMSL/车载视频链路** 的高密度集成连接，适用于 **ADAS、",
   "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
     "MOLEX",
+    "overhaul_enriched",
+    "GMSL",
     "208244-0200",
     "mini FAKRA",
-    "code A",
-    "GMSL"
+    "code A"
   ],
   "confidence": "high"
 }

@@ -8,7 +8,9 @@
     "SUUNTO",
     "运动手表",
     "户外导航",
-    "品牌参考"
+    "品牌参考",
+    "night_deepened",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

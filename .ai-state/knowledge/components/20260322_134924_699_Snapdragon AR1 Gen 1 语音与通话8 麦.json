@@ -1,14 +1,16 @@
 {
   "title": "Snapdragon AR1 Gen 1 语音与通话：8 麦克风、降噪与回声消除",
   "domain": "components",
-  "content": "平台支持最多 8 个麦克风，并提供 AI-powered targeted capture，用于实现更清晰的音视频采集。还集成 Qualcomm Noise and Echo Cancellation、Qualcomm Audio and Voice Communication Suite，以及 Snapdragon Voice Activation。文档强调其可实现更清晰通话，并支持 Always-on audio、Bluetooth A2DP 与 Hands-Free Profile。",
+  "content": "Snapdragon AR1 Gen 1 的语音与通话能力，核心来自 **Qualcomm Technologies, Inc.（高通）** 在平台级集成的音频/语音处理模块，而不是某一颗独立音频芯片。根据高通公开资料，**Snapdragon AR1 Gen 1** 支持 **最多 8 路麦克风输入**，并提供 **AI-powered targeted capture**，用于提升语音与视频采集清晰度；同时集成 **Qualcomm Noise and Echo Cancellation**、**Qualcomm Audio and Voice Communication Suite** 以及 **Snapdragon Voice Activation**，支持 **Always-on audio**、**Bluetooth A2DP** 和 **Hands-Free Profile（HFP）**。\n\n就芯片平台本身，搜索结果中可确认的具体信息包括：**型号为 Snapdragon AR1 Gen 1**，采用 **4nm 工艺**，并集成 **Kryo CPU、Adreno GPU、Hexagon DSP、Spectra ISP**。其中与语音处理最相关的是 **Hexagon DSP**，负责多麦克风语音采集、降噪、回声消除和语音唤醒等任务。连接方面，资料提到其支持 **Wi‑Fi 7** 与 **Bluetooth 5.3**。\n\n需要注意的是，“8 麦克风”指的是平台能力上限，并不代表 SoC 内置 8 颗麦克风。实际产品通常会外挂 **MEMS 麦克风**，常见供应商包括 **Knowles（楼氏）**、**STMicroelectronics（意法半导体）**、**TDK InvenSense**、**Goertek（歌尔股份）**、**Bosch Sensortec**。搜索结果给出的这类麦克风常见参数范围为：**灵敏度 -26 dBFS 到 -42 dBFS**、**信噪比 60 dB 到 70 dB**、**声学过载点 120 dB SPL 到 130 dB SPL**。接口通常为 **PDM** 或 **I2S**。\n\n在通话增强方面，搜索结果没有给出 Snapdragon AR1 Gen 1 官方标称的固定降噪或回声消除数值，但给出了行业常见效果区间：优秀降噪算法可将环境噪声降低 **20–30 dB** 甚至更多；声学回声消除常以 **ERLE（Echo Return Loss Enhancement）30–60 dB** 衡量。由于这类效果高度依赖整机麦克风布局、扬声器设计和厂商调校，因此不能把这些区间直接当作 AR1 Gen 1 的官方承诺值。\n\n价格方面，搜索结果明确指出：**高通通常不公开 Snapdragon AR1 G",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "8 microphones",
+    "voice",
     "noise cancellation",
+    "internal",
+    "8 microphones",
     "echo cancellation",
-    "voice"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

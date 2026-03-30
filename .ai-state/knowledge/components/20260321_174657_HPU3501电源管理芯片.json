@@ -7,7 +7,8 @@
   "tags": [
     "PMIC",
     "多路电源",
-    "AI处理器供电"
+    "AI处理器供电",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

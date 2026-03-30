@@ -10,5 +10,8 @@
     "product_definition",
     "pairing_flow"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "_usage_count": 13,
+  "_last_used": "2026-03-30T00:48:22.492031",
+  "_first_used": "2026-03-28T15:03:22.788120"
 }

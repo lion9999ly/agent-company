@@ -10,7 +10,8 @@
     "CAN电池3",
     "CAN-H",
     "CAN-L",
-    "Charge-ID"
+    "Charge-ID",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -1,18 +1,19 @@
 {
   "title": "Sena Technologies 通讯模组由自研方案主导",
   "domain": "components",
-  "content": "关于 Sena 通讯模组“谁做”的问题，现有证据支持的结论是：模组方案、系统架构、固件、Mesh 协议和整机集成由 Sena Technologies, Inc. 自研/主导，Sena 本身就是 communication supplier。已知相关产品包括 Sena 50S、50C、60X、S1 EVO、R2 EVO，以及 Sena Phantom。底层蓝牙/音频 SoC 供应商未公开，市场推断可能是 Qualcomm/CSR、Airoha/MediaTek 或 Realtek，但没有拆解、FCC 或 BOM 证据，不能锁定具体芯片厂。",
+  "content": "关于 Sena 通讯模组“谁做”的问题，现有公开证据支持的结论是：**模组方案、系统架构、固件、Mesh 协议和整机集成由 Sena Technologies, Inc. 主导，自身就是 communication supplier**；但**底层蓝牙/音频 SoC 的具体芯片型号与供应商，公开资料仍未披露**，不能补成 IMX678、BES2800、QCC5181 这类确定型号。\n\n从公开产品信息看，Sena 已知相关产品包括 **Sena 50S、50R、50C、60S、60R、30K、20S EVO、S1 EVO、R1 EVO、R2 EVO、Phantom、Stryker、Impulse、Outrush R** 等，品牌主体为 **Sena Technologies, Inc.**。其自研/主导部分主要体现在：**Mesh Intercom 2.0 协议、Advanced Noise Control™、HD Voice、设备固件、手机 App、PCB/天线/功耗/声学集成优化**。\n\n能补充的具体参数，应以 Sena 成品公开规格为准，而不是内部模组参数。公开资料中常见、且可交叉验证的数据包括：  \n- **蓝牙版本：Bluetooth 5.0**（如 50S/50R/50C/30K 等系列公开规格）  \n- **蓝牙对讲距离：最远约 2 km**（开阔地形条件）  \n- **Mesh Intercom 距离：单人间约 2 km；6 人以上中继时最远约 8 km**  \n- **Group Mesh：最多 24 人**  \n- **Open Mesh：支持近乎无限数量参与者**  \n- **工作频段：2.4 GHz**  \n- **充电时间：约 1.5–2.5 小时**（不同机型略有差异）  \n- **通话/对讲续航：约 8–14 小时**（取决于蓝牙或 Mesh 模式及具体型号）  \n- **工作温度：-10°C 至 55°C**  \n- **认证类型：FCC、CE、IC、KC、NCC、TELEC** 等\n\n价格方面，公开可见的是**整机零售价**，不是模组价格。按公开市场售价区间，Sena 产品大致可分为：  \n- **入门级蓝牙对讲设备：约 100–200 美元**  \n- **中高端蓝牙/Mesh 对讲设备：约 250–400 美元**  \n- **智能头盔：约 400–700 美元以上**\n\n因此，补充后的结论应表述为：**Sena Technologies, Inc. 在通讯产品上以自研方案主导，尤其是协议、固件、系统与整机集成；但内部通讯模组所用 SoC 的具体型号、单颗价格、芯片厂商，目前公开资料不足，不能锁定 Qualcomm/CSR、MediaTek/Airoha、Realtek、Nordic 等任何一家。** 现阶段能确认的“具体",
   "source": "deep_research:competitor_supply_chain",
   "created_at": "2026-03-22",
   "tags": [
-    "Sena",
     "通讯模组",
+    "Sena",
     "Mesh",
-    "Bluetooth",
     "自研方案",
-    "芯片未公开",
+    "competitor_supply_chain",
+    "Bluetooth",
     "deep_research",
-    "competitor_supply_chain"
+    "芯片未公开",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

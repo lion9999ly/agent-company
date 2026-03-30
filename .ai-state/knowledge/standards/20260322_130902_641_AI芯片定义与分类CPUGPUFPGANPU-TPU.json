@@ -1,17 +1,19 @@
 {
   "title": "AI芯片定义与分类：CPU/GPU/FPGA/NPU-TPU的边界",
   "domain": "standards",
-  "content": "白皮书将AI芯片定义为：基于软硬件协同设计，针对矩阵运算、并行计算、低精度计算、稀疏化等AI负载进行硬件级优化的处理器，目标是同时突破“计算墙”“内存墙”“功耗墙”，实现高TOPS与TOPS/W。广义AI芯片包括CPU、GPU、FPGA等所有可加速AI负载的处理器；狭义AI芯片特指面向AI场景设计的ASIC，如NPU、TPU。CPU灵活且生态成熟但AI能效低；GPU并行度高、训练主力但功耗高；FPGA可重构、低延迟但开发难；NPU/TPU性能和能效极致但灵活性差。",
+  "content": "白皮书可将AI芯片定义为：面向人工智能负载、通过软硬件协同对矩阵乘法、卷积、并行计算、低精度计算与数据搬运进行硬件级优化的处理器，目标是在“计算墙、内存墙、功耗墙”之间取得更优平衡。广义上，凡能加速AI负载的处理器都可纳入AI芯片，包括CPU、GPU、FPGA；狭义上则主要指为AI场景专门设计的ASIC，如NPU、TPU。\n\n从边界看，**CPU**仍是最通用的控制与调度核心，适合数据预处理、后处理和轻量推理。以 **Intel Xeon Platinum 8480+** 为例，采用 **60核120线程**，基础频率 **2.0GHz**、最大睿频 **3.8GHz**，配备 **112.5MB L3缓存**，支持 **AMX** 矩阵扩展；同类高端服务器CPU市场价格通常在 **数千美元级**。**AMD EPYC 9654** 则为 **96核192线程**，基础频率 **2.4GHz**、最大加速 **3.7GHz**，L3缓存 **384MB**。CPU优势是生态成熟、编程灵活，但单位功耗下的AI吞吐通常不如专用加速器。\n\n**GPU**是当前训练与高性能推理主力。典型如 **NVIDIA H100 SXM 80GB**：配备 **80GB HBM3**，显存带宽 **3.35TB/s**，FP8 Tensor Core算力最高可达 **4,000 TFLOPS**；其热设计功耗约 **700W**。另一代表是 **AMD Instinct MI300X**，拥有 **192GB HBM3**、**5.3TB/s** 显存带宽，适合大模型推理与训练。GPU的边界在于：它并非只服务AI，而是通用并行处理器；但凭借 CUDA、ROCm 等生态，已成为AI计算事实标准。高端数据中心GPU单卡价格通常在 **数万美元级**。\n\n**FPGA**位于GPU与ASIC之间，特点是可重构、低时延。以 **AMD（原Xilinx）Versal AI Core VC1902** 为例，集成 AI Engine 阵列，适合边缘推理、工业视觉、低时延信号处理。FPGA优势是可按场景定制数据流，缺点是开发门槛高、工具链复杂，因此更适合对时延、接口或确定性要求极高的行业场景。\n\n**NPU/TPU**则属于狭义AI芯片。**Google TPU v4** 面向数据中心训练与推理，单芯片峰值算力约 **275 TFLOPS（BF16）**；**Google Cloud TPU v5e** 则主打更高性价比部署。终端侧NPU方面，**Apple A17 Pro** 内置 **16核 Neural Engine**，官方标称可达 **35 TOPS**；**Qualcomm Snapdragon 8 Gen 3** 的 Hexagon NPU 也面向端侧生成式AI。此类芯片通常通",
   "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "AI芯片定义",
-    "CPU",
-    "GPU",
-    "FPGA",
+    "overhaul_enriched",
     "NPU",
+    "AI芯片定义",
+    "ASIC",
+    "FPGA",
+    "internal",
+    "CPU",
     "TPU",
-    "ASIC"
+    "GPU"
   ],
   "confidence": "high"
 }

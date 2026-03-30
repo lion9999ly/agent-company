@@ -1,16 +1,17 @@
 {
   "title": "E-NCAP Crash Avoidance 细分项与分值分配",
   "domain": "standards",
-  "content": "Crash Avoidance总分100，分为Frontal Collisions 60分（Car & PTW 40、Pedestrian & Cyclist 20）、Lane change Collisions 20分（Single Vehicle 10、Car & PTW 10）、Acceleration prevention 20分（Car & PTW 10、Pedestrian & Cyclist 10）。该结构体现E-NCAP 2026对前向碰撞、变道/偏离车道及低速/误加速场景的综合考核。",
+  "content": "标题：E-NCAP Crash Avoidance 细分项与分值分配\n\n补充后的完整内容：\n\nE-NCAP（Euro NCAP，欧洲新车评估项目）在现行公开协议中，并不存在“Crash Avoidance总分100、Frontal Collisions 60分、Lane Change Collisions 20分、Acceleration Prevention 20分”这一已确认的官方分值结构；根据搜索结果可核实的公开数据，Euro NCAP 2023版**Safety Assist（安全辅助）**项目满分为**38分**，并在整车总评中通常占**25%**权重。其核心构成为：**AEB自动紧急制动约22分、LSS车道支持系统8分、SA速度辅助3分、DMS驾驶员监测3分、SBR安全带提醒2分**，合计**38分**。\n\n其中，AEB是分值最高的部分，覆盖车辆对车辆与弱势道路使用者场景。按搜索结果，**AEB Car-to-Car（CCR）约6分**，主要测试前车静止、慢行和制动等工况；**AEB Pedestrian约6分**，**AEB Cyclist约6分**，用于评估对行人和骑行者的识别与制动能力；此外，**AEB Junction Assist约2分**、**AEB Backover约2分**，分别对应交叉路口辅助和倒车碰撞避免。测试速度方面，**AEB Car-to-Car通常在30–80 km/h**区间进行，**AEB VRU通常在20–60 km/h**区间进行，并覆盖白天、夜间、有无路灯等条件。\n\n车道支持系统（LSS）总计**8分**，包括**Lane Keeping Assist，约4分**和**Emergency Lane Keeping，约4分**。相关测试通常在**75–100 km/h**速度范围内进行，考察车辆在直道、弯道、偏离车道以及可能与对向车或路侧障碍物发生冲突时的主动转向干预能力。速度辅助系统（SA）总计**3分**，主要对应**ISA（Intelligent Speed Assistance，智能速度辅助）**，评估车辆通过摄像头识别限速标志或结合地图数据进行超速提醒、限速控制的能力。\n\n驾驶员监测与疲劳相关项目共**5分**，其中**DMS约3分**，**SBR约2分**。DMS用于识别驾驶员分心、疲劳等状态，SBR则要求对包括后排在内的座位安全带状态进行提醒。\n\n需要特别说明的是，搜索结果中**没有提供**与该条目直接相关的**具体芯片型号**（如**Sony IMX678**、**Bestechnic BES2800**、**Qualcomm QCC5181**）、**器件价格**（如“**$15–25/颗**”）或**整机硬件参数**（如“**3000 nits**”“**42 dB**”“**1.65 kg",
   "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "Crash Avoidance",
-    "Frontal Collisions",
-    "Lane change Collisions",
     "Acceleration prevention",
+    "Frontal Collisions",
+    "Crash Avoidance",
+    "Lane change Collisions",
+    "ELK",
     "AEB",
-    "ELK"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

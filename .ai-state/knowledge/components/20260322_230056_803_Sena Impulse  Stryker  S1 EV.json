@@ -1,19 +1,20 @@
 {
   "title": "Sena Impulse / Stryker / S1 EVO / R2 EVO（Sena）— 先做通信模块，再做头盔与 OEM 平台",
   "domain": "components",
-  "content": "Sena 的核心优势不是先卖头盔，而是先建立蓝牙/Mesh 通信能力，再延伸到自有品牌头盔和 OEM/B2B。其智能自行车头盔包括 S1 EVO 与 R2 EVO，卖点为 Mesh对讲、蓝牙连接和尾灯；高端智能头盔如 Impulse / Stryker，价格通常在 US$500-700 区间。更关键的是，Shoei SRL 与 HJC Smart HJC 都属于 Sena 技术合作方向，证明其商业模式已从单品销售升级为“通信技术平台 + 全球分销网络 + 专业零售 + OEM合作”。对新项目而言，这意味着若具备成熟模块、认证能力和交付能力，B2B/OEM 比单纯自有品牌更容易形成稳定出货。",
+  "content": "Sena 的核心优势并非先卖头盔，而是先建立**蓝牙与 Mesh 通信模块能力**，再向自有品牌头盔和 OEM/B2B 延伸。其高端一体式摩托车头盔 **Sena Impulse** 与 **Sena Stryker** 都内置 **Mesh 2.0** 与 **Bluetooth 5.0**，并与 **Harman Kardon** 合作集成扬声器和麦克风。根据搜索结果，Impulse 为全盔，采用**复合玻璃纤维外壳**，**重量约 1720g（M码）**，支持 **Open Mesh** 与 **Group Mesh**；其中 Mesh 对讲在开放环境下可实现**单人最远 2km**、**6人以上中继最远 8km**，蓝牙对讲最远 **2km**。续航方面，蓝牙对讲约 **18小时**，Mesh 对讲约 **11小时**，充电时间约 **2.5小时**。其零售价通常在 **US$699–749**。Stryker 则在相近通信规格基础上增加了**QHD 1440p@30fps / FHD 1080p@60fps** 一体式摄像头，**120°广角**，支持 **MicroSD 最大 128GB**，录像续航约 **2小时**，定位更高端。\n\n在自行车头盔方面，**Sena S1 EVO** 与 **Sena R2 EVO** 体现了 Sena 将通信模块标准化后向骑行场景复制的能力。原文已指出其核心卖点为 **Mesh 对讲、蓝牙连接和尾灯**，这与 Sena 的平台化路线一致：先把无线通信、音频、降噪、App 连接等能力做成成熟方案，再嵌入不同头盔品类，而不是从传统头盔制造切入。\n\n更关键的是，Sena 已验证其 **OEM/合作品牌模式**。搜索结果明确提到，**Shoei SRL** 与 **HJC Smart HJC** 都属于 Sena 的技术合作方向，说明其商业模式已从单一消费品牌升级为“**通信技术平台 + 全球分销网络 + 专业零售 + OEM合作**”。销售渠道上，除 **Sena** 官网外，还覆盖 **RevZilla、Cycle Gear、J&P Cycles、FC-Moto、Louis Moto** 等全球摩托车装备零售商，这也是其平台能力的一部分。\n\n因此，对新项目的启示非常明确：如果企业具备成熟的**蓝牙/Mesh 通信模块**、认证能力、声学与整机集成能力，以及稳定交付能力，那么优先切入 **B2B/OEM** 往往比单纯做自有头盔品牌更容易形成稳定出货。Sena 的案例证明，先掌握核心通信技术，再向整机品牌和合作品牌扩展，是一条已被市场验证的路径。",
   "source": "deep_research:business_model",
   "created_at": "2026-03-22",
   "tags": [
     "Sena",
     "Mesh",
-    "蓝牙通信",
-    "OEM",
+    "business_model",
     "B2B",
+    "OEM",
+    "蓝牙通信",
     "Shoei",
-    "HJC",
     "deep_research",
-    "business_model"
+    "HJC",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

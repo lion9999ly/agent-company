@@ -1,0 +1,13 @@
+{
+  "title": "跨界:latest Medtronic wearable EEG ",
+  "domain": "lessons",
+  "content": "**结构化摘要（面向智能骑行头盔研发）**\n\n1. **可借鉴技术方向**\n- **低功耗生物信号采集**：就“latest Medtronic wearable EEG”这一条目，现有搜索结果明确显示：**美敦力（Medtronic）官方并未发布或公开销售可定义为“可穿戴EEG”的消费级或研究级产品**，因此**没有可核实的具体芯片型号、通道功耗、续航或BOM价格数据可补充**。可参考的真实市场方向来自其他厂商：如 **Emotiv EPOC+** 提供 **14个EEG通道**，**Muse S / Muse 2** 为 **4–7通道**，**NeuroSky MindWave Mobile 2** 为 **单通道EEG**。这说明头盔若考虑脑电/疲劳监测，应优先评估**低通道数、低功耗、干电极方案**，而不是假设美敦力已有现成可穿戴方案。\n- **边缘AI实时处理**：搜索结果未给出美敦力可穿戴EEG的端侧AI芯片、模型名称或时延数据，因此**不能补充诸如BES2800、QCC5181或“几秒到几十秒”这类具体指标**。但从产品形态看，消费级EEG品牌 **Emotiv、Muse、NeuroSky** 均采用本地采集 + 蓝牙传输 + App/SDK分析路径，对智能骑行头盔的启发是：可将**跌倒识别、疲劳预警、碰撞检测、语音控制**放在头盔MCU/SoC侧做轻量化推理，减少持续无线传输。\n- **BLE低功耗传输**：搜索结果确认，现有可穿戴EEG普遍采用**蓝牙连接**，但**未提供具体蓝牙SoC型号、发射功耗、吞吐率或延迟数据**。可明确补充的公司/品牌包括 **Emotiv、InteraXon（Muse）、NeuroSky、g.tec medical engineering**。对骑行头盔而言，BLE仍是传感器同步、音频控制和手机互联的现实主流。\n- **干电极/多传感器阵列/舒适佩戴**：搜索结果明确提到上述可穿戴EEG多采用**干电极设计**。其中 **Emotiv EPOC+**、**Muse S / Muse 2**、**NeuroSky MindWave Mobile 2** 都属于头戴式/头带式非侵入方案；**g.tec g.Nautilus** 则偏研究级、支持 **16–64通道**。这对头盔研发的直接借鉴是：内衬传感器应优先考虑**贴合头部、抗运动伪影、快速佩戴**，并与麦克风阵列、骨传导或头部压力传感协同设计。\n\n2. **行业趋势**\n- 可穿戴脑电市场正由医院固定式设备向**便携化、无线化、居家化**延伸，但主导者并**不是美敦力**，而是 **Emotiv、Muse（InteraXon）、NeuroSky、g.tec** 等品牌。\n- **价格带**已有可核实区间：**Muse 2 / Muse S 约 200–400",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-24",
+  "tags": [
+    "night_cross",
+    "overhaul_enriched",
+    "跨界"
+  ],
+  "confidence": "medium"
+}

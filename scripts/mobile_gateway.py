@@ -262,22 +262,41 @@ class FeishuBot:
 class TelegramBot:
     """Telegram机器人"""
 
-    def __init__(self, token: str = None):
+    def __init__(self, token: str = None, proxy: str = None):
         self.token = token or os.getenv("TELEGRAM_BOT_TOKEN", "")
         self.base_url = f"https://api.telegram.org/bot{self.token}"
         self.chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
+        self.proxy = proxy or os.getenv("TELEGRAM_PROXY", "")
+        self.proxies = {"http": self.proxy, "https": self.proxy} if self.proxy else None
+        self.last_update_id = 0
 
     def set_webhook(self, webhook_url: str) -> bool:
         """设置Webhook"""
         url = f"{self.base_url}/setWebhook"
         data = {"url": webhook_url}
         try:
-            response = requests.post(url, json=data, timeout=10)
+            response = requests.post(url, json=data, timeout=10, proxies=self.proxies)
             result = response.json()
             return result.get("ok", False)
         except Exception as e:
             logger.error(f"设置Telegram webhook失败: {e}")
             return False
+
+    def get_updates(self, timeout: int = 10) -> list:
+        """轮询获取更新（不需要webhook）"""
+        url = f"{self.base_url}/getUpdates"
+        params = {"timeout": timeout, "offset": self.last_update_id + 1}
+        try:
+            response = requests.get(url, params=params, timeout=timeout + 5, proxies=self.proxies)
+            result = response.json()
+            if result.get("ok"):
+                updates = result.get("result", [])
+                if updates:
+                    self.last_update_id = updates[-1].get("update_id", 0)
+                return updates
+        except Exception as e:
+            logger.error(f"获取Telegram更新失败: {e}")
+        return []
 
     def parse_message(self, data: Dict) -> Optional[MobileMessage]:
         """解析Telegram消息"""
@@ -336,7 +355,7 @@ class TelegramBot:
             "parse_mode": parse_mode
         }
         try:
-            response = requests.post(url, json=data, timeout=10)
+            response = requests.post(url, json=data, timeout=10, proxies=self.proxies)
             result = response.json()
             return result.get("ok", False)
         except Exception as e:
@@ -348,12 +367,12 @@ class TelegramBot:
         # 先获取文件路径
         url = f"{self.base_url}/getFile"
         try:
-            response = requests.get(url, params={"file_id": file_id}, timeout=10)
+            response = requests.get(url, params={"file_id": file_id}, timeout=10, proxies=self.proxies)
             result = response.json()
             if result.get("ok"):
                 file_path = result["result"]["file_path"]
                 download_url = f"https://api.telegram.org/file/bot{self.token}/{file_path}"
-                response = requests.get(download_url, timeout=30)
+                response = requests.get(download_url, timeout=30, proxies=self.proxies)
                 if response.status_code == 200:
                     return response.content
         except Exception as e:
@@ -420,7 +439,7 @@ class VisionService:
     """图像理解服务"""
 
     def __init__(self):
-        self.gemini_api_key = os.getenv("GOOGLE_API_KEY", "AIzaSyCIpULNyI26SptD9OTfOXbfiK4uI9gqFXA")
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY", "")
 
     def analyze_image(self, image_data: bytes, prompt: str = "描述这张图片的内容") -> str:
         """分析图片内容"""
@@ -462,13 +481,14 @@ class VisionService:
 class MobileGateway:
     """移动端交互网关"""
 
-    def __init__(self, port: int = 8080):
+    def __init__(self, port: int = 8080, proxy: str = None):
         self.port = port
+        self.proxy = proxy
         self.app = Flask(__name__) if HAS_FLASK else None
 
         # 初始化各渠道
         self.feishu = FeishuBot()
-        self.telegram = TelegramBot()
+        self.telegram = TelegramBot(proxy=proxy)
         self.asr = ASRService()
         self.vision = VisionService()
 
@@ -710,13 +730,43 @@ class MobileGateway:
 
         self.app.run(host="0.0.0.0", port=self.port, debug=False)
 
+    def run_polling(self):
+        """轮询模式启动（不需要webhook，适合网络受限环境）"""
+        logger.info("🚀 移动端网关启动 (轮询模式)")
+        logger.info("📱 正在监听 Telegram 消息...")
+        if self.proxy:
+            logger.info(f"🔗 使用代理: {self.proxy}")
+
+        # 启动后台任务处理线程
+        task_thread = threading.Thread(target=self.process_tasks, daemon=True)
+        task_thread.start()
+
+        # 轮询循环
+        while True:
+            try:
+                updates = self.telegram.get_updates(timeout=10)
+                for update in updates:
+                    message = self.telegram.parse_message(update)
+                    if message:
+                        logger.info(f"📨 收到消息: {message.content[:50]}...")
+                        self._process_message(message)
+            except KeyboardInterrupt:
+                logger.info("停止轮询")
+                break
+            except Exception as e:
+                logger.error(f"轮询异常: {e}")
+                time.sleep(5)
+
 
 def main():
     parser = argparse.ArgumentParser(description="移动端交互网关")
     parser.add_argument("--port", "-p", type=int, default=8080, help="服务端口")
+    parser.add_argument("--proxy", "-x", type=str, default=None, help="代理地址 (如 http://127.0.0.1:7890)")
     parser.add_argument("--setup-feishu", action="store_true", help="输出飞书配置指南")
     parser.add_argument("--setup-telegram", action="store_true", help="输出Telegram配置指南")
     parser.add_argument("--ngrok", action="store_true", help="启动ngrok内网穿透")
+    parser.add_argument("--set-webhook", action="store_true", help="设置Telegram Webhook")
+    parser.add_argument("--polling", action="store_true", help="轮询模式（不需要webhook）")
 
     args = parser.parse_args()
 
@@ -765,6 +815,10 @@ Telegram机器人配置指南
 设置Webhook:
    curl -F "url=https://<your-domain>/webhook/telegram" \\
         https://api.telegram.org/bot<token>/setWebhook
+
+使用代理 (中国大陆):
+   python scripts/mobile_gateway.py --proxy http://127.0.0.1:7890
+   或设置环境变量: export TELEGRAM_PROXY="http://127.0.0.1:7890"
 """)
         return
 
@@ -774,9 +828,39 @@ Telegram机器人配置指南
         subprocess.Popen(["ngrok", "http", str(args.port)])
         print(f"请在ngrok控制台查看外网地址: http://127.0.0.1:4040")
 
+    if args.set_webhook:
+        # 获取 ngrok URL
+        try:
+            resp = requests.get("http://127.0.0.1:4040/api/tunnels", timeout=5)
+            data = resp.json()
+            if data.get("tunnels"):
+                ngrok_url = data["tunnels"][0]["public_url"]
+                webhook_url = f"{ngrok_url}/webhook/telegram"
+                print(f"检测到 ngrok URL: {ngrok_url}")
+                print(f"正在设置 Webhook: {webhook_url}")
+
+                bot = TelegramBot(proxy=args.proxy)
+                if bot.set_webhook(webhook_url):
+                    print("SUCCESS: Webhook 设置成功!")
+                else:
+                    print("FAILED: Webhook 设置失败")
+            else:
+                print("ERROR: 无法获取 ngrok URL，请确保 ngrok 正在运行")
+        except Exception as e:
+            print(f"ERROR: {e}")
+        return
+
     # 启动网关
-    gateway = MobileGateway(port=args.port)
-    gateway.run()
+    if args.proxy:
+        print(f"使用代理: {args.proxy}")
+    gateway = MobileGateway(port=args.port, proxy=args.proxy)
+
+    if args.polling:
+        # 轮询模式（不需要代理能访问Telegram API）
+        gateway.run_polling()
+    else:
+        # Webhook 模式
+        gateway.run()
 
 
 if __name__ == "__main__":

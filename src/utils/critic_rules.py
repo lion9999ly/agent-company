@@ -111,6 +111,7 @@ def add_critic_rule(
         tags=["critic_rule", f"severity_{severity}", f"source_{source}"],
         source=f"critic_rule:{source}",
         confidence="high",
+        caller="critic_rule"
     )
 
     if path:

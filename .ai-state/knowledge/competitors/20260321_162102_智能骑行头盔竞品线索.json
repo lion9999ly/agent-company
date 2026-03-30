@@ -1,13 +1,18 @@
 {
   "title": "智能骑行头盔竞品线索",
   "domain": "competitors",
-  "content": "文档为竞品清单，核心与智能骑行头盔研发相关的信息主要集中在“智能竞品”页，未提供参数、价格、销量、功能对比等定量数据；“传统盔”页仅有表头，无实质内容。可提取的有效信息为竞品与可借鉴生态名单：1）直接相关头盔/摩托头盔类：GT‑Air 3 Smart+Eyelights、Shoei Opticson、Forcite MK1S、Motoeyes M6、Sena Stryker Sound、Sena Impulse，说明市场已存在“头盔+显示/音频/互联”方向。2）头盔通信/音频配件：Cardo Beyond GTS、Cardo Packtalk pro、ASMAX F1 PRO、豆包耳机、光帆Lightwear耳机，可作为语音、对讲、降噪、佩戴体验参考。3）近眼显示/AR眼镜：雷鸟X3、BleeqUP、Meta Ray-Ban Display glasses、RESO Pilot Pro、夸克S1、PICO、Engo2、影目Air 3，提示HUD/导航/信息提示是重要能力方向。4）影像记录设备：Insta360 X5、DJI Osmo 360、DJI Action 6、DJI Pocket 3/4、Insta360 Go3s、Insta Nano、DJI Osmo Nano、Looki、INNOVV、盯盯拍摩托车记录仪，表明骑行记录、全景、轻量化相机是潜在集成点。5）运动与骑行生态：COROS、Garmin、SUUNTO、Chigee（骑技）及大疆NEO2无人机，反映导航、运动数据、车机互联、外设联动的生态机会。结论：该文档更像竞品池/灵感池，适合用于建立竞品地图与功能拆解清单，但不足以直接支撑规格定义。",
+  "content": "标题：智能骑行头盔竞品线索\n\n补充后内容：文档为竞品清单，核心与智能骑行头盔研发相关的信息主要集中在“智能竞品”页。基于现有搜索结果，可补充到的定量信息主要来自已公开参数的智能头盔品牌 **Lumos Helmets（美国/香港）**，其产品已验证“头盔+灯光提示+蓝牙互联+App”方向具备成熟商品化路径。\n\n1）**直接相关智能头盔类**：  \n- **Lumos Ultra**：集成前后灯与转向灯，前置 **COB LED 30流明**、后置 **COB LED 30流明**，共 **38个独立LED**；支持 **MIPS** 版本；蓝牙 **4.2**；电池 **3.7V 1300mAh**；续航约 **10小时（闪烁）/2.5小时（常亮）**；**USB-C** 充电，约 **3小时充满**；重量约 **370g（MIPS版）**；防水 **IPX6**；价格约 **119–179美元**。  \n- **Lumos Kickstart**：前置 **10个白色LED**、后置 **38个红色LED**，支持转向灯；蓝牙 **4.0**；电池 **3.7V 800mAh**；续航约 **6小时（闪烁）/3小时（常亮）**；磁吸充电，约 **2小时充满**；重量约 **380g**；防水 **IPX6**；价格约 **179–199美元**。  \n- **Lumos Matrix**：后部采用 **7×11 RGB LED矩阵屏**，支持自定义图案与转向提示；蓝牙 **4.2**；电池 **3.7V 1800mAh**。搜索结果未给出完整重量和价格区间，暂不补充。\n\n2）**可借鉴的功能方向**：  \n现有清单中的 **GT‑Air 3 Smart+Eyelights、Shoei Opticson、Forcite MK1S、Motoeyes M6、Sena Stryker Sound、Sena Impulse**，说明市场已存在“**头盔+显示/HUD+音频+互联**”路线；但本次搜索结果未提供这些型号的公开重量、亮度、SoC型号或售价，不能补充具体数值。  \n头盔通信/音频配件如 **Cardo Beyond GTS、Cardo Packtalk Pro、ASMAX F1 PRO、豆包耳机、光帆Lightwear耳机**，可重点参考 **语音、对讲、降噪、佩戴舒适性**；近眼显示/AR眼镜如 **雷鸟X3、BleeqUp、Meta Ray-Ban Display Glasses、RESO Pilot Pro、夸克S1、PICO、Engo 2、影目 Air 3**，可作为 **HUD导航、信息提示、轻量显示模组** 的生态参考；影像记录设备如 **Insta360 X5、DJI Osmo 360、DJI Action 6** 可作为骑行记录与内容分享场",
   "source": "doc_import:Project X 竞品分析.xlsx",
   "created_at": "2026-03-21",
   "tags": [
-    "智能头盔",
+    "生态参考",
     "骑行竞品",
-    "生态参考"
+    "internal",
+    "智能头盔",
+    "overhaul_enriched"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 461,
+  "_last_used": "2026-03-30T00:50:58.626480",
+  "_first_used": "2026-03-28T10:57:11.448929"
 }

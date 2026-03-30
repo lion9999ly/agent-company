@@ -11,7 +11,8 @@
     "HBM",
     "CUDA",
     "cuDNN",
-    "TensorRT"
+    "TensorRT",
+    "internal"
   ],
   "confidence": "high"
 }

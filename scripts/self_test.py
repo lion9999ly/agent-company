@@ -16,6 +16,58 @@ from src.utils.model_gateway import get_model_gateway
 from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt, KB_ROOT
 
 
+def _retrieve_multi_entity(question: str) -> str:
+    """
+    多实体分别检索，合并结果（修复 2）
+    从问题中提取多个实体，分别检索，合并结果
+    """
+    # 提取品牌/产品名（中英文）
+    brands = re.findall(
+        r'(?:Sena|Cardo|Forcite|LIVALL|CrossHelmet|EyeRide|Shoei|AGV|HJC|Arai|'
+        r'Strava|Relive|Rever|'
+        r'ECE|DOT|FCC|CE-RED|UN38\.3|Snell|FIM|GB 811|3C|'
+        r'LCoS|DLP|MicroLED|BLE|WiFi|UWB|'
+        r'歌尔|立讯|闻泰|龙旗|舜宇|丘钛|欧菲)',
+        question,
+        re.IGNORECASE
+    )
+
+    # 提取关键词
+    keywords = re.findall(
+        r'(?:HUD|OTA|ADAS|ANC|BOM|NRE|V2X|CAN|GATT|'
+        r'头盔|认证|电池|充电|语音|摄像|脑图|氛围灯|按键|配对|'
+        r'成本|价格|市场|渠道|用户|骑行|拆解)',
+        question,
+        re.IGNORECASE
+    )
+
+    all_terms = list(set(brands + keywords))
+
+    if not all_terms:
+        # 兜底：用原始问题检索
+        kb_entries = search_knowledge(question, limit=10)
+        return format_knowledge_for_prompt(kb_entries) if kb_entries else ""
+
+    # 每个实体/关键词分别检索 top 3，合并去重
+    all_results = []
+    seen_titles = set()
+
+    for term in all_terms[:8]:  # 最多 8 个词，避免过度检索
+        entries = search_knowledge(term, limit=3)
+        if entries:
+            for entry in entries:
+                title = entry.get('title', '') if isinstance(entry, dict) else str(entry)[:50]
+                if title not in seen_titles:
+                    seen_titles.add(title)
+                    all_results.append(entry)
+
+    if not all_results:
+        return ""
+
+    # 格式化合并结果
+    return format_knowledge_for_prompt(all_results[:15]) if all_results else ""
+
+
 def generate_test_questions(topics: list, gateway, count=10) -> list:
     """Generate test questions based on recently learned topics"""
 
@@ -51,9 +103,8 @@ def generate_test_questions(topics: list, gateway, count=10) -> list:
 def answer_question_from_kb(question: str, gateway) -> dict:
     """Answer question using knowledge base, and evaluate answer quality"""
 
-    # Search knowledge base
-    kb_entries = search_knowledge(question, limit=8)
-    kb_context = format_knowledge_for_prompt(kb_entries) if kb_entries else ""
+    # Search knowledge base - 使用多实体检索（修复 2）
+    kb_context = _retrieve_multi_entity(question)
 
     if not kb_context or len(kb_context) < 100:
         return {

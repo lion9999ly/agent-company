@@ -4,11 +4,11 @@
     "title": "Phase 2 Test Plan",
     "description": "Test Plan Persistence",
     "created_at": "2026-03-16T17:12:01.228882",
-    "updated_at": "2026-03-16T17:12:01.228882",
-    "status": "draft",
+    "updated_at": "2026-03-16T17:12:28.468675",
+    "status": "completed",
     "total_phases": 2,
-    "completed_phases": 0,
-    "overall_progress": 0.0
+    "completed_phases": 2,
+    "overall_progress": 100.0
   },
   "phases": [
     {
@@ -19,20 +19,20 @@
         {
           "id": "plan_20260316_171201_p0_c0",
           "description": "Create dir",
-          "completed": false,
-          "completed_at": null,
-          "notes": null
+          "completed": true,
+          "completed_at": "2026-03-16T17:12:28.468675",
+          "notes": "Done"
         },
         {
           "id": "plan_20260316_171201_p0_c1",
           "description": "Create script",
-          "completed": false,
-          "completed_at": null,
-          "notes": null
+          "completed": true,
+          "completed_at": "2026-03-16T17:12:28.468675",
+          "notes": "Done"
         }
       ],
-      "status": "pending",
-      "progress": 0.0
+      "status": "completed",
+      "progress": 100.0
     },
     {
       "phase_id": "plan_20260316_171201_phase_1",
@@ -42,20 +42,20 @@
         {
           "id": "plan_20260316_171201_p1_c0",
           "description": "Test plan creation",
-          "completed": false,
-          "completed_at": null,
-          "notes": null
+          "completed": true,
+          "completed_at": "2026-03-16T17:12:28.468675",
+          "notes": "Done"
         },
         {
           "id": "plan_20260316_171201_p1_c1",
           "description": "Test progress update",
-          "completed": false,
-          "completed_at": null,
-          "notes": null
+          "completed": true,
+          "completed_at": "2026-03-16T17:12:28.468675",
+          "notes": "Done"
         }
       ],
-      "status": "pending",
-      "progress": 0.0
+      "status": "completed",
+      "progress": 100.0
     }
   ],
   "context": {},

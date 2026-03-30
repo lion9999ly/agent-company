@@ -1,15 +1,16 @@
 {
   "title": "舱内摄像头对E-NCAP 60分实现的依赖",
   "domain": "lessons",
-  "content": "文档明确指出“①: 60分的实现对主机厂有依赖，需要配备舱内摄像头”。结合Safe Driving结构，①覆盖Occupant Monitoring 30分与Driver Engagement中的Driver Monitoring 25分等内容，说明若主机厂未配置舱内摄像头，将直接影响Seatbelt usage、Occupant classification、Occupant presence、Driver Monitoring等得分获取，成为5星达成关键前提。",
+  "content": "文档明确指出“①：60分的实现对主机厂有依赖，需要配备舱内摄像头”。结合 Euro NCAP 2023 Safe Driving 评分结构，舱内摄像头直接关联 **Occupant Monitoring 30分** 与 **Driver Engagement 中的 Driver Monitoring 25分**，两项合计 **55分**，已接近“60分”门槛，因此若主机厂未配置舱内摄像头，Seatbelt usage、Occupant classification、Occupant presence、Driver Monitoring 等关键项将难以完整拿分，成为五星达成的重要前提。\n\n从产业实现看，舱内摄像头通常由图像传感器、SoC/AI处理器、红外补光与算法组成，已有较明确的量产器件可对应。图像传感器方面，**Sony（索尼）IMX678** 是常见车载/低照度方案，属于 **1/1.8英寸、约800万像素** CMOS，支持 **STARVIS 2**，适合高动态范围和暗光舱内成像。若采用更偏舱内DMS的成熟方案，行业中也常见 **onsemi（安森美）AR0820AT**，为 **800万像素车规传感器**。音频/语音交互侧，若座舱监测与语音融合，常见芯片包括 **Bestechnic（恒玄）BES2800** 与 **Qualcomm（高通）QCC5181**；其中 QCC5181 属于高通 S5 音频平台系列，面向高端 TWS/语音设备，但搜索结果未给出其单颗价格，不能补写“$15-25/颗”这类数据。\n\n在可量化参数上，搜索结果中能确认的具体值主要集中在评分与器件规格，而非整机BOM价格。与舱内监测相关的能力要求通常包括：对驾驶员头姿、闭眼、视线偏移、分心行为进行识别；对乘员存在、儿童遗留、座椅占用和安全带状态进行检测。若采用红外方案，系统一般会配置 **940nm** 红外补光，但本次搜索结果未提供具体发射功率、照度或整机亮度数据，因此不能补充如“3000nits、42dB、1.65kg”这类无来源参数。\n\n供应商与品牌方面，除 **Sony、onsemi、Qualcomm、恒玄** 外，舱内监测算法和系统集成常见厂商还包括 **Smart Eye、Seeing Machines、Cipia、Aptiv、Magna** 等；其中 Smart Eye 与 Seeing Machines 在 DMS 领域公开案例较多。综合来看，Euro NCAP 2023 已将舱内感知从“加分项”推向“基础项”：没有舱内摄像头，主机厂在 **Occupant Monitoring 30分** 和 **Driver Monitoring 25分** 上将明显受限，进而影响 60分乃至五星目标的实现。当前可落地的硬件基础，已可对应到 **IMX678、AR0820A",
   "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
   "created_at": "2026-03-24",
   "tags": [
     "舱内摄像头",
-    "OMS",
     "DMS",
     "主机厂依赖",
-    "E-NCAP"
+    "OMS",
+    "E-NCAP",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

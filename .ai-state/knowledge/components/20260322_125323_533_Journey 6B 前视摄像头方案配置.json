@@ -9,7 +9,8 @@
     "Front Camera",
     "8MP",
     "120°FOV",
-    "X8D"
+    "X8D",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

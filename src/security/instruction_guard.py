@@ -1,5 +1,9 @@
 # 🛡️ 指令歧义防护模块 (Instruction Ambiguity Guard)
 """
+@description: 检测并拦截可能导致安全锁移除的歧义指令，防止"越快越好"等指令绕过安全检查
+@dependencies: re, dataclasses, enum, typing
+@last_modified: 2026-03-18
+
 核心职责：检测并拦截可能导致安全锁移除的歧义指令。
 
 参考：虎嗅文章《Multi-Agent协作的三大陷阱》

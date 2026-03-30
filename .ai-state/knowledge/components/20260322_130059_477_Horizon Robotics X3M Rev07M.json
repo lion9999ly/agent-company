@@ -10,7 +10,8 @@
     "8M@30fps",
     "DDR4",
     "LPDDR4",
-    "Thermal resistance"
+    "Thermal resistance",
+    "internal"
   ],
   "confidence": "high"
 }

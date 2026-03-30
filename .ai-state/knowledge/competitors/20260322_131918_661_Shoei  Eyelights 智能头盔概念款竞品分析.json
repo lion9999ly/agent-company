@@ -1,15 +1,20 @@
 {
   "title": "Shoei × Eyelights 智能头盔概念款竞品分析",
   "domain": "competitors",
-  "content": "Shoei × Eyelights为Eicma展示的概念产品，智能系统价格约€600，GT3头盔售价约￥5600，据悉计划于2026年6月上市。功能包括HUD nano OLED抬头显示、日光下可显示、10小时电池续航、动态降噪、客制化UI、支持谷歌和苹果语音控制，成像焦点位置为3米外，可显示速度、GPS定位、来电、雷达预警。缺点是上市时间不确定，Shoei此前类似概念未量产；不含Camera、无视觉智能功能、无AI辅助、无控车能力。",
+  "content": "**Shoei × Eyelights 智能头盔概念款竞品分析**\n\nShoei × Eyelights 于 **EICMA 2024** 展出的概念产品，合作方分别为日本头盔品牌 **Shoei** 与法国摩托 HUD 公司 **EyeLights**。已公开信息显示，其基础头盔为 **Shoei GT-Air 3（GT3）**，欧洲市场公开售价约 **€699**；EyeLights 此前面向存量头盔推出的 HUD 产品为 **EyeRide / EyeRide HUD**，官方公开售价常见为 **€399–€499**。因此，媒体与展会口径中提到的整套智能系统约 **€600**，更接近“HUD 模组价格级别”，并非整盔最终零售价。\n\n从功能看，该概念款核心是 **nano OLED HUD**，官方/媒体公开描述包括：**白天可视**、**续航约10小时**、成像焦点约 **3 米** 外，可显示 **速度、导航、来电提醒、雷达预警**，并支持 **Google Assistant** 与 **Apple Siri** 语音控制。现有公开资料未披露其所用显示芯片、SoC、蓝牙音频芯片等具体型号，因此**不能补充 IMX678、BES2800、QCC5181 一类器件型号**。同样，公开资料中也**未见 3000 nits、42 dB、1.65 kg** 等精确参数。\n\n上市节奏方面，多家媒体援引展会信息称其目标时间为 **2026年6月**，但截至目前仍属概念阶段，Shoei 过往类似智能化展示并无明确量产落地记录，因此时间表存在不确定性。\n\n**竞品对比**方面，最直接的是 **Forcite MK1S / MK1.5**。品牌为澳大利亚 **Forcite Helmets**，主打集成 HUD、前置摄像头、碰撞提醒与 App 联动。公开零售价常见约 **US$1,099**（不同版本和地区会有差异），认证信息公开可见 **ECE 22.06 / DOT**（新版本）。另一类竞品是日本 **CrossHelmet X1**，由 **Borderless Inc.** 推出，核心不是前风挡 HUD，而是 **后视摄像头 + 头盔内显示**，其公开售价长期在 **US$1,799** 左右。相比之下，Shoei × Eyelights 的优势在于依托 Shoei 的高端整盔平台与 EyeLights 的成熟 HUD 方案，产品定位更偏“高端骑行信息显示”。\n\n但其短板也很明确：目前公开信息显示，**不含摄像头（Camera）**，没有已确认的**视觉智能**、**AI 辅助决策**或**控车能力**；同时也没有公开的传感器、芯片、亮度、重量、降噪深度等硬件级参数。结论上，Shoei × Eyelights 更像是“**Shoei GT-Air 3 + ",
   "source": "doc_import:两轮项目立项报告（智能头盔） V2.1 - 草稿！！！ (1).docx",
   "created_at": "2026-03-22",
   "tags": [
-    "Shoei",
+    "Eicma",
     "Eyelights",
+    "internal",
     "HUD",
+    "Shoei",
     "nano OLED",
-    "Eicma"
+    "overhaul_enriched"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 3,
+  "_last_used": "2026-03-28T16:06:19.138075",
+  "_first_used": "2026-03-28T16:02:59.977824"
 }

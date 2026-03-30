@@ -1,16 +1,19 @@
 {
   "title": "Luna 6 Mini Fakra J2信号定义：DMS_DES与DVR_SER",
   "domain": "components",
-  "content": "Mini Fakra连接器J2为2管脚定义：Pin1 CONN_DES_GMSL，对应DMS_DES；Pin2 CONN_SER_GMSL，对应DVR_SER。该命名显示接口承载GMSL相关高速链路，分别面向DMS反序列化端与DVR序列化端，是车内视觉/视频链路的重要接口。",
+  "content": "Mini Fakra 连接器 **J2** 目前依据公开可检索信息，**仅能确认 2 个管脚定义**：**Pin1 = CONN_DES_GMSL，对应 DMS_DES；Pin2 = CONN_SER_GMSL，对应 DVR_SER**。这表明 J2 承载的是 **GMSL（Gigabit Multimedia Serial Link）** 相关链路，其中 **DMS_DES** 指向驾驶员监控系统 **DMS（Driver Monitoring System）** 的**解串端**，**DVR_SER** 指向行车记录/视频链路的**串行端**。就命名方式看，它不是普通 GPIO，而是面向车载视频 **SerDes** 架构的专用高速接口。\n\n结合公开行业资料，可补充的确定性数据主要来自 **FAKRA / Mini FAKRA** 与 **GMSL** 通用规范，而**不是**“Luna 6 Mini”这款具体设备本身。首先，FAKRA 体系通常基于 **50Ω** 阻抗，常见厂商包括 **TE Connectivity、Molex、Amphenol、Rosenberger、HUBER+SUHNER**。其中 **Mini FAKRA** 对应汽车高速数据连接器体系，行业中也常称 **HFM（High-Speed FAKRA-Mini）**。公开资料可确认其应用场景覆盖车载摄像头、ADAS、DMS、环视和信息娱乐高速链路。\n\n在 SerDes 芯片侧，若 J2 的命名中明确出现 **GMSL**，则其相关生态通常来自 **Analog Devices（原 Maxim Integrated）**。公开可查的代表型号包括 **MAX96717**（GMSL2 串行器）、**MAX96716A / MAX96714**（GMSL2 解串器）等；这类器件常用于摄像头到域控/计算平台的视频传输。这里能确认的是**品牌与系列**，但针对 “Luna 6 Mini J2” 本身，搜索结果**没有给出**其实际采用的是哪一颗 **MAX96717、MAX96716A、MAX9295A、MAX9296A** 或其他具体型号，因此不能进一步指定。\n\n同样，DMS 摄像头常见会搭配汽车图像传感器，公开行业常见品牌包括 **Sony、onsemi、OmniVision**；代表型号在行业里常见如 **Sony IMX390**、**OmniVision OV2311** 等，但搜索结果**没有证明**“Luna 6 Mini”的 J2 就连接这些具体 sensor，因此不能把它们写成该产品已确认配置。\n\n价格方面，原搜索结果给出的 **“0.5–5 美元/个连接器”**、**“30–150 美元/摄像头模块”**、**“5–20 美元/米线缆”** 都**没有来源佐证**，因此",
   "source": "doc_import:Luna 6一体机 20251227 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "Luna 6",
-    "Mini Fakra",
     "J2",
-    "DMS",
     "DVR",
-    "GMSL"
+    "Luna 6",
+    "DMS",
+    "GMSL",
+    "Mini Fakra",
+    "overhaul_deepened",
+    "night_deepened",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

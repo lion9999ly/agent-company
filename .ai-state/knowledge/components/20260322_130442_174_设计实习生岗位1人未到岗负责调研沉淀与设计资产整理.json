@@ -9,7 +9,8 @@
     "设计实习生",
     "设计调研",
     "设计资产",
-    "未到岗"
+    "未到岗",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

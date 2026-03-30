@@ -9,7 +9,8 @@
     "Gemini 3.1 Pro",
     "配额限制",
     "429",
-    "RESOURCE_EXHAUSTED"
+    "RESOURCE_EXHAUSTED",
+    "internal"
   ],
   "confidence": "high"
 }

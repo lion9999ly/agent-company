@@ -11,7 +11,8 @@
     "RISC-V",
     "GPU",
     "DSA",
-    "2:4稀疏"
+    "2:4稀疏",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -11,7 +11,8 @@
     "SPI count",
     "MIPI CSI Host",
     "MIPI CSI Device",
-    "IAR"
+    "IAR",
+    "internal"
   ],
   "confidence": "high"
 }

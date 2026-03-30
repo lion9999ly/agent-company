@@ -7,7 +7,8 @@
   "tags": [
     "SoC芯片",
     "视觉AI",
-    "功能安全"
+    "功能安全",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

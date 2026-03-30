@@ -1,6 +1,6 @@
 """
 @description: Token使用统计模块 - 记录和统计各模型API调用情况
-@dependencies: json, datetime
+@dependencies: json, datetime, threading
 @last_modified: 2026-03-17
 """
 
@@ -55,23 +55,43 @@ class TokenUsageTracker:
     """
 
     # 各模型每1K token的估算成本(美元)
+    # 定价来源：各平台官网 2025-2026
+    # 注意：免费层有请求限制，超出后需付费
     PRICING = {
-        # Gemini
-        "gemini-2.5-flash": {"input": 0.000, "output": 0.000},  # 免费层
-        "gemini-2.5-flash-lite": {"input": 0.000, "output": 0.000},
-        "gemini-2.5-pro": {"input": 0.00125, "output": 0.005},
+        # ========== Google Gemini ==========
+        # 免费层：15 RPM, 100 RPD, 1500 RPM (Flash)
+        # 付费层价格如下（按1K token计算）
+        "gemini-2.5-flash": {"input": 0.000075, "output": 0.00030},  # 付费: $0.075/$0.30 per 1M
+        "gemini-2.5-flash-lite": {"input": 0.000075, "output": 0.00030},
+        "gemini-2.5-pro": {"input": 0.00125, "output": 0.005},  # $1.25/$5.00 per 1M
         "gemini-3-pro-preview": {"input": 0.00125, "output": 0.005},
         "deep-research-pro-preview-12-2025": {"input": 0.002, "output": 0.008},
 
-        # Azure OpenAI
-        "gpt-4o": {"input": 0.0025, "output": 0.01},
-        "gpt-4o-mini": {"input": 0.00015, "output": 0.0006},
-        "o3-mini": {"input": 0.0011, "output": 0.0044},
-        "o1": {"input": 0.015, "output": 0.06},
+        # ========== Azure OpenAI ==========
+        # 价格相对稳定
+        "gpt-4o": {"input": 0.0025, "output": 0.01},  # $2.50/$10.00 per 1M
+        "gpt-4o-mini": {"input": 0.00015, "output": 0.0006},  # $0.15/$0.60 per 1M
+        "o3-mini": {"input": 0.0011, "output": 0.0044},  # $1.10/$4.40 per 1M
+        "o1": {"input": 0.015, "output": 0.06},  # $15/$60 per 1M
 
-        # Qwen
-        "qwen-max": {"input": 0.0008, "output": 0.002},
-        "qwen-plus": {"input": 0.0004, "output": 0.001},
+        # ========== 阿里云通义千问 ==========
+        # 定价单位：人民币/千tokens，已按汇率 1 USD ≈ 7.2 CNY 转换
+        "qwen-max": {"input": 0.00056, "output": 0.00167},  # ¥0.04/¥0.12 per 1K → $0.0056/$0.017
+        "qwen-plus": {"input": 0.00028, "output": 0.00083},  # ¥0.02/¥0.06 per 1K
+        "qwen-turbo": {"input": 0.00014, "output": 0.00042},  # ¥0.01/¥0.03 per 1K
+
+        # ========== 智谱 AI GLM ==========
+        # 用于 Claude Code 会话或直接调用
+        # 定价：人民币/千tokens，汇率 1 USD ≈ 7.2 CNY
+        "glm-4": {"input": 0.0139, "output": 0.0139},  # ¥0.1/千tokens → $0.0139/1K
+        "glm-4-flash": {"input": 0.00014, "output": 0.00014},  # ¥0.001/千tokens → 免费/极低价
+        "glm-4-plus": {"input": 0.00694, "output": 0.00694},  # ¥0.05/千tokens
+        "glm-4-air": {"input": 0.00097, "output": 0.00097},  # ¥0.007/千tokens
+
+        # ========== DeepSeek ==========
+        # 国产模型，性价比极高
+        "deepseek-chat": {"input": 0.00014, "output": 0.00028},  # ¥1/¥2 per 1M tokens
+        "deepseek-reasoner": {"input": 0.00056, "output": 0.00222},  # ¥4/¥16 per 1M tokens
     }
 
     def __init__(self, data_dir: str = None):

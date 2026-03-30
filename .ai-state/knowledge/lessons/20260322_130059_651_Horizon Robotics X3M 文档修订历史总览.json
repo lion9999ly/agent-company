@@ -1,15 +1,17 @@
 {
   "title": "Horizon Robotics X3M 文档修订历史总览（2019-12-10 至 2021-07-14）",
   "domain": "lessons",
-  "content": "X3M Datasheet 修订历史从 0.1（2019-12-10，Initial draft）持续到至少 1.3（2021-07-14），当前文档封面版本为 Rev.1.6（March 2022）。修订内容覆盖引脚定义、MIPI、IPU、PYM、DDR、热参数、电气规格、功耗域、时序、封装、订货信息等多个模块，说明 X3M 在量产前后经历了较密集的规格收敛与文档完善过程。对研发团队而言，版本差异可能直接影响硬件设计、BSP 适配和量产一致性验证。",
+  "content": "Horizon Robotics X3M 文档修订历史总览（2019-12-10 至 2021-07-14）：现有可核实信息显示，**X3M Datasheet** 的修订历史至少覆盖 **Rev.0.1（2019-12-10，Initial draft）至 Rev.1.3（2021-07-14）**，且文档封面版本已到 **Rev.1.6（March 2022）**。从原始修订项描述看，变更涉及 **Pin Definition、MIPI、IPU、PYM、DDR、Thermal Parameter、Electrical Specification、Power Domain、Timing、Package、Ordering Information** 等模块，说明该器件在 2019 年底到 2021 年中经历了较连续的规格收敛和文档完善。对硬件研发、BSP 适配和量产验证而言，不同版本 datasheet 可能直接影响原理图、时序约束、散热设计和物料选型。\n\n需要说明的是，基于当前搜索结果，**“X3M”并不是地平线机器人（Horizon Robotics）公开市场中常见的对外芯片商品名**；搜索结果明确提示，它**更可能是内部项目代号、特定模组名，或与“征程 3”相关的文档命名**。因此，在“具体公司/品牌名”层面，目前能够明确补充的是：**公司/品牌为地平线机器人（Horizon Robotics）**；在公开产品体系中，与该时间段最接近、最相关的对外系列是 **征程（Journey）系列**，其中搜索结果重点指向 **征程 3（Journey 3 / J3）**。\n\n但对于用户要求补充的更细项数据，当前搜索结果**没有给出可直接核验的具体数值**，因此不能编造。例如：  \n- **具体型号**：搜索结果未出现 **IMX678、BES2800、QCC5181** 这类可对应到 X3M 文档的外围器件或配套芯片型号；仅能谨慎写为 **Journey 3 / J3（相关公开系列）**。  \n- **具体参数**：搜索结果未提供类似 **42dB、1.65kg、3000nits** 这类可归属于 X3M datasheet 的明确参数值。  \n- **具体价格**：搜索结果未提供任何 **$15–25/颗** 或其他单价、批量价格信息。  \n- **具体品牌/公司名**：可确认的只有 **地平线机器人（Horizon Robotics）**。\n\n因此，基于现有搜索结果，最稳妥的修订表述应为：**X3M 文档在 2019-12-10 至 2021-07-14 期间至少从 Rev.0.1 演进到 Rev.1.3，2022 年 3 月封面版本为 Rev.1.6；修订范围覆盖接口、电气、热、封装、订货等关键章节，反映出地平线机器人相关芯片/模组在量产前后的持续规格收敛",
   "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "Revision history",
-    "0.1",
-    "1.3",
     "Documentation evolution",
-    "Change tracking"
+    "Change tracking",
+    "1.3",
+    "internal",
+    "0.1",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

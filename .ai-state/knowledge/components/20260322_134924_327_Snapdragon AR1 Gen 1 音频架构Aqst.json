@@ -1,14 +1,17 @@
 {
   "title": "Snapdragon AR1 Gen 1 音频架构：Aqstic Speaker Max 与立体声输出",
   "domain": "components",
-  "content": "音频部分集成 Qualcomm Aqstic Speaker Max for stereo speakers，支持扬声器处理与扬声器保护。平台支持立体声扬声器、Always-on audio，以及低功耗蓝牙音频能力，适合智能眼镜开放式音频播放、提示音与通话场景。",
+  "content": "音频部分公开信息主要来自 Qualcomm 对 **Snapdragon AR1 Gen 1** 的平台级描述：其 SoC 集成 **Qualcomm Aqstic Speaker Max**，面向**双扬声器立体声输出**，并提供**speaker processing（扬声器处理）**与**speaker protection（扬声器保护）**能力，适合智能眼镜镜腿内的微型开放式扬声器。公开资料还确认平台支持 **Always-on audio** 与 **Bluetooth LE Audio**，蓝牙版本为 **Bluetooth 5.3**；无线侧同时支持 **Wi‑Fi 7**。这些能力使 AR1 Gen 1 可覆盖提示音、语音助手唤醒、开放式音乐播放和通话等典型场景。\n\n从产品定位看，AR1 Gen 1 是 Qualcomm 在 **2023 年发布**、专为轻量化智能眼镜设计的平台。Aqstic Speaker Max 的价值不在“更大功率”这一单一指标，而在于对小尺寸扬声器进行实时补偿：在有限腔体和振膜位移下，通过算法控制失真、温升和过冲，尽量提升可听响度与清晰度，同时降低扬声器损坏风险。这对开放式音频尤其关键，因为眼镜扬声器通常离耳道较远，若没有保护与补偿，音量一旦拉高就容易出现破音、漏音增加或单元寿命下降。\n\n需要说明的是，公开搜索结果**没有给出** AR1 Gen 1 音频部分更细的硬件数据，例如：Aqstic Speaker Max 的具体放大器型号、输出功率（W）、支持采样率/位深、THD+N、信噪比、延迟毫秒数，也**没有公开**该模块的单独采购价格、参考 BOM 成本或可直接下单的供应商报价。因此这些参数不能编造。就供应链关系而言，已知平台/技术供应商为 **Qualcomm（高通）**；终端厂商会基于该平台再搭配各自的扬声器、麦克风和声学结构件方案。\n\n综合来看，Snapdragon AR1 Gen 1 的音频架构重点不是传统手机那种大功率外放，而是围绕 **立体声、低功耗、常开语音、LE Audio** 和 **微型扬声器保护** 做系统级优化，比较适合智能眼镜“轻提示、轻媒体、轻通话”的使用模型。若后续需要补充更具体的型号、参数和价格，只能等待 Qualcomm 官方 datasheet、OEM 设计指南或终端厂商拆机资料公开。",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Aqstic Speaker Max",
+    "speaker protection",
     "stereo speakers",
+    "Aqstic Speaker Max",
     "audio",
-    "speaker protection"
+    "internal",
+    "overhaul_deepened",
+    "night_deepened"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

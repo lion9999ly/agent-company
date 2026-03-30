@@ -9,7 +9,12 @@
     "耳机",
     "音频",
     "AI",
-    "可穿戴"
+    "可穿戴",
+    "night_deepened",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high",
+  "_usage_count": 26,
+  "_last_used": "2026-03-30T00:46:36.135758",
+  "_first_used": "2026-03-28T13:31:36.326194"
 }

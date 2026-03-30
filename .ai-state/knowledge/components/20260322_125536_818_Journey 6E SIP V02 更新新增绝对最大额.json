@@ -1,16 +1,18 @@
 {
   "title": "Journey 6E SIP V0.2 更新：新增绝对最大额定值、工作条件与 DC 特性",
   "domain": "components",
-  "content": "V0.2（2024-03-26）更新内容包括：Section 4.3 引脚图更新；Section 4.4.1 描述更新并增加注释；Section 5.1 新增 absolute maximum ratings；Section 5.2 更新 operating conditions；Section 5.3 新增 DC characteristics。该版本首次补齐关键电气边界条件，表明模块从概念定义向可评估硬件接口阶段推进。",
+  "content": "根据公开搜索结果，**“Journey 6E SIP V0.2”未检索到可对应的公开标准产品型号、厂商名称、数据手册或销售页面**，因此**无法补充具体型号、具体参数、具体价格及具体公司/品牌名**。现阶段能确认的信息仅限于版本更新记录本身：**V0.2 于 2024-03-26 更新**，内容包括 **Section 4.3 引脚图更新、Section 4.4.1 描述更新并增加注释、Section 5.1 新增 Absolute Maximum Ratings、Section 5.2 更新 Operating Conditions、Section 5.3 新增 DC Characteristics**。\n\n基于这些已知信息，可以较为稳妥地判断：该版本的重点不在功能扩展，而在于**补齐硬件接口定义所必需的基础电气规范**。其中，**Absolute Maximum Ratings（绝对最大额定值）**通常用于界定器件不可逾越的电压、电流、温度等极限边界；**Operating Conditions（工作条件）**用于说明器件在何种供电、温度及环境范围内可保证正常运行；**DC Characteristics（直流特性）**则进一步给出输入输出逻辑门限、漏电、电源电流等静态电气指标。对于任何芯片、模组或 SiP 文档而言，这三部分都是从“概念说明”走向“可做原理图、可做接口评估、可做板级联调”的关键步骤。\n\n不过，需要特别说明的是：**搜索结果没有给出该产品的任何可核实数值**，例如**供电电压范围、最大耐压、工作温度、输入高低电平门限、静态电流、封装尺寸、目标品牌、供应商名称或单价区间**等，因此不能像公开器件那样补入诸如 **IMX678、BES2800、QCC5181、3000nits、42dB、1.65kg、$15–25/颗** 这类具体数据。若强行补充，将构成无依据推断。\n\n因此，补充后的准确表述应为：**Journey 6E SIP V0.2（2024-03-26）首次新增绝对最大额定值、更新工作条件并加入 DC 特性章节，说明文档开始覆盖关键电气边界与静态接口指标；但截至当前公开搜索结果，尚无可核实的具体型号、参数数值、价格信息及厂商/品牌名称披露。** 这表明该项目更像是**内部开发版本、定制 SiP，或尚未公开发布的早期硬件文档**，其成熟度已从概念定义推进到接口评估阶段，但仍不足以支持完整的公开规格归档。",
   "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "V0.2",
-    "2024-03-26",
-    "Absolute Maximum Ratings",
     "Operating Conditions",
+    "2024-03-26",
+    "overhaul_enriched",
+    "V0.2",
+    "internal",
     "DC Characteristics",
-    "Pin Map"
+    "Pin Map",
+    "Absolute Maximum Ratings"
   ],
   "confidence": "high"
 }

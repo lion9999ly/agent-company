@@ -10,7 +10,8 @@
     "Power-up sequence",
     "Power-down sequence",
     "Sleep mode",
-    "Power tree"
+    "Power tree",
+    "internal"
   ],
   "confidence": "high"
 }

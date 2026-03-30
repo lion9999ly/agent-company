@@ -15,7 +15,8 @@
     "FDW",
     "LDW",
     "AFL",
-    "ADB"
+    "ADB",
+    "internal"
   ],
   "confidence": "high"
 }

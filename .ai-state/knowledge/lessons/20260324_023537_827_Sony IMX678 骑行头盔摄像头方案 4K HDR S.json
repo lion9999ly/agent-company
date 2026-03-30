@@ -1,0 +1,16 @@
+{
+  "title": "Sony IMX678 骑行头盔摄像头方案 4K HDR Starvis 2 EIS 低照度 ISP",
+  "domain": "lessons",
+  "content": "**方案/器件**\n- **Sony IMX678（IMX678-AAMY）**：1/1.8\"、**2.0μm**、约**8.42MP**，支持**4K UHD 3840×2160 / 60fps**，**Starvis 2**低照度、**DOL-HDR**，MIPI CSI-2。\n- **Ambarella CV22**：集成**ISP + H.264/H.265 4K60 编码 + 硬件EIS + CVflow AI引擎**，适合头盔摄像、AI预警、低功耗边缘视觉。\n- 文中**未给出价格**。\n\n**对智能骑行头盔研发的直接价值**\n- **芯片选型**：IMX678 + CV22适合做**高端智能骑行头盔摄像模组**，核心卖点是**夜骑低照度、逆光HDR、4K防抖**。\n- **安全功能扩展**：CV22 的 **AI引擎**可扩展**碰撞预警、车道/目标检测**，适合与**GPS、IMU、蓝牙/Wi‑Fi**做传感器融合。\n- **通信模块**：方案默认可接入**Wi‑Fi/蓝牙模块**用于APP控制、视频回传、固件升级。\n- **运动场景适配**：硬件**EIS**适合头盔震动场景，但会带来**视场裁切**，镜头FOV需预留。\n\n**关键参数/功耗评估**\n- **IMX678功耗**：约**200–400mW**\n- **CV22功耗**（4K60、H.265、ISP、EIS）：约**1.5–3.5W**\n- **LPDDR4**：**100–300mW**\n- **Wi‑Fi/蓝牙**：活跃**100–300mW**，待机**10–50mW**\n- **GPS**：**30–100mW**\n- **PMIC损耗**：**50–150mW**\n- **MicroSD写入**：**50–150mW**\n- 结论：整机在**4K HDR + EIS**下大概率是*",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-24",
+  "tags": [
+    "摄像头",
+    "Sony IMX678",
+    "Starvis2",
+    "Ambarella",
+    "低照度",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

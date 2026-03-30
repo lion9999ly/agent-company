@@ -10,7 +10,8 @@
     "MC_TX",
     "MC_RX",
     "MC_RST",
-    "READY_KEY_IN"
+    "READY_KEY_IN",
+    "internal"
   ],
   "confidence": "high"
 }

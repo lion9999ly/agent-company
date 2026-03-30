@@ -1,16 +1,19 @@
 {
   "title": "RISC-V架构AI创新：开放可定制与ONNX Runtime集成",
   "domain": "components",
-  "content": "白皮书将RISC-V定义为开放可定制、灵活创新的AI架构。核心创新包括自定义指令扩展、矢量/张量处理单元，以及可定制NPU。软件生态依赖专用工具链和ONNX Runtime集成，硬件指令集可快速响应生态需求。其优势是能效比高、模块化设计、低成本，适合IoT、边缘AI、定制化AI芯片和新兴市场。生态策略以开源开放、社区驱动为主，并探索硬件指令集兼容性。",
+  "content": "RISC-V 在 AI 方向的价值，关键不只是“开放”，而是能把开放直接转化为可落地的芯片定制能力。现有资料中可确认的基础配置包括通用推理常见的 **RV64GC** 指令集，以及面向高吞吐计算的 **RISC-V Vector Extension（RVV）**。白皮书提到的创新路径主要有三类：一是通过 **Custom Instruction Extensions** 为矩阵乘、卷积、激活等算子增加专用指令；二是在 SoC 中集成矢量/张量处理单元；三是外挂或片上集成可定制 **NPU/DSA**，把 AI 负载从通用 CPU 中剥离。与封闭 ISA 相比，RISC-V 由 **RISC-V International** 维护开放标准，授权模式为免版税，这一点直接降低了 AI 芯片设计门槛。\n\n软件侧，资料明确提到生态依赖 **GCC、LLVM、GDB** 等主流工具链，以及 **TVM、IREE** 这类面向 AI 编译优化的框架。部署层的关键是 **ONNX Runtime**：它可作为跨框架推理引擎，把来自 **PyTorch、TensorFlow、Keras** 的模型先转换为 ONNX，再在 RISC-V 平台执行。其实现方式包括两层：第一层是面向通用 RISC-V CPU 的 **CPU Execution Provider**，可直接运行在 RV64GC 上；第二层是芯片厂商自定义的 **Execution Provider（EP）**，把 **Conv、MatMul、ReLU、Pooling** 等算子映射到自定义指令、RVV 单元或片上 NPU。若某些算子暂不支持，还可回退到 CPU 执行，形成混合推理路径。\n\n供应商层面，搜索结果中明确出现的 RISC-V 相关厂商包括 **SiFive、Andes、Alibaba T-Head、Esperanto**，但未给出具体芯片型号、频率、TOPS、功耗或单价，因此不能补充编造。可以确认的是，这些厂商代表了当前 RISC-V AI 生态的主要供给方向：CPU IP、AI 加速器 IP、SoC 集成与工具链适配。总体看，RISC-V 的现实优势仍集中在 **IoT、边缘 AI、工业控制、智能终端** 等对成本、功耗和定制化敏感的场景；其竞争力来自模块化设计、较高能效比和开放社区驱动，而 ONNX Runtime 则提供了模型部署标准化接口，使硬件创新不必从软件生态重建开始。至于具体价格、量产型号和供应商报价，当前搜索结果未提供，原文不宜扩展。",
   "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
   "created_at": "2026-03-22",
   "tags": [
+    "ONNX Runtime",
     "RISC-V",
     "自定义指令",
     "张量处理单元",
-    "ONNX Runtime",
     "开源生态",
-    "边缘AI"
+    "边缘AI",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened"
   ],
   "confidence": "high"
 }

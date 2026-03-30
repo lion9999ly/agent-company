@@ -1,7 +1,7 @@
 {
   "title": "0323_2025“Unit 1 AURA”相关器件选型与矛盾辨析：Auracast SoC、天线与MEMS麦克风",
   "domain": "components",
-  "content": "基于3个来源，需先澄清：搜索词中的“Unit 1 AURA chip model”并无明确公开数据手册，来源3实际指向的是Unit1 Aura智能头盔，而非名为“AURA”的芯片；来源2中的“Aurawave AW100 Series - Auracast™ Platform”是Ezurio的无线平台名称，也不是Unit1自研SoC。因此，“AURA芯片型号”存在来源语义冲突。若按2025年可落地方案推断，Auracast/LE Audio主控更可能采用Nordic或同类蓝牙音频SoC/模组，而不是独立“AURA-X1”这类未证实名号。来源1（Nordic 2025 Issue 2）给出的关键标准依据是：LE Audio依赖Bluetooth Core 5.2引入的Isochronous Channels，Auracast广播则依赖BIS（Broadcast Isochronous Streams），这意味着SoC至少要支持Bluetooth 5.2及以上。来源2可见Ezurio在售BL5340系列、BL5340PA长距离模组及Aurawave AW100平台，说明2025年市场上成熟供应商已提供现成Auracast硬件路径。BL5340系列公开定位为Bluetooth 5.2 + 802.15.4 + NFC多核模组，适合头盔/HUD类低功耗音频控制节点；若强调覆盖距离，可优先BL5340PA。价格方面，来源未给出官方单价，按工业模组常见采购方式通常需“Request a Quote”，因此无法从本次来源中确认精确美元价格，这一点应明确标注。天线设计上，头盔/HUD产品受人体遮挡和曲面塑料外壳影响，优先选2.4GHz PCB倒F天线或认证模组自带天线版本，天线净空建议至少5-10 mm，并避开电池、LED灯板和金属支架；若采用Ezurio预认证模组，可显著降低射频调试风险",
+  "content": "【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n基于3个来源，需先澄清：搜索词中的“Unit 1 AURA chip model”并无明确公开数据手册，来源3实际指向的是Unit1 Aura智能头盔，而非名为“AURA”的芯片；来源2中的“Aurawave AW100 Series - Auracast™ Platform”是Ezurio的无线平台名称，也不是Unit1自研SoC。因此，“AURA芯片型号”存在来源语义冲突。若按2025年可落地方案推断，Auracast/LE Audio主控更可能采用Nordic或同类蓝牙音频SoC/模组，而不是独立“AURA-X1”这类未证实名号。来源1（Nordic 2025 Issue 2）给出的关键标准依据是：LE Audio依赖Bluetooth Core 5.2引入的Isochronous Channels，Auracast广播则依赖BIS（Broadcast Isochronous Streams），这意味着SoC至少要支持Bluetooth 5.2及以上。来源2可见Ezurio在售BL5340系列、BL5340PA长距离模组及Aurawave AW100平台，说明2025年市场上成熟供应商已提供现成Auracast硬件路径。BL5340系列公开定位为Bluetooth 5.2 + 802.15.4 + NFC多核模组，适合头盔/HUD类低功耗音频控制节点；若强调覆盖距离，可优先BL5340PA。价格方面，来源未给出官方单价，按工业模组常见采购方式通常需“Request a Quote”，因此无法从本次来源中确认精确美元价格，这一点应明确标注。天线设计上，头盔/HUD产品受人体遮挡和曲面塑料外壳影响，优先选2.4GHz PCB倒F天线或认证模组自带天线版本，天线净空建议至少5-10 mm，并避开电池、LED灯板和金属支架；若采用Ezurio预认证模组，可显著降低射频调试风险",
   "source": "daily_deep",
   "created_at": "2026-03-23",
   "tags": [
@@ -17,7 +17,8 @@
     "antenna design",
     "HUD audio",
     "smart helmet",
-    "dynamic"
+    "dynamic",
+    "speculative"
   ],
-  "confidence": "high"
+  "confidence": "low"
 }

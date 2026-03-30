@@ -1,13 +1,19 @@
 {
   "title": "Shoei GT3 SMART视频信息不足",
   "domain": "competitors",
-  "content": "当前仅提供文件名“Shoei GT3 SMART.mp4”，未提供可解析的视频画面、字幕、音频转写或文字说明；且系统提示视频文件过大（451MB，超过20MB上限），因此无法从内容中提取关于智能骑行头盔产品研发的具体信息。基于文件名可初步判断可能与Shoei品牌、GT3 SMART相关产品或宣传材料有关，但无法确认其是否涉及智能功能、通信模组、HUD、降噪、传感器、安全认证、续航、交互设计、结构方案或竞品参数。建议补充视频转写、关键截图、字幕文本或产品说明后再做研发情报提取。",
+  "content": "当前仅有文件名“Shoei GT3 SMART.mp4”，且原视频文件过大（451MB，超过20MB上限），无法直接解析画面、字幕或音频；但结合现有搜索结果可补充：所谓“Shoei GT3 SMART”并非Shoei官方公开型号，更可能是对 **Shoei GT-Air III** 与 **SENA SRL3 Mesh** 集成方案的误称。可作为研发情报参考的具体产品组合为：**Shoei GT-Air III 全盔 + SENA SRL3 Mesh 通讯系统**。\n\n其中，头盔具体品牌/公司为 **Shoei（日本）**，通讯系统品牌/公司为 **Sena**。**Shoei GT-Air III** 属于运动旅行型全盔，搜索结果显示其安全认证包括 **ECE 22.06**，并提到还覆盖 **DOT、JIS** 等地区标准；外壳材料为 **AIM+（Advanced Integrated Matrix Plus Multi-Fiber）**；镜片系统包括 **CNS-1C** 主镜片、兼容 **Pinlock EVO** 防雾片，以及 **QSV-2** 内置遮阳镜。头盔尺码覆盖 **XS、S、M、L、XL、XXL**，重量约 **1550g–1700g（±50g，视尺寸和地区版本而异）**，采用 **微调棘轮扣（Micro Ratchet Buckle）**。价格方面，搜索结果给出的区间为：纯色款约 **600–700美元 / 600–700欧元 / 4500–5500元人民币**，花色款约 **700–800美元 / 700–800欧元 / 5500–6500元人民币**。\n\n“SMART”部分主要对应 **SENA SRL3 Mesh**。该系统为面向 **Shoei GT-Air III、Neotec 3、J-Cruise II** 等头盔的隐藏式集成通讯模组，支持 **Bluetooth 5.0** 与 **Mesh Intercom**。具体参数包括：**Open Mesh** 模式下单段通信距离约 **1.6公里（1英里）**，在开放地形且至少 **6名骑手** 条件下可扩展至 **8公里（5英里）**；**Group Mesh** 最多支持 **24名用户**；蓝牙对讲最多 **4人**，距离约 **1.2公里（0.75英里）**。续航方面，蓝牙对讲约 **11小时**，Mesh 对讲约 **8小时**，充电时间约 **2.5小时**，接口为 **USB-C**。音频部分提到配备 **HD 扬声器与麦克风**，支持 **SBC 编解码器**、**48kHz 采样率**，并带有 **Advanced Noise Control** 降噪。价格区间约为 **320–380美元 / 320–380欧元 / 2500–3000元人民币**。\n\n因",
   "source": "doc_import:Shoei GT3 SMART.mp4",
   "created_at": "2026-03-21",
   "tags": [
-    "Shoei",
+    "信息缺失",
+    "internal",
     "GT3 SMART",
-    "信息缺失"
+    "night_deepened",
+    "Shoei",
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high",
+  "_usage_count": 296,
+  "_last_used": "2026-03-30T00:49:58.250306",
+  "_first_used": "2026-03-28T13:28:04.173041"
 }

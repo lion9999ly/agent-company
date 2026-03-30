@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-@description: Codex 交叉评审脚本 - 使用 OpenAI API 进行代码/文档评审
-@dependencies: openai, pathlib, json
+@description: Codex 交叉评审脚本 - 支持 OpenAI、Azure OpenAI 和 Google Gemini API
+@dependencies: openai, google-generativeai, pathlib, json
 @last_modified: 2026-03-16
 """
 
@@ -14,18 +14,26 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict
 
-# 尝试导入 openai，如果失败则提供友好提示
+# 尝试导入 API 客户端
 try:
-    from openai import OpenAI
+    from openai import OpenAI, AzureOpenAI
+    HAS_OPENAI = True
 except ImportError:
-    print("ERROR: openai package not installed. Run: pip install openai")
-    sys.exit(1)
+    HAS_OPENAI = False
+    print("WARNING: openai package not installed. Run: pip install openai")
+
+try:
+    import google.generativeai as genai
+    HAS_GEMINI = True
+except ImportError:
+    HAS_GEMINI = False
+    print("WARNING: google-generativeai package not installed. Run: pip install google-generativeai")
 
 
 # ==========================================
 # 配置与常量
 # ==========================================
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent  # scripts -> pythonProject1
 AI_STATE_DIR = PROJECT_ROOT / ".ai-state"
 REVIEW_LOGS_FILE = AI_STATE_DIR / "review_logs.jsonl"
 REVIEW_REQUEST_FILE = AI_STATE_DIR / "review_request.json"
@@ -80,16 +88,120 @@ class ReviewResult:
 # 评审核心逻辑
 # ==========================================
 class CodexReviewer:
-    """Codex 交叉评审器"""
+    """Codex 交叉评审器 - 支持 OpenAI、Azure OpenAI 和 Google Gemini"""
 
-    def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        if not self.api_key:
-            print("WARNING: OPENAI_API_KEY not set. Review will be skipped.")
-            self.client = None
+    def __init__(self, provider: str = "auto", api_key: Optional[str] = None):
+        """
+        初始化评审器
+
+        provider: "auto", "azure", "openai", "gemini"
+        - auto: 自动检测可用的 API（优先级: gemini > azure > openai）
+
+        环境变量:
+        - GOOGLE_API_KEY: Google Gemini API key
+        - AZURE_OPENAI_API_KEY + AZURE_OPENAI_ENDPOINT: Azure OpenAI
+        - OPENAI_API_KEY: 标准 OpenAI
+        """
+        self.provider = provider
+        self.client = None
+        self.gemini_model = None
+        self.model = "unknown"
+
+        # 自动选择或使用指定 provider
+        if provider == "auto":
+            self._init_auto()
+        elif provider == "gemini":
+            self._init_gemini(api_key)
+        elif provider == "azure":
+            self._init_azure()
+        elif provider == "openai":
+            self._init_openai(api_key)
         else:
-            self.client = OpenAI(api_key=self.api_key)
-        self.model = "gpt-4o"  # 使用 GPT-4o 作为评审模型
+            print(f"[WARNING] Unknown provider: {provider}")
+
+    def _init_auto(self):
+        """自动检测可用的 API"""
+        # 优先级 1: Gemini (通常最稳定)
+        gemini_key = os.getenv("GOOGLE_API_KEY")
+        if gemini_key and HAS_GEMINI:
+            self._init_gemini(gemini_key)
+            if self.gemini_model:
+                return
+
+        # 优先级 2: Azure OpenAI
+        azure_key = os.getenv("AZURE_OPENAI_API_KEY")
+        azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+        if azure_key and azure_endpoint and HAS_OPENAI:
+            self._init_azure()
+            if self.client:
+                return
+
+        # 优先级 3: 标准 OpenAI
+        openai_key = os.getenv("OPENAI_API_KEY")
+        if openai_key and HAS_OPENAI:
+            self._init_openai(openai_key)
+            if self.client:
+                return
+
+        print("[WARNING] 未找到可用的 API，评审将被跳过")
+
+    def _init_gemini(self, api_key: Optional[str] = None):
+        """初始化 Google Gemini"""
+        key = api_key or os.getenv("GOOGLE_API_KEY")
+        if not key:
+            print("[WARNING] GOOGLE_API_KEY not set")
+            return
+
+        if not HAS_GEMINI:
+            print("[WARNING] google-generativeai not installed. Run: pip install google-generativeai")
+            return
+
+        try:
+            genai.configure(api_key=key)
+            self.gemini_model = genai.GenerativeModel('gemini-2.5-flash')
+            self.model = "gemini-2.5-flash"
+            print(f"[INFO] 已连接 Google Gemini: {self.model}")
+        except Exception as e:
+            print(f"[WARNING] Gemini 初始化失败: {e}")
+
+    def _init_azure(self):
+        """初始化 Azure OpenAI"""
+        if not HAS_OPENAI:
+            return
+
+        azure_key = os.getenv("AZURE_OPENAI_API_KEY")
+        azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+        api_version = os.getenv("OPENAI_API_VERSION", "2024-02-15-preview")
+
+        if not (azure_key and azure_endpoint):
+            return
+
+        try:
+            self.client = AzureOpenAI(
+                api_key=azure_key,
+                api_version=api_version,
+                azure_endpoint=azure_endpoint
+            )
+            self.model = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "gpt-4o")
+            print(f"[INFO] 已连接 Azure OpenAI: {azure_endpoint}")
+        except Exception as e:
+            print(f"[WARNING] Azure OpenAI 初始化失败: {e}")
+
+    def _init_openai(self, api_key: Optional[str] = None):
+        """初始化标准 OpenAI"""
+        if not HAS_OPENAI:
+            return
+
+        key = api_key or os.getenv("OPENAI_API_KEY")
+        if not key:
+            return
+
+        try:
+            self.client = OpenAI(api_key=key)
+            self.model = "gpt-4o"
+            print(f"[INFO] 已连接 OpenAI API")
+        except Exception as e:
+            print(f"[WARNING] OpenAI 初始化失败: {e}")
 
     def generate_request_id(self, request: ReviewRequest) -> str:
         """生成请求唯一ID"""
@@ -121,44 +233,30 @@ class CodexReviewer:
     def build_review_prompt(self, request: ReviewRequest) -> str:
         """构建评审提示词"""
         target_contents = self.load_target_files(request.target_files)
-        context_contents = self.load_context_files(request.context)
 
-        dimension_descriptions = [REVIEW_DIMENSIONS.get(d, d) for d in request.review_dimensions]
+        # 直接发送完整内容，让模型自己分析
+        all_content = ""
+        for f, content in target_contents.items():
+            all_content += f"=== {f} ===\n{content}\n\n"
 
-        prompt = f"""你是一个严格的代码评审专家。请对以下内容进行交叉评审。
+        # 限制总长度
+        if len(all_content) > 3000:
+            all_content = all_content[:3000] + "\n...[truncated]"
 
-## 评审类型
-{request.review_type}
+        prompt = f"""Review this Chinese project documentation. Output ONLY valid JSON.
 
-## 评审维度 (每项 0-10 分)
-{chr(10).join(f'- {d}' for d in dimension_descriptions)}
+Dimensions: {', '.join(request.review_dimensions)}
 
-## 上下文参考
-```
-{json.dumps(context_contents, ensure_ascii=False, indent=2)[:3000]}
-```
+Check:
+1. Security blacklist (安全黑名单) - must list forbidden functions like eval(), exec(), os.system()
+2. Quality thresholds (质量硬阈值) - must have clear limits
+3. Documentation rules (文档同构规则) - must be complete
 
-## 待评审内容
-```
-{json.dumps(target_contents, ensure_ascii=False, indent=2)[:8000]}
-```
+Content:
+{all_content}
 
-## 输出格式 (严格 JSON)
-请输出以下格式的 JSON：
-{{
-  "score": <总体评分 0-10>,
-  "dimensions": {{
-    "<维度名>": {{
-      "score": <该维度评分>,
-      "issues": ["问题1", "问题2"],
-      "suggestions": ["建议1", "建议2"]
-    }}
-  }},
-  "blockers": ["阻断性问题，必须修复"],
-  "warnings": ["警告性问题，建议修复"]
-}}
-
-请严格评审，不要放宽标准。"""
+JSON output (NO markdown):
+{{"score": <0-10>, "dimensions": {{"<dim>": {{"score": <0-10>, "issues": [], "suggestions": []}}}}, "blockers": [], "warnings": []}}"""
 
         return prompt
 
@@ -166,22 +264,132 @@ class CodexReviewer:
         """执行评审"""
         request_id = self.generate_request_id(request)
 
-        # 如果没有配置 API key，返回默认通过结果
-        if not self.client:
+        # 如果没有任何可用的 API
+        if not self.client and not self.gemini_model:
             return ReviewResult(
                 request_id=request_id,
                 score=10.0,
                 passed=True,
                 dimensions={d: {"score": 10, "issues": [], "suggestions": []} for d in request.review_dimensions},
-                blockers=["WARNING: OpenAI API key not configured, review skipped"],
+                blockers=["WARNING: No API configured, review skipped"],
                 warnings=[],
                 reviewer_model="none",
                 timestamp=datetime.now().isoformat(),
-                raw_response="Review skipped due to missing API key"
+                raw_response="Review skipped due to missing API configuration"
             )
 
         prompt = self.build_review_prompt(request)
 
+        # 使用 Gemini
+        if self.gemini_model:
+            return self._review_with_gemini(request_id, prompt, request.review_dimensions)
+
+        # 使用 OpenAI/Azure
+        return self._review_with_openai(request_id, prompt, request.review_dimensions)
+
+    def _try_complete_json(self, truncated_json: str) -> str:
+        """尝试补全被截断的 JSON"""
+        # 统计未闭合的括号
+        open_braces = truncated_json.count("{") - truncated_json.count("}")
+        open_brackets = truncated_json.count("[") - truncated_json.count("]")
+
+        # 补全缺失的闭合
+        completion = ""
+        if open_brackets > 0:
+            completion += "]" * open_brackets
+        if open_braces > 0:
+            completion += "}" * open_braces
+
+        return truncated_json + completion
+
+    def _review_with_gemini(self, request_id: str, prompt: str, dimensions: List[str]) -> ReviewResult:
+        """使用 Gemini 执行评审"""
+        try:
+            response = self.gemini_model.generate_content(
+                prompt,
+                generation_config={
+                    "temperature": 0.0,
+                    "max_output_tokens": 4000  # 增加输出限制
+                }
+            )
+
+            # 检查安全过滤
+            if hasattr(response, 'prompt_feedback') and response.prompt_feedback:
+                print(f"[DEBUG] Prompt feedback: {response.prompt_feedback}")
+
+            # 获取完整响应
+            raw_response = ""
+            finish_reason = None
+            if response.candidates:
+                candidate = response.candidates[0]
+                if hasattr(candidate, 'finish_reason'):
+                    finish_reason = candidate.finish_reason
+                    if finish_reason == 2:  # MAX_TOKENS
+                        print(f"[WARNING] Response truncated (MAX_TOKENS)")
+                if candidate.content and candidate.content.parts:
+                    raw_response = candidate.content.parts[0].text
+
+            if not raw_response:
+                print(f"[ERROR] Empty response. Candidates: {response.candidates}")
+                raise ValueError("Empty response from Gemini")
+
+            # 清理 markdown 代码块包装
+            if raw_response.startswith("```json"):
+                raw_response = raw_response[7:]  # 移除 ```json
+            if raw_response.startswith("```"):
+                raw_response = raw_response[3:]  # 移除 ```
+            if raw_response.endswith("```"):
+                raw_response = raw_response[:-3]  # 移除结尾的 ```
+            raw_response = raw_response.strip()
+
+            # 如果响应被截断，尝试补全 JSON
+            if finish_reason == 2 and not raw_response.rstrip().endswith("}"):
+                raw_response = self._try_complete_json(raw_response)
+
+            # 解析 JSON 响应
+            try:
+                result_data = json.loads(raw_response)
+            except json.JSONDecodeError:
+                json_start = raw_response.find("{")
+                json_end = raw_response.rfind("}") + 1
+                if json_start >= 0 and json_end > json_start:
+                    json_str = raw_response[json_start:json_end]
+                    result_data = json.loads(json_str)
+                else:
+                    print(f"[ERROR] Cannot parse response. Raw length: {len(raw_response)}")
+                    raise ValueError("No JSON found in response")
+
+            score = float(result_data.get("score", 0))
+            passed = score >= PASS_THRESHOLD and len(result_data.get("blockers", [])) == 0
+
+            return ReviewResult(
+                request_id=request_id,
+                score=score,
+                passed=passed,
+                dimensions=result_data.get("dimensions", {}),
+                blockers=result_data.get("blockers", []),
+                warnings=result_data.get("warnings", []),
+                reviewer_model=self.model,
+                timestamp=datetime.now().isoformat(),
+                raw_response=raw_response
+            )
+
+        except Exception as e:
+            print(f"ERROR during Gemini review: {e}")
+            return ReviewResult(
+                request_id=request_id,
+                score=0.0,
+                passed=False,
+                dimensions={},
+                blockers=[f"评审失败: {str(e)}"],
+                warnings=[],
+                reviewer_model=self.model,
+                timestamp=datetime.now().isoformat(),
+                raw_response=str(e)
+            )
+
+    def _review_with_openai(self, request_id: str, prompt: str, dimensions: List[str]) -> ReviewResult:
+        """使用 OpenAI/Azure 执行评审"""
         try:
             response = self.client.chat.completions.create(
                 model=self.model,

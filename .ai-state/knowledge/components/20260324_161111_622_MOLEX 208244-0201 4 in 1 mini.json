@@ -1,15 +1,16 @@
 {
   "title": "MOLEX 208244-0201 4 in 1 mini FAKRA code B连接器",
   "domain": "components",
-  "content": "4 in 1 mini FAKRA code B连接器供应商为MOLEX，零件号208244-0201，颜色White，数量1。接口描述为Mini FAKRA interface。该接口页面定义为“接鱼眼”，4个Pin均为GMSL链路，分别对应AVM-CAM-GMSL-C、AVM-CAM-GMSL-D、AVM-CAM-GMSL-A、AVM-CAM-GMSL-B，连接3M 360camera REAR、FRONT、LEFT、RIGHT。该接口专用于环视四路鱼眼摄像头接入。",
+  "content": "MOLEX **208244-0201** 是 **Molex（莫仕）** 的一款 **4 in 1 Mini-FAKRA II 连接器**，用于汽车高速视频/射频链路接入。该器件属于 **Mini-FAKRA II Connector System**，原厂料号明确为 **208244-0201**。从现有搜索结果可确认，其接口类型为 **Mini-FAKRA interface**，为 **4通道集成式 RF 连接器**，适合车载环视、ADAS、信息娱乐等多路高速信号场景。\n\n就已检索到的具体规格看，该连接器的**标称阻抗为 50Ω**，安装形式为**PCB直角安装（Right-Angle, PCB Mount）**，端接方式为**焊接（Solder）**，包装方式为**Tray**。环境参数方面，搜索结果给出了**工作温度范围 -40°C 至 +105°C**，并提到其符合**USCAR-17、ISO 20860-1、RoHS、ELV**等汽车连接器相关规范。材料方面，结果中列出主体和中心触点为**Brass（黄铜）**，绝缘体为**LCP**或同类高性能工程塑料，主体镀层为**Nickel（镍）**，中心触点镀层为**Gold（金）**。\n\n在电气与机械参数中，搜索结果明确给出的数据包括：**介电耐压 500V AC (RMS)**、**绝缘电阻 1000MΩ min.**、**插入力 30N max.**、**拔出力 5N min.**、**保持力 110N min.**。此外，结果还提到频率范围“通常支持高达 **6GHz** 或更高”、**VSWR < 1.5:1**、**插入损耗 < 0.5dB**、**插拔寿命 25次**，但这些表述同时注明“需查阅最新数据手册”或属于“典型值/通常值”，因此只能作为搜索结果中的参考描述，不能进一步扩展为确定官方参数。\n\n关于编码与颜色，原内容写明颜色为 **White**，并将其定义为“接鱼眼”的4路GMSL接口；但搜索结果中同时写到 **Code B 通常对应蓝色（Blue）**。由于两者存在冲突，因此目前可稳妥保留的信息是：该器件为 **Code B** 编码、型号为 **208244-0201**，实际颜色应以 Molex 原厂页面或图纸为准，不宜擅自统一为白色或蓝色。\n\n价格方面，本次搜索结果**未给出可核实的具体单价**，仅说明价格会受采购数量、分销商和交期影响，并提到可参考 **Digi-Key、Mouser、Arrow** 等国际分销渠道，但没有形成完整可引用的数字，因此**不能补充具体价格**。\n\n结合原接口定义，可整理为：**MOLEX 208244-0201** 用于**环视四路鱼眼摄像头接入**，4个Pin分别承载 **GMSL** 链路，对应 **AVM-CAM-GMSL-C、AV",
   "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
     "MOLEX",
-    "208244-0201",
     "mini FAKRA",
+    "AVM",
+    "208244-0201",
     "code B",
-    "AVM"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

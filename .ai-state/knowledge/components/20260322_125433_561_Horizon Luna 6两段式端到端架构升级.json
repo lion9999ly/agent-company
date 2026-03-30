@@ -10,7 +10,8 @@
     "E2E",
     "Perception",
     "Planner",
-    "架构"
+    "架构",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -58,33 +58,33 @@ class ContextInjector:
         context = self.inject_startup_context()
 
         lines = [
-            "# 🌱 会话上下文种子",
+            "# [Session Context Seed]",
             "",
-            f"> 自动注入时间: {context['injected_at']}",
+            f"> Auto-injected at: {context['injected_at']}",
             "",
             "---",
             "",
-            "## 📋 项目信息",
+            "## Project Info",
         ]
 
         project = context.get("project", {})
-        lines.append(f"- **项目名称**: {project.get('name', 'N/A')}")
-        lines.append(f"- **技术栈**: {', '.join(project.get('tech_stack', []))}")
-        lines.append(f"- **当前阶段**: {project.get('phase', 'N/A')}")
+        lines.append(f"- **Name**: {project.get('name', 'N/A')}")
+        lines.append(f"- **Tech Stack**: {', '.join(project.get('tech_stack', []))}")
+        lines.append(f"- **Phase**: {project.get('phase', 'N/A')}")
 
         lines.extend([
             "",
-            "## 🤖 模型状态",
+            "## Model Status",
         ])
 
         models = context.get("models", {})
         for model_name, status in models.items():
-            icon = "✅" if status.get("available") else "❌"
+            icon = "[OK]" if status.get("available") else "[X]"
             lines.append(f"- {icon} **{model_name}**: {status.get('purpose', 'N/A')}")
 
         lines.extend([
             "",
-            "## 📌 近期决策",
+            "## Recent Decisions",
         ])
 
         for decision in context.get("recent_decisions", [])[:5]:
@@ -92,7 +92,7 @@ class ContextInjector:
 
         lines.extend([
             "",
-            "## ⚠️ 活跃约束",
+            "## Active Constraints",
         ])
 
         for constraint in context.get("active_constraints", [])[:5]:
@@ -102,7 +102,7 @@ class ContextInjector:
         if pending:
             lines.extend([
                 "",
-                "## 📝 待办事项",
+                "## Pending Todos",
             ])
             for todo in pending[:5]:
                 lines.append(f"- [ ] {todo.get('content', 'N/A')}")
@@ -111,10 +111,10 @@ class ContextInjector:
         if checkpoint:
             lines.extend([
                 "",
-                "## 🔄 最近检查点",
+                "## Last Checkpoint",
                 f"- **ID**: {checkpoint.get('checkpoint_id', 'N/A')}",
-                f"- **时间**: {checkpoint.get('created_at', 'N/A')}",
-                f"- **摘要**: {checkpoint.get('summary', 'N/A')}",
+                f"- **Time**: {checkpoint.get('created_at', 'N/A')}",
+                f"- **Summary**: {checkpoint.get('summary', 'N/A')}",
             ])
 
         return "\n".join(lines)
@@ -279,6 +279,11 @@ if __name__ == "__main__":
     print(f"  Pending todos: {len(context['pending_todos'])}")
 
     print("\n[RESULT] Context seed (first 500 chars):")
-    print(injector.generate_context_seed()[:500])
+    seed = injector.generate_context_seed()
+    # Windows控制台编码处理
+    try:
+        print(seed[:500])
+    except UnicodeEncodeError:
+        print(seed[:500].encode('utf-8', errors='replace').decode('utf-8'))
 
     print("\n" + "=" * 60)

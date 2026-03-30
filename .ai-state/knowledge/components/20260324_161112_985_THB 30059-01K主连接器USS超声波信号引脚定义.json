@@ -1,15 +1,16 @@
 {
   "title": "THB 30059-01K主连接器USS超声波信号引脚定义",
   "domain": "components",
-  "content": "30059-01K主连接器中，USS相关信号集中在Pin21-38：Pin21 USS-SUP-CH0，Pin23 USS-SUP-CH1，Pin25 USS-SUP-CH2；Pin27 USS-RRM，Pin28 USS-RLM，Pin29 USS-RRS，Pin30 USS-RLS；Pin31 USS-FRS，Pin32 USS-FRM，Pin33 USS-FLM，Pin34 USS-FLS；Pin35 USS-RR，Pin36 USS-FR，Pin37 USS-RL，Pin38 USS-FL。结合命名可判断其覆盖前后左右多路超声波传感器/供电通道，面向泊车感知场景。",
+  "content": "THB 30059-01K主连接器中，USS相关信号集中在 **Pin21–38**：**Pin21 USS-SUP-CH0、Pin23 USS-SUP-CH1、Pin25 USS-SUP-CH2**；**Pin27 USS-RRM、Pin28 USS-RLM、Pin29 USS-RRS、Pin30 USS-RLS**；**Pin31 USS-FRS、Pin32 USS-FRM、Pin33 USS-FLM、Pin34 USS-FLS**；**Pin35 USS-RR、Pin36 USS-FR、Pin37 USS-RL、Pin38 USS-FL**。从命名看，这是一组面向整车泊车辅助/环绕感知的超声波传感器接口定义，其中 **SUP-CH0/1/2** 更像是超声波传感器供电或分组通道，**FR/FL/RR/RL** 及 **FRS/FRM/FLM/FLS、RRS/RRM/RLM/RLS** 则对应前后左右不同位置的传感器信号。\n\n基于现有搜索结果，**“THB 30059-01K”未能检索到可对应的公开标准连接器料号、官方datasheet、制造商名称或品牌归属**，也**无法确认其是否来自 TE Connectivity、Molex、Amphenol、Yazaki、Sumitomo、Bosch、Valeo、Hella、Continental 等公司**。因此，现阶段**不能补充具体公司/品牌名**，也**不能给出该连接器的官方尺寸、电流、电压、插拔寿命、单价等具体数据**。\n\n同样，搜索结果中**没有出现任何可核验的具体型号**，例如您举例的 **IMX678、BES2800、QCC5181** 这类芯片型号，均**与本条目无直接证据关联**，因此不能补入。对于**具体参数**，搜索结果仅给出汽车USS的一般性行业范围，而非 THB 30059-01K 的专属规格：常见汽车超声波传感器工作频率约 **40kHz、48kHz、58kHz 或 75kHz**，检测范围通常约 **0.15–0.3m** 最小距离、**1.5–2.5m** 最大距离，工作电压常见 **9–16V DC**，工作电流约 **20–50mA**，响应时间约 **50–150ms**，工作温度常见 **-40°C 至 +85°C**，防护等级常见 **IP67** 或 **IP6K9K**。但这些都只是**通用USS参数范围**，**不能视为 THB 30059-01K 的确定参数**。\n\n在**价格**方面，搜索结果**未提供 THB 30059-01K 或其对应连接器/传感器的公开报价**，因此也**不能补充类似“$15–25/颗”这样的具体价格**。综合来看，目前能够确认的只有 **Pin21–38 的USS引脚分配关系** 以及其**面向泊车感知场景**的用途判断；若需补充准确",
   "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "USS",
-    "超声波",
     "引脚定义",
     "泊车",
-    "主连接器"
+    "超声波",
+    "主连接器",
+    "USS",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

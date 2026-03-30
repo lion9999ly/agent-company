@@ -1,23 +1,24 @@
 {
   "title": "Lumus vs. DigiLens（AR HUD波导供应商选型，2026）",
   "domain": "components",
-  "content": "公司名称：Lumus、DigiLens。核心能力：Lumus成立于2000年，2018年被广达电脑（Quanta Computer）收购，主打反射式波导/LOE，优势是高亮度、高效率、大视场角、低失真、无衍射伪影，Maximus平台对角FoV超过50度；短板是厚度、重量及精密组装带来的较高制造成本。DigiLens成立于2003年，主打衍射式波导/VHG，采用IP授权模式，优势是毫米级超薄、轻量化、可集成挡风玻璃夹层，并具备“喷墨打印”式全息记录的大规模量产潜力；短板是亮度/效率偏低、彩虹效应与杂散光、眼盒较小及环境稳定性。代工/合作客户：Lumus背靠广达，具备制造与供应链支持；DigiLens合作方包括Continental、Panasonic、Mitsubishi Chemical、Samsung、Sony。报价水平：原文未给出具体价格。产能规模：未披露明确产能数字，但Lumus受益于广达量产能力，DigiLens强调低成本大规模制造潜力。技术参数：Lumus FoV>50度；DigiLens波导厚度为毫米级。",
+  "content": "标题：Lumus vs. DigiLens（AR HUD波导供应商选型，2026）\n\n公司名称：**Lumus Ltd.**、**DigiLens Inc.**\n\n核心能力：**Lumus**成立于**2000年**，**2018年被广达电脑（Quanta Computer）收购**。其核心技术为**反射式波导/LOE（Light-guide Optical Element）**。公开资料中，Lumus面向AR眼镜发布过**Maximus**平台，官方称其**对角视场角（Diagonal FoV）超过50°**；同时其Z-Lens系列曾披露**约7,000 nits/W**的亮度效率指标。该路线优势是**高亮度、高光效、较大FoV、低失真、无典型衍射彩虹伪影**，适合高环境光场景；短板是波导通常更厚、更重，且精密镀膜与装调带来较高制造成本。  \n**DigiLens**成立于**2003年**，核心技术为**衍射式波导/VHG（Volume Holographic Grating）**。其公开表述强调波导可做到**毫米级厚度**，并采用**Bayfol HX**等光聚合物材料路线，主打**超薄、轻量化、可贴合/集成到汽车挡风玻璃夹层**，并宣传基于**“打印式/复制式”全息制造**的规模化潜力。其短板主要是衍射路线常见的**亮度效率较低、杂散光、彩虹效应、眼盒受限及环境稳定性要求更高**。\n\n代工/合作客户：Lumus背靠**广达电脑**，具备消费电子级制造与供应链支持。DigiLens公开合作方包括**Continental（大陆集团）**、**Panasonic（松下）**、**Mitsubishi Chemical（三菱化学）**、**Samsung（三星）**、**Sony（索尼）**；其中三菱化学与其在材料/制造生态上关联较深。\n\n技术参数：目前可明确补充的公开数据中，Lumus **Maximus平台对角FoV >50°**；DigiLens公开描述其波导为**毫米级厚度**。原始搜索结果未提供可核实的**眼盒尺寸、透过率、具体HUD投影距离、车规温度范围、量产良率**等数字，因此不补充。  \n需要注意的是，Lumus公开高亮度指标多来自近眼显示场景，而非车载AR HUD整机参数；DigiLens公开“超薄”与“可夹层集成”也主要是技术路线能力描述，不等同于某一量产车型的最终规格。\n\n报价水平：本次搜索结果**未给出Lumus或DigiLens波导的具体单价、模组价格或授权费区间**，因此无法补充“$15–25/颗”这类数字。若用于2026年选型，通常需分别向**Lumus Ltd.**与**DigiLens Inc.**获取**NRE、样品费、量产阶梯报价、IP授权费**。\n\n产能规模：两家公司均**未披露明确年产能数字**。Lumus的量产能",
   "source": "jdm_learning",
   "created_at": "2026-03-22",
   "tags": [
-    "AR HUD",
     "Waveguide",
-    "Lumus",
-    "DigiLens",
-    "Reflective Waveguide",
     "Diffractive Waveguide",
-    "LOE",
-    "VHG",
+    "jdm_study",
     "Quanta",
     "Tier1合作",
+    "Reflective Waveguide",
+    "AR HUD",
+    "LOE",
     "大视场角",
     "毫米级超薄",
-    "jdm_study"
+    "Lumus",
+    "VHG",
+    "DigiLens",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

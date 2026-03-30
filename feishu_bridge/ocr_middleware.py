@@ -1,6 +1,6 @@
 """
-@description: OCR预处理中间件，基于PaddleOCR实现中英文混合识别
-@dependencies: paddleocr, PIL
+@description: OCR预处理中间件，基于RapidOCR实现中英文混合识别
+@dependencies: rapidocr_onnxruntime, PIL
 @last_modified: 2026-03-18
 """
 
@@ -22,7 +22,8 @@ class OCRMiddleware:
     """
     OCR预处理中间件
 
-    基于PaddleOCR实现中英文混合识别，提供标准化的输入输出接口。
+    基于RapidOCR实现中英文混合识别，提供标准化的输入输出接口。
+    RapidOCR是PaddleOCR的ONNX版本，无需PaddlePaddle框架，兼容性更好。
     """
 
     # 标准化提示文本
@@ -39,36 +40,27 @@ class OCRMiddleware:
         初始化OCR引擎
 
         Args:
-            use_gpu: 是否使用GPU加速，默认False
-            lang: 识别语言，'ch'表示中英文混合，'en'表示英文
+            use_gpu: 是否使用GPU加速（RapidOCR暂不支持，参数保留用于兼容）
+            lang: 识别语言，'ch'表示中英文混合
         """
         self._ocr = None
         self._use_gpu = use_gpu
         self._lang = lang
-        self._initialized = False
 
     def _init_ocr(self) -> bool:
         """延迟初始化OCR引擎"""
-        if self._initialized:
-            return self._ocr is not None
+        if self._ocr is not None:
+            return True
 
         try:
-            from paddleocr import PaddleOCR
-            self._ocr = PaddleOCR(
-                use_angle_cls=True,
-                lang=self._lang,
-                use_gpu=self._use_gpu,
-                show_log=False
-            )
-            self._initialized = True
+            from rapidocr_onnxruntime import RapidOCR
+            self._ocr = RapidOCR()
             return True
         except ImportError:
-            print("[OCR] PaddleOCR未安装，请执行: pip install paddleocr")
-            self._initialized = True
+            print("[OCR] RapidOCR未安装，请执行: pip install rapidocr_onnxruntime")
             return False
         except Exception as e:
             print(f"[OCR] 初始化失败: {e}")
-            self._initialized = True
             return False
 
     def _validate_input(self, image_path: str) -> tuple[bool, str]:
@@ -95,19 +87,19 @@ class OCRMiddleware:
         从OCR结果中提取并标准化文本
 
         Args:
-            ocr_result: PaddleOCR返回的原始结果
+            ocr_result: RapidOCR返回的结果列表
+            格式: [[box, text, confidence], ...] 或 None
 
         Returns:
             标准化后的文本（按行合并，去除首尾空白）
         """
-        if not ocr_result or not ocr_result[0]:
+        if not ocr_result:
             return ""
 
         lines = []
-        for line in ocr_result[0]:
-            if line and len(line) >= 2:
-                text = line[1][0] if isinstance(line[1], tuple) else str(line[1])
-                text = text.strip()
+        for item in ocr_result:
+            if item and len(item) >= 2:
+                text = str(item[1]).strip()
                 if text:
                     lines.append(text)
 
@@ -144,7 +136,7 @@ class OCRMiddleware:
 
         # 3. 执行识别
         try:
-            result = self._ocr.ocr(image_path, cls=True)
+            result, elapse = self._ocr(image_path)
 
             # 4. 提取文本
             text = self._extract_text(result)
@@ -197,7 +189,7 @@ def recognize_image(image_path: str, use_gpu: bool = False) -> str:
 
     Args:
         image_path: 本地图片的绝对路径
-        use_gpu: 是否使用GPU加速
+        use_gpu: 是否使用GPU加速（兼容参数）
 
     Returns:
         标准化的文本消息
@@ -206,17 +198,30 @@ def recognize_image(image_path: str, use_gpu: bool = False) -> str:
     return middleware.recognize_to_message(image_path)
 
 
+def process_image_to_text(image_path: str) -> str:
+    """
+    便捷函数：处理图片并返回文本（别名）
+
+    Args:
+        image_path: 本地图片的绝对路径
+
+    Returns:
+        标准化的文本消息
+    """
+    return recognize_image(image_path)
+
+
 # ============== 测试入口 ==============
 
 if __name__ == "__main__":
     import sys
 
     print("=" * 50)
-    print("OCR Middleware 测试")
+    print("OCR Middleware 测试 (RapidOCR)")
     print("=" * 50)
 
     # 创建测试实例
-    ocr = OCRMiddleware(use_gpu=False, lang='ch')
+    ocr = OCRMiddleware()
 
     # 测试用例
     test_cases = [
@@ -238,7 +243,9 @@ if __name__ == "__main__":
 
         result = ocr.recognize(path)
         print(f"成功: {result.success}")
-        print(f"文本: {result.text[:100]}..." if len(result.text) > 100 else f"文本: {result.text}")
+        if result.text:
+            display_text = result.text[:100] + "..." if len(result.text) > 100 else result.text
+            print(f"文本: {display_text}")
         if result.error_message:
             print(f"错误: {result.error_message}")
 
@@ -248,3 +255,6 @@ if __name__ == "__main__":
     print("\n使用方法:")
     print("  python ocr_middleware.py <图片路径>")
     print("  python ocr_middleware.py  # 仅运行内置测试用例")
+    print("\n便捷函数:")
+    print("  from feishu_bridge.ocr_middleware import process_image_to_text")
+    print("  text = process_image_to_text(r'D:\\path\\to\\image.jpg')")

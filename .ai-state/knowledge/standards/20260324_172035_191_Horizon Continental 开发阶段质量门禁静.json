@@ -1,15 +1,17 @@
 {
   "title": "Horizon Continental 开发阶段质量门禁：静态扫描、MIL、SIL回归",
   "domain": "standards",
-  "content": "在需求分析、设计、开发阶段，测试流程要求执行代码静态扫描、单元测试、MIL评测、模块Benchmark和SIL回归测试，并辅以小样本量实车测试。该阶段重点在于尽早发现设计与实现问题，建立从模型到软件的前置质量门禁。",
+  "content": "在 Horizon Continental 的开发阶段，质量门禁通常前移到需求、模型和编码早期，核心包括静态扫描、MIL（Model-in-the-Loop）和 SIL（Software-in-the-Loop）回归，并与单元测试、模块 Benchmark、小样本实车验证联动。就搜索结果可确认的工具与供应商看，静态扫描常见方案包括 **SonarQube**、**MathWorks Polyspace Bug Finder / Code Prover**、**Synopsys Coverity**、**Perforce Klocwork / Helix QAC**、**Gimpel PC-lint Plus**；其中 **Polyspace** 供应商为 **MathWorks**，**Coverity** 供应商为 **Synopsys**，**Klocwork/Helix QAC** 供应商为 **Perforce**，**PC-lint Plus** 供应商为 **Gimpel Software**。搜索结果还明确提到该类门禁通常集成到 **CI/CD** 流程，在每次代码提交或合并请求时触发，以满足 **ISO 26262、ASPICE、ISO 21434** 等要求。\n\n从门禁目标看，静态扫描主要覆盖编码规范违规、潜在缺陷、安全漏洞和复杂度问题；MIL 主要验证模型级算法逻辑、功能行为与需求一致性；SIL 则验证生成代码或手写代码是否正确实现模型功能，并支撑软件单元与集成回归。搜索结果还给出了阶段划分：静态扫描位于编码早期，MIL 位于需求/架构/模型设计阶段，SIL 位于软件单元/集成阶段。这意味着 Horizon Continental 的“前置质量门禁”并非只看最终实车结果，而是要求从模型、代码到软件执行环境逐层收敛问题，减少缺陷后移带来的返工成本。\n\n需要说明的是，搜索结果虽然给出了**工具型号/产品名和供应商名**，但**没有提供可核实的具体参数数值、许可证价格、覆盖率阈值、误报率、执行时长、Benchmark 分数或实车样本量**。因此不能编造诸如“覆盖率 90%”“单套价格 xx 万元”“回归时长 xx 分钟”等数据。基于现有信息，能够确认的只有：该阶段要求执行代码静态扫描、单元测试、MIL 评测、模块 Benchmark 和 SIL 回归测试，并辅以小样本量实车测试；重点是在开发早期尽早发现设计与实现问题，建立从模型到软件的系统化质量门禁。",
   "source": "doc_import:测试能力与流程 20260130 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
     "代码静态扫描",
     "MIL评测",
+    "质量门禁",
     "SIL回归测试",
+    "overhaul_deepened",
     "模块Benchmark",
-    "质量门禁"
+    "night_deepened"
   ],
   "confidence": "high"
 }

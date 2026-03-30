@@ -1,10 +1,21 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(python:*)",
-      "Bash(curl -s \"https://generativelanguage.googleapis.com/v1beta/models?key=AIzaSyBtKSV3Op7bv2goSGA1IiOUlP-6CByN1eo\")",
-      "Bash(curl -s \"https://ai-share01ai443564620477.openai.azure.com/openai/deployments?api-version=2024-12-01-preview\" -H \"api-key: 4VUFOKsbvcaBC9JQl0KNPr4bSsQMNkkQAnuWN3pVCUk2CbgjhV1nJQQJ99CCACHYHv6XJ3w3AAAAACOGYOQ8\")",
-      "Bash(curl -s \"https://ai-share01ai443564620477.openai.azure.com/openai/models?api-version=2024-12-01-preview\" -H \"api-key: 4VUFOKsbvcaBC9JQl0KNPr4bSsQMNkkQAnuWN3pVCUk2CbgjhV1nJQQJ99CCACHYHv6XJ3w3AAAAACOGYOQ8\")"
-    ]
-  }
+    "env": {
+        "ANTHROPIC_API_KEY": "sk-b541f81971a949fdb0a089ab8415922a",
+        "ANTHROPIC_BASE_URL": "https://dashscope.aliyuncs.com/apps/anthropic",
+        "ANTHROPIC_MODEL": "glm-5"
+    },
+    "alwaysThinkingEnabled": true,
+    "permissions": {
+        "allow": ["*"]
+    },
+    "defaultMode": "bypassPermissions",
+    "skipDangerousModePermissionPrompt": true,
+    "hooks": {
+        "Stop": [
+            {
+                "type": "command",
+                "command": "cmd.exe /c D:\Users\uih00653\my_agent_company\pythonProject1\beep.bat"
+            }
+        ]
+    }
 }

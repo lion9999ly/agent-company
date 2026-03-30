@@ -9,7 +9,8 @@
     "Part Number",
     "CPU Frequency",
     "型号",
-    "修订"
+    "修订",
+    "internal"
   ],
   "confidence": "high"
 }

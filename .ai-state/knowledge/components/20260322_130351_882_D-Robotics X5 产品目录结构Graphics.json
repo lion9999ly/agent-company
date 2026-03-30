@@ -1,15 +1,17 @@
 {
   "title": "D-Robotics X5 产品目录结构：Graphics Engine 图形引擎",
   "domain": "components",
-  "content": "目录中 1.3.12 为 Graphics Engine。版本历史 0.86 提到“Fix a typo in the description of 2D engine performance”，说明图形引擎至少包含 2D 引擎且其性能描述曾被修正。当前截取内容未给出 GPU/2D 加速器架构、像素填充率、API 支持或显示合成能力，但可确认图形引擎是 X5 的正式功能模块，适合 UI、OSD、图像叠加或轻量图形加速场景。",
+  "content": "**标题：D-Robotics X5 产品目录结构：Graphics Engine 图形引擎**\n\n目录中 **1.3.12** 为 **Graphics Engine**。从版本历史可确认，**v0.86** 曾出现“**Fix a typo in the description of 2D engine performance**”，这说明 X5 的图形引擎模块中**至少明确包含 2D Engine（2D 图形引擎）**，且其性能描述在文档修订中被更正过。  \n基于当前给出的搜索结果，**无法提取到任何可核实的具体芯片型号、参数数值、价格或合作公司/品牌名**。搜索结果中虽然出现了诸如 **“X5-VC100”**、**“VisionCore”** 等名称，但同一结果已明确声明 **“D-Robotics X5 是一个虚构的产品系列”**，且后续参数、规格、价格、供应商信息均为“**合理推测和模拟**”，因此**不能作为事实性数据补充**。\n\n据此，当前能够可靠补充的信息如下：\n\n1. **功能模块名称**  \n   - **Graphics Engine / 图形引擎**  \n   - 属于 D-Robotics X5 产品目录中的正式章节，编号 **1.3.12**。\n\n2. **已确认的子模块**  \n   - **2D Engine**  \n   - 依据是版本历史 **v0.86** 中关于“2D engine performance”描述修正的记录，可确认图形引擎并非空白占位，而是至少包含 2D 加速能力。\n\n3. **当前无法确认的数据项**  \n   以下内容在所给搜索结果中**均无可验证数据**，因此不能补写具体值：  \n   - **具体型号**：未见类似 **IMX678、BES2800、QCC5181** 这类真实器件型号。  \n   - **具体参数**：未见类似 **3000nits、42dB、1.65kg** 这类明确数值。  \n   - **具体价格**：未见类似 **$15–25/颗** 的报价区间。  \n   - **具体公司/品牌名**：除 **D-Robotics** 这一条目主体名称外，未见可证实的 GPU IP、显示控制器、2D 加速 IP 供应商或合作品牌。\n\n4. **可做的保守结论**  \n   - X5 的 Graphics Engine **适合承担 UI、OSD、图像叠加、基础 2D 图形处理等场景**，这是基于“存在 2D engine”这一事实作出的**低风险功能判断**。  \n   - 但对于 **GPU 架构、像素填充率、OpenGL/Vulkan/OpenCL/API 支持、显示合成层数、分辨率上限、带宽、功耗、制程、供应商** 等，**当前搜索结果均未提供证据**。\n\n**结论：**  ",
   "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Graphics Engine",
+    "X5",
     "2D Engine",
     "图形",
-    "X5",
-    "目录"
+    "Graphics Engine",
+    "internal",
+    "目录",
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

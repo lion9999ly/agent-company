@@ -1,17 +1,22 @@
 {
   "title": "Journey 6E SIP V0.4 更新：可订购型号、模拟引脚与电源输出 DC 特性修订",
   "domain": "components",
-  "content": "V0.4（2024-06-14）更新包括：Section 2 更新 Figure 2-1 料号定义与 Table 2-1 可订购型号；Section 4.4.4 修正 Table 4-5 Analog Pin List；Section 5.1 更新绝对最大额定值；Section 5.2 更新工作条件；Section 5.3 更新 SIP module Output power supply DC characteristics。该版本重点修正模拟接口和供电输出特性，对硬件设计影响较大。",
+  "content": "基于你提供的“搜索结果”，**没有出现任何可核实的具体型号、参数、价格或公司/品牌名**，且搜索结果已明确说明：**公开互联网资源中极少能找到“Journey 6E SIP”这一具体产品 V0.4 版本的订购型号、模拟引脚表、电源输出 DC 特性修订等细节**。因此，不能补入诸如 **IMX678、BES2800、QCC5181、3000nits、42dB、1.65kg、$15–25/颗** 这类与本条目无直接证据对应的数据，否则属于编造。\n\n补充数据后的完整内容如下：\n\n**Journey 6E SIP V0.4 更新：可订购型号、模拟引脚与电源输出 DC 特性修订**\n\nJourney 6E SIP 文档 **V0.4（2024-06-14）** 的更新主要集中在三个部分：一是 **Section 2** 中 **Figure 2-1 料号定义** 与 **Table 2-1 可订购型号** 的修订；二是 **Section 4.4.4** 中 **Table 4-5 Analog Pin List** 的更正；三是 **Section 5** 中电气规格的更新，包括 **5.1 绝对最大额定值**、**5.2 工作条件** 以及 **5.3 SIP module Output power supply DC characteristics**。从版本说明看，这次更新属于面向硬件设计和选型的关键修订，尤其会影响原理图、接口定义、电源预算和器件下单。\n\n但根据现有搜索结果，**公开资料未披露 Journey 6E SIP 的具体可订购型号名称、料号编码、芯片型号、品牌厂商名称，也未给出模拟引脚表中被修正的具体引脚编号、功能定义或电气参数数值**。同样，关于 **Output power supply DC characteristics**，搜索结果只确认该章节被更新，**未提供输出电压、电流能力、纹波、容差、上电时序等具体数值**。因此，目前能够确认的只有：**文档版本号为 V0.4，发布日期为 2024-06-14，修订章节包括 Section 2、4.4.4、5.1、5.2、5.3**。\n\n从工程影响上看，**Table 2-1 可订购型号** 的变化通常关系到不同封装、温度等级、功能配置或供货状态；**Analog Pin List** 的修正意味着模拟接口定义可能存在前版错误，若继续沿用旧版设计，可能导致引脚复用冲突或外围电路连接错误；而 **绝对最大额定值、工作条件和电源输出 DC 特性** 的更新，则直接关系到供电设计裕量、器件可靠性和系统稳定性。对于正在导入该 SIP 的团队，建议以 **V0.4 原始数据手册、PCN/勘误通知、厂商 FAE 或销售渠道** 为准，逐项核对订购信息、引脚表和电源规格后再冻结硬件版本。\n\n**当前可确认的具体",
   "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "V0.4",
-    "2024-06-14",
     "Orderable Part",
-    "Analog Pin List",
-    "Absolute Maximum Ratings",
     "Operating Conditions",
-    "Output Power Supply DC"
+    "overhaul_enriched",
+    "V0.4",
+    "Analog Pin List",
+    "internal",
+    "2024-06-14",
+    "Output Power Supply DC",
+    "Absolute Maximum Ratings"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 34,
+  "_last_used": "2026-03-30T00:48:55.806848",
+  "_first_used": "2026-03-29T00:29:18.685631"
 }

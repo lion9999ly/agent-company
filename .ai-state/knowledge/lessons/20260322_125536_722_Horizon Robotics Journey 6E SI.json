@@ -1,15 +1,18 @@
 {
   "title": "Horizon Robotics Journey 6E SIP 典型参数与客户验证要求",
   "domain": "lessons",
-  "content": "文档特别指出 datasheet/specification 中给出的“Typical”参数会因应用不同而变化，且实际性能会随时间变化。包括“Typicals”在内的所有工作参数，都必须由客户技术专家针对具体应用进行验证。这意味着 Journey 6E SIP 的参数不能直接视为量产保证值，项目导入时需安排板级、电源、接口、热设计和系统级验证流程。",
+  "content": "文档的关键信息不是给出一组可直接承诺的量产数值，而是强调 **datasheet / specification 中标注为“Typical”的参数仅代表典型条件下的参考值**。这些数值会随应用场景、板级设计、供电质量、接口负载、散热条件以及器件老化而变化，因此**不能直接视为 Journey 6E SIP 的出厂保证值或量产验收值**。从现有搜索结果看，**没有地平线官方公开的 Journey 6E SIP 具体型号参数、封装尺寸、工作电压、功耗、价格或供应商清单**；搜索结果中出现的 **200–300 TOPS、25–45W、LPDDR5/LPDDR5X 16–32GB、5nm/4nm、BPU 6.x** 等内容均被明确标注为**预测性分析**，不是官方 datasheet 数据，因此不应写成确定参数。\n\n在客户验证要求上，这类表述通常意味着项目导入必须建立完整的验证闭环。首先是**板级验证**，包括上电时序、纹波、压降、时钟稳定性、复位链路和高速信号完整性；其次是**电源验证**，需在不同输入电压、冷启动/热启动、峰值负载和瞬态切换条件下确认 SoC/SIP 工作边界。第三是**接口验证**，对摄像头、存储、以太网、PCIe、CAN/LIN 等外设进行兼容性、误码率、带宽和长时间稳定性测试。第四是**热设计验证**，要在目标环境温度、风道、散热器和整机功耗条件下评估结温与降频风险。最后是**系统级验证**，即把算法负载、操作系统、中间件和整车工况一起纳入测试，确认性能、时延、可靠性和功能安全目标是否满足量产要求。\n\n价格与供应商方面，当前搜索结果**未提供 Journey 6E SIP 的官方单价、批量采购区间、代理商名称或模组供应商信息**，因此不能补充具体报价。可保留的唯一稳妥结论是：对于 Journey 6E SIP，凡 datasheet 中标注为 “Typical” 的工作参数，都需要由**客户技术专家结合具体应用自行验证**，并通过板级、电源、接口、热和系统级测试后，才能形成项目可用的设计基线。",
   "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "Typical Parameters",
-    "Validation",
+    "Engineering",
+    "internal",
+    "overhaul_deepened",
     "Application Design",
-    "Risk",
-    "Engineering"
+    "Validation",
+    "night_deepened",
+    "Risk"
   ],
   "confidence": "high"
 }

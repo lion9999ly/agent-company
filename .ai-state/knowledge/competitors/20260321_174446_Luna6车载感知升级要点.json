@@ -7,7 +7,8 @@
   "tags": [
     "车载SoC",
     "端到端感知",
-    "视觉感知"
+    "视觉感知",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

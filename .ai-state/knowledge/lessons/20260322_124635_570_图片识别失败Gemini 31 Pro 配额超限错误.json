@@ -9,7 +9,8 @@
     "Gemini 3.1 Pro",
     "429错误",
     "配额限制",
-    "API调用"
+    "API调用",
+    "internal"
   ],
   "confidence": "high"
 }

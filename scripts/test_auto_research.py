@@ -1,5 +1,6 @@
 """Test auto research extraction"""
 import sys
+sys.path.insert(0, '.')
 sys.stdout.reconfigure(encoding='utf-8')
 import json
 import re

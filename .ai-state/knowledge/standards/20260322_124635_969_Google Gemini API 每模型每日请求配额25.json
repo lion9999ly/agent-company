@@ -9,7 +9,8 @@
     "配额",
     "GenerateRequestsPerDayPerProjectPerModel",
     "gemini-3.1-pro",
-    "global"
+    "global",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -155,6 +155,11 @@ def run_completeness_check(progress_callback=None) -> str:
 
     report = "\n".join(report_lines)
     print(report)
+
+    # 任务完成提示音
+    from src.utils.notifier import notify
+    notify("success")
+
     return report
 
 

@@ -1,14 +1,19 @@
 {
   "title": "AI智能眼镜发展历程：1984 EyeTab 到 2023-2025 行业爆发",
   "domain": "lessons",
-  "content": "行业发展经历概念萌芽、商业化探索、应用拓展三阶段。1984年Steve Mann开发可联网智能眼镜EyeTab；1990年Tom Caudell和David Mizell首次使用Augmented Reality概念；2012年Google Glass发布，2015年停产；2016年微软HoloLens和Snap Spectacles推出；2021年Meta与雷朋推出Ray-Ban Stories；2023-2025年Ray-Ban Meta升级并带动行业爆发，中国厂商雷鸟创新、Rokid等持续发布新品。",
+  "content": "AI智能眼镜发展历程大致可分为概念萌芽、商业化探索、应用拓展三阶段。**1984年**，被称为“可穿戴计算之父”的**Steve Mann**开发早期可穿戴显示原型 **EyeTap / EyeTab**，其核心是通过头戴式显示器把计算信息叠加到视野中，但当时仍需**线缆连接背包式计算机**，属于实验性设备，公开资料中未见统一量产参数与价格。**1990年**，**Tom Caudell** 与 **David Mizell** 首次提出 **Augmented Reality（增强现实）** 概念，为后续AR眼镜奠定理论基础。\n\n进入商业化探索期，**Google** 于 **2013年**推出 **Google Glass Explorer Edition**。该机采用右上方棱镜显示，分辨率 **640×360**，配备 **500万像素**摄像头，支持 **720p** 视频录制，处理器为 **TI OMAP 4430**，内存 **1GB RAM**，存储 **16GB**，重量约 **36g**，发售价 **1499美元**。Google Glass以“OK Glass”语音唤醒实现早期语音交互，但因隐私争议、续航和应用生态不足，Google于**2015年1月**停止消费者版销售，后续转向企业市场。\n\n**2016年**是行业分化的重要节点。**Microsoft** 推出 **HoloLens**，定位企业级混合现实；其后 **2019年**发布 **HoloLens 2**，采用波导显示，视场角提升至 **52°**，整机重量约 **566g**，售价 **3500美元**。同年，**Snap** 发布首代 **Spectacles**，主打拍摄分享，首发价格 **129.99美元**，代表消费级智能眼镜开始从“显示”转向“影像入口”。\n\n应用拓展阶段中，**Meta** 与 **EssilorLuxottica（雷朋母公司）** 于 **2021年**推出 **Ray-Ban Stories**，配备双 **500万像素**摄像头、开放式音频与语音助手，起售价 **299美元**。真正带动行业爆发的是 **2023年9月**发布的 **Ray-Ban Meta Smart Glasses**：搭载 **高通 Snapdragon AR1 Gen 1** 平台，升级为双 **1200万像素**摄像头，支持 **1080p/60fps** 视频，内置 **5麦克风阵列** 与定向扬声器，典型售价 **299美元起**。Meta在**2024年**披露，Ray-Ban Meta销量已突破**100万副**，成为AI眼镜商业化的重要里程碑。\n\n**2023-2025年**，中国厂商加速跟进。**雷鸟创新（XREAL/Thunderbird）**、*",
   "source": "doc_import:2025中国AI智能眼镜行业白皮书 - 沙利文.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "发展历程",
     "EyeTab",
     "Google Glass",
-    "Ray-Ban Meta"
+    "internal",
+    "Ray-Ban Meta",
+    "overhaul_enriched"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 11,
+  "_last_used": "2026-03-30T00:48:12.570310",
+  "_first_used": "2026-03-29T00:29:51.035451"
 }

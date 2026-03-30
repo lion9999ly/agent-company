@@ -9,7 +9,11 @@
     "AR-HUD",
     "4K影像",
     "双认证",
-    "联合开发"
+    "联合开发",
+    "internal"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 15,
+  "_last_used": "2026-03-30T00:46:45.691663",
+  "_first_used": "2026-03-28T10:58:03.274902"
 }

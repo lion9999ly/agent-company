@@ -7,7 +7,8 @@
   "tags": [
     "HUD显示",
     "声学降噪",
-    "摄像头防抖"
+    "摄像头防抖",
+    "internal"
   ],
   "confidence": "high"
 }

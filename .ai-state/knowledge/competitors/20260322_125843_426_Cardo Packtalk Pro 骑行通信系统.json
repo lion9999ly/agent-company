@@ -1,15 +1,19 @@
 {
   "title": "Cardo Packtalk Pro 骑行通信系统",
   "domain": "competitors",
-  "content": "文档列出“Cardo Packtalk pro”。该产品属于头盔外挂式骑行通信系统竞品，可与一体化智能头盔形成直接对比。当前片段未提供 DMC/Mesh、蓝牙版本、音频品牌、续航、价格、兼容头盔范围等参数。",
+  "content": "**Cardo Packtalk Pro 骑行通信系统**：**Cardo Systems** 是摩托车头盔通信领域的主流品牌之一，长期与 **Sena** 等厂商并列竞争。**Packtalk Pro** 属于 Cardo 旗下高端外挂式骑行通信系统，面向摩托车通勤、长途旅行及多人编队骑行场景，可与一体化智能头盔形成直接对比。安装方式为头盔外侧夹具或粘贴底座。\n\n在通信能力上，Packtalk Pro 采用 **第二代 DMC（Dynamic Mesh Communication）动态网状通信**，支持**最多 15 名骑手**全双工组网；官方给出的通信距离为**两人间最远 1.6 公里（1 英里）**，群组总覆盖距离**最高 8 公里（5 英里）**。同时支持蓝牙互联，可与其他品牌蓝牙设备进行兼容连接，提升跨品牌使用灵活性。\n\n音频部分，Packtalk Pro 与 **JBL** 合作，配备 **40mm JBL 扬声器**，并提供多种音效配置。设备支持 **Natural Voice Operation** 自然语音控制，可通过“**Hey Cardo**”进行免提操作，用于接听电话、控制音乐和切换功能。其麦克风强调降噪能力，但当前搜索结果中**未提供具体降噪分贝数**，因此不能补充如“42dB”这类数据。\n\n续航方面，官方资料显示 Packtalk Pro 的**通话时间最长 13 小时**，并支持**快充**；搜索结果仅确认“短时间充电可获得数小时使用时间”，但**未给出明确充电分钟数与对应续航时长**。防护等级为 **IP67**，可满足雨天、泥水和粉尘环境下使用。软件与生态方面，产品支持通过 **Cardo Connect App** 进行 **OTA 无线固件升级**，并新增**碰撞检测（Crash Detection）**功能，可在严重碰撞后通过 App 向预设紧急联系人发送警报和位置信息。\n\n价格方面，本次搜索结果**未提供官方售价或稳定市场价格区间**，因此不能补充具体金额。芯片型号方面，搜索结果中也**未出现**诸如 **QCC5181、BES2800、IMX678** 等具体主控/传感器型号，故不应臆测。综合来看，**Cardo Packtalk Pro** 已可确认的关键数据包括：**Cardo Systems 品牌、JBL 40mm 扬声器、DMC Gen 2、15 人组网、1.6 公里点对点距离、8 公里群组距离、13 小时通话续航、IP67 防护**。它属于高端外挂式骑行通信设备，优势在于成熟生态、多人 Mesh 互联、语音控制与安全功能，但芯片型号和价格仍需以官方销售页面或说明书进一步确认。",
   "source": "doc_import:Project X 竞品分析.xlsx",
   "created_at": "2026-03-22",
   "tags": [
-    "Cardo",
-    "Packtalk Pro",
-    "对讲",
+    "头盔配件",
+    "overhaul_light",
     "骑行通信",
-    "头盔配件"
+    "对讲",
+    "Packtalk Pro",
+    "internal",
+    "night_deepened",
+    "Cardo",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

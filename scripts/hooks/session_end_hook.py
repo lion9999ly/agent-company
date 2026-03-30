@@ -19,6 +19,11 @@ import json
 from pathlib import Path
 from datetime import datetime
 
+# 添加项目根目录到 Python 路径
+_project_root = Path(__file__).parent.parent.parent
+if str(_project_root) not in sys.path:
+    sys.path.insert(0, str(_project_root))
+
 
 def check_pending_review() -> dict:
     """检查是否有待评审的变更"""

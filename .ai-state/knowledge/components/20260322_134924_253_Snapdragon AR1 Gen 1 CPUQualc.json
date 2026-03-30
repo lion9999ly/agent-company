@@ -1,14 +1,17 @@
 {
   "title": "Snapdragon AR1 Gen 1 CPU：Qualcomm Kryo 4 核 1.9 GHz",
   "domain": "components",
-  "content": "CPU 采用 Qualcomm Kryo CPU，配置为 4 个核心，主频 1.9 GHz，支持 64-bit Architecture。该规格表明平台在智能眼镜场景中更偏向低功耗与轻量计算，而非高性能移动终端级算力，适合配合专用 ISP、NPU 与连接模块协同工作。",
+  "content": "Snapdragon AR1 Gen 1 的 CPU 模块已知公开信息为 **Qualcomm Kryo 四核，最高 1.9 GHz，支持 64-bit 架构**。从这一组参数看，它并不是面向手机旗舰 SoC 的高性能大核设计，而是明显针对智能眼镜、轻量 AR 终端的功耗与体积约束做了平衡。四核配置通常足以承担系统调度、传感器数据预处理、基础 UI 逻辑、语音交互控制以及与 ISP、NPU、连接模块之间的任务分发；**1.9 GHz** 的频率也说明其重点在持续运行效率，而非长时间高负载计算。\n\n结合公开资料，Snapdragon AR1 Gen 1 是高通在 **2023 年**发布的面向智能眼镜的专用平台，定位低功耗、轻薄化设备，而不是 XR2 系列那类更偏头显的高算力方案。搜索结果中还提到，该平台通常与专用图像处理、AI 推理和无线连接能力协同工作，因此 CPU 本身更像“控制中枢”，而不是唯一算力来源。对于 AR 眼镜这类设备，CPU 负责操作系统、应用逻辑和部分传感器融合，复杂的视觉理解、手势识别、语音处理则更多依赖专用单元完成。\n\n需要说明的是，当前搜索结果**没有给出更细的 CPU 型号拆分**，例如具体 Kryo 子核心名称、缓存容量、制程节点、单核/多核跑分，也**没有提供芯片价格、整机 BOM 成本或明确供应商报价**。同样，虽然结果中提到可能支持 **LPDDR5/LPDDR5X、4GB/6GB/8GB 内存**，以及 **UFS 3.1**、**Wi‑Fi 6E / Wi‑Fi 7**、**Bluetooth 5.3** 等，但这些属于平台层面的推断或行业分析，并非该 CPU 条目的直接、完整公开规格，因此不能当作已确认参数写死。\n\n就条目本身而言，当前最可靠、可确认的数据仍是：**供应商为 Qualcomm（高通）**，**CPU 型号为 Qualcomm Kryo**，**核心数 4 核**，**主频 1.9 GHz**，**架构 64-bit**。这些参数共同表明，Snapdragon AR1 Gen 1 的 CPU 设计目标是为智能眼镜提供“够用且省电”的通用计算能力，适合长时间佩戴设备在有限散热和电池容量下稳定运行。",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
+    "64-bit",
+    "internal",
+    "overhaul_deepened",
     "Kryo CPU",
-    "4 cores",
+    "night_deepened",
     "1.9GHz",
-    "64-bit"
+    "4 cores"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

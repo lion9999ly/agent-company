@@ -9,7 +9,8 @@
     "1VxR",
     "DRAM",
     "内存预算",
-    "DVR/EDR"
+    "DVR/EDR",
+    "internal"
   ],
   "confidence": "high"
 }

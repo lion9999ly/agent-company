@@ -1,0 +1,23 @@
+{
+  "title": "0323_Bosch摩托车ARAS与头盔式盲点预警：量产能力已成熟，头盔HUD仍停留概念验证",
+  "domain": "components",
+  "content": "就“Bosch motorcycle ARAS blind spot collision warning helmet-mounted ADAS 2025”这一主题，现有可确认的信息显示：博世在摩托车ARAS（Advanced Rider Assistance Systems）已具备成熟量产能力，但“头盔式ADAS/AR盲点碰撞预警”截至该来源所述仍主要是概念或原型方向，不能等同于已上市的全盔产品。对我们做智能摩托车全盔的意义在于：应把博世视为车端感知与预警算法/传感器供应商，而非现成头盔竞品。已落地的车端方案包括基于后向雷达的BSD盲点检测、前向雷达的ACC自适应巡航和FCW前碰撞预警，典型传感器频段为77GHz或24GHz毫米波雷达；警告输出目前主要落在后视镜LED、仪表图标，少量涉及触觉反馈。来源列举的量产车型包括Ducati Multistrada V4、KTM 1290 Super Adventure S、Kawasaki Ninja H2 SX SE，以及BMW R 1250 RT，其中前几款已采用前后雷达实现ACC/BSD组合。安全收益方面，来源给出博世MSC（Motorcycle Stability Control）可使事故中受伤风险降低约25%，说明博世在两轮主动安全上有较强可信度。头盔侧，博世曾在2017年CES展示AR智能头盔概念，可在视野中叠加导航、车速、胎压、来电及盲点警告，但来源未提供2025年量产型号、头盔参数、认证规格、供应商SKU或零售价，因此不能写成“博世已推出可购买的摩托车ARAS全盔”。这点尤其重要：该来源没有涉及自行车头盔产品，且我们必须明确区分，摩托车全盔需要满足更高冲击、防护、风噪和高速稳定性要求，不能把自行车HUD头盔方案直接类比。商业上可提炼的结论是：若做智能摩托车全盔，优先考虑与Bosch Mobility Solutio",
+  "source": "daily_deep",
+  "created_at": "2026-03-23",
+  "tags": [
+    "Bosch",
+    "摩托车ARAS",
+    "盲点检测BSD",
+    "ACC",
+    "FCW",
+    "毫米波雷达",
+    "智能摩托车全盔",
+    "HUD",
+    "ADAS供应商",
+    "dynamic"
+  ],
+  "confidence": "high",
+  "_usage_count": 30,
+  "_last_used": "2026-03-30T00:48:56.292993",
+  "_first_used": "2026-03-29T00:29:19.180810"
+}

@@ -9,7 +9,8 @@
     "Startup",
     "Shutdown",
     "Group1",
-    "Group6"
+    "Group6",
+    "internal"
   ],
   "confidence": "high"
 }

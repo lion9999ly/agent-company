@@ -12,7 +12,8 @@
     "Package",
     "Pin Definitions",
     "Electrical",
-    "Timing"
+    "Timing",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -1,14 +1,17 @@
 {
   "title": "Horizon Luna 6车辆检测能力提升",
   "domain": "components",
-  "content": "在车辆感知方面，Luna 6探测距离提升至300 m，并新增Emergency Vehicle识别；Luna 3车辆探测距离为250 m。该升级意味着Luna 6在高速远距目标识别和特殊车辆识别方面能力更强，可提升前向安全与场景理解能力。",
+  "content": "在车辆感知方面，Luna 6探测距离提升至300 m，并新增Emergency Vehicle识别；Luna 3车辆探测距离为250 m。若仅按现有可核实信息对比，Luna 6相较Luna 3的前向车辆探测距离增加50 m，增幅约20%，这意味着在高速场景下可为系统争取更长的识别与决策时间。以120 km/h车速计算，50 m额外探测距离约对应1.5 s的提前量，有助于前向碰撞预警、自动紧急制动和变道决策。功能上，Luna 6新增对应急车辆（Emergency Vehicle）的识别能力，说明其在目标分类维度上较Luna 3更细，可支持对警车、救护车、消防车等特殊车辆进行单独识别，从而提升复杂交通场景下的优先通行判断与场景理解能力。\n\n需要说明的是，搜索结果中未提供“Horizon Luna 6”车辆检测模块的公开型号、传感器参数、整机价格、供应商名称或采购报价，也未给出Emergency Vehicle识别的准确率、误检率、工作速度范围、视场角、刷新率等更细指标。因此这些数据无法补充，避免编造。基于现有信息，能够确认的核心结论只有：Luna 6在车辆检测距离上由250 m提升到300 m，并新增对应急车辆的识别能力，整体更适合高速远距目标识别与特殊车辆识别场景。",
   "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
   "created_at": "2026-03-22",
   "tags": [
     "Luna 6",
+    "internal",
     "车辆检测",
-    "Emergency Vehicle",
-    "探测距离"
+    "探测距离",
+    "overhaul_deepened",
+    "night_deepened",
+    "Emergency Vehicle"
   ],
   "confidence": "high"
 }

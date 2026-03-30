@@ -7,7 +7,8 @@
   "tags": [
     "两轮车ADAS",
     "头盔佩戴检测",
-    "中视摄像头"
+    "中视摄像头",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

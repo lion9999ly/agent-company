@@ -1,9 +1,10 @@
 """
 @description: 飞书移动端审批执行器 - Agent 提出修复建议，用户审批后自动执行
-@dependencies: json, pathlib, datetime
-@last_modified: 2026-03-19
+@dependencies: json, pathlib, datetime, subprocess
+@last_modified: 2026-03-21
 """
 import json
+import subprocess
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, Any
@@ -78,6 +79,33 @@ def approve_and_execute(fix_id: str) -> Dict[str, Any]:
 
     new_content = content.replace(data["old_content"], data["new_content"], 1)
     target_file.write_text(new_content, encoding="utf-8")
+
+    # 自动验证
+    verify_commands = [
+        "python -c \"from src.graph.router import app; print('OK')\"",
+    ]
+    verify_passed = True
+    verify_error = ""
+    project_root = Path(__file__).resolve().parent.parent.parent
+    for cmd in verify_commands:
+        try:
+            result_proc = subprocess.run(
+                cmd, shell=True, capture_output=True, text=True, timeout=30,
+                cwd=str(project_root)
+            )
+            if result_proc.returncode != 0:
+                verify_passed = False
+                verify_error = result_proc.stderr[:300]
+                break
+        except Exception as e:
+            verify_passed = False
+            verify_error = str(e)
+            break
+
+    if not verify_passed:
+        # 回滚
+        target_file.write_text(content, encoding="utf-8")
+        return {"success": False, "error": f"验证失败，已回滚: {verify_error}"}
 
     # 更新状态并移入历史
     data["status"] = "executed"

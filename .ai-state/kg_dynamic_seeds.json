@@ -1,1 +1,68 @@
-{}
+{
+  "connector_interface": {
+    "config": {
+      "name": "连接器/接口与头盔系统布线",
+      "seeds": [
+        "Hirose DF40C-30DP-0.4V",
+        "JAE WP7B-S030VA1-R8000",
+        "Molex SlimStack 503480-3000",
+        "TE Connectivity M8 A-coded panel connector",
+        "USB Type-C Receptacle USB4085-GF-A"
+      ],
+      "expansion_prompt": "围绕摩托车智能全盔的主板-显示模组-摄像头-电池-麦克风-扬声器-外设扩展链路，继续发现可用于高振动、狭小空间、低高度、可维护设计的具体连接器/接口节点。优先扩展：0.35/0.4/0.5mm板对板连接器、FPC/FFC连接器、M8/M12防水接口、USB Type-C与磁吸充电接口、BTB高速连接器、同轴RF连接器、摄像头MIPI接口、扬声器/电池线束连接器、pogopin弹簧针、IP67面板接口。输出时给出具体型号、厂商、pin数/间距/额定电流/高度/IP等级/锁扣方式/适用场景，并判断是否适合头盔曲面空间、手套操作、汗液雨水环境和维修更换。",
+      "deep_search_template": [
+        "{chip} {vendor} helmet connector board-to-board FPC waterproof vibration datasheet",
+        "{chip} {vendor} smart helmet USB-C M8 pogo pin high cycle connector specification",
+        "{chip} {vendor} 头盔 连接器 板对板 FPC 防水 抗振 数据手册",
+        "{chip} {vendor} 智能头盔 USB-C 磁吸 pogopin 线束 接口 规格书"
+      ],
+      "knowledge_template": "技术档案模板：\\n- 节点名称：\\n- 厂商：\\n- 类别：板对板/线对板/FPC/USB-C/RF/防水圆形/pogopin/音频接口\\n- 具体型号：\\n- 适用子系统：HUD/AR、4K摄像、ANC/ENC、Mesh对讲、电池充电、外设扩展\\n- 关键电气参数：pin数、间距、额定电流、额定电压、阻抗控制/高速支持、USB版本\\n- 关键机械参数：堆叠高度、尺寸、插拔寿命、锁扣方式、线缆出线方向\\n- 环境可靠性：工作温度、抗振、抗冲击、防水防尘等级、耐汗液/盐雾\\n- 认证与合规：UL、RoHS、REACH、车规/工业等级\\n- 与头盔设计相关约束：曲面安装、有限厚度、手套操作、可维修性、装配容差\\n- 兼容协议/接口：MIPI CSI/DSI、USB 2.0/3.x、I2S、UART、SPI、CAN、以太网\\n- 典型配套器件/线束：\\n- 供应风险：交期、替代料、最小起订量、区域供货\\n- 成本区间：\\n- 竞品对比：\\n- 适配建议：原型/量产/高端款/入门款\\n- 信息来源与链接："
+    },
+    "discovered_at": "2026-03-25T13:56:06.910813",
+    "status": "in_progress"
+  },
+  "sensor_imu": {
+    "config": {
+      "name": "传感器/IMU与骑行姿态感知",
+      "seeds": [
+        "Bosch BMI323",
+        "TDK InvenSense ICM-42688-P",
+        "STMicroelectronics ASM330LHHX",
+        "Bosch BMM350",
+        "Infineon DPS368"
+      ],
+      "expansion_prompt": "围绕摩托车智能全盔的姿态稳定、碰撞检测、跌落识别、头部跟踪、HUD稳像、风噪场景感知和环境补偿，继续扩展具体传感器节点。优先发现：6轴/9轴IMU、车规级IMU、低功耗always-on IMU、磁力计、气压计、ToF接近传感器、环境光传感器、温湿度传感器。要求输出具体型号、厂商、量程、噪声密度、功耗、FIFO/时间戳/中断能力、温漂、封装、车规等级，并说明其在头盔中的安装位置、算法用途和与摄像/HUD/ADAS联动价值。",
+      "deep_search_template": [
+        "{chip} {vendor} IMU smart helmet head tracking crash detection datasheet",
+        "{chip} {vendor} low power 6-axis 9-axis sensor HUD stabilization motorcycle helmet",
+        "{chip} {vendor} 头盔 IMU 姿态检测 碰撞识别 HUD 稳像 规格书",
+        "{chip} {vendor} 摩托车 智能头盔 传感器 陀螺仪 加速度计 磁力计 数据手册"
+      ],
+      "knowledge_template": "技术档案模板：\\n- 节点名称：\\n- 厂商：\\n- 传感器类型：6轴IMU/9轴IMU/磁力计/气压计/ALS/ToF/温湿度\\n- 具体型号：\\n- 目标应用：头部跟踪、碰撞检测、跌落检测、HUD稳像、导航指向、环境补偿\\n- 核心参数：量程、分辨率、噪声密度、零偏稳定性、ODR、带宽、延迟\\n- 功耗特性：正常功耗、低功耗模式、always-on能力\\n- 片上功能：FIFO、时间戳、步态/活动检测、中断引脚、自检、传感器融合支持\\n- 环境性能：工作温度、温漂、抗振、抗冲击、EMI敏感性\\n- 封装与集成：封装尺寸、安装方向要求、PCB布局注意事项\\n- 头盔安装建议：前额/顶部/后脑/侧边/下巴位置及优缺点\\n- 算法适配：EKF/姿态解算/碰撞阈值/稳像补偿/头势交互\\n- 与其他模块联动：摄像头、HUD、Mesh、SOS、手机APP\\n- 认证与等级：工业级/车规级/AEC-Q100（如适用）\\n- 供应与成本：交期、替代型号、价格带\\n- 竞品对比：\\n- 适配建议：原型验证/量产推荐/高端方案\\n- 信息来源与链接："
+    },
+    "discovered_at": "2026-03-25T14:06:24.592642",
+    "status": "in_progress"
+  },
+  "mesh_intercom": {
+    "config": {
+      "name": "Mesh对讲与头盔无线音频互联",
+      "seeds": [
+        "Nordic nRF5340",
+        "Silicon Labs EFR32BG24",
+        "Qualcomm QCC5171",
+        "Sena Mesh Intercom 3.0",
+        "Bluetooth Core Specification 5.4"
+      ],
+      "expansion_prompt": "围绕摩托车智能全盔的多人组网对讲、低时延语音、与手机/导航/相机并发连接、远距离中继和复杂骑行环境稳定性，继续扩展具体芯片、协议栈、商用方案和标准节点。优先发现：BLE Audio/LC3、Auracast、专有Mesh对讲方案、双模蓝牙音频SoC、外置天线方案、双设备并发、回声消除链路、风噪环境语音链路优化。输出时给出具体型号/标准版本/厂商、链路预算、发射功率、接收灵敏度、并发能力、音频编解码、Mesh拓扑、功耗和头盔场景适配性。",
+      "deep_search_template": [
+        "{chip} {vendor} mesh intercom motorcycle helmet BLE Audio LC3 datasheet",
+        "{chip} {vendor} smart helmet multi-hop voice intercom low latency wireless audio specification",
+        "{chip} {vendor} 摩托车 头盔 Mesh 对讲 BLE Audio LC3 规格书",
+        "{chip} {vendor} 智能头盔 多人对讲 低时延 无线音频 组网 方案"
+      ],
+      "knowledge_template": "技术档案模板：\\n- 节点名称：\\n- 厂商/标准组织：\\n- 节点类型：蓝牙SoC/音频SoC/协议标准/商用Mesh方案/模组\\n- 具体型号或标准号：\\n- 目标应用：骑行对讲、导航播报、音乐共享、相机联动、SOS广播\\n- 无线能力：Bluetooth版本、BLE Audio、Classic Audio、Auracast、专有Mesh\\n- 音频能力：LC3/CVSD/mSBC/aptX支持，采样率，双麦/多麦支持，AEC/ENC链路\\n- Mesh能力：拓扑结构、最大节点数、中继能力、重连时间、组网方式\\n- 射频参数：发射功率、接收灵敏度、天线接口、典型距离、共存能力\\n- 并发连接：手机、导航、相机、乘客对讲、多设备同时连接数\\n- 时延与稳定性：端到端时延、丢包恢复、抗干扰、风噪场景表现\\n- 功耗与热设计：待机/通话/广播功耗，电池影响\\n- 头盔集成要点：天线布局、人体遮挡、壳体材料影响、按键/语音交互\\n- 软件生态：SDK、协议开放度、手机APP支持、OTA能力\\n- 认证要求：Bluetooth SIG、SRRC/FCC/CE/TELEC等\\n- 供应与成本：模组化可得性、量产风险、授权费用\\n- 竞品对比：\\n- 适配建议：自研Mesh/采购模组/高端旗舰/中端量产\\n- 信息来源与链接："
+    },
+    "discovered_at": "2026-03-25T14:23:46.843348",
+    "status": "in_progress"
+  }
+}

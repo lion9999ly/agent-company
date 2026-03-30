@@ -7,7 +7,8 @@
   "tags": [
     "视觉处理SoC",
     "AI加速",
-    "多摄像头"
+    "多摄像头",
+    "internal"
   ],
   "confidence": "high"
 }

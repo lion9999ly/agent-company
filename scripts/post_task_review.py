@@ -104,10 +104,9 @@ class PostTaskReviewer:
 
     def review_with_gemini(self, prompt: str) -> Dict[str, Any]:
         """使用Gemini进行评审"""
-        api_key = self.get_api_key("GOOGLE_API_KEY")
+        api_key = self.get_api_key("GEMINI_API_KEY")
         if not api_key:
-            # 使用配置文件中的key
-            api_key = "AIzaSyCIpULNyI26SptD9OTfOXbfiK4uI9gqFXA"
+            return {"success": False, "error": "GEMINI_API_KEY 环境变量未设置"}
 
         url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
 

@@ -1,14 +1,17 @@
 {
   "title": "Horizon Robotics X3M Rev.0.3 新增电气特性数据",
   "domain": "components",
-  "content": "Rev.0.3（2020-03-16）在纠正拼写错误之外，新增 electrical characteristic data。该更新意味着 X3M 从早期功能性描述逐步补齐硬件设计所需的电气边界条件，为电源设计、IO 电平匹配、时序预算、信号完整性和可靠性验证提供基础依据。对于采用早期版本文档的团队，应确认后续电气参数是否已纳入设计约束。",
+  "content": "Rev.0.3（2020-03-16）在纠正拼写错误之外，明确新增了 **electrical characteristic data**。就公开搜索结果看，能够确认的具体信息只有版本号 **Rev.0.3** 与日期 **2020-03-16**；搜索结果未给出该版新增电气特性的原始数值表，因此不应编造具体电压、电流、时序或温度参数。现有可据实补充的是：X3M通常被描述为基于地平线征程3（Journey 3，J3）系列的核心模组/计算平台，面向智能驾驶、机器人、IPC 等边缘 AI 场景。此次在文档层面补入 electrical characteristic data，意义在于把原先偏功能、接口和系统框图的资料，推进到可支撑硬件落地的工程阶段。对电源设计而言，设计团队通常需要据此确认各电源轨容差、上电/掉电时序、静态与动态负载边界；对 IO 设计而言，需要核对输入高低电平阈值、驱动能力、上拉下拉约束以及与外部器件的电平兼容性；对高速接口和时钟系统，则要把这些数据纳入时序预算、信号完整性和可靠性验证。由于搜索结果没有给出具体 **型号参数表、数值、价格或供应商名**，目前只能保留原判断：Rev.0.3 的价值不在“功能新增”，而在于补齐硬件设计所必需的电气边界条件。对于仍参考早期版本文档的团队，应重点核查 2020-03-16 之后的正式 datasheet、硬件设计指南和勘误说明，确认新增电气参数是否已经同步进入原理图约束、PCB 规则、PMIC 选型、接口匹配和验证用例；若项目已进入试产或量产准备阶段，这一步尤其关键，因为缺失或沿用旧版电气假设，往往会直接影响板级稳定性、EMC/ESD 余量以及长期可靠性。",
   "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Rev0.3",
-    "Electrical characteristics",
     "Datasheet update",
-    "Hardware design"
+    "Hardware design",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
+    "Electrical characteristics",
+    "Rev0.3"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

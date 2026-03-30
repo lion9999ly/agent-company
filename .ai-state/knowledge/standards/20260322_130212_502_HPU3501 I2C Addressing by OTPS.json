@@ -1,17 +1,20 @@
 {
   "title": "HPU3501 I2C Addressing by OTPSEL and Variant",
   "domain": "standards",
-  "content": "HPU3501 的 I2C 地址由型号和 OTPSEL 共同决定。HPU3501A/HPU3501C：OTPSEL=0 时地址 0x1E，OTPSEL=1 时地址 0x3E。HPU3501B/HPU3501D：OTPSEL=0 时地址 0x1C，OTPSEL=1 时地址 0x3C。该机制便于同系列器件在主从或多 PMIC 系统中避免地址冲突。",
+  "content": "HPU3501 的 I2C 地址并非单一固定值，而是由**器件变体（Variant）**与 **OTPSEL** 组合决定，且现有可确认的数据仅包括 4 个型号与 2 种 OTPSEL 状态下的 7-bit 地址映射。具体为：**HPU3501A / HPU3501C** 在 **OTPSEL=0** 时地址为 **0x1E**，在 **OTPSEL=1** 时为 **0x3E**；**HPU3501B / HPU3501D** 在 **OTPSEL=0** 时地址为 **0x1C**，在 **OTPSEL=1** 时为 **0x3C**。也就是说，该系列共给出 **4 个可用地址：0x1C、0x1E、0x3C、0x3E**。从数值上看，A/C 与 B/D 两组之间相差 **0x02**，而同组在 OTPSEL 切换后相差 **0x20**，说明 OTPSEL 很可能控制的是地址编码中的一个高位选择，而 Variant 决定基础地址组别。\n\n这种设计对多器件系统尤其有价值。例如在同一 I2C 总线上，如果系统同时使用 HPU3501A 与 HPU3501B，并分别配置不同 OTPSEL，就可以在 **最多 4 个唯一地址** 下避免冲突，适合主板上存在多个 PMIC、从控制器或电源域管理节点的场景。相比仅依赖外部地址引脚的方案，OTPSEL 方式通常有助于减少封装引脚占用，并在量产时通过预配置实现地址固化。\n\n需要特别说明的是，基于当前搜索结果，**没有检索到 HPU3501 的官方 datasheet、封装型号、工作电压、电流能力、时钟速率、封装尺寸、单价、MOQ、授权分销商或原厂名称**。因此，除上述地址表外，**无法补充具体参数、价格或供应商信息**，以免造成编造。现阶段可保留的可靠信息只有以下地址对应关系：\n\n- **HPU3501A / HPU3501C**：OTPSEL=0 → **0x1E**；OTPSEL=1 → **0x3E**\n- **HPU3501B / HPU3501D**：OTPSEL=0 → **0x1C**；OTPSEL=1 → **0x3C**\n\n综上，HPU3501 的 I2C 寻址机制核心在于：**Variant 决定地址族，OTPSEL 决定族内切换**。在缺少公开数据手册的情况下，这是目前能够确认且可直接用于系统地址规划的全部具体数据。",
   "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "I2C",
-    "Address",
-    "OTPSEL",
-    "0x1E",
     "0x3E",
+    "0x3C",
+    "0x1E",
+    "OTPSEL",
+    "Address",
     "0x1C",
-    "0x3C"
+    "internal",
+    "overhaul_deepened",
+    "night_deepened"
   ],
   "confidence": "high"
 }

@@ -7,7 +7,8 @@
   "tags": [
     "端侧AI",
     "低功耗NPU",
-    "RISC-V/Arm"
+    "RISC-V/Arm",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

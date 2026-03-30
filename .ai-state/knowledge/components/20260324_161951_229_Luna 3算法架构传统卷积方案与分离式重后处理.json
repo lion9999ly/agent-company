@@ -1,16 +1,19 @@
 {
   "title": "Luna 3算法架构：传统卷积方案与分离式重后处理",
   "domain": "components",
-  "content": "Luna 3采用传统卷积方案，整体为分离式重后处理算法架构，流程包括Perception Model、Post Processing、Tracking、Multi-Sensor Fusion等模块。该架构依赖较多后处理与模块串联，适合传统感知栈，但在稳定性、时延与整体体验上相较Luna 6的端到端方案存在提升空间。",
+  "content": "就给定搜索结果本身，**无法确认“Luna 3”对应的具体产品、公司或算法平台名称**；搜索结果唯一明确提到的现代设备是 **DJI（大疆）Zenmuse L2**，而且结果中已说明这更像是对用户原词的**推测性纠偏**，并非证实“Luna 3=某量产感知方案”。因此，以下补充只能基于搜索结果中**可直接确认**的信息整理，不能补入 IMX678、BES2800、QCC5181、3000nits、42dB、1.65kg、$15–25/颗 这类未在结果中出现的数据。\n\n**补充后的完整内容：**\n\n“Luna 3算法架构”这一表述，依据现有搜索结果**并没有被明确指向某家自动驾驶、机器人或视觉感知公司的正式产品/平台名称**。搜索结果首先指出，**Luna 3**通常对应的是**1959年苏联月球探测器 Luna 3**，与现代“传统卷积方案”或“分离式重后处理”感知架构无直接关系。结果中唯一被进一步展开分析的现代设备，是 **DJI（大疆）Zenmuse L2**，但该对应关系仅为搜索结果中的推测，并非官方确认。\n\n如果仅按搜索结果可确认的信息来概括，其描述的并不是“端到端一体化决策”架构，而是更接近**前端实时预处理 + 后端分离式重后处理**的思路。以前端来看，系统会并行采集并同步多源数据，包括 **LiDAR 点云、IMU 惯性数据、GNSS 定位数据以及 RGB 影像**，并在机载端完成初步滤波、IMU预积分、GNSS原始观测值记录、低精度实时点云生成和数据压缩存储。搜索结果对时间同步只给出了**“通常纳秒级”**这一表述，但**没有给出 Zenmuse L2 或所谓“Luna 3”对应系统的官方同步精度数值**。\n\n在后端重处理部分，搜索结果明确提到会使用更强算力进行**IMU-GNSS-LiDAR 紧耦合 SLAM**、**PPK/RTK 差分解算**、点云去噪、配准、着色、分类以及 DEM、DSM、DOM、三维模型等成果生成。其中，定位精度层面，搜索结果只给出了**“厘米级甚至亚厘米级绝对定位精度”**和**“输出高精度POS数据，通常精度可达厘米级”**这样的范围性描述，**没有提供具体到毫米、厘米误差上限的官方参数**。\n\n涉及公司与软件品牌，搜索结果中可明确提取的名称包括：**DJI（大疆）**、**DJI Terra**，以及第三方软件/品牌 **Applanix POSPac MMS、Terrasolid、CloudCompare、Leica Cyclone、Trimble RealWorks、RiPROCESS、Agisoft Metashape、Pix4Dmapper、ContextCapture**。但关于传感器具体型号、芯片型号、重量、亮度、价格等，搜索结果**均未提供可核实数据**，因此不能补写。总体而言，现有结果只能支持将",
   "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
+    "Perception",
     "Luna 3",
-    "传统卷积",
-    "后处理",
     "Tracking",
     "Multi-Sensor Fusion",
-    "Perception"
+    "后处理",
+    "传统卷积",
+    "overhaul_deepened",
+    "night_deepened",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

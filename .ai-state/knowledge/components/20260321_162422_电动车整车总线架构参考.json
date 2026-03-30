@@ -7,7 +7,8 @@
   "tags": [
     "CAN总线",
     "NFC蓝牙陀螺仪",
-    "雷达与灯光联动"
+    "雷达与灯光联动",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

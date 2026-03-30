@@ -1,14 +1,15 @@
 {
   "title": "[技术档案] Qualcomm S7 (Qualcomm)",
   "domain": "components",
-  "content": "以下技术档案**严格基于你给出的搜索结果**整理；凡搜索结果未明确给出的内容，一律标注为**“未查到”**，不擅自补全为确定参数。\n\n---\n\n# Qualcomm S7 技术档案\n\n## 0. 结论先行\n根据给定搜索结果，**“Qualcomm S7”并不是已确认公开发布的 Qualcomm SoC 产品型号**。搜索结果明确指出：\n\n- 截至其知识范围，**Qualcomm 目前没有名为 “S7” 的移动 SoC 产品系列**\n- “Qualcomm S7”**很可能是一个假设性的未来产品名称、内部代号，或并非公开产品**\n- 因此，**不存在可核验的公开 datasheet 级参数**\n- 搜索结果后半部分提供的是**对 2026 年 Qualcomm 高性能移动 SoC 的趋势预测**，**不能等同于 Qualcomm S7 的正式规格**\n\n所以，下面档案分为两层：\n1. **已查到/可确认信息**\n2. **基于搜索结果中的行业趋势预测（明确标注为预测，不视为实锤）**\n\n---\n\n# 1. 基本参数\n\n## 1.1 产品身份\n- 产品名称：**Qualcomm S7**\n- 产品类型：**未查到**\n- 是否为 Qualcomm 公开量产 SoC：**未查到；搜索结果倾向于“不是公开产品”**\n- 备注：搜索结果明确表示，**Qualcomm 目前没有名为 “S7” 的移动 SoC 系列**\n\n## 1.2 制程\n- **未查到（正式参数）**\n\n### 搜索结果中的趋势预测\n- 若指向 2026 年 Qualcomm 旗舰/高性能移动 SoC，**可能采用 TSMC 或 Samsung 的 2nm（N2）或更先进的 3nm（N3P/N3X）工艺**\n- 但这只是**行业预测**，**不能认定为 Qualcomm S7 的制程**\n\n## 1.3 CPU 架构\n- **未查到（正式参数）**\n\n### 搜索结果中的趋势预测\n- Qualcomm 未来高端 SoC **预计会采用 Oryon CPU 核心技术下放到移动平台**\n- 但**没有任何证据表明 Qualcomm S7 一定采用 Oryon**\n\n## 1.4 GPU 架构\n- **未查到（正式参数）**\n\n### 搜索结果中的趋势预测\n- Qualcomm 未来移动高端 SoC **预计继续使用 Adreno GPU**\n- 但**未明确对应 Qualcomm S7**\n\n## 1.5 NPU / AI 架构\n- **未查到（正式参数）**\n\n### 搜索结果中的趋势预测\n- Qualcomm 未来高端 SoC **预计继续使用 Hexagon NPU / AI Engine**\n- 面向终端侧生成式 AI、语音、图像、视频增强等\n- 但**未明确对应 Qualcomm S7**\n\n## 1.6 CPU / GPU / NPU 算力\n- CPU 算力：**未查到**\n- GPU 算力：**未查到**\n- NPU 算力：**未查到**\n\n## 1.7 主频\n- CPU 主频：**未查到**\n- GPU 主频：**未查到**\n- NPU 主频：**未查到**\n\n---\n\n# 2. 接口\n\n由于搜索结果没有给出任何 datasheet 级 I/O 规格，以下均为未查到。\n\n## 2.1 摄像头接口\n- CSI 数量：**未查到**\n- 支持标准：**未查到**\n- 最大摄像头像素/吞吐：**未查到**\n\n## 2.2 显示接口\n- DSI / MIPI 显示接口：**未查到**\n",
+  "content": "【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n以下技术档案**严格基于你给出的搜索结果**整理；凡搜索结果未明确给出的内容，一律标注为**“未查到”**，不擅自补全为确定参数。\n\n---\n\n# Qualcomm S7 技术档案\n\n## 0. 结论先行\n根据给定搜索结果，**“Qualcomm S7”并不是已确认公开发布的 Qualcomm SoC 产品型号**。搜索结果明确指出：\n\n- 截至其知识范围，**Qualcomm 目前没有名为 “S7” 的移动 SoC 产品系列**\n- “Qualcomm S7”**很可能是一个假设性的未来产品名称、内部代号，或并非公开产品**\n- 因此，**不存在可核验的公开 datasheet 级参数**\n- 搜索结果后半部分提供的是**对 2026 年 Qualcomm 高性能移动 SoC 的趋势预测**，**不能等同于 Qualcomm S7 的正式规格**\n\n所以，下面档案分为两层：\n1. **已查到/可确认信息**\n2. **基于搜索结果中的行业趋势预测（明确标注为预测，不视为实锤）**\n\n---\n\n# 1. 基本参数\n\n## 1.1 产品身份\n- 产品名称：**Qualcomm S7**\n- 产品类型：**未查到**\n- 是否为 Qualcomm 公开量产 SoC：**未查到；搜索结果倾向于“不是公开产品”**\n- 备注：搜索结果明确表示，**Qualcomm 目前没有名为 “S7” 的移动 SoC 系列**\n\n## 1.2 制程\n- **未查到（正式参数）**\n\n### 搜索结果中的趋势预测\n- 若指向 2026 年 Qualcomm 旗舰/高性能移动 SoC，**可能采用 TSMC 或 Samsung 的 2nm（N2）或更先进的 3nm（N3P/N3X）工艺**\n- 但这只是**行业预测**，**不能认定为 Qualcomm S7 的制程**\n\n## 1.3 CPU 架构\n- **未查到（正式参数）**\n\n### 搜索结果中的趋势预测\n- Qualcomm 未来高端 SoC **预计会采用 Oryon CPU 核心技术下放到移动平台**\n- 但**没有任何证据表明 Qualcomm S7 一定采用 Oryon**\n\n## 1.4 GPU 架构\n- **未查到（正式参数）**\n\n### 搜索结果中的趋势预测\n- Qualcomm 未来移动高端 SoC **预计继续使用 Adreno GPU**\n- 但**未明确对应 Qualcomm S7**\n\n## 1.5 NPU / AI 架构\n- **未查到（正式参数）**\n\n### 搜索结果中的趋势预测\n- Qualcomm 未来高端 SoC **预计继续使用 Hexagon NPU / AI Engine**\n- 面向终端侧生成式 AI、语音、图像、视频增强等\n- 但**未明确对应 Qualcomm S7**\n\n## 1.6 CPU / GPU / NPU 算力\n- CPU 算力：**未查到**\n- GPU 算力：**未查到**\n- NPU 算力：**未查到**\n\n## 1.7 主频\n- CPU 主频：**未查到**\n- GPU 主频：**未查到**\n- NPU 主频：**未查到**\n\n---\n\n# 2. 接口\n\n由于搜索结果没有给出任何 datasheet 级 I/O 规格，以下均为未查到。\n\n## 2.1 摄像头接口\n- CSI 数量：**未查到**\n- 支持标准：**未查到**\n- 最大摄像头像素/吞吐：**未查到**\n\n## 2.2 显示接口\n- DSI / MIPI 显示接口：**未查到**\n",
   "source": "kg_expand:ar_xr_soc",
   "created_at": "2026-03-25",
   "tags": [
     "knowledge_graph",
     "tech_profile",
     "ar_xr_soc",
-    "qualcomm"
+    "qualcomm",
+    "speculative"
   ],
-  "confidence": "high"
+  "confidence": "low"
 }

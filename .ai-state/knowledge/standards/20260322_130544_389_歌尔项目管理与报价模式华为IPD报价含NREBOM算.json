@@ -1,15 +1,19 @@
 {
   "title": "歌尔项目管理与报价模式：华为IPD，报价含NRE/BOM/算法",
   "domain": "standards",
-  "content": "歌尔表示项目流程管理模式采用华为IPD。报价组成包括NRE、BOM、算法三部分，说明除硬件物料外，开发费用和算法费用将单独核算。资源投入方式为：各事业部先评估资源投入或招聘，项目立项后各板块再投入全职人员。该模式适合复杂跨部门项目，但前期需求定义必须足够清晰，以避免报价和排期反复。",
+  "content": "歌尔股份（**Goertek**）对外被普遍认为深度借鉴了华为 **IPD（Integrated Product Development）** 的项目管理思路，但现有公开搜索结果并**没有披露歌尔内部实际使用的 IPD 阶段代码、评审模板编号、表单型号或 PLM/项目管理软件版本**，因此这部分不能补充到更细颗粒度。基于搜索结果，能确认的公开流程表述主要是按阶段推进并设置评审点，常见阶段包括 **Concept、Planning、Development、Verification、Production、Lifecycle Management**，并结合 **EVT（Engineering Verification Test）/DVT（Design Verification Test）/PVT（Production Verification Test）** 做验证与导入。这种模式适合歌尔在声学、结构、电子、软件、算法、制造、供应链等多团队并行协作的复杂 ODM/OEM 项目，也意味着前期需求冻结程度会直接影响报价、排期和资源锁定。\n\n在报价结构上，搜索结果明确提到歌尔通常拆分为 **NRE、BOM、算法** 三部分。  \n其中 **NRE（Non-Recurring Engineering）** 覆盖一次性开发投入，如工业设计（ID）、结构设计（MD）、电子开发（EE）、软件开发（SW）、模具、夹具/治具、样机制作、测试认证和项目导入等。公开搜索结果给出的只是**行业通用范围**，并非歌尔单一项目实价：例如 **TWS 耳机项目 NRE 约 50万–300万美元**，**VR/AR 头显项目 NRE 约 500万–2000万美元以上**。  \n**BOM（Bill of Materials）** 对应量产硬件物料成本，通常包含主控 SoC、存储、电池、麦克风、扬声器、传感器、结构件、连接器、包装等。  \n**算法费用** 被单独列项，说明其并不简单并入硬件单价，而是作为独立技术模块核算，可能涉及 ANC、通话降噪、空间音频、传感器融合、语音唤醒等软件/算法能力。\n\n需要特别说明的是，用户要求补充的这类具体数据——例如器件型号 **IMX678、BES2800、QCC5181**，参数如 **3000 nits、42 dB、1.65 kg**，价格如 **15–25 美元/颗**，以及对应供应商/品牌名——在本次给定搜索结果中**并未出现**，因此不能据此补入歌尔条目。现有结果只提到上游类别和典型厂商方向，如主控/蓝牙芯片可能来自 **Qualcomm（高通）**、**MediaTek（联发科）**、**Bestechnic（恒玄）**、**Airoha（络达）**，管理体系涉及 **Huawei（华为）IPD**，质量方法涉及 **APQP**、**PPAP*",
   "source": "doc_import:[20260320] 歌尔对接会议记录.docx",
   "created_at": "2026-03-22",
   "tags": [
     "华为IPD",
-    "报价模式",
-    "NRE",
+    "算法费用",
     "BOM",
-    "算法费用"
+    "NRE",
+    "internal",
+    "overhaul_deepened",
+    "报价模式",
+    "night_deepened",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

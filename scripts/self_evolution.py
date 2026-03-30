@@ -4,12 +4,22 @@
 @last_modified: 2026-03-21
 """
 import sys
+import os
 import json
 import re
 from pathlib import Path
 from datetime import datetime
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# 加载 .env 文件
+env_file = Path(__file__).parent.parent / ".env"
+if env_file.exists():
+    for line in env_file.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip())
 
 from src.utils.model_gateway import get_model_gateway
 from src.tools.knowledge_base import add_knowledge, search_knowledge, get_knowledge_stats
@@ -241,6 +251,11 @@ def run_review(progress_callback=None) -> str:
 
     report = "\n".join(report_lines)
     print(report)
+
+    # 任务完成提示音
+    from src.utils.notifier import notify
+    notify("success")
+
     return report
 
 

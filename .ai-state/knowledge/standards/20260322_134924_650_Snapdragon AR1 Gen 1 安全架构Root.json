@@ -1,14 +1,17 @@
 {
   "title": "Snapdragon AR1 Gen 1 安全架构：Root of Trust 与 TEE",
   "domain": "standards",
-  "content": "安全方面，平台提供 Trust Management Engine（Root of Trust）及平台级安全基础，并支持 Qualcomm Trusted Execution Environment（TEE），用于需要更高处理可信度的场景。该设计适合智能眼镜中的身份、数据保护、受信执行与敏感应用隔离需求。",
+  "content": "Snapdragon AR1 Gen 1 的安全架构公开信息主要来自 Qualcomm 对 **Snapdragon Secure** 的通用描述。就 AR1 Gen 1 而言，已明确提到平台提供 **Trust Management Engine**，可作为硬件级 **Root of Trust（RoT）** 的基础，并支持 **Qualcomm Trusted Execution Environment（TEE）**，用于高可信处理场景。其作用是从设备启动阶段建立信任链：先由片上不可轻易篡改的安全基础验证引导代码，再逐级校验后续固件与系统组件，降低恶意固件、篡改启动链和未授权代码加载的风险。\n\n在运行阶段，TEE 负责把敏感任务与普通应用环境隔离。对智能眼镜这类设备而言，摄像头、麦克风、身份凭据、配对密钥、支付或企业访问令牌都属于高敏感数据，适合放在 TEE 中处理。这样即使主系统侧应用存在漏洞，敏感逻辑和密钥材料也不会直接暴露。公开资料没有给出 AR1 Gen 1 的 TEE 内存大小、加密算法型号、熔丝容量、启动 ROM 容量等更细参数，因此这些内容不能编造。\n\n从产品定位看，Snapdragon AR1 Gen 1 面向轻量级智能眼镜，Qualcomm 公布的参考终端包括 **Ray-Ban Meta 智能眼镜** 所属方向的设备生态，但并未公开单独芯片零售价格。市场上 AR1 Gen 1 不是面向个人开发者零售的标准单芯片商品，通常由 **Qualcomm Technologies, Inc.** 直接向 OEM/ODM 供应，因此公开渠道中也缺少像“单片价格”“分销商现货报价”这类数据。现有公开信息能确认的只有：它属于 Qualcomm 于 **2023 年** 发布的新一代 AR 平台，重点优化了低功耗、端侧 AI、影像与安全能力。\n\n因此，若严格依据现有搜索结果，能补充的具体信息只有：**平台名称为 Snapdragon AR1 Gen 1，安全模块名称为 Trust Management Engine，可信执行环境为 Qualcomm Trusted Execution Environment，供应商为 Qualcomm Technologies, Inc.，发布时间为 2023 年。** 除此之外，诸如具体型号后缀、主频、安全协处理器参数、BOM 价格、授权费用等，公开结果均未提供。综合来看，AR1 Gen 1 的安全设计重点不在公开“参数表”，而在通过 RoT + TEE 的组合，为智能眼镜提供启动完整性、身份保护、数据隔离和受信执行基础。",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "security",
+    "TEE",
     "Trust Management Engine",
     "Root of Trust",
-    "TEE"
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
+    "security"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

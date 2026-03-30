@@ -12,7 +12,8 @@
     "碰撞检测",
     "传感器",
     "platform_monitor",
-    "tech_radar"
+    "tech_radar",
+    "night_deepened"
   ],
   "confidence": "medium"
 }

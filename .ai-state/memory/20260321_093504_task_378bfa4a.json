@@ -9,8 +9,8 @@
   "critic_rounds": 1,
   "critic_decision": "PASS",
   "synthesis_conflicts": 3,
-  "user_rating": null,
-  "user_feedback": null,
+  "user_rating": "C",
+  "user_feedback": "缺少具体无线充电芯片选型对比",
   "knowledge_gaps": [],
   "new_knowledge": []
 }

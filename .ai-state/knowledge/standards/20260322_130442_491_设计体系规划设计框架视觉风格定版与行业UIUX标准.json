@@ -1,15 +1,21 @@
 {
   "title": "设计体系规划：设计框架、视觉风格定版与行业UIUX标准",
   "domain": "standards",
-  "content": "设计模块核心输出包括：设计框架、视觉风格定版、行业UIUX体验标准制定。该条目表明项目不仅做单次界面设计，还计划沉淀统一的体验标准和设计体系，以支持HUD、App、AI场景等多端一致性和后续规模化迭代。",
+  "content": "设计体系规划的核心，不是单次出图，而是建立一套可复用、可维护、可跨端落地的“设计—开发”协同标准。结合现有资料，该体系至少应覆盖三层：**设计框架、视觉风格定版、行业 UI/UX 标准**。在设计框架层，建议采用**8px 基线网格**与 **12 列/24 列弹性栅格**，响应断点可按资料中的 **375px、768px、1280px、1920px** 规划，以同时适配 HUD、小屏 App 与中控大屏。设计令牌（Design Tokens）应以 **JSON、YAML、CSS Variables、Sass Variables** 形式管理，命名方式可采用如 `color-brand-primary`、`spacing-md`、`font-size-body-large` 的语义化结构，便于多端同步。\n\n在工具与组件实现上，资料明确提到可采用 **Figma Variables** 管理变量，组件开发环境可选 **Storybook** 或 **Ladle**，前端技术栈支持 **React、Vue、Angular、Web Components**。测试链路可配置 **Jest、React Testing Library、Cypress、Playwright**，版本管理采用 **Semantic Versioning**，如 **v1.2.3**。文档门户可基于 **Next.js、Gatsby、Docusaurus** 搭建，代码仓库可放在 **GitHub、GitLab、Bitbucket**，自动化发布可接入 **GitHub Actions** 或 **Jenkins**。这些工具名和规格说明，该项目目标并非单一视觉交付，而是形成可持续演进的设计基础设施。\n\n视觉风格定版层面，重点是把品牌抽象为统一的颜色、字体、间距、动效和组件状态规则，并沉淀到组件库中。资料中已给出可直接落地的参数基础，例如间距体系基于 **4px 或 8px** 递进，组件 API 需定义 **Props、Slots、Events、States、Variants**，以支持不同业务场景复用。对于多端一致性，HUD、App、AI 场景应共享同一套设计令牌和交互模式，只在信息密度、对比度、触控热区等层面做差异化适配。\n\n行业 UI/UX 标准层面，现有资料可确认的方向包括：**用户中心、可访问性、一致性、可扩展性、效率、灵活性、可持续性、伦理**。对标案例可参考 **Google Material Design** 与 **IBM Carbon Design System**；研究资料还提到，依据 **InVision《Design System Handbook》**，拥有明确设计原则的团队可减少约 **20%** 返工率；采用设计令牌后，跨平台主题和品牌更新效率可提升 **3",
   "source": "doc_import:X：2年智能规划.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "设计体系",
-    "视觉风格",
-    "UIUX标准",
     "设计框架",
-    "行业标准"
+    "视觉风格",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
+    "行业标准",
+    "UIUX标准"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 1,
+  "_last_used": "2026-03-28T11:05:56.703750",
+  "_first_used": "2026-03-28T11:05:56.703750"
 }

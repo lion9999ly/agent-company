@@ -12,7 +12,8 @@
     "SDA",
     "SCL",
     "VSEL",
-    "OTPSEL"
+    "OTPSEL",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

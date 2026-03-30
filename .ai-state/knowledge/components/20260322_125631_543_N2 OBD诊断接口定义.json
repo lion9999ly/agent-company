@@ -10,7 +10,8 @@
     "CAN1H",
     "CAN1L",
     "K线",
-    "IGN"
+    "IGN",
+    "internal"
   ],
   "confidence": "high"
 }

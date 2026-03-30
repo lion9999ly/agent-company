@@ -8,7 +8,8 @@
     "FastConnect 7800",
     "Wi-Fi 7",
     "Bluetooth 5.4",
-    "wireless"
+    "wireless",
+    "internal"
   ],
   "confidence": "high"
 }

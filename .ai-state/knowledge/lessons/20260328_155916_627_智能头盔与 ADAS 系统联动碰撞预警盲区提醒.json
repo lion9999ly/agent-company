@@ -1,0 +1,13 @@
+{
+  "title": "智能头盔与 ADAS 系统联动：碰撞预警/盲区提醒",
+  "domain": "lessons",
+  "content": "**知识条目：智能头盔与 ADAS 系统联动：碰撞预警/盲区提醒**\n\n智能头盔与摩托车 ADAS（高级驾驶辅助系统）联动，核心是把车辆传感器识别到的风险，通过头盔 HUD、声音或震动更快传递给骑手，重点场景包括**前向碰撞预警（FCW）**和**盲区监测/提醒（BSD）**。搜索结果显示，这一方向已具备量产摩托车基础，但“量产车 ADAS 与量产头盔 HUD 深度联动”的公开商品化数据仍较少。\n\n### 1. 已有量产摩托车 ADAS 基础\n\n目前摩托车端的 ADAS 已在高端车型落地：\n\n- **Ducati Multistrada V4**\n  - 品牌：**杜卡迪 Ducati**\n  - 功能：**ACC 自适应巡航、BSD 盲点监测**\n  - 说明：搜索结果明确提到该车已集成相关功能，可作为头盔联动的前端感知平台。\n  - 价格：**not found**\n  - 雷达参数/探测距离：**not found**\n\n- **BMW R 1250 RT**\n  - 品牌：**宝马 BMW**\n  - 功能：**ACC 自适应巡航**\n  - 价格：**not found**\n  - 是否带 BSD：搜索结果未明确，记为 **not found**\n\n- **KTM 1290 Super Adventure S**\n  - 品牌：**KTM**\n  - 功能：**BSD 盲点监测**\n  - 价格：**not found**\n  - 传感器参数：**not found**\n\n从供应链看，搜索结果指出**Bosch（博世）**和**Continental（大陆集团）**是摩托车 ADAS 传感器和系统的主要供应商，但未给出具体雷达型号、毫米波频段、探测角度、单价，因此这些参数均为 **not found**。\n\n### 2. 智能头盔/HUD 端现状\n\n头盔端的目标是把 ADAS 风险提示直接投射到视野中，减少低头看仪表的时间。搜索结果提到的品牌/产品包括：\n\n- **Sena Momentum EVO**\n  - 品牌：**Sena**\n  - 定位：智能头盔\n  - 已知特征：搜索结果称其“主要侧重通信和音频”，并非明确的成熟 ADAS-HUD 联动产品。\n  - HUD 参数：**not found**\n  - 电池续航：**not found**\n  - 价格：**not found**\n\n- **NUVIZ**\n  - 品牌：**NUVIZ**\n  - 形态：可安装在任意头盔上的 HUD 设备\n  - 状态：**已停产**\n  - 显示参数、视场角、价格：**not found**\n\n- **Skully**\n  - 品牌：**Skully**\n  - 特点：曾推出**集成后视摄像头和 HUD** 的智能头盔\n  - 状态：**已破产**\n  - 型号、分辨率、价格：**not found**\n\n- **Jarvish、Forcite**\n  - 品牌：**Jarvish、Forcite**\n  - 方向：探索智能头盔与 HUD 集成\n  - 具体型号、联动协议、价格：**not found**\n\n此外，搜索结果提到 HUD 可采用 **DLP、LCoS、OLED** 等显示技术，但没有给出具体头盔产品对应的分辨率、亮度、FoV（视场角）数值。\n\n### 3. 联动方式与关键技术\n\n典型链路是：**摩托车雷达/摄像头 → ECU 判断风险 → 通过 CAN 总线与无线模块 → 头盔 HUD/音频/震动提醒**。  \n在功能上：\n\n",
+  "source": "overnight_deep_v3_breadth",
+  "created_at": "2026-03-28",
+  "tags": [
+    "v2x",
+    "adas",
+    "breadth_v3"
+  ],
+  "confidence": "medium"
+}

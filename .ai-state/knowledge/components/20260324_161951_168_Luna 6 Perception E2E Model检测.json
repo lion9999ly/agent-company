@@ -1,7 +1,7 @@
 {
   "title": "Luna 6 Perception E2E Model：检测、跟踪、预测与道路结构一体化输出",
   "domain": "components",
-  "content": "Luna 6的Perception E2E Model将检测、跟踪、预测和道路结构纳入统一模型，通过模型直出，减少后处理。量化收益包括：感知稳定性提升15%，轨迹误差降低20%，鬼探头场景输出及时性提升50%。该模型体现从模块化感知向一体化感知预测的升级方向。",
+  "content": "【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n【注意：以下部分内容基于趋势推测，非官方确认数据】\n\nLuna 6的Perception E2E Model将检测、跟踪、预测和道路结构纳入统一模型，通过模型直出，减少后处理。量化收益包括：感知稳定性提升15%，轨迹误差降低20%，鬼探头场景输出及时性提升50%。该模型体现从模块化感知向一体化感知预测的升级方向。",
   "source": "doc_import:Luna6 vs Luna3 提升点 20251227 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
@@ -10,7 +10,9 @@
     "检测",
     "跟踪",
     "预测",
-    "道路结构"
+    "道路结构",
+    "speculative",
+    "night_deepened"
   ],
-  "confidence": "high"
+  "confidence": "low"
 }

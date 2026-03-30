@@ -10,8 +10,8 @@
   "critic_rounds": 1,
   "critic_decision": "PASS",
   "synthesis_conflicts": 4,
-  "user_rating": null,
-  "user_feedback": null,
+  "user_rating": "D",
+  "user_feedback": "完全没生成结果。",
   "knowledge_gaps": [],
   "new_knowledge": []
 }

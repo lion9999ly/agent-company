@@ -1,15 +1,19 @@
 {
   "title": "Horizon Robotics X3M Rev.0.2 引脚更正：JTG_TDI/SPI1_MOSI 与 JTG_TDO/SPI1_MISO",
   "domain": "components",
-  "content": "Rev.0.2（2020-02-02）修正了 JTG_TDI/SPI1_MOSI 与 JTG_TDO/SPI1_MISO 的定义。这类复用引脚修正对原理图、边界扫描、SPI 外设连接和调试接口设计影响较大，若项目基于早期草案设计，需重点核对 JTAG 与 SPI1 复用关系，避免板级连线错误导致下载、调试或外设通信异常。",
+  "content": "Rev.0.2（版本日期 **2020-02-02**）对 **JTG_TDI/SPI1_MOSI** 与 **JTG_TDO/SPI1_MISO** 的定义进行了更正，重点是这两组复用引脚的**方向与功能对应关系**必须按修订版重新核对。对 **Horizon Robotics（地平线）** 的 **X3M SoC** 而言，JTAG 与 SPI1 共用物理管脚；若原理图仍沿用早期草案，最直接的风险就是把 **TDI 误接到 MISO**、或把 **TDO 误接到 MOSI**，从而导致边界扫描失败、下载器无法识别、SPI 外设读写异常等问题。\n\n从接口语义看，**JTG_TDI** 是 JTAG 的 **Test Data Input**，即数据**输入到 X3M**；这与 **SPI1_MOSI** 在“X3M 作为 SPI 从机”场景下的信号方向一致，因为 MOSI 本质上是“主机输出、从机输入”。相对地，**JTG_TDO** 是 **Test Data Output**，即数据**从 X3M 输出**；这与 **SPI1_MISO** 在“X3M 作为 SPI 从机”场景下的方向一致，因为 MISO 是“主机输入、从机输出”。因此，这次更正的核心不是新增性能参数，而是明确**输入脚对应输入功能、输出脚对应输出功能**，避免设计人员仅凭 MOSI/MISO 字面含义，在主从关系未澄清时接反。\n\n需要特别说明的是，现有搜索结果中，**唯一可核实的具体数据只有版本号与日期：Rev.0.2 / 2020-02-02**，以及公司名 **Horizon Robotics**。搜索结果**没有提供**该更正对应的官方**球位号/管脚号、封装信息、I/O 电压（如 1.8V 或 3.3V）、驱动电流、上下拉状态、寄存器地址、复用选择位、时序参数、JTAG 时钟上限、SPI1 速率上限**等数据，因此这些内容不能补写，更不能编造。\n\n同时，用户要求补充的“具体型号、具体参数、具体价格”，例如 **IMX678、BES2800、QCC5181、3000nits、42dB、1.65kg、$15-25/颗**，均属于其他器件或整机条目的信息范畴；本条目讨论的是 **X3M Rev.0.2 文档中的引脚定义更正**，搜索结果并未出现任何与这些型号、参数或价格直接相关的可验证信息，因此不应强行嫁接。基于当前可证据化信息，最稳妥的结论是：在涉及 **JTG_TDI/SPI1_MOSI** 与 **JTG_TDO/SPI1_MISO** 的原理图、PCB、BSP 引脚复用配置和产测治具设计时，应以 **Horizon Robotics X3M Rev.0.2（2020-02-02）** 为准重新核对。",
   "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Rev0.2",
     "Pin correction",
-    "JTAG",
     "SPI1_MOSI",
-    "SPI1_MISO"
+    "JTAG",
+    "internal",
+    "overhaul_deepened",
+    "Rev0.2",
+    "night_deepened",
+    "SPI1_MISO",
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

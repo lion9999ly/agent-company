@@ -9,7 +9,8 @@
     "CCFtap",
     "转弯车辆",
     "遮挡",
-    "中央隔离带"
+    "中央隔离带",
+    "night_deepened"
   ],
   "confidence": "medium"
 }

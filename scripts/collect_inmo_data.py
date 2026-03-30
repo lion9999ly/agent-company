@@ -14,9 +14,12 @@ from typing import Optional, Dict, Any, List
 # 添加路径
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.collectors.sourced_data_collector import (
+# 直接导入本地模块
+sys.path.insert(0, str(PROJECT_ROOT / "src" / "collectors"))
+from sourced_data_collector import (
     SourcedDataCollector, DataSourceType, SourcedReport
 )
 

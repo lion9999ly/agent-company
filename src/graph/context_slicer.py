@@ -1,5 +1,9 @@
 # 🔀 上下文切片管理器 (Context Slicer)
 """
+@description: 为CTO/CMO执行节点提供隔离的上下文切片，防止全局状态污染
+@dependencies: json, hashlib, datetime, pathlib, dataclasses, typing, enum
+@last_modified: 2026-03-18
+
 核心职责：为CTO/CMO执行节点提供隔离的上下文切片，防止全局状态污染。
 
 设计原则：
@@ -30,6 +34,7 @@ class SliceType(Enum):
     """切片类型"""
     CTO_DEVELOPMENT = "cto_development"      # CTO研发切片
     CMO_MARKETING = "cmo_marketing"          # CMO市场切片
+    CDO_DESIGN = "cdo_design"                # CDO设计切片
     PROTOTYPE_LOFI = "prototype_lofi"        # 低保真原型切片
     PROTOTYPE_HIFI = "prototype_hifi"        # 高保真原型切片
     CRITIC_REVIEW = "critic_review"          # 评审切片
@@ -89,6 +94,14 @@ CMO_WHITELIST: list[FieldAccess] = [
     FieldAccess("task_contract.task_goal", AccessLevel.READ_ONLY, "需要了解全局目标"),
     FieldAccess("sub_tasks.{task_id}", AccessLevel.READ_ONLY, "自己的任务契约"),
     FieldAccess("execution.cmo_output", AccessLevel.READ_WRITE, "自己的产出"),
+    FieldAccess("control.error_traceback", AccessLevel.READ_ONLY, "错误历史用于调试"),
+]
+
+# CDO节点允许访问的字段
+CDO_WHITELIST: list[FieldAccess] = [
+    FieldAccess("task_contract.task_goal", AccessLevel.READ_ONLY, "需要了解全局目标"),
+    FieldAccess("sub_tasks.{task_id}", AccessLevel.READ_ONLY, "自己的任务契约"),
+    FieldAccess("execution.cdo_output", AccessLevel.READ_WRITE, "自己的产出"),
     FieldAccess("control.error_traceback", AccessLevel.READ_ONLY, "错误历史用于调试"),
 ]
 
@@ -241,6 +254,41 @@ class ContextSlicer:
 
         return slice_obj
 
+    def create_cdo_slice(self,
+                         task_id: str,
+                         global_state: dict,
+                         task_contract: dict) -> ContextSlice:
+        """创建CDO设计切片"""
+        slice_id = f"cdo_{task_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+
+        slice_data = {
+            "task_id": task_id,
+            "task_goal": global_state.get("task_contract", {}).get("task_goal", ""),
+            "my_contract": task_contract,
+            "error_history": global_state.get("control", {}).get("error_traceback", [])[-5:],
+            "previous_output": global_state.get("execution", {}).get("cdo_output"),
+        }
+
+        dependencies = []
+        if task_contract.get("depends_on"):
+            dependencies.extend(task_contract["depends_on"])
+
+        slice_obj = ContextSlice(
+            slice_id=slice_id,
+            slice_type=SliceType.CDO_DESIGN,
+            target_agent="cdo",
+            created_at=datetime.now().isoformat(),
+            data=slice_data,
+            dependencies=dependencies,
+            access_whitelist=CDO_WHITELIST,
+            checksum=self._compute_checksum(slice_data)
+        )
+
+        self._slice_cache[slice_id] = slice_obj
+        self._log_access(slice_id, "cdo", "create", list(slice_data.keys()), True)
+
+        return slice_obj
+
     def create_critic_slice(self, global_state: dict) -> ContextSlice:
         """创建Critic评审切片"""
         slice_id = f"critic_{datetime.now().strftime('%Y%m%d%H%M%S')}"
@@ -335,7 +383,8 @@ class ContextSlicer:
             return True  # CPO和Critic允许全局访问
 
         # 确定白名单
-        whitelist = CTO_WHITELIST if agent_id == "cto" else CMO_WHITELIST
+        whitelist_map = {"cto": CTO_WHITELIST, "cmo": CMO_WHITELIST, "cdo": CDO_WHITELIST}
+        whitelist = whitelist_map.get(agent_id, CMO_WHITELIST)
         allowed_paths = {fa.field_path.replace("{task_id}", "*") for fa in whitelist}
 
         for field in accessed_fields:
@@ -401,6 +450,11 @@ def create_cto_slice(task_id: str, global_state: dict, task_contract: dict) -> C
 def create_cmo_slice(task_id: str, global_state: dict, task_contract: dict) -> ContextSlice:
     """便捷函数：创建CMO切片"""
     return get_context_slicer().create_cmo_slice(task_id, global_state, task_contract)
+
+
+def create_cdo_slice(task_id: str, global_state: dict, task_contract: dict) -> ContextSlice:
+    """便捷函数：创建CDO切片"""
+    return get_context_slicer().create_cdo_slice(task_id, global_state, task_contract)
 
 
 # === 测试入口 ===

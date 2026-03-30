@@ -1,15 +1,17 @@
 {
   "title": "Horizon Robotics X3M 典型参数验证与用户赔偿义务",
   "domain": "standards",
-  "content": "文档特别指出 datasheet/specification 中给出的“Typical”参数会因应用不同而变化，实际性能也可能随时间变化；包括“Typicals”在内的所有工作参数都必须由用户针对具体应用自行验证。若用户未经授权使用 Horizon 产品或不遵守免责声明条款，用户同意对因此产生的 claims、damages、costs、losses、liabilities 向 Horizon 及其代表进行全额赔偿。这一条款对车载、安防、机器人等高可靠场景导入 X3M 时尤为关键。",
+  "content": "文档特别指出，**Horizon Robotics（地平线）** 在 **datasheet/specification** 中给出的 **“Typical”** 参数仅代表典型值，会因应用场景、系统配置、环境条件及时间变化而波动，因此包括 **“Typicals”** 在内的所有工作参数，均需由用户针对具体应用自行验证。结合公开资料，X3M 通常并非单一裸芯片型号，而多指基于地平线 **征程 5（Journey 5，J5）** 的计算平台或模块。公开可核实的核心参数包括：**征程 5** 单颗芯片 AI 算力约 **128 TOPS（INT8）**，采用 **7nm** 工艺；在行业公开报道和地平线对外材料中，征程 5 也被用于支持 **L2+ 至 L4** 级智能驾驶计算平台。搜索结果还显示，X3M 类平台常见为单 **J5** 或双 **J5** 配置，对应总算力可达 **128 TOPS** 或 **256 TOPS**；例如公开报道中，部分量产车型采用双征程 5 方案，总算力即 **256 TOPS**。  \n  \n在接口和系统层面，搜索结果仅能确认其面向车载域控制器/计算模块场景，支持多路摄像头、车载以太网、PCIe、CAN-FD、LIN、USB 等车规接口，但**“16 核 CPU”“30W 功耗”“16 路以上 MIPI CSI”“16GB/32GB 内存”“60W-100W 模块功耗”**等数字，在本次给定搜索结果中缺乏可直接交叉验证的明确出处，因此不宜写成确定事实。价格方面，搜索结果同样明确指出：**X3M/J5 相关模块属于 B2B 车载产品，公开市场无统一零售价**，通常由 **OEM** 与 **Tier-1** 按采购规模、定制程度和合作模式议价，因此无法像消费电子器件那样给出 **$15-25/颗** 这类公开单价。  \n  \n关于公司与品牌，能够明确补充的是：核心芯片/平台提供方为 **地平线机器人（Horizon Robotics）**；相关量产或方案合作通常涉及汽车 **OEM** 与 **Tier-1**，搜索结果中提到的企业包括 **大陆集团（Continental）**、**采埃孚（ZF）**、**德赛西威（Desay SV）**、**中科创达（ThunderSoft）** 等。  \n  \n更关键的是法律责任条款：若用户未经授权使用 Horizon 产品，或未遵守免责声明、适用限制及验证义务，用户同意就因此产生的 **claims、damages、costs、losses、liabilities** 向 **Horizon Robotics** 及其代表进行全额赔偿。对于车载、安防、机器人等高可靠场景，这意味着即便公开资料写有 **128 TOPS、7nm、256 TOPS** 等典型指标，导入前仍必须完成面向整机、",
   "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "Typical parameters",
+    "Application safety",
+    "Indemnify",
+    "internal",
     "Validation",
     "User responsibility",
-    "Indemnify",
-    "Application safety"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

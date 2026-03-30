@@ -1,15 +1,16 @@
 {
   "title": "0322_competitors_Sena smart helmet HUD concept suppl...",
   "domain": "competitors",
-  "content": "**1. 产品方向与关键技术**\n- Sena正评估/布局**智能头盔HUD**：将**速度、导航、来电、音乐控制**投射到骑手视野，目标是提升安全与便利。\n- 2026年可行性判断：随着**AR、微显示、波导**成熟，小型化与成本优化将推动HUD头盔商业化。\n\n**2. 微显示技术路线与可选供应链**\n- **OLED微显示**：高对比、宽视角、响应快；典型**1080p+**，亮度**数千nits**。适合现阶段量产，但强日光下持续高亮仍有挑战。潜在供应商：**Sony、Kopin、BOE、Seeya、eMagin/Applied Materials**。\n- **LCoS微显示**：可达**1080p/2K**，配强光源时亮度可达**数万nits**，成本相对低，但系统体积偏大。供应商：**Himax、Omnivision**。\n- **MicroLED微显示**：趋势最强，适合户外HUD；已展示**0.13英寸、>300万nits**（JBD单色），但**彩色量产与成本**仍是2026前后瓶颈。供应商：**JBD、VueReal、Porotech**。\n- **研发启示**：骑行HUD首要指标是**强日光可视性、低功耗、轻量化**；2026量产更现实的组合可能是**高亮OLED/LCoS**，高端路线可预研**MicroLED**。\n\n**3. 波导/光学方案趋势**\n- **衍射波导**：薄、轻，适合头盔集成，但可能有彩虹效应、效率较低。供应商：**DigiLens、Dispelix、Vuzix**。\n- **反射波导/自由曲面**：亮度效率高、画质好，但更厚重。供应商：**Lumus、LetinAR**。\n- **材料趋势**：头盔更偏向**聚合物波导**（轻、抗冲击），材料可关注**Covestro、Sabic、Mitsubishi Chemical**；但需平衡透光率、耐温、畸变控制。\n\n**4. 可借鉴设计理念**\n- 头盔HUD研发应采用**“安全优先”架构**：显示信息极简，只保留导航/告警/通信等高价值内容，避免遮挡主视野。\n- 商业模式可参考**“头盔硬件 + 通信/导航生态”**，利用Sena既有蓝牙通信优势做系统整合，而非单卖显示模组。\n\n**5. 价格/法规**\n- 原文**未给出具体产品售价**。\n- **未出现明确标准法规变更要点**。",
+  "content": "**1. 产品方向与关键技术**  \n- **Sena Technologies, Inc.** 曾在 **2016年前后 CES** 展示过**智能头盔 HUD 概念/原型**，常见称呼包括 **“Sena AR Helmet Concept”**、**“Sena Smart Helmet with HUD Prototype”**，**未公布正式商业型号**。  \n- 已披露/媒体报道的功能方向包括：将**速度、导航、来电、音乐/对讲状态**叠加到骑手视野，并结合**后置摄像头后视画面**提升安全性。  \n- 但截至目前，Sena 已量产头盔如 **Stryker、Impulse、R1 EVO** 主要是**蓝牙/Mesh 通讯头盔**，**并无 HUD 量产型号**。因此原条目中关于 2026 年量产判断，只能作为行业趋势推测，**不能写成 Sena 已确定量产计划**。  \n\n**2. 微显示技术路线与可选供应链**  \n- **OLED 微显示**：行业常见分辨率可到 **1080p 级**。原搜索结果仅明确到“**1080p+**、亮度**数千 nits**”，未给出可直接核验的具体单一器件型号，因此不宜补写 **Sony ECX335S、Seeya、BOE** 等具体器件参数。可保留公司名：**Sony、Kopin、BOE、Seeya、eMagin（后并入 Applied Materials）**。  \n- **LCoS 微显示**：搜索结果给出的可核验信息是**1080p/2K**，配合强光源时系统亮度可达**数万 nits**；潜在供应链公司可写 **Himax、OmniVision**。但**未提供具体芯片型号**，不应补成某个确定料号。  \n- **MicroLED 微显示**：搜索结果中唯一较明确的数据是 **JBD（上海显耀显示科技）** 已展示 **0.13 英寸、>300 万 nits 的单色 MicroLED 微显示**。这说明其非常适合强日照 HUD，但**彩色量产与成本**仍是瓶颈。可列公司：**JBD、VueReal、Porotech**。  \n\n**3. 价格与商业化参考**  \n- **Sena HUD 概念头盔无官方定价**。  \n- 可参考的公开市场区间：历史上 **Skully AR-1** 预售价约 **1499 美元**；而高端智能/通讯头盔如 **Sena Stryker、Shoei Neotec II** 常见区间约 **500–900 美元**。基于搜索结果，只能写：若 Sena HUD 量产，市场推测可能在 **1500–2500 美元**甚至更高，但这**不是官方价格**。  \n\n**4. 供应链与研发启示**  \n- 头盔品牌/开发主体：**Sena Technologies, Inc.**  ",
   "source": "daily_learning",
   "created_at": "2026-03-22",
   "tags": [
+    "material",
+    "2026",
     "sena",
     "HUD",
-    "material",
     "supplier",
-    "2026"
+    "overhaul_enriched"
   ],
   "confidence": "medium"
 }

@@ -75,7 +75,12 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_import_docs(reply_target, send_reply)
         return
 
-    # === 6. 结构化文档快速通道 ===
+    # === 6. 参考文件（多文件研究任务） ===
+    if "参考文件：" in text_stripped or "reference file:" in text_stripped.lower():
+        _handle_reference_files(text_stripped, reply_target, send_reply)
+        return
+
+    # === 7. 结构化文档快速通道 ===
     try:
         from scripts.feishu_handlers.structured_doc import try_structured_doc_fast_track
         if try_structured_doc_fast_track(text_stripped, reply_target, reply_type, open_id, chat_id, send_reply):
@@ -282,6 +287,90 @@ def _handle_article_import(text: str, open_id: str, reply_target: str, send_repl
         send_reply(reply_target, f"✅ 文章已入库：{title}")
     except Exception as e:
         send_reply(reply_target, f"导入失败: {e}")
+
+
+def _handle_reference_files(text: str, reply_target: str, send_reply):
+    """处理参考文件（多文件研究任务）
+
+    支持格式：
+    - 单行：参考文件：docs/tasks/xxx.md
+    - 多行：参考文件：\n  A. docs/tasks/xxx.md\n  B. docs/specs/yyy.md
+    """
+    import time
+
+    # 提取所有 .md 文件路径（支持各种排版格式）
+    matches = re.findall(r'[\w./\\-]+\.md', text)
+    if not matches:
+        send_reply(reply_target, "格式错误。正确格式：参考文件：docs/tasks/xxx.md")
+        return
+
+    # 区分参考文件(docs/tasks/)和约束文件(docs/specs/)
+    task_files = []
+    constraint_files = []
+    for raw_path in matches:
+        # 支持相对路径和绝对路径
+        if not raw_path.startswith('/') and not raw_path.startswith('D:'):
+            full_path = str(PROJECT_ROOT / raw_path)
+        else:
+            full_path = raw_path
+
+        if Path(full_path).exists():
+            if 'docs/tasks/' in raw_path or 'docs\\tasks' in raw_path:
+                task_files.append((raw_path, full_path))
+            elif 'docs/specs/' in raw_path or 'docs\\specs' in raw_path:
+                constraint_files.append((raw_path, full_path))
+            else:
+                # 其他位置的 .md 默认作为参考文件
+                task_files.append((raw_path, full_path))
+        else:
+            send_reply(reply_target, f"[Research] 文件不存在: {raw_path}")
+
+    if not task_files:
+        if constraint_files:
+            send_reply(reply_target, "[Research] 仅收到约束文件，缺少研究任务文件(docs/tasks/)")
+        return
+
+    # 后台执行多文件研究
+    def _run_multi_files():
+        global _long_task_running
+        _long_task_running = True
+        try:
+            from scripts.tonight_deep_research import run_research_from_file
+
+            # 读取约束文件内容作为上下文注入
+            constraint_context = ""
+            for raw_path, full_path in constraint_files:
+                constraint_context += f"\n\n---\n## 约束文件: {raw_path}\n\n"
+                constraint_context += Path(full_path).read_text(encoding='utf-8')
+
+            # 每个参考文件独立执行
+            for idx, (raw_path, full_path) in enumerate(task_files, 1):
+                send_reply(reply_target, f"🔍 [{idx}/{len(task_files)}] 开始研究: {Path(full_path).name}")
+                report_path = run_research_from_file(
+                    full_path,
+                    progress_callback=lambda msg: send_reply(reply_target, msg),
+                    constraint_context=constraint_context if constraint_context else None
+                )
+                if report_path:
+                    send_reply(reply_target, f"✅ [{idx}/{len(task_files)}] 完成: {Path(full_path).name}\n报告: {report_path}")
+                else:
+                    send_reply(reply_target, f"[Research] {Path(full_path).name} 未解析到有效任务")
+                time.sleep(2)
+        except Exception as e:
+            send_reply(reply_target, f"[Research] 执行失败: {e}")
+        finally:
+            _long_task_running = False
+
+    # 启动后台线程
+    threading.Thread(target=_run_multi_files, daemon=True).start()
+    msg = f"[Research] 启动 {len(task_files)} 个研究任务"
+    if constraint_files:
+        msg += f"，附带 {len(constraint_files)} 个约束文件"
+    send_reply(reply_target, msg)
+
+
+# 全局任务运行状态（防止并发）
+_long_task_running = False
 
 
 def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: str, reply_type: str,

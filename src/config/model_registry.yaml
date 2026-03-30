@@ -1,65 +1,424 @@
 # 📋 模型API配置文件
-# @description: Multi-Agent异构模型阵列配置
-# @last_modified: 2026-03-16
+# @description: Multi-Agent异构模型阵列配置 + 智能路由
+# @last_modified: 2026-03-20
+# @security: API Key 已迁移至环境变量
+
+# ============================================================
+# 模型能力矩阵 (用于智能路由决策)
+# ============================================================
+# 能力标签说明:
+#   code: 代码生成/审查      creative: 创意写作
+#   analysis: 数据分析       reasoning: 复杂推理
+#   search: 搜索增强         multilingual: 多语言
+#   long_context: 长上下文   fast: 快速响应
+#   deep_research: 深度研究  vision: 图像理解
+#   audio: 语音处理          computer_use: 计算机操作
+#
+# 成本等级: $ (便宜) → $$$$ (昂贵)
+# 性能等级: 1-5 (5最高)
+# ============================================================
 
 model_registry:
-  # === CPO 中枢层 ===
-  cpo:
-    provider: "openai"
-    model: "gpt-4o"
+  # ============================================================
+  # 🔥 Azure OpenAI 旗舰阵列 (主力)
+  # ============================================================
+
+  # GPT-5.4 - 最强旗舰 (2026-03发布)
+  gpt_5_4:
+    provider: "azure_openai"
+    model: "gpt-5.4"
+    deployment: "gpt-5.4"
     api_key_env: "AZURE_OPENAI_API_KEY"
-    endpoint: "${AZURE_OPENAI_ENDPOINT}"
-    purpose: "意图拆解、契约生成、结果汇总"
-    max_tokens: 4096
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "旗舰模型、复杂推理、代码生成、架构设计"
+    capabilities: ["code", "reasoning", "analysis", "creative", "vision"]
+    cost_tier: "$$$$"
+    performance: 5
+    max_tokens: 16384
+    temperature: 0.2
+    api_version: "2024-12-01-preview"
+
+  # GPT-5.3 - 高性能主力
+  gpt_5_3:
+    provider: "azure_openai"
+    model: "gpt-5.3-chat-2026-03-03"
+    deployment: "gpt-5.3-chat-2026-03-03"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "高性能通用模型"
+    capabilities: ["code", "reasoning", "analysis"]
+    cost_tier: "$$$"
+    performance: 5
+    max_tokens: 16384
+    temperature: 0.2
+    api_version: "2024-12-01-preview"
+
+  # Claude Opus 4.6 - Anthropic 旗舰
+  claude_opus_4_6:
+    provider: "azure_openai"
+    model: "claude-opus-4-6"
+    deployment: "claude-opus-4-6"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "深度推理、长上下文、安全敏感任务"
+    capabilities: ["reasoning", "analysis", "long_context", "creative"]
+    cost_tier: "$$$$"
+    performance: 5
+    max_tokens: 32768
+    temperature: 0.1
+    api_version: "2024-12-01-preview"
+
+  # Claude Sonnet 4.6 - Anthropic 主力
+  claude_sonnet_4_6:
+    provider: "azure_openai"
+    model: "claude-sonnet-4-6"
+    deployment: "claude-sonnet-4-6"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "通用任务、代码、分析"
+    capabilities: ["code", "reasoning", "analysis"]
+    cost_tier: "$$$"
+    performance: 5
+    max_tokens: 16384
+    temperature: 0.2
+    api_version: "2024-12-01-preview"
+
+  # o3 - 推理专家
+  o3:
+    provider: "azure_openai"
+    model: "o3"
+    deployment: "o3"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "深度推理、数学、复杂逻辑"
+    capabilities: ["reasoning", "analysis", "math"]
+    cost_tier: "$$$$"
+    performance: 5
+    max_tokens: 65536
+    temperature: 1.0
+    api_version: "2024-12-01-preview"
+
+  # o3-mini - 轻量推理
+  o3_mini:
+    provider: "azure_openai"
+    model: "o3-mini"
+    deployment: "o3-mini"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "推理任务、成本优化"
+    capabilities: ["reasoning", "analysis"]
+    cost_tier: "$$"
+    performance: 5
+    max_tokens: 65536
+    temperature: 1.0
+    api_version: "2024-12-01-preview"
+
+  # o3-deep-research - 深度研究
+  o3_deep_research:
+    provider: "azure_openai"
+    model: "o3-deep-research-2025-06-26"
+    deployment: "o3-deep-research-2025-06-26"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "深度研究、市场分析、竞品调研"
+    capabilities: ["deep_research", "search", "analysis", "long_context"]
+    cost_tier: "$$$$"
+    performance: 5
+    max_tokens: 65536
+    temperature: 1.0
+    api_version: "2024-12-01-preview"
+
+  # Grok 4 - xAI 推理模型
+  grok_4:
+    provider: "azure_openai"
+    model: "grok-4-fast-reasoning"
+    deployment: "grok-4-fast-reasoning"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "推理任务、另类视角"
+    capabilities: ["reasoning", "analysis", "creative"]
+    cost_tier: "$$$"
+    performance: 5
+    max_tokens: 32768
+    temperature: 0.2
+    api_version: "2024-12-01-preview"
+
+  # ============================================================
+  # 🌟 Gemini 阵列 (Google AI Studio)
+  # ============================================================
+
+  # Gemini 3.1 Pro Preview - 最新旗舰
+  gemini_3_1_pro:
+    provider: "google"
+    model: "gemini-3.1-pro-preview"
+    api_key_env: "GEMINI_API_KEY"
+    purpose: "旗舰模型、复杂推理、多模态"
+    capabilities: ["reasoning", "code", "analysis", "vision", "long_context"]
+    cost_tier: "$$$"
+    performance: 5
+    max_tokens: 65536
     temperature: 0.1
 
-  # === CPO_Critic 评审层 (双模型阵列) ===
-  critic_gemini:
+  # Gemini 3 Pro Preview
+  gemini_3_pro:
+    provider: "google"
+    model: "gemini-3-pro-preview"
+    api_key_env: "GEMINI_API_KEY"
+    purpose: "第三代旗舰、多模态理解"
+    capabilities: ["reasoning", "code", "analysis", "vision"]
+    cost_tier: "$$"
+    performance: 5
+    max_tokens: 32768
+    temperature: 0.1
+
+  # Gemini 2.5 Pro - 稳定版
+  gemini_2_5_pro:
+    provider: "google"
+    model: "gemini-2.5-pro"
+    api_key_env: "GEMINI_API_KEY"
+    purpose: "稳定旗舰、复杂任务"
+    capabilities: ["reasoning", "code", "analysis", "vision"]
+    cost_tier: "$$"
+    performance: 5
+    max_tokens: 65536
+    temperature: 0.1
+
+  # Gemini 2.5 Flash - 快速响应
+  gemini_2_5_flash:
     provider: "google"
     model: "gemini-2.5-flash"
-    api_key: "AIzaSyCIpULNyI26SptD9OTfOXbfiK4uI9gqFXA"
-    purpose: "系统边界推演、大上下文一致性审查"
+    api_key_env: "GEMINI_API_KEY"
+    purpose: "快速问答、代码审查、搜索增强"
+    capabilities: ["fast", "search", "multilingual", "reasoning"]
+    cost_tier: "$"
+    performance: 4
     max_tokens: 8192
     temperature: 0.1
 
-  critic_qwen:
-    provider: "alibaba"
-    model: "qwen-max"
-    api_key_env: "DASHSCOPE_API_KEY"
-    purpose: "硬件可行性、代码规范、供应链常识审查"
-    max_tokens: 4096
-    temperature: 0.1
+  # Deep Research - 深度研究
+  gemini_deep_research:
+    provider: "google"
+    model: "deep-research-pro-preview-12-2025"
+    api_key_env: "GEMINI_API_KEY"
+    purpose: "竞品调研、市场分析、深度信息收集"
+    capabilities: ["deep_research", "search", "analysis", "long_context"]
+    cost_tier: "$$$"
+    performance: 5
+    max_tokens: 65536
+    temperature: 0.0
 
-  # === CTO 研发层 ===
-  cto:
-    provider: "alibaba"
-    model: "qwen-max"
-    api_key_env: "DASHSCOPE_API_KEY"
-    purpose: "软硬件研发、代码生成、技术方案"
+  # ============================================================
+  # 🔓 开源模型阵列 (Azure托管)
+  # ============================================================
+
+  # Llama 4 Maverick - Meta最新旗舰
+  llama_4_maverick:
+    provider: "azure_openai"
+    model: "Llama-4-Maverick-17B-128E-Instruct-FP8"
+    deployment: "Llama-4-Maverick-17B-128E-Instruct-FP8"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "开源旗舰、多模态"
+    capabilities: ["code", "reasoning", "vision"]
+    cost_tier: "$$"
+    performance: 4
     max_tokens: 8192
     temperature: 0.2
+    api_version: "2024-12-01-preview"
 
-  # === CMO 市场层 ===
-  cmo:
-    provider: "alibaba"
-    model: "qwen-max"
-    api_key_env: "DASHSCOPE_API_KEY"
-    purpose: "市场调研、竞品分析、营销策略"
+  # DeepSeek V3.2 - 国产之光
+  deepseek_v3_2:
+    provider: "azure_openai"
+    model: "DeepSeek-V3.2"
+    deployment: "DeepSeek-V3.2"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "代码生成、推理、中文任务"
+    capabilities: ["code", "reasoning", "multilingual"]
+    cost_tier: "$"
+    performance: 4
     max_tokens: 8192
-    temperature: 0.3
+    temperature: 0.2
+    api_version: "2024-12-01-preview"
 
-  # === 备用模型 ===
-  fallback:
-    provider: "anthropic"
+  # DeepSeek R1 - 推理专家
+  deepseek_r1:
+    provider: "azure_openai"
+    model: "DeepSeek-R1"
+    deployment: "DeepSeek-R1"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "深度推理、数学、逻辑"
+    capabilities: ["reasoning", "analysis", "math"]
+    cost_tier: "$$"
+    performance: 5
+    max_tokens: 16384
+    temperature: 0.6
+    api_version: "2024-12-01-preview"
+
+  # Qwen 3 32B - 阿里最新
+  qwen_3_32b:
+    provider: "azure_openai"
+    model: "qwen-3-32b"
+    deployment: "qwen-3-32b"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "中文任务、多语言、代码"
+    capabilities: ["multilingual", "code", "reasoning"]
+    cost_tier: "$"
+    performance: 4
+    max_tokens: 8192
+    temperature: 0.2
+    api_version: "2024-12-01-preview"
+
+  # ============================================================
+  # 🎯 Agent 角色绑定 (优化配置)
+  # ============================================================
+
+  # CPO (Echo) - 意图拆解、契约生成
+  cpo:
+    provider: "azure_openai"
+    model: "gpt-5.4"
+    deployment: "gpt-5.4"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "意图拆解、契约生成、结果汇总"
+    capabilities: ["reasoning", "analysis", "long_context"]
+    max_tokens: 16384
+    temperature: 0.1
+    api_version: "2024-12-01-preview"
+
+  # CTO - 软硬件研发、代码生成
+  cto:
+    provider: "azure_openai"
+    model: "gpt-5.4"
+    deployment: "gpt-5.4"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "软硬件研发、代码生成、技术方案"
+    capabilities: ["code", "reasoning", "analysis"]
+    max_tokens: 16384
+    temperature: 0.2
+    api_version: "2024-12-01-preview"
+
+  # CMO - 市场调研、竞品分析
+  cmo:
+    provider: "azure_openai"
+    model: "gpt-5.4"
+    deployment: "gpt-5.4"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "市场调研、竞品分析、营销策略"
+    capabilities: ["deep_research", "analysis", "search"]
+    max_tokens: 16384
+    temperature: 0.2
+    api_version: "2024-12-01-preview"
+
+  # CDO (Carl) - 工业设计、外观造型、用户体验
+  cdo:
+    provider: "azure_openai"
+    model: "gpt-5.4"
+    deployment: "gpt-5.4"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "工业设计、外观造型、UI/UX、人机工程学"
+    capabilities: ["creative", "analysis", "vision"]
+    max_tokens: 16384
+    temperature: 0.3
+    api_version: "2024-12-01-preview"
+
+  # CPO_Critic Gemini - 评审专家
+  critic_gemini:
+    provider: "google"
+    model: "gemini-3.1-pro-preview"
+    api_key_env: "GEMINI_API_KEY"
+    purpose: "系统边界推演、大上下文一致性审查"
+    capabilities: ["reasoning", "analysis", "long_context"]
+    max_tokens: 65536
+    temperature: 0.1
+
+  # CPO_Critic Azure - 评审备选
+  critic_azure:
+    provider: "azure_openai"
+    model: "claude-opus-4-6"
+    deployment: "claude-opus-4-6"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "评审降级备选、安全审查"
+    capabilities: ["reasoning", "analysis", "long_context"]
+    max_tokens: 32768
+    temperature: 0.1
+    api_version: "2024-12-01-preview"
+
+  # CRO - 代码审查、质量把关
+  cro:
+    provider: "azure_openai"
     model: "claude-sonnet-4-6"
-    api_key_env: "ANTHROPIC_API_KEY"
-    purpose: "主模型不可用时的备用"
-    max_tokens: 4096
+    deployment: "claude-sonnet-4-6"
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    purpose: "代码审查、架构评审、质量把关"
+    capabilities: ["code", "reasoning", "analysis"]
+    max_tokens: 16384
+    temperature: 0.1
+    api_version: "2024-12-01-preview"
+
+# ============================================================
+# 智能路由规则 (基于任务特征选择最优模型)
+# ============================================================
+routing_rules:
+  task_model_mapping:
+    # 代码类任务
+    code_review: ["claude_sonnet_4_6", "gemini_2_5_flash", "cro"]
+    code_generation: ["gpt_5_4", "cto", "claude_opus_4_6"]
+    code_debug: ["o3", "deepseek_r1", "gpt_5_4"]
+
+    # 架构设计类
+    architecture_design: ["claude_opus_4_6", "gpt_5_4", "o3"]
+    system_design: ["gpt_5_4", "claude_opus_4_6", "gemini_3_1_pro"]
+
+    # 快速响应类
+    quick_qa: ["gemini_2_5_flash", "claude_sonnet_4_6"]
+    quick_summary: ["gemini_2_5_flash", "gpt_5_3"]
+
+    # 研究分析类
+    search_augmented: ["gemini_2_5_flash", "gemini_3_1_pro"]
+    data_analysis: ["o3", "claude_opus_4_6", "gpt_5_4"]
+    competitive_research: ["o3_deep_research", "gemini_deep_research", "cmo"]
+    market_analysis: ["o3_deep_research", "gemini_deep_research", "cmo"]
+
+    # 创意类
+    creative_writing: ["claude_opus_4_6", "gpt_5_4", "gemini_3_1_pro"]
+    content_generation: ["gpt_5_4", "claude_sonnet_4_6"]
+
+    # 多语言类
+    multilingual: ["gemini_3_1_pro", "qwen_3_32b"]
+    chinese_task: ["qwen_3_32b", "deepseek_v3_2", "gemini_3_1_pro"]
+
+    # 硬件类
+    hardware_review: ["deepseek_v3_2", "qwen_3_32b", "o3"]
+
+    # 复杂推理类
+    complex_reasoning: ["o3", "claude_opus_4_6", "gemini_3_1_pro"]
+    math_problem: ["o3", "deepseek_r1", "o3_mini"]
+    logic_analysis: ["o3", "claude_opus_4_6", "deepseek_r1"]
+
+  # 成本控制
+  cost_control:
+    prefer_cheaper: true
+    max_cost_tier: "$$$$"
+    budget_alert_threshold: 0.8
+
+  # 降级策略
+  fallback:
+    enabled: true
+    on_rate_limit: true
+    on_timeout: true
 
 # === 评审规则 ===
 review_rules:
   critic_pass_threshold: 8.0
-  require_dual_pass: true  # 必须双模型PASS
+  require_dual_pass: true
   max_retry_count: 3
 
 # === 工具白名单 ===
@@ -68,3 +427,4 @@ tool_whitelist:
   cto: ["code_execute", "file_write", "test_run", "web_search"]
   cmo: ["web_search", "social_media", "database_query"]
   critic: ["doc_read", "code_analyze", "web_search"]
+  cro: ["code_analyze", "doc_read", "test_run"]

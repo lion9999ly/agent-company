@@ -9,7 +9,8 @@
     "经济型",
     "行泊一体",
     "DMS",
-    "多摄像头"
+    "多摄像头",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

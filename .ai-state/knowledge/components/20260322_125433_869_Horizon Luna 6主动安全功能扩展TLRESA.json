@@ -1,17 +1,21 @@
 {
   "title": "Horizon Luna 6主动安全功能扩展：TLR、ESA/AES、PMA、MEB",
   "domain": "components",
-  "content": "在单芯片方案对比中，Luna 6与Luna 3均支持AEB/FCW、LDW/LKA/ELK、SAS、IHC/ADB、RCW/RCTA、BSD/LCA、DOW；但Luna 6新增支持TLR交通信号灯识别、ESA紧急转向辅助/AES自动紧急转向、PMA防油门误踩、MEB低速自动紧急制动，而Luna 3不支持这些功能。说明Luna 6主动安全覆盖更完整。",
+  "content": "在单芯片方案对比中，**地平线（Horizon Robotics）征程 6 系列中的 Luna 6 相比 Luna 3，主动安全功能覆盖更完整**。现有公开资料可确认，两者共同支持的基础 ADAS 功能包括：**AEB/FCW、LDW/LKA/ELK、SAS、IHC/ADB、RCW/RCTA、BSD/LCA 以及 DOW**。在此基础上，**Luna 6 新增支持 TLR、ESA/AES、PMA、MEB，而 Luna 3 不支持**这些功能，因此更适合做高阶主动安全一体机或面向中高端车型的前视一体方案。这里涉及的具体公司/品牌名为**地平线（Horizon Robotics）**，产品线为**征程 6（Journey 6）**，其中包含 **Luna 3** 与 **Luna 6** 两个版本。\n\n从功能定义看，**TLR（Traffic Light Recognition）** 是交通信号灯识别，可在城市路口识别红黄绿灯状态；**ESA/AES（Emergency Steering Assist / Automatic Emergency Steering）** 分别对应紧急转向辅助与自动紧急转向，属于比单纯 AEB 更进一步的横向避险能力；**PMA** 在你给出的原文语境中指**防油门误踩**；**MEB** 为**低速自动紧急制动**，通常用于低速跟车、泊车或近距离障碍物场景。\n\n需要说明的是，基于你提供的搜索结果，**没有出现 Luna 6 或 Luna 3 的具体芯片型号编号、算力数值、功耗、BOM 成本、单颗价格，或 TLR/ESA/AES/PMA/MEB 在征程 6 上的触发速度、识别距离、制动减速度等定量参数**。搜索结果中虽然给出了若干“通常”“典型”的行业范围，例如 TLR 识别距离“**50–150 米**”、识别准确率“**95%以上**”，以及高级 ADAS 套件价格“**500–2000 美元**”或“**2000–8000 美元**”，但这些都属于**通用行业估算**，并**不是地平线 Luna 6 的官方参数**，因此不能直接写入该知识条目作为确定数据。\n\n因此，当前能够可靠补充的具体信息主要是：**公司/品牌名为地平线（Horizon Robotics）**，**产品系列为征程 6（Journey 6）**，**对比型号为 Luna 3 与 Luna 6**，以及 **Luna 6 相比 Luna 3 新增 TLR、ESA/AES、PMA、MEB 四项主动安全能力**。若要继续补充“具体型号、具体参数、具体价格”，还需要进一步检索**地平线官方发布会资料、征程 6 产品白皮书、车展技术手册或客户方案文档**；仅凭当前搜索结果，**无法提供不编造的数值型数据**。",
   "source": "doc_import:Luna6 vs Luna3 提升点 20250925 CN.pptx",
   "created_at": "2026-03-22",
   "tags": [
     "Luna 6",
+    "MEB",
+    "PMA",
+    "internal",
+    "overhaul_deepened",
     "主动安全",
     "TLR",
-    "ESA",
+    "night_deepened",
     "AES",
-    "PMA",
-    "MEB"
+    "ESA",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

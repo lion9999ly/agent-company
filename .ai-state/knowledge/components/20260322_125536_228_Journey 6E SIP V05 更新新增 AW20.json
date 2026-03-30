@@ -12,7 +12,8 @@
     "M45",
     "PMCTRL_19",
     "Interface Electrical",
-    "Timing"
+    "Timing",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -1,17 +1,20 @@
 {
   "title": "Arm架构AI革新：SVE2/SME2、KleidiAI与端边云协同",
   "domain": "components",
-  "content": "Arm在白皮书中被定位为高能效生态代表，适用于端边云协同。其AI创新包括SVE2/SME2矢量扩展、为AI优化的CPU核，以及与GPU/NPU紧密集成。软件侧依托KleidiAI软件库、CMSIS-NN兼容性和Arm NN SDK。系统层面强调能效比优势、大小核配置和Chiplet技术。典型应用覆盖移动端AI、边缘服务器和云原生部署。其生态策略是持续扩张并强化云端协同。",
+  "content": "Arm 在 AI 领域的价值，不只在“低功耗”，而在于把同一套架构延伸到端、边、云。就指令集而言，**SVE2** 是 Armv9-A 的关键扩展，支持 **128–2048 bit** 可伸缩向量长度，按 **128 bit** 递增，常见数据类型覆盖 **INT8/INT16/INT32、FP16、BF16、FP32**。这使同一份代码可在不同向量宽度 CPU 上运行，适合 CNN、语音和传统 ML 推理。面向更重的矩阵计算，**SME/SME2** 引入矩阵 tile 机制，重点加速 GEMM、Transformer 和 LLM 推理；但本次搜索结果未给出 SME2 已量产 CPU 的明确型号与公开报价，因此不宜编造。\n\n落地芯片方面，搜索结果明确提到 **Cortex-A710、A715、A720** 等高性能核支持 SVE2 路线，适合移动端与边缘侧 AI 前后处理。云侧则可结合 Arm 服务器 CPU 做推理编排，但当前结果未提供具体云实例型号价格，因此保留原判断。软件层是 Arm 近年的重点：**KleidiAI** 作为面向 AI 工作负载的优化软件库，配合 **Arm NN SDK** 与 **CMSIS-NN**，可把底层 SVE2/SME 能力暴露给上层框架，减少开发者直接写汇编或 intrinsics 的成本。其意义在于让同一模型在 MCU、移动 SoC、边缘盒子到云端 Arm 服务器之间迁移时，尽量复用算子与工具链。\n\n系统设计上，Arm 仍强调**能效比**与**异构协同**：CPU 负责控制流、预处理和轻量推理，GPU/NPU 承担高吞吐算子，形成端边云协同。白皮书中提到的 **big.LITTLE** 大小核配置，适合把常驻感知、唤醒、低时延任务放在小核，把多模态或生成式 AI 的突发负载交给大核/NPU。另一个方向是 **Chiplet**，便于把 CPU、I/O、AI 加速单元分拆组合，降低不同市场的定制成本。\n\n需要说明的是，当前搜索结果虽给出了 **SVE2 向量长度 128–2048 bit**、支持 **BF16/FP16/INT8** 等较具体参数，但**没有提供 KleidiAI 的商业价格、供应商报价，亦未给出 SME2 商用芯片售价或云服务单价**。因此可确认的供应商名称仅包括 **Arm** 本身，以及其软件生态中的 **Arm NN SDK、CMSIS-NN**。综合看，Arm 的 AI 革新重点不是单点峰值算力，而是以 SVE2/SME2 + KleidiAI 为核心，构建覆盖终端、边缘与云的统一高能效生态。",
   "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Arm",
-    "SVE2",
-    "SME2",
-    "KleidiAI",
     "CMSIS-NN",
+    "KleidiAI",
+    "Arm",
     "Arm NN SDK",
-    "Chiplet"
+    "SME2",
+    "Chiplet",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
+    "SVE2"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

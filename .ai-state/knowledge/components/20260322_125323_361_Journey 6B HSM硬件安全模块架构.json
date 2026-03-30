@@ -9,7 +9,8 @@
     "HSM",
     "600MHz",
     "TRNG",
-    "Hardware Root of Trust"
+    "Hardware Root of Trust",
+    "internal"
   ],
   "confidence": "high"
 }

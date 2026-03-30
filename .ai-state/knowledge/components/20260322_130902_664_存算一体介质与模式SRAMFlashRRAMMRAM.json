@@ -11,7 +11,8 @@
     "MRAM",
     "PCM",
     "数字存算",
-    "模拟存算"
+    "模拟存算",
+    "internal"
   ],
   "confidence": "high"
 }

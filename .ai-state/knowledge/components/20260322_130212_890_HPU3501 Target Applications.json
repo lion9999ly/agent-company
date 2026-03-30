@@ -1,18 +1,21 @@
 {
   "title": "HPU3501 Target Applications",
   "domain": "components",
-  "content": "文档给出的 HPU3501 目标应用包括：AI 与视频处理器供电、智能手机、平板、AR/VR、无人机、光模块、SSD、NAS。结合其 2.7V~5.5V 输入、5 路 Buck + 3 路 LDO、RTC、I2C、时序控制和双相 Buck 能力，可见其定位为中高集成、多电源轨处理器 PMIC。",
+  "content": "文档给出的 HPU3501 目标应用包括：AI 与视频处理器供电、智能手机、平板、AR/VR、无人机、光模块、SSD、NAS。结合其 **2.7V~5.5V 输入范围、5 路 Buck + 3 路 LDO、RTC、I2C 接口、电源时序控制以及双相 Buck 能力**，可以判断它并不是单一负载电源，而是面向多电源轨、对启动顺序和动态负载响应有要求的处理器/SoC 级 PMIC。  \n从应用划分看，手机、平板、AR/VR 和无人机通常由单节锂电池供电，电池工作区间与 **2.7V~5.5V** 输入高度匹配；AI 与视频处理器则往往需要 **0.6V~1.2V 核心电压、1.8V/3.3V 外设电压以及低噪声模拟电源**，因此 **5 路 Buck + 3 路 LDO** 的组合适合同时给 CPU/GPU/NPU、LPDDR、传感器、摄像头或射频辅助模块供电。双相 Buck 说明其至少有一路可面向更高电流核心轨，用于提升瞬态响应、降低纹波并改善散热，这对边缘 AI、视频编解码和高速存储控制器尤其重要。  \n在存储与通信侧，SSD、NAS、光模块通常需要多路电压协同上电，例如主控、缓存、PHY、时钟和管理接口分别使用不同电源轨，I2C 与时序控制功能有助于系统监控和软配置。RTC 则说明 HPU3501 还考虑了待机保持、掉电唤醒或实时时钟场景，适合便携式终端和需要低功耗待机的嵌入式设备。  \n需要说明的是，当前公开搜索结果**没有提供 HPU3501 的厂商名称、封装型号、各路输出电流、开关频率、效率曲线、参考价格、供应商或渠道信息**，因此无法补充诸如“单路 3A/5A”“QFN 封装”“单价 2.5 美元”“由某代理商供货”等具体数据。基于现有可确认信息，只能得出较稳妥结论：HPU3501 的定位是**中高集成度、多轨时序管理型 PMIC**，重点服务于需要紧凑 PCB 面积、单电池或 5V 电源输入、并且对核心电源稳定性和上电管理有较高要求的处理器平台。",
   "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "AI",
-    "Video Processor",
-    "Smartphone",
-    "AR/VR",
-    "Drone",
     "SSD",
+    "Video Processor",
+    "Optical Module",
+    "AR/VR",
     "NAS",
-    "Optical Module"
+    "AI",
+    "Smartphone",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
+    "Drone"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

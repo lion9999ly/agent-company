@@ -1,15 +1,22 @@
 {
   "title": "Gemini API 重试窗口：retryDelay 69222s",
   "domain": "standards",
-  "content": "返回的 RetryInfo 指定 retryDelay 为 69222s，对应约 19 小时 13 分 42.990424396 秒。说明该失败并非瞬时抖动，而是明确的配额恢复等待期。对于依赖 Gemini 3.1 Pro 的图片识别或文档解析流程，应增加任务排队、跨模型切换或次日重试机制，避免无效重试。",
+  "content": "返回的 `RetryInfo.retryDelay=69222s` 是一个非常明确的服务端限流/配额恢复信号，换算为 **19 小时 13 分 42 秒**。这类数值远超常见瞬时重试参数：在 Google API 常见客户端重试里，`initialDelay` 往往只有 **100ms-1s**，`multiplier` 常见 **1.5-2.0**，`maxDelay` 多为 **30-120s**，`maxRetries` 常见 **3-10 次**，`totalTimeout` 常见 **30-600s**。因此，`69222s` 不应被当作普通网络抖动处理，而应视为“当前配额窗口内基本不可恢复”的等待期。\n\n从错误治理角度看，这通常比 `500/502/503/504` 更接近 `429 Too Many Requests` 的语义：不是请求格式错，也不是短时链路抖动，而是服务端明确要求客户端在较长时间后再试。对依赖 **Google** 提供的 **Gemini API**、运行在 **Google AI Studio** 或 **Google Cloud Vertex AI** 上的图片识别、票据抽取、PDF 文档解析流程，继续按秒级或分钟级重试只会放大失败量，并额外消耗任务队列、线程池和告警资源。\n\n结合搜索结果，`retryDelay 69222s` 更可能来自服务端返回的重试指令，例如 **HTTP `Retry-After`** 响应头，常见于 **429** 或部分 **503** 场景。其含义不是“建议稍后再试”，而是“在约 19.23 小时内不要继续打这个接口”。搜索结果同时指出，Gemini API 归属于 **Google AI / Google Cloud** 体系，常见模型包括 **Gemini 1.0 Pro、Gemini 1.0 Ultra、Gemini 1.5 Pro、Gemini 1.5 Flash**。其中，**Gemini 1.5 Pro** 与 **Gemini 1.5 Flash** 的公开特征之一是支持 **128K tokens** 上下文，并可扩展至 **1M tokens**；搜索结果还给出了 **Gemini 1.0 Pro** 常见上下文窗口为 **32,768 tokens**。这些是与模型能力直接相关的已知具体数据。\n\n需要强调的是，当前搜索结果**没有提供**您要求的那类硬件型号或器件价格数据，例如 **IMX678、BES2800、QCC5181**、**3000nits、42dB、1.65kg**、**$15-25/颗** 等；也**没有提供** “Gemini 3.1 Pro” 的官方型号信息或价格表，因此不能补写为确定事实。基于现有结果，能确认的具体公司/品牌名只有 **Google",
   "source": "doc_import:20260318-175916.jpg",
   "created_at": "2026-03-22",
   "tags": [
-    "RetryInfo",
-    "retryDelay",
-    "重试策略",
     "API稳定性",
-    "限流恢复"
+    "限流恢复",
+    "retryDelay",
+    "internal",
+    "overhaul_deepened",
+    "RetryInfo",
+    "重试策略",
+    "night_deepened",
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high",
+  "_usage_count": 2,
+  "_last_used": "2026-03-29T08:28:33.225141",
+  "_first_used": "2026-03-28T11:05:56.703750"
 }

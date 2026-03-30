@@ -70,15 +70,21 @@ JDM_TOPICS = [
 ]
 
 
-def run_jdm_learning():
+def run_jdm_learning(progress_callback=None):
     """执行 JDM 供应商定向学习"""
     print(f"[JDM Learning] 启动 JDM 供应商定向学习，共 {len(JDM_TOPICS)} 个主题")
+
+    if progress_callback:
+        progress_callback(f"📚 启动 JDM 学习（{len(JDM_TOPICS)} 个主题）")
 
     learned = 0
     failed = 0
 
     for i, topic in enumerate(JDM_TOPICS, 1):
         print(f"\n[{i}/{len(JDM_TOPICS)}] 搜索: {topic[:60]}...")
+
+        if i % 10 == 0 and progress_callback:
+            progress_callback(f"📖 进度 {i}/{len(JDM_TOPICS)}...")
 
         try:
             # 用 deep_research 获取高质量内容

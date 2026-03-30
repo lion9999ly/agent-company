@@ -1,15 +1,18 @@
 {
   "title": "Horizon Robotics X3M Rev.0.5：MIPI RX 端口命名统一与 BPU 算力信息更新",
   "domain": "components",
-  "content": "Rev.0.5（2020-04-23）将 MIPI RX Port 名称修改为与 ball name 一致，并更新 BPU computing power information。前者有助于封装球位、原理图网络名和软件端口映射保持一致，减少多摄像头设计中的接口歧义；后者表明 X3M 的 AI/BPU 算力描述在该阶段发生调整，涉及性能评估、模型部署和竞品对比时应以更新版本为准。",
+  "content": "Rev.0.5（2020-04-23）将 MIPI RX Port 名称修改为与 ball name 一致，并更新 BPU computing power information。就已给出的检索结果看，**没有出现 X3M Rev.0.5 的公开 datasheet 原文、端口型号表、BPU 具体 TOPS 数值、芯片封装球位表、价格或供应商清单**；现有结果主要是背景性说明，且其中一部分明确标注为“预测/推测”，不能作为事实数据引用。因此，以下内容仅在**不编造具体参数**的前提下，对原条目做技术性深化。\n\nMIPI RX 端口命名统一为与 ball name 一致，通常意味着芯片封装引脚命名、原理图网络名、PCB 丝印/约束文件以及软件驱动中的端口标识被拉齐。对于多摄像头系统，这类统一非常关键：若硬件文档写作 Port0/Port1，而封装球位或驱动中使用另一套命名，容易在 CSI-2 传感器接入、lane 对应、时钟/数据对布线和调试日志分析时产生歧义。Rev.0.5 的这次修改，实质上是在降低硬件设计、BSP 适配和产线联调中的沟通成本，尤其适用于前视、环视、DMS/OMS 等多路视频输入并存的场景。\n\n“更新 BPU computing power information”则说明该版本对 X3M 的 AI 算力表述进行了修订。由于搜索结果未提供**BPU 型号、算力数值、INT8/INT16 精度口径、功耗区间、测试条件**等具体数据，因此不能写成确定参数。但从工程使用角度，这一变更会直接影响三类工作：第一，模型部署时的容量评估，例如多任务感知网络是否需要裁剪；第二，性能预算与实时性分析，包括摄像头路数、分辨率和帧率配置；第三，竞品对比与方案选型，必须以 Rev.0.5 之后的最新文档口径为准，避免沿用旧版宣传值或早期评估值。\n\n需要特别说明的是，用户要求补充“型号、参数、价格、供应商名”，但本次搜索结果中**未检出**可核实的 X3M Rev.0.5 具体型号明细、器件价格、授权代理商名称或采购链接。现有文本仅能确认版本号 **Rev.0.5**、日期 **2020-04-23**，以及两项变更主题：**MIPI RX Port 命名统一**与 **BPU 算力信息更新**。因此在知识条目中，最稳妥的写法应保留上述事实，并注明：若用于原理图设计、接口映射、性能评估或采购决策，应进一步查阅对应版本的正式 datasheet、pin list、硬件设计指南和发布说明。",
   "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Rev0.5",
     "MIPI RX",
+    "Port naming",
     "BPU",
     "Computing power",
-    "Port naming"
+    "internal",
+    "Rev0.5",
+    "overhaul_deepened",
+    "night_deepened"
   ],
   "confidence": "high"
 }

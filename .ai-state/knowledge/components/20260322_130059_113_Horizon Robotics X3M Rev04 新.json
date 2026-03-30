@@ -1,14 +1,17 @@
 {
   "title": "Horizon Robotics X3M Rev.0.4 新增 Boot Strap Pins Definitions",
   "domain": "components",
-  "content": "Rev.0.4（2020-03-30）新增 Boot Strap Pins Definitions。启动绑带脚定义通常决定芯片上电后的启动模式、介质选择、调试配置或安全模式，因此该更新对板级上拉/下拉电阻设计、量产烧录流程和故障恢复策略具有直接影响。若系统使用 X3M 作为主控 AP，需将该版本后的启动脚定义纳入硬件审查。",
+  "content": "Rev.0.4（2020-03-30）新增 **Boot Strap Pins Definitions**。这类启动绑带脚会在上电复位阶段被芯片采样，用于决定启动介质、下载/调试入口及部分安全相关模式，因此它直接影响原理图、电阻网络和量产流程。就板级实现而言，常见做法是通过外部上拉/下拉电阻固定启动状态，工程上常用阻值多为 **4.7 kΩ、10 kΩ 或 47 kΩ**，其中 **10 kΩ** 是较常见的默认选型；若同时需要测试点或拨码开关，通常还会串入 **0 Ω** 电阻位便于改板和故障定位。  \n对使用 X3M 作为主控 AP 的设计，Rev.0.4 之后必须重新核对：1）启动脚默认电平是否与 **eMMC / SPI NOR / SD** 启动方案一致；2）是否预留量产烧录模式；3）异常恢复时能否进入串口或 USB 下载路径。若旧版原理图已按早期文档布置，上电后可能出现无法从目标介质启动、误入下载模式或调试口状态异常等问题。  \n此次更新的价值主要在“定义补全”，即把原先未明确或易歧义的 strap 采样规则写清楚，便于硬件、BIOS/Bootloader、产测三方统一。搜索结果中**未提供 X3M Rev.0.4 的具体引脚编号、采样时序、电压阈值、芯片封装型号、官方价格或授权供应商名称**，因此这些关键数据不能编造，仍应以地平线官方 datasheet / hardware design guide / errata 为准。实际项目建议在硬件审查中把该版本作为基线，并同步检查 BOM 中相关电阻型号、容差（常见 **1%**）及上电时序裕量。",
   "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Rev0.4",
-    "Boot Strap Pins",
     "Boot configuration",
-    "Startup"
+    "Boot Strap Pins",
+    "Rev0.4",
+    "internal",
+    "overhaul_deepened",
+    "Startup",
+    "night_deepened"
   ],
   "confidence": "high"
 }

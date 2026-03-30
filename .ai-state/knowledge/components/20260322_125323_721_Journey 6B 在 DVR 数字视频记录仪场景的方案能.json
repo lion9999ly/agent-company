@@ -9,7 +9,8 @@
     "DVR",
     "Digital Video Recorder",
     "低功耗录制",
-    "Codec"
+    "Codec",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -66,9 +66,13 @@ def _load_anchor():
 
 def _merge_anchor_with_prompt(anchor: dict, prompt_modules: list) -> list:
     """
-    将 anchor 中的模块与用户 prompt 解析出的模块合并。
-    anchor 为底线（保证不遗漏），prompt 为增量（可新增 anchor 没有的）。
-    返回去重后的完整模块名列表。
+    Layer 1: Anchor 唯一驱动——Prompt 关键词只补充已有模块，不创建新模块。
+
+    anchor 为模块定义的唯一来源。prompt_modules 中的模块名如果不在 anchor 中，
+    会尝试归一化映射和模糊匹配，匹配不上的直接丢弃。
+
+    Returns:
+        Anchor 原始模块列表（数量 = Anchor 模块数，不会增加）
     """
     anchor_names = set()
 
@@ -82,29 +86,45 @@ def _merge_anchor_with_prompt(anchor: dict, prompt_modules: list) -> list:
     # 获取归一化映射
     normalize_map = anchor.get('module_normalize', {}) if anchor else {}
 
-    # 合并: anchor 全部保留 + prompt 中 anchor 没有的新增（先归一化）
+    # Prompt 中的模块名处理
     prompt_set = set(prompt_modules)
-    new_from_prompt = prompt_set - anchor_names
+    absorbed = []
+    dropped = []
 
-    # Round 8 Fix 4: 对 prompt 新增模块名应用归一化映射
-    normalized_new = set()
-    for name in new_from_prompt:
-        normalized_name = normalize_map.get(name, name)
-        if normalized_name not in anchor_names:
-            normalized_new.add(normalized_name)
-        # 如果归一化后已在 anchor 中，说明是变体名，不需要新增
+    for kw in prompt_set:
+        # 1. 先查 normalize_map
+        normalized = normalize_map.get(kw, kw)
 
-    if new_from_prompt:
-        # 打印归一化前后的差异（调试用）
-        normalized_diff = [n for n in new_from_prompt if normalize_map.get(n, n) != n]
-        if normalized_diff:
-            print(f"[Anchor] 归一化变体名: {normalized_diff}")
-        print(f"[Anchor] Prompt 新增 {len(new_from_prompt)} 个模块: {new_from_prompt}")
+        if normalized in anchor_names:
+            # 已在 Anchor 中（归一化后），跳过
+            absorbed.append(f"{kw} → {normalized}")
+            continue
 
-    merged = list(anchor_names) + list(normalized_new)
+        # 2. 模糊匹配：关键词是否是某个 Anchor 模块的子串
+        matched = False
+        for anchor_name in anchor_names:
+            if kw in anchor_name or anchor_name in kw:
+                absorbed.append(f"{kw} → {anchor_name} (fuzzy)")
+                matched = True
+                break
 
-    print(f"[Anchor] 合并后共 {len(merged)} 个模块")
-    return merged
+        if not matched:
+            # 3. 不创建新模块，丢弃并警告
+            dropped.append(kw)
+
+    if absorbed:
+        print(f"[Anchor] Prompt 关键词吸收: {len(absorbed)} 个")
+        for a in absorbed[:5]:
+            print(f"  ✓ {a}")
+        if len(absorbed) > 5:
+            print(f"  ...还有 {len(absorbed) - 5} 个")
+
+    if dropped:
+        print(f"[Anchor] ⚠️ Prompt 关键词丢弃（未匹配到 Anchor 模块）: {dropped}")
+
+    # 返回 Anchor 原始模块列表，不增加
+    print(f"[Anchor] 最终模块数: {len(anchor_names)} 个（Anchor 定义）")
+    return list(anchor_names)
 
 
 def _get_anchor_sub_features(anchor: dict, module_name: str) -> str:
@@ -491,27 +511,64 @@ MODULE_NAME_NORMALIZE = {
     'App-我的': '我的Tab',
     '我的首页': '我的Tab',
     '我的首页与个人中心': '我的Tab',
-    '我的首页与账户中心': '我的Tab',  # 新增
+    '我的首页与账户中心': '我的Tab',
     '我的': '我的Tab',
     'App-社区': '社区',
-    '社区Tab': '社区',  # Fix 2: 修正方向，将社区Tab归一化为社区
+    '社区Tab': '社区',
     'App-商城': '商城',
     'App-设备': '设备Tab',
     '设备连接与管理': '设备Tab',
     '设备控制与显示设置': '设备Tab',
     '电量续航与固件维护': '设备Tab',
     '设备 Tab': '设备Tab',  # 注意空格
+    '设备管理': '设备Tab',
+    '身份认证': '我的Tab',
+    '身份认证与用户信息采集': '我的Tab',
     # HUD 端归一化
-    '简易': '简易路线',
-    '路线': '简易路线',
+    '简易': '导航',
+    '简易路线': '导航',
+    '简易导航': '导航',
+    '简易导航模式': '导航',
+    '路线': '导航',
+    '显示队友位置': '组队',
     'Ai语音助手': 'AI语音助手',
     'ai语音助手': 'AI语音助手',
+    # 其他归一化
+    '高光时刻异常与素材完整性': '相册Tab',
+    '高光结果异常提示': '相册Tab',
 }
 
 def _normalize_module_name(name: str) -> str:
     """归一化模块名，统一变体"""
     return MODULE_NAME_NORMALIZE.get(name, name)
 # ===== End Fix 3 =====
+
+# ===== Layer 3: 模块密度上限配置 =====
+# 按复杂度分级：核心复杂模块 60 行，标准模块 35 行，简单模块 25 行
+MODULE_DENSITY_LIMITS = {
+    # 核心复杂模块：60 行
+    "导航": 60, "组队": 60, "设备Tab": 60, "我的Tab": 60,
+    "手机系统权限管理": 50,
+
+    # 标准模块：35 行
+    "场景模式": 35, "社区": 35, "商城": 35, "摄像状态": 35,
+    "信息中岛": 35, "多模态交互": 35, "AI语音助手": 35,
+    "主动安全预警提示": 40, "设备互联": 35, "设备配对流程": 35,
+    "SOS与紧急救援": 35, "部件识别与兼容性管理": 35,
+    "通知中心": 35, "AI Tab": 35, "相册Tab": 35,
+    "多语言支持": 35, "AI功能": 35, "恢复出厂设置": 35,
+    "佩戴检测与电源管理": 35, "生命体征与疲劳监测": 35,
+
+    # 简单模块：25 行
+    "开机动画": 25, "速度": 25, "来电": 25, "消息": 25,
+    "音乐": 25, "胎温胎压": 25,
+    "氛围灯交互": 25,
+    "视觉交互": 25, "语音交互": 25, "实体按键交互": 25,
+    "设备状态": 25,
+}
+
+DEFAULT_DENSITY_LIMIT = 35
+# ===== End Layer 3 Config =====
 
 
 def is_structured_doc_request(text: str) -> bool:
@@ -3203,6 +3260,292 @@ def _compare_decision(module_name: str, old_rows: list, new_rows: list, old_scor
         return 'merge'
 
 
+# ===== Layer 2: 替换模式比较函数 =====
+def _compare_module_replace_mode(module_name: str, old_rows: list, new_rows: list, old_score: int, new_score: int) -> str:
+    """模块级对比——择优替换，不做并集
+
+    每轮生成是替换而非累加。新版更好就整体替换，旧版更好就保留不动。
+    不吸收对方独有功能。
+
+    Returns:
+        'replace': 整体替换为新版
+        'keep': 整体保留旧版
+        None: 需要重新生成（两者都是空壳）
+    """
+    old_count = len(old_rows)
+    new_count = len(new_rows)
+
+    # Case 1: 旧版空壳（< 3 条），无条件用新版
+    if old_count < 3:
+        print(f"  [Compare] {module_name}: 旧版空壳 → 用新版 ({new_count}条)")
+        return 'replace'
+
+    # Case 2: 新版空壳或生成失败
+    if new_count < 3:
+        print(f"  [Compare] {module_name}: 新版空壳 → 保留旧版 ({old_count}条)")
+        return 'keep'
+
+    # Case 3: 都有内容，抽样对比质量
+    winner = _sample_compare(old_rows, new_rows)
+
+    if winner == "new":
+        return 'replace'
+    elif winner == "old" or winner == "keep":
+        return 'keep'
+    else:
+        # 质量相当（merge），稳定优先，保留旧版
+        print(f"  [Compare] {module_name}: 质量相当 → 稳定优先保留旧版 ({old_count}条)")
+        return 'keep'
+# ===== End Layer 2 =====
+
+
+# ===== Layer 3: 模块压缩函数 =====
+def _compress_module(module_name: str, features: list, limit: int, gateway=None) -> list:
+    """对超限模块调用 LLM 合并精简
+
+    Args:
+        module_name: 模块名
+        features: 当前功能列表
+        limit: 行数上限
+        gateway: LLM 网关（可选）
+    Returns:
+        精简后的功能列表（≤ limit 条）
+    """
+    if len(features) <= limit:
+        return features
+
+    print(f"  [Compress] {module_name}: {len(features)} 条 → 目标 ≤{limit} 条")
+
+    # 分离 P0（不可删除）和非 P0
+    p0_features = [f for f in features if f.get('priority') == 'P0']
+    other_features = [f for f in features if f.get('priority') != 'P0']
+
+    # 如果仅 P0 就超限，只精简非 P0 为 0
+    if len(p0_features) >= limit:
+        print(f"  [Compress] ⚠️ {module_name} 仅 P0 就有 {len(p0_features)} 条，超过上限 {limit}")
+        return p0_features[:limit]
+
+    remaining_budget = limit - len(p0_features)
+
+    # 如果非 P0 不需要精简
+    if len(other_features) <= remaining_budget:
+        return features
+
+    # 用 LLM 精简非 P0 部分
+    compress_prompt = f"""你是 PRD 精简专家。以下模块「{module_name}」有 {len(other_features)} 条非P0功能，需要精简到 {remaining_budget} 条以内。
+
+精简规则：
+1. 同一件事的不同说法（如"蓝牙断连重连"和"蓝牙连接中断恢复"）→ 合并为一条，保留描述最完整的
+2. L3 粒度过细的功能 → 合并到对应 L2，不需要每个细节都独立成行
+3. 纯异常/边界场景如果跟正常功能重复 → 合并到正常功能的验收标准中
+4. 保留所有独立功能点，只删除冗余表述
+5. 输出精简后的 JSON 数组，格式与输入相同
+
+当前功能列表（{len(other_features)} 条）：
+{json.dumps(other_features, ensure_ascii=False, indent=1)[:8000]}
+
+只输出 JSON 数组，不要其他内容。精简到 {remaining_budget} 条以内。"""
+
+    try:
+        if gateway:
+            result = gateway.call(compress_prompt, model_tier="fast")
+        else:
+            result = _call_llm_fallback(compress_prompt)
+
+        if result and result.get("success"):
+            resp = result.get("response", "").strip()
+            # 清理 markdown 代码块
+            resp = re.sub(r'^```json\s*', '', resp)
+            resp = re.sub(r'^```\s*', '', resp)
+            resp = re.sub(r'\s*```$', '', resp)
+            compressed = json.loads(resp)
+
+            if isinstance(compressed, list) and len(compressed) <= remaining_budget:
+                final = p0_features + compressed
+                print(f"  [Compress] ✅ {module_name}: {len(features)} → {len(final)} 条")
+                return final
+            elif isinstance(compressed, list):
+                print(f"  [Compress] ⚠️ LLM 返回 {len(compressed)} 条，超过预算 {remaining_budget}")
+                # 截断兜底
+                return p0_features + compressed[:remaining_budget]
+    except Exception as e:
+        print(f"  [Compress] ❌ LLM 精简失败: {e}")
+
+    # LLM 失败兜底：按优先级截断
+    print(f"  [Compress] 降级：按优先级截断")
+    priority_order = {"P1": 0, "P2": 1, "P3": 2}
+    other_features.sort(key=lambda f: priority_order.get(f.get('priority', 'P3'), 3))
+    return p0_features + other_features[:remaining_budget]
+
+
+def _apply_density_limits(items: list, anchor: dict, gateway=None) -> list:
+    """对所有模块应用密度上限检查和精简
+
+    Args:
+        items: 功能列表
+        anchor: 锚点配置
+        gateway: LLM 网关
+    Returns:
+        精简后的功能列表
+    """
+    # 按模块分组
+    by_module = {}
+    for item in items:
+        mod = item.get('module', item.get('L1功能', 'unknown'))
+        if mod not in by_module:
+            by_module[mod] = []
+        by_module[mod].append(item)
+
+    total_before = len(items)
+    total_after = 0
+    compressed_modules = []
+
+    for module_name, features in by_module.items():
+        limit = MODULE_DENSITY_LIMITS.get(module_name, DEFAULT_DENSITY_LIMIT)
+        if len(features) > limit:
+            compressed = _compress_module(module_name, features, limit, gateway)
+            by_module[module_name] = compressed
+            compressed_modules.append(f"{module_name}({len(features)}→{len(compressed)})")
+            total_after += len(compressed)
+        else:
+            total_after += len(features)
+
+    # 重新组合
+    result = []
+    for features in by_module.values():
+        result.extend(features)
+
+    if compressed_modules:
+        print(f"[DensityCap] {total_before} → {total_after} 条 (精简 {total_before - total_after})")
+        print(f"[DensityCap] 精简模块: {', '.join(compressed_modules[:5])}")
+        if len(compressed_modules) > 5:
+            print(f"  ...还有 {len(compressed_modules) - 5} 个模块")
+
+    return result
+# ===== End Layer 3 =====
+
+
+# ===== Layer 4: 模块级微循环 QA =====
+def _module_qa_check(module_name: str, features: list) -> dict:
+    """模块级质量检查——纯规则 + 轻量检查
+
+    Returns:
+        {"pass": bool, "issues": [...], "auto_fixable": [...]}
+    """
+    issues = []
+    auto_fixable = []
+
+    for f in features:
+        fid = f.get('功能ID', f.get('id', f.get('_id', '')))
+        name = f.get('name', f.get('L2功能', f.get('L3功能', '')))
+        level = f.get('level', '')
+
+        # Rule 1: 空描述
+        desc = f.get('description', f.get('描述', ''))
+        if not desc or len(str(desc).strip()) < 10:
+            issues.append(f"[空描述] {fid} {name}")
+
+        # Rule 2: 空验收标准
+        acc = f.get('acceptance', f.get('验收标准', ''))
+        if not acc or len(str(acc).strip()) < 10:
+            issues.append(f"[空验收] {fid} {name}")
+
+        # Rule 3: L1/L2/L3 层级错误（L1 有值但不等于 module_name）
+        l1 = f.get('module', f.get('L1功能', ''))
+        if level == 'L1' and l1 and l1 != module_name:
+            issues.append(f"[L1错位] {fid} L1={l1} 应为 {module_name}")
+            auto_fixable.append(('fix_l1', fid, module_name))
+
+        # Rule 4: 优先级缺失
+        pri = f.get('priority', f.get('优先级', ''))
+        if not pri or pri not in ('P0', 'P1', 'P2', 'P3'):
+            issues.append(f"[无优先级] {fid} {name}")
+            auto_fixable.append(('fix_priority', fid, 'P2'))
+
+    # Rule 5: 模块内 L2 功能名重复
+    l2_names = []
+    for f in features:
+        if f.get('level') in ('L2', ''):
+            l2_name = f.get('L2功能', f.get('name', ''))
+            if l2_name:
+                l2_names.append(l2_name)
+
+    seen = set()
+    for n in l2_names:
+        if n in seen:
+            issues.append(f"[L2重复] {module_name} 有重复 L2: {n}")
+        seen.add(n)
+
+    passed = len(issues) == 0
+    if not passed:
+        print(f"  [QA] {module_name}: {len(issues)} 个问题")
+        for iss in issues[:5]:
+            print(f"    {iss}")
+        if len(issues) > 5:
+            print(f"    ...还有 {len(issues) - 5} 个")
+    else:
+        print(f"  [QA] ✅ {module_name}: 通过")
+
+    return {"pass": passed, "issues": issues, "auto_fixable": auto_fixable}
+
+
+def _module_qa_autofix(features: list, auto_fixable: list) -> list:
+    """自动修复可修复的问题"""
+    fix_map = {}
+    for fix_type, fid, value in auto_fixable:
+        fix_map[(fix_type, fid)] = value
+
+    for f in features:
+        fid = f.get('功能ID', f.get('id', f.get('_id', '')))
+        if ('fix_l1', fid) in fix_map:
+            f['L1功能'] = fix_map[('fix_l1', fid)]
+            f['module'] = fix_map[('fix_l1', fid)]
+        if ('fix_priority', fid) in fix_map:
+            f['优先级'] = fix_map[('fix_priority', fid)]
+            f['priority'] = fix_map[('fix_priority', fid)]
+
+    return features
+
+
+def _apply_module_qa(items: list) -> list:
+    """对所有模块执行 QA 检查并自动修复
+
+    Args:
+        items: 功能列表
+    Returns:
+        检查并修复后的功能列表
+    """
+    # 按模块分组
+    by_module = {}
+    for item in items:
+        mod = item.get('module', item.get('L1功能', 'unknown'))
+        if mod not in by_module:
+            by_module[mod] = []
+        by_module[mod].append(item)
+
+    total_issues = 0
+    total_fixed = 0
+
+    for module_name, features in by_module.items():
+        qa_result = _module_qa_check(module_name, features)
+        if not qa_result["pass"]:
+            total_issues += len(qa_result["issues"])
+            if qa_result["auto_fixable"]:
+                by_module[module_name] = _module_qa_autofix(features, qa_result["auto_fixable"])
+                total_fixed += len(qa_result["auto_fixable"])
+
+    if total_issues > 0:
+        print(f"[QA] 共发现 {total_issues} 个问题，自动修复 {total_fixed} 个")
+
+    # 重新组合
+    result = []
+    for features in by_module.values():
+        result.extend(features)
+
+    return result
+# ===== End Layer 4 =====
+
+
 def _merge_two_versions(old_rows: list, new_rows: list) -> list:
     """合并两个版本，按 L3 功能名逐条取优"""
     merged = []
@@ -3678,6 +4021,47 @@ def _export_to_excel(items: List[Dict], filename_prefix: str, title_hint: str, e
             app_items.append(i)
 
     print(f"[Placement] 分流结果: HUD {len(hud_items)} 条, App {len(app_items)} 条")
+
+    # === Fix B: 幽灵模块过滤 ===
+    # 过滤掉不在 Anchor 定义中的 L1 模块
+    if anchor:
+        valid_hud_modules = set()
+        valid_app_modules = set()
+
+        for mod in anchor.get('hud_modules', []):
+            name = mod.get('name', '')
+            if name:
+                valid_hud_modules.add(name)
+
+        for mod in anchor.get('app_modules', []):
+            name = mod.get('name', '')
+            if name:
+                valid_app_modules.add(name)
+
+        # 跨端模块也加入有效集合
+        for mod in anchor.get('cross_cutting', []):
+            name = mod.get('name', '')
+            if name:
+                # 根据之前的 cross_to_hud/cross_to_app 逻辑分配
+                cross_to_hud = {'AI功能', '语音交互', '视觉交互', '多模态交互', '实体按键交互', '氛围灯交互'}
+                if name in cross_to_hud:
+                    valid_hud_modules.add(name)
+                else:
+                    valid_app_modules.add(name)
+
+        original_hud_count = len(hud_items)
+        original_app_count = len(app_items)
+
+        # 过滤幽灵模块
+        hud_items = [f for f in hud_items if f.get('module') in valid_hud_modules]
+        app_items = [f for f in app_items if f.get('module') in valid_app_modules]
+
+        filtered_hud = original_hud_count - len(hud_items)
+        filtered_app = original_app_count - len(app_items)
+
+        if filtered_hud > 0 or filtered_app > 0:
+            print(f"[GhostFilter] 过滤 HUD {filtered_hud} 条, App {filtered_app} 条不在 Anchor 中的功能")
+    # === End Fix B ===
 
     # 修复 1: 强制归一化，确保写入时名称正确
     hud_items = _force_normalize(hud_items, normalize_map)
@@ -4915,34 +5299,18 @@ def try_structured_doc_fast_track(
                         print(f"  [Score] 新版评分异常: {e}, 默认0分")
                         new_score = 0
 
-                    # Fix 4: 使用比较决策函数
-                    decision = _compare_decision(mod_name, old, new, old_score, new_score)
+                    # Layer 2: 使用替换模式对比——择优替换，不做并集
+                    # decision = 'replace' / 'keep'（不再有 merge 或吸收逻辑）
+                    decision = _compare_module_replace_mode(mod_name, old, new, old_score, new_score)
 
-                    # 修复 3: Compare KEEP/NEW 时吸收对方独有功能
-                    if decision == 'new':
+                    if decision == 'replace':
+                        # 整体替换为新版，不保留旧版独有功能
                         final_items.extend(new)
-                        # 扫描旧版中新版没有的功能，追加
-                        new_names = {str(r.get('name', '')) for r in new if r.get('name')}
-                        old_only = [r for r in old if str(r.get('name', '')) not in new_names and r.get('name')]
-                        if old_only:
-                            final_items.extend(old_only)
-                            print(f"  OK+ {mod_name}: 新版更好 + 保留旧版 {len(old_only)} 条独有功能")
+                        print(f"  REPLACE {mod_name}: 新版质量更好 → 整体替换 (新{len(new)}条，弃旧{len(old)}条)")
                     elif decision == 'keep':
-                        # 保留旧版全部内容
+                        # 整体保留旧版，不吸收新版独有功能
                         final_items.extend(old)
-                        # 但扫描新版中旧版没有的 L3 功能名，追加进去
-                        old_names = {str(r.get('name', '')) for r in old if r.get('name')}
-                        new_only = [r for r in new if str(r.get('name', '')) not in old_names and r.get('name')]
-                        if new_only:
-                            final_items.extend(new_only)
-                            new_names_list = [str(r.get('name', ''))[:20] for r in new_only[:5]]
-                            print(f"  KEEP+ {mod_name}: 旧版更好 + 吸收 {len(new_only)} 条新增功能 ({', '.join(new_names_list)}...)")
-                        else:
-                            print(f"  KEEP {mod_name}: 旧版质量更好 (抽样)")
-                    elif decision == 'merge':
-                        merged = _merge_best_of_both(old, new)
-                        print(f"  MERGE {mod_name}: 逐条取优 ({len(merged)}条)")
-                        final_items.extend(merged)
+                        print(f"  KEEP {mod_name}: 旧版质量更好 → 保留旧版 ({len(old)}条)")
                     # decision is None → 跳过该模块
 
                 all_items = final_items
@@ -4957,6 +5325,16 @@ def try_structured_doc_fast_track(
                 print(f"[Normalize-Post] Compare 后归一化: {len(all_items)} 条")
 
                 print(f"[Compare] 最终: {len(all_items)} 条")
+
+                # === Layer 3: 密度控制 ===
+                print(f"\n[DensityCap] 检查模块密度上限...")
+                all_items = _apply_density_limits(all_items, anchor, gw)
+                print(f"[DensityCap] 最终: {len(all_items)} 条")
+
+                # === Layer 4: 模块级 QA ===
+                print(f"\n[QA] 模块级质量检查...")
+                all_items = _apply_module_qa(all_items)
+                print(f"[QA] 最终: {len(all_items)} 条")
 
             if not all_items:
                 _send_reply("生成失败:所有批次均未生成有效内容")

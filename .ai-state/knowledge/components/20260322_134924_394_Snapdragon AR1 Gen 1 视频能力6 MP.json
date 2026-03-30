@@ -1,15 +1,18 @@
 {
   "title": "Snapdragon AR1 Gen 1 视频能力：6 MP 30 FPS 与 720p120 慢动作",
   "domain": "components",
-  "content": "Snapdragon AR1 Gen 1 支持最高 6 MP 30 FPS 视频采集，视频编解码规格包括 Decode 1920 x 1080 30 FPS、Encode 6 MP 30 FPS，并支持 720p30 encode + 720p30 decode 并发。平台还支持 720p120 FPS 慢动作视频拍摄，适合智能眼镜第一视角短视频与直播前处理场景。",
+  "content": "Snapdragon AR1 Gen 1 的视频能力可概括为“中等分辨率、低功耗优先”的轻量级智能眼镜方案。根据高通公开规格，这颗平台最高支持 **6 MP@30 FPS** 视频采集，视频编解码能力为 **Decode 1920×1080@30 FPS**、**Encode 6 MP@30 FPS**，并支持 **720p30 encode + 720p30 decode** 并发，适合一边本地采集、一边进行视频通话或直播预处理。另一个明确卖点是 **720p@120 FPS** 慢动作拍摄，可用于第一视角运动片段、短视频素材和动作分析场景。\n\n从像素量看，**6 MP** 约等于 **600 万像素/帧**，在 **30 FPS** 下每秒处理约 **1.8 亿像素**；而 **720p** 分辨率为 **1280×720**，单帧约 **92.16 万像素**，在 **120 FPS** 下每秒约 **1.106 亿像素**。这说明 AR1 Gen 1 虽然不是面向高端手机影像的旗舰 SoC，但其视频链路明显针对眼镜设备做了功耗与带宽平衡：既保证日常录制和直播所需的流畅度，又避免过高分辨率带来的发热和续航压力。\n\n在产品落地上，高通在 **2023 年 8 月** 发布 Snapdragon AR1 Gen 1，并将其定位为轻量级智能眼镜平台，典型合作对象包括 **Meta、XREAL、Lenovo、OPPO、Rokid、Tencent、Vuzix、Xiaomi** 等厂商。不过，现有搜索结果**没有给出**搭载该芯片的量产模组型号、单芯片采购价格、摄像头传感器配套型号或具体供应商报价，因此这部分不能编造。能确认的供应商名称主要是 **Qualcomm（高通）** 作为平台提供方。\n\n综合来看，AR1 Gen 1 的视频规格并不追求 4K，而是围绕智能眼镜的真实需求设计：**6 MP@30 FPS** 适合第一视角记录、视频通话、AI 视觉输入；**1080p30 解码** 和 **720p30 编解码并发** 有利于远程协作与流媒体；**720p120** 则补足了创意拍摄能力。对于强调轻薄、续航和实时连接的 AR 眼镜，这组参数比单纯堆高分辨率更实用。",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "video capture",
     "6MP",
-    "30FPS",
     "slow motion",
-    "720p120"
+    "video capture",
+    "720p120",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
+    "30FPS"
   ],
   "confidence": "high"
 }

@@ -1,16 +1,18 @@
 {
   "title": "Horizon Robotics Sunrise 3.0M (X3M) Datasheet Rev.1.6 产品状态与版本信息",
   "domain": "components",
-  "content": "文档对应产品为 Horizon Robotics Sunrise 3.0M（X3M），资料名称为《X3M Datasheet》，版本 Rev.1.6，发布时间 March 2022。文档明确声明该产品“under development”，Horizon Robotics 保留在不通知情况下变更或停产该产品的权利。版权页显示 ©2020 Horizon Robotics，官网为 https://www.horizon.ai 。该条目适合作为 X3M 芯片资料的基础元数据与版本识别信息。",
+  "content": "文档对应产品为 **Horizon Robotics（地平线）Journey 3 / Sunrise 3.0M，型号 X3M**，资料名称为 **《X3M Datasheet》**，文档版本 **Rev.1.6**，发布时间 **March 2022**。从现有搜索结果可直接确认的基础元数据包括：版权页标注 **©2020 Horizon Robotics**，官网为 **https://www.horizon.ai**。原文还指出该文档将产品状态标记为 **“under development”**，并声明地平线保留在不另行通知的情况下对产品进行变更或停产的权利，这些内容可作为该版数据手册的版本识别与状态说明。\n\n结合搜索结果中可公开核实的信息，**X3M/征程3** 属于地平线 **Journey（征程）系列** 车载 AI 芯片，主要面向 **ADAS、智能座舱、L2/L2+ 辅助驾驶**。公开资料中可补充的具体型号与规格包括：芯片型号为 **Journey 3（征程3）/ X3M**；AI 架构为地平线自研 **BPU Bernoulli（伯努利）**；CPU 为 **双核 Arm Cortex-A53**；公开常见指标为 **5 TOPS INT8 AI 算力**、**16nm 制程**、**典型功耗约 2.5W**。接口与能力方面，搜索结果提到其支持 **LPDDR4/LPDDR4X** 内存，具备 **MIPI CSI** 摄像头输入、**MIPI DSI/LVDS** 显示输出，以及 **PCIe Gen3、USB 3.0、千兆以太网、CAN-FD、LIN、GPIO、SPI、I2C、UART** 等接口；视频侧支持 **H.264/H.265** 编解码。安全与车规方面，公开结果提到其面向 **ISO 26262 ASIL B** 功能安全目标，并符合 **AEC-Q100** 车规可靠性要求。\n\n产品状态上，需要区分“**文档状态**”与“**芯片商业化状态**”：虽然该 **Rev.1.6** 文档页写明产品 **under development**，但搜索结果同时显示，**征程3于 2020 年发布，并在 2021 年实现量产上车**，已用于 **长安 UNI-T、UNI-K、广汽埃安 LX Plus、哪吒 U Pro、理想 ONE（部分功能）** 等车型。因此，这一条目更适合表述为：**Rev.1.6 是 2022 年 3 月发布的 X3M 数据手册版本信息，文档页声明产品处于开发状态；而从公开市场信息看，征程3芯片本身已在 2021 年进入量产应用。**\n\n关于价格，搜索结果明确指出：**X3M 芯片单价未公开**，且车规 SoC 价格通常属于 **B2B 商业敏感信息**，公开渠道未给出可核实的 **美元/颗** 或 **人民币",
   "source": "doc_import:X3M - DT-2500-2-X3M-Datasheet-V1.6.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Horizon Robotics",
-    "Sunrise 3.0M",
-    "X3M",
     "Datasheet",
+    "X3M",
+    "Horizon Robotics",
+    "internal",
     "Rev1.6",
-    "March 2022"
+    "Sunrise 3.0M",
+    "March 2022",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

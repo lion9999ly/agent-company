@@ -1,15 +1,21 @@
 {
   "title": "EyeLights EyeRide：整体安全感与品牌推荐度",
   "domain": "competitors",
-  "content": "用户对 EyeRide 系统整体满意，并直接向 EyeLights 品牌致敬，认为该系统“确实能让你成为更安全的骑手”，给出强烈推荐。这类反馈强化了产品在安全辅助骑行上的品牌定位，但缺少可量化指标，更多体现用户主观满意度与口碑传播价值。",
+  "content": "EyeLights **EyeRide** 是法国公司 **EyeLights** 推出的摩托车头盔 HUD（平视显示）产品，主打把导航、来电、音乐等信息直接投射到骑手视线前方。结合现有可核实信息，这一产品的品牌口碑主要建立在“减少低头看手机/仪表”的安全感之上，但关于“更安全”本身，公开资料里仍以用户主观评价为主，缺少事故率下降、反应时间缩短等量化数据。\n\n从产品与品牌信息看，EyeRide 并非像传感器或芯片那样有 **IMX678、BES2800、QCC5181** 这类公开核心器件型号可查；公开资料通常直接以 **EyeLights EyeRide / EyeRide HUD** 作为产品名。已披露的规格中，显示部分常见描述为 **OLED 微显示+光学投影系统**，分辨率约 **800×480**，亮度约 **3000–5000 nits**，视场角约 **20–25°**，虚拟成像距离约 **2–3 米**。连接方面通常支持 **Bluetooth 5.0**，并兼容 **iOS / Android** 手机及部分摩托车蓝牙耳机品牌，如 **Sena**、**Cardo**。续航公开信息多为 **5–8 小时**，充电接口为 **USB-C**。整机重量公开资料一般写在 **100–150g** 区间，强调适配多数全盔和揭面盔。\n\n在“整体安全感”层面，用户推荐 EyeRide 的核心原因，是它让骑手在导航、接电话、听提示时尽量保持“**eyes on the road**”。这类体验与 EyeLights 的品牌定位高度一致：不是单纯卖一个显示器，而是卖“更少分心”的骑行辅助方案。尤其在陌生路线、城市通勤和长途骑行场景中，HUD 相比车把手机支架更容易被用户理解为安全升级。不过需要说明的是，公开搜索结果没有给出例如“事故风险降低 xx%”“视线转移减少 xx 秒”之类的硬指标，因此不能把用户好评直接等同于经过严格验证的安全结论。\n\n价格方面，公开市场信息通常将 EyeRide 归为高端摩托车电子配件，海外零售价格多在 **数百欧元/美元** 区间，但本次搜索结果未提供可直接确认的单一官方售价，因此不宜写成确定数字。综合来看，EyeLights 作为 **法国品牌 EyeLights**，在摩托车 HUD 这一细分市场具备较强辨识度；而 EyeRide 的推荐度，更多来自用户对其使用体验、科技感和安全辅助逻辑的认可，而非基于大样本量化测试的数据背书。",
   "source": "doc_import:eyelights_competitor_analysis.xlsx",
   "created_at": "2026-03-22",
   "tags": [
+    "brand perception",
+    "recommendation",
     "EyeLights",
     "EyeRide",
-    "brand perception",
+    "internal",
     "safety",
-    "recommendation"
+    "night_deepened",
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high",
+  "_usage_count": 12,
+  "_last_used": "2026-03-30T00:49:12.241624",
+  "_first_used": "2026-03-28T14:56:26.852251"
 }

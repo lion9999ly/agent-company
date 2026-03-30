@@ -1,17 +1,20 @@
 {
   "title": "DSA专用加速器路线：NPU/TPU的脉动阵列与低精度优化",
   "domain": "components",
-  "content": "白皮书将DSA专用加速器（如NPU/TPU）定位为专域极致能效路线，主要服务推理与训练。核心创新包括脉动阵列等定制架构、量化与低精度计算、片上模型缓存。软件侧依赖编译器与驱动深度优化，并与特定框架紧密绑定，如TPU-TensorFlow。其优势是单位能效高、针对特定负载优化、常集成于SoC；典型应用包括云端大规模推理和端侧AI推理。生态策略强调软硬件紧耦合及与云服务绑定。",
+  "content": "DSA专用加速器（如 NPU、TPU）之所以被视为 AI 芯片的高能效路线，关键在于把神经网络最常见的矩阵乘法、卷积等操作，固化到脉动阵列（Systolic Array）等专用数据流架构中。公开资料里，Google 第一代 TPU 采用 **256×256 脉动阵列**，共 **65,536 个 8-bit MAC**，峰值约 **92 TOPS（INT8）**，板载 **28 MiB 片上存储**，典型板卡功耗约 **40W**，主要面向推理。到训练场景，Google **Cloud TPU v4** 单芯片公开规格为 **275 TFLOPS（BF16）**、**32 GiB HBM**、带宽 **1,200 GB/s**，并通过 Pod 规模互联支撑大模型训练，供应商为 **Google Cloud**。\n\n低精度优化是另一条主线。TPU 长期强调 **BF16**，因为其指数位与 FP32 接近，训练稳定性较好；推理侧则大量使用 **INT8**，进一步压缩带宽和功耗。类似思路也出现在商用 NPU。以 **Intel Habana Gaudi2** 为例，公开参数包括 **24 个 Tensor Processor Core**、**96 GB HBM2E**、内存带宽 **2.45 TB/s**，支持 **BF16/FP8** 等低精度训练与推理，官方建议价约 **6,500 美元**，供应商为 **Intel**。NVIDIA 虽不以 NPU 命名，但其 **H100 Tensor Core GPU** 代表了同类 DSA 化趋势：支持 **FP8/FP16/BF16/INT8**，SXM 版本显存 **80 GB HBM3**、带宽约 **3 TB/s**，Hopper 架构将 Transformer Engine 与低精度动态切换结合，强化训练能效。\n\n端侧 SoC 中，NPU 更强调功耗与集成。比如 **Apple A17 Pro** 的 Neural Engine 公开为 **16 核**、约 **35 TOPS**；**Qualcomm Snapdragon 8 Gen 3** 宣称端侧 AI 性能提升并支持多模态生成式 AI，但公开资料未统一给出独立 NPU 单元价格，故不宜编造。此类芯片通常由 **台积电代工**，通过片上 SRAM/缓存减少对 LPDDR 的访问，适合手机、PC 和汽车座舱推理。\n\n总体看，这一路线的优势不是“通用性最强”，而是对特定 AI 负载做到极致：一是用脉动阵列提升矩阵计算吞吐；二是用 **BF16、FP16、INT8、FP8** 等低精度格式降低存储和带宽压力；三是依赖编译器、驱动和框架深度协同，例如 **TPU 与 TensorFlow/XLA**、Habana 与 **SynapseAI**。其代价则",
   "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "DSA",
-    "NPU",
-    "TPU",
     "脉动阵列",
-    "低精度计算",
+    "NPU",
+    "软硬件紧耦合",
+    "internal",
+    "overhaul_deepened",
     "片上缓存",
-    "软硬件紧耦合"
+    "低精度计算",
+    "night_deepened",
+    "TPU",
+    "DSA"
   ],
   "confidence": "high"
 }

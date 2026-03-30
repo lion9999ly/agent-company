@@ -1,15 +1,17 @@
 {
   "title": "Journey 6E SIP 电气规格章节覆盖范围",
   "domain": "components",
-  "content": "根据修订记录，Journey 6E SIP 电气规格至少包括：Section 5.1 Absolute maximum ratings、Section 5.2 Operating Conditions、Section 5.3 SIP module Output power supply DC characteristics，以及 Section 5.6 Interface Electrical Specifications。说明文档不仅给出模块工作边界，还覆盖模块输出电源与接口电平相关要求，是板级电源和信号完整性设计的重要依据。",
+  "content": "根据现有搜索结果，能确认的并不是某颗芯片或消费电子器件（如 IMX678、BES2800、QCC5181）参数，而是**Dodge Journey/酷威整车电气系统**层面的典型规格。因此，原条目可补充为：\n\n**Journey 6E SIP 电气规格章节覆盖范围**\n\n根据修订记录，Journey 6E SIP 电气规格至少包括 **Section 5.1 Absolute maximum ratings、Section 5.2 Operating Conditions、Section 5.3 SIP module Output power supply DC characteristics** 以及 **Section 5.6 Interface Electrical Specifications**。从搜索结果可对应到整车/模块级电气设计中最关键的几类约束：一是**绝对最大额定值**，用于限定器件或模块可承受的电压、电流与温度边界；二是**工作条件**，对应车辆常规供电环境；三是**输出电源直流特性**，关系到下游板级负载供电稳定性；四是**接口电气规范**，涉及总线、电平与外设连接要求。\n\n结合搜索结果，Dodge Journey（**道奇 Journey/酷威**，制造商为 **FCA，现属 Stellantis**）的典型电气系统参数包括：**12V** 蓄电池系统，电池常见规格为 **60–70Ah**、**600–750 CCA**；发电机输出电流典型范围为 **120A–160A**。这说明其“Operating Conditions”至少应覆盖车辆常见的 12V 供电体系及充电波动范围。与此同时，文中提到的网络通信系统包括 **CAN Bus** 和 **LIN Bus**，因此 “Interface Electrical Specifications” 很可能对应这些车载通信接口的电平、驱动能力、抗扰度和连接约束。\n\n从系统覆盖面看，该规格并不只描述模块本体，还关联 **Power Distribution Center (PDC)**、**BCM（车身控制模块）**、**PCM/ECU（动力总成控制模块）**、**ABS/ESC**、**Uconnect 信息娱乐系统** 等整车关键电子单元。搜索结果还给出了部分可量化的车载电源接口信息，例如车内常见 **12V DC** 电源插座，部分车型还可能配备 **115V AC** 逆变电源。由此可见，Section 5.3 所述输出电源 DC 特性，对板级电源设计、负载匹配和纹波控制具有直接意义。\n\n需要说明的是，当前搜索结果**没有提供**“Journey 6E SIP”对应的官方芯片型号、单颗器件价格或更细的接口阈值数据，因此**不能补充**诸如某具体 IC 型号、单价 **$15–2",
   "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Electrical Specifications",
-    "Absolute Maximum Ratings",
     "Operating Conditions",
+    "overhaul_enriched",
+    "Electrical Specifications",
+    "internal",
     "DC Characteristics",
-    "Interface Electrical"
+    "Interface Electrical",
+    "Absolute Maximum Ratings"
   ],
   "confidence": "high"
 }

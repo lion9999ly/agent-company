@@ -11,5 +11,8 @@
   "confidence": "high",
   "created": "2026-03-25T23:52:13.001824",
   "type": "report",
-  "word_count": 6284
+  "word_count": 6284,
+  "_usage_count": 3,
+  "_last_used": "2026-03-29T09:00:57.024265",
+  "_first_used": "2026-03-28T16:06:19.149447"
 }

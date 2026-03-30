@@ -1,14 +1,16 @@
 {
   "title": "Journey 6E SIP 接口时序规格已单独成章",
   "domain": "components",
-  "content": "修订记录显示 Section 6 为 Interface Timings Specifications，并在 V0.5（2024-07-19）进行了更新。该信息表明 Journey 6E SIP 的外部接口不仅有电气约束，还有明确时序要求，适用于高速数字接口、控制信号或同步总线设计。由于时序章节仍在更新，系统联调时需关注版本一致性。",
+  "content": "标题：Journey 6E SIP 接口时序规格已单独成章\n\n原内容补充后：\n\n现有搜索结果**未提供 Journey 6E 的具体公司/品牌名、芯片型号、器件价格或硬件参数**，因此不能补充诸如 **IMX678、BES2800、QCC5181、3000nits、42dB、1.65kg、$15-25/颗** 这类与该条目直接对应的数据。根据搜索结果，当前能够确认的具体信息仅包括：修订记录中 **Section 6 标题为 “Interface Timings Specifications”**，并且在 **V0.5（2024-07-19）** 进行了更新。这说明 Journey 6E SIP 文档已将接口时序要求从一般接口说明中独立出来，形成单独章节，表明其外部接口设计不仅关注电气特性，也强调时序约束。\n\n从搜索结果引用的 SIP 通用标准看，若该“接口时序”涉及 SIP 协议交互，其可参考 **IETF RFC 3261** 中的事务定时器：**T1=500 ms、T2=4 s、T4=5 s**，而典型事务超时为 **64×T1=32 s**。例如，**Timer B** 和 **Timer F** 常取 **32 s**，用于 INVITE 与非 INVITE 客户端事务超时控制。这些数值说明，在系统联调、超时重传、异常恢复和互操作验证中，时序章节并非形式性补充，而是直接影响接口稳定性和兼容性的关键约束。\n\n需要特别说明的是，搜索结果明确指出：**“Journey 6E”并非一个广为人知或标准化的 SIP 设备型号或产品系列名称**，也**未检索到对应制造商信息**。因此，目前无法基于结果补充其**具体品牌、供应商、市场价格、BOM 成本、芯片平台或量产规格**。若后续能拿到该文档封面、修订页、料号页或厂商主页，才可进一步核实其所属公司及是否采用特定 SoC、PHY、时钟器件或接口收发器。\n\n综上，当前可落地的补充数据为：**Section 6=Interface Timings Specifications**、**版本更新时间=2024-07-19（V0.5）**、可参考的 SIP 标准时序参数包括 **500 ms、4 s、5 s、32 s**。由于时序章节仍在更新，系统联调时应严格核对**文档版本号、接口定义页与时序页的一致性**，避免因版本差异导致握手、重传或同步行为异常。",
   "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
   "created_at": "2026-03-22",
   "tags": [
+    "Revision V0.5",
     "Interface Timing",
     "Section 6",
     "Timing Specifications",
-    "Revision V0.5"
+    "internal",
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

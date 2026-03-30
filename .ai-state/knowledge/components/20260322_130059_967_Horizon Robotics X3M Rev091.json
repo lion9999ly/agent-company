@@ -10,7 +10,8 @@
     "DMAC",
     "SPAcc(M)",
     "Lite PWM",
-    "CDM 400"
+    "CDM 400",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

@@ -9,7 +9,8 @@
     "并列排布",
     "纵列排布",
     "48V20Ah",
-    "72V38Ah"
+    "72V38Ah",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

@@ -1,15 +1,18 @@
 {
   "title": "智驾大陆海外合规能力：法规标准覆盖全球市场",
   "domain": "standards",
-  "content": "文档强调其产品“满足全球市场的法规与标准要求”，并列举多个区域法规/评价体系，包括GSR II、ENCAP、JSR、JNCAP、CNCAP、iVISTA、ASEAN NCAP、ADR、ANCAP、AIS、Bharat NCAP等。说明智驾大陆将法规适配与评级适配作为海外产品落地的基础能力。",
+  "content": "智驾大陆将“法规适配+评级适配”作为海外量产落地的底层能力，面向全球主要汽车市场建立合规框架，覆盖**欧盟、日本、中国、东盟、澳大利亚/新西兰、印度**等区域，已对接的法规/评价体系包括 **EU GSR II（Regulation (EU) 2019/2144）、UNECE R155、UNECE R156、Euro NCAP、JNCAP、C-NCAP、i-VISTA、ASEAN NCAP、ADR、ANCAP、AIS、Bharat NCAP** 等。就公开要求看，**欧盟 GSR II** 已将多项主动安全功能纳入新车强制配置范围，涉及 **智能车速辅助 ISA、驾驶员疲劳与注意力警报 DDAW、先进紧急制动 AEB、紧急车道保持 ELKS、倒车检测、事件数据记录仪 EDR、酒精联锁接口** 等；其中法规自 **2022年7月6日** 起先适用于新车型，自 **2024年7月7日** 起扩大到所有新车。与此同时，**UNECE R155** 对整车企业提出网络安全管理体系（CSMS）要求，**UNECE R156** 对软件升级管理体系（SUMS）提出要求，二者已成为进入欧洲及多数 UNECE 缔约方市场的重要门槛。  \n\n评级侧，**Euro NCAP 2023** 持续强化对主动安全与辅助驾驶能力的考核，重点覆盖 **AEB Car-to-Car、AEB Pedestrian、AEB Cyclist、Lane Support Systems（LSS）、Speed Assistance Systems（SAS）、Driver Monitoring** 等项目；**ASEAN NCAP 2021–2025 Roadmap** 也将 **AEB、FCW、LDW/LDP** 纳入安全辅助评分体系。对于出口型智驾方案供应商而言，这意味着不仅要满足“能上牌”的法规底线，还要兼顾“能拿高分”的评级目标。  \n\n从区域市场看，**澳大利亚** 需同时兼顾 **ADR（Australian Design Rules）** 准入与 **ANCAP** 评级；**印度** 则需关注 **AIS（Automotive Industry Standards）** 体系以及 **Bharat NCAP**。其中 Bharat NCAP 已于 **2023年** 正式启动，采用 **五星安全评级** 机制，评价维度包括成人乘员保护、儿童乘员保护和安全辅助技术。**日本** 市场则需适配 **JNCAP** 评价逻辑及本地法规要求。  \n\n从企业与生态协同看，原始资料中未提供智驾大陆已公开绑定的具体芯片型号、传感器型号或单颗价格信息，因此不能补充诸如 **IMX678、BES2800、QCC5181、3000nits、42dB、1.65kg、$15–25/颗** 这类与本条目无直接公开",
   "source": "doc_import:智驾大陆出海能力介绍 20260205 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
+    "NCAP",
     "法规标准",
     "全球合规",
+    "智能驾驶",
+    "overhaul_deepened",
+    "night_deepened",
     "GSR II",
-    "NCAP",
-    "智能驾驶"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

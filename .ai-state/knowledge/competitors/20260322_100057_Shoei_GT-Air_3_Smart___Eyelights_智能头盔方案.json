@@ -1,15 +1,19 @@
 {
   "title": "Shoei GT-Air 3 Smart + Eyelights 智能头盔方案",
   "domain": "competitors",
-  "content": "文档列出竞品名称“GT‑Air 3 Smart+Eyelights”。可视为 Shoei 传统头盔与 Eyelights 智能模块结合的智能头盔方案，主题聚焦摩托骑行场景。原文未提供价格、参数、上市时间、供应商关系等进一步数据，仅能确认品牌/型号级信息：Shoei GT-Air 3、Eyelights。",
+  "content": "“**Shoei GT‑Air 3 Smart + Eyelights**”目前仍只能确认是一个**方案级/组合级名称**，并非已检索到的 Shoei 官方量产整机型号。基于现有搜索结果，可核验的信息应拆分为两部分：一是 **Shoei GT‑Air 3** 头盔本体，二是 **Eyelights** 的第三方 HUD 智能显示系统。可明确写入的品牌/公司名包括：**Shoei（日本头盔品牌）**、**Eyelights（法国 HUD 公司）**，以及 GT‑Air 3 预留适配的通信系统品牌 **Sena**，对应型号为 **Sena SRL‑3 Mesh**。\n\n其中，**Shoei GT‑Air 3** 被描述为 Shoei 于 **2023 年末/2024 年初**推出的运动旅行全盔，基础型号可确认就是 **GT‑Air 3**。其已出现的具体部件/命名包括：外壳材料 **AIM+（Advanced Integrated Matrix Plus Multi‑Fiber）**，内置遮阳镜 **QSV‑2**，面罩/镜片系统 **CNS‑1C**，并支持 **Pinlock** 防雾片；安全认证方面，搜索结果明确提到 **ECE 22.06**，并列出 **DOT、JIS**。与“Smart”最相关的已知型号是其预留安装位适配 **Sena SRL‑3 Mesh**，说明它具备面向通信系统的一体化结构设计，但这并不等于 Shoei 官方推出了名为“GT‑Air 3 Smart + Eyelights”的整机。\n\n可补充的具体参数方面，搜索结果给出的 GT‑Air 3 重量区间为 **约 1500g–1650g**，尺码为 **XS、S、M、L、XL、XXL**。价格方面，GT‑Air 3 素色版通常在 **550–700 欧元 / 600–800 美元 / 4500–6000 元人民币**；配套通信模块 **Sena SRL‑3 Mesh** 需另购，价格约 **300–350 欧元 / 350–400 美元 / 2500–3000 元人民币**。\n\n**Eyelights** 部分，搜索结果仅确认其为可安装在多数全盔内部的**第三方摩托车 HUD 系统**，未给出更细的官方量产型号编码，因此可写的型号级信息只有品牌名 **Eyelights HUD**。已出现的具体参数包括：连接方式为 **蓝牙 4.0/5.0**，兼容 **iOS 和 Android**，电池续航约 **6–8 小时**。价格方面，Eyelights HUD 系统通常在 **500–700 欧元 / 550–750 美元 / 4000–6000 元人民币**。\n\n因此，这一条目更准确的表述应是：**以 Shoei GT‑Air 3 为基础头盔，结合 Eyelights HUD 形成的",
   "source": "doc_import:Project X 竞品分析.xlsx",
   "created_at": "2026-03-22",
   "tags": [
-    "Shoei",
     "GT-Air 3",
     "Eyelights",
+    "internal",
+    "摩托车",
+    "overhaul_deepened",
     "智能头盔",
-    "摩托车"
+    "night_deepened",
+    "Shoei",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

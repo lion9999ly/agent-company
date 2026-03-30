@@ -1,0 +1,13 @@
+{
+  "title": "V2X 技术在两轮车上的应用：协议栈与硬件需求",
+  "domain": "lessons",
+  "content": "**知识条目：V2X 技术在两轮车上的应用：协议栈与硬件需求**\n\nV2X（Vehicle-to-Everything）在两轮车（摩托车、电动踏板车等）上的核心目标是提升弱势交通参与者安全性。搜索结果给出的背景数据包括：**WHO** 指出摩托车手和自行车手约占全球道路交通死亡人数的 **28%**；**NHTSA** 数据显示，摩托车手按每英里里程计的致命事故风险约为乘用车乘员的 **28 倍**。这也是两轮车导入 V2X 的主要驱动力。\n\n### 1. 两轮车 V2X 的主流技术路线\n当前协议栈主要分为两类：\n\n1. **DSRC / IEEE 802.11p**\n   - 工作频段：**5.9 GHz**（美国、部分亚洲）或 **5.8 GHz**（欧洲 ITS-G5）\n   - 物理层速率：**3 Mbps–27 Mbps**\n   - 优点：低时延、直连通信成熟\n   - 典型场景：V2V、V2I 安全广播\n\n2. **C-V2X（3GPP）**\n   - 包括 **LTE-V2X（4G）** 与 **5G NR V2X（5G）**\n   - 通信模式：\n     - **PC5**：终端直连，不依赖基站\n     - **Uu**：通过蜂窝网络接入云端/平台\n   - 搜索结果未给出具体芯片型号、发射功率、模组价格，**not found**\n\n### 2. 两轮车协议栈结构\n#### （1）应用层\n两轮车 V2X 应用通常复用汽车 V2X 消息集，但面向摩托车场景做功能适配。\n\n- **SAE J2735（美国）**\n  - **BSM**（Basic Safety Message，基本安全消息）\n  - **SPAT**（Signal Phase and Timing，信号灯相位与配时）\n  - **MAP**（地图数据）\n\n- **ETSI EN 302 637（欧洲）**\n  - **CAM**（Cooperative Awareness Message，协作感知消息）\n  - **DENM**（Decentralized Environmental Notification Message，去中心化环境通知消息）\n\n- 两轮车典型应用：\n  - **MCW**：Motorcycle Collision Warning，摩托车碰撞预警\n  - **MBSD**：Motorcycle Blind Spot Detection，摩托车盲区检测\n  - **ISA**：Intersection Safety Assistant，交叉口安全辅助\n  - **Motorcycle Platooning**：摩托车编队行驶\n\n#### （2）传输层\n- **IEEE 1609.3**\n- **ETSI TS 102 636-4**\n- 轻量协议：\n  - **WSMP**（WAVE Short Message Protocol）\n  - **BTP**（Basic Transport Protocol）\n- 也可使用 **UDP/TCP** 承载非安全业务\n\n#### （3）网络层\n- **GeoNetworking（GN）**：支持按地理区域传播消息，无需传统 IP 路由\n- **IPv6**：用于更广泛的联网能力\n\n#### （4）数据链路层\n- **IEEE 802.11p**\n- **IEEE 1609.4**：支持控制信道（CCH）与业务信道（SCH）切换\n\n#### （5）安全层\n- **IEEE 1609.2**\n- **E",
+  "source": "overnight_deep_v3_breadth",
+  "created_at": "2026-03-28",
+  "tags": [
+    "v2x",
+    "protocol",
+    "breadth_v3"
+  ],
+  "confidence": "medium"
+}

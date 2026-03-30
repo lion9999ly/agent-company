@@ -1,11 +1,12 @@
 {
   "title": "跨界:Bell Helmets + Quin crash dete",
   "domain": "lessons",
-  "content": "**智能骑行头盔研发摘要**\n\n1. **已落地产品/技术**\n- **Bell SRT Modular Quin**：Bell已将**Quin碰撞检测+SOS**集成到量产头盔。  \n- **Quin技术栈**：**加速度计+陀螺仪**传感器融合，配合专有算法识别碰撞；通过**Bluetooth LE**连接手机App；事故后**10–30秒**倒计时，未取消则向紧急联系人发送**GPS位置**求救信息。  \n- **MIPS Integra**：将低摩擦层**无缝集成到衬垫/通风结构**，相较传统MIPS更**轻薄、舒适、隐蔽**，并减少对通风和贴合的影响。  \n- Bell现有安全平台还包括**Progressive Layering**、**Flex Technology**、**MIPS Spherical/Integra**等多层冲击管理方案。\n\n2. **研发趋势（至2026）**\n- **更深度集成**：传感器、电池、通信模块向壳体/衬垫内嵌，降低重量与外露部件。  \n- **AI降误报**：用机器学习区分真实事故、头盔跌落、剧烈颠簸，提升SOS触发准确率。  \n- **连接升级**：从BLE+手机中继，向**5G/V2X/GPS**联动演进，支持更快救援与预警。  \n- **功能扩展**：**无线充电、健康监测、生物传感器、AR/HUD、后视视频、语音/音频系统**成为高端方向。  \n- **可持续与模块化**：可更换智能模块、可回收/生物基材料，有利于延长产品生命周期。\n\n3. **可借鉴设计/商业模式**\n- **“被动防护+主动救援”双层价值**：MIPS类旋转防护 + 碰撞检测/SOS。  \n- **模块化智能内核**：将传感器/蓝牙/GPS/电池做成可升级模块，适配多头盔SKU。  \n- **App生态**：紧急联系人、骑行数据、固件OTA、订阅",
+  "content": "**智能骑行头盔研发摘要（Bell Helmets + Quin Design）**\n\n1. **已落地产品/技术**  \n- **Bell SRT Modular DLX / SRT Modular Rumble + QUIN**：Bell Helmets 已与 **QUIN Design** 合作，将碰撞检测与 SOS 功能集成到量产摩托车头盔中，公开型号包括 **Bell SRT Modular Rumble Helmet with QUIN**。  \n- **Quin 技术栈**：采用 **加速度计（accelerometer）+ 陀螺仪（gyroscope）** 的传感器融合方案，配合 **IntelliQuin** 专有算法识别碰撞；通过 **Bluetooth Low Energy（BLE）** 连接手机 App；事故后会进入 **倒计时取消流程**，公开资料中可见 **30–60 秒**范围的描述，若未取消则向预设紧急联系人发送包含 **GPS 位置** 的求救信息。  \n- **续航与充电**：搜索结果显示，Quin 模块公开宣传口径为 **120 小时以上使用时间** 或 **60 天以上待机时间**；充电接口资料中提到 **Micro-USB 或 USB-C**，但不同代际资料不完全一致。  \n- **MIPS Integra / Bell 安全平台**：Bell 现有安全平台包括 **MIPS Integra、MIPS Spherical、Flex Technology、Progressive Layering**。其中 **MIPS Integra** 为将低摩擦层更深度整合进头盔内部结构的方案，强调更轻薄、贴合与通风兼顾。  \n\n2. **已公开产品参数/价格**  \n- **Bell SRT Modular Rumble Helmet with QUIN**  \n  - 品牌/公司：**Bell Helmets + QUIN Design**  \n  - 类型：模块化摩托车头盔  \n  - 外壳：**玻璃纤维复合材料（fiberglass composite shell）**  \n  - 认证：**DOT、ECE**  \n  - 尺码：**XS–3XL**  \n  - 重量：搜索结果给出约 **1700–1850g**（随尺码变化）  \n  - 价格：公开零售区间约 **350–450 美元**  \n\n- **Bell Qualifier DLX MIPS with QUIN**  \n  - 品牌/公司：**Bell Helmets + QUIN Design**  \n  - 类型：全盔  \n  - 外壳：**聚碳酸酯/ABS 复合材料**  \n  - 认证：**DOT**  \n  - 尺码：**XS–3XL**  \n  - 重",
   "source": "night_deep_learning",
   "created_at": "2026-03-23",
   "tags": [
     "night_cross",
+    "overhaul_enriched",
     "跨界"
   ],
   "confidence": "medium"

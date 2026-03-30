@@ -1,17 +1,20 @@
 {
   "title": "x86架构AI革新：AMX、AVX-512、HBM与EMIB系统级优化",
   "domain": "components",
-  "content": "白皮书认为x86仍是通用计算基石，主要承担控制与调度角色。其AI创新包括AMX、AVX-512指令集，高带宽内存HBM，以及多芯片封装EMIB。软件生态侧依托oneAPI、AI框架优化和OpenVINO工具套件，强调系统级优化与CPU+GPU+FPGA异构协同。典型应用包括AI服务器、高性能AI PC和数据中心。总体定位是性能优先、能效持续优化，依靠广泛生态地位维持竞争力。",
+  "content": "白皮书将 x86 定位为 AI 系统中的“通用计算与控制中枢”，不仅负责任务调度、数据预处理和推理编排，也通过专用指令与封装技术提升本地 AI 吞吐。以 Intel 为例，**AMX（Advanced Matrix Extensions）**已在第 4 代 Xeon Scalable（Sapphire Rapids）中落地，单核提供 **8 个 Tile 寄存器、总计 8KB Tile 数据空间**，支持 **BF16、INT8** 矩阵运算；对应产品如 **Xeon Platinum 8480+**，**56 核 / 112 线程，基础频率 2.0GHz，TDP 350W**，公开市场价格约 **US$10,710**，供应商为 **Intel**。AMX主要面向大模型推理、推荐系统和视觉模型中的矩阵乘加密集型负载。\n\n在向量计算侧，**AVX-512** 仍是 x86 AI 优化的重要基础。其单条指令可处理 **512 位** 数据，支持 **AVX512_BF16、VNNI** 等扩展，适合特征工程、激活函数、归一化及传统机器学习。AMD 也在 **Zen 4** 服务器平台中支持 AVX-512，例如 **AMD EPYC 9654**，规格为 **96 核 / 192 线程，2.4GHz 基础频率，TDP 360W**，首发价约 **US$11,805**，供应商为 **AMD**。这说明 AVX-512 已不再只是单一厂商特性，而是 x86 阵营在 AI/HPC 融合场景中的共同能力。\n\n内存与封装方面，x86 的系统级创新集中在 **HBM** 与 **EMIB**。典型产品是 **Intel Xeon Max 9480**，集成 **64GB HBM2e**，可提供最高约 **1TB/s 内存带宽**，核心规格为 **56 核、350W TDP**，供应商为 **Intel**。相比传统 DDR5 平台，HBM 更适合参数规模大、访存密集的推理与科学计算任务。**EMIB（Embedded Multi-die Interconnect Bridge）** 则用于多芯片高速互连，使 CPU、GPU、I/O Die 或 HBM 堆栈在同一封装内实现更高带宽、更低延迟连接，是 Intel Ponte Vecchio、Xeon Max 等产品的重要基础技术。\n\n软件生态是 x86 保持竞争力的关键。Intel 提供 **oneAPI、OpenVINO**，并持续优化 **PyTorch、TensorFlow** 等框架；AMD 则推进 **ROCm** 与 CPU/GPU 协同。整体看，x86 在 AI 时代并非单纯“让位”给 GPU，而是通过 **AMX + AVX-512 + HBM + EMIB** 形成从指令集、内存到封装的系统级优化路径，继",
   "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "x86",
-    "AMX",
-    "AVX-512",
-    "HBM",
+    "OpenVINO",
     "EMIB",
+    "x86",
+    "AVX-512",
     "oneAPI",
-    "OpenVINO"
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
+    "AMX",
+    "HBM"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

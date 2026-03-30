@@ -1,15 +1,21 @@
 {
   "title": "Meta Ray-Ban Display Glasses 智能眼镜",
   "domain": "competitors",
-  "content": "文档列出“Meta Ray-Ban Display glasses”。该条目可作为国际智能眼镜代表竞品，重点在品牌联名与显示型眼镜方向。原文未提供售价、显示模组、摄像头规格、AI 功能、重量、续航等参数；可确认信息为 Meta、Ray-Ban、Display glasses。",
+  "content": "文档中仅明确出现“**Meta Ray-Ban Display glasses**”，可将其视为 Meta 与 Ray-Ban 联名、面向**显示型智能眼镜**方向的国际代表竞品。基于当前搜索结果，**没有可直接确认的量产型号、官方售价、重量、续航、摄像头像素、显示模组参数或供应商清单**；搜索内容主要是对“2026 Edition”“Project Orion / Aura”等的**预测**，因此这些信息**不能作为已发布产品参数写入**。目前可确认的只有品牌与产品方向：**Meta**、**Ray-Ban**、**Display glasses**。\n\n从竞品研究角度，这一条目的价值主要在两点。第一，**品牌联名能力**：Meta 负责智能硬件与 AI/生态，Ray-Ban 代表成熟眼镜品牌与渠道资源，这种组合有利于降低智能眼镜的“极客感”，提升日常佩戴接受度。第二，**产品路线指向显示型眼镜**：相较仅提供拍摄、音频或语音助手功能的智能眼镜，Display glasses 意味着其目标更接近带有视觉信息叠加能力的下一代形态，通常会涉及镜片显示、光学模组、交互与功耗平衡等更高技术门槛。\n\n需要特别说明的是，搜索结果中虽然出现了大量具体数字，例如“**每眼 1920×1080 MicroLED 波导显示**、**25°–35° 视场角**、**2,000–5,000 尼特亮度**、**20MP 摄像头**、**4K@60fps**、**8GB–16GB RAM**、**128GB–256GB 存储**、**500–700mAh 电池**、**4–6 小时续航**、**Wi‑Fi 6E/Wi‑Fi 7**、**Bluetooth 5.3**，以及可能供应链方向如 **MicroLED、Waveguide、LiDAR** 等”，但这些均来自**未来产品预测**，并非 Meta 或 Ray-Ban 已公开确认的数据；同样，搜索结果也**未给出明确供应商名称、官方价格区间或上市渠道**。因此，为避免误导，现阶段该条目应保持审慎表述，不宜将上述数字写成既定规格。\n\n综合来看，Meta Ray-Ban Display Glasses 更适合作为“**国际显示型智能眼镜潜在标杆**”纳入竞品池，重点关注其后续是否公布**正式型号、显示方案、摄像头规格、AI 功能、重量、续航、售价以及核心供应商**。在缺乏官方数据前，建议条目维持“品牌联名 + 显示型方向”的基础认知，不扩展为确定参数表。",
   "source": "doc_import:Project X 竞品分析.xlsx",
   "created_at": "2026-03-22",
   "tags": [
     "Meta",
-    "Ray-Ban",
-    "Display Glasses",
+    "internal",
     "智能眼镜",
+    "night_deepened",
+    "Display Glasses",
+    "overhaul_deepened",
+    "Ray-Ban",
     "可穿戴"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 8,
+  "_last_used": "2026-03-29T15:27:07.305193",
+  "_first_used": "2026-03-28T13:28:04.644240"
 }

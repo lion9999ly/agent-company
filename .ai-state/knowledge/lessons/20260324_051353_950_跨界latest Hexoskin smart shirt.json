@@ -1,0 +1,13 @@
+{
+  "title": "跨界:latest Hexoskin smart shirt bi",
+  "domain": "lessons",
+  "content": "**相关研发情报摘要（补充具体数据版）**\n\n1. **可集成技术/模块**  \n- **Hexoskin智能衬衫**：目前公开资料中较新的旗舰系列为 **Hexoskin ProShirt**，由 **Carré Technologies Inc.（品牌：Hexoskin）** 推出，总部位于**加拿大蒙特利尔**。该衬衫内置**纺织ECG电极**与**呼吸传感器**，配合外接 **Hexoskin Device / Hexoskin Pro Device** 使用，可连续输出**心率（HR）**、**心率变异性（HRV）**、**呼吸频率**、**潮气量（Tidal Volume）**、**分钟通气量（Minute Ventilation）**、**步数**、**卡路里消耗**、**睡眠质量**、**身体姿态**与**活动强度**等数据。  \n- **配套采集设备参数**：Hexoskin Device 集成 **IMU**，公开描述为包含**三轴加速度计、三轴陀螺仪、三轴磁力计**；支持 **BLE（Bluetooth Low Energy）** 实时传输到 iOS/Android 设备；内置存储可保存**超过600小时原始数据**；连续记录续航通常约 **14小时**。  \n- **服装规格**：ProShirt 提供 **XS、S、M、L、XL、XXL、XXXL** 多尺码，面料为**聚酯纤维与氨纶混纺**的高弹透气织物，支持**机洗**和重复使用。  \n\n2. **2026头盔传感器融合方向**  \n- **EEG**：干电极/微针电极，用于疲劳、分心、认知负荷识别。  \n- **眼动追踪**：红外摄像头监测凝视、眨眼、闭眼时长。  \n- **PPG/SpO2**：耳部、额头或太阳穴位置监测心率与血氧。  \n- **GSR/皮温**：用于压力与情绪状态识别。  \n- **IMU**：头部姿态、跌落/碰撞检测。  \n- **麦克风阵列**：语音控制、风噪抑制、呼吸异常辅助识别。  \n> 注：本次搜索结果未提供这些头盔模块对应的**具体芯片型号**（如 IMX678、BES2800、QCC5181）或单颗价格，因此不补充未检索到的数据。  \n\n3. **系统架构趋势**  \n- **多模态传感器融合 + Edge AI** 是核心方向：头盔本体传感器与 **Hexoskin ProShirt** 这类智能服装联动，可提升疲劳、分心和健康异常识别准确率。  \n- **无线连接**建议采用 **BLE/低功耗蓝牙**，实现头盔与生理穿戴设备的实时同步。  \n- **交互方式**可结合 **HUD、语音、震动提醒** 做多通道反馈。  \n\n4. **价格与采购信息**  \n- **Hexoskin Pro Kit**（通常含 **1件 ProShirt +",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-24",
+  "tags": [
+    "night_cross",
+    "overhaul_enriched",
+    "跨界"
+  ],
+  "confidence": "medium"
+}

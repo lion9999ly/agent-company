@@ -7,7 +7,9 @@
   "tags": [
     "BleeqUP",
     "智能眼镜",
-    "骑行穿戴"
+    "骑行穿戴",
+    "night_deepened",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

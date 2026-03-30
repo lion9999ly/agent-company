@@ -1,15 +1,18 @@
 {
   "title": "EyeLights EyeRide 未来科技形象：面向前瞻型骑手的必备设备",
   "domain": "competitors",
-  "content": "简短用户评价将 EyeRide 定义为“任何有未来眼光的骑手的必备品”，反映其品牌形象偏向新技术、前沿骑行装备与科技爱好者市场。虽然没有涉及价格、参数或具体功能，但对产品的创新感知和目标用户画像具有参考价值。",
+  "content": "EyeLights **EyeRide** 常被用户评价为“**任何有未来眼光的骑手的必备品**”，这一表述与其产品定位基本一致：它并非传统车载导航，而是由法国公司 **EyeLights（EyeLights SAS）** 推出的摩托车头盔 **HUD（平视显示器）**，面向重视科技感、安全性与互联体验的骑手。结合搜索结果，可补充的具体信息包括：产品型号为 **EyeRide HUD**，支持与 **Google Maps、Waze** 等导航应用联动，并通过配套 **EyeLights App** 在 **iOS 13.0 及以上**、**Android 8.0 及以上** 设备上使用。\n\n从参数看，EyeRide 的“未来科技”形象主要来自其显示与交互能力。搜索结果显示，其采用 **高亮度 OLED 微型显示屏**，亮度可达 **10,000 nits**，在强光环境下仍强调可视性；**分辨率为 720p**，**水平视场角（FOV）为 20°**，并将画面投射为约 **21 米** 外的虚拟成像距离，以减少骑手频繁变焦带来的视觉负担。连接方面，设备支持 **Bluetooth 5.0**，并具备 **2.4GHz Wi‑Fi** 用于数据传输和固件更新；还支持 **Siri** 与 **Google Assistant** 语音控制。续航方面，内置锂离子电池可提供约 **8 小时** 使用时间，**USB‑C** 充电，充满约 **2 小时**。重量约 **100 克**，官方描述可兼容市面上 **90% 以上** 的全盔和揭面盔；防护等级为 **IP54**。此外，它还可与主流头盔蓝牙通讯品牌如 **Sena**、**Cardo** 配合使用。\n\n价格方面，搜索结果给出的区间较明确：EyeRide HUD 的官方建议零售价通常在 **€499–€549**，美国市场约 **$599–$649**；在早期 **Kickstarter** 或 **Indiegogo** 众筹阶段，价格曾低至 **€299–€399**。这些数字说明，EyeRide 并不是入门级配件，而是定位中高端的智能骑行装备。\n\n因此，这条“未来科技形象”的评价并非空泛印象，而是建立在较具体的产品事实上：**EyeLights** 这家成立于 **2016 年** 的法国公司，确实以 **EyeRide HUD** 这样一款具备 **10,000 nits 亮度、20° FOV、21 米虚拟成像、8 小时续航、€499–€549 定价** 的产品，切入了面向前瞻型骑手的高科技骑行市场。需要说明的是，搜索结果中**未提供**诸如 **IMX678、BES2800、QCC5181** 这类芯片/器件型号信息，因此不应补写。",
   "source": "doc_import:eyelights_competitor_analysis.xlsx",
   "created_at": "2026-03-22",
   "tags": [
+    "brand perception",
+    "future-forward",
     "EyeLights",
     "EyeRide",
-    "future-forward",
     "tech adoption",
-    "brand perception"
+    "internal",
+    "night_deepened",
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

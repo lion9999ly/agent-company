@@ -9,7 +9,8 @@
     "摄像头",
     "SoC",
     "续航",
-    "电池"
+    "电池",
+    "internal"
   ],
   "confidence": "high"
 }

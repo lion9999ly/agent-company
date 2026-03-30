@@ -1,15 +1,18 @@
 {
   "title": "Gemini API 错误处理信息：429 与 RetryInfo 重试延迟",
   "domain": "standards",
-  "content": "错误对象包含 code=429、status=RESOURCE_EXHAUSTED，并提供 RetryInfo.retryDelay=66558s，约等于 18 小时 29 分 18 秒。该信息可直接用于客户端退避重试、任务排队和告警策略设计。错误详情还附带 Help 链接与 QuotaFailure 结构化字段，适合做自动化异常分类与监控。",
+  "content": "Gemini API 返回限流时，错误对象通常可见 `code=429`、`status=RESOURCE_EXHAUSTED`，这对应 Google API 统一错误模型中的资源耗尽场景。已给出的具体样例里，`RetryInfo.retryDelay=66558s`，即 **66,558 秒**，折合 **18 小时 29 分 18 秒**；这不是模糊建议，而是服务端明确给出的最早重试时间，可直接作为客户端调度参数。对接时可将其写入任务队列的 `next_retry_at` 字段，或映射为告警系统中的“长时配额阻塞”事件。\n\n从结构上看，这类响应除 HTTP `429 Too Many Requests` 外，还会在错误详情中附带 `RetryInfo`、`Help`、`QuotaFailure` 等结构化字段。`RetryInfo` 的核心参数就是 `retryDelay`，单位为秒；本例值 **66558s** 说明这不是常见的秒级抖动退避，而更像日配额或较长窗口配额被打满。`QuotaFailure` 适合提取“违反了哪一类配额规则”，`Help` 则可挂接到运维面板，提示开发者跳转官方说明页排查。\n\n工程实现上，建议把 429 分成两类：一类是带明确 `RetryInfo` 的“硬等待”，严格按 **66558 秒** 后再试；另一类是未给出具体延迟的“软退避”，再使用指数退避加抖动。若系统使用 Redis、RabbitMQ 或云任务队列，可把延迟值原样入队，避免应用层忙等。监控侧可设置阈值：例如单项目 5 分钟内连续出现 429 即告警，若 `retryDelay` 超过 **3600s** 则升级为高优先级事件。当前搜索结果未提供 Gemini API 具体套餐价格、配额型号、供应商报价或更细的官方数值表，因此这部分不应编造。已确认可安全使用的具体数据只有：**HTTP 状态码 429、状态名 RESOURCE_EXHAUSTED、RetryInfo.retryDelay=66558s、约 18 小时 29 分 18 秒**。",
   "source": "doc_import:用户旅程图 - 20260318.jpg",
   "created_at": "2026-03-22",
   "tags": [
-    "HTTP 429",
-    "RetryInfo",
     "重试机制",
+    "API治理",
+    "internal",
     "错误码",
-    "API治理"
+    "overhaul_deepened",
+    "RetryInfo",
+    "HTTP 429",
+    "night_deepened"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

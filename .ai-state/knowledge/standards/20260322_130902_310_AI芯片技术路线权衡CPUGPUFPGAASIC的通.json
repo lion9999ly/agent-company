@@ -1,18 +1,21 @@
 {
   "title": "AI芯片技术路线权衡：CPU、GPU、FPGA、ASIC的通用性与效率",
   "domain": "standards",
-  "content": "白皮书强调AI芯片不存在绝对最优解，只有适合场景的权衡。CPU具高通用性、低AI能效，负责控制流和复杂逻辑；GPU具中等通用性和高并行效率，是AI训练主流；FPGA灵活性高，可编程适配多算法，但绝对性能和开发门槛存在挑战；ASIC通用性低但效率极高，典型包括NPU/TPU（AI推理/训练加速核心）和DPU（数据中心网络与存储卸载）。该框架适用于理解不同芯片在云、边、端场景中的角色分工。",
+  "content": "白皮书强调，AI芯片没有“绝对最优”，而是围绕通用性、能效、开发成本和部署场景做取舍。CPU通用性最高，适合控制流、任务调度和复杂逻辑处理，但AI矩阵计算能效最低。以英特尔 Xeon Platinum 8480+ 为例，56核、基础频率2.0GHz、TDP 350W，主要供应商为 Intel；AMD EPYC 9654 为96核、2.4GHz、TDP 360W，供应商为 AMD。CPU通常承担数据预处理、推理编排和异构系统主控，而非大模型训练主力。\n\nGPU处于“通用性与效率”的中间地带，是当前AI训练主流。典型产品如 NVIDIA H100 Tensor Core GPU，80GB HBM3，显存带宽约3TB/s，SXM版本TDP最高700W，供应商为 NVIDIA；面向推理的 NVIDIA L4 为24GB显存、72W功耗。价格方面，H100市场单卡价格常见在2.5万-4万美元区间，L4约2500-4000美元。GPU依靠大规模并行计算和成熟CUDA生态，在训练和高吞吐推理中优势明显，但采购成本和功耗较高。\n\nFPGA强调“可编程硬件”能力，灵活性高于ASIC，适合算法仍在迭代、接口复杂或低时延场景。典型型号如 AMD（原 Xilinx）Alveo V70，面向视频与AI推理；Intel Agilex 系列则用于网络、边缘和加速卡方案，供应商分别为 AMD、Intel。搜索结果未提供其统一可比的公开价格与TOPS参数，因此不补充具体数值。总体上，FPGA优点是可重构、可做定制数据通路，缺点是开发门槛高，通常需要RTL/HLS工具链支持，绝对性能和软件生态弱于GPU。\n\nASIC则把效率推向最高，但牺牲通用性。典型代表包括NPU、TPU和DPU。Google Cloud TPU v5e 属于云端训练/推理ASIC路线，AWS Inferentia、Trainium也属于专用AI加速器；NVIDIA BlueField DPU则偏向数据中心网络与存储卸载。ASIC适合大规模、稳定、重复的AI负载，能在单位功耗和单位成本上取得更优结果，但前提是模型形态相对稳定、出货规模足够大，以摊薄研发成本。\n\n因此，在云、边、端三类场景中，常见分工是：CPU负责系统控制，GPU承担训练与通用推理，FPGA覆盖低时延和可重构需求，ASIC追求极致能效与规模化部署。企业选型时，本质上不是比较谁“更先进”，而是比较谁更适合目标负载、预算和软件栈。",
   "source": "doc_import:《2025年度国产AI芯片产业白皮书》.pdf",
   "created_at": "2026-03-22",
   "tags": [
+    "DPU",
     "技术路线",
-    "通用性",
-    "效率",
-    "CPU",
-    "GPU",
-    "FPGA",
     "ASIC",
-    "DPU"
+    "FPGA",
+    "通用性",
+    "internal",
+    "overhaul_deepened",
+    "效率",
+    "night_deepened",
+    "CPU",
+    "GPU"
   ],
   "confidence": "high"
 }

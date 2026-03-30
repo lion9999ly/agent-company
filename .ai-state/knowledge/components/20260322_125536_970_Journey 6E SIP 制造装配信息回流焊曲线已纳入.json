@@ -1,15 +1,18 @@
 {
   "title": "Journey 6E SIP 制造装配信息：回流焊曲线已纳入文档",
   "domain": "components",
-  "content": "V0.3（2024-05-13）新增 Section 8 的 Figure 8-1 J6E SIP Reflow Profile，说明文档已覆盖 SMT 装配相关信息。对于 SIP 模块导入，回流焊曲线是评估焊接窗口、热冲击风险、返修策略和产线兼容性的关键数据。虽然当前正文未给出具体温度数值，但已确认存在正式回流焊规范章节。",
+  "content": "根据现有检索结果，能够确认的具体信息只有文档版本与章节变更：**Journey 6E SIP** 的制造装配文档在 **V0.3（2024-05-13）** 中新增了 **Section 8**，并加入 **Figure 8-1：J6E SIP Reflow Profile**。这说明该版本已经正式把 SMT 装配所需的回流焊信息纳入受控文档，而不再只是口头说明或外部工艺建议。对于导入 SIP 模块的 EMS 厂、ODM 厂和终端硬件团队来说，这一更新非常关键，因为回流焊曲线直接关系到钢网开口、焊膏选择、炉温设定、热冲击控制、空洞率评估以及返修可行性。\n\n但需要强调的是，当前搜索结果**没有给出 Figure 8-1 的具体温度、时间、峰值温度、液相线以上时间（TAL）等数值**，因此不能补写诸如峰值 **245°C**、升温速率 **1–3°C/s**、焊膏型号 **SAC305**、MSL 等参数，否则属于编造。现阶段能保留的事实是：文档中已经存在正式回流焊规范章节，可作为 NPI 阶段工艺评审的依据。实际导入时，制造工程团队应进一步索取该文档原件或最新受控版，重点核对 **Figure 8-1** 是否包含单次/双次回流限制、器件本体最高耐温、推荐焊膏体系、炉温窗口及返修约束。\n\n另外，搜索结果中也**没有出现可核实的供应商名称、采购价格、封装型号后缀或分销渠道信息**。因此目前不能确认 Journey 6E SIP 的具体料号、单价区间，也无法列出 Mouser、DigiKey、Arrow、Avnet 等供应商对应页面。若后续拿到完整 datasheet、PCN 或制造指南，建议补充四类关键数据：1）模块完整型号与封装尺寸；2）回流焊曲线数值参数；3）推荐物料与工艺边界；4）授权供应商与参考价格。就当前证据而言，最可靠的结论仍是：**截至 2024-05-13 的 V0.3 文档，Journey 6E SIP 已明确纳入回流焊曲线章节，但具体工艺参数尚未在现有搜索结果中披露。**",
   "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Reflow Profile",
-    "Section 8",
-    "Manufacturing",
     "Assembly",
-    "V0.3"
+    "Manufacturing",
+    "Section 8",
+    "Reflow Profile",
+    "internal",
+    "overhaul_deepened",
+    "V0.3",
+    "night_deepened"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

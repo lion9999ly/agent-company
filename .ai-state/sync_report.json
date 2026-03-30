@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-03-16T17:31:48.588717",
+  "generated_at": "2026-03-29T09:36:35.875213",
   "summary": {
-    "total_files_checked": 7,
-    "total_modules_checked": 5,
-    "total_issues": 29,
+    "total_files_checked": 27,
+    "total_modules_checked": 10,
+    "total_issues": 20,
     "critical_issues": 0,
-    "error_issues": 26,
-    "warning_issues": 3,
+    "error_issues": 10,
+    "warning_issues": 10,
     "passed": false
   },
   "file_reports": [
@@ -14,160 +14,763 @@
       "file_path": "src\\huge_code.py",
       "has_docstring": true,
       "docstring_fields": {
-        "description": null,
-        "dependencies": null,
-        "last_modified": null,
+        "description": "特批豁免超长文件测试用例",
+        "dependencies": "无",
+        "last_modified": "2026-03-18",
         "author": null,
         "version": null,
         "status": null
       },
-      "declared_dependencies": [],
+      "declared_dependencies": [
+        "无"
+      ],
       "actual_imports": [],
       "dependency_mismatch": [],
-      "issue_count": 3
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\agents\\cpo_critic.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "CPO Critic 双模型评审模块",
+        "dependencies": "src.utils.model_gateway",
+        "last_modified": "2026-03-16\n\n核心职责：\n1. 对CPO生成的任务契约进行毒性审查\n2. 双模型阵列：Gemini + Qwen 必须双PASS才可下发\n3. 输出结构化评审报告",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "src.utils.model_gateway"
+      ],
+      "actual_imports": [
+        "json",
+        "dataclasses",
+        "src.utils.model_gateway",
+        "typing",
+        "re",
+        "pathlib",
+        "sys",
+        "datetime",
+        "enum"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
     },
     {
       "file_path": "src\\audit\\behavior_logger.py",
-      "has_docstring": false,
+      "has_docstring": true,
       "docstring_fields": {
-        "description": null,
-        "dependencies": null,
-        "last_modified": null,
+        "description": "记录和审计Agent行为，确保行为边界合规，防止Agent学习人类闲聊、越权操作、边界漂移",
+        "dependencies": "json, hashlib, datetime, pathlib, dataclasses, enum, threading",
+        "last_modified": "2026-03-18\n\n核心职责：记录和审计Agent行为，确保行为边界合规。\n\n参考：虎嗅文章《Multi-Agent协作的三大陷阱》\n行为审计：防止Agent学习人类闲聊、越权操作、边界漂移\n\n作者：虚拟研发中心安全团队\n创建：2026-03-16",
         "author": null,
         "version": null,
         "status": null
       },
-      "declared_dependencies": [],
-      "actual_imports": [
-        "hashlib",
+      "declared_dependencies": [
         "json",
+        "hashlib",
+        "datetime",
+        "pathlib",
         "dataclasses",
         "enum",
-        "datetime",
+        "threading"
+      ],
+      "actual_imports": [
         "threading",
+        "json",
+        "dataclasses",
+        "typing",
+        "hashlib",
         "pathlib",
-        "typing"
+        "datetime",
+        "enum"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\collectors\\sourced_data_collector.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "严格数据采集器 - 每项数据必须有出处",
+        "dependencies": "requests, beautifulsoup4",
+        "last_modified": "2026-03-16\n\n核心原则：\n1. 无来源不写入\n2. 来源必须可追溯（URL/文档名）\n3. 置信度分级：实测 > 官方 > 媒体 > 推断",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "requests",
+        "beautifulsoup4"
+      ],
+      "actual_imports": [
+        "json",
+        "dataclasses",
+        "re",
+        "requests",
+        "typing",
+        "pathlib",
+        "datetime",
+        "enum"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\config\\prompt_loader.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "Agent prompt 集中加载器，从 agent_prompts.yaml 读取并组装 prompt",
+        "dependencies": "yaml, pathlib",
+        "last_modified": "2026-03-21",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "yaml",
+        "pathlib"
+      ],
+      "actual_imports": [
+        "yaml",
+        "typing",
+        "pathlib"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\graph\\context_slicer.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "为CTO/CMO执行节点提供隔离的上下文切片，防止全局状态污染",
+        "dependencies": "json, hashlib, datetime, pathlib, dataclasses, typing, enum",
+        "last_modified": "2026-03-18\n\n核心职责：为CTO/CMO执行节点提供隔离的上下文切片，防止全局状态污染。\n\n设计原则：\n1. 执行级盲盒隔离：CTO/CMO绝对禁止读取AgentGlobalState全量数据\n2. 白名单机制：只允许访问明确声明的字段\n3. 依赖追踪：记录每个切片的依赖关系，支持增量更新\n4. 审计日志：所有切片访问行为记录到行为日志\n\n参考：虎嗅文章《Multi-Agent协作的三大陷阱》\n- 上下文熵增：Token爆炸导致系统不可控\n- 解决方案：渐进式加载，按需切片\n\n作者：虚拟研发中心安全团队\n创建：2026-03-16",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "json",
+        "hashlib",
+        "datetime",
+        "pathlib",
+        "dataclasses",
+        "typing",
+        "enum"
+      ],
+      "actual_imports": [
+        "json",
+        "dataclasses",
+        "typing",
+        "hashlib",
+        "pathlib",
+        "src.audit",
+        "datetime",
+        "enum"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\graph\\router.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "LangGraph状态机流转拓扑，定义Multi-Agent工作流节点与连线",
+        "dependencies": "langgraph.graph, langgraph.types, src.schema.state, src.graph.context_slicer, src.utils.model_gateway, src.config.prompt_loader, scripts.doc_sync_validator, uuid",
+        "last_modified": "2026-03-21",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "langgraph.graph",
+        "langgraph.types",
+        "src.schema.state",
+        "src.graph.context_slicer",
+        "src.utils.model_gateway",
+        "src.config.prompt_loader",
+        "scripts.doc_sync_validator",
+        "uuid"
+      ],
+      "actual_imports": [
+        "threading",
+        "langgraph.graph",
+        "langgraph.types",
+        "scripts.doc_sync_validator",
+        "datetime",
+        "uuid",
+        "scripts.self_evolution",
+        "src.tools.knowledge_base",
+        "json",
+        "src.schema.state",
+        "typing",
+        "hashlib",
+        "src.config.prompt_loader",
+        "src.utils.critic_rules",
+        "sys",
+        "sqlite3",
+        "src.utils.model_gateway",
+        "re",
+        "time",
+        "langgraph.checkpoint.sqlite",
+        "os",
+        "src.graph.context_slicer",
+        "pathlib",
+        "src.tools.tool_registry"
       ],
       "dependency_mismatch": [
-        "未声明依赖: threading"
+        "未声明依赖: threading",
+        "未声明依赖: scripts.self_evolution",
+        "未声明依赖: sqlite3",
+        "未声明依赖: langgraph.checkpoint.sqlite"
       ],
       "issue_count": 4
     },
     {
-      "file_path": "src\\graph\\context_slicer.py",
-      "has_docstring": false,
-      "docstring_fields": {
-        "description": null,
-        "dependencies": null,
-        "last_modified": null,
-        "author": null,
-        "version": null,
-        "status": null
-      },
-      "declared_dependencies": [],
-      "actual_imports": [
-        "hashlib",
-        "json",
-        "dataclasses",
-        "enum",
-        "datetime",
-        "src.audit",
-        "pathlib",
-        "typing"
-      ],
-      "dependency_mismatch": [],
-      "issue_count": 3
-    },
-    {
-      "file_path": "src\\graph\\router.py",
-      "has_docstring": false,
-      "docstring_fields": {
-        "description": null,
-        "dependencies": null,
-        "last_modified": null,
-        "author": null,
-        "version": null,
-        "status": null
-      },
-      "declared_dependencies": [],
-      "actual_imports": [
-        "hashlib",
-        "json",
-        "langgraph.graph",
-        "os",
-        "src.schema.state",
-        "src.graph.context_slicer",
-        "pathlib",
-        "langgraph.types",
-        "typing"
-      ],
-      "dependency_mismatch": [
-        "未声明依赖: langgraph.graph",
-        "未声明依赖: langgraph.types"
-      ],
-      "issue_count": 5
-    },
-    {
       "file_path": "src\\schema\\state.py",
-      "has_docstring": false,
+      "has_docstring": true,
       "docstring_fields": {
-        "description": null,
-        "dependencies": null,
-        "last_modified": null,
+        "description": "全局状态树定义，包含TypedDict类型定义和枚举类",
+        "dependencies": "typing, enum",
+        "last_modified": "2026-03-18",
         "author": null,
         "version": null,
         "status": null
       },
-      "declared_dependencies": [],
+      "declared_dependencies": [
+        "typing",
+        "enum"
+      ],
       "actual_imports": [
-        "enum",
         "operator",
-        "typing"
+        "typing",
+        "enum"
       ],
       "dependency_mismatch": [],
-      "issue_count": 3
+      "issue_count": 0
     },
     {
       "file_path": "src\\security\\instruction_guard.py",
-      "has_docstring": false,
+      "has_docstring": true,
       "docstring_fields": {
-        "description": null,
-        "dependencies": null,
-        "last_modified": null,
+        "description": "检测并拦截可能导致安全锁移除的歧义指令，防止\"越快越好\"等指令绕过安全检查",
+        "dependencies": "re, dataclasses, enum, typing",
+        "last_modified": "2026-03-18\n\n核心职责：检测并拦截可能导致安全锁移除的歧义指令。\n\n参考：虎嗅文章《Multi-Agent协作的三大陷阱》\n- \"越快越好\" -> 可能导致跳过安全检查\n- \"简单处理\" -> 可能绕过边界验证\n- \"看着办\" -> 可能引发权限越界\n\n作者：虚拟研发中心安全团队\n创建：2026-03-16",
         "author": null,
         "version": null,
         "status": null
       },
-      "declared_dependencies": [],
-      "actual_imports": [
+      "declared_dependencies": [
         "re",
         "dataclasses",
         "enum",
         "typing"
       ],
+      "actual_imports": [
+        "re",
+        "typing",
+        "enum",
+        "dataclasses"
+      ],
       "dependency_mismatch": [],
-      "issue_count": 3
+      "issue_count": 0
     },
     {
       "file_path": "src\\security\\kpi_trap_detector.py",
-      "has_docstring": false,
+      "has_docstring": true,
       "docstring_fields": {
-        "description": null,
-        "dependencies": null,
-        "last_modified": null,
+        "description": "检测Agent为达成KPI而走捷径的行为模式，防止\"表面达标\"而非\"实质达标\"",
+        "dependencies": "re, dataclasses, enum, typing",
+        "last_modified": "2026-03-18\n\n核心职责：检测Agent为达成KPI而走捷径的行为模式。\n\n参考：虎嗅文章《Multi-Agent协作的三大陷阱》\nKPI陷阱：Agent可能选择\"表面达标\"而非\"实质达标\"\n- 测试覆盖率90% -> 但只测简单路径\n- 响应时间<100ms -> 但跳过异常处理\n- 功能完成率100% -> 但忽略边界场景\n\n作者：虚拟研发中心安全团队\n创建：2026-03-16",
         "author": null,
         "version": null,
         "status": null
       },
-      "declared_dependencies": [],
-      "actual_imports": [
+      "declared_dependencies": [
         "re",
         "dataclasses",
         "enum",
         "typing"
       ],
+      "actual_imports": [
+        "re",
+        "typing",
+        "enum",
+        "dataclasses"
+      ],
       "dependency_mismatch": [],
-      "issue_count": 3
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\tools\\context_injector.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "上下文注入器 - 会话开始时自动加载关键上下文",
+        "dependencies": "json, yaml",
+        "last_modified": "2026-03-17\n\n核心功能：\n1. 会话启动时注入关键上下文\n2. 从分层记忆恢复历史状态\n3. 生成上下文种子文档",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "json",
+        "yaml"
+      ],
+      "actual_imports": [
+        "datetime",
+        "typing",
+        "json",
+        "pathlib"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\tools\\echo_memory.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "Echo长期记忆管理器 - 项目上下文、用户偏好、历史决策",
+        "dependencies": "json, yaml, datetime, uuid",
+        "last_modified": "2026-03-17\n\nEcho(CPO)重新定位：从\"调度中枢\"转型为\"基础设施守护者\"\n核心职责：长期记忆管家、跨会话协调器、行为审计官、模型路由守门",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "json",
+        "yaml",
+        "datetime",
+        "uuid"
+      ],
+      "actual_imports": [
+        "json",
+        "os",
+        "dataclasses",
+        "typing",
+        "hashlib",
+        "pathlib",
+        "time",
+        "yaml",
+        "datetime",
+        "uuid",
+        "enum"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\tools\\fix_executor.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "飞书移动端审批执行器 - Agent 提出修复建议，用户审批后自动执行",
+        "dependencies": "json, pathlib, datetime, subprocess",
+        "last_modified": "2026-03-21",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "json",
+        "pathlib",
+        "datetime",
+        "subprocess"
+      ],
+      "actual_imports": [
+        "json",
+        "dataclasses",
+        "typing",
+        "pathlib",
+        "subprocess",
+        "datetime"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\tools\\knowledge_base.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "知识库管理 - 搜索、写入、检索项目级领域知识",
+        "dependencies": "json, pathlib, datetime",
+        "last_modified": "2026-03-23",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "json",
+        "pathlib",
+        "datetime"
+      ],
+      "actual_imports": [
+        "json",
+        "re",
+        "typing",
+        "random",
+        "hashlib",
+        "pathlib",
+        "datetime"
+      ],
+      "dependency_mismatch": [
+        "未声明依赖: random"
+      ],
+      "issue_count": 1
+    },
+    {
+      "file_path": "src\\tools\\layered_memory.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "分层记忆系统 - 解决Claude Code上下文压缩导致的信息丢失",
+        "dependencies": "json, datetime, hashlib",
+        "last_modified": "2026-03-17\n\n核心设计：\n1. 短期记忆 (Session Memory) - 当前会话关键信息，实时更新\n2. 中期记忆 (Working Memory) - 任务相关上下文，任务结束归档\n3. 长期记忆 (Long-term Memory) - 项目知识库，永久存储\n4. 检查点机制 (Checkpoint) - 定期生成摘要，防止压缩丢失\n\n使用场景：\n- 会话开始：加载长期记忆 + 恢复未完成任务\n- 任务执行：更新短期记忆，定期检查点\n- 任务结束：归档到中期记忆，更新长期记忆\n- 会话结束：生成会话摘要，持久化关键信息",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "json",
+        "datetime",
+        "hashlib"
+      ],
+      "actual_imports": [
+        "json",
+        "os",
+        "dataclasses",
+        "typing",
+        "hashlib",
+        "pathlib",
+        "datetime",
+        "enum"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\tools\\search_api.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "统一搜索API工具 - 支持SerpAPI/Tavily/Exa/浏览器降级",
+        "dependencies": "requests, yaml",
+        "last_modified": "2026-03-17",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "requests",
+        "yaml"
+      ],
+      "actual_imports": [
+        "json",
+        "os",
+        "dataclasses",
+        "typing",
+        "requests",
+        "pathlib",
+        "time",
+        "yaml",
+        "enum"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\tools\\session_manager.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "自动检查点脚本 - 定期创建会话摘要检查点",
+        "dependencies": "layered_memory, model_gateway",
+        "last_modified": "2026-03-17\n\n使用方式：\n1. 任务开始时调用 start_session()\n2. 任务进行中调用 checkpoint()\n3. 任务结束时调用 end_session()",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "layered_memory",
+        "model_gateway"
+      ],
+      "actual_imports": [
+        "json",
+        "src.utils.token_usage_tracker",
+        "typing",
+        "src.tools.layered_memory",
+        "sys",
+        "datetime"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\tools\\tool_registry.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "Agent 工具注册表 - 统一管理外部工具调用，支持扩展",
+        "dependencies": "src.utils.model_gateway, requests",
+        "last_modified": "2026-03-27",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "src.utils.model_gateway",
+        "requests"
+      ],
+      "actual_imports": [
+        "tavily",
+        "os",
+        "json",
+        "src.utils.model_gateway",
+        "typing",
+        "requests",
+        "re",
+        "pathlib",
+        "subprocess",
+        "apify_client",
+        "time",
+        "datetime"
+      ],
+      "dependency_mismatch": [
+        "未声明依赖: tavily",
+        "未声明依赖: apify_client"
+      ],
+      "issue_count": 2
+    },
+    {
+      "file_path": "src\\utils\\capability_registry.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "Agent 能力注册表 - 机器人知道自己能干什么",
+        "dependencies": "None",
+        "last_modified": "2026-03-25",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "None"
+      ],
+      "actual_imports": [],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\utils\\conversation_memory.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "飞书对话记忆管理 - 维护每个用户/群的最近对话上下文",
+        "dependencies": "json, pathlib, datetime",
+        "last_modified": "2026-03-25",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "json",
+        "pathlib",
+        "datetime"
+      ],
+      "actual_imports": [
+        "datetime",
+        "typing",
+        "json",
+        "pathlib"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\utils\\critic_rules.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "结构化检查规则引擎 — Critic 评审的硬性约束层",
+        "dependencies": "json, pathlib, src.tools.knowledge_base, src.utils.model_gateway",
+        "last_modified": "2026-03-26\n\nHashimoto 闭环核心：每次 Agent 犯错 → 生成检查规则 → Critic 下次强制检查 → 永不再犯同类错误\n\n规则来源（三通道）：\n  1. D 评价自动生成（handle_rating 的失败分析）\n  2. 人工锚点（产品决策者的行业共识）\n  3. Critic 自身发现（评审中发现的矛盾）\n\n规则存储：知识库 lessons/ 目录，tag 含 critic_rule\n规则匹配：LLM 语义匹配（Flash 模型，低成本高准确度）",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "json",
+        "pathlib",
+        "src.tools.knowledge_base",
+        "src.utils.model_gateway"
+      ],
+      "actual_imports": [
+        "src.tools.knowledge_base",
+        "json",
+        "src.utils.model_gateway",
+        "re",
+        "typing",
+        "pathlib",
+        "datetime"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\utils\\intent_router.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "LLM 意图识别与对话路由",
+        "dependencies": "src.utils.model_gateway, src.utils.conversation_memory, src.utils.capability_registry",
+        "last_modified": "2026-03-25",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "src.utils.model_gateway",
+        "src.utils.conversation_memory",
+        "src.utils.capability_registry"
+      ],
+      "actual_imports": [
+        "re",
+        "json",
+        "typing"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\utils\\model_gateway.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "多模型网关 - 支持Gemini/Qwen/OpenAI等异构模型调用 + 智能路由",
+        "dependencies": "requests, yaml, base64",
+        "last_modified": "2026-03-27",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "requests",
+        "yaml",
+        "base64"
+      ],
+      "actual_imports": [
+        "json",
+        "os",
+        "dataclasses",
+        "src.utils.token_usage_tracker",
+        "typing",
+        "requests",
+        "re",
+        "pathlib",
+        "time",
+        "yaml",
+        "datetime",
+        "base64",
+        "enum"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\utils\\notifier.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "任务完成通知工具 - 播放提示音",
+        "dependencies": "无（使用 Windows 内置 winsound）",
+        "last_modified": "2026-03-25",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "无（使用 Windows 内置 winsound）"
+      ],
+      "actual_imports": [
+        "threading",
+        "winsound",
+        "time",
+        "sys",
+        "inspect"
+      ],
+      "dependency_mismatch": [
+        "未声明依赖: threading",
+        "未声明依赖: inspect"
+      ],
+      "issue_count": 2
+    },
+    {
+      "file_path": "src\\utils\\progress_heartbeat.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "长任务进度心跳 — 统一接口，支持日志+飞书推送",
+        "dependencies": "pathlib, datetime, json",
+        "last_modified": "2026-03-26\n\n用法:\n    from src.utils.progress_heartbeat import ProgressHeartbeat\n\n    hb = ProgressHeartbeat(\"知识图谱扩展\", total=100, feishu_callback=send_reply_fn)\n    for i, item in enumerate(items):\n        process(item)\n        hb.tick(detail=f\"处理: {item['title'][:30]}\")\n    hb.finish(\"扩展完成\")",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "pathlib",
+        "datetime",
+        "json"
+      ],
+      "actual_imports": [
+        "json",
+        "typing",
+        "pathlib",
+        "time",
+        "datetime"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
+    },
+    {
+      "file_path": "src\\utils\\task_priority.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "任务优先级管理 - 用户实时任务优先，后台任务让路",
+        "dependencies": "无",
+        "last_modified": "2026-03-25",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "无"
+      ],
+      "actual_imports": [
+        "threading",
+        "time"
+      ],
+      "dependency_mismatch": [
+        "未声明依赖: threading"
+      ],
+      "issue_count": 1
+    },
+    {
+      "file_path": "src\\utils\\token_usage_tracker.py",
+      "has_docstring": true,
+      "docstring_fields": {
+        "description": "Token使用统计模块 - 记录和统计各模型API调用情况",
+        "dependencies": "json, datetime, threading",
+        "last_modified": "2026-03-17",
+        "author": null,
+        "version": null,
+        "status": null
+      },
+      "declared_dependencies": [
+        "json",
+        "datetime",
+        "threading"
+      ],
+      "actual_imports": [
+        "threading",
+        "json",
+        "os",
+        "dataclasses",
+        "typing",
+        "pathlib",
+        "sys",
+        "datetime"
+      ],
+      "dependency_mismatch": [],
+      "issue_count": 0
     }
   ],
   "module_reports": [
@@ -181,7 +784,19 @@
         "接口"
       ],
       "files_checked": 1,
-      "files_with_issues": 1
+      "files_with_issues": 0
+    },
+    {
+      "module_path": "src\\agents",
+      "has_readme": false,
+      "readme_sections": [],
+      "missing_sections": [
+        "功能",
+        "职责",
+        "接口"
+      ],
+      "files_checked": 1,
+      "files_with_issues": 0
     },
     {
       "module_path": "src\\audit",
@@ -193,7 +808,31 @@
         "接口"
       ],
       "files_checked": 2,
-      "files_with_issues": 1
+      "files_with_issues": 0
+    },
+    {
+      "module_path": "src\\collectors",
+      "has_readme": false,
+      "readme_sections": [],
+      "missing_sections": [
+        "功能",
+        "职责",
+        "接口"
+      ],
+      "files_checked": 1,
+      "files_with_issues": 0
+    },
+    {
+      "module_path": "src\\config",
+      "has_readme": false,
+      "readme_sections": [],
+      "missing_sections": [
+        "功能",
+        "职责",
+        "接口"
+      ],
+      "files_checked": 1,
+      "files_with_issues": 0
     },
     {
       "module_path": "src\\graph",
@@ -205,7 +844,7 @@
         "接口"
       ],
       "files_checked": 3,
-      "files_with_issues": 2
+      "files_with_issues": 1
     },
     {
       "module_path": "src\\schema",
@@ -217,7 +856,7 @@
         "接口"
       ],
       "files_checked": 1,
-      "files_with_issues": 1
+      "files_with_issues": 0
     },
     {
       "module_path": "src\\security",
@@ -229,6 +868,30 @@
         "接口"
       ],
       "files_checked": 3,
+      "files_with_issues": 0
+    },
+    {
+      "module_path": "src\\tools",
+      "has_readme": false,
+      "readme_sections": [],
+      "missing_sections": [
+        "功能",
+        "职责",
+        "接口"
+      ],
+      "files_checked": 9,
+      "files_with_issues": 2
+    },
+    {
+      "module_path": "src\\utils",
+      "has_readme": false,
+      "readme_sections": [],
+      "missing_sections": [
+        "功能",
+        "职责",
+        "接口"
+      ],
+      "files_checked": 9,
       "files_with_issues": 2
     }
   ]

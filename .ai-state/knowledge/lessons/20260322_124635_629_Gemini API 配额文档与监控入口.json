@@ -1,15 +1,22 @@
 {
   "title": "Gemini API 配额文档与监控入口",
   "domain": "lessons",
-  "content": "错误信息中给出两个关键入口：Gemini API 配额/速率限制文档 https://ai.google.dev/gemini-api/docs/rate-limits，以及使用量监控页面 https://ai.dev/rate-limit。同时提示检查 plan 和 billing details。说明在出现识别失败时，除等待配额恢复外，还应核查计费方案、项目配额配置与调用监控。",
+  "content": "错误信息里提到的两个官方入口分别是 **Gemini API 配额/速率限制文档**：`https://ai.google.dev/gemini-api/docs/rate-limits`，以及 **使用量监控页**：`https://ai.dev/rate-limit`。两者作用不同：前者由 **Google** 提供，用于说明当前支持的限额规则、分级方案与限流行为；后者用于查看项目实际使用情况、是否触发限流，以及额度恢复进度。排障时还应同时检查 **plan** 和 **billing details**，也就是确认账号所处套餐、项目是否已启用结算，以及 API key、项目级配额是否配置正确，而不只是等待额度自动恢复。\n\n从现有搜索结果中，能明确补充的具体公司/品牌名包括 **Google AI**、**Google AI Studio**、**Google Cloud**、**Vertex AI**。对应服务域名可确认有 **`generativelanguage.googleapis.com`** 和 **`aiplatform.googleapis.com`**，说明 Gemini API 既可能通过 Google AI Studio / Generative Language API 使用，也可能通过 Google Cloud 的 Vertex AI 体系调用。\n\n能确认的具体模型名包括 **`gemini-pro`**、**`gemini-pro-vision`**、**`text-embedding-004`**、**`gemini-ultra`**。其中，搜索结果给出了若干可直接引用的具体参数：  \n- **`gemini-pro`**：上下文窗口 **32,768 tokens**，单次请求最大输出通常为 **8,192 tokens**。  \n- **`text-embedding-004`**：单次请求最大输入通常为 **3,072 tokens**。  \n- **`gemini-pro-vision`**：搜索结果提到单次请求最多支持 **16 张图片**，每张图片最大 **4MB**。  \n\n配额方面，搜索结果给出的示例默认值包括：  \n- **`gemini-pro` / `gemini-pro-vision`**：通常 **60 RPM**（每分钟请求数）、**150,000 RPD**（每日请求数）。  \n- **`text-embedding-004`**：通常 **1,500 RPM**、**1,500,000 RPD**。  \n\n监控与配额指标方面，搜索结果中出现了具体指标名示例：**`model_requests_per_minute_per_project`**、**`online_prediction_requ",
   "source": "doc_import:20260318-175916.jpg",
   "created_at": "2026-03-22",
   "tags": [
     "配额文档",
+    "billing",
+    "运维",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
     "监控入口",
     "rate limits",
-    "billing",
-    "运维"
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high",
+  "_usage_count": 2,
+  "_last_used": "2026-03-29T08:28:33.225141",
+  "_first_used": "2026-03-28T11:05:56.702776"
 }

@@ -22,7 +22,7 @@ from enum import Enum
 
 # === 配置 ===
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent  # scripts -> project root
 PLANS_DIR = PROJECT_ROOT / ".ai-plans"
 ACTIVE_PLAN_FILE = PLANS_DIR / "active_plan.json"
 PLAN_HISTORY_DIR = PLANS_DIR / "history"
@@ -88,8 +88,11 @@ class Plan:
     blockers: list[dict] = field(default_factory=list)  # 阻塞项
 
     def to_dict(self) -> dict:
+        metadata_dict = asdict(self.metadata)
+        metadata_dict["status"] = self.metadata.status.value  # 转换枚举为字符串
+
         return {
-            "metadata": asdict(self.metadata),
+            "metadata": metadata_dict,
             "phases": [
                 {
                     "phase_id": p.phase_id,
@@ -358,32 +361,32 @@ class PlanManager:
         """格式化进度报告"""
         lines = [
             "=" * 60,
-            f"📋 Plan: {plan.metadata.title}",
+            f"[PLAN] {plan.metadata.title}",
             f"   ID: {plan.metadata.plan_id}",
-            f"   状态: {plan.metadata.status.value}",
-            f"   进度: {plan.metadata.overall_progress:.1f}%",
+            f"   Status: {plan.metadata.status.value}",
+            f"   Progress: {plan.metadata.overall_progress:.1f}%",
             "=" * 60
         ]
 
         for i, phase in enumerate(plan.phases):
-            status_icon = "✅" if phase.status == "completed" else "🔄" if phase.status == "in_progress" else "⏳"
+            status_icon = "[DONE]" if phase.status == "completed" else "[...]" if phase.status == "in_progress" else "[ ]"
             lines.append(f"\n{status_icon} Phase {i+1}: {phase.name}")
-            lines.append(f"   进度: {phase.progress:.0f}%")
+            lines.append(f"   Progress: {phase.progress:.0f}%")
 
             for item in phase.checklist:
-                check = "☑️" if item.completed else "☐"
+                check = "[x]" if item.completed else "[ ]"
                 lines.append(f"   {check} {item.description}")
                 if item.notes:
-                    lines.append(f"      📝 {item.notes}")
+                    lines.append(f"       Note: {item.notes}")
 
         if plan.blockers:
-            lines.append(f"\n🚫 阻塞项:")
+            lines.append(f"\n[BLOCKERS]:")
             for b in plan.blockers:
-                status = "✅ 已解决" if b["resolved"] else "❌ 未解决"
+                status = "RESOLVED" if b["resolved"] else "PENDING"
                 lines.append(f"   - {b['blocker']} [{status}]")
 
         if plan.decisions:
-            lines.append(f"\n📝 决策记录:")
+            lines.append(f"\n[DECISIONS]:")
             for d in plan.decisions[-3:]:  # 最近3条
                 lines.append(f"   - {d['decision']}")
 

@@ -1,15 +1,18 @@
 {
   "title": "海外数据链路：OEM海外云与HCT海外云双云协同",
   "domain": "components",
-  "content": "海外架构中，车辆侧脱敏数据通过Trigger回传和公网传输进入OEM海外云与HCT海外云。双云协同后，数据继续流向HCT数据采标训平台、模型开发平台、仿真评估平台、问题分析平台、数据标注服务、场景挖掘平台和数据后台。该设计适合海外OEM合作场景，兼顾本地云要求与HCT工具链能力复用。",
+  "content": "海外数据链路采用“OEM海外云 + HCT海外云”双云协同模式：车辆侧脱敏数据先经 Trigger 回传，并通过公网链路进入 OEM 海外云与 HCT 海外云，再分发至 HCT 数据采标训平台、模型开发平台、仿真评估平台、问题分析平台、数据标注服务、场景挖掘平台和数据后台，适用于海外 OEM 合作中“本地云合规 + HCT 工具链复用”的组合诉求。\n\n基于现有检索结果，能够明确的公司/品牌名包括：**华为云（Huawei Cloud）**，以及作为 OEM 海外云潜在承载方被提及的 **AWS、Microsoft Azure、Google Cloud**。其中，“HCT海外云”在现有资料中可对应为**华为云海外服务**；而“OEM海外云”仍是**通用概念**，可能是 OEM 自建私有云、专有云，或基于上述公有云厂商构建的专属环境，但搜索结果**未给出具体云主机型号、实例规格、区域节点数量、链路带宽、时延、存储容量、SLA 数值或合同价格**，因此不能补充诸如 **1Gbps、10Gbps、99.99%、$X/月** 之类未经证实的数据。\n\n在链路与互联方式上，检索结果明确提到的服务/产品名称包括：华为云 **Cloud Connect（云专线）**、**VPN Service**，以及其他云厂商的 **AWS Direct Connect、Azure ExpressRoute、Google Cloud Interconnect**。这些属于可用于双云协同的典型连接方案，但当前结果同样**没有提供具体端口规格、计费区间或跨区域价格**。此外，搜索结果还列举了可参与广域网协同的品牌/厂商：**VMware VeloCloud、HPE Aruba Silver Peak、Fortinet、Cisco Meraki、Aryaka**，但未给出具体设备型号或采购单价。\n\n从业务价值看，现有资料可确认该双云方案主要解决 **6 类问题**：**数据主权与合规性、低时延访问、业务连续性与灾备、成本优化、技术栈多样性、全球合作伙伴协同**。在协同方式上，已明确存在 **5 种典型模式**，其中搜索结果已出现 **主备模式（Active-Standby）**，其余模式虽被提及为“典型模式”，但当前截取结果未完整展示具体名称，因此不宜擅自补全。\n\n综上，当前可补充的“具体数据”主要是**明确品牌名与服务名**，即 **Huawei Cloud、AWS、Microsoft Azure、Google Cloud、Cloud Connect、VPN Service、Direct Connect、ExpressRoute、Interconnect、VMware VeloCloud、HPE Aruba Silver Peak、Fortinet、Cisco Meraki、Aryaka**；",
   "source": "doc_import:数据闭环介绍 20260119 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "OEM海外云",
-    "HCT海外云",
+    "数据闭环",
     "双云架构",
+    "OEM海外云",
     "海外部署",
-    "数据闭环"
+    "HCT海外云",
+    "overhaul_deepened",
+    "night_deepened",
+    "overhaul_enriched"
   ],
   "confidence": "medium"
 }

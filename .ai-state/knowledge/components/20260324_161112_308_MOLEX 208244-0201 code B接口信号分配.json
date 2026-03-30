@@ -1,15 +1,16 @@
 {
   "title": "MOLEX 208244-0201 code B接口信号分配：3M环视四路鱼眼",
   "domain": "components",
-  "content": "MOLEX 208244-0201（White）4 in 1 mini FAKRA code B的4路信号定义为：Pin1 AVM-CAM-GMSL-C，对应3M 360camera REAR；Pin2 AVM-CAM-GMSL-D，对应3M 360camera FRONT；Pin3 AVM-CAM-GMSL-A，对应3M 360camera LEFT；Pin4 AVM-CAM-GMSL-B，对应3M 360camera RIGHT。4路均为GMSL信号。该接口专门服务AVM环视系统，集中接入前后左右四路3M鱼眼摄像头。",
+  "content": "MOLEX **208244-0201** 是 **Molex** 的 **Mini50™ Unsealed Header**，**4 circuits**、**Code B**、白色、SMT 立式车载连接器，属于汽车高速/低压信号连接方案。公开可确认的信息主要是连接器本体规格：该系列相较传统 **USCAR 0.64mm** 连接器可节省**最高 50% 空间**，适用于车内非密封环境。就“**208244-0201 code B 接口信号分配：3M环视四路鱼眼**”这一条目而言，现有搜索结果能够确认：该接口被定义为 **4 路 GMSL 信号输入**，分别接入 AVM 环视系统的前后左右四路鱼眼摄像头，即 **Pin1 = AVM-CAM-GMSL-C，对应 3M 360camera REAR；Pin2 = AVM-CAM-GMSL-D，对应 3M 360camera FRONT；Pin3 = AVM-CAM-GMSL-A，对应 3M 360camera LEFT；Pin4 = AVM-CAM-GMSL-B，对应 3M 360camera RIGHT**。因此，这个接口的用途不是单路摄像头供电+数据，而是作为 **AVM（Around View Monitor）环视系统** 的四路视频集中接入口。\n\n需要特别说明的是，搜索结果**没有给出**这四路“3M鱼眼摄像头”的**具体图像传感器型号**，例如是否采用 **Sony IMX678**、**onsemi AR0820**、**OmniVision OX03C10** 等；也**没有给出**摄像头模组的关键参数，如分辨率、视场角、照度、动态范围、帧率、功耗、工作温度、模组尺寸或重量。搜索结果同样**没有提供**对应 GMSL 串行器/解串器芯片的具体型号，无法确认是否为 **ADI/Maxim MAX9295/MAX96705/MAX96712** 等方案。关于价格，现有结果仅覆盖连接器类别信息，**未出现 208244-0201 的单价区间**，也**未出现**四路 3M 环视鱼眼摄像头模组或整套 AVM 系统的公开报价，因此不能补充诸如“**$15–25/颗**”这类价格数据。\n\n基于现有可核实信息，本条目中能够明确补充的具体公司/品牌名包括：**Molex**（连接器厂商）、**Mini50™**（产品系列）、**USCAR**（对比标准/接口体系）、**3M 360camera**（系统中对前后左右环视摄像头的命名）、以及 **AVM**（环视系统类别）。结论是：**MOLEX 208244-0201 Code B 白色 4针接口在该设计中被定义为 4 路 GMSL 环视摄像头输入，分别对应 REAR / FRONT / LEFT / RIGHT 四个 3M 鱼眼相机通道；除连接器系列、4 ci",
   "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "208244-0201",
-    "360camera",
     "鱼眼",
+    "GMSL",
+    "360camera",
     "AVM",
-    "GMSL"
+    "208244-0201",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

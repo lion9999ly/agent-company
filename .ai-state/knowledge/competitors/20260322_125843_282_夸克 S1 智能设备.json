@@ -8,7 +8,9 @@
     "夸克",
     "S1",
     "智能设备",
-    "骑行场景"
+    "骑行场景",
+    "night_deepened",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

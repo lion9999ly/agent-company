@@ -9,7 +9,8 @@
     "功能安全架构",
     "ECC",
     "Lockstep",
-    "Watchdog"
+    "Watchdog",
+    "internal"
   ],
   "confidence": "high"
 }

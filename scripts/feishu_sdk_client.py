@@ -2448,41 +2448,70 @@ def handle_message(event):
                         _long_task_running = False
                 threading.Thread(target=_run_tonight, daemon=True).start()
                 send_reply(reply_target, "[Tonight] Deep research queue started (10 tasks, ETA 60-90 min)...")
-            # ===== 新增：从文件读取研究任务 =====
+            # ===== 新增：从文件读取研究任务（支持多文件） =====
             elif "参考文件：" in text or "reference file:" in text.lower():
                 import re
-                # 提取文件路径
-                match = re.search(r'参考文件[：:]\s*([^\s\n]+)', text)
-                if not match:
-                    match = re.search(r'reference file[：:]\s*([^\s\n]+)', text, re.IGNORECASE)
-                if match:
-                    file_path = match.group(1).strip()
-                    # 支持相对路径和绝对路径
-                    if not file_path.startswith('/') and not file_path.startswith('D:'):
-                        file_path = str(Path(__file__).parent.parent / file_path)
+                # 提取所有 .md 文件路径（支持单行、多行、带序号等格式）
+                matches = re.findall(r'[\w./\\-]+\.md', text)
+                if matches:
+                    # 区分参考文件(docs/tasks/)和约束文件(docs/specs/)
+                    task_files = []
+                    constraint_files = []
+                    for raw_path in matches:
+                        # 支持相对路径和绝对路径
+                        if not raw_path.startswith('/') and not raw_path.startswith('D:'):
+                            full_path = str(Path(__file__).parent.parent / raw_path)
+                        else:
+                            full_path = raw_path
 
-                    if Path(file_path).exists():
-                        def _run_from_file():
+                        if Path(full_path).exists():
+                            if 'docs/tasks/' in raw_path or 'docs\\tasks' in raw_path:
+                                task_files.append((raw_path, full_path))
+                            elif 'docs/specs/' in raw_path or 'docs\\specs' in raw_path:
+                                constraint_files.append((raw_path, full_path))
+                            else:
+                                # 其他位置的 .md 默认作为参考文件
+                                task_files.append((raw_path, full_path))
+                        else:
+                            send_reply(reply_target, f"[Research] 文件不存在: {raw_path}")
+
+                    if task_files:
+                        def _run_multi_files():
                             global _long_task_running
                             _long_task_running = True
                             try:
                                 from scripts.tonight_deep_research import run_research_from_file
-                                report_path = run_research_from_file(
-                                    file_path,
-                                    progress_callback=lambda msg: send_reply(reply_target, msg)
-                                )
-                                if report_path:
-                                    send_reply(reply_target, f"[Research] 文件任务已完成！\n报告: {report_path}")
-                                else:
-                                    send_reply(reply_target, "[Research] 未解析到有效任务，请检查文件格式")
+                                # 读取约束文件内容作为上下文注入
+                                constraint_context = ""
+                                for raw_path, full_path in constraint_files:
+                                    constraint_context += f"\n\n---\n## 约束文件: {raw_path}\n\n"
+                                    constraint_context += Path(full_path).read_text(encoding='utf-8')
+
+                                # 每个参考文件独立执行
+                                for idx, (raw_path, full_path) in enumerate(task_files, 1):
+                                    send_reply(reply_target, f"🔍 [{idx}/{len(task_files)}] 开始研究: {Path(full_path).name}")
+                                    # 如果有约束文件，作为附加参数传入
+                                    report_path = run_research_from_file(
+                                        full_path,
+                                        progress_callback=lambda msg: send_reply(reply_target, msg),
+                                        constraint_context=constraint_context if constraint_context else None
+                                    )
+                                    if report_path:
+                                        send_reply(reply_target, f"✅ [{idx}/{len(task_files)}] 完成: {Path(full_path).name}\n报告: {report_path}")
+                                    else:
+                                        send_reply(reply_target, f"[Research] {Path(full_path).name} 未解析到有效任务")
                             except Exception as e:
                                 send_reply(reply_target, f"[Research] 执行失败: {e}")
                             finally:
                                 _long_task_running = False
-                        threading.Thread(target=_run_from_file, daemon=True).start()
-                        send_reply(reply_target, f"[Research] 从文件启动研究: {Path(file_path).name}")
-                    else:
-                        send_reply(reply_target, f"[Research] 文件不存在: {file_path}")
+
+                        threading.Thread(target=_run_multi_files, daemon=True).start()
+                        msg = f"[Research] 启动 {len(task_files)} 个研究任务"
+                        if constraint_files:
+                            msg += f"，附带 {len(constraint_files)} 个约束文件"
+                        send_reply(reply_target, msg)
+                    elif constraint_files and not task_files:
+                        send_reply(reply_target, "[Research] 仅收到约束文件，缺少研究任务文件(docs/tasks/)")
                 else:
                     send_reply(reply_target, "格式错误。正确格式：参考文件：docs/tasks/xxx.md")
             # ===== End 新增 =====

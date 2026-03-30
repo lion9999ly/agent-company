@@ -1,15 +1,17 @@
 {
   "title": "D-Robotics X5 产品目录结构：SoC Component 与 Others",
   "domain": "components",
-  "content": "目录中 1.3.15 为 SoC Component，1.3.16 为 Others，说明除 CPU/BPU/多媒体/接口外，X5 还包含若干系统级组件与其他辅助功能模块。此类章节通常覆盖时钟、复位、电源管理、安全、启动配置、调试、DMA、中断控制器等基础设施。版本历史中提到 strap pin 描述更新、PIN 名称与软件一致性修订，也侧面说明系统级引脚与启动/配置逻辑是 X5 设计的重要组成部分。",
+  "content": "标题：D-Robotics X5 产品目录结构：SoC Component 与 Others\n\n目录中 1.3.15 为 SoC Component，1.3.16 为 Others，说明除 CPU/BPU/多媒体/接口外，X5 还包含若干系统级组件与辅助模块。结合现有搜索结果，能明确补充到的具体公司/品牌名主要是 **NVIDIA、Velodyne、Intel、Arducam**，对应示例器件分别为 **Jetson AGX Orin 64GB、VLP-16 Lite、RealSense D455、IMX298 MIPI Camera Module**。\n\n其中，若将 SoC Component 理解为系统主控级核心模块，搜索结果给出的具体型号是 **NVIDIA Jetson AGX Orin 64GB Module**。其公开参数包括：**12 核 Arm Cortex-A78AE CPU，最高 2.2GHz；2048 个 CUDA Core、64 个 Tensor Core；AI 算力 200 TOPS（INT8）；64GB LPDDR5，带宽 204.8GB/s；64GB eMMC 5.1；功耗 15W–60W；模块尺寸 100mm × 87mm；工作温度 -25°C 至 80°C**。价格方面，搜索结果给出区间为 **约 1500–2000 美元/模块**，供应商为 **NVIDIA** 及其授权分销商 **Arrow Electronics、Avnet、Seeed Studio**。这些信息可作为“系统级组件”章节中主控、启动配置、调试与基础资源管理的硬件承载背景。\n\n在 Others 部分，搜索结果列出了多类外围感知器件。3D 激光雷达采用 **Velodyne VLP-16 Lite（Puck LITE）**，其参数包括：**16 线、测距 100m、精度 ±3cm、水平视场角 360°、垂直视场角 30°（-15° 到 +15°）、300,000 点/秒、转速 5–20Hz、IP67、尺寸 103mm × 72mm、重量 590g**。价格区间为 **约 4000–6000 美元**，品牌/公司为 **Velodyne Lidar**。\n\n深度相机部分为 **Intel RealSense D455**。搜索结果给出的参数包括：**深度分辨率最高 1280×720@90fps，RGB 分辨率 1280×800@30fps，深度范围 0.4–6m，深度视场角 87° × 58°，RGB 视场角 90° × 65°，USB 3.1 Gen1 Type-C，内置 6DoF IMU，尺寸 124mm × 29mm × 29mm**。价格区间为 **约 250–350 美元**，公司/品牌为 **Intel**。\n\n此外，广角导航摄像头条目中已出现 ",
   "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "SoC Component",
-    "Others",
     "X5",
+    "internal",
     "系统集成",
-    "目录"
+    "Others",
+    "目录",
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

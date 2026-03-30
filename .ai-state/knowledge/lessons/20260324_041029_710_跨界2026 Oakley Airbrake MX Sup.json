@@ -1,0 +1,13 @@
+{
+  "title": "跨界:2026 Oakley Airbrake MX Superc",
+  "domain": "lessons",
+  "content": "**结构化摘要（面向智能骑行头盔研发）**\n\n1. **已知产品基础技术（可迁移）**  \n- Oakley **Airbrake MX** 现有防雾方案包括：**F3 Anti-fog** 防雾涂层、**Switchlock®** 镜片快拆、**三层面部泡沫**吸湿结构。搜索结果还提到其镜片为 **Plutonite®** 材料，支持 **100% 阻挡 UVA/UVB/UVC 及有害蓝光**。  \n- 镜框材料为 **O Matter™**，固定带为 **5mm 宽硅胶衬里固定带**，并带可调 **Outriggers** 结构以适配头盔。  \n- 安全标准方面，搜索结果明确提到符合 **ANSI Z87.1** 和 **EN 1938**。  \n- 对头盔研发启发：可迁移到 **HUD 盖板/面罩防雾**、**模块化快拆面罩**、**吸湿排汗内衬**、**头盔兼容支架设计**。\n\n2. **现有产品可确认的具体型号、价格与品牌**  \n- 具体型号：**Oakley Airbrake MX**、**Airbrake MX Prizm™ Goggles**。  \n- 具体镜片版本（搜索结果列举）：**Prizm MX Jade Iridium、Prizm MX Torch Iridium、Prizm MX Sapphire Iridium**。  \n- 具体品牌/公司：**Oakley**。  \n- 具体销售渠道/公司名：**Oakley.com、REI、Backcountry、Cycle Gear、Amazon 上的 Oakley 官方店**。  \n- 具体价格：搜索结果给出的官方零售价通常在 **160–200 美元以上**，折合人民币约 **1200–1500 元以上**（原结果注明“汇率波动”）。  \n\n3. **与智能头盔研发相关的可落地映射**  \n- **防雾系统**：Airbrake MX 已验证的 **F3 防雾涂层 + 三层吸湿泡沫**，适合迁移到头盔面罩、HUD 透明盖板。  \n- **快拆维护**：**Switchlock®** 说明模块化镜片更换已具备成熟用户接受度，可借鉴到智能头盔的面罩、摄像头保护片、HUD 外盖。  \n- **结构兼容**：**O Matter™ Outriggers** 的头盔适配思路，可转化为智能头盔外设接口设计，如运动相机、通讯模组、风道附件。  \n- **光学方向**：现有 **Prizm™ MX** 已强调地形对比增强，说明未来智能头盔可结合视觉增强、AR 提示，但搜索结果**没有提供**任何已发布的 AR 显示型号、芯片型号或亮度参数，因此不能补充如 **IMX678、BES2800、QCC5181、3000nits** 等数据。  \n\n4. **关于“2026 Oakley Airbrake ",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-24",
+  "tags": [
+    "night_cross",
+    "overhaul_enriched",
+    "跨界"
+  ],
+  "confidence": "medium"
+}

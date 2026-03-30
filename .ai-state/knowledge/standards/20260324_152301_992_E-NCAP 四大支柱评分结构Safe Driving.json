@@ -1,16 +1,17 @@
 {
   "title": "E-NCAP 四大支柱评分结构：Safe Driving / Crash Avoidance / Crash Protection / Post-Crash",
   "domain": "standards",
-  "content": "E-NCAP总评由四大支柱组成：Safe Driving权重20、总分100；Crash Avoidance权重20、总分100；Crash Protection权重50、总分100；Post-Crash权重10、总分100。该页重点标注了Safe Driving中的Occupant Monitoring、Driver Engagement、Vehicle Assistance，以及Crash Avoidance整列，表明文档主要聚焦主动安全与驾驶监测相关得分实现。",
+  "content": "E-NCAP（此处搜索结果实际对应 **Euro NCAP**）整车总评通常按四大官方支柱给出，而不是零部件型号评分。依据搜索结果，可将题述的 **Safe Driving / Crash Avoidance / Crash Protection / Post-Crash** 映射为：**Crash Protection** 主要对应 **成人乘员保护（Adult Occupant Protection, AOP）** 与 **儿童乘员保护（Child Occupant Protection, COP）**；**Crash Avoidance** 与 **Safe Driving** 主要对应 **安全辅助系统（Safety Assist, SA）**，并部分涉及 **弱势道路使用者保护（Vulnerable Road User Protection, VRUP）**；**Post-Crash** 则是近年新增的碰撞后安全评估维度。搜索结果给出的典型总权重为：**AOP 约40%**、**COP 约20%**、**VRUP 约20%**、**SA 约20%**。这也说明，题述“Safe Driving 20 / Crash Avoidance 20 / Crash Protection 50 / Post-Crash 10”的表达，更像是对官方框架的功能性重组，而非搜索结果中明确列出的Euro NCAP官方四柱名称。\n\n在 **Crash Protection** 方面，搜索结果给出了多项明确测试参数：正面偏置可变形壁障碰撞为 **50 km/h**、**25%** 重叠率；正面全宽刚性壁障碰撞为 **50 km/h**、**100%** 车宽；侧面移动可变形壁障碰撞速度 **60 km/h**；侧柱碰速度 **32 km/h**，碰撞柱直径 **254 mm**。相关假人类型包括 **Hybrid III 50th percentile male**、**WorldSID 50th percentile male** 和 **BioRID II**。这些测试主要考察头部、颈部、胸部、腹部、骨盆、股骨、胫骨等伤害指标，以及乘员舱结构完整性、安全带预紧/限力和气囊协同保护效果。涉及的主要公司/品牌包括安全气囊与安全带系统供应商 **Autoliv（奥托立夫）**、**ZF（采埃孚）**、**Joyson Safety Systems（均胜安全）**，座椅系统供应商 **Adient**、**Lear**、**Faurecia（佛吉亚）**，以及材料相关企业 **ArcelorMittal**、**Novelis**。\n\n在 **Crash Avoidance / Safe Driving** 方面，搜索结果明确指出页面重点关注 **Occupant Monit",
   "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "E-NCAP",
-    "评分结构",
-    "Safe Driving",
     "Crash Avoidance",
+    "评分结构",
+    "E-NCAP",
+    "Post-Crash",
+    "Safe Driving",
     "Crash Protection",
-    "Post-Crash"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

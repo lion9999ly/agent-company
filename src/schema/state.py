@@ -1,3 +1,8 @@
+"""
+@description: 全局状态树定义，包含TypedDict类型定义和枚举类
+@dependencies: typing, enum
+@last_modified: 2026-03-18
+"""
 import operator
 from typing import TypedDict, Annotated, List, Dict, Optional, Any
 from enum import Enum
@@ -47,6 +52,21 @@ class OperatorRole(str, Enum):
 def append_logs(existing: List[Any], new: List[Any]) -> List[Any]:
     return existing + new if existing else new
 
+def merge_dict(left: dict, right: dict) -> dict:
+    """通用字典合并函数：用于并行节点的字段合并"""
+    merged = {**left}
+    merged.update(right)
+    return merged
+
+# 专用的 reducer 别名（语义更清晰）
+merge_execution = merge_dict
+merge_metadata = merge_dict
+merge_task_contract = merge_dict
+merge_contract_metadata = merge_dict
+merge_prototype_evaluation = merge_dict
+merge_sub_tasks = merge_dict
+merge_control = merge_dict
+
 # --- 结构化字典 ---
 class SubTaskContract(TypedDict):
     subtask_id: str
@@ -77,8 +97,11 @@ class ControlData(TypedDict):
 
 class ExecutionData(TypedDict):
     prototype_output: Optional[Dict[str, str]]
+    prototype_output_word_count: Optional[int]
     cto_output: Optional[Dict[str, str]]
+    cto_output_word_count: Optional[int]
     cmo_output: Optional[Dict[str, str]]
+    cmo_output_word_count: Optional[int]
     review_reports: Annotated[List[Dict[str, str]], append_logs]
 
 class TaskMetadata(TypedDict):
@@ -104,17 +127,42 @@ class TaskContract(TypedDict):
 
 # --- 3. 明确 Send API 扇出切片类型 ---
 class CTOTaskSlice(TypedDict):
+    """CTO研发任务切片 - 严格执行上下文隔离"""
     current_task_id: str
+    slice_id: Optional[str]           # 切片唯一标识
+    task_goal: Optional[str]          # 全局目标（只读）
+    my_contract: Optional[SubTaskContract]  # 自己的任务契约
+    error_history: Optional[List[str]]      # 最近错误历史
+    previous_output: Optional[Dict[str, str]]  # 之前的产出
+    dependencies: Optional[List[str]]        # 依赖的其他任务
+    checksum: Optional[str]                  # 数据校验和
+
 
 class CMOTaskSlice(TypedDict):
+    """CMO市场任务切片 - 严格执行上下文隔离"""
     current_task_id: str
+    slice_id: Optional[str]
+    task_goal: Optional[str]
+    my_contract: Optional[SubTaskContract]
+    error_history: Optional[List[str]]
+    previous_output: Optional[Dict[str, str]]
+    dependencies: Optional[List[str]]
+    checksum: Optional[str]
+
+
+class CriticTaskSlice(TypedDict):
+    """Critic评审任务切片 - 需要更多上下文"""
+    slice_id: Optional[str]
+    task_contract: Optional[TaskContract]
+    sub_tasks: Optional[Dict[str, SubTaskContract]]
+    prototype_evaluation: Optional[PrototypeEvaluation]
 
 # --- 4. 组装终极 AgentGlobalState ---
 class AgentGlobalState(TypedDict):
-    metadata: TaskMetadata
-    contract_metadata: ContractMetadata         # 已细化
-    prototype_evaluation: PrototypeEvaluation   # 已细化
-    task_contract: TaskContract                 # 已细化
-    sub_tasks: Dict[str, SubTaskContract]
-    execution: ExecutionData
-    control: ControlData
+    metadata: Annotated[TaskMetadata, merge_metadata]              # 并行节点写入合并
+    contract_metadata: Annotated[ContractMetadata, merge_contract_metadata]  # 并行节点写入合并
+    prototype_evaluation: Annotated[PrototypeEvaluation, merge_prototype_evaluation]  # 并行节点写入合并
+    task_contract: Annotated[TaskContract, merge_task_contract]   # 并行节点写入合并
+    sub_tasks: Annotated[Dict[str, SubTaskContract], merge_sub_tasks]  # 并行节点写入合并
+    execution: Annotated[ExecutionData, merge_execution]          # 并行节点写入合并
+    control: Annotated[ControlData, merge_control]                # 并行节点写入合并

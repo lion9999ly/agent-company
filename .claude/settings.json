@@ -1,0 +1,13 @@
+"hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd.exe /c D:\\Users\\uih00653\\my_agent_company\\pythonProject1\\beep.bat"
+          }
+        ]
+      }
+    ]
+  }

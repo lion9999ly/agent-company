@@ -10,7 +10,9 @@
     "customer service",
     "battery unit",
     "remote control",
-    "after-sales"
+    "after-sales",
+    "night_deepened",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

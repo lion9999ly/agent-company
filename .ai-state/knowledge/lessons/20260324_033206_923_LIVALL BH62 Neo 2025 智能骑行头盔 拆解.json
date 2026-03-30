@@ -1,0 +1,17 @@
+{
+  "title": "LIVALL BH62 Neo 2025 智能骑行头盔 拆解 FCC ID 跌倒检测 SOS 模组 ",
+  "domain": "lessons",
+  "content": "【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n**产品/模组信息（基于公开资料+前代推测）**\n- **LIVALL BH62 Neo 2025**：新型号公开拆解/FCC资料暂缺，**FCC Grantee Code 可能为 `2AB7Y`**；后续可重点查 FCC 内部照、方框图、测试报告获取主板/电池/天线布局。\n- **主控SoC候选**：  \n  - Nordic **nRF52832/nRF52840**：ARM Cortex‑M4F，最高 **64MHz**，**512KB Flash / 64KB RAM**，支持 **Bluetooth 5.0**，适合低功耗头盔主控+蓝牙一体化。  \n  - 备选：Dialog **DA1468x/1469x**、Infineon/Cypress **PSoC**。\n- **IMU候选**：Bosch **BMI270/BMI323**、ST **LSM6DSOX/LSM6DSV16X**、TDK **ICM‑42688‑P**；典型为 **6轴IMU**，加速度 **±2g~±16g**、陀螺仪 **±125~±2000dps**，采样频率 **100~1000Hz**。\n- **结构推测**：后置主控仓 + 独立 **LED灯带** + 集成 **麦克风/扬声器**；**USB‑C** 充电大概率替代旧接口。\n\n**关键技术点**\n- **跌倒检测/SOS**：依赖 IMU + 算法融合，核心逻辑为 **冲击阈值（约10G~20G）+ 姿态突变 + 跌倒后静止5~10秒**；触发后 **30~90秒倒计时**，未取消则经手机蓝牙转发 **GPS位置** 给紧急联系人。\n- **无线通信**：头盔端以 **BLE** 为主，SOS/GPS 仍依赖手机，说明“头盔轻量化+手机算力/联网复用”仍是主流方案。\n- **灯控设计**：后部高可视 **LED警示/转向灯**",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-24",
+  "tags": [
+    "LIVALL",
+    "拆解",
+    "跌倒检测",
+    "IMU",
+    "LED",
+    "night_expand",
+    "speculative"
+  ],
+  "confidence": "low"
+}

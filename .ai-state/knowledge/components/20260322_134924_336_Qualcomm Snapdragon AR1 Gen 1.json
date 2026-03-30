@@ -1,13 +1,16 @@
 {
   "title": "Qualcomm Snapdragon AR1 Gen 1 Platform 概览",
   "domain": "components",
-  "content": "Snapdragon AR1 Gen 1 Platform 面向下一代智能眼镜，主打拍照、视频录制、直播、通知显示与端侧 AI。平台强调轻量化、低功耗与优化散热，适配时尚型智能眼镜形态。官方说明其可支持直接在眼镜上完成 12 MP 照片拍摄、6 MP 视频采集、单目/双目显示、3DoF 体验，以及基于 Qualcomm AI Engine 的视觉搜索和实时翻译等能力。",
+  "content": "Qualcomm Snapdragon AR1 Gen 1 Platform 是高通在 2023 年发布的轻量级智能眼镜专用平台，定位区别于面向头显的 Snapdragon XR 系列，更强调“接近普通眼镜”的外形、低功耗和端侧 AI。根据高通公开信息，AR1 Gen 1 可在眼镜端直接支持 **1200 万像素（12 MP）照片拍摄**、**600 万像素（6 MP）视频采集**，并支持**单目或双目显示**、**3DoF** 体验，以及基于 **Qualcomm AI Engine** 的视觉搜索、实时翻译、语音交互等功能。这些能力主要面向拍照眼镜、信息提示型 AR 眼镜和轻量化智能眼镜，而非重型 MR 头显。\n\n在连接与生态方面，高通明确提到该平台支持与手机协同，并已被多家厂商采用。公开点名的合作或采用厂商包括 **Meta、XREAL、Lenovo、OPPO、Rokid、RayNeo、Goertek、Thundercomm、Pegatron、QONOQ** 等。供应链层面，**Thundercomm（创通联达）** 和 **Goertek（歌尔）** 更偏向方案/参考设计与制造支持，**Pegatron（和硕）** 也属于重要 ODM 厂商。终端品牌中，**RayNeo**、**Rokid**、**XREAL** 则更接近消费者熟悉的 AR 眼镜供应商。\n\n需要说明的是，关于芯片更细的硬件参数——例如 **CPU 核心数量、主频、GPU 型号细分、制程工艺、内存类型、TDP、芯片单价**——高通在公开资料中**没有披露**，因此不能补充具体数值。搜索结果中提到的 LPDDR5/LPDDR5X、UFS 3.1、Wi‑Fi 6/6E、Bluetooth 5.3、Micro‑OLED 分辨率等，均属于行业推测，并非该平台公开确认的正式规格，不宜当作确定参数写入。\n\n价格方面，公开渠道也**没有 AR1 Gen 1 芯片本体报价**。不过，采用该类平台的智能眼镜终端通常覆盖中高端市场；由于本次搜索结果未给出具体终端型号与售价，不能据此补充确定价格数据。总体看，Snapdragon AR1 Gen 1 的价值不在于堆高算力，而在于把拍摄、显示、音频、AI 与连接能力压缩进更小、更轻、更低热设计的眼镜形态中，为 2023—2025 年的消费级智能眼镜提供基础平台。",
   "source": "doc_import:高通AR1 - 87-86507-1_REV_B_Snapdragon_AR1_Gen_1_Platform_Product_Brief.pdf",
   "created_at": "2026-03-22",
   "tags": [
     "Qualcomm",
     "Snapdragon AR1 Gen 1",
+    "internal",
+    "overhaul_deepened",
     "smart glasses",
+    "night_deepened",
     "AR platform"
   ],
   "confidence": "high"

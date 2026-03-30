@@ -10,7 +10,8 @@
     "Package outline",
     "MIPI CSI",
     "Video input",
-    "Reflow profile"
+    "Reflow profile",
+    "internal"
   ],
   "confidence": "high"
 }

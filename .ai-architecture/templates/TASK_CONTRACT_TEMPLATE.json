@@ -1,0 +1,26 @@
+{
+  "task_metadata": {
+    "[REQUIRED] task_id": "REQ-CTO-20260303-001",
+    "[REQUIRED] target_role": "CTO",
+    "[REQUIRED] issue_timestamp": "2026-03-03T10:00:00Z"
+  },
+  "execution_directive": {
+    "[REQUIRED] task_goal": "编写头盔蓝牙低功耗广播 (BLE Advertising) 底层驱动",
+    "[REQUIRED] context_files_allowed": [
+      "src/hardware/bluetooth/README.md",
+      "docs/specs/ble_chip_datasheet.pdf"
+    ],
+    "[REQUIRED] deliverable_format": "C/C++ 源码文件及单元测试"
+  },
+  "strict_boundaries": {
+    "[REQUIRED] quantitative_acceptance_criteria": {
+      "metric_1": "广播间隔必须在 500ms 至 1000ms 之间可调",
+      "metric_2": "该进程独占内存不得超过 4KB",
+      "metric_3": "测试覆盖率必须达到 100%"
+    },
+    "[REQUIRED] redline_constraints": [
+      "禁止使用任何可能导致线程阻塞的死循环 delay()",
+      "必须调用白名单内的安全内存分配函数"
+    ]
+  }
+}

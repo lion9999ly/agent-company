@@ -1,16 +1,17 @@
 {
   "title": "E-NCAP Crash Protection 与 Post-Crash 评分框架",
   "domain": "standards",
-  "content": "Crash Protection总分100：Frontal Impact 40（Offset incl 10 COP 20、Full Width 10、VT & Sled 10）、Side Impact 35（MDB incl 5 COP 15、Pole 10、Farside 10）、Whiplash 5、Vulnerable Road Users 20（Headform 10、Legform 10）。Post-Crash总分100：Rescue information 40（Rescue sheets 35、Rescue Guide 5）、Post-Crash intervention 25（Advanced eCall 20、Multi Collision Brake 5）、Extrication 35（Energy Management 20、Occupant Extrication 15）。",
+  "content": "标题：E-NCAP Crash Protection 与 Post-Crash 评分框架\n\nE-NCAP（Euro NCAP，欧洲新车评估项目）的Crash Protection与Post-Crash评分框架，属于整车安全评价体系中的结构化打分规则，适用于乘员保护、弱势道路使用者保护以及碰撞后救援与处置能力评估。该条目不涉及IMX678、BES2800、QCC5181这类芯片型号，也不存在“3000nits”“42dB”“1.65kg”或“$15–25/颗”这类器件参数/价格数据；可明确补充的具体机构名称为**Euro NCAP**。\n\n在Crash Protection部分，原始框架总分为**100分**。其中Frontal Impact（正面碰撞）占**40分**，细分为：**Offset incl COP 20分**、**Full Width 10分**、**VT & Sled 10分**。结合搜索结果，可补充其典型测试条件：移动渐进可变形壁障正面碰撞（MPDB）测试速度为**50 km/h**，重叠率**50%**，壁障质量**1400 kg**；全宽刚性壁障正面碰撞速度同为**50 km/h**，重叠率**100%**。Side Impact（侧面碰撞）占**35分**，包括**MDB incl COP 15分**、**Pole 10分**、**Farside 10分**。其中侧面移动壁障碰撞速度为**60 km/h**，壁障质量**1400 kg**；侧面柱碰速度为**32 km/h**，碰撞角度**75度**，柱体直径**254 mm**。Whiplash（颈部鞭打伤）占**5分**。Vulnerable Road Users（弱势道路使用者保护）占**20分**，分为**Headform 10分**和**Legform 10分**；搜索结果显示，行人头部/腿部冲击测试常用速度为**40 km/h**。\n\nPost-Crash部分总分同样为**100分**。Rescue Information（救援信息）占**40分**，其中**Rescue Sheets 35分**、**Rescue Guide 5分**；这里的“Rescue Sheets”通常指车辆救援卡，“Rescue Guide”指面向救援人员的操作指南。Post-Crash Intervention（碰撞后干预）占**25分**，包括**Advanced eCall 20分**和**Multi Collision Brake 5分**。Extrication（脱困/救援处置）占**35分**，包括**Energy Management 20分**和**Occupant Extrication 15分**，重点关注高压系统断电管理、车门开启、乘员移出便利性等。\n\n从搜索结果可确认，Eu",
   "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "Crash Protection",
-    "Post-Crash",
-    "Frontal Impact",
     "Side Impact",
     "eCall",
-    "Rescue"
+    "Frontal Impact",
+    "Post-Crash",
+    "Rescue",
+    "Crash Protection",
+    "overhaul_enriched"
   ],
   "confidence": "medium"
 }

@@ -10,7 +10,8 @@
     "轮速传感器",
     "CANH",
     "CANL",
-    "LAMP-ABS"
+    "LAMP-ABS",
+    "internal"
   ],
   "confidence": "high"
 }

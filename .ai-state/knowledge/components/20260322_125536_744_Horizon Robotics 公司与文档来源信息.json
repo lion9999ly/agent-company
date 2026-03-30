@@ -1,14 +1,16 @@
 {
   "title": "Horizon Robotics 公司与文档来源信息",
   "domain": "components",
-  "content": "文档主体归属 Horizon Robotics, Inc.，官网为 https://www.horizon.cc。文档标注“Confidential and Proprietary – Horizon Robotics”，并带有“Confidential to 大陆芯智驾 by 姚鹏 2024-12-19”水印，说明该版本属于受限传播资料。对情报使用而言，应视为非公开或半公开技术资料，引用和流转需注意保密边界。",
+  "content": "标题：Horizon Robotics 公司与文档来源信息\n\n补充后的完整内容：\n\n文档主体归属 **Horizon Robotics, Inc.（地平线机器人）**，官网为 **https://www.horizon.cc**。从搜索结果看，地平线成立于 **2015年**，是一家中国边缘 AI 芯片设计公司，核心产品为面向智能驾驶的 **征程（Journey）系列** 芯片。文档页眉/页脚标注有 **“Confidential and Proprietary – Horizon Robotics”**，同时带有 **“Confidential to 大陆芯智驾 by 姚鹏 2024-12-19”** 水印，说明该版本并非公开市场宣传材料，而是带明确保密属性、且定向流转给特定对象的资料版本。\n\n结合搜索结果，可用具体产品信息辅助判断其技术归属：例如 **征程2（Journey 2）** 面向 L2 级 ADAS，公开参数包括 **4 TOPS** AI 算力、**28nm** 制程、**2.5W** 典型功耗；**征程3（Journey 3）** 为 **5 TOPS**、**16nm**、**5W**；旗舰 **征程5（Journey 5）** 则达到 **128 TOPS**，采用 **7nm** 工艺，典型功耗约 **30W**，并配备 **16核 ARM Cortex-A55**，支持 **PCIe Gen4、LPDDR5、万兆以太网** 等接口，且通过 **ISO 26262 ASIL-B** 功能安全认证。这些具体型号和参数均表明，文档内容大概率围绕地平线智能驾驶芯片或相关解决方案展开，而非泛泛的企业介绍。\n\n从公司与合作方信息看，搜索结果提到的品牌/企业包括 **比亚迪、理想汽车、长城汽车、上汽集团、广汽集团、长安汽车、哪吒汽车、岚图汽车、极越、文远知行、大陆集团（Continental）、博世（Bosch）** 等；其上游供应链相关公司包括 **台积电（TSMC）**、**ARM**，以及 **Synopsys、Cadence** 等 EDA/IP 厂商。这些具体公司名进一步支持“文档属于产业链合作或项目交流材料”的判断。\n\n关于价格，搜索结果明确指出：**地平线芯片具体价格不对外公开**，因为其主要采用 **B2B** 模式，面向 OEM、Tier 1 和方案商销售，价格通常随 **采购量、合作深度、定制化需求、技术支持内容** 而协商。因此，现有搜索结果中**没有可核实的公开单价**，不宜补写类似“$15-25/颗”这类数字。\n\n综合来看，该文档应视为 **非公开或半公开技术资料**，其来源主体明确为 **Horizon Robotics, Inc.**，且带有针对 **大陆芯智驾** 的定向保密标识。用于情报分析时，可引用其中已被公开",
   "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
   "created_at": "2026-03-22",
   "tags": [
+    "Confidential",
     "Horizon Robotics",
-    "Company",
     "Website",
-    "Confidential"
+    "Company",
+    "internal",
+    "overhaul_enriched"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

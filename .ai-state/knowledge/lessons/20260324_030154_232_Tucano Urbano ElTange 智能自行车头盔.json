@@ -1,0 +1,17 @@
+{
+  "title": "Tucano Urbano El'Tange 智能自行车头盔 Mips Quin crash sen",
+  "domain": "lessons",
+  "content": "【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n**产品/技术要点**\n- **Tucano Urbano El'Tange**：城市通勤型智能自行车头盔，集成 **Mips** 被动防护、**Quin crash sensor** 碰撞检测、**BLE** 通信、**尾灯模组**。续航公开推测约 **10小时**，电池多为 **3.7V Li-Po 500–700mAh**，充电接口常见 **Micro-USB/USB-C**。\n- **Mips**：低摩擦层结构，斜向撞击时允许头盔相对头部滑移 **10–15mm**；公开资料称可降低旋转运动 **10%–50%**，适合与智能模组并存的“被动+主动安全”方案。\n- **Quin碰撞检测**：基于 **IMU+MCU+算法+手机App**，检测碰撞后通过手机向紧急联系人发送 **GPS位置**；官方口径准确率约 **99%**。研发重点在于**误报抑制**与**传感器融合算法**。\n- **BLE主控候选**：**Nordic nRF52832/52840、Dialog DA14531、STM32WB、Infineon/Cypress PSoC 4 BLE**。趋势是选用**低功耗SoC+OTA升级+天线一体化**。\n- **IMU候选**：**Bosch BMI270/BMI160、ST LSM6DSOX、TDK ICM系列**；典型能力：采样率可达**数千Hz**，加速度 **±16g或更高**，角速度 **±2000dps**，适合碰撞/刹车识别。\n\n**可借鉴设计**\n- 采用**后部集中式电子舱**：主控、IMU、电池、尾灯一体化，FPC连接，利于装配、防水和维护。\n- **尾灯模组**建议支持常亮/闪烁/刹车增强；可复用IMU做**刹车灯联动**，提升安全卖点。\n- 电子模组需做**灌封/密封**，目标至少 **IPX4**，兼顾轻量化与抗振。\n\n**行业",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-24",
+  "tags": [
+    "Tucano Urbano",
+    "El'Tange",
+    "Quin",
+    "IMU",
+    "尾灯",
+    "night_expand",
+    "speculative"
+  ],
+  "confidence": "low"
+}

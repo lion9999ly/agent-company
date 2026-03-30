@@ -1,16 +1,18 @@
 {
   "title": "模型开发与集群调度：支持训练、评测、管理、编译、云端IDE",
   "domain": "components",
-  "content": "云端架构中，模型开发侧具备集群调度能力，支持模型训练、评测、管理、编译和云端IDE。该能力与数据生产、训练评估集同步、问题回归和工程集成形成闭环，面向ADAS/AD模型的高频开发与验证需求，提升资源利用率和版本迭代效率。",
+  "content": "云端架构中的“模型开发与集群调度”通常不是单点工具，而是一套覆盖训练、评测、管理、编译和云端 IDE 的研发平台。结合现有搜索结果，可落地的技术栈主要围绕 **Kubernetes + Kubeflow/Volcano/Slurm-K8s Operator** 展开，用于统一调度 **CPU、GPU、NPU、FPGA** 等异构资源，并支持多租户隔离、优先级抢占和弹性伸缩。硬件侧，搜索结果给出了可支持的型号，包括 **NVIDIA Blackwell B100/B200、AMD Instinct MI400 系列、Intel Gaudi3/4、Google TPU v5e/v6、AWS Trainium/Inferentia v2/v3**；网络可采用 **200/400/800 Gbps InfiniBand NDR/XDR 或 RoCE**，存储支持 **NVMe-oF、Lustre、CephFS**。这些参数说明平台已具备面向大规模 ADAS/AD 模型训练的基础设施能力。\n\n在训练与评测侧，平台通常兼容 **PyTorch、TensorFlow、JAX、MindSpore、PaddlePaddle** 等框架，并支持 **FSDP、DeepSpeed ZeRO-3、Horovod、Megatron-LM** 等分布式训练方案。搜索结果显示，其目标能力可覆盖 **万亿（10^12）参数级别模型训练**。从行业使用情况看，**Kaggle 2022 调查**中，深度学习框架使用率约为 **PyTorch 46%**、**TensorFlow 40%**，说明主流平台必须优先适配这两类生态。超参数优化可接入 **Optuna、Ray Tune、Vertex AI Vizier、AWS SageMaker HPO、Azure ML HyperDrive**；已有结果指出，在部分图像分类任务中，HPO 可带来 **5%–10%** 的准确率提升。实验管理则常结合 **MLflow、Weights & Biases、Comet** 做指标、权重、代码和数据版本追踪。\n\n在工程闭环上，这类平台的价值不只是“能训练”，而是把数据生产、训练评估集同步、问题回归、模型版本管理和部署编译串起来。模型编译侧可支持量化、剪枝、图优化以及 **FP8、INT4** 等低精度优化；云端 IDE 则提供基于 Web 的协作开发环境，便于算法、数据和工程团队共享资源。搜索结果中唯一出现的价格信息是概念化产品 **AI-Compute Orchestrator (ACO) Platform v3.0**，但未提供具体报价；供应商名称则明确包括 **NVIDIA、AMD、Intel、Google、AWS**。因此可以确认：该能力已形成面向高频迭代场景的统一研发底座，能够提升资源利用率、缩",
   "source": "doc_import:数据闭环介绍 20260119 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "模型开发",
-    "集群调度",
-    "模型训练",
-    "模型评测",
     "云端IDE",
-    "编译"
+    "编译",
+    "模型训练",
+    "集群调度",
+    "模型评测",
+    "overhaul_deepened",
+    "night_deepened",
+    "模型开发"
   ],
   "confidence": "high"
 }

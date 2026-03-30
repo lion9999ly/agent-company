@@ -1,6 +1,6 @@
 """
 @description: Echo长期记忆管理器 - 项目上下文、用户偏好、历史决策
-@dependencies: json, yaml, datetime
+@dependencies: json, yaml, datetime, uuid
 @last_modified: 2026-03-17
 
 Echo(CPO)重新定位：从"调度中枢"转型为"基础设施守护者"
@@ -108,7 +108,10 @@ class EchoMemoryManager:
         # 保存到文件
         file_path = self._get_file_path(memory_type, key)
         with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(asdict(entry), f, ensure_ascii=False, indent=2)
+            # 将MemoryType枚举转换为字符串值
+            entry_dict = asdict(entry)
+            entry_dict['type'] = entry_dict['type'].value
+            json.dump(entry_dict, f, ensure_ascii=False, indent=2)
 
         # 更新缓存
         self._cache[entry_id] = entry
@@ -150,6 +153,8 @@ class EchoMemoryManager:
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
+                # 将字符串type转换回MemoryType枚举
+                data['type'] = MemoryType(data['type'])
                 entry = MemoryEntry(**data)
                 self._cache[entry_id] = entry
                 return entry

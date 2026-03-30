@@ -9,7 +9,8 @@
     "QuotaFailure",
     "GenerateRequestsPerDayPerProjectPerModel",
     "global",
-    "daily limit"
+    "daily limit",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -1,15 +1,17 @@
 {
   "title": "特斯拉早期明星用户与品牌传播：George Clooney 及 Signature 100",
   "domain": "competitors",
-  "content": "好莱坞明星群体是特斯拉早期品牌传播的重要杠杆。George Clooney 是最著名的早期用户之一，购买了 Roadster 第 0008 号车，并成为“Signature 100”系列成员；他还在 2006 年 8 月、Roadster 尚未量产时即支付预付款。其他明星用户包括布拉德·皮特、施瓦辛格、莱昂纳多·迪卡普里奥、安吉丽娜·朱莉、马特·达蒙等。明星背书帮助特斯拉建立“科技+时尚+高端”的品牌形象。",
+  "content": "好莱坞明星群体是特斯拉早期品牌传播的重要杠杆，其中**George Clooney（乔治·克鲁尼）**是最具代表性的早期车主之一。公开资料显示，他购买的是**Tesla Roadster 第一代、编号 0008** 的车辆，并属于首批限量交付的 **“Signature 100”** 序列。报道还提到，Clooney 在 **2006 年 8 月**、Roadster 尚未量产时就已支付预付款，这说明他属于特斯拉最早一批高知名度支持者。\n\nClooney 所购车型为**特斯拉 Tesla Roadster（第一代）**，该车基于**Lotus Cars（莲花汽车）Elise** 平台深度改造，采用**两门两座**布局和**后轮驱动**。动力系统为**交流感应电机（AC Induction Motor）**，最大功率约 **185kW**，峰值扭矩约 **270Nm**；电池组容量约 **53kWh**，由约 **6,831 节 18650 锂离子电芯**组成。性能方面，0-60mph 加速约 **3.9 秒**，最高时速约 **201km/h（125mph）**，EPA 续航约 **244 英里（约 393km）**。车身尺寸约为 **3946mm×1873mm×1127mm**，轴距 **2330mm**，整备质量约 **1238kg**。这些数据在当时的电动车市场中极具冲击力，也是 Roadster 能够打破“电动车=低性能”刻板印象的关键。\n\n关于价格，公开资料普遍提到 Roadster 早期版本售价在 **10 万美元左右**；搜索结果中给出的 **Signature 100 初始售价约 100,000 美元**，而后续量产阶段的 Roadster 价格则常见于 **109,000-128,500 美元**区间。就供应链和品牌信息而言，整车品牌和销售方是**Tesla Motors（特斯拉汽车公司）**，底盘和车身基础由**Lotus Cars**提供，最终由特斯拉完成电驱、电池和控制系统集成。\n\n除 George Clooney 外，早期被媒体频繁提及的特斯拉明星用户还包括**Brad Pitt（布拉德·皮特）**、**Arnold Schwarzenegger（阿诺·施瓦辛格）**、**Leonardo DiCaprio（莱昂纳多·迪卡普里奥）**、**Angelina Jolie（安吉丽娜·朱莉）**、**Matt Damon（马特·达蒙）**等。这些具体明星姓名本身就是品牌传播资产：他们将特斯拉与“环保、科技、时尚、高端生活方式”绑定，帮助特斯拉在尚未形成大规模销量前，就建立起强烈的品牌辨识度。\n\n因此，George Clooney 与 **Roadster Signature 100 / 0008 号车** 的案例，不只是明星购车新闻，更是",
   "source": "doc_import:特斯拉早期用户.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "George Clooney",
     "Roadster 0008",
-    "Signature 100",
+    "品牌传播",
     "明星用户",
-    "品牌传播"
+    "Signature 100",
+    "internal",
+    "George Clooney",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

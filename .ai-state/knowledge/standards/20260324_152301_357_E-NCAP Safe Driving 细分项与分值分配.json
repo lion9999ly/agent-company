@@ -1,16 +1,17 @@
 {
   "title": "E-NCAP Safe Driving 细分项与分值分配",
   "domain": "standards",
-  "content": "Safe Driving总分100，包含三部分：Occupant Monitoring 30分（Seatbelt usage 10、Occupant classification 10、Occupant presence 10）；Driver Engagement 30分（Driver Monitoring 25、Driving Controls 5）；Vehicle Assistance 40分（Speed Assistance 20、ACC Performance 15、Steering Assistance 5）。其中Occupant Monitoring与Driver Monitoring直接关联舱内感知能力。",
+  "content": "E-NCAP（Euro NCAP，欧洲新车安全评鉴协会）在**2023 Safety Assist / Safe Driving**项目中，并不存在“总分100、三大部分30/30/40”的公开官方分法。根据公开协议，**该项最高为16分，整车星级权重为20%**。细分项通常包括：**AEB Car-to-Car 6分、AEB Vulnerable Road Users 6分、Lane Support 4分、Speed Assistance 3分、Driver Monitoring 3分、Occupant Status Monitoring 3分、Other Safety Systems 1分**；各项为理论上限，最终成绩按协议规则折算，并非简单相加后固定等于16分。\n\n其中，与舱内感知直接相关的是**Driver Monitoring Systems（DMS，驾驶员监测）**和**Occupant Status Monitoring（OSM，乘员状态监测）**。DMS主要考察驾驶员疲劳、注意力分散、视线脱离等识别与预警；OSM主要考察**安全带提醒**、**儿童遗留提醒（Child Presence Detection, CPD）**等。公开测试协议给出的多为**测试场景、速度区间、触发条件和评分逻辑**，而不是消费电子式的器件型号参数，因此搜索结果中**没有官方给出具体芯片型号、单颗价格、亮度/降噪/重量等数据**，不能补成如“IMX678、BES2800、QCC5181、3000nits、42dB、1.65kg、$15-25/颗”这类信息。\n\n可确认的具体测试参数方面：  \n- **AEB Car-to-Car**：覆盖CCR场景，包括对静止车、慢行车、制动车；**测试速度通常约30–80 km/h**。  \n- **AEB VRU**：覆盖行人、骑行者、夜间行人、路口冲突等；**测试速度通常约20–60 km/h**。  \n- **Speed Assistance Systems（SAS）**：评估**ISA（Intelligent Speed Assistance，智能限速辅助）**与**TSR（Traffic Sign Recognition，交通标志识别）**。  \n- **Lane Support Systems（LSS）**：评估**LDW（车道偏离预警）**、**LKA（车道保持辅助）**、**ELK（紧急车道保持）**。  \n\n相关机构/品牌名称应写为：**Euro NCAP**；若展开缩写，可写**AEB、VRU、DMS、OSM、ISA、TSR、LDW、LKA、ELK**。需要注意，Euro NCAP评估的是**整车系统功能表现**，并不指定供应商，也不要求公开摄像头CMOS、座舱SoC、毫米波雷达或DMS红外模组的**具体品牌、型号",
   "source": "doc_import:ENCAP&CNCAP得分 20260122 CN（简）.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "Safe Driving",
-    "Occupant Monitoring",
     "Driver Engagement",
-    "Vehicle Assistance",
     "DMS",
-    "OMS"
+    "Occupant Monitoring",
+    "OMS",
+    "Vehicle Assistance",
+    "Safe Driving",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

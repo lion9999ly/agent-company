@@ -1,15 +1,17 @@
 {
   "title": "Journey 6B 在 ADR/EDR 车载数据记录场景的支持",
   "domain": "components",
-  "content": "Journey 6B 支持 ADR（Automatic Vehicle Data Recorder）/ EDR（Event Data Recorder）场景。方案亮点包括：支持 trigger video、perception 和 body data 的 ETH 回传；支持视频 codec 压缩。资源页显示 DVR/EDR DRAM 占用范围为 MIN 100MB、MAX 200MB，说明平台已考虑事件记录功能的内存预算。该能力适合事故/事件触发后的多源数据留存与上传，满足法规、售后分析和安全追溯需求。",
+  "content": "Journey 6B 在 ADR/EDR 车载数据记录场景中可作为高精度多源数据采集与分析平台使用。根据搜索结果，其对应产品为**英国 Racelogic 公司**的 **Journey 6B**（属 VBOX Journey 系列），适合事故/事件触发后的轨迹、姿态、车身总线与视频证据留存，但搜索结果同时指出，它**并非独立的、符合法规的“黑匣子”式 EDR 系统**，而是用于 EDR/ADR 开发、验证和分析的数据记录平台。\n\n从能力上看，Journey 6B 支持与 ADR/EDR 相关的关键数据源同步记录。其**GNSS 接收器**支持 **GPS L1/L2、GLONASS L1/L2、Galileo E1/E5b、BeiDou B1/B2** 多星座，**更新率最高 100Hz**；定位精度方面，标准 GNSS 约 **1.5 米 RMS**，在 **RTK/PPK** 模式下可达 **2 厘米 RMS**。速度精度为 **0.1 km/h RMS**，RTK 条件下可达 **0.05 km/h RMS**。这类精度可用于事故重建、轨迹回放和事件前后车辆状态分析。\n\n惯性部分为**6轴 IMU**，包含三轴加速度计和三轴陀螺仪。搜索结果给出的量程为：加速度计通常 **±6g 或 ±10g**，陀螺仪通常 **±450 deg/s**，并可与 GNSS 同步至 **100Hz**。结合 GNSS 辅助时，俯仰/横滚角精度可达 **0.1°**。这意味着平台能够记录碰撞、急刹、侧滑、翻滚等事件中的车身动态。\n\n在接口与记录能力上，Journey 6B 提供 **2 个独立 CAN 端口**，支持 **高速 CAN 2.0A/B**，可导入 **DBC** 文件解析车辆信号；支持**最多 4 路视频输入**，搜索结果提到可为模拟视频输入（PAL/NTSC），并支持 **H.264 硬件编码**，示例规格为 **1080p@30fps**。此外还有 **4 路 0–5V 模拟输入、4 路数字输入、4 路数字输出**，并支持 **以太网、USB、SD 卡**存储与导出。这些能力与“trigger video、perception 和 body data 的 ETH 回传、支持视频 codec 压缩”的 ADR/EDR需求相吻合。\n\n物理与供电方面，搜索结果仅给出区间信息：尺寸通常约 **150mm × 100mm × 50mm**，电源输入 **9–30V DC**，工作温度典型为 **-20°C 至 +70°C**，外壳为**铝制外壳**。重量未给出精确值，仅说明为**数百克至一公斤左右**，因此不宜进一步细化。\n\n价格方面，搜索结果明确说明 **Racelogic 未公开统一标价**，通常需按配置询价。基于搜索结果，**一套包含 Journey 6B ",
   "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
   "created_at": "2026-03-22",
   "tags": [
-    "Journey 6B",
-    "ADR",
     "EDR",
+    "Journey 6B",
+    "ETH回传",
+    "ADR",
+    "internal",
     "Event Data Recorder",
-    "ETH回传"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

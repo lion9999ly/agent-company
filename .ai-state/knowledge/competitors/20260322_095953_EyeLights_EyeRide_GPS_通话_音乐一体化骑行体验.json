@@ -10,7 +10,12 @@
     "GPS",
     "calls",
     "music",
-    "hands-free"
+    "hands-free",
+    "night_deepened",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high",
+  "_usage_count": 6,
+  "_last_used": "2026-03-28T13:54:15.898780",
+  "_first_used": "2026-03-28T12:02:16.830819"
 }

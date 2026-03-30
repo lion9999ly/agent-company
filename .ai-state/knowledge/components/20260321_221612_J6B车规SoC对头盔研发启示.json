@@ -1,13 +1,15 @@
 {
   "title": "J6B车规SoC对头盔研发启示",
   "domain": "components",
-  "content": "文档介绍地平线 Journey 6B（J6B）车规AI SoC，核心能力包括：18 TOPS BPU、23K DMIPS CPU、vDSP 64 GFLOPS@FP32、ISP处理带宽0.64 Gpixel/s、视频编解码支持4K@60FPS/5K@30FPS H.264/H.265；接口含2×4-lane MIPI-CSI RX + 1×2-lane TX、2×1GE+1×100Mbps以太网、LPDDR5/4x/4 32bit约25GB/s、XSPI/NAND/eMMC、较多GPIO。功耗方面TDP<6W、SDP<5W（125℃条件），并具备AEC-Q100 Grade2、ASIL-B主域+ASIL-D MCU域、HSM/FIPS140-3 L2等车规安全特性。应用场景聚焦DVR、DMS、EDR/ADR、ADAS智能摄像头，支持低功耗停车录像、事件触发录像、DMS算法集成。资源占用示例显示：1VxR方案CPU<15kDMIPS，BPU感知/预测<13 TOPS，另预留1~2 TOPS给DMS；系统设计最小建议2GB DDR。对智能骑行头盔研发的相关启示：其视觉AI、摄像头接入、视频压缩、事件录像和安全启动能力可借鉴于高端头盔的行车记录、骑行监测、多摄融合设计；但该芯片明显面向汽车ADAS，算力、接口、车规安全和功耗规格整体偏重，可能超出头盔产品在体积、散热、电池续航和成本上的可接受范围。更适合作为高性能视觉头盔SoC选型的能力上限参考，而非直接适配方案。",
+  "content": "【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n【注意：以下部分内容基于趋势推测，非官方确认数据】\n\n文档介绍地平线 Journey 6B（J6B）车规AI SoC，核心能力包括：18 TOPS BPU、23K DMIPS CPU、vDSP 64 GFLOPS@FP32、ISP处理带宽0.64 Gpixel/s、视频编解码支持4K@60FPS/5K@30FPS H.264/H.265；接口含2×4-lane MIPI-CSI RX + 1×2-lane TX、2×1GE+1×100Mbps以太网、LPDDR5/4x/4 32bit约25GB/s、XSPI/NAND/eMMC、较多GPIO。功耗方面TDP<6W、SDP<5W（125℃条件），并具备AEC-Q100 Grade2、ASIL-B主域+ASIL-D MCU域、HSM/FIPS140-3 L2等车规安全特性。应用场景聚焦DVR、DMS、EDR/ADR、ADAS智能摄像头，支持低功耗停车录像、事件触发录像、DMS算法集成。资源占用示例显示：1VxR方案CPU<15kDMIPS，BPU感知/预测<13 TOPS，另预留1~2 TOPS给DMS；系统设计最小建议2GB DDR。对智能骑行头盔研发的相关启示：其视觉AI、摄像头接入、视频压缩、事件录像和安全启动能力可借鉴于高端头盔的行车记录、骑行监测、多摄融合设计；但该芯片明显面向汽车ADAS，算力、接口、车规安全和功耗规格整体偏重，可能超出头盔产品在体积、散热、电池续航和成本上的可接受范围。更适合作为高性能视觉头盔SoC选型的能力上限参考，而非直接适配方案。",
   "source": "doc_import:J6B芯片介绍 20250716 EN.pptx",
   "created_at": "2026-03-21",
   "tags": [
     "车规SoC",
     "视觉AI",
-    "视频编解码"
+    "视频编解码",
+    "internal",
+    "speculative"
   ],
-  "confidence": "medium"
+  "confidence": "low"
 }

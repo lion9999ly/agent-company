@@ -10,7 +10,8 @@
     "HPU3501C",
     "HPU3501D",
     "I2C Address",
-    "PWRKEY"
+    "PWRKEY",
+    "internal"
   ],
   "confidence": "high"
 }

@@ -9,7 +9,9 @@
     "Osmo Nano",
     "微型相机",
     "大疆",
-    "可穿戴影像"
+    "可穿戴影像",
+    "night_deepened",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

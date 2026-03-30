@@ -1,17 +1,19 @@
 {
   "title": "Journey 6E SIP 封装与引脚定义章节结构",
   "domain": "components",
-  "content": "第4章“Package and Pin definitions”细分为：4.1 I/O parameter definitions；4.2 Package；4.3 Pin map Diagram；4.4 Pin Descriptions，其中至少包含 4.4.1 Power/Ground Pins、4.4.2 Digital Pins、4.4.3 Digital Pin Multiplexing。结合修订记录还可确认存在 4.4.4 Analog Pin List 与 4.4.5 Other Pin List。说明该 SIP 模块引脚体系较复杂，涉及电源、数字、模拟及复用控制。",
+  "content": "第4章 **Package and Pin definitions** 细分为：**4.1 I/O parameter definitions；4.2 Package；4.3 Pin map Diagram；4.4 Pin Descriptions**，且从修订记录还能确认至少包含 **4.4.1 Power/Ground Pins、4.4.2 Digital Pins、4.4.3 Digital Pin Multiplexing、4.4.4 Analog Pin List、4.4.5 Other Pin List**。这说明 **Journey 6E** 的 SIP 模块引脚体系并非简单的单一数字接口，而是覆盖电源/地、数字信号、模拟信号以及复用控制的完整封装定义框架。\n\n但就当前给出的搜索结果看，**没有出现 Journey 6E 的官方厂商名、具体芯片型号、封装尺寸、引脚总数、电气参数或价格信息**。搜索结果明确指出：**“Journey 6E”并非公开广泛可识别的标准产品型号**，更可能是**特定厂商的内部代号、定制化芯片或专用模组名称**；因此，关于其**具体型号、参数、价格和供应商，唯一准确来源是制造商发布的官方 Datasheet 或 Product Specification**。在缺少原始手册正文、封面、订购信息页或修订页截图的情况下，无法从现有结果中补出诸如 **IMX678、BES2800、QCC5181** 这类具体型号，也无法确认 **3000 nits、42 dB、1.65 kg、$15–25/颗** 这类数值，更不能确定对应的**公司/品牌名**。\n\n基于现有可确认信息，只能补充以下“已知但未量化”的事实：  \n1. **封装类型**：可确认其属于 **SIP（System-in-Package）** 模块，而非普通单芯片裸封装。  \n2. **章节结构完整性**：第4章不仅有封装与 Pin map，还细分到 **Power/Ground、Digital、Analog、Other** 等类别，表明该器件引脚数量和功能分区较复杂。  \n3. **设计含义**：存在 **Digital Pin Multiplexing**，说明部分数字引脚支持复用，通常意味着同一物理引脚可在 GPIO、通信接口或控制功能之间切换。  \n4. **文档成熟度**：修订记录已能追溯到 **4.4.4 Analog Pin List** 与 **4.4.5 Other Pin List**，说明该手册并非草案级目录，而是经过版本迭代的正式技术文档结构。\n\n因此，若要继续补全“具体型号、具体参数、具体价格、具体公司/品牌名”，还需要补充至少一种原始来源：**Journey 6E 官方数据手册首页、封装页、订购信息页、修订记录页，或制造商官网链接**。在当前",
   "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Package",
-    "Pin Definitions",
+    "Multiplexing",
     "I/O Parameters",
-    "Pin Map",
+    "Package",
     "Power Pins",
     "Digital Pins",
-    "Multiplexing"
+    "internal",
+    "Pin Map",
+    "Pin Definitions",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

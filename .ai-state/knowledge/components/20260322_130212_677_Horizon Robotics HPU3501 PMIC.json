@@ -9,7 +9,8 @@
     "HPU3501",
     "PMIC",
     "X3",
-    "X5"
+    "X5",
+    "internal"
   ],
   "confidence": "high"
 }

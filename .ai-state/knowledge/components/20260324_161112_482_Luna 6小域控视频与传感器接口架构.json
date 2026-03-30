@@ -1,15 +1,16 @@
 {
   "title": "Luna 6小域控视频与传感器接口架构",
   "domain": "components",
-  "content": "从接口与引脚定义可还原整机感知架构：2组4 in 1 mini FAKRA共提供8路同轴资源，其中code A承载8M前视、DMS、IVI视频输出、DVR输出，code B承载4路3M 360camera（REAR/FRONT/LEFT/RIGHT）；主连接器提供USS-SUP-CH0/1/2及USS前后左右多路超声波信号；另配1个1000BASE以太网接口和5路CAN。该配置表明Luna 6小域控面向泊车/环视/座舱监控融合场景。",
+  "content": "从接口与引脚定义可还原整机感知架构：该“小域控”板上可见 **2组 4-in-1 mini FAKRA**，合计提供 **8 路同轴视频链路**；其中 **code A** 分配给 **8MP 前视、DMS、IVI 视频输出、DVR 输出**，**code B** 分配给 **4 路 3MP 环视摄像头**（REAR/FRONT/LEFT/RIGHT）。主连接器还引出 **USS-SUP-CH0/1/2** 及前后左右多路超声波信号，另有 **1 个 1000BASE-T1 车载以太网接口** 和 **5 路 CAN/CAN-FD**，整体明显面向泊车、环视、座舱监控融合场景。\n\n但就公开资料看，**“Luna 6小域控”并不是地平线（Horizon Robotics）官方公开发布的标准产品型号**，因此无法直接给出该整机的官方BOM、量产价格或精确芯片丝印。现有搜索结果只能支持将其归入**基于地平线征程系列 SoC 的小域控形态**进行说明。可对应的公开主控型号包括 **地平线征程5（Journey 5）** 与 **地平线征程6（Journey 6）**。其中，搜索结果给出的公开参数为：**征程5 AI 算力最高 128 TOPS（INT8）**，采用 **16 核 Cortex-A76**，支持 **LPDDR4X/LPDDR5**，**典型功耗约 30W**，并支持**最多 16 路 8MP 摄像头输入**；**征程6** 则分为 **征程6E/6M/6P**，对应约 **80 TOPS、200 TOPS、400+ TOPS（INT8）**，支持 **LPDDR5X**，并可支持**更多路数视频输入**，搜索结果中举例为**24 路 8MP 摄像头**。\n\n在视频链路实现上，公开可对应的车载 SerDes 供应商主要包括 **ADI/Maxim** 的 **GMSL/GMSL2** 与 **TI（德州仪器）** 的 **FPD-Link III/IV**。网络接口方面，搜索结果明确提到可采用 **100BASE-T1** 或 **1000BASE-T1**；结合原条目中的 **1000BASE 以太网接口**，更接近千兆车载以太网回传或域间通信配置。总线侧的 **5 路 CAN** 也符合小域控同时连接车身、泊车、超声波和执行器网络的常见做法。\n\n需要说明的是，用户要求补充的诸如 **IMX678、BES2800、QCC5181**、**3000nits、42dB、1.65kg**、**$15–25/颗** 等具体型号、参数和价格，**在给定搜索结果中均未出现**，因此不能据此补入。基于现有可验证信息，能确认的具体公司/品牌名主要有：**地平线（Horizon Robotics）**、**ADI/Maxim**、**TI（Texas Instrume",
   "source": "doc_import:Luna 6小域控 20250922 CN.pptx",
   "created_at": "2026-03-24",
   "tags": [
-    "接口架构",
-    "GMSL",
-    "AVM",
     "DMS",
-    "USS"
+    "GMSL",
+    "接口架构",
+    "AVM",
+    "USS",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

@@ -1,0 +1,16 @@
+{
+  "title": "TALI Connected 智能骑行头盔 FCC ID 拆解 BLE SoC 电池方案 麦克风阵列",
+  "domain": "lessons",
+  "content": "**智能骑行头盔研发关键信息（TALI Connected）**\n\n**1. 产品/硬件方案**\n- **产品**：TALI Connected 智能骑行头盔，集成 **LED照明、蓝牙通信、碰撞检测、导航提示、语音交互、OTA升级**。\n- **FCC认证**：**FCC ID 2A222-TALI**。可通过FCC公开资料获取**外观/内部照片、用户手册、测试报告**，适合作为竞品硬件架构与认证路径参考。\n- **BLE SoC推断选型**：主流可行方案集中在  \n  - **Nordic nRF52（nRF52832/nRF52840）**：低功耗、Bluetooth 5.x、Cortex-M4F，适合传感器+灯控+BLE主控一体化；  \n  - TI **CC26xx/CC23xx**、Dialog **DA145xx/DA146xx**、Infineon **PSoC 4 BLE**。  \n  **趋势**：智能头盔主控倾向“**低功耗BLE SoC + 传感器融合 + 音频处理**”高集成方案。\n- **电池方案推断**：**单节3.7V Li-Po**，容量约 **800–1500mAh**；续航目标约 **10–15小时**；充电接口可能为 **Micro-USB/USB-C**，需配套**充电管理IC/保护/电量监测**。\n- **音频系统**：至少 **2个以上MEMS麦克风阵列**，用于**波束成形、风噪/环境噪声抑制、AEC回声消除、VAD语音检测**；适合骑行场景通话与语音控制。\n- **传感器**：**加速度计+陀螺仪**为标配，用于**碰撞检测、姿态识别**。\n\n**2. 可借鉴设计理念**\n- 以**安全功能闭环**为核心：**灯光提醒 + 碰撞检测 + 手机联动紧急通知**。\n- 通过**App连接**实现导航、参数配置、OTA，形成“**",
+  "source": "night_deep_learning",
+  "created_at": "2026-03-24",
+  "tags": [
+    "TALI",
+    "智能头盔",
+    "拆解",
+    "FCC",
+    "BLE",
+    "night_expand"
+  ],
+  "confidence": "medium"
+}

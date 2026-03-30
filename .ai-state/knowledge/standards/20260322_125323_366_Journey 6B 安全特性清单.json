@@ -9,7 +9,8 @@
     "Secure Boot",
     "Secure OTA",
     "Secure Storage",
-    "Secure Debug"
+    "Secure Debug",
+    "internal"
   ],
   "confidence": "high"
 }

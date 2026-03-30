@@ -132,6 +132,10 @@ def interactive_mode():
 
 
 if __name__ == "__main__":
+    # 设置控制台编码
+    if sys.platform == 'win32':
+        sys.stdout.reconfigure(encoding='utf-8')
+
     parser = argparse.ArgumentParser(description="会话用量记录工具")
     parser.add_argument("--model", "-m", help="模型名称")
     parser.add_argument("--prompt", "-p", type=int, help="输入token数")

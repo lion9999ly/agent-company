@@ -9,7 +9,8 @@
     "Ray-Ban",
     "智能眼镜",
     "手环交互",
-    "LCD"
+    "LCD",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

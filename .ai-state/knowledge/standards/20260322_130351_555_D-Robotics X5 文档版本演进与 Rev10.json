@@ -1,15 +1,17 @@
 {
   "title": "D-Robotics X5 文档版本演进与 Rev.1.0 更新点",
   "domain": "standards",
-  "content": "X5 数据手册版本历史：0.8（2024-01-20，Initial draft）；0.81（2024-02-21，Minor update）；0.82（2024-02-27，Minor update）；0.83（2024-03-25，Minor update）；0.84（2024-04-25，更新 strap pin 描述）；0.85（2024-06-16，修改芯片 PIN 名称以与软件一致）；0.86（2024-08-21，更新 X5H CPU frequency 描述、修正 2D engine performance 描述错误、更新 X5H part number 与说明）；1.0（2024-08-25，面向 RDK release 更新，新增各电源域最小/最大电压，新增 USB3.0 与 USB2.0 电气规范）。",
+  "content": "标题：D-Robotics X5 文档版本演进与 Rev.1.0 更新点\n\n根据给定搜索结果，**无法补充具体型号、参数、价格或公司/品牌名**。原因是搜索结果已明确说明：**目前公开信息中没有名为“D-Robotics X5”的真实产品或公司**，后续出现的公司简介、产品定位、规格参数表等内容，均被搜索结果标注为**“模拟”**或**“虚拟案例”**，不属于可采信的真实数据。因此，不能将其中的“6轴、5kg、850mm、±0.02mm、22kg、IP54、250W/400W”等数值写入知识条目，以免造成编造。\n\n基于现有可验证信息，能够确认的只有 **X5 数据手册版本历史及 Rev.1.0 的更新说明**。完整内容可整理如下：\n\nX5 数据手册版本历史为：**0.8（2024-01-20，Initial draft）**；**0.81（2024-02-21，Minor update）**；**0.82（2024-02-27，Minor update）**；**0.83（2024-03-25，Minor update）**；**0.84（2024-04-25，更新 strap pin 描述）**；**0.85（2024-06-16，修改芯片 PIN 名称以与软件一致）**；**0.86（2024-08-21，更新 X5H CPU frequency 描述、修正 2D engine performance 描述错误、更新 X5H part number 与说明）**；**1.0（2024-08-25，面向 RDK release 更新，新增各电源域最小/最大电压，新增 USB3.0 与 USB2.0 电气规范）**。\n\n从版本演进看，**0.8 至 0.83** 主要处于初稿和连续小幅修订阶段，公开描述仅为“Initial draft”与“Minor update”，搜索结果中**没有提供更细的变更项**。**0.84** 开始出现明确的技术修改，即补充或修正 **strap pin** 描述；**0.85** 进一步将**芯片 PIN 名称**调整为与软件命名一致，说明文档开始加强软硬件对齐；**0.86** 则集中修订 **X5H CPU frequency**、**2D engine performance** 描述错误，以及 **X5H part number** 与相关说明，属于针对具体器件说明和性能表述的较大一次校正。\n\n**Rev.1.0（2024-08-25）** 是当前版本演进中的关键节点。根据搜索结果，可确认其更新点包括三项：一是**面向 RDK release 更新**；二是**新增各电源域最小/最大电压**；三是**新增 USB3.0 与 USB2.0 电气规范**。不过，搜索结果**没有给出这些电压范围的具体数值**，也**没有列出",
   "source": "doc_import:X5-Brief-V1.0-D-Robotics.pdf",
   "created_at": "2026-03-22",
   "tags": [
-    "Revision History",
-    "Rev 1.0",
+    "文档变更",
     "X5",
+    "Revision History",
     "X5H",
-    "文档变更"
+    "internal",
+    "Rev 1.0",
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }

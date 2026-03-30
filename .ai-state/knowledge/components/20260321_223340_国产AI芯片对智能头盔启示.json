@@ -7,7 +7,8 @@
   "tags": [
     "端侧AI",
     "NPU",
-    "低功耗芯片"
+    "低功耗芯片",
+    "internal"
   ],
-  "confidence": "medium"
+  "confidence": "high"
 }

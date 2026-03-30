@@ -1,14 +1,17 @@
 {
   "title": "HPU3501 LDO and RTC Integration",
   "domain": "components",
-  "content": "HPU3501 除 5 路 Buck 外，还集成 3 路 300mA LDO 和 1 个实时时钟 RTC。器件支持 Alarm 输出，并在典型应用图中包含 32kHz 晶振相关引脚 X1/X2、XTAL、CLKO、VRTC。LDO 输出在默认配置中可设为 0.8V、1.8V、3.3V 等，适合为 IO、RTC、外设或 Always-on 电源域供电。",
+  "content": "HPU3501 在 5 路 Buck 之外，还集成 **3 路 LDO** 与 **1 路 RTC**，这是其面向 SoC/嵌入式系统电源树设计的重要补充。根据现有条目中可确认的信息，**每路 LDO 的额定输出电流为 300mA**，因此 3 路 LDO 的总输出能力可达 **900mA**。默认配置下，LDO 输出电压可设为 **0.8V、1.8V、3.3V** 等，适合分别给低压核心 IO、RTC/Always-on 域、传感器或外设接口供电。与 Buck 相比，LDO 更适合噪声敏感或负载较小的电源轨，例如时钟、模拟辅助电路、待机域等。\n\nRTC 部分方面，现有资料可确认器件带有 **Alarm 输出**，并在典型应用图中给出了完整的时钟相关引脚：**X1/X2、XTAL、CLKO、VRTC**。这说明 HPU3501 的 RTC 设计至少支持外部 **32kHz 晶振** 接入，并提供时钟输出或相关缓冲功能，适合做系统实时时基、低功耗唤醒和掉电保持。**VRTC** 引脚通常对应 RTC/备份电源域，意味着在主电源关闭时，RTC 仍可由独立电源维持运行，从而保留时间与闹钟功能。对于需要待机唤醒的设备，这种集成方式可减少外置 RTC 芯片和分立 LDO 的 BOM 数量。\n\n从系统集成角度看，HPU3501 把 **5 路 Buck + 3 路 300mA LDO + RTC** 集成在单芯片内，可显著节省 PCB 面积，并减少外围器件数量。若单独实现类似功能，通常至少需要 1 颗 RTC、数颗 LDO 以及对应晶振和分立无源器件；而 HPU3501 通过单芯片方案降低了布板复杂度，也更利于时序和上电管理统一控制。\n\n需要说明的是，公开搜索结果**未提供** HPU3501 的更详细实测参数，例如 **LDO 压差、静态电流、RTC 精度、封装型号、单价、供应商报价** 等，因此这些数据目前**不能补充或编造**。现阶段能够确认的具体数据只有：**3 路 LDO、每路 300mA、默认电压可设 0.8V/1.8V/3.3V、RTC 支持 Alarm、相关引脚包括 X1/X2/XTAL/CLKO/VRTC**。若后续拿到正式 datasheet 或供应链资料，再补充如封装尺寸、工作温度、采购价格及供应商名称会更准确。",
   "source": "doc_import:X3X5电源 - HPU3501 - PMIC for Horizon X3.pdf",
   "created_at": "2026-03-22",
   "tags": [
+    "Alarm",
+    "internal",
+    "overhaul_deepened",
+    "night_deepened",
     "LDO",
     "RTC",
-    "300mA",
-    "Alarm"
+    "300mA"
   ],
   "confidence": "high"
 }

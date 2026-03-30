@@ -1,16 +1,18 @@
 {
   "title": "Horizon Robotics Journey 6E SIP Datasheet Rev.0.51（开发中产品）",
   "domain": "components",
-  "content": "文档为 Horizon Robotics 的 Journey 6E SIP 数据手册，版本 Rev.0.51，日期为 August 2024。首页明确说明该产品“under development”，Horizon Robotics 保留在不通知情况下变更或停产该产品的权利。文档版权标注为 ©2018 Horizon Robotics。该条目反映产品当前仍处于开发阶段，所有参数和供货信息存在后续调整风险。",
+  "content": "文档为 **Horizon Robotics（地平线）** 的 **Journey 6E SIP** 数据手册，版本 **Rev.0.51**，日期为 **August 2024**。根据首页说明，该产品状态为 **“under development”**，即仍处于开发阶段；同时文档标注 **©2018 Horizon Robotics**，并明确地平线保留在**不另行通知**情况下对产品进行修改、替换或停产的权利。就目前可见搜索结果而言，**未披露 Journey 6E SIP 的具体芯片型号细分、算力数值、封装尺寸、功耗、接口数量、工作温度、单价区间等可核实数据**，因此不能补充诸如 **IMX678、BES2800、QCC5181** 这类具体型号，也不能补充类似 **3000 nits、42 dB、1.65 kg、$15–25/颗** 这类具体参数或价格，以免编造。\n\n从已知信息看，能够确认的具体品牌/公司名只有 **Horizon Robotics / 地平线**。其中 **Journey 6E** 属于地平线 **Journey（征程）6 系列**，而 **SIP** 表示 **System in Package**，即系统级封装；但搜索结果并未给出该 SIP 内部是否集成 DRAM、PMIC 或其他裸片，也未给出所采用的制程节点、BPU/NPU 版本、车规等级或量产时间。搜索结果还明确指出：**Rev.0.51 通常意味着较早期修订版**，相关规格可能仅在 **NDA（保密协议）** 条件下向合作伙伴开放，而非公开发布。\n\n因此，基于当前搜索结果，能够安全补充的“具体数据”仅包括：**产品名 Journey 6E SIP、版本号 Rev.0.51、日期 August 2024、状态 under development、版权标注 ©2018 Horizon Robotics、公司名 Horizon Robotics（地平线）**。除此之外，关于**具体参数、具体价格、具体供货信息、具体认证等级**等内容，搜索结果均未提供可验证数字。该条目的核心结论应表述为：**Journey 6E SIP 目前仍是开发中产品，公开资料仅能确认其开发状态与文档版本信息，所有性能、规格和商务信息后续均存在调整风险。**",
   "source": "doc_import:MU-5101-1-J6E SIP-Datasheet-Draft-V0.51.pdf",
   "created_at": "2026-03-22",
   "tags": [
+    "Datasheet",
     "Horizon Robotics",
+    "Rev.0.51",
+    "August 2024",
+    "internal",
     "Journey 6E",
     "SIP",
-    "Datasheet",
-    "Rev.0.51",
-    "August 2024"
+    "overhaul_enriched"
   ],
   "confidence": "high"
 }
