@@ -2897,9 +2897,9 @@ def _gen_dev_tasks(items: List[Dict], gateway) -> List[Dict]:
             f"只输出 JSON."
         )
 
-        # 添加重试机制
+        # 添加重试机制（最多 2 次重试，间隔 10 秒）
         for attempt in range(max_retries + 1):
-            result = gateway.call_azure_openai("cpo", prompt,
+            result = gateway.call("gpt_5_4", prompt,
                 "生成开发任务.只输出JSON.", "structured_doc")
             if result.get("success"):
                 json_match = re.search(r'\[[\s\S]*\]', result["response"])
@@ -2911,11 +2911,15 @@ def _gen_dev_tasks(items: List[Dict], gateway) -> List[Dict]:
                         return tasks
                     except json.JSONDecodeError:
                         if attempt < max_retries:
-                            print(f"  [DevTask] Batch {batch_idx} JSON解析失败，重试...")
+                            print(f"  [DevTask] Batch {batch_idx} JSON解析失败，等待 10 秒后重试...")
+                            import time
+                            time.sleep(10)
                             continue
             else:
                 if attempt < max_retries:
-                    print(f"  [DevTask] Batch {batch_idx} 调用失败，重试...")
+                    print(f"  [DevTask] Batch {batch_idx} 调用失败 (status={result.get('status_code', '?')}), 等待 10 秒后重试...")
+                    import time
+                    time.sleep(10)
                     continue
         return []
 
@@ -3372,7 +3376,7 @@ def _compress_module(module_name: str, features: list, limit: int, gateway=None)
 
     try:
         if gateway:
-            result = gateway.call_azure_openai("cpo", compress_prompt, "精简PRD功能列表。只输出JSON数组。", "compress_module")
+            result = gateway.call("gpt_5_4", compress_prompt, "精简PRD功能列表。只输出JSON数组。", "compress_module")
         else:
             result = _call_llm_fallback(compress_prompt)
 
