@@ -1879,7 +1879,7 @@ def _generate_interactive_prd_html(items: List[Dict], extra_sheets: Dict = None,
 <style>
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
 /* ===== 修复 A: 固定布局方案 ===== */
-html, body {{ margin: 0; padding: 0; height: 100%; overflow: hidden; }}
+html, body {{ margin: 0; padding: 0; }}
 body {{ font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f5f6fa; color: #333; }}
 .page-wrapper {{ display: flex; flex-direction: column; height: 100vh; }}
 .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff;
@@ -2228,9 +2228,14 @@ function toggleFlowBody(idx) {{
     if (body.style.display === 'none') {{
         body.style.display = 'block';
         toggle.textContent = '折叠';
+        // 确保父容器可见且有宽度后再调用 mermaid.init
         if (typeof mermaid !== 'undefined') {{
+            // 强制 reflow，确保 display: block 生效
+            void body.offsetWidth;
             const mermaidDivs = body.querySelectorAll('.mermaid:not([data-processed])');
-            if (mermaidDivs.length > 0) {{ try {{ mermaid.init(undefined, mermaidDivs); }} catch(e) {{}} }}
+            if (mermaidDivs.length > 0) {{
+                try {{ mermaid.init(undefined, mermaidDivs); }} catch(e) {{ console.error('Mermaid init error:', e); }}
+            }}
         }}
     }} else {{
         body.style.display = 'none';
@@ -2468,8 +2473,12 @@ if (firstBody) firstBody.classList.add('open');
             body.style.display = 'block';
             tog.textContent = 'Hide';
             if (mermaidReady) {{
+                // 强制 reflow，确保 display: block 生效
+                void body.offsetWidth;
                 const mermaidDivs = body.querySelectorAll('.mermaid:not([data-processed])');
-                if (mermaidDivs.length > 0) {{ try {{ mermaid.init(undefined, mermaidDivs); }} catch(e) {{}} }}
+                if (mermaidDivs.length > 0) {{
+                    try {{ mermaid.init(undefined, mermaidDivs); }} catch(e) {{ console.error('Mermaid init error:', e); }}
+                }}
             }}
         }} else {{
             body.style.display = 'none';
@@ -2860,7 +2869,7 @@ def _gen_dev_tasks(items: List[Dict], gateway) -> List[Dict]:
     for start in range(0, len(l2_features), batch_size):
         batches.append((l2_features[start:start + batch_size], start // batch_size))
 
-    def _gen_batch(batch_info):
+    def _gen_batch(batch_info, max_retries=2):
         batch, batch_idx = batch_info
         features_text = "\n".join(
             f"- {f.get('name', '')}({f.get('module', '')}): {f.get('description', '')[:60]}"
@@ -2887,18 +2896,27 @@ def _gen_dev_tasks(items: List[Dict], gateway) -> List[Dict]:
             f"功能列表:\n{features_text}\n\n"
             f"只输出 JSON."
         )
-        result = gateway.call_azure_openai("cpo", prompt,
-            "生成开发任务.只输出JSON.", "structured_doc")
-        if result.get("success"):
-            json_match = re.search(r'\[[\s\S]*\]', result["response"])
-            if json_match:
-                try:
-                    tasks = json.loads(json_match.group())
-                    for idx, t in enumerate(tasks):
-                        t["task_id"] = f"T-{batch_idx * batch_size + idx + 1:04d}"
-                    return tasks
-                except json.JSONDecodeError:
-                    pass
+
+        # 添加重试机制
+        for attempt in range(max_retries + 1):
+            result = gateway.call_azure_openai("cpo", prompt,
+                "生成开发任务.只输出JSON.", "structured_doc")
+            if result.get("success"):
+                json_match = re.search(r'\[[\s\S]*\]', result["response"])
+                if json_match:
+                    try:
+                        tasks = json.loads(json_match.group())
+                        for idx, t in enumerate(tasks):
+                            t["task_id"] = f"T-{batch_idx * batch_size + idx + 1:04d}"
+                        return tasks
+                    except json.JSONDecodeError:
+                        if attempt < max_retries:
+                            print(f"  [DevTask] Batch {batch_idx} JSON解析失败，重试...")
+                            continue
+            else:
+                if attempt < max_retries:
+                    print(f"  [DevTask] Batch {batch_idx} 调用失败，重试...")
+                    continue
         return []
 
     # 8 路并行处理所有批次
@@ -3354,7 +3372,7 @@ def _compress_module(module_name: str, features: list, limit: int, gateway=None)
 
     try:
         if gateway:
-            result = gateway.call(compress_prompt, model_tier="fast")
+            result = gateway.call_azure_openai("cpo", compress_prompt, "精简PRD功能列表。只输出JSON数组。", "compress_module")
         else:
             result = _call_llm_fallback(compress_prompt)
 
