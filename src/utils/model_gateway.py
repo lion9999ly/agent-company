@@ -78,6 +78,7 @@ class ModelProvider(Enum):
     ANTHROPIC = "anthropic"
     ZHIPU = "zhipu"        # 智谱 AI
     DEEPSEEK = "deepseek"  # DeepSeek
+    VOLCENGINE = "volcengine"  # 火山引擎（豆包）
 
 
 class TaskType(Enum):
@@ -958,6 +959,77 @@ class ModelGateway:
                 )
             return {"success": False, "error": str(e)}
 
+    def call_volcengine(self, model_name: str, prompt: str, system_prompt: str = None,
+                        task_type: str = "general") -> Dict[str, Any]:
+        """调用火山引擎（豆包）API — OpenAI SDK 兼容格式"""
+        cfg = self.models.get(model_name)
+        if not cfg or not cfg.api_key:
+            return {"success": False, "error": f"Model {model_name} not configured or missing API key"}
+
+        endpoint = cfg.endpoint or "https://ark.cn-beijing.volces.com/api/v3"
+
+        # 使用 OpenAI SDK（火山引擎 API 兼容 OpenAI 格式）
+        try:
+            from openai import OpenAI
+            client = OpenAI(api_key=cfg.api_key, base_url=endpoint)
+        except ImportError:
+            return {"success": False, "error": "OpenAI SDK not installed"}
+
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        messages.append({"role": "user", "content": prompt})
+
+        start_time = time.time()
+        timeout = TIMEOUT_BY_TASK.get(task_type, 120)
+
+        try:
+            resp = client.chat.completions.create(
+                model=cfg.model,
+                messages=messages,
+                max_tokens=cfg.max_tokens,
+                temperature=cfg.temperature
+            )
+            latency_ms = int((time.time() - start_time) * 1000)
+
+            text = resp.choices[0].message.content
+            usage = {
+                "prompt_tokens": resp.usage.prompt_tokens,
+                "completion_tokens": resp.usage.completion_tokens
+            }
+
+            if HAS_TRACKER:
+                get_tracker().record(
+                    model=cfg.model,
+                    provider="volcengine",
+                    prompt_tokens=usage["prompt_tokens"],
+                    completion_tokens=usage["completion_tokens"],
+                    task_type=task_type,
+                    success=True,
+                    latency_ms=latency_ms
+                )
+
+            return {
+                "success": True,
+                "model": model_name,
+                "response": text,
+                "usage": usage
+            }
+
+        except Exception as e:
+            latency_ms = int((time.time() - start_time) * 1000)
+            if HAS_TRACKER:
+                get_tracker().record(
+                    model=cfg.model,
+                    provider="volcengine",
+                    prompt_tokens=0,
+                    completion_tokens=0,
+                    task_type=task_type,
+                    success=False,
+                    latency_ms=latency_ms
+                )
+            return {"success": False, "error": str(e)}
+
     def call(self, model_name: str, prompt: str, system_prompt: str = None,
              task_type: str = "general") -> Dict[str, Any]:
         """统一调用接口"""
@@ -975,6 +1047,8 @@ class ModelGateway:
             return self.call_zhipu(model_name, prompt, system_prompt, task_type)
         elif cfg.provider == "deepseek":
             return self.call_deepseek(model_name, prompt, system_prompt, task_type)
+        elif cfg.provider == "volcengine":
+            return self.call_volcengine(model_name, prompt, system_prompt, task_type)
         else:
             return {"success": False, "error": f"Unsupported provider: {cfg.provider}"}
 
