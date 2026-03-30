@@ -2220,8 +2220,11 @@ function buildFlowView() {{
 
 function toggleFlowBody(idx) {{
     const body = document.getElementById('flow-body-' + idx);
+    if (!body) return;  // 防空检查
     const header = body.previousElementSibling;
+    if (!header) return;  // 防空检查
     const toggle = header.querySelector('.flow-toggle');
+    if (!toggle) return;  // 防空检查
     if (body.style.display === 'none') {{
         body.style.display = 'block';
         toggle.textContent = '折叠';
@@ -2456,8 +2459,11 @@ if (firstBody) firstBody.classList.add('open');
     }}
     function toggleFlow(idx) {{
         const body = document.getElementById('flow-body-' + idx);
+        if (!body) return;  // 防空检查
         const hdr = body.previousElementSibling;
+        if (!hdr) return;  // 防空检查
         const tog = hdr.querySelector('.flow-toggle');
+        if (!tog) return;  // 防空检查
         if (body.style.display === 'none') {{
             body.style.display = 'block';
             tog.textContent = 'Hide';

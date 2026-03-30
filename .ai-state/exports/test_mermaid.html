@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mermaid v9.4.3 渲染测试</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f5f6fa; padding: 20px; }
+        h1 { color: #2F5496; margin-bottom: 20px; }
+        .flow-item { background: #fff; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+        .flow-header { padding: 14px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .flow-header:hover { background: #f8f9fa; }
+        .flow-title { font-weight: 600; color: #333; }
+        .flow-toggle { font-size: 12px; color: #a0aec0; transition: transform 0.2s; }
+        .flow-body { padding: 20px; overflow-x: auto; }
+        .flow-body .mermaid { display: flex; justify-content: center; }
+        .flow-body svg { max-width: 100%; height: auto; }
+        .info { background: #e8f4fd; padding: 12px 16px; border-radius: 4px; margin-bottom: 16px; font-size: 13px; }
+        .info code { background: #fff; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Mermaid v9.4.3 渲染测试</h1>
+    <div class="info">
+        测试配置: <code>mermaid@9.4.3</code> + <code>mermaid.init()</code> API<br>
+        共 8 个流程图，点击展开查看渲染效果。
+    </div>
+
+    <div id="flow-container">
+        
+        <div class="flow-item">
+            <div class="flow-header" onclick="toggleFlow(0)">
+                <span class="flow-title">首次配对流程</span>
+                <span class="flow-toggle">展开</span>
+            </div>
+            <div class="flow-meta" style="padding:8px 20px;background:#f8f9fa;font-size:12px;color:#666;">
+                <span>触发: 用户首次开机/新设备</span> | <span>范围: 头盔+App双端</span>
+            </div>
+            <div class="flow-body" id="flow-body-0" style="display:none;">
+                <div class="mermaid">graph TD
+    A[头盔开机配对模式 - 头盔]
+    B[引导页与权限申请 - App]
+    C{蓝牙已开启? - 手机}
+    D{权限已授权? - 手机}
+    E{系统版本兼容? - 手机}
+    F[蓝牙扫描设备 - App]
+    G{发现头盔? - App}
+    H[用户确认配对 - App]
+    I{头盔在线? - 头盔]
+    J{已绑其他手机? - 头盔]
+    K{配对成功? - App]
+    L[四路成功反馈 - HUD/App/头盔]
+    M[进入新手教学 - App]
+    N[持久化配对信息 - App/头盔]
+    O[下次自动连接 - App/头盔]
+    X1[引导开启蓝牙 - App]
+    X2[说明权限用途 - App]
+    X3[去系统设置开启 - 手机]
+    X4[提示最低版本要求 - App]
+    X5[检查开机与距离 - App]
+    X6[返回扫描重试 - App]
+    X7[连接中断重开机 - App]
+    X8[原手机解绑或重置 - App/头盔]
+    A --> B
+    B --> C
+    C -->|是| D
+    D -->|是| E
+    E -->|是| F
+    F --> G
+    G -->|是| H
+    H --> I
+    I -->|是| J
+    J -->|否| K
+    K -->|是| L
+    L --> M
+    M --> N
+    N --> O
+    C -.->|否| X1
+    X1 -.-> C
+    D -.->|否| X2
+    X2 -.-> X3
+    X3 -.-> D
+    E -.->|否| X4
+    G -.->|否| X5
+    X5 -.-> F
+    I -.->|否| X7
+    X7 -.-> A
+    J -.->|是| X8
+    X8 -.-> F
+    K -.->|否| X6
+    X6 -.-> F
+    style X1 fill:#fee,stroke:#c00
+    style X2 fill:#fee,stroke:#c00
+    style X3 fill:#fee,stroke:#c00
+    style X4 fill:#fee,stroke:#c00
+    style X5 fill:#fee,stroke:#c00
+    style X6 fill:#fee,stroke:#c00
+    style X7 fill:#fee,stroke:#c00
+    style X8 fill:#fee,stroke:#c00
+    style O fill:#efe,stroke:#0a0</div>
+            </div>
+        </div>
+        <div class="flow-item">
+            <div class="flow-header" onclick="toggleFlow(1)">
+                <span class="flow-title">非首次连接流程</span>
+                <span class="flow-toggle">展开</span>
+            </div>
+            <div class="flow-meta" style="padding:8px 20px;background:#f8f9fa;font-size:12px;color:#666;">
+                <span>触发: 已配对设备开机/App打开</span> | <span>范围: 头盔+App双端</span>
+            </div>
+            <div class="flow-body" id="flow-body-1" style="display:none;">
+                <div class="mermaid">graph TD
+    A[头盔开机或App打开]
+    B[头盔 自动搜已绑手机]
+    C{[头盔] OTA后首次连接?}
+D[(头盔) 按最近连接优先]
+E[(头盔) 自动回连]
+    F{[手机] 蓝牙已开启?}
+    G{[头盔] 手机在范围内?}
+    H{[头盔] 30s内回连成功?}
+    I{[手机] 音频通道冲突?}
+J[(HUD) 回连成功提示]
+K[(App) 设备状态刷新]
+    L([连接完成])
+X1[(HUD) 提示重新配对]]
+X2[(App) 引导重新配对]]
+X3[(HUD) 未连接手机]]
+X4[(App) 提示开蓝牙]]
+X5[(HUD) 离线模式可用]]
+X6[(HUD) 手动连接提示]]
+X7[(头盔) 可语音重连]]
+X8[(HUD) 音频冲突提示]]
+X9[(App) 提示切换音频]]
+    A --> B
+    B --> C
+    C -- 否 --> D
+    D --> E
+    E --> F
+    F -- 是 --> G
+    G -- 是 --> H
+    H -- 是 --> I
+    I -- 否 --> J
+    J --> K
+    K --> L
+    C -. 是 .-> X1
+    X1 -.-> X2
+    F -. 否 .-> X3
+    F -. 否 .-> X4
+    G -. 否 .-> X5
+    H -. 否 .-> X6
+    X6 -.-> X7
+    X7 -.-> E
+    I -. 是 .-> X8
+    I -. 是 .-> X9
+    style X1 fill:#fee,stroke:#c00
+    style X2 fill:#fee,stroke:#c00
+    style X3 fill:#fee,stroke:#c00
+    style X4 fill:#fee,stroke:#c00
+    style X5 fill:#fee,stroke:#c00
+    style X6 fill:#fee,stroke:#c00
+    style X7 fill:#fee,stroke:#c00
+    style X8 fill:#fee,stroke:#c00
+    style X9 fill:#fee,stroke:#c00
+    style L fill:#efe,stroke:#0a0</div>
+            </div>
+        </div>
+        <div class="flow-item">
+            <div class="flow-header" onclick="toggleFlow(2)">
+                <span class="flow-title">组队配对流程</span>
+                <span class="flow-toggle">展开</span>
+            </div>
+            <div class="flow-meta" style="padding:8px 20px;background:#f8f9fa;font-size:12px;color:#666;">
+                <span>触发: 用户发起组队/加入队伍</span> | <span>范围: 多头盔+App</span>
+            </div>
+            <div class="flow-body" id="flow-body-2" style="display:none;">
+                <div class="mermaid">graph TD
+A[发起组队/加入(App)]
+    B{选择方式[App]}
+C[创建队伍(App)]
+D[生成邀请码/二维码(App)]
+E[附近设备发现(头盔)]
+F[选择设备加入(App)]
+G[输入邀请码/扫码(手机)]
+H[校验邀请码(App)]
+I[成员确认(HUD)]
+J[队伍建立(App)]
+K[建立通信链路(头盔)]
+L[HUD显示队伍状态(HUD)]
+M[组队成功(HUD)]
+X1[队伍已满提示(App)]
+X2[邀请码过期刷新(App)]
+X3[连接不稳提示(HUD)]
+X4[转移队长/重建(App)]
+X5[固件升级提示(App)]
+    Y1{队伍已满?[App]}
+    Y2{邀请码过期?[App]}
+    Y3{固件兼容?[头盔]}
+    Y4{连接稳定?[头盔]}
+    Y5{队长在线?[头盔]}
+    A --> B
+    B -->|创建队伍| C
+    C --> D
+    D --> I
+    B -->|附近加入| E
+    E --> F
+    F --> Y1
+    Y1 -->|否| Y3
+    B -->|邀请码/扫码| G
+    G --> H
+    H --> Y2
+    Y2 -->|否| Y1
+    Y3 -->|是| I
+    I --> J
+    J --> K
+    K --> Y4
+    Y4 -->|是| Y5
+    Y5 -->|是| L
+    L --> M
+    Y1 -.->|是| X1
+    X1 -.-> B
+    Y2 -.->|是| X2
+    X2 -.-> D
+    Y3 -.->|否| X5
+    X5 -.-> Y3
+    Y4 -.->|否| X3
+    X3 -.-> K
+    Y5 -.->|否| X4
+    X4 -.-> L
+    style X1 fill:#fee,stroke:#c00
+    style X2 fill:#fee,stroke:#c00
+    style X3 fill:#fee,stroke:#c00
+    style X4 fill:#fee,stroke:#c00
+    style X5 fill:#fee,stroke:#c00
+    style M fill:#efe,stroke:#0a0</div>
+            </div>
+        </div>
+        <div class="flow-item">
+            <div class="flow-header" onclick="toggleFlow(3)">
+                <span class="flow-title">第三方设备配对流程</span>
+                <span class="flow-toggle">展开</span>
+            </div>
+            <div class="flow-meta" style="padding:8px 20px;background:#f8f9fa;font-size:12px;color:#666;">
+                <span>触发: 用户绑定胎压计/运动相机/车辆设备</span> | <span>范围: 头盔+App</span>
+            </div>
+            <div class="flow-body" id="flow-body-3" style="display:none;">
+                <div class="mermaid">graph TD
+A[App 第三方设备入口] --> B(App 选择设备类型)
+    B --> C[App 搜索发现设备]
+    C --> D{App 发现设备?}
+    D -->|是| E[App 配对确认绑定]
+    E --> F{App 协议兼容?}
+    F -->|是| G{App 同类已绑定?}
+    G -->|否| H[头盔 建立数据通道]
+    G -->|是| X4[App 提示替换或管理]
+    X4 --> E
+    H --> I[HUD 显示设备数据]
+    I --> J([成功结束])
+    D -.->|否| X1[App 引导检查状态]
+    X1 -.-> C
+    F -.->|否| X2[App 提示支持型号]
+    X2 -.-> B
+    I -.-> K{头盔 设备在线?}
+    K -.->|否| X3[HUD 显示--并提示]
+    X3 -.-> C
+    K -.->|是| J
+    style X1 fill:#fee,stroke:#c00
+    style X2 fill:#fee,stroke:#c00
+    style X3 fill:#fee,stroke:#c00
+    style X4 fill:#fee,stroke:#c00
+    style J fill:#efe,stroke:#0a0</div>
+            </div>
+        </div>
+        <div class="flow-item">
+            <div class="flow-header" onclick="toggleFlow(4)">
+                <span class="flow-title">照片/视频传输流程</span>
+                <span class="flow-toggle">展开</span>
+            </div>
+            <div class="flow-meta" style="padding:8px 20px;background:#f8f9fa;font-size:12px;color:#666;">
+                <span>触发: 用户在App端查看/导出头盔影像</span> | <span>范围: 头盔→App/手机</span>
+            </div>
+            <div class="flow-body" id="flow-body-4" style="display:none;">
+                <div class="mermaid">graph TD
+    A[App 触发查看导出]
+    B[App 校验前提条件]
+    C{条件满足?}
+    D[头盔 连接正常]
+    E[头盔 电量&gt;15%]
+    F[头盔 存储卡正常]
+    G[App 同步文件列表]
+    H[App 显示缩略信息]
+    I[App 选择传输方式]
+    J{选择WiFi直连?}
+    K[手机 建立WiFi直连]
+    L{直连成功?}
+    M[App 降级蓝牙慢传]
+    N[App 蓝牙慢传]
+    O[App WiFi快传]
+    P[App 传前检查空间]
+    Q{空间足够?}
+    R[手机 提示清理空间]
+    S[App 开始批量传输]
+    T[App 支持后台传输]
+    U[App 展示进度信息]
+    V{单文件>2GB?}
+    W[App 自动分片传输]
+    X[App 传输文件中]
+    Y{读取正常?}
+    Z[App 跳过异常文件]
+    AA[App 继续其他文件]
+    AB{蓝牙断连?}
+    AC[App 暂停传输]
+    AD[App 自动重试3次]
+    AE{重试成功?}
+    AF[App 提示手动恢复]
+    AG{头盔低电?}
+    AH[App 暂停并提示充电]
+    AI[App 记录断点位置]
+    AJ{App被杀后台?}
+    AK[App 恢复中断位置]
+    AL[App 支持断点续传]
+    AM[App 文件传输完成]
+    AN[App 可预览文件]
+    AO[头盔 可选删除文件]
+    AP[手机 恢复原WiFi]
+    AQ[App 传输完成]
+    AR[头盔 存储卡异常]
+    AS[头盔 只读挽救文件]
+    A --> B
+    B --> D
+    D --> E
+    E --> F
+    F --> C
+    C -->|是| G
+    C -.->|否| AR
+    G --> H
+    H --> I
+    I --> J
+    J -->|是| K
+    J -->|否| N
+    K --> L
+    L -->|是| O
+    L -.->|否| M
+    M --> P
+    N --> P
+    O --> P
+    P --> Q
+    Q -->|是| S
+    Q -.->|否| R
+    S --> T
+    T --> U
+    U --> V
+    V -->|是| W
+    V -->|否| X
+    W --> X
+    X --> Y
+    Y -->|是| AB
+    Y -.->|否| Z
+    Z -.-> AA
+    AA --> AB
+    AB -.->|是| AC
+    AB -->|否| AG
+    AC -.-> AD
+    AD -.-> AE
+    AE -->|是| X
+    AE -.->|否| AF
+    AG -.->|是| AH
+    AG -->|否| AJ
+    AH -.-> AI
+    AJ -.->|是| AK
+    AJ -->|否| AM
+    AK -.-> AL
+    AL --> X
+    AM --> AN
+    AN --> AO
+    AO --> AP
+    AP --> AQ
+    AR -.-> AS
+    AS -.-> G
+    style R fill:#fee,stroke:#c00
+    style M fill:#fee,stroke:#c00
+    style Z fill:#fee,stroke:#c00
+    style AC fill:#fee,stroke:#c00
+    style AD fill:#fee,stroke:#c00
+    style AF fill:#fee,stroke:#c00
+    style AH fill:#fee,stroke:#c00
+    style AI fill:#fee,stroke:#c00
+    style AK fill:#fee,stroke:#c00
+    style AL fill:#fee,stroke:#c00
+    style AR fill:#fee,stroke:#c00
+    style AS fill:#fee,stroke:#c00
+    style W fill:#fee,stroke:#c00
+    style AQ fill:#efe,stroke:#0a0</div>
+            </div>
+        </div>
+        <div class="flow-item">
+            <div class="flow-header" onclick="toggleFlow(5)">
+                <span class="flow-title">部件更换与识别流程</span>
+                <span class="flow-toggle">展开</span>
+            </div>
+            <div class="flow-meta" style="padding:8px 20px;background:#f8f9fa;font-size:12px;color:#666;">
+                <span>触发: 用户更换电池/耳机模组/摄像头模组等可更换部件</span> | <span>范围: 头盔固件+HUD+App</span>
+            </div>
+            <div class="flow-body" id="flow-body-5" style="display:none;">
+                <div class="mermaid">graph TD
+A[开始(头盔)] --> B{需关机更换?(头盔)}
+    B -->|是| C[用户关机[头盔]]
+    B -->|否| D[拆卸旧部件[头盔]]
+    C --> D
+    D --> E[安装新部件[头盔]]
+    E --> F[用户开机[头盔]]
+    F --> G[扫描部件芯片[头盔]]
+    G --> H{识别结果?[头盔]}
+    H -->|官方原装| I[HUD显示通过[HUD]]
+    H -->|授权第三方| I
+    I --> J[启用全部功能[头盔]]
+    J --> K[同步部件信息[App]]
+    K --> L[成功结束[头盔]]
+    H -.->|未认证| M[HUD显示未通过[HUD]]
+    H -.->|无法识别| N[HUD显示无法识别[HUD]]
+    H -.->|无认证芯片| N
+    H -.->|伪造芯片| O[记录异常日志[头盔]]
+    O -.-> M
+    M --> P[功能降级运行[头盔]]
+    N --> Q[安全模式运行[头盔]]
+    P --> R[HUD常驻警告[HUD]]
+    Q --> R
+    R --> S[App显示降级[App]]
+    S --> T[App购买引导[App]]
+    G -.->|通信失败| U[连接异常提示[HUD]]
+    U -.-> V{重试<3次?[头盔]}
+    V -.->|是| W[重新安装部件[头盔]]
+    W -.-> G
+    V -.->|否| N
+    G -.->|版本过旧| X[提示部件OTA[App]]
+    X -.-> Y[升级部件固件[App]]
+    Y -.-> G
+    G -.->|固件不兼容| Z[提示升级头盔[HUD]]
+    Z -.-> AA[升级或换兼容件[App]]
+    AA -.-> G
+    E -.->|意外通电| AB[检测热插拔[头盔]]
+    AB -.-> AC[强制关机保护[头盔]]
+    style U fill:#fee,stroke:#c00
+    style N fill:#fee,stroke:#c00
+    style M fill:#fee,stroke:#c00
+    style O fill:#fee,stroke:#c00
+    style X fill:#fee,stroke:#c00
+    style Z fill:#fee,stroke:#c00
+    style AB fill:#fee,stroke:#c00
+    style AC fill:#fee,stroke:#c00
+    style L fill:#efe,stroke:#0a0</div>
+            </div>
+        </div>
+        <div class="flow-item">
+            <div class="flow-header" onclick="toggleFlow(6)">
+                <span class="flow-title">恢复出厂设置流程</span>
+                <span class="flow-toggle">展开</span>
+            </div>
+            <div class="flow-meta" style="padding:8px 20px;background:#f8f9fa;font-size:12px;color:#666;">
+                <span>触发: 用户主动恢复或远程防盗清除</span> | <span>范围: 头盔+App</span>
+            </div>
+            <div class="flow-body" id="flow-body-6" style="display:none;">
+                <div class="mermaid">graph TD
+    A[选择触发方式]
+    B[HUD 长按10秒]
+    C[App 远程触发]
+    D[App 账号验证]
+    E{验证通过?}
+    F[备份提醒]
+    G[可选云备份]
+    H[二次确认]
+    I[HUD 10秒倒计时]
+    J[App 弹窗确认]
+    K{用户确认?}
+    L[执行恢复]
+    M[清除配对偏好缓存]
+    N[保留固件校准]
+    O[重启]
+    P[进入配对模式]
+    Q[App 自动解绑]
+    R([恢复完成])
+    X1[头盔离线]
+    X2[记录远程指令]
+    X3[下次上线执行]
+    X4[用户取消]
+    X5[中止恢复]
+    X6([正常运行])
+    X7[恢复中断电]
+    X8[下次开机续恢]
+    X9[无法进配对]
+    X10[硬件自检]
+    X11[联系售后]
+    X12([异常结束])
+    A --> B
+    A --> C
+    C --> D
+    D --> E
+    E -->|是| F
+    B --> F
+    E -.->|否| X1
+    X1 -.-> X2
+    X2 -.-> X3
+    X3 -.-> L
+    F --> G
+    G --> H
+    H --> I
+    H --> J
+    I --> K
+    J --> K
+    K -->|确认| L
+    K -.->|取消| X4
+    X4 -.-> X5
+    X5 -.-> X6
+    L --> M
+    M --> N
+    N --> O
+    O --> P
+    P --> Q
+    Q --> R
+    L -.-> X7
+    X7 -.-> X8
+    X8 -.-> L
+    P -.->|失败| X9
+    X9 -.-> X10
+    X10 -.-> X11
+    X11 -.-> X12
+A[选择触发方式(头盔+App)]
+B[长按组合键10秒(HUD)]
+C[远程触发恢复(App)]
+D[账号密码验证(App)]
+F[恢复前备份提醒(App)]
+G[可选备份到云(App)]
+H[二次确认(头盔+App)]
+I[倒计时10秒(HUD)]
+J[弹窗确认(App)]
+L[执行恢复(头盔)]
+M[清配对偏好缓存(头盔)]
+N[保留固件校准(头盔)]
+O[恢复完成重启(头盔)]
+P[进入配对模式(头盔)]
+Q[自动解绑设备(App)]
+    R([成功结束[头盔+App]])
+X1[头盔离线(头盔)]
+X2[记录恢复指令(App)]
+X3[上线后再执行(头盔)]
+X4[用户取消恢复(HUD)]
+X5[中止恢复流程(头盔)]
+    X6([恢复正常运行[头盔]])
+X7[恢复过程断电(头盔)]
+X8[开机继续恢复(头盔)]
+X9[无法进配对模(头盔)]
+X10[执行硬件自检(头盔)]
+X11[引导联系售后(App)]
+    X12([异常结束[头盔+App]])
+    style X1 fill:#fee,stroke:#c00
+    style X2 fill:#fee,stroke:#c00
+    style X3 fill:#fee,stroke:#c00
+    style X4 fill:#fee,stroke:#c00
+    style X5 fill:#fee,stroke:#c00
+    style X6 fill:#fee,stroke:#c00
+    style X7 fill:#fee,stroke:#c00
+    style X8 fill:#fee,stroke:#c00
+    style X9 fill:#fee,stroke:#c00
+    style X10 fill:#fee,stroke:#c00
+    style X11 fill:#fee,stroke:#c00
+    style X12 fill:#fee,stroke:#c00
+    style R fill:#efe,stroke:#0a0</div>
+            </div>
+        </div>
+        <div class="flow-item">
+            <div class="flow-header" onclick="toggleFlow(7)">
+                <span class="flow-title">权限申请与降级流程</span>
+                <span class="flow-toggle">展开</span>
+            </div>
+            <div class="flow-meta" style="padding:8px 20px;background:#f8f9fa;font-size:12px;color:#666;">
+                <span>触发: App首次启动/功能首次使用</span> | <span>范围: App（iOS+Android）</span>
+            </div>
+            <div class="flow-body" id="flow-body-7" style="display:none;">
+                <div class="mermaid">graph TD
+    A[App 首启触发]
+    B[App 权限总览页]
+    C[App 蓝牙说明页]
+    D{App 蓝牙授权?}
+    E[手机 蓝牙系统弹窗]
+    F[App 蓝牙功能启用]
+    G[App 蓝牙降级灰显]
+    H[App 点击提示说明]
+    I[手机 跳系统设置]
+    J{App 安卓不再询问?}
+    K[App 定位说明页]
+    L{App 定位授权?}
+    M[手机 定位系统弹窗]
+    N[App 定位功能启用]
+    O[App 定位降级灰显]
+    P{App 系统支持定位?}
+    Q[App 跳过并用替代]
+    R[App 通知说明页]
+    S{App 通知授权?}
+    T[手机 通知系统弹窗]
+    U[App 通知功能启用]
+    V[App 通知降级灰显]
+    W[App 追踪说明页]
+    X{App iOS追踪可用?}
+    Y[手机 追踪系统弹窗]
+    Z[App 说明影响范围]
+    AA[App 不强制要求]
+    AB[App 功能正常启用]
+    AC[App 后续权限检测]
+    AD{App 权限被回收?}
+    AE[App 弹窗提醒恢复]
+    AF{App 安卓自动回收?}
+    AG[App 下次启动提醒]
+    A --> B
+    B --> C
+    C --> E
+    E --> D
+    D -->|允许| F
+    D -->|拒绝| G
+    G --> H
+    H --> I
+    D -.-> J
+    J -.->|是| I
+    F --> K
+    G --> K
+    I --> K
+    K --> P
+    P -->|支持| M
+    P -.->|不支持| Q
+    Q --> R
+    M --> L
+    L -->|允许| N
+    L -->|拒绝| O
+    O --> H
+    N --> R
+    O --> R
+    R --> T
+    T --> S
+    S -->|允许| U
+    S -->|拒绝| V
+    V --> H
+    U --> W
+    V --> W
+    W --> X
+    X -->|可用| Y
+    Y --> AB
+    X -.->|全局关闭| Z
+    Z -.-> AA
+    AA --> AB
+    AB --> AC
+    AC --> AD
+    AD -->|否| AB
+    AD -->|是| AE
+    AE --> I
+    AD -.-> AF
+    AF -.->|是| AG
+    AG --> AE
+    style AB fill:#efe,stroke:#0a0
+    style J fill:#fee,stroke:#c00
+    style X fill:#fee,stroke:#c00
+    style P fill:#fee,stroke:#c00
+    style AF fill:#fee,stroke:#c00
+    style AG fill:#fee,stroke:#c00
+    style AE fill:#fee,stroke:#c00</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mermaid.js v9.4.3 -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+    <script>
+    (function() {
+        // Mermaid 初始化
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'neutral',
+            securityLevel: 'loose',
+            flowchart: { useMaxWidth: true }
+        });
+
+        // 切换流程图展开/折叠
+        function toggleFlow(idx) {
+            const body = document.getElementById('flow-body-' + idx);
+            const header = body.previousElementSibling;
+            const toggle = header.querySelector('.flow-toggle');
+
+            if (body.style.display === 'none') {
+                body.style.display = 'block';
+                toggle.textContent = '折叠';
+
+                // 只渲染未处理的 mermaid div
+                const mermaidDivs = body.querySelectorAll('.mermaid:not([data-processed])');
+                if (mermaidDivs.length > 0) {
+                    try {
+                        mermaid.init(undefined, mermaidDivs);
+                    } catch(e) {
+                        console.error('Mermaid render error:', e);
+                    }
+                }
+            } else {
+                body.style.display = 'none';
+                toggle.textContent = '展开';
+            }
+        }
+
+        // 页面加载后自动展开第一个流程图
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                toggleFlow(0);
+            }, 200);
+        });
+    })();
+    </script>
+</body>
+</html>
