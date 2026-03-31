@@ -1,13 +1,15 @@
 """
-@description: JDM供应商选型深度研究 - 完整研究报告生成
+@description: JDM供应商选型深度研究 - 完整研究报告生成（五层管道架构 v2）
 @dependencies: src.utils.model_gateway, src.tools.knowledge_base, src.tools.tool_registry
-@last_modified: 2026-03-29
+@last_modified: 2026-03-31
 """
 import json
 import time
 import re
 import sys
 import yaml
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from datetime import datetime
 
@@ -23,21 +25,63 @@ gateway = get_model_gateway()
 
 
 # ============================================================
+# 并发控制: 按 provider 限制并发数
+# ============================================================
+PROVIDER_SEMAPHORES = {
+    "o3": threading.Semaphore(3),        # o3 慢，3 并发
+    "doubao": threading.Semaphore(8),    # 豆包快，8 并发
+    "flash": threading.Semaphore(8),     # Flash 提炼，8 并发
+    "gemini_pro": threading.Semaphore(3),# 有限额，保守
+    "gpt54": threading.Semaphore(4),     # 成本高
+    "gpt4o": threading.Semaphore(4),     # 通用
+}
+
+
+def _get_sem_key(model_name: str) -> str:
+    """模型名 → 信号量 key"""
+    if "o3" in model_name and "deep" in model_name:
+        return "o3"
+    elif "doubao" in model_name:
+        return "doubao"
+    elif "flash" in model_name:
+        return "flash"
+    elif "gemini" in model_name and "pro" in model_name:
+        return "gemini_pro"
+    elif "gpt_5_4" in model_name or "gpt-5.4" in model_name:
+        return "gpt54"
+    elif "4o" in model_name:
+        return "gpt4o"
+    return "gpt54"  # 默认保守
+
+
+# ============================================================
+# 降级映射表
+# ============================================================
+FALLBACK_MAP = {
+    "gpt_5_4": "gpt_4o_norway",
+    "doubao_seed_pro": "doubao_seed_lite",
+    "gemini_3_1_pro": "gemini_3_pro",
+    "gemini_3_pro": "gemini_2_5_pro",
+    "o3_deep_research": "gpt_5_4",  # o3 失败降级到 gpt-5.4
+}
+
+
+# ============================================================
 # 模型路由辅助函数 —— 深度研究专用模型分层配置
 # ============================================================
 # 注意：不使用 Claude 系列模型
 
 def _get_model_for_role(role: str) -> str:
-    """深度研究流程中，各角色使用的模型
+    """深度研究 v2: 各角色模型分配
 
-    分工原则：
-    - CTO/CPO 用 gpt_5_4（最强推理，核心决策）
-    - CMO 用 gemini_3_pro（独立视角，避免同模型自说自话）
-    - CDO 用 gemini_3_1_pro（最新旗舰，多模态强）
+    原则:
+    - CTO/CPO: gpt_5_4（最强推理）→ gpt_4o_norway
+    - CMO: doubao_seed_pro（中文互联网）→ doubao_seed_lite
+    - CDO: gemini_3_1_pro（多模态）→ gemini_3_pro
     """
     role_model_map = {
         "CTO": "gpt_5_4",
-        "CMO": "gemini_3_pro",
+        "CMO": "doubao_seed_pro",
         "CDO": "gemini_3_1_pro",
         "CPO": "gpt_5_4",
     }
@@ -45,42 +89,82 @@ def _get_model_for_role(role: str) -> str:
 
 
 def _get_model_for_task(task_type: str) -> str:
-    """各任务环节使用的模型
+    """深度研究 v2: 各环节模型分配
 
-    分层原则：
-    - 轻量任务 → gemini_2_5_flash（快且便宜）
-    - 核心推理/整合 → gpt_5_4（最强可用）
-    - 评审/挑战 → gemini_3_1_pro（独立视角，不能用同一个模型审自己）
-    - 修复/补充 → gemini_2_5_pro（稳定可靠，成本适中）
+    分层:
+    - 搜索: o3_deep_research + doubao_seed_pro（并行）
+    - 提炼: gemini_2_5_flash（便宜无限额）
+    - 整合: gpt_5_4（最强推理）
+    - Critic: gemini_3_1_pro（独立于 synthesis 模型）
     """
     task_model_map = {
         "discovery": "gemini_2_5_flash",
         "query_generation": "gemini_2_5_flash",
-        "data_extraction": "gemini_2_5_flash",
+        "data_extraction": "gemini_2_5_flash",    # Layer 2 提炼
         "role_assign": "gemini_2_5_flash",
-        "synthesis": "gpt_5_4",
+        "synthesis": "gpt_5_4",                    # Layer 4
         "re_synthesis": "gpt_5_4",
         "final_synthesis": "gpt_5_4",
-        "critic_challenge": "gemini_3_1_pro",
+        "critic_challenge": "gemini_3_1_pro",      # Layer 5
+        "consistency_check": "gemini_3_1_pro",
         "knowledge_extract": "gemini_2_5_flash",
         "fix": "gemini_2_5_pro",
         "cdo_fix": "gemini_2_5_pro",
+        "chinese_search": "doubao_seed_pro",
+        "deep_research_search": "o3_deep_research",
     }
     return task_model_map.get(task_type, "gpt_5_4")
 
 
 def _call_model(model_name: str, prompt: str, system_prompt: str = None, task_type: str = "general") -> dict:
-    """统一的模型调用入口，根据模型名自动选择调用方式"""
-    cfg = gateway.models.get(model_name)
-    if not cfg:
-        return {"success": False, "error": f"Unknown model: {model_name}"}
+    """统一模型调用入口，自动降级"""
+    result = gateway.call(model_name, prompt, system_prompt, task_type)
+    if result.get("success"):
+        return result
 
-    if cfg.provider == "google":
-        return gateway.call_gemini(model_name, prompt, system_prompt, task_type)
-    elif cfg.provider == "azure_openai":
-        return gateway.call_azure_openai(model_name, prompt, system_prompt, task_type)
-    else:
-        return gateway.call(model_name, prompt, system_prompt, task_type)
+    # 自动降级
+    fallback = FALLBACK_MAP.get(model_name)
+    if fallback and fallback in gateway.models:
+        print(f"  [Degrade] {model_name} failed, trying {fallback}")
+        result2 = gateway.call(fallback, prompt, system_prompt, task_type)
+        result2["degraded_from"] = model_name
+        return result2
+
+    return result
+
+
+def _call_with_backoff(model_name: str, prompt: str, system_prompt: str = None,
+                        task_type: str = "general", max_retries: int = 3) -> dict:
+    """带限流退避的模型调用（用于 Layer 1/2/3 并发场景）"""
+    sem_key = _get_sem_key(model_name)
+    sem = PROVIDER_SEMAPHORES.get(sem_key)
+
+    result = None
+    for attempt in range(max_retries + 1):
+        if sem:
+            sem.acquire()
+        try:
+            result = _call_model(model_name, prompt, system_prompt, task_type)
+
+            # 检查限流
+            error = result.get("error", "")
+            is_rate_limit = ("429" in str(error) or "rate" in str(error).lower()
+                            or "quota" in str(error).lower()
+                            or "RESOURCE_EXHAUSTED" in str(error))
+
+            if is_rate_limit and attempt < max_retries:
+                wait = (2 ** attempt) * 10  # 10s, 20s, 40s
+                print(f"  [RateLimit] {model_name} attempt {attempt+1}, "
+                      f"waiting {wait}s...")
+                time.sleep(wait)
+                continue
+
+            return result
+        finally:
+            if sem:
+                sem.release()
+
+    return result  # 最后一次的结果
 
 
 # ============================================================
@@ -455,18 +539,34 @@ RESEARCH_TASKS = [
 
 
 def _run_critic_challenge(report: str, goal: str, agent_outputs: dict,
+                          structured_data: str = "",
                           progress_callback=None) -> str:
-    """对报告执行 Critic 挑战，返回修正后的报告"""
+    """Layer 5: Critic 挑战 + 交叉验证
+
+    新增: 将 Layer 2 的结构化数据传入，
+    Critic 可以用原始数据点交叉验证报告中的结论。
+    """
     if len(report) < 500:
         print("  [Critic] 报告太短，跳过挑战")
         return report
 
     print("  [L5] 开始 Critic 挑战...")
 
+    # 附加结构化数据供交叉验证
+    cross_validate_section = ""
+    if structured_data:
+        cross_validate_section = (
+            f"\n\n## 原始结构化数据（用于交叉验证）\n"
+            f"以下是 Layer 2 提炼的结构化数据点。"
+            f"请检查报告结论是否与这些数据点一致。\n"
+            f"{structured_data[:4000]}\n"
+        )
+
     critic_prompt = (
         f"你的职责不是打分，而是提出最尖锐、最有建设性的挑战问题。\n\n"
         f"## 任务目标\n{goal}\n\n"
         f"## 报告（{len(report)}字）\n{report[:8000]}\n\n"
+        f"{cross_validate_section}"
         f"## 挑战规则\n"
         f"1. 找出分析中最薄弱的 3 个论点，每个提出一个具体的反驳或追问\n"
         f"2. 反驳必须基于知识库数据、搜索到的事实、或明显的逻辑漏洞，不能泛泛说'建议加强'\n"
@@ -656,10 +756,10 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
             except:
                 pass
 
-    # Step 1: 多源搜索，收集原始材料
+    # === Layer 1: 并发双搜索 ===
     all_sources = []
+    source_lock = threading.Lock()
 
-    # === 心跳初始化 ===
     hb = ProgressHeartbeat(
         f"深度研究:{title[:20]}",
         total=len(searches),
@@ -669,55 +769,96 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         feishu_time_interval=180
     )
 
-    for i, query in enumerate(searches, 1):
-        print(f"  [{i}/{len(searches)}] 搜索: {query[:50]}...")
-
-        # 先用 deep_research（Gemini），再用 tavily 补充
+    def _search_one_query(i: int, query: str) -> dict:
+        """单个 query 的双通道搜索（在线程中运行）"""
         source_text = ""
 
-        result = registry.call("deep_research", query)
-        if result.get("success") and len(result.get("data", "")) > 200:
-            source_text += result["data"][:3000]
-            print(f"    deep_research: {len(result['data'])} 字")
+        # Channel A: o3-deep-research（英文技术 + 专利）
+        o3_result = _call_with_backoff(
+            "o3_deep_research", query,
+            "Search for technical specifications, patents, and research papers.",
+            "deep_research_search")
+        o3_text = ""
+        if o3_result.get("success") and len(o3_result.get("response", "")) > 200:
+            o3_text = o3_result["response"][:3000]
+            model_used = o3_result.get("degraded_from", "o3_deep_research") if o3_result.get("degraded_from") else "o3"
+            print(f"    [{i}] o3: {len(o3_result['response'])} 字 (via {model_used})")
 
-        result2 = registry.call("tavily_search", query)
-        if result2.get("success") and len(result2.get("data", "")) > 200:
-            source_text += "\n---\n" + result2["data"][:2000]
-            print(f"    tavily: {len(result2['data'])} 字")
+        # Channel B: doubao（中文互联网）
+        doubao_result = _call_with_backoff(
+            "doubao_seed_pro", query,
+            "搜索中文互联网信息，重点关注小红书、B站、知乎、雪球、1688等平台的相关内容。",
+            "chinese_search")
+        doubao_text = ""
+        if doubao_result.get("success") and len(doubao_result.get("response", "")) > 200:
+            doubao_text = doubao_result["response"][:3000]
+            print(f"    [{i}] doubao: {len(doubao_result['response'])} 字")
 
-        if source_text:
-            all_sources.append({"query": query, "content": source_text[:4000]})
-            hb.tick(detail=query[:40], success=True)
-        else:
-            print(f"    ❌ 无有效结果")
-            hb.tick(detail=f"失败: {query[:40]}", success=False)
+        source_text = o3_text
+        if doubao_text:
+            source_text += "\n---\n" + doubao_text if source_text else doubao_text
 
-        time.sleep(2)  # 避免限流
+        # Fallback: tavily（仅当双通道都失败时）
+        if not source_text:
+            tavily_result = registry.call("tavily_search", query)
+            if tavily_result.get("success") and len(tavily_result.get("data", "")) > 200:
+                source_text = tavily_result["data"][:3000]
+                print(f"    [{i}] tavily(fallback): {len(source_text)} 字")
+
+        return {"index": i, "query": query, "content": source_text}
+
+    # 并发搜索所有 query
+    print(f"  [L1] 并发搜索 {len(searches)} 个 query...")
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        futures = {
+            executor.submit(_search_one_query, i, q): i
+            for i, q in enumerate(searches, 1)
+        }
+        for future in as_completed(futures):
+            result = future.result()
+            if result["content"]:
+                with source_lock:
+                    all_sources.append({
+                        "query": result["query"],
+                        "content": result["content"][:6000]
+                    })
+                hb.tick(detail=result["query"][:40], success=True)
+            else:
+                hb.tick(detail=f"失败: {result['query'][:40]}", success=False)
 
     hb.finish(f"搜索完成，{len(all_sources)}/{len(searches)} 有效")
 
     if not all_sources:
         return f"# {title}\n\n调研失败：所有搜索均无结果"
 
-    # Step 1.5: 结构化提取 —— 从搜索结果中提取结构化数据点
-    print(f"  [L3.A] 开始结构化提取...")
+    # === Layer 2: 并发结构化提炼 ===
+    print(f"  [L2] 并发提炼 {len(all_sources)} 条...")
     structured_data_list = []
+    struct_lock = threading.Lock()
     task_type_hint = task.get("goal", "") + " " + title
-    for src in all_sources:
-        extracted = _extract_structured_data(
+
+    def _extract_one(src: dict) -> dict:
+        """单条搜索结果的结构化提取"""
+        return _extract_structured_data(
             raw_text=src["content"],
             task_type=task_type_hint,
             topic=src["query"]
         )
-        if extracted:
-            structured_data_list.append(extracted)
-    print(f"  [L3.A] 提取完成: {len(structured_data_list)}/{len(all_sources)} 成功")
 
-    # 将结构化数据序列化，附加到搜索材料中供 Agent 使用
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        futures = {executor.submit(_extract_one, src): src for src in all_sources}
+        for future in as_completed(futures):
+            extracted = future.result()
+            if extracted:
+                with struct_lock:
+                    structured_data_list.append(extracted)
+
+    print(f"  [L2] 提炼完成: {len(structured_data_list)}/{len(all_sources)} 成功")
+
+    # 序列化供后续层使用
     structured_dump = ""
     if structured_data_list:
-        structured_dump = "\n\n## 结构化提取数据\n"
-        structured_dump += json.dumps(structured_data_list, ensure_ascii=False, indent=2)[:6000]
+        structured_dump = json.dumps(structured_data_list, ensure_ascii=False, indent=2)
 
     # Step 2: 读取知识库中已有的相关知识（内部文档优先）
     kb_context = ""
@@ -834,8 +975,9 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         f"{product_anchor[:2500] if product_anchor else '无内部产品定义文档。'}\n"
     )
 
-    # Step 3.5: 各 Agent 并行分析
+    # === Layer 3: Agent 并行分析 ===
     agent_outputs = {}
+    agent_lock = threading.Lock()
 
     # Step 3.4: 匹配专家框架
     expert_fw = _match_expert_framework(goal, title)
@@ -858,87 +1000,99 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
     if expert_injection:
         print(f"  [ExpertFW] 匹配到专家框架，注入 {len(expert_injection)} 字")
 
-    source_material = source_dump[:10000]  # 搜索材料
-    if structured_dump:
-        source_material += structured_dump[:4000]  # 附加结构化数据
-    kb_material = kb_context[:2000]  # 知识库
+    # Layer 3 输入: 提炼数据 + KB，不是原始搜索材料
+    distilled_material = structured_dump[:8000] if structured_dump else source_dump[:8000]
+    kb_material = kb_context[:2000]
 
+    # 构建 Agent prompts
+    cto_prompt = (
+        f"你是智能骑行头盔项目的技术合伙人（CTO）。\n"
+        f"你拥有顶尖的技术判断力，不会泛泛而谈，每个判断都有具体数据支撑。\n"
+        f"{expert_injection}\n"
+        f"## 调研数据（已结构化提炼，每个数据点附 source 和 confidence）\n{distilled_material}\n\n"
+        f"## 已有知识库\n{kb_material}\n\n"
+        f"{anchor_instruction}\n"
+        f"{THINKING_PRINCIPLES}\n"
+        f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
+        f"## 你的任务\n"
+        f"从技术角度分析这个问题。要求：\n"
+        f"1. 给出具体的技术参数对比（型号、规格、价格区间）\n"
+        f"2. 评估技术可行性和风险\n"
+        f"3. 给出明确的技术推荐（不要模棱两可）\n"
+        f"4. 标注你不确定的信息\n"
+        f"5. 如果某些功能风险高，建议分阶段实现，而不是砍掉\n"
+        f"6. 输出 1000-1500 字\n"
+    )
+
+    cmo_prompt = (
+        f"你是智能骑行头盔项目的市场合伙人（CMO）。\n"
+        f"你拥有敏锐的商业判断力，能识别伪需求，每个判断都基于数据或逻辑推演。\n"
+        f"{expert_injection}\n"
+        f"## 调研数据（已结构化提炼）\n{distilled_material}\n\n"
+        f"## 已有知识库\n{kb_material}\n\n"
+        f"{anchor_instruction}\n"
+        f"{THINKING_PRINCIPLES}\n"
+        f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
+        f"## 你的任务\n"
+        f"从市场和商业角度分析这个问题。要求：\n"
+        f"1. 竞品是怎么做的？成功还是失败？为什么？\n"
+        f"2. 用户真正在意什么？购买决策的关键因素？\n"
+        f"3. 定价和商业模式建议\n"
+        f"4. 给出明确的市场判断（不要两边讨好）\n"
+        f"5. 如果市场风险高，建议如何分阶段验证，而不是放弃方向\n"
+        f"6. 输出 1000-1500 字\n"
+    )
+
+    cdo_prompt = (
+        f"你是智能骑行头盔项目的设计合伙人（CDO）。\n"
+        f"你懂工程约束，用设计语言表达品牌战略。\n"
+        f"{expert_injection}\n"
+        f"## 调研数据（已结构化提炼）\n{distilled_material}\n\n"
+        f"## 已有知识库\n{kb_material}\n\n"
+        f"{anchor_instruction}\n"
+        f"{THINKING_PRINCIPLES}\n"
+        f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
+        f"## 你的任务\n"
+        f"从产品设计和用户体验角度分析。要求：\n"
+        f"1. 产品形态和用户体验的关键约束\n"
+        f"2. 设计上的取舍建议（重量、体积、外观、佩戴感）\n"
+        f"3. 竞品的设计优劣势\n"
+        f"4. 如果设计约束导致某些功能难以首代实现，建议分阶段路径\n"
+        f"5. 输出 800-1200 字\n"
+    )
+
+    def _run_agent(role: str, prompt: str, sys_prompt: str) -> tuple:
+        """运行单个 Agent（在线程中）"""
+        model = _get_model_for_role(role)
+        result = _call_with_backoff(model, prompt, sys_prompt,
+                                     f"deep_research_{role.lower()}")
+        if result.get("success"):
+            return (role, result["response"])
+        return (role, None)
+
+    # 构建各 Agent 的任务
+    agent_tasks = []
     if "CTO" in roles:
-        cto_prompt = (
-            f"你是智能骑行头盔项目的技术合伙人（CTO）。\n"
-            f"你拥有顶尖的技术判断力，不会泛泛而谈，每个判断都有具体数据支撑。\n"
-            f"{expert_injection}\n"
-            f"## 结构化数据（优先使用）\n"
-            f"以下是从搜索结果中提取的结构化数据点，每个字段附有 source 和 confidence。\n"
-            f"优先基于这些数据做分析，原始搜索材料作为补充参考。\n\n"
-            f"{anchor_instruction}\n"
-            f"{THINKING_PRINCIPLES}\n"
-            f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
-            f"## 已有知识库\n{kb_material}\n\n"
-            f"## 调研材料\n{source_material}\n\n"
-            f"## 你的任务\n"
-            f"从技术角度分析这个问题。要求：\n"
-            f"1. 给出具体的技术参数对比（型号、规格、价格区间）\n"
-            f"2. 评估技术可行性和风险\n"
-            f"3. 给出明确的技术推荐（不要模棱两可）\n"
-            f"4. 标注你不确定的信息\n"
-            f"5. 如果某些功能风险高，建议分阶段实现，而不是砍掉\n"
-            f"6. 输出 1000-1500 字\n"
-        )
-        cto_result = _call_model(_get_model_for_role("CTO"), cto_prompt,
-            "你是资深技术合伙人，输出专业的技术分析。", "deep_research_cto")
-        if cto_result.get("success"):
-            agent_outputs["CTO"] = cto_result["response"]
-            print(f"  [CTO] {len(cto_result['response'])} chars")
-
+        agent_tasks.append(("CTO", cto_prompt, "你是资深技术合伙人，输出专业的技术分析。"))
     if "CMO" in roles:
-        cmo_prompt = (
-            f"你是智能骑行头盔项目的市场合伙人（CMO）。\n"
-            f"你拥有敏锐的商业判断力，能识别伪需求，每个判断都基于数据或逻辑推演。\n"
-            f"{expert_injection}\n"
-            f"{anchor_instruction}\n"
-            f"{THINKING_PRINCIPLES}\n"
-            f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
-            f"## 已有知识库\n{kb_material}\n\n"
-            f"## 调研材料\n{source_material}\n\n"
-            f"## 你的任务\n"
-            f"从市场和商业角度分析这个问题。要求：\n"
-            f"1. 竞品是怎么做的？成功还是失败？为什么？\n"
-            f"2. 用户真正在意什么？购买决策的关键因素？\n"
-            f"3. 定价和商业模式建议\n"
-            f"4. 给出明确的市场判断（不要两边讨好）\n"
-            f"5. 如果市场风险高，建议如何分阶段验证，而不是放弃方向\n"
-            f"6. 输出 1000-1500 字\n"
-        )
-        cmo_result = _call_model(_get_model_for_role("CMO"), cmo_prompt,
-            "你是资深市场合伙人，输出专业的商业分析。", "deep_research_cmo")
-        if cmo_result.get("success"):
-            agent_outputs["CMO"] = cmo_result["response"]
-            print(f"  [CMO] {len(cmo_result['response'])} chars")
-
+        agent_tasks.append(("CMO", cmo_prompt, "你是资深市场合伙人，输出专业的商业分析。"))
     if "CDO" in roles:
-        cdo_prompt = (
-            f"你是智能骑行头盔项目的设计合伙人（CDO）。\n"
-            f"你懂工程约束，用设计语言表达品牌战略。\n"
-            f"{expert_injection}\n"
-            f"{anchor_instruction}\n"
-            f"{THINKING_PRINCIPLES}\n"
-            f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
-            f"## 已有知识库\n{kb_material}\n\n"
-            f"## 调研材料\n{source_material}\n\n"
-            f"## 你的任务\n"
-            f"从产品设计和用户体验角度分析。要求：\n"
-            f"1. 产品形态和用户体验的关键约束\n"
-            f"2. 设计上的取舍建议（重量、体积、外观、佩戴感）\n"
-            f"3. 竞品的设计优劣势\n"
-            f"4. 如果设计约束导致某些功能难以首代实现，建议分阶段路径\n"
-            f"5. 输出 800-1200 字\n"
-        )
-        cdo_result = _call_model(_get_model_for_role("CDO"), cdo_prompt,
-            "你是资深设计合伙人，输出专业的设计分析。", "deep_research_cdo")
-        if cdo_result.get("success"):
-            agent_outputs["CDO"] = cdo_result["response"]
-            print(f"  [CDO] {len(cdo_result['response'])} chars")
+        agent_tasks.append(("CDO", cdo_prompt, "你是资深设计合伙人，输出专业的设计分析。"))
+
+    print(f"  [L3] 并行运行 {len(agent_tasks)} 个 Agent...")
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        futures = {
+            executor.submit(_run_agent, role, prompt, sys): role
+            for role, prompt, sys in agent_tasks
+        }
+        for future in as_completed(futures):
+            role, output = future.result()
+            if output:
+                with agent_lock:
+                    agent_outputs[role] = output
+                print(f"  [{role}] {len(output)} chars")
+            else:
+                print(f"  [{role}] ❌ failed")
 
     if not agent_outputs:
         # 全部失败，fallback 到单 CPO 模式
@@ -1027,8 +1181,10 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         else:
             report = synthesis_result["response"]
 
-    # === Step 5: Critic 挑战（所有路径统一执行）===
-    report = _run_critic_challenge(report, goal, agent_outputs, progress_callback)
+    # === Layer 5: Critic（所有路径统一执行）===
+    report = _run_critic_challenge(report, goal, agent_outputs,
+                                    structured_data=structured_dump,
+                                    progress_callback=progress_callback)
 
     # Step 4: 保存报告到文件
     report_path = REPORT_DIR / f"{task_id}_{time.strftime('%Y%m%d_%H%M')}.md"
@@ -1369,6 +1525,276 @@ def run_research_from_file(md_path: str, progress_callback=None, task_ids: list 
     print(f"{'#'*60}")
 
     return str(summary_path)
+
+
+# ============================================================
+# Part 2: 深度学习调度器 — 任务池 + 自主发现 + 7h 窗口
+# ============================================================
+
+TASK_POOL_PATH = Path(__file__).parent.parent / ".ai-state" / "research_task_pool.yaml"
+
+
+def _load_task_pool() -> list:
+    """加载任务池，返回未完成的任务（按优先级排序）"""
+    if not TASK_POOL_PATH.exists():
+        return []
+    try:
+        with open(TASK_POOL_PATH, 'r', encoding='utf-8') as f:
+            pool = yaml.safe_load(f) or []
+        # 过滤已完成的
+        return [t for t in pool if not t.get("completed")]
+    except:
+        return []
+
+
+def _save_task_pool(pool: list):
+    """保存任务池"""
+    TASK_POOL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(TASK_POOL_PATH, 'w', encoding='utf-8') as f:
+        yaml.dump(pool, f, allow_unicode=True)
+
+
+def _mark_task_done(task_id: str):
+    """标记任务完成"""
+    pool = _load_task_pool()
+    all_tasks = []
+    # 重新加载完整池（包括已完成的）
+    if TASK_POOL_PATH.exists():
+        try:
+            with open(TASK_POOL_PATH, 'r', encoding='utf-8') as f:
+                all_tasks = yaml.safe_load(f) or []
+        except:
+            all_tasks = pool
+
+    for t in all_tasks:
+        if t.get("id") == task_id:
+            t["completed"] = True
+            t["completed_at"] = time.strftime('%Y-%m-%d %H:%M')
+    _save_task_pool(all_tasks)
+
+
+def _discover_new_tasks() -> list:
+    """自主发现新研究方向
+
+    基于:
+    1. KB 缺口分析
+    2. 产品锚点中未覆盖的技术方向
+    3. 竞品动态
+    4. 供应链变化
+    """
+    # 用 LLM 分析 KB 现状，生成研究建议
+    kb_summary = _get_kb_summary()
+
+    discover_prompt = (
+        f"你是智能骑行头盔项目的研究规划师。\n\n"
+        f"## 当前知识库状态\n{kb_summary}\n\n"
+        f"## 产品方向\n"
+        f"全脸头盔，HUD显示，语音控制，组队骑行，主动安全。\n"
+        f"V1 关键技术: OLED+Free Form / Micro LED+树脂衍射光波导（并行路线）\n"
+        f"主SoC: Qualcomm AR1 Gen 1\n"
+        f"通信: Mesh Intercom\n\n"
+        f"## 任务\n"
+        f"分析知识库的薄弱环节，生成 3-5 个新研究任务。\n"
+        f"每个任务要有明确的研究目标和 6-8 个搜索关键词。\n"
+        f"优先级: 1=紧急（影响V1决策）, 2=重要（影响成本/供应链）, 3=储备\n\n"
+        f"输出 JSON 数组:\n"
+        f'[{{"id": "auto_xxx", "title": "标题", "goal": "研究目标", '
+        f'"priority": 1, "searches": ["搜索词1", "搜索词2", ...]}}]\n'
+        f"只输出 JSON。"
+    )
+
+    result = _call_model("gemini_2_5_flash", discover_prompt,
+                          task_type="discovery")
+    if result.get("success"):
+        try:
+            resp = result["response"].strip()
+            resp = re.sub(r'^```json\s*', '', resp)
+            resp = re.sub(r'\s*```$', '', resp)
+            tasks = json.loads(resp)
+            if isinstance(tasks, list):
+                print(f"  [Discover] 发现 {len(tasks)} 个新方向")
+                return tasks
+        except:
+            pass
+    return []
+
+
+def _get_kb_summary() -> str:
+    """获取知识库摘要"""
+    stats = get_knowledge_stats()
+    summary = f"知识库统计: {stats}\n"
+
+    # 扫描最近条目
+    recent = []
+    for f in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+            recent.append({
+                "title": data.get("title", "")[:50],
+                "domain": data.get("domain", ""),
+                "confidence": data.get("confidence", "")
+            })
+        except:
+            continue
+
+    if recent:
+        summary += f"总条目数: {len(recent)}\n"
+        domains = {}
+        for e in recent:
+            d = e.get("domain", "unknown")
+            domains[d] = domains.get(d, 0) + 1
+        summary += f"域分布: {domains}\n"
+
+    return summary
+
+
+def _run_layers_1_to_3(task: dict, progress_callback=None) -> dict:
+    """执行 Layer 1-3，返回中间结果供 Layer 4-5 使用
+
+    返回的 dict 包含:
+    - agent_outputs: {role: output_text}
+    - structured_dump: JSON 字符串
+    - kb_context: 知识库上下文
+    - goal, title: 元数据
+    - l1_l3_duration: 耗时（秒）
+    """
+    # 复用 deep_research_one 的逻辑，但只执行到 Agent 分析
+    # 这里简化实现：直接调用 deep_research_one，然后提取中间结果
+    # 完整实现需要将 deep_research_one 拆分为两阶段
+    t0 = time.time()
+
+    # 调用 deep_research_one 获取报告
+    report = deep_research_one(task, progress_callback=progress_callback)
+
+    return {
+        "title": task.get("title", ""),
+        "goal": task.get("goal", ""),
+        "task": task,
+        "report": report,
+        "l1_l3_duration": time.time() - t0,
+    }
+
+
+def _run_layers_4_to_5(intermediate: dict, progress_callback=None) -> str:
+    """执行 Layer 4-5: 整合→Critic→入库
+
+    输入: _run_layers_1_to_3 的输出
+    输出: 最终报告文本
+    """
+    # 简化实现：直接返回报告
+    # 完整实现需要拆分 deep_research_one
+    return intermediate.get("report", "")
+
+
+def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
+    """深度学习主调度器
+
+    在 max_hours 时间窗口内，持续执行研究任务:
+    1. 先从任务池取
+    2. 任务池空了 → 自主发现新方向
+    3. 每个任务完成后检查剩余时间
+    4. 不够跑下一个就收尾
+    """
+    import queue
+
+    start_time = time.time()
+    deadline = start_time + max_hours * 3600
+    completed = []
+
+    print(f"\n{'#'*60}")
+    print(f"# 深度学习模式 — {max_hours}h 窗口")
+    print(f"# 开始: {time.strftime('%Y-%m-%d %H:%M')}")
+    print(f"# 截止: {time.strftime('%Y-%m-%d %H:%M', time.localtime(deadline))}")
+    print(f"{'#'*60}")
+
+    if progress_callback:
+        progress_callback(f"🎓 深度学习开始 ({max_hours}h 窗口)")
+
+    while True:
+        remaining_hours = (deadline - time.time()) / 3600
+        if remaining_hours < 0.5:
+            print(f"\n[Scheduler] 剩余 {remaining_hours:.1f}h < 0.5h，收尾")
+            break
+
+        # 1. 从任务池取
+        pool = _load_task_pool()
+        task = None
+        if pool:
+            task = pool[0]  # 取优先级最高的
+            print(f"\n[Scheduler] 从任务池取: {task['title']} (剩余 {remaining_hours:.1f}h)")
+        else:
+            # 2. 自主发现
+            print(f"\n[Scheduler] 任务池空，自主发现新方向...")
+            new_tasks = _discover_new_tasks()
+            if new_tasks:
+                # 加入任务池
+                existing_pool = _load_task_pool()
+                for nt in new_tasks:
+                    nt["source"] = "auto_discover"
+                    nt["discovered_at"] = time.strftime('%Y-%m-%d %H:%M')
+                existing_pool.extend(new_tasks)
+                _save_task_pool(existing_pool)
+                task = new_tasks[0]
+                print(f"  发现 {len(new_tasks)} 个新任务，开始: {task['title']}")
+            else:
+                print("[Scheduler] 无新任务可发现，结束")
+                break
+
+        # 3. 执行（完整五层管道）
+        task_start = time.time()
+
+        if progress_callback:
+            progress_callback(
+                f"📖 [{len(completed)+1}] {task['title']} "
+                f"(剩余 {remaining_hours:.1f}h)"
+            )
+
+        report = deep_research_one(task, progress_callback=progress_callback)
+        task_duration = (time.time() - task_start) / 60
+
+        completed.append({
+            "title": task["title"],
+            "duration_min": round(task_duration, 1),
+            "report_len": len(report) if report else 0
+        })
+
+        _mark_task_done(task.get("id", ""))
+        print(f"\n✅ {task['title']} 完成 ({task_duration:.0f}min, {len(report) if report else 0}字)")
+
+        if progress_callback:
+            progress_callback(
+                f"✅ {task['title']} ({task_duration:.0f}min)"
+            )
+
+        time.sleep(5)
+
+    # 收尾: 运行 KB 治理
+    print(f"\n[Scheduler] 任务完成，运行 KB 治理...")
+    try:
+        from scripts.kb_governance import run_governance
+        gov_report = run_governance()
+    except ImportError:
+        gov_report = "KB 治理模块未安装"
+        print(f"  [Warn] {gov_report}")
+
+    # 汇总
+    total_hours = (time.time() - start_time) / 3600
+    print(f"\n{'#'*60}")
+    print(f"# 深度学习完成")
+    print(f"# 耗时: {total_hours:.1f}h / {max_hours}h")
+    print(f"# 任务: {len(completed)} 个")
+    for c in completed:
+        print(f"#   - {c['title']} ({c['duration_min']}min, {c['report_len']}字)")
+    print(f"# KB 治理: {gov_report}")
+    print(f"{'#'*60}")
+
+    if progress_callback:
+        progress_callback(
+            f"🎓 深度学习完成: {len(completed)} 个任务, "
+            f"{total_hours:.1f}h"
+        )
+
+    return completed
 
 
 if __name__ == "__main__":

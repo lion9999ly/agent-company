@@ -792,6 +792,117 @@ class ModelGateway:
                 )
             return {"success": False, "error": str(e)}
 
+    def call_azure_responses(self, model_name: str, prompt: str,
+                              task_type: str = "deep_research",
+                              tools: list = None) -> Dict[str, Any]:
+        """调用 Azure OpenAI Responses API（o3-deep-research 专用）
+
+        与 Chat Completions API 的区别:
+        - endpoint: /openai/deployments/{deployment}/responses
+        - 请求体: {"input": "...", "max_output_tokens": N}
+        - 响应体: {"output": [...], "usage": {...}}
+        """
+        cfg = self.models.get(model_name)
+        if not cfg or not cfg.api_key:
+            return {"success": False, "error": f"Model {model_name} not configured"}
+
+        if not cfg.endpoint:
+            return {"success": False, "error": f"Endpoint not configured for {model_name}"}
+
+        deployment_name = cfg.deployment or cfg.model
+        api_version = cfg.api_version or "2025-04-01-preview"
+
+        url = (f"{cfg.endpoint.rstrip('/')}/openai/deployments/"
+               f"{deployment_name}/responses?api-version={api_version}")
+
+        payload = {
+            "input": prompt,
+            "max_output_tokens": cfg.max_tokens or 16000,
+        }
+        if tools:
+            payload["tools"] = tools
+
+        # o3-deep-research 单次可能 2-5 分钟
+        timeout = max(TIMEOUT_BY_TASK.get(task_type, 180), 600)
+
+        start_time = time.time()
+        try:
+            resp = requests.post(url, json=payload, timeout=timeout,
+                                 headers={"api-key": cfg.api_key,
+                                          "Content-Type": "application/json"})
+            result = resp.json()
+            latency_ms = int((time.time() - start_time) * 1000)
+
+            print(f"  [Azure-Responses] task={task_type} status={resp.status_code} "
+                  f"latency={latency_ms}ms")
+
+            if resp.status_code == 404:
+                msg = (f"[MODEL_404] {model_name} deployment={deployment_name} "
+                       f"Responses API 404. URL: {url[:120]}")
+                print(msg)
+                return {"success": False, "error": msg, "status_code": 404}
+
+            if resp.status_code >= 400:
+                msg = f"[MODEL_ERROR] {model_name} status={resp.status_code}: {str(result)[:300]}"
+                print(msg)
+                return {"success": False, "error": msg, "status_code": resp.status_code}
+
+            # 解析 Responses API 输出
+            output = result.get("output", [])
+            text_parts = []
+            for item in output:
+                if item.get("type") == "message":
+                    for content in item.get("content", []):
+                        if content.get("type") == "output_text":
+                            text_parts.append(content.get("text", ""))
+                elif item.get("type") == "text":
+                    text_parts.append(item.get("text", ""))
+            text = "\n".join(text_parts)
+
+            # fallback 解析
+            if not text:
+                if isinstance(output, str):
+                    text = output
+                elif isinstance(output, list) and output:
+                    first = output[0]
+                    text = first if isinstance(first, str) else json.dumps(first, ensure_ascii=False)
+
+            usage = result.get("usage", {})
+            p_tok = usage.get("input_tokens", usage.get("prompt_tokens", 0))
+            c_tok = usage.get("output_tokens", usage.get("completion_tokens", 0))
+
+            if HAS_TRACKER:
+                get_tracker().record(model=cfg.model, provider="azure_responses",
+                                    prompt_tokens=p_tok, completion_tokens=c_tok,
+                                    task_type=task_type, success=bool(text),
+                                    latency_ms=latency_ms)
+
+            if text:
+                print(f"  [Azure-Responses] OK: {len(text)} chars, {c_tok} tokens")
+                return {"success": True, "model": model_name, "response": text,
+                        "raw": result,
+                        "usage": {"prompt_tokens": p_tok, "completion_tokens": c_tok}}
+            else:
+                return {"success": False, "error": f"Empty response: {str(result)[:200]}"}
+
+        except requests.exceptions.Timeout:
+            ms = int((time.time() - start_time) * 1000)
+            print(f"  [Azure-Responses] TIMEOUT after {ms}ms")
+            return {"success": False, "error": f"Timeout after {ms}ms"}
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
+    def call_with_fallback(self, primary: str, fallback: str, prompt: str,
+                            system_prompt: str = None, task_type: str = "general") -> Dict:
+        """调用主模型，失败时降级到备选"""
+        result = self.call(primary, prompt, system_prompt, task_type)
+        if result.get("success"):
+            return result
+        print(f"  [Fallback] {primary} failed, degrading to {fallback}")
+        result2 = self.call(fallback, prompt, system_prompt, task_type)
+        result2["degraded_from"] = primary
+        return result2
+
     def call_zhipu(self, model_name: str, prompt: str, system_prompt: str = None,
                    task_type: str = "general") -> Dict[str, Any]:
         """调用智谱 AI GLM API"""
@@ -1053,13 +1164,18 @@ class ModelGateway:
         elif cfg.provider == "alibaba":
             return self.call_qwen(model_name, prompt, system_prompt)
         elif cfg.provider == "azure_openai":
+            # o3-deep-research 走 Responses API
+            if "deep-research" in (cfg.deployment or "").lower() or "deep-research" in cfg.model.lower():
+                full_prompt = (f"[System]\n{system_prompt}\n\n[User]\n{prompt}"
+                               if system_prompt else prompt)
+                return self.call_azure_responses(model_name, full_prompt, task_type)
             return self.call_azure_openai(model_name, prompt, system_prompt, task_type)
+        elif cfg.provider == "volcengine":
+            return self.call_volcengine(model_name, prompt, system_prompt, task_type)
         elif cfg.provider == "zhipu":
             return self.call_zhipu(model_name, prompt, system_prompt, task_type)
         elif cfg.provider == "deepseek":
             return self.call_deepseek(model_name, prompt, system_prompt, task_type)
-        elif cfg.provider == "volcengine":
-            return self.call_volcengine(model_name, prompt, system_prompt, task_type)
         else:
             return {"success": False, "error": f"Unsupported provider: {cfg.provider}"}
 

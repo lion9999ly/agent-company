@@ -116,16 +116,16 @@ model_registry:
   # o3-deep-research - 深度研究 (Norway East)
   o3_deep_research:
     provider: "azure_openai"
-    model: "o3-deep-research"
+    model: "o3-deep-research-2025-06-26"
     deployment: "o3-deep-research"
     api_key_env: "AZURE_OPENAI_NORWAY_API_KEY"
     endpoint_env: "AZURE_OPENAI_NORWAY_ENDPOINT"
-    purpose: "深度研究、市场分析、竞品调研"
-    capabilities: ["deep_research", "search", "analysis", "long_context"]
+    purpose: "深度研究、市场分析、竞品调研、互联网搜索"
+    capabilities: ["deep_research", "search", "analysis", "long_context", "reasoning", "web_search"]
     cost_tier: "$$$$"
     performance: 5
-    max_tokens: 65536
-    temperature: 1.0
+    max_tokens: 16000
+    temperature: 0.1
     api_version: "2025-04-01-preview"
 
   # gpt-4o (Norway East)

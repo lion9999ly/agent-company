@@ -1,0 +1,100 @@
+# 研究任务池 — 深度学习调度器使用
+# 广度: 覆盖产品各核心模块
+# 深度: 每个环节的 top 供应商详细参数
+
+# === 供应链深度调研 ===
+- id: "supply_chain_optical"
+  title: "光学方案供应链深度调研"
+  goal: "OLED+Free Form vs Micro LED+衍射光波导的完整供应链对比，含良率、交期、MOQ、BOM"
+  priority: 1
+  searches:
+    - "motorcycle helmet HUD optical module supplier BOM cost 2026"
+    - "OLED micro display free form lens supplier price comparison"
+    - "Micro LED resin diffractive waveguide supplier 量产良率 交期"
+    - "JBD Micro LED display module specs price MOQ 2026"
+    - "Sony ECX 系列 OLED microdisplay specs comparison"
+    - "珑璟光电 灵犀微光 谷东科技 光波导 参数 价格"
+    - "AR HUD optical engine comparison waveguide birdbath freeform 2026"
+    - "helmet HUD display reliability outdoor sunlight brightness nits"
+  completed: false
+
+- id: "supply_chain_audio"
+  title: "声学方案供应链深度调研"
+  goal: "骑行头盔用扬声器/麦克风/ANC方案的供应商对比，含风噪处理能力实测"
+  priority: 1
+  searches:
+    - "骨传导扬声器 头盔 供应商 韶音 歌尔 瑞声 参数 价格 2026"
+    - "helmet speaker wind noise cancellation MEMS microphone"
+    - "ANC chipset BES2700 QCC5181 comparison motorcycle helmet"
+    - "smart helmet audio solution IP67 waterproof speaker"
+  completed: false
+
+- id: "supply_chain_soc"
+  title: "主SoC选型验证"
+  goal: "Qualcomm AR1 Gen 1 的实际性能、功耗、散热、供货情况验证"
+  priority: 1
+  searches:
+    - "Qualcomm AR1 Gen 1 XR platform specs power consumption thermal"
+    - "Qualcomm AR1 供货 交期 最小起订量 方案商 2026"
+    - "motorcycle helmet SoC alternatives MediaTek Genio Amlogic"
+    - "AR1 Gen 1 reference design smart glasses module"
+  completed: false
+
+# === 竞品深度拆解 ===
+- id: "competitor_deep_dive"
+  title: "竞品深度拆解"
+  goal: "Cardo Packtalk/Sena/LIVALL/Jarvish 的硬件拆解、BOM估算、用户口碑"
+  priority: 2
+  searches:
+    - "Cardo Packtalk Edge teardown BOM cost analysis"
+    - "Sena 50S vs Cardo comparison 2026 user review"
+    - "LIVALL smart helmet review problems issues"
+    - "Jarvish X-AR helmet review 实测 评价 问题"
+    - "智能头盔 小红书 用户评测 吐槽 2026"
+  completed: false
+
+# === 认证路线图 ===
+- id: "certification_roadmap"
+  title: "安全认证路线图"
+  goal: "DOT/ECE/SNELL认证流程、周期、成本，以及HUD对认证的影响"
+  priority: 2
+  searches:
+    - "motorcycle helmet DOT ECE certification process cost timeline"
+    - "helmet HUD certification impact ECE 22.06"
+    - "SNELL认证 费用 周期 测试项目 2026"
+    - "motorcycle helmet electronic components certification requirements"
+  completed: false
+
+# === 技术专题 ===
+- id: "mesh_intercom_protocol"
+  title: "Mesh Intercom 协议深度分析"
+  goal: "Cardo DMC vs 自研Mesh的技术可行性、延迟、功耗、频段限制"
+  priority: 2
+  searches:
+    - "Cardo DMC mesh intercom protocol technical analysis"
+    - "Bluetooth mesh vs proprietary mesh motorcycle intercom latency"
+    - "mesh network 骑行 对讲 功耗 延迟 频段"
+    - "LoRa vs Bluetooth mesh motorcycle communication"
+  completed: false
+
+- id: "thermal_management"
+  title: "头盔散热方案调研"
+  goal: "SoC+显示模组+电池在全封闭头盔内的散热方案"
+  priority: 3
+  searches:
+    - "smart helmet thermal management heat dissipation solution"
+    - "AR glasses thermal design copper heat pipe graphene"
+    - "头盔内 散热 方案 石墨片 热管 仿真"
+    - "qualcomm AR1 thermal design guide smart glasses"
+  completed: false
+
+- id: "display_sunlight_readability"
+  title: "强光下显示可读性"
+  goal: "户外阳光下 HUD 显示的亮度需求、方案对比、实测数据"
+  priority: 2
+  searches:
+    - "HUD display sunlight readability nits brightness requirement"
+    - "OLED vs Micro LED sunlight visibility comparison"
+    - "waveguide display outdoor brightness efficiency"
+    - "helmet HUD contrast ratio sunlight measurement"
+  completed: false

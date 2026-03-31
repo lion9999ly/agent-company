@@ -57,8 +57,16 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_reset_learning(reply_target, send_reply)
         return
 
-    if text_stripped in ("深度学习", "夜间学习", "night learning"):
+    if text_stripped in ("深度学习", "夜间学习", "night learning", "deep learning"):
         _handle_night_learning(reply_target, send_reply)
+        return
+
+    if text_stripped in ("自学习", "auto learn", "自动学习"):
+        _handle_auto_learn(reply_target, send_reply)
+        return
+
+    if text_stripped in ("KB治理", "kb治理", "知识库治理"):
+        _handle_kb_governance(reply_target, send_reply)
         return
 
     if text_stripped in ("对齐", "对齐报告", "alignment"):
@@ -175,16 +183,46 @@ def _handle_reset_learning(reply_target: str, send_reply):
 
 
 def _handle_night_learning(reply_target: str, send_reply):
-    """处理夜间深度学习"""
-    send_reply(reply_target, "[NightLearn] 启动深度学习（三阶段：深化+拓展+跨界）...")
+    """处理夜间深度学习（v2: 五层管道 + 7h 窗口）"""
+    send_reply(reply_target, "🎓 启动深度学习（7h 窗口，五层管道）...")
 
     def _run():
         try:
-            from scripts.daily_learning import run_night_deep_learning
-            report = run_night_deep_learning(progress_callback=lambda msg: send_reply(reply_target, msg))
-            send_reply(reply_target, report)
+            from scripts.tonight_deep_research import run_deep_learning
+            completed = run_deep_learning(max_hours=7.0, progress_callback=lambda msg: send_reply(reply_target, msg))
+            send_reply(reply_target, f"✅ 深度学习完成: {len(completed)} 个任务")
         except Exception as e:
-            send_reply(reply_target, f"夜间学习执行失败: {e}")
+            send_reply(reply_target, f"深度学习执行失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_kb_governance(reply_target: str, send_reply):
+    """处理 KB 治理"""
+    send_reply(reply_target, "🗄️ 正在运行知识库治理...")
+
+    def _run():
+        try:
+            from scripts.kb_governance import run_governance
+            report = run_governance()
+            send_reply(reply_target, f"✅ KB 治理完成: {report}")
+        except Exception as e:
+            send_reply(reply_target, f"KB 治理失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_auto_learn(reply_target: str, send_reply):
+    """处理自学习（30min 周期）"""
+    send_reply(reply_target, "📚 启动自学习（KB 缺口补充）...")
+
+    def _run():
+        try:
+            from scripts.auto_learn import auto_learn_cycle
+            result = auto_learn_cycle(progress_callback=lambda msg: send_reply(reply_target, msg))
+            send_reply(reply_target, f"✅ 自学习完成: {result}")
+        except Exception as e:
+            send_reply(reply_target, f"自学习执行失败: {e}")
 
     threading.Thread(target=_run, daemon=True).start()
 
