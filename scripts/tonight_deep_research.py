@@ -578,7 +578,8 @@ CRITIC_FEW_SHOT = """
 
 def _run_critic_challenge(report: str, goal: str, agent_outputs: dict,
                           structured_data: str = "",
-                          progress_callback=None) -> str:
+                          progress_callback=None,
+                          task_title: str = "") -> str:
     """Layer 5: Critic 五维挑战
 
     改进:
@@ -625,13 +626,24 @@ def _run_critic_challenge(report: str, goal: str, agent_outputs: dict,
     except ImportError:
         pass
 
+    # 尝试使用进化版 few-shot（基于人工标注），如果没有就用默认
+    few_shot_to_use = CRITIC_FEW_SHOT
+    try:
+        from scripts.critic_calibration import get_evolved_few_shot
+        evolved_few_shot = get_evolved_few_shot()
+        if evolved_few_shot:
+            few_shot_to_use = evolved_few_shot
+            print("  [Critic] 使用进化版 few-shot 示例")
+    except ImportError:
+        pass
+
     critic_prompt = (
         f"你是独立审查员。你的职责不是打分，而是找出会导致决策失误的致命问题。\n\n"
         f"## 任务目标\n{goal}\n"
         f"{decision_anchor}\n"
         f"## 报告（{len(report)}字）\n{report[:8000]}\n"
         f"{data_section}\n"
-        f"{CRITIC_FEW_SHOT}\n\n"
+        f"{few_shot_to_use}\n\n"
         f"## 挑战规则（强制）\n"
         f"1. 每个 P0 必须引用 Layer 2 数据中的具体数据点作为反证。\n"
         f"   格式: \"Layer 2 数据显示 [产品X] 的 [参数Y] 为 [值Z]"
@@ -838,6 +850,34 @@ def _run_critic_challenge(report: str, goal: str, agent_outputs: dict,
             critic_appendix += f"- {p2.get('issue', '')}\n"
 
     report += critic_appendix
+
+    # === 校准采样 + 漂移检测 ===
+    try:
+        from scripts.critic_calibration import (
+            sample_for_calibration, save_pending_samples,
+            push_calibration_to_feishu, check_drift
+        )
+
+        # 采样
+        report_excerpt = report[:500]
+        samples = sample_for_calibration(
+            {"p0_blocking": p0_list, "p1_improvement": p1_list, "p2_note": p2_list},
+            report_excerpt, goal, task_title
+        )
+        if samples:
+            save_pending_samples(samples)
+            push_calibration_to_feishu(samples, progress_callback)
+
+        # 漂移检测
+        check_drift(
+            {"p0_blocking": p0_list, "p1_improvement": p1_list, "p2_note": p2_list},
+            progress_callback
+        )
+
+    except ImportError:
+        pass  # 校准模块未安装
+    except Exception as e:
+        print(f"  [Calibration] 采样/漂移检测异常: {e}")
 
     return report
 
@@ -1398,7 +1438,8 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
     # === Layer 5: Critic（所有路径统一执行）===
     report = _run_critic_challenge(report, goal, agent_outputs,
                                     structured_data=structured_dump,
-                                    progress_callback=progress_callback)
+                                    progress_callback=progress_callback,
+                                    task_title=title)
 
     # Step 4: 保存报告到文件
     report_path = REPORT_DIR / f"{task_id}_{time.strftime('%Y%m%d_%H%M')}.md"

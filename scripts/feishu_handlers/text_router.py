@@ -48,6 +48,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
             send_reply(reply_target, "我是智能骑行头盔研发助手，可以帮你做竞品分析、技术方案、市场策略等。")
         return
 
+    # === 2.5 校准回复处理 ===
+    if text_stripped in ("1", "2", "3", "0"):
+        _handle_calibration_reply(text_stripped, reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -240,6 +245,53 @@ def _handle_alignment(reply_target: str, send_reply):
             send_reply(reply_target, f"对齐报告生成失败: {e}")
 
     threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_calibration_reply(text: str, reply_target: str, send_reply):
+    """处理 Critic 校准回复
+
+    用户回复 1/2/3/0 时，从最近的校准样本中获取 sample_id 并记录标注。
+    """
+    try:
+        from scripts.critic_calibration import record_label
+
+        # 读取最近的校准样本
+        pending_path = PROJECT_ROOT / ".ai-state" / "critic_calibration_pending.json"
+        if not pending_path.exists():
+            send_reply(reply_target, "⚠️ 没有待校准的样本")
+            return
+
+        pending = json.loads(pending_path.read_text(encoding="utf-8"))
+        if not pending:
+            send_reply(reply_target, "⚠️ 没有待校准的样本")
+            return
+
+        # 取最新的样本
+        latest = pending[-1]
+        sample_id = latest.get("sample_id", "")
+        if not sample_id:
+            send_reply(reply_target, "⚠️ 样本 ID 无效")
+            return
+
+        # 映射回复到标签
+        label_map = {"1": "accurate", "2": "too_loose", "3": "too_strict", "0": "skip"}
+        label = label_map.get(text, "")
+
+        if not label:
+            send_reply(reply_target, f"⚠️ 无效的回复: {text}")
+            return
+
+        success = record_label(sample_id, label)
+        if success:
+            label_desc = {"accurate": "✅ 准确", "too_loose": "⬆️ 偏松", "too_strict": "⬇️ 偏紧", "skip": "⏭️ 跳过"}
+            send_reply(reply_target, f"✅ 校准已记录: {sample_id} = {label_desc.get(label, label)}")
+        else:
+            send_reply(reply_target, f"❌ 记录失败: 未找到样本 {sample_id}")
+
+    except ImportError:
+        send_reply(reply_target, "⚠️ 校准模块未安装")
+    except Exception as e:
+        send_reply(reply_target, f"❌ 校准处理异常: {e}")
 
 
 def _handle_add_topic(text: str, reply_target: str, send_reply):
