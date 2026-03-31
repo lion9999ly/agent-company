@@ -1,6 +1,6 @@
 """
 @description: JDM供应商选型深度研究 - 完整研究报告生成（五层管道架构 v2）
-@dependencies: src.utils.model_gateway, src.tools.knowledge_base, src.tools.tool_registry
+@dependencies: src.utils.model_gateway, src.tools.knowledge_base, src.tools.tool_registry, scripts.meta_capability
 @last_modified: 2026-03-31
 """
 import json
@@ -19,6 +19,12 @@ from src.utils.model_gateway import get_model_gateway, call_for_search, call_for
 from src.tools.knowledge_base import add_knowledge, get_knowledge_stats, KB_ROOT
 from src.tools.tool_registry import ToolRegistry
 from src.utils.progress_heartbeat import ProgressHeartbeat
+from scripts.meta_capability import (
+    CAPABILITY_GAP_INSTRUCTION,
+    scan_capability_gaps,
+    resolve_all_gaps,
+    generate_evolution_report,
+)
 
 registry = ToolRegistry()
 gateway = get_model_gateway()
@@ -578,6 +584,7 @@ def _run_critic_challenge(report: str, goal: str, agent_outputs: dict,
         f"## 输出格式\n"
         f"输出 JSON：\n"
         f'{{"challenges": ["挑战1内容", "挑战2内容", "挑战3内容"], "overall": "PASS或NEEDS_FIX"}}\n'
+        f"{CAPABILITY_GAP_INSTRUCTION}"
     )
 
     critic_result = _call_model(
@@ -666,6 +673,14 @@ def _run_critic_challenge(report: str, goal: str, agent_outputs: dict,
 
     # 附加 Critic 评审意见
     report += f"\n\n---\n## Critic Review\n{critic_result['response'][:1000]}"
+
+    # === 元能力层: Critic 也可能发现能力缺口 ===
+    critic_gaps = scan_capability_gaps(critic_result.get("response", ""))
+    if critic_gaps:
+        print(f"  [Meta-Critic] 发现 {len(critic_gaps)} 个验证能力缺口")
+        for gap in critic_gaps[:2]:
+            resolve_all_gaps([gap], gateway, max_resolve=1)
+
     return report
 
 
@@ -1022,6 +1037,7 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         f"4. 标注你不确定的信息\n"
         f"5. 如果某些功能风险高，建议分阶段实现，而不是砍掉\n"
         f"6. 输出 1000-1500 字\n"
+        f"{CAPABILITY_GAP_INSTRUCTION}"
     )
 
     cmo_prompt = (
@@ -1041,6 +1057,7 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         f"4. 给出明确的市场判断（不要两边讨好）\n"
         f"5. 如果市场风险高，建议如何分阶段验证，而不是放弃方向\n"
         f"6. 输出 1000-1500 字\n"
+        f"{CAPABILITY_GAP_INSTRUCTION}"
     )
 
     cdo_prompt = (
@@ -1059,6 +1076,7 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         f"3. 竞品的设计优劣势\n"
         f"4. 如果设计约束导致某些功能难以首代实现，建议分阶段路径\n"
         f"5. 输出 800-1200 字\n"
+        f"{CAPABILITY_GAP_INSTRUCTION}"
     )
 
     def _run_agent(role: str, prompt: str, sys_prompt: str) -> tuple:
@@ -1093,6 +1111,44 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
                 print(f"  [{role}] {len(output)} chars")
             else:
                 print(f"  [{role}] ❌ failed")
+
+    # === 元能力层: 扫描并补齐能力缺口 ===
+    if agent_outputs:
+        all_gaps = []
+        for role, output in agent_outputs.items():
+            gaps = scan_capability_gaps(output)
+            for g in gaps:
+                g["source_agent"] = role
+            all_gaps.extend(gaps)
+
+        if all_gaps:
+            resolved_tools = resolve_all_gaps(all_gaps, gateway, max_resolve=3)
+
+            # 如果补齐了新能力，为受影响的 Agent 提供补充分析
+            if resolved_tools:
+                print(f"  [Meta] 补齐 {len(resolved_tools)} 个能力，补充分析...")
+                for gap in all_gaps[:3]:
+                    source_agent = gap.get("source_agent")
+                    if source_agent and source_agent in agent_outputs:
+                        tool_info = "\n".join([
+                            f"[新增工具] {t['tool_name']}: {t.get('invoke', '')}"
+                            for t in resolved_tools
+                        ])
+                        supplement_prompt = (
+                            f"你之前的分析中标记了能力缺口: {gap['description']}\n"
+                            f"现在系统已补齐以下工具:\n{tool_info}\n\n"
+                            f"请基于你之前的分析，补充使用新工具后可以得出的额外结论。"
+                            f"只输出补充部分（300-500字），不要重复之前的内容。"
+                        )
+                        supplement = _call_model(
+                            _get_model_for_role(source_agent),
+                            supplement_prompt, task_type="meta_supplement"
+                        )
+                        if supplement.get("success"):
+                            agent_outputs[source_agent] += (
+                                f"\n\n## 补充分析（能力补齐后）\n"
+                                f"{supplement['response']}"
+                            )
 
     if not agent_outputs:
         # 全部失败，fallback 到单 CPO 模式
@@ -1786,6 +1842,11 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
     for c in completed:
         print(f"#   - {c['title']} ({c['duration_min']}min, {c['report_len']}字)")
     print(f"# KB 治理: {gov_report}")
+
+    # 进化报告
+    evolution_report = generate_evolution_report()
+    print(f"\n{evolution_report}")
+
     print(f"{'#'*60}")
 
     if progress_callback:
@@ -1793,6 +1854,7 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
             f"🎓 深度学习完成: {len(completed)} 个任务, "
             f"{total_hours:.1f}h"
         )
+        progress_callback(f"🧬 {evolution_report[:200]}")
 
     return completed
 
