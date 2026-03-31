@@ -113,20 +113,35 @@ model_registry:
     temperature: 1.0
     api_version: "2024-12-01-preview"
 
-  # o3-deep-research - 深度研究
+  # o3-deep-research - 深度研究 (Norway East)
   o3_deep_research:
     provider: "azure_openai"
     model: "o3-deep-research"
-    deployment: "o3-deep-research-2"
-    api_key_env: "AZURE_OPENAI_API_KEY"
-    endpoint_env: "AZURE_OPENAI_ENDPOINT"
+    deployment: "o3-deep-research"
+    api_key_env: "AZURE_OPENAI_NORWAY_API_KEY"
+    endpoint_env: "AZURE_OPENAI_NORWAY_ENDPOINT"
     purpose: "深度研究、市场分析、竞品调研"
     capabilities: ["deep_research", "search", "analysis", "long_context"]
     cost_tier: "$$$$"
     performance: 5
     max_tokens: 65536
     temperature: 1.0
-    api_version: "2024-12-01-preview"
+    api_version: "2025-04-01-preview"
+
+  # gpt-4o (Norway East)
+  gpt_4o_norway:
+    provider: "azure_openai"
+    model: "gpt-4o"
+    deployment: "gpt-4o"
+    api_key_env: "AZURE_OPENAI_NORWAY_API_KEY"
+    endpoint_env: "AZURE_OPENAI_NORWAY_ENDPOINT"
+    purpose: "通用任务、多模态"
+    capabilities: ["code", "reasoning", "vision"]
+    cost_tier: "$$"
+    performance: 5
+    max_tokens: 16384
+    temperature: 0.2
+    api_version: "2025-04-01-preview"
 
   # Grok 4 - xAI 推理模型
   grok_4:

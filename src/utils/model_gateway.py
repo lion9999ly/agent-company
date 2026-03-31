@@ -134,6 +134,13 @@ class ModelGateway:
     """多模型网关 - 统一调用接口 + 智能路由"""
 
     def __init__(self, config_path: str = None):
+        # 加载 .env 文件中的环境变量
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(Path(__file__).parent.parent.parent / ".env")
+        except ImportError:
+            pass  # python-dotenv 未安装，跳过
+
         if config_path is None:
             config_path = Path(__file__).parent.parent / "config" / "model_registry.yaml"
 
@@ -722,12 +729,16 @@ class ModelGateway:
 
                 # 空/短响应诊断
                 if not text or len(text) < 50:
-                    print(f"  [Azure-Diag] ⚠️ 空/短响应! len={len(text) if text else 0}")
+                    print(f"  [Azure-Diag] WARN empty/short response! len={len(text) if text else 0}")
                     print(f"  [Azure-Diag] finish_reason={finish_reason}")
                     # 检查 content_filter_results
                     cfr = result['choices'][0].get('content_filter_results', None)
                     if cfr:
-                        print(f"  [Azure-Diag] content_filter={cfr}")
+                        # 安全打印，避免编码错误
+                        try:
+                            print(f"  [Azure-Diag] content_filter={cfr}")
+                        except UnicodeEncodeError:
+                            print(f"  [Azure-Diag] content_filter=<contains non-ascii chars>")
 
                 # 提取token使用信息
                 usage = result.get('usage', {})
