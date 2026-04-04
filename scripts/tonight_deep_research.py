@@ -220,8 +220,259 @@ def _call_with_backoff(model_name: str, prompt: str, system_prompt: str = None,
 
 
 # ============================================================
-# 专家框架匹配与知识库检索
+# A-1: F2 深钻模式 — 对单个主题连续多轮深入研究
 # ============================================================
+
+def deep_drill(topic: str, max_rounds: int = 4, progress_callback=None) -> str:
+    """深钻模式：对一个主题连续多轮深入研究
+
+    第 1 轮: 广搜 — 搜索该主题的全面信息
+    第 2 轮: 追问 — 基于第 1 轮发现的疑点和缺口，生成新的搜索词深入
+    第 3 轮: 验证 — 对矛盾数据点交叉验证
+    第 4 轮: 结论 — 整合所有轮次发现，形成结论性报告
+
+    每轮的输出作为下一轮的输入。
+    """
+    all_findings = []
+
+    for round_num in range(1, max_rounds + 1):
+        round_type = {1: "广搜", 2: "追问", 3: "验证", 4: "结论"}
+        print(f"\n  [DeepDrill] 第 {round_num} 轮: {round_type.get(round_num, '深入')}")
+
+        if progress_callback:
+            progress_callback(f"深钻 [{round_num}/{max_rounds}] {topic}: {round_type.get(round_num, '深入')}")
+
+        if round_num == 1:
+            # 第 1 轮: 广搜
+            task = {
+                "title": f"深钻-{topic}-广搜",
+                "goal": f"全面搜索关于 {topic} 的信息，包括技术参数、供应商、价格、竞品、用户评价",
+                "searches": _generate_drill_queries(topic, "broad"),
+            }
+        elif round_num == 2:
+            # 第 2 轮: 基于上轮发现追问
+            gaps = _extract_gaps_from_findings(all_findings[-1] if all_findings else "")
+            task = {
+                "title": f"深钻-{topic}-追问",
+                "goal": f"针对以下疑点深入调查:\n{gaps}",
+                "searches": _generate_drill_queries(topic, "deep", context=all_findings[-1] if all_findings else ""),
+            }
+        elif round_num == 3:
+            # 第 3 轮: 验证矛盾点
+            contradictions = _extract_contradictions(all_findings)
+            if not contradictions:
+                print(f"  [DeepDrill] 无矛盾数据，跳过验证轮")
+                continue
+            task = {
+                "title": f"深钻-{topic}-验证",
+                "goal": f"验证以下矛盾数据:\n{contradictions}",
+                "searches": _generate_drill_queries(topic, "verify", context=contradictions),
+            }
+        else:
+            # 第 4 轮: 形成结论（不搜索，直接整合）
+            conclusion_prompt = (
+                f"基于以下 {len(all_findings)} 轮深钻研究的全部发现，"
+                f"形成关于 {topic} 的最终结论报告。\n\n"
+                + "\n\n---\n\n".join([f"## 第{i+1}轮\n{f[:2000]}" for i, f in enumerate(all_findings)])
+            )
+            result = _call_model("gpt_5_4", conclusion_prompt,
+                                  "你是高级分析师，输出结构化的结论报告。", "deep_drill_conclusion")
+            if result.get("success"):
+                all_findings.append(result["response"])
+            break
+
+        # 执行研究（复用 deep_research_one 的 Layer 1-3）
+        if round_num < 4:
+            report = deep_research_one(task, progress_callback=progress_callback)
+            all_findings.append(report)
+
+    # 合并所有发现
+    final_report = "\n\n".join([f"## 第{i+1}轮\n{f}" for i, f in enumerate(all_findings)])
+
+    # 入库
+    add_knowledge(
+        title=f"[深钻] {topic}",
+        domain="lessons",
+        content=final_report[:2000],
+        tags=["deep_drill", topic],
+        source="deep_drill",
+        confidence="high"  # 多轮验证后的结论
+    )
+
+    return final_report
+
+
+def _generate_drill_queries(topic: str, mode: str, context: str = "") -> list:
+    """生成深钻搜索词"""
+    prompt = f"为主题 '{topic}' 生成 6-8 个搜索关键词。"
+    if mode == "broad":
+        prompt += "\n搜索方向: 全面覆盖（技术、市场、供应商、竞品、用户）"
+    elif mode == "deep":
+        prompt += f"\n搜索方向: 针对以下发现中的疑点和缺口深入追问:\n{context[:1000]}"
+    elif mode == "verify":
+        prompt += f"\n搜索方向: 验证以下矛盾数据点:\n{context[:1000]}"
+    prompt += "\n只输出搜索词列表，每行一个。"
+
+    result = _call_model("gemini_2_5_flash", prompt, task_type="query_generation")
+    if result.get("success"):
+        queries = [q.strip() for q in result["response"].strip().split("\n") if q.strip()]
+        return queries[:8]
+    return [topic]
+
+
+def _extract_gaps_from_findings(findings: str) -> str:
+    """从研究发现中提取知识缺口和疑点"""
+    result = _call_model("gemini_2_5_flash",
+        f"从以下研究发现中，提取 3-5 个还不清楚的疑点、数据缺口或需要深入的方向:\n\n{findings[:2000]}\n\n只输出疑点列表。",
+        task_type="query_generation")
+    return result.get("response", "") if result.get("success") else ""
+
+
+def _extract_contradictions(all_findings: list) -> str:
+    """从多轮发现中提取矛盾数据"""
+    combined = "\n---\n".join([f[:1000] for f in all_findings])
+    result = _call_model("gemini_2_5_flash",
+        f"从以下多轮研究中，找出数据矛盾的地方（同一个指标出现了不同的值）:\n\n{combined}\n\n只输出矛盾列表。如果没有矛盾，输出'无矛盾'。",
+        task_type="query_generation")
+    resp = result.get("response", "") if result.get("success") else ""
+    if "无矛盾" in resp:
+        return ""
+    return resp
+
+
+# ============================================================
+# A-2: F3 Agent 辩论机制 — 检测分歧并交锋
+# ============================================================
+
+def _run_agent_debate(agent_outputs: dict, goal: str, evidence: str) -> dict:
+    """检测 Agent 间分歧，触发交锋，生成裁决
+
+    流程:
+    1. 用 Flash 检测分歧点
+    2. 如果有分歧，让持不同意见的 Agent 交锋
+    3. 用 gpt-5.4 做最终裁决
+    """
+    # Step 1: 检测分歧
+    combined = "\n\n".join([f"[{role}]\n{output[:1500]}" for role, output in agent_outputs.items()])
+    detect_prompt = (
+        f"以下是不同 Agent 对同一研究任务的分析：\n\n{combined}\n\n"
+        f"找出他们之间的观点分歧（如果有的话）。\n"
+        f"输出 JSON: {{\"has_conflict\": true/false, \"conflicts\": ["
+        f"{{\"topic\": \"分歧主题\", \"side_a\": {{\"agent\": \"CTO\", \"position\": \"观点\"}}, "
+        f"\"side_b\": {{\"agent\": \"CMO\", \"position\": \"观点\"}}}}]}}\n"
+        f"如果没有实质性分歧，has_conflict=false。只输出 JSON。"
+    )
+    detect_result = _call_model("gemini_2_5_flash", detect_prompt, task_type="data_extraction")
+    if not detect_result.get("success"):
+        return agent_outputs
+
+    try:
+        resp = detect_result["response"].strip()
+        resp = re.sub(r'^```json\s*', '', resp)
+        resp = re.sub(r'\s*```$', '', resp)
+        conflicts = json.loads(resp)
+    except:
+        return agent_outputs
+
+    if not conflicts.get("has_conflict") or not conflicts.get("conflicts"):
+        print("  [Debate] 无实质分歧")
+        return agent_outputs
+
+    print(f"  [Debate] 发现 {len(conflicts['conflicts'])} 个分歧点，开始交锋...")
+
+    # Step 2: 交锋
+    debate_record = []
+    for conflict in conflicts["conflicts"][:2]:  # 最多处理 2 个分歧
+        topic = conflict.get("topic", "")
+        side_a = conflict.get("side_a", {})
+        side_b = conflict.get("side_b", {})
+
+        # 让 side_a 用数据反驳 side_b
+        rebuttal_a = _call_model(
+            _get_model_for_role(side_a.get("agent", "CTO")),
+            f"你之前的观点是：{side_a.get('position', '')}\n"
+            f"{side_b.get('agent', 'CMO')} 的反对观点是：{side_b.get('position', '')}\n"
+            f"请用具体数据反驳或承认对方有道理。\n"
+            f"参考数据:\n{evidence[:2000]}",
+            task_type="debate"
+        )
+
+        # 让 side_b 用数据反驳 side_a
+        rebuttal_b = _call_model(
+            _get_model_for_role(side_b.get("agent", "CMO")),
+            f"你之前的观点是：{side_b.get('position', '')}\n"
+            f"{side_a.get('agent', 'CTO')} 的反驳是：{rebuttal_a.get('response', '')[:500]}\n"
+            f"请用具体数据回应。\n"
+            f"参考数据:\n{evidence[:2000]}",
+            task_type="debate"
+        )
+
+        debate_record.append({
+            "topic": topic,
+            "side_a": {"agent": side_a.get("agent"), "rebuttal": rebuttal_a.get("response", "")[:500]},
+            "side_b": {"agent": side_b.get("agent"), "rebuttal": rebuttal_b.get("response", "")[:500]},
+        })
+
+    # Step 3: 裁决（追加到 agent_outputs）
+    debate_text = json.dumps(debate_record, ensure_ascii=False, indent=2)
+    agent_outputs["_debate"] = (
+        f"\n## Agent 辩论记录\n\n"
+        f"以下分歧经过交锋后的记录，synthesis 请在整合时重点关注并裁决：\n\n"
+        f"{debate_text[:3000]}"
+    )
+    print(f"  [Debate] 交锋完成，{len(debate_record)} 个分歧点记录已注入 synthesis")
+
+    return agent_outputs
+
+
+# ============================================================
+# A-3: G2 跨任务知识传递
+# ============================================================
+
+FINDINGS_PATH = Path(__file__).parent.parent / ".ai-state" / "task_findings.jsonl"
+
+def _save_task_findings(task_title: str, report: str):
+    """从报告中提取 3-5 个关键发现，存入 findings 日志"""
+    result = _call_model("gemini_2_5_flash",
+        f"从以下研究报告中提取 3-5 个最关键的发现（具体数据点，不是泛泛总结）:\n\n"
+        f"{report[:3000]}\n\n"
+        f"输出 JSON 数组: [{{\"finding\": \"具体发现\", \"keywords\": [\"关键词1\", \"关键词2\"]}}]",
+        task_type="knowledge_extract")
+    if result.get("success"):
+        try:
+            findings = json.loads(re.sub(r'^```json\s*|\s*```$', '', result["response"].strip()))
+            entry = {"task_title": task_title, "timestamp": time.strftime('%Y-%m-%d %H:%M'), "findings": findings}
+            FINDINGS_PATH.parent.mkdir(parents=True, exist_ok=True)
+            with open(FINDINGS_PATH, 'a', encoding='utf-8') as f:
+                f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+            print(f"  [Findings] 保存 {len(findings)} 个关键发现")
+        except:
+            pass
+
+
+def _get_related_findings(task_title: str, task_goal: str, limit: int = 5) -> str:
+    """检索与当前任务相关的历史发现"""
+    if not FINDINGS_PATH.exists():
+        return ""
+    keywords = set(re.findall(r'[\u4e00-\u9fff]{2,4}|[A-Z][a-z]+|[A-Z]{2,}', task_title + " " + task_goal))
+    related = []
+    for line in FINDINGS_PATH.read_text(encoding='utf-8').strip().split('\n'):
+        try:
+            entry = json.loads(line)
+            for f in entry.get("findings", []):
+                f_keywords = set(f.get("keywords", []))
+                overlap = keywords & f_keywords
+                if overlap:
+                    related.append((len(overlap), f["finding"], entry["task_title"]))
+        except:
+            continue
+    related.sort(reverse=True)
+    if not related:
+        return ""
+    text = "\n## 前序任务的相关发现\n"
+    for _, finding, source in related[:limit]:
+        text += f"- [{source}] {finding}\n"
+    return text
 
 def _match_expert_framework(task_goal: str, task_title: str) -> dict:
     """根据任务关键词匹配专家框架"""
@@ -956,6 +1207,12 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         print(f"[Constraints] 附带约束文件")
     print(f"{'='*60}")
 
+    # === A-3: 注入相关历史发现 ===
+    prior_findings = _get_related_findings(title, goal)
+    if prior_findings:
+        print(f"  [Knowledge Transfer] 发现相关历史发现")
+        goal = goal + prior_findings
+
     if progress_callback:
         progress_callback(f"Researching: {title[:20]}...")
 
@@ -1434,6 +1691,10 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
                                 f"{supplement['response']}"
                             )
 
+    # === Layer 3.5: Agent 辩论（如果有多于 1 个 Agent 输出）===
+    if len(agent_outputs) >= 2:
+        agent_outputs = _run_agent_debate(agent_outputs, goal, distilled_material)
+
     if not agent_outputs:
         # 全部失败，fallback 到单 CPO 模式
         print("  [WARN] All agents failed, fallback to single CPO")
@@ -1614,6 +1875,9 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
             print(f"[KB] 提取 {added_count} 条知识，跳过 {skipped_count} 条低质量")
         except:
             print("[KB] 提取失败")
+
+    # === A-3: 保存关键发现供未来任务使用 ===
+    _save_task_findings(title, report)
 
     return report
 
