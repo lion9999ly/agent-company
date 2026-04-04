@@ -118,6 +118,9 @@ def _handle_rating(text: str, reply_target: str, send_reply) -> bool:
             msg += f"\n反馈：{feedback}"
         send_reply(reply_target, msg)
 
+        # 输出格式学习（后台线程）
+        threading.Thread(target=_learn_output_preferences, args=(rating, feedback, data), daemon=True).start()
+
         # 评价驱动进化（后台线程）
         if rating in ("C", "D"):
             threading.Thread(target=_analyze_failure, args=(data, feedback, rating), daemon=True).start()
@@ -359,6 +362,74 @@ def _analyze_success(data: dict):
             print(f"[Evolution] 成功模式已入库")
     except Exception as e:
         print(f"[Evolution] 分析失败: {e}")
+
+
+def _learn_output_preferences(rating: str, feedback: str, task_data: dict):
+    """从用户评价中学习输出格式偏好"""
+    print(f"[OutputLearning] 分析评价偏好: {rating}")
+    try:
+        import yaml as _yaml
+        from datetime import datetime
+
+        prefs_file = PROJECT_ROOT / ".ai-state" / "output_preferences.yaml"
+
+        # 加载现有偏好
+        prefs = {"report": {}, "learnings": []}
+        if prefs_file.exists():
+            try:
+                prefs = _yaml.safe_load(prefs_file.read_text(encoding='utf-8')) or prefs
+            except:
+                pass
+
+        # 从反馈中提取偏好线索
+        synthesis = task_data.get("synthesis_output", "")
+        synthesis_len = len(synthesis) if synthesis else 0
+
+        # 根据评价推断偏好
+        learning = {
+            "rating": rating,
+            "feedback": feedback[:100] if feedback else "",
+            "output_length": synthesis_len,
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        }
+
+        # 从反馈文本中提取偏好信号
+        if feedback:
+            fb_lower = feedback.lower()
+            if "太长" in fb_lower or "冗余" in fb_lower:
+                prefs["report"]["preferred_length"] = "short"
+                learning["preference_signal"] = "prefers_shorter"
+            elif "太短" in fb_lower or "不够详细" in fb_lower or "深入" in fb_lower:
+                prefs["report"]["preferred_length"] = "long"
+                learning["preference_signal"] = "prefers_longer"
+            elif "数据" in fb_lower or "具体" in fb_lower:
+                prefs["report"]["data_density"] = "high"
+                learning["preference_signal"] = "wants_more_data"
+            elif "结论" in fb_lower or "先说" in fb_lower:
+                prefs["report"]["structure"] = "conclusion_first"
+                learning["preference_signal"] = "wants_conclusion_first"
+
+        # 根据评价级别推断
+        if rating == "A" and synthesis_len > 0:
+            # A 评价说明当前长度/格式可以接受
+            prefs["report"]["good_length_example"] = synthesis_len
+        elif rating in ("C", "D"):
+            # 差评，记录问题
+            prefs["report"]["last_bad_rating"] = rating
+            if feedback:
+                prefs.setdefault("avoid", []).append(feedback[:50])
+
+        # 保存学习记录
+        prefs.setdefault("learnings", []).append(learning)
+        # 只保留最近 50 条学习记录
+        if len(prefs.get("learnings", [])) > 50:
+            prefs["learnings"] = prefs["learnings"][-50:]
+
+        prefs_file.parent.mkdir(parents=True, exist_ok=True)
+        prefs_file.write_text(_yaml.dump(prefs, allow_unicode=True), encoding='utf-8')
+        print(f"[OutputLearning] 偏好已更新")
+    except Exception as e:
+        print(f"[OutputLearning] 学习失败: {e}")
 
 
 # === 导出接口 ===
