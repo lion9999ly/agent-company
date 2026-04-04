@@ -1226,6 +1226,94 @@ def _select_best_model_learned(task_type: str) -> str:
     return None
 
 
+# ============================================================
+# Demo V1: Demo 信息自动补齐 — 生成前检查并补齐设计信息
+# ============================================================
+
+def _ensure_demo_prerequisites(demo_type: str, progress_callback=None) -> dict:
+    """检查并补齐 Demo 生成所需的前置信息
+
+    Args:
+        demo_type: "hud_demo" 或 "app_demo"
+        progress_callback: 进度回调函数
+
+    Returns:
+        包含所有必需知识的字典
+    """
+    required_knowledge = {
+        "hud_demo": [
+            ("HUD 信息布局规范", "HUD layout specification display position motorcycle helmet"),
+            ("HUD 色彩方案", "HUD color scheme helmet visor daylight night visibility"),
+            ("HUD 信息优先级", "HUD information priority navigation speed call alert"),
+            ("HUD 动画规范", "HUD animation transition fade duration interaction"),
+            ("竞品 HUD 布局参考", "EyeRide Jarvish Forcite HUD layout screenshot interface"),
+        ],
+        "app_demo": [
+            ("App 配对流程", "smart helmet app pairing bluetooth connection flow"),
+            ("App 骑行仪表盘", "motorcycle riding dashboard UI speedometer navigation"),
+            ("App 组队地图", "group ride map real-time location sharing mesh"),
+            ("竞品 App 参考", "Cardo Sena app UI design screenshot interface"),
+        ],
+    }
+
+    results = {}
+    missing = []
+
+    for topic, search_query in required_knowledge.get(demo_type, []):
+        # 检查 KB 中是否有足够信息
+        kb_results = []
+        for f in KB_ROOT.rglob("*.json"):
+            try:
+                data = json.loads(f.read_text(encoding="utf-8"))
+                content = data.get("content", "")
+                title = data.get("title", "")
+                if topic.lower() in title.lower() or topic.lower() in content[:500].lower():
+                    kb_results.append(data)
+            except:
+                continue
+
+        if len(kb_results) >= 2 and any(r.get("confidence") in ("high", "authoritative") for r in kb_results):
+            results[topic] = kb_results
+        else:
+            missing.append((topic, search_query))
+
+    # 自动补齐缺失信息
+    if missing:
+        if progress_callback:
+            progress_callback(f"  Demo准备: 缺少 {len(missing)} 项信息，自动搜索补齐...")
+        print(f"  [DemoPrep] 缺少 {len(missing)} 项信息，自动搜索补齐...")
+
+        for topic, query in missing:
+            # 用快速研究补齐
+            search_result = _quick_research_for_demo(query)
+            if search_result:
+                add_knowledge(
+                    title=f"[Demo准备] {topic}",
+                    domain="components",
+                    content=search_result,
+                    tags=["demo_prep", demo_type],
+                    source="auto_demo_prep",
+                    confidence="medium"
+                )
+                results[topic] = [{"content": search_result}]
+                print(f"  [DemoPrep] 补齐: {topic}")
+
+    return results
+
+
+def _quick_research_for_demo(query: str) -> str:
+    """快速搜索用于 Demo 准备"""
+    # 用单通道快速搜索
+    result = _call_with_backoff(
+        "gemini_2_5_flash",
+        f"搜索关于 {query} 的关键信息，输出 300-500 字摘要。",
+        "你是产品研究员，提取关键设计参数。", "demo_prep_search"
+    )
+    if result.get("success"):
+        return result["response"][:1000]
+    return ""
+
+
 def _match_expert_framework(task_goal: str, task_title: str) -> dict:
     """根据任务关键词匹配专家框架"""
     config_path = Path(__file__).parent.parent / "src" / "config" / "expert_frameworks.yaml"
