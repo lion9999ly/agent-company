@@ -24,9 +24,13 @@ def process_new_image(img_path: Path):
     print(f"[Watcher] 检测到新图片: {img_path.name}")
 
     # 备份原图（保持 .jpg 后缀以便 OCR 能处理）
+    # 只保留一个备份，避免无限嵌套 _bak_bak_bak...
     backup_path = img_path.parent / (img_path.stem + '_bak.jpg')
-    shutil.copy2(img_path, backup_path)
-    print(f"[Watcher] 已备份原图: {backup_path.name}")
+    if not backup_path.exists():
+        shutil.copy2(img_path, backup_path)
+        print(f"[Watcher] 已备份原图: {backup_path.name}")
+    else:
+        print(f"[Watcher] 备份已存在，跳过: {backup_path.name}")
 
     # OCR 识别（使用备份文件）
     text = process_image_to_text(str(backup_path))

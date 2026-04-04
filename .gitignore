@@ -45,4 +45,15 @@ Thumbs.db
 
 # Project specific
 .ai-state/*.lock
+.ai-state/tools/
+.ai-state/inbox/
+.ai-state/langgraph_checkpoints.db
+.ai-state/usage_logs/
 *.bak
+node_modules/
+*.pyc
+claude-install-windows/
+*.mp4
+*.pptx
+*.zip
+_archive_competitors/

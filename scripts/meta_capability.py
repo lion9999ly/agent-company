@@ -33,6 +33,7 @@ FORBIDDEN_PATTERNS = [
     r"api_key", r"API_KEY", r"SECRET",
     r"git\s+push",
     r"os\.system\(['\"]shutdown", r"subprocess\.call\(['\"]reboot",
+    r"os\.system\s*\(", r"subprocess\.Popen\s*\([^)]*shell\s*=\s*True",  # 命令注入防护
     r"DROP\s+TABLE", r"DELETE\s+FROM",  # SQL 注入防护
     r"eval\s*\(", r"exec\s*\(",  # 代码注入防护
 ]
