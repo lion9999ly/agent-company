@@ -14,6 +14,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 # 深度学习待确认状态：{open_id: True} 或 {open_id_confirmed: hours}
 _deep_learn_pending = {}
 
+# 教练模式状态：{open_id: True}
+_coach_mode = {}
+
 
 def route_text_message(text: str, reply_target: str, reply_type: str, open_id: str, chat_id: str,
                        send_reply, session_id: str = None, mem=None):
@@ -147,6 +150,29 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_onboarding_pack(role, reply_target, send_reply)
         return
 
+    # === 2.15 多角色支持 ===
+    if text_stripped.startswith("设置角色") or text_stripped.startswith("set role"):
+        role = text_stripped.replace("设置角色", "").replace("set role", "").strip().strip(":：")
+        _handle_set_role(role, open_id, reply_target, send_reply)
+        return
+
+    # === 2.16 教练模式 ===
+    if text_stripped in ("教练模式", "帮我理清思路", "coach", "coaching"):
+        _coach_mode[open_id or "default"] = True
+        send_reply(reply_target, "🧠 已进入教练模式。我只问问题，不给答案。\n说"退出教练"结束。\n\n你目前最纠结的决策是什么？")
+        return
+
+    if text_stripped in ("退出教练", "exit coach"):
+        _coach_mode.pop(open_id or "default", None)
+        send_reply(reply_target, "✅ 已退出教练模式。")
+        return
+
+    # === 2.17 竞品战争推演 ===
+    if text_stripped.startswith("竞品推演") or text_stripped.startswith("competitor war game"):
+        competitor = text_stripped.replace("竞品推演", "").replace("competitor war game", "").strip().strip(":：")
+        _handle_competitor_wargame(competitor, reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -216,6 +242,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
     # === 9. 长文章导入 ===
     if _is_likely_article(text_stripped):
         _handle_article_import(text_stripped, open_id, reply_target, send_reply)
+        return
+
+    # === 9.5 教练模式处理 ===
+    if _coach_mode.get(open_id or "default"):
+        _handle_coach_response(text_stripped, reply_target, send_reply)
         return
 
     # === 10. 兜底：智能对话 ===
@@ -997,6 +1028,88 @@ def _handle_onboarding_pack(role: str, reply_target: str, send_reply):
                 send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
         except Exception as e:
             send_reply(reply_target, f"生成失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_set_role(role: str, open_id: str, reply_target: str, send_reply):
+    """设置用户角色"""
+    valid_roles = ["技术", "产品", "市场", "供应链", "管理", "默认"]
+    if role not in valid_roles:
+        send_reply(reply_target, f"⚠️ 无效角色。可选: {', '.join(valid_roles)}")
+        return
+
+    roles_file = PROJECT_ROOT / ".ai-state" / "user_roles.yaml"
+    try:
+        import yaml as _yaml
+        roles_data = {"roles": {}}
+        if roles_file.exists():
+            roles_data = _yaml.safe_load(roles_file.read_text(encoding='utf-8')) or {"roles": {}}
+        roles_data["roles"][open_id or "default"] = {"role": role, "updated_at": datetime.now().strftime("%Y-%m-%d")}
+        roles_file.parent.mkdir(parents=True, exist_ok=True)
+        roles_file.write_text(_yaml.dump(roles_data, allow_unicode=True), encoding="utf-8")
+        send_reply(reply_target, f"✅ 已设置角色: {role}\n系统将根据角色调整回答深度和视角")
+    except Exception as e:
+        send_reply(reply_target, f"设置失败: {e}")
+
+
+def _handle_coach_response(text: str, reply_target: str, send_reply):
+    """教练模式回复——只问问题，不给答案"""
+    from src.utils.model_gateway import get_model_gateway
+    from src.tools.knowledge_base import search_knowledge
+    gw = get_model_gateway()
+
+    # 注入 KB 上下文，让教练的问题有数据支撑
+    kb = search_knowledge(text, limit=5)
+    kb_text = "\n".join([f"- {r.get('title','')}: {r.get('content','')[:150]}" for r in kb])
+
+    result = gw.call("gpt_5_4",
+        f"用户说: {text}\n\n"
+        f"相关知识:\n{kb_text}\n\n"
+        f"你是一个苏格拉底式教练。规则:\n"
+        f"1. 绝对不给答案或建议\n"
+        f"2. 只问一个尖锐的问题，挑战用户的假设或暴露盲区\n"
+        f"3. 问题要基于数据（引用知识库中的信息）\n"
+        f"4. 保持友善但犀利",
+        "你是产品教练，只问问题不给答案。", "coach")
+    if result.get("success"):
+        send_reply(reply_target, result["response"])
+    else:
+        send_reply(reply_target, "你这个问题很有意思——你觉得最大的风险是什么？")
+
+
+def _handle_competitor_wargame(competitor: str, reply_target: str, send_reply):
+    """竞品战争推演"""
+    send_reply(reply_target, f"⚔️ 正在推演竞品: {competitor}...")
+
+    def _run():
+        try:
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge
+            gw = get_model_gateway()
+
+            # 搜索 KB 中该竞品的全部数据
+            kb_results = search_knowledge(competitor, limit=20)
+            kb_text = "\n".join([f"- [{r.get('confidence','')}] {r.get('title','')}: {r.get('content','')[:200]}"
+                                for r in kb_results])
+
+            prompt = (
+                f"竞品战争推演：{competitor}\n\n"
+                f"## 竞品信息\n{kb_text}\n\n"
+                f"## 要求\n"
+                f"1. 竞品现状分析（产品/技术/市场/供应链）\n"
+                f"2. 推演未来 12 个月可能的动向（3-5 个场景）\n"
+                f"3. 每个场景对我们的威胁评估\n"
+                f"4. 我们的应对策略（进攻/防守/合作）\n"
+            )
+
+            result = gw.call("gpt_5_4", prompt, "你是战略分析师。", "synthesis")
+            if result.get("success"):
+                send_reply(reply_target, result["response"])
+            else:
+                send_reply(reply_target, f"推演失败: {result.get('error', '')[:200]}")
+        except Exception as e:
+            send_reply(reply_target, f"推演失败: {e}")
 
     threading.Thread(target=_run, daemon=True).start()
 
