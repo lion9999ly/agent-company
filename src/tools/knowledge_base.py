@@ -182,6 +182,30 @@ def format_knowledge_for_prompt(entries: List[Dict[str, Any]]) -> str:
     return "\n\n".join(parts)
 
 
+def format_knowledge_for_answer(entries: List[Dict[str, Any]]) -> str:
+    """格式化知识条目用于回答（含置信度和溯源）
+
+    用于最终输出给用户时，显示置信度、时间戳和来源
+    """
+    if not entries:
+        return ""
+    parts = []
+    for e in entries:
+        conf = e.get("confidence", "medium")
+        created = e.get("created_at", "?")
+        source = e.get("source", "auto")
+        conf_icon = {"authoritative": "⭐⭐⭐", "high": "⭐⭐", "medium": "⭐", "low": "⚠️"}.get(conf, "⭐")
+
+        parts.append(f"{conf_icon} {e.get('title', '')} (📅{created} | 🔗{source})")
+        parts.append(f"  {e.get('content', '')[:300]}")
+
+        # 检查是否有矛盾标记
+        if "needs_reconciliation" in e.get("tags", []):
+            parts.append(f"  ⚠️ 此数据存在矛盾，建议交叉验证")
+
+    return "\n".join(parts)
+
+
 def get_knowledge_stats() -> Dict[str, int]:
     """获取知识库统计"""
     if not KB_ROOT.exists():
