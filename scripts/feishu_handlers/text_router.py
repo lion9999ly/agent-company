@@ -249,6 +249,25 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_coach_response(text_stripped, reply_target, send_reply)
         return
 
+    # === 9.6 意图智能路由 ===
+    intent = _classify_intent(text_stripped)
+    if intent == "decision_brief":
+        _handle_decision_brief("", reply_target, send_reply)
+        return
+    elif intent == "negotiation":
+        _handle_negotiation_brief("", reply_target, send_reply)
+        return
+    elif intent == "knowledge_query":
+        _handle_fast_query(text_stripped, reply_target, send_reply)
+        return
+    elif intent == "coach":
+        _coach_mode[open_id or "default"] = True
+        send_reply(reply_target, "🧠 已进入教练模式。你目前最纠结的决策是什么？")
+        return
+    elif intent == "status":
+        _handle_dashboard(reply_target, send_reply)
+        return
+
     # === 10. 兜底：智能对话 ===
     _smart_route_and_reply(text_stripped, open_id, chat_id, reply_target, reply_type, send_reply, session_id, mem)
 
@@ -1112,6 +1131,53 @@ def _handle_competitor_wargame(competitor: str, reply_target: str, send_reply):
             send_reply(reply_target, f"推演失败: {e}")
 
     threading.Thread(target=_run, daemon=True).start()
+
+
+def _classify_intent(text: str) -> str:
+    """用 o3-mini 分类用户意图"""
+    from src.utils.model_gateway import get_model_gateway
+    gw = get_model_gateway()
+    result = gw.call("o3_mini",
+        f"用户说: {text}\n\n"
+        f"判断意图类别（只输出类别名，不要解释）:\n"
+        f"research_task — 需要多Agent协作的研发分析\n"
+        f"decision_brief — 想看某个决策的简报\n"
+        f"negotiation — 谈判准备\n"
+        f"knowledge_query — 查询知识库（简单问题）\n"
+        f"deep_drill — 想深入研究某个话题\n"
+        f"coach — 想理清思路，需要教练式提问\n"
+        f"product_vision — 想看产品愿景或场景描述\n"
+        f"status — 想看系统状态\n"
+        f"chat — 普通闲聊或简单问题\n",
+        task_type="intent_classify")
+    if result.get("success"):
+        return result["response"].strip().split("\n")[0].strip()
+    return "chat"
+
+
+def _handle_fast_query(text: str, reply_target: str, send_reply):
+    """简单问答快速通道 — KB + 单模型，跳过多Agent"""
+    try:
+        from src.utils.model_gateway import get_model_gateway
+        from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt
+        gw = get_model_gateway()
+
+        # 搜索知识库
+        kb_entries = search_knowledge(text, limit=5)
+        kb_context = format_knowledge_for_prompt(kb_entries) if kb_entries else ""
+
+        prompt = text
+        if kb_context:
+            prompt = f"相关知识：\n{kb_context[:1500]}\n\n用户问题：{text}"
+
+        # 用 gemini-2.5-flash 做简单问答（快速+便宜）
+        result = gw.call("gemini_2_5_flash", prompt, "", "chat")
+        if result.get("success"):
+            send_reply(reply_target, result["response"])
+        else:
+            send_reply(reply_target, "抱歉，我暂时无法回答这个问题。")
+    except Exception as e:
+        send_reply(reply_target, f"处理异常: {str(e)[:200]}")
 
 
 def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: str, reply_type: str,
