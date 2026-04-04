@@ -206,6 +206,51 @@ def format_knowledge_for_answer(entries: List[Dict[str, Any]]) -> str:
     return "\n".join(parts)
 
 
+def detect_contradictions_in_results(results: list) -> str:
+    """检测搜索结果中的矛盾数据
+
+    简单规则：同一实体出现在多个条目中，如果数值差异超过 50% 则标记矛盾
+    """
+    import re
+    if len(results) < 2:
+        return ""
+
+    # 按实体分组检测数值矛盾
+    entities = {}
+    for r in results:
+        title = r.get("title", "")
+        content = r.get("content", "")
+        # 提取数值型数据（单位：万台/nits/mW/USD/元/克/g/mm/小时/h）
+        numbers = re.findall(r'(\d+(?:\.\d+)?)\s*(万台|nits|mW|USD|元|克|g|mm|小时|h)', content)
+        for num, unit in numbers:
+            key = f"{title[:10]}_{unit}"
+            if key not in entities:
+                entities[key] = []
+            entities[key].append({
+                "value": float(num),
+                "source": title,
+                "confidence": r.get("confidence", "")
+            })
+
+    contradictions = []
+    for key, values in entities.items():
+        if len(values) >= 2:
+            vals = [v["value"] for v in values]
+            if max(vals) / max(min(vals), 0.01) > 1.5:  # 差异超过 50%
+                contradictions.append({
+                    "key": key,
+                    "values": values,
+                })
+
+    if contradictions:
+        lines = ["⚠️ KB 中存在矛盾信息:"]
+        for c in contradictions[:3]:  # 只显示前 3 个
+            for v in c["values"]:
+                lines.append(f"  - {v['source']}: {v['value']} ({v['confidence']})")
+        return "\n".join(lines)
+    return ""
+
+
 def get_knowledge_stats() -> Dict[str, int]:
     """获取知识库统计"""
     if not KB_ROOT.exists():
