@@ -1,0 +1,43 @@
+# 项目阶段感知配置
+# 当前阶段影响深度学习的优先级和搜索方向
+
+current_phase: "方案论证"
+
+phases:
+  方案论证:
+    research_focus: ["技术路线对比", "竞品分析", "用户需求", "供应商评估"]
+    priority_boost: ["v1_display", "v1_intercom", "v1_audio", "v1_jdm_partner"]
+    kb_domains_focus: ["components", "competitors"]
+    estimated_duration_weeks: 4
+
+  供应商评选:
+    research_focus: ["供应商对比", "成本分析", "交期评估", "MOQ", "产能"]
+    priority_boost: ["v1_jdm_partner"]
+    kb_domains_focus: ["components", "competitors"]
+    estimated_duration_weeks: 3
+
+  原型开发:
+    research_focus: ["工程实现", "规格书解读", "接口定义", "调试方法"]
+    priority_boost: []
+    kb_domains_focus: ["components", "lessons"]
+    estimated_duration_weeks: 8
+
+  量产准备:
+    research_focus: ["认证流程", "品控标准", "供应链风险", "量产工艺"]
+    priority_boost: ["v1_safety_cert"]
+    kb_domains_focus: ["standards", "lessons"]
+    estimated_duration_weeks: 6
+
+# 阶段切换触发条件（自动检测）
+phase_transition_rules:
+  方案论证_to_供应商评选:
+    condition: "所有 P1 决策点 resolved_knowledge >= 80%"
+    auto_trigger: false
+
+  供应商评选_to_原型开发:
+    condition: "JDM 合作伙伴已确定"
+    auto_trigger: false
+
+  原型开发_to_量产准备:
+    condition: "原型测试通过 + 认证启动"
+    auto_trigger: false
