@@ -11,6 +11,9 @@ from datetime import datetime
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
+# 深度学习待确认状态：{open_id: True} 或 {open_id_confirmed: hours}
+_deep_learn_pending = {}
+
 
 def route_text_message(text: str, reply_target: str, reply_type: str, open_id: str, chat_id: str,
                        send_reply, session_id: str = None, mem=None):
@@ -48,6 +51,46 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
             send_reply(reply_target, "我是智能骑行头盔研发助手，可以帮你做竞品分析、技术方案、市场策略等。")
         return
 
+    # === 2.4 深度学习时长回复 ===
+    pending_key = open_id or "default"
+    if _deep_learn_pending.get(pending_key):
+        try:
+            hours = float(text_stripped)
+            if hours < 0.5:
+                send_reply(reply_target, "⚠️ 最少 0.5 小时")
+                return
+            if hours > 12 and not _deep_learn_pending.get(pending_key + "_confirmed"):
+                # 超过 12h，二次确认
+                _deep_learn_pending[pending_key + "_confirmed"] = hours
+                send_reply(reply_target, f"⚠️ {hours}h 是一次较长的运行，确定吗？回复 Y 确认，其他取消")
+                return
+
+            # 检查是否是二次确认回复
+            confirmed_hours = _deep_learn_pending.pop(pending_key + "_confirmed", None)
+            if text_stripped.upper() == "Y" and confirmed_hours:
+                hours = confirmed_hours
+
+            # 清除 pending 状态并启动
+            if pending_key in _deep_learn_pending:
+                del _deep_learn_pending[pending_key]
+            send_reply(reply_target, f"🎓 启动深度学习（{hours}h 窗口）...")
+
+            def _run():
+                try:
+                    from scripts.tonight_deep_research import run_deep_learning
+                    completed = run_deep_learning(max_hours=hours, progress_callback=lambda msg: send_reply(reply_target, msg))
+                    send_reply(reply_target, f"✅ 深度学习完成: {len(completed) if completed else 0} 个任务")
+                except Exception as e:
+                    send_reply(reply_target, f"深度学习执行失败: {e}")
+
+            threading.Thread(target=_run, daemon=True).start()
+            return
+        except ValueError:
+            # 不是数字，清除 pending 状态，继续正常路由
+            if pending_key in _deep_learn_pending:
+                del _deep_learn_pending[pending_key]
+            # 不 return，让后续路由继续处理这条消息
+
     # === 2.5 校准回复处理 ===
     if text_stripped and all(c in "0123" for c in text_stripped) and len(text_stripped) <= 10:
         _handle_calibration_reply(text_stripped, reply_target, send_reply)
@@ -63,7 +106,7 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         return
 
     if text_stripped in ("深度学习", "夜间学习", "night learning", "deep learning"):
-        _handle_night_learning(reply_target, send_reply)
+        _handle_night_learning(reply_target, send_reply, open_id)
         return
 
     if text_stripped in ("自学习", "auto learn", "自动学习"):
@@ -187,19 +230,11 @@ def _handle_reset_learning(reply_target: str, send_reply):
         send_reply(reply_target, f"重置失败: {e}")
 
 
-def _handle_night_learning(reply_target: str, send_reply):
-    """处理夜间深度学习（v2: 五层管道 + 7h 窗口）"""
-    send_reply(reply_target, "🎓 启动深度学习（7h 窗口，五层管道）...")
-
-    def _run():
-        try:
-            from scripts.tonight_deep_research import run_deep_learning
-            completed = run_deep_learning(max_hours=7.0, progress_callback=lambda msg: send_reply(reply_target, msg))
-            send_reply(reply_target, f"✅ 深度学习完成: {len(completed)} 个任务")
-        except Exception as e:
-            send_reply(reply_target, f"深度学习执行失败: {e}")
-
-    threading.Thread(target=_run, daemon=True).start()
+def _handle_night_learning(reply_target: str, send_reply, open_id: str = ""):
+    """处理深度学习指令 — 先询问时长"""
+    pending_key = open_id or "default"
+    _deep_learn_pending[pending_key] = True
+    send_reply(reply_target, "🎓 深度学习 — 请问跑几个小时？\n\n直接回复数字，如：1.5、3、7")
 
 
 def _handle_kb_governance(reply_target: str, send_reply):
