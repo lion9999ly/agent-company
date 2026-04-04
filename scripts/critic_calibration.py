@@ -434,3 +434,146 @@ def check_drift(critic_data: dict, reply_func=None):
                 reply_func(msg)
             except:
                 pass
+
+
+# ============================================================
+# 6. Critic 标准自进化
+# ============================================================
+
+EVOLVED_RULES_PATH = Path(__file__).parent.parent / ".ai-state" / "critic_evolved_rules.yaml"
+
+
+def evolve_critic_rules():
+    """从校准数据中自动进化 P0/P1 判断标准
+
+    策略:
+    - 连续 5 次某个模式被标记为 accurate → 加入 P0 触发模式
+    - 连续 5 次某个模式被标记为 too_strict → 加入 P0 抑制模式
+    - 连续 5 次某个模式被标记为 too_loose → 需要更严格
+    """
+    if not CALIBRATION_PATH.exists():
+        return {}
+
+    # 加载校准数据
+    labeled = []
+    with open(CALIBRATION_PATH, 'r', encoding='utf-8') as f:
+        for line in f:
+            try:
+                labeled.append(json.loads(line.strip()))
+            except:
+                continue
+
+    if len(labeled) < 10:
+        return {}
+
+    # 分析模式
+    import re
+    from collections import defaultdict
+
+    pattern_labels = defaultdict(list)
+    for item in labeled:
+        issue = item.get("issue", "")
+        label = item.get("label")
+        if not label or label == "skip":
+            continue
+
+        # 提取关键词模式
+        keywords = re.findall(r'[\u4e00-\u9fff]{2,4}|功耗|成本|重量|价格|延迟|续航|亮度|对比度', issue)
+        for kw in keywords:
+            pattern_labels[kw].append({
+                "label": label,
+                "level": item.get("level", ""),
+                "issue": issue[:50],
+            })
+
+    # 判断哪些模式应该进化
+    p0_triggers = []
+    p0_suppressions = []
+
+    for pattern, labels in pattern_labels.items():
+        if len(labels) < 3:
+            continue
+
+        accurate_count = sum(1 for l in labels if l["label"] == "accurate")
+        too_strict_count = sum(1 for l in labels if l["label"] == "too_strict")
+        too_loose_count = sum(1 for l in labels if l["label"] == "too_loose")
+
+        # 连续准确 → 触发模式
+        if accurate_count >= 3:
+            p0_triggers.append({
+                "pattern": pattern,
+                "learned_from": f"{accurate_count} 次一致标注",
+                "confidence": min(1.0, accurate_count / len(labels)),
+            })
+
+        # 连续偏紧 → 抑制模式
+        if too_strict_count >= 3:
+            p0_suppressions.append({
+                "pattern": pattern,
+                "learned_from": f"{too_strict_count} 次标注偏紧",
+                "confidence": min(1.0, too_strict_count / len(labels)),
+            })
+
+    # 保存进化后的规则
+    if p0_triggers or p0_suppressions:
+        import yaml
+        evolved_rules = {
+            "generated_at": time.strftime('%Y-%m-%d %H:%M'),
+            "source_count": len(labeled),
+            "p0_triggers": p0_triggers,
+            "p0_suppressions": p0_suppressions,
+        }
+        EVOLVED_RULES_PATH.parent.mkdir(parents=True, exist_ok=True)
+        EVOLVED_RULES_PATH.write_text(
+            yaml.dump(evolved_rules, allow_unicode=True, default_flow_style=False),
+            encoding="utf-8"
+        )
+        print(f"  [Critic-Rules] 进化完成: {len(p0_triggers)} 触发, {len(p0_suppressions)} 抑制")
+        return evolved_rules
+
+    return {}
+
+
+def get_evolved_rules() -> dict:
+    """获取进化后的 Critic 规则"""
+    if not EVOLVED_RULES_PATH.exists():
+        return {}
+
+    try:
+        import yaml
+        return yaml.safe_load(EVOLVED_RULES_PATH.read_text(encoding="utf-8"))
+    except:
+        return {}
+
+
+def check_issue_against_evolved_rules(issue: str) -> dict:
+    """检查问题是否匹配进化后的规则
+
+    Returns:
+        dict with should_be_p0 (bool), confidence (float), reason (str)
+    """
+    rules = get_evolved_rules()
+    if not rules:
+        return {"should_be_p0": None, "confidence": 0, "reason": "无进化规则"}
+
+    issue_lower = issue.lower()
+
+    # 检查触发规则
+    for trigger in rules.get("p0_triggers", []):
+        if trigger["pattern"] in issue_lower:
+            return {
+                "should_be_p0": True,
+                "confidence": trigger["confidence"],
+                "reason": f"匹配触发模式 '{trigger['pattern']}' ({trigger['learned_from']})",
+            }
+
+    # 检查抑制规则
+    for suppression in rules.get("p0_suppressions", []):
+        if suppression["pattern"] in issue_lower:
+            return {
+                "should_be_p0": False,
+                "confidence": suppression["confidence"],
+                "reason": f"匹配抑制模式 '{suppression['pattern']}' ({suppression['learned_from']})",
+            }
+
+    return {"should_be_p0": None, "confidence": 0, "reason": "无匹配规则"}
