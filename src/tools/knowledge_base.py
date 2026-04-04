@@ -1,7 +1,7 @@
 """
 @description: 知识库管理 - 搜索、写入、检索项目级领域知识
-@dependencies: json, pathlib, datetime
-@last_modified: 2026-03-23
+@dependencies: json, pathlib, datetime, sentence_transformers (可选)
+@last_modified: 2026-04-04
 """
 import json
 from pathlib import Path
@@ -9,6 +9,17 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 
 KB_ROOT = Path(__file__).resolve().parent.parent.parent / ".ai-state" / "knowledge"
+EMBEDDINGS_PATH = KB_ROOT.parent / "kb_embeddings.npz"
+
+# 尝试导入向量搜索依赖
+try:
+    from sentence_transformers import SentenceTransformer
+    import numpy as np
+    _EMBED_MODEL = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
+    HAS_VECTOR = True
+except ImportError:
+    HAS_VECTOR = False
+    print("[KB] sentence-transformers 未安装，向量搜索禁用")
 
 # Domain 白名单
 VALID_DOMAINS = {"competitors", "components", "standards", "lessons", "methodology"}
@@ -56,11 +67,123 @@ def _track_knowledge_usage(file_path: Path):
         pass
 
 
-def search_knowledge(query: str, limit: int = 5) -> List[Dict[str, Any]]:
-    """根据关键词搜索知识库，返回匹配的知识条目（中文友好）"""
+# ============================================================
+# 向量搜索功能
+# ============================================================
+
+def _build_embedding_index() -> dict:
+    """构建/更新 embedding 索引
+
+    Returns:
+        dict with entries (list of {path, title, content}) and embeddings (np.array)
+    """
+    if not HAS_VECTOR:
+        return {}
+
+    entries = []
+    texts = []
+
+    for json_file in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(json_file.read_text(encoding="utf-8"))
+            title = data.get("title", "")
+            content = data.get("content", "")[:500]  # 截断
+            text = f"{title}\n{content}"
+            entries.append({
+                "path": str(json_file),
+                "title": title,
+                "domain": data.get("domain", ""),
+            })
+            texts.append(text)
+        except:
+            continue
+
+    if not texts:
+        return {}
+
+    embeddings = _EMBED_MODEL.encode(texts, convert_to_numpy=True)
+
+    # 缓存到文件
+    try:
+        np.savez(EMBEDDINGS_PATH, embeddings=embeddings, entries=json.dumps(entries))
+    except:
+        pass
+
+    return {"entries": entries, "embeddings": embeddings}
+
+
+def _load_embedding_index() -> dict:
+    """加载缓存的 embedding 索引"""
+    if not HAS_VECTOR:
+        return {}
+
+    if EMBEDDINGS_PATH.exists():
+        try:
+            data = np.load(EMBEDDINGS_PATH, allow_pickle=True)
+            return {
+                "entries": json.loads(str(data["entries"])),
+                "embeddings": data["embeddings"]
+            }
+        except:
+            pass
+
+    # 重新构建
+    return _build_embedding_index()
+
+
+def vector_search(query: str, limit: int = 10) -> list:
+    """向量相似度搜索
+
+    Args:
+        query: 搜索查询
+        limit: 返回数量限制
+
+    Returns:
+        匹配的条目路径列表
+    """
+    if not HAS_VECTOR:
+        return []
+
+    index = _load_embedding_index()
+    if not index:
+        return []
+
+    entries = index.get("entries", [])
+    embeddings = index.get("embeddings")
+
+    if not entries or embeddings is None:
+        return []
+
+    # 编码查询
+    query_embedding = _EMBED_MODEL.encode([query], convert_to_numpy=True)[0]
+
+    # 计算余弦相似度
+    similarities = np.dot(embeddings, query_embedding) / (
+        np.linalg.norm(embeddings, axis=1) * np.linalg.norm(query_embedding)
+    )
+
+    # 排序取 top
+    top_indices = np.argsort(similarities)[::-1][:limit]
+
+    results = []
+    for idx in top_indices:
+        if similarities[idx] > 0.3:  # 相似度阈值
+            results.append({
+                "path": entries[idx]["path"],
+                "title": entries[idx]["title"],
+                "domain": entries[idx]["domain"],
+                "score": float(similarities[idx]),
+            })
+
+    return results
+
+
+def _keyword_search(query: str, limit: int = 5) -> List[Dict[str, Any]]:
+    """关键词搜索（原有逻辑提取为独立函数）"""
     import re
     if not KB_ROOT.exists():
         return []
+
     # 中文友好：提取2字以上的关键词片段
     keywords = []
     for word in query.split():
@@ -99,8 +222,55 @@ def search_knowledge(query: str, limit: int = 5) -> List[Dict[str, Any]]:
         except Exception:
             continue
     results.sort(key=lambda x: x["score"], reverse=True)
+    return [r["data"] for r in results[:limit]]
 
-    # Track usage for returned results
+
+def search_knowledge(query: str, limit: int = 5) -> List[Dict[str, Any]]:
+    """混合搜索：向量 + 关键词
+
+    Args:
+        query: 搜索查询
+        limit: 返回数量限制
+
+    Returns:
+        匹配的知识条目列表
+    """
+    if not KB_ROOT.exists():
+        return []
+
+    results = []
+
+    # 1. 向量搜索（如果可用）
+    if HAS_VECTOR:
+        vector_results = vector_search(query, limit=limit * 2)
+        for vr in vector_results:
+            try:
+                data = json.loads(Path(vr["path"]).read_text(encoding="utf-8"))
+                data["_vector_score"] = vr["score"]
+                results.append({"score": vr["score"] * 10, "data": data, "path": Path(vr["path"])})
+            except:
+                continue
+
+    # 2. 关键词搜索
+    keyword_results = _keyword_search(query, limit=limit * 2)
+    for kr in keyword_results:
+        # 检查是否已在向量结果中
+        already = any(r["data"].get("title") == kr.get("title") for r in results)
+        if not already:
+            # 找到对应的文件路径
+            for f in KB_ROOT.rglob("*.json"):
+                try:
+                    data = json.loads(f.read_text(encoding="utf-8"))
+                    if data.get("title") == kr.get("title"):
+                        results.append({"score": 5, "data": kr, "path": f})
+                        break
+                except:
+                    continue
+
+    # 3. 排序去重
+    results.sort(key=lambda x: x["score"], reverse=True)
+
+    # 4. Track usage
     for r in results[:limit]:
         _track_knowledge_usage(r["path"])
 
