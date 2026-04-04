@@ -799,6 +799,243 @@ def _try_analogy_reasoning(query: str, kb_results: list) -> str:
     return ""
 
 
+# ============================================================
+# A-11: M4 信息增量感知的预算路由 — 按覆盖度选模型
+# ============================================================
+
+def _assess_kb_coverage(query: str) -> float:
+    """评估 KB 对某个 query 的已有覆盖度 (0.0-1.0)"""
+    results = []
+    for f in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+            content = data.get("content", "")
+            title = data.get("title", "")
+            if query.lower() in title.lower() or query.lower() in content[:500].lower():
+                results.append(data)
+        except:
+            continue
+    if not results:
+        return 0.0
+    high_conf = sum(1 for r in results if r.get("confidence") in ("high", "authoritative"))
+    return min(1.0, (len(results) * 0.1) + (high_conf * 0.15))
+
+
+def _select_model_by_coverage(query: str, default_model: str) -> str:
+    """根据 KB 覆盖度选择模型——覆盖度低用强模型，覆盖度高用便宜模型"""
+    coverage = _assess_kb_coverage(query)
+    if coverage > 0.7:
+        print(f"  [Budget] KB 覆盖度 {coverage:.0%}，用 Flash 补充")
+        return "gemini_2_5_flash"
+    elif coverage > 0.4:
+        print(f"  [Budget] KB 覆盖度 {coverage:.0%}，用默认模型")
+        return default_model
+    else:
+        print(f"  [Budget] KB 覆盖度 {coverage:.0%}，用最强模型深搜")
+        return "o3_deep_research"
+
+
+# ============================================================
+# A-12: N1 反脆弱运行 — API 失败时切换离线任务
+# ============================================================
+
+def _fallback_to_offline_tasks(failed_model: str, failed_query: str):
+    """API 全部失败时切换到离线任务"""
+    print(f"  [AntiFragile] {failed_model} 全部失败，切换离线任务")
+
+    offline_tasks = [
+        ("KB治理", lambda: _run_kb_governance_lite()),
+        ("知识综述", lambda: _generate_knowledge_synthesis()),
+        ("决策树扫描", lambda: _scan_decision_readiness()),
+        ("工作记忆整理", lambda: _organize_work_memory()),
+    ]
+
+    for name, task_fn in offline_tasks:
+        try:
+            print(f"  [AntiFragile] 执行离线任务: {name}")
+            task_fn()
+        except:
+            pass
+
+
+def _run_kb_governance_lite():
+    """轻量级 KB 治理"""
+    _extract_experience_rules()
+    _generate_knowledge_synthesis()
+
+
+def _scan_decision_readiness():
+    """扫描决策树就绪状态"""
+    decision_tree_path = Path(__file__).parent.parent / ".ai-state" / "product_decision_tree.yaml"
+    if not decision_tree_path.exists():
+        return
+    try:
+        with open(decision_tree_path, 'r', encoding='utf-8') as f:
+            tree = yaml.safe_load(f)
+        for decision in tree.get("decisions", []):
+            gaps = decision.get("blocking_knowledge", [])
+            ready = len(gaps) == 0
+            print(f"  [Decision] {decision.get('id')}: {'就绪' if ready else f'缺 {len(gaps)} 项'}")
+    except:
+        pass
+
+
+def _organize_work_memory():
+    """整理工作记忆"""
+    # 清理过期的临时文件
+    temp_dir = Path(__file__).parent.parent / ".ai-state" / "temp"
+    if temp_dir.exists():
+        for f in temp_dir.glob("*"):
+            if f.stat().st_mtime < time.time() - 86400:  # 24小时前
+                f.unlink()
+
+
+# ============================================================
+# A-13: O3 对抗性数据验证 — 数据口径质疑
+# ============================================================
+
+ADVERSARIAL_PROMPT_SUFFIX = """
+对每个关键数据点（价格、产能、良率、功耗等数值），追加以下字段：
+"data_caveat": {
+    "price_basis": "含税/不含税/未知",
+    "volume_basis": "样品/千片/万片/未知",
+    "time_basis": "2024/2025/2026/未知",
+    "source_type": "官方datasheet/新闻报道/分析师估算/论坛帖子/未知",
+    "needs_clarification": true/false
+}
+如果以上任何字段为"未知"，则 needs_clarification 必须为 true。
+"""
+
+
+# ============================================================
+# A-14: O4 沙盘 What-If 模式 — 参数变更影响推演
+# ============================================================
+
+def sandbox_what_if(parameter_change: str, kb_context: str = "", progress_callback=None) -> str:
+    """沙盘推演：调整一个参数，推算连锁影响"""
+    prompt = (
+        f"产品: 智能骑行头盔 V1\n"
+        f"参数变更: {parameter_change}\n\n"
+        f"已知产品参数和约束:\n{kb_context[:3000]}\n\n"
+        f"请推演这个变更的连锁影响链条。每一步标注:\n"
+        f"1. 直接影响（确定性高）\n"
+        f"2. 间接影响（确定性中）\n"
+        f"3. 远端影响（确定性低）\n\n"
+        f"对每个影响给出具体数值估算（如有数据支撑）或定性判断。\n"
+        f"最终给出：这个变更是否值得做？代价是什么？"
+    )
+    result = gateway.call("o3", prompt,
+        "你是系统工程师，擅长因果链条推理。每一步必须有依据。", "sandbox")
+    return result.get("response", "") if result.get("success") else "推演失败"
+
+
+# ============================================================
+# A-15: P4 竞品界面素材库 — 自动收集截图
+# ============================================================
+
+COMPETITIVE_UI_PATH = Path(__file__).parent.parent / ".ai-state" / "competitive_ui"
+
+def _collect_competitive_ui(url: str, source_name: str):
+    """检测并保存竞品界面截图 URL"""
+    if not url:
+        return
+
+    # 检测是否是图片 URL
+    image_extensions = ['.png', '.jpg', '.jpeg', '.gif', '.webp']
+    if any(ext in url.lower() for ext in image_extensions):
+        COMPETITIVE_UI_PATH.mkdir(parents=True, exist_ok=True)
+        # 记录 URL 和来源
+        record_path = COMPETITIVE_UI_PATH / "ui_assets.jsonl"
+        entry = {
+            "url": url,
+            "source": source_name,
+            "timestamp": time.strftime('%Y-%m-%d %H:%M')
+        }
+        with open(record_path, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        print(f"  [UI Asset] 记录: {url[:60]}...")
+
+
+# ============================================================
+# A-16: Q2 数值计算引擎 — Python 计算替代 LLM 猜测
+# ============================================================
+
+CALC_PATTERN = re.compile(r'\[CALC:\s*([^\]]+)\]')
+
+def _evaluate_calculations(text: str) -> str:
+    """扫描输出中的 [CALC: expression] 标记，用 Python 执行并回填结果"""
+    def replace_calc(match):
+        expr = match.group(1)
+        try:
+            # 安全评估：只允许数学运算
+            allowed_chars = set('0123456789.+-*/() ')
+            if all(c in allowed_chars for c in expr):
+                result = eval(expr)
+                return f"[CALC: {expr}] = {result:.2f}"
+            else:
+                return f"[CALC: {expr}] = (不安全表达式)"
+        except Exception as e:
+            return f"[CALC: {expr}] = (计算错误: {str(e)[:30]})"
+
+    return CALC_PATTERN.sub(replace_calc, text)
+
+
+# ============================================================
+# A-17: Q3 推理链可见化 — 展示推理过程
+# ============================================================
+
+REASONING_CHAIN_PROMPT = """
+请在结论之前展示推理过程：
+- 数据来源 → 推论 → 结论
+- 如果多个数据指向不同结论，说明为什么选择了这个结论
+
+格式示例:
+## 推理链
+1. 数据来源: [来源A] 显示 X
+2. 推论: 基于 X，可以推断 Y
+3. 冲突处理: [来源B] 显示 Z，但选择 Y 因为 [理由]
+4. 结论: 最终判断为 Y
+"""
+
+
+# ============================================================
+# A-18: Q5 系统自评分 — 输出质量评估
+# ============================================================
+
+SELF_ASSESSMENT_PATH = Path(__file__).parent.parent / ".ai-state" / "self_assessments.jsonl"
+
+def _run_self_assessment(report: str, task_title: str, search_count: int, structured_count: int):
+    """评估本次产出质量"""
+    assessment_prompt = (
+        f"评估以下研究报告的质量（1-10分）:\n\n"
+        f"报告标题: {task_title}\n"
+        f"报告长度: {len(report)} 字\n"
+        f"搜索结果数: {search_count}\n"
+        f"结构化数据条数: {structured_count}\n\n"
+        f"评估维度:\n"
+        f"1. 数据密度（具体数字/参数的比例）\n"
+        f"2. 结论明确度（是否有明确推荐）\n"
+        f"3. 来源标注（是否标注数据来源）\n"
+        f"4. 决策支撑度（是否帮助决策）\n\n"
+        f"输出 JSON: {{\"overall\": 1-10, \"data_density\": 1-10, \"clarity\": 1-10, "
+        f"\"sourcing\": 1-10, \"decision_support\": 1-10, \"issues\": [\"问题1\", \"问题2\"]}}"
+    )
+    result = _call_model("gemini_2_5_flash", assessment_prompt, "只输出 JSON。", "self_assessment")
+    if result.get("success"):
+        try:
+            assessment = json.loads(re.sub(r'^```json\s*|\s*```$', '', result["response"].strip()))
+            assessment["task_title"] = task_title
+            assessment["timestamp"] = time.strftime('%Y-%m-%d %H:%M')
+            assessment["report_length"] = len(report)
+            with open(SELF_ASSESSMENT_PATH, 'a', encoding='utf-8') as f:
+                f.write(json.dumps(assessment, ensure_ascii=False) + "\n")
+            print(f"  [SelfAssess] 评分: {assessment.get('overall', '?')}/10")
+            return assessment
+        except:
+            pass
+    return {}
+
+
 def _match_expert_framework(task_goal: str, task_title: str) -> dict:
     """根据任务关键词匹配专家框架"""
     config_path = Path(__file__).parent.parent / "src" / "config" / "expert_frameworks.yaml"
