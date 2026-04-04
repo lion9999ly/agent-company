@@ -111,6 +111,12 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_one_pager(reply_target, send_reply)
         return
 
+    # === 2.9 决策简报 ===
+    if text_stripped.startswith("决策简报") or text_stripped.startswith("decision brief"):
+        decision_id = text_stripped.replace("决策简报", "").replace("decision brief", "").strip().strip(":：")
+        _handle_decision_brief(decision_id, reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -689,6 +695,67 @@ def _handle_one_pager(reply_target: str, send_reply):
             )
 
             result = gw.call("gpt_5_4", prompt, "你是产品营销专家。", "content_generation")
+            if result.get("success"):
+                send_reply(reply_target, result["response"])
+            else:
+                send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
+        except Exception as e:
+            send_reply(reply_target, f"生成失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_decision_brief(decision_id: str, reply_target: str, send_reply):
+    """生成决策简报"""
+    send_reply(reply_target, f"📋 正在生成决策简报: {decision_id}...")
+
+    def _run():
+        try:
+            import yaml as _yaml
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge
+            gw = get_model_gateway()
+
+            # 读决策树
+            dt_path = PROJECT_ROOT / ".ai-state" / "product_decision_tree.yaml"
+            decision = None
+            if dt_path.exists():
+                dt = _yaml.safe_load(dt_path.read_text(encoding='utf-8'))
+                for d in dt.get("decisions", []):
+                    if decision_id.lower() in d.get("id", "").lower() or decision_id in d.get("question", ""):
+                        decision = d
+                        break
+
+            if not decision:
+                send_reply(reply_target, f"⚠️ 未找到决策: {decision_id}\n可用决策ID: " +
+                    ", ".join([d["id"] for d in dt.get("decisions", [])]))
+                return
+
+            # 搜索相关 KB
+            kb_results = search_knowledge(decision["question"], limit=15)
+            kb_text = "\n".join([f"- [{r.get('confidence','')}] {r.get('title','')}: {r.get('content','')[:200]}"
+                                for r in kb_results])
+
+            # 读 resolved_knowledge
+            resolved = decision.get("resolved_knowledge", [])
+            resolved_text = "\n".join([f"- {r.get('knowledge','')}" for r in resolved]) if resolved else "暂无"
+
+            prompt = (
+                f"生成决策简报。\n\n"
+                f"## 决策问题\n{decision['question']}\n\n"
+                f"## 已确认的知识\n{resolved_text}\n\n"
+                f"## 相关知识库条目\n{kb_text}\n\n"
+                f"## 仍缺的知识\n" +
+                "\n".join([f"- {bk}" for bk in decision.get("blocking_knowledge", [])]) +
+                f"\n\n## 要求\n"
+                f"1. 列出所有可选方案（每个方案的优势/劣势/BOM/供应商/风险）\n"
+                f"2. 标注数据来源的 confidence\n"
+                f"3. 标注仍缺的关键信息\n"
+                f"4. 如果数据足够，给出推荐\n"
+                f"5. 如果数据不足，说明还需要什么信息才能做决定"
+            )
+
+            result = gw.call("gpt_5_4", prompt, "你是产品决策顾问，输出结构化的决策简报。", "synthesis")
             if result.get("success"):
                 send_reply(reply_target, result["response"])
             else:
