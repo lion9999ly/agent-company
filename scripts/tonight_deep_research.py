@@ -19,6 +19,7 @@ from src.utils.model_gateway import get_model_gateway, call_for_search, call_for
 from src.tools.knowledge_base import add_knowledge, get_knowledge_stats, KB_ROOT
 from src.tools.tool_registry import ToolRegistry
 from src.utils.progress_heartbeat import ProgressHeartbeat
+from src.config.prompt_loader import get_agent_prompt
 from scripts.meta_capability import (
     CAPABILITY_GAP_INSTRUCTION,
     scan_capability_gaps,
@@ -1230,63 +1231,40 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
     distilled_material = structured_dump[:8000] if structured_dump else source_dump[:8000]
     kb_material = kb_context[:2000]
 
-    # 构建 Agent prompts
+    # 构建 Agent prompts（从 yaml 读取基础 prompt）
+    cto_base = get_agent_prompt("deep_research_cto") or "你是智能骑行头盔项目的技术合伙人（CTO）。"
     cto_prompt = (
-        f"你是智能骑行头盔项目的技术合伙人（CTO）。\n"
-        f"你拥有顶尖的技术判断力，不会泛泛而谈，每个判断都有具体数据支撑。\n"
+        f"{cto_base}\n\n"
         f"{expert_injection}\n"
         f"## 调研数据（已结构化提炼，每个数据点附 source 和 confidence）\n{distilled_material}\n\n"
         f"## 已有知识库\n{kb_material}\n\n"
         f"{anchor_instruction}\n"
         f"{THINKING_PRINCIPLES}\n"
         f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
-        f"## 你的任务\n"
-        f"从技术角度分析这个问题。要求：\n"
-        f"1. 给出具体的技术参数对比（型号、规格、价格区间）\n"
-        f"2. 评估技术可行性和风险\n"
-        f"3. 给出明确的技术推荐（不要模棱两可）\n"
-        f"4. 标注你不确定的信息\n"
-        f"5. 如果某些功能风险高，建议分阶段实现，而不是砍掉\n"
-        f"6. 输出 1000-1500 字\n"
         f"{CAPABILITY_GAP_INSTRUCTION}"
     )
 
+    cmo_base = get_agent_prompt("deep_research_cmo") or "你是智能骑行头盔项目的市场合伙人（CMO）。"
     cmo_prompt = (
-        f"你是智能骑行头盔项目的市场合伙人（CMO）。\n"
-        f"你拥有敏锐的商业判断力，能识别伪需求，每个判断都基于数据或逻辑推演。\n"
+        f"{cmo_base}\n\n"
         f"{expert_injection}\n"
         f"## 调研数据（已结构化提炼）\n{distilled_material}\n\n"
         f"## 已有知识库\n{kb_material}\n\n"
         f"{anchor_instruction}\n"
         f"{THINKING_PRINCIPLES}\n"
         f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
-        f"## 你的任务\n"
-        f"从市场和商业角度分析这个问题。要求：\n"
-        f"1. 竞品是怎么做的？成功还是失败？为什么？\n"
-        f"2. 用户真正在意什么？购买决策的关键因素？\n"
-        f"3. 定价和商业模式建议\n"
-        f"4. 给出明确的市场判断（不要两边讨好）\n"
-        f"5. 如果市场风险高，建议如何分阶段验证，而不是放弃方向\n"
-        f"6. 输出 1000-1500 字\n"
         f"{CAPABILITY_GAP_INSTRUCTION}"
     )
 
+    cdo_base = get_agent_prompt("deep_research_cdo") or "你是智能骑行头盔项目的设计合伙人（CDO）。"
     cdo_prompt = (
-        f"你是智能骑行头盔项目的设计合伙人（CDO）。\n"
-        f"你懂工程约束，用设计语言表达品牌战略。\n"
+        f"{cdo_base}\n\n"
         f"{expert_injection}\n"
         f"## 调研数据（已结构化提炼）\n{distilled_material}\n\n"
         f"## 已有知识库\n{kb_material}\n\n"
         f"{anchor_instruction}\n"
         f"{THINKING_PRINCIPLES}\n"
         f"## 研究任务\n{title}\n\n## 目标\n{goal}\n\n"
-        f"## 你的任务\n"
-        f"从产品设计和用户体验角度分析。要求：\n"
-        f"1. 产品形态和用户体验的关键约束\n"
-        f"2. 设计上的取舍建议（重量、体积、外观、佩戴感）\n"
-        f"3. 竞品的设计优劣势\n"
-        f"4. 如果设计约束导致某些功能难以首代实现，建议分阶段路径\n"
-        f"5. 输出 800-1200 字\n"
         f"{CAPABILITY_GAP_INSTRUCTION}"
     )
 
