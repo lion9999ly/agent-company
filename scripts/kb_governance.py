@@ -56,7 +56,10 @@ def run_governance() -> str:
     # 4. 矛盾检测
     report["contradictions_flagged"] = _flag_contradictions(all_entries)
 
-    # 5. 生成健康度报告
+    # 5. 可信度传播
+    _propagate_confidence_changes()
+
+    # 6. 生成健康度报告
     health = _compute_health_score(all_entries)
 
     summary = (
@@ -302,9 +305,9 @@ def _compute_health_score(entries: list) -> int:
 
     # 域覆盖
     domains = set(e.get("domain", "") for e in entries)
-    required_domains = {"components", "competitors", "standards", "lessons"}
+    required_domains = {"components", "competitors", "standards", "lessons", "methodology"}
     covered = len(required_domains & domains)
-    score += covered * 5
+    score += covered * 4
 
     # 矛盾率
     contradiction_count = sum(1 for e in entries
@@ -313,6 +316,47 @@ def _compute_health_score(entries: list) -> int:
     score += max(0, int(20 * (1 - contra_ratio / 0.1)))
 
     return min(100, score)
+
+
+def _propagate_confidence_changes():
+    """当上游条目 confidence 变化时，扫描所有下游条目并级联更新"""
+    for f in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+            derived = data.get("derived_from")
+            if not derived:
+                continue
+            # 查找上游条目
+            upstream = _find_entry_by_path_or_title(derived)
+            if upstream and upstream.get("confidence") == "low":
+                if data.get("confidence") not in ("low",):
+                    data["confidence"] = "low"
+                    data["_upstream_warning"] = f"上游数据 '{derived}' 已降级为 low"
+                    f.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+                    print(f"  [Propagate] 降级: {data.get('title', '')[:40]} (上游: {derived[:40]})")
+        except:
+            continue
+
+
+def _find_entry_by_path_or_title(identifier: str) -> dict:
+    """通过路径或标题查找条目"""
+    # 先尝试按路径查找
+    try:
+        path = Path(identifier)
+        if path.exists():
+            return json.loads(path.read_text(encoding="utf-8"))
+    except:
+        pass
+
+    # 按标题模糊匹配
+    for f in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+            if identifier[:20].lower() in data.get("title", "").lower():
+                return data
+        except:
+            continue
+    return None
 
 
 def _safe_delete(path: str):

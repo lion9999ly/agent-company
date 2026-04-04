@@ -111,7 +111,8 @@ def add_knowledge(title: str, domain: str, content: str, tags: List[str],
                   source: str = "auto", confidence: str = "medium",
                   caller: str = "auto",
                   confidence_score: float = None,
-                  uncertainty_range: str = None) -> Optional[str]:
+                  uncertainty_range: str = None,
+                  derived_from: str = None) -> Optional[str]:
     """添加新的知识条目
 
     Args:
@@ -121,6 +122,7 @@ def add_knowledge(title: str, domain: str, content: str, tags: List[str],
             - "product_decision": 允许 authoritative
         confidence_score: 数值置信度 (0.0-1.0)
         uncertainty_range: 不确定性区间 (如 "500-800万台/年")
+        derived_from: 引用的上游条目 path 或 title（用于可信度传播）
     """
     import random
 
@@ -196,6 +198,9 @@ def add_knowledge(title: str, domain: str, content: str, tags: List[str],
         entry["confidence_score"] = confidence_score  # 0.0-1.0
     if uncertainty_range is not None:
         entry["uncertainty_range"] = uncertainty_range  # "500-800万台/年"
+    # === 可信度传播：记录上游条目 ===
+    if derived_from is not None:
+        entry["derived_from"] = derived_from
     # === 竞品动态时间线：competitors 域自动添加 observed_at ===
     if domain == "competitors":
         entry["observed_at"] = datetime.now().strftime("%Y-%m-%d")
