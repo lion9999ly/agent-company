@@ -11,7 +11,7 @@ from typing import List, Dict, Any, Optional
 KB_ROOT = Path(__file__).resolve().parent.parent.parent / ".ai-state" / "knowledge"
 
 # Domain 白名单
-VALID_DOMAINS = {"competitors", "components", "standards", "lessons"}
+VALID_DOMAINS = {"competitors", "components", "standards", "lessons", "methodology"}
 
 # Domain 映射表（非白名单 domain 自动映射）
 DOMAIN_MAP = {
@@ -22,6 +22,8 @@ DOMAIN_MAP = {
     "regulation": "standards", "insight": "lessons",
     "供应链": "components", "supply_chain": "components",
     "audio": "components", "optical": "components",
+    "方法论": "methodology", "method": "methodology",
+    "流程": "methodology", "process": "methodology",
 }
 
 
