@@ -31,15 +31,23 @@ gateway = get_model_gateway()
 
 
 # ============================================================
-# 并发控制: 按 provider 限制并发数
+# 并发控制: 按 provider 限制并发数（升级版 - 19 模型支持）
 # ============================================================
 PROVIDER_SEMAPHORES = {
-    "o3": threading.Semaphore(3),        # o3 慢，3 并发
-    "doubao": threading.Semaphore(8),    # 豆包快，8 并发
-    "flash": threading.Semaphore(8),     # Flash 提炼，8 并发
-    "gemini_pro": threading.Semaphore(3),# 有限额，保守
-    "gpt54": threading.Semaphore(4),     # 成本高
-    "gpt4o": threading.Semaphore(4),     # 通用
+    "o3_deep": threading.Semaphore(3),    # o3-deep-research 慢，3 并发
+    "o3": threading.Semaphore(3),         # o3 推理模型，3 并发
+    "o3_mini": threading.Semaphore(5),    # o3-mini 便宜，5 并发
+    "grok": threading.Semaphore(3),       # Grok 社交搜索，3 并发
+    "gemini_deep": threading.Semaphore(2),# Gemini Deep Research，限额低
+    "doubao": threading.Semaphore(8),     # 豆包快，8 并发
+    "flash": threading.Semaphore(8),      # Flash 提炼，8 并发
+    "gemini_pro": threading.Semaphore(3), # Gemini Pro 系列，有限额
+    "gpt54": threading.Semaphore(4),      # GPT-5.4 成本高
+    "gpt53": threading.Semaphore(4),      # GPT-5.3
+    "gpt4o": threading.Semaphore(4),      # GPT-4o 通用
+    "deepseek_r1": threading.Semaphore(3),# DeepSeek R1 推理链长
+    "qwen": threading.Semaphore(4),       # Qwen 中文
+    "llama": threading.Semaphore(3),      # Llama 多模态
 }
 
 
