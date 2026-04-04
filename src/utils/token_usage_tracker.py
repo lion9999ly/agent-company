@@ -92,6 +92,42 @@ class TokenUsageTracker:
         # 国产模型，性价比极高
         "deepseek-chat": {"input": 0.00014, "output": 0.00028},  # ¥1/¥2 per 1M tokens
         "deepseek-reasoner": {"input": 0.00056, "output": 0.00222},  # ¥4/¥16 per 1M tokens
+
+        # ========== Azure OpenAI (2026) ==========
+        "gpt-5.4": {"input": 0.005, "output": 0.015},  # Azure GPT-5.4
+        "gpt-5.3": {"input": 0.003, "output": 0.009},  # Azure GPT-5.3
+        "o3-deep-research-2025-06-26": {"input": 0.010, "output": 0.040},  # o3 deep research
+        "o3": {"input": 0.002, "output": 0.008},  # o3 standard
+
+        # ========== Google Gemini 3.x (2026) ==========
+        "gemini-3.1-pro-preview": {"input": 0.00175, "output": 0.007},
+        "gemini-deep-research": {"input": 0.002, "output": 0.008},
+
+        # ========== 火山引擎豆包 (2026) ==========
+        "doubao-seed-2-0-pro-260215": {"input": 0.00056, "output": 0.00222},
+        "doubao-seed-2-0-lite-260215": {"input": 0.00014, "output": 0.00042},
+        "doubao_seed_pro": {"input": 0.00056, "output": 0.00222},  # alias
+        "doubao_seed_lite": {"input": 0.00014, "output": 0.00042},  # alias
+
+        # ========== DeepSeek v3 (2026) ==========
+        "deepseek-v3-2-251201": {"input": 0.00014, "output": 0.00028},
+        "deepseek_r1": {"input": 0.00056, "output": 0.00222},  # DeepSeek R1 reasoning
+
+        # ========== xAI Grok (2026) ==========
+        "grok-4-fast-reasoning": {"input": 0.0055, "output": 0.0275},  # $5.5/$27.5 per 1M
+        "grok_4": {"input": 0.0055, "output": 0.0275},  # alias
+
+        # ========== 阿里 Qwen 3 (2026) ==========
+        "qwen-3-32b": {"input": 0.00028, "output": 0.00083},
+        "qwen_3_32b": {"input": 0.00028, "output": 0.00083},  # alias
+
+        # ========== Meta Llama 4 (2026) ==========
+        "llama-4-maverick": {"input": 0.0002, "output": 0.0006},
+        "llama_4_maverick": {"input": 0.0002, "output": 0.0006},  # alias
+
+        # ========== Claude (保留，暂未激活) ==========
+        "claude-opus-4-6": {"input": 0.015, "output": 0.075},
+        "claude-sonnet-4-6": {"input": 0.003, "output": 0.015},
     }
 
     def __init__(self, data_dir: str = None):

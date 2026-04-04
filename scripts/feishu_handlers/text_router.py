@@ -96,6 +96,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_calibration_reply(text_stripped, reply_target, send_reply)
         return
 
+    # === 2.6 早报 ===
+    if text_stripped in ("早报", "morning", "日报", "daily"):
+        _handle_morning_brief(reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -505,6 +510,77 @@ def _handle_reference_files(text: str, reply_target: str, send_reply):
 
 # 全局任务运行状态（防止并发）
 _long_task_running = False
+
+
+def _handle_morning_brief(reply_target: str, send_reply):
+    """生成并推送每日早报（决策视角）"""
+    send_reply(reply_target, "🌅 正在生成早报...")
+
+    def _run():
+        try:
+            brief = _generate_morning_brief()
+            send_reply(reply_target, brief)
+        except Exception as e:
+            send_reply(reply_target, f"早报生成失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _generate_morning_brief() -> str:
+    """生成每日早报"""
+    lines = [f"🌅 早报 {datetime.now().strftime('%Y-%m-%d')}\n"]
+
+    # 1. 决策进展
+    dt_path = PROJECT_ROOT / ".ai-state" / "product_decision_tree.yaml"
+    if dt_path.exists():
+        try:
+            import yaml as _yaml
+            dt = _yaml.safe_load(dt_path.read_text(encoding='utf-8'))
+            lines.append("📌 决策进展")
+            for d in dt.get("decisions", []):
+                if d.get("status") == "open":
+                    total = len(d.get("blocking_knowledge", []))
+                    resolved = len(d.get("resolved_knowledge", []))
+                    icon = "🟢" if resolved >= total * 0.8 else "🟡" if resolved >= total * 0.5 else "🔴"
+                    lines.append(f"  {icon} {d['question'][:50]} ({resolved}/{total})")
+        except:
+            pass
+
+    # 2. 最近报告摘要
+    reports_dir = PROJECT_ROOT / ".ai-state" / "reports"
+    if reports_dir.exists():
+        recent = sorted(reports_dir.glob("*.summary.json"), reverse=True)[:3]
+        if recent:
+            lines.append("\n📝 最新研究")
+            for f in recent:
+                try:
+                    s = json.loads(f.read_text(encoding='utf-8'))
+                    lines.append(f"  • {s.get('task_title', '?')[:30]}")
+                    lines.append(f"    → {s.get('core_finding', '')[:60]}")
+                except:
+                    continue
+
+    # 3. KB 统计
+    try:
+        from src.tools.knowledge_base import get_knowledge_stats
+        stats = get_knowledge_stats()
+        total = sum(stats.values())
+        lines.append(f"\n📚 知识库: {total} 条")
+    except:
+        pass
+
+    # 4. Critic 统计
+    drift_path = PROJECT_ROOT / ".ai-state" / "critic_drift_log.jsonl"
+    if drift_path.exists():
+        try:
+            last_lines = drift_path.read_text(encoding='utf-8').strip().split('\n')[-5:]
+            p0_rates = [json.loads(l).get("p0_rate", 0) for l in last_lines]
+            avg_p0 = sum(p0_rates) / len(p0_rates) if p0_rates else 0
+            lines.append(f"🔍 Critic P0 率: {avg_p0:.0%}（最近 {len(p0_rates)} 次）")
+        except:
+            pass
+
+    return "\n".join(lines)
 
 
 def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: str, reply_type: str,
