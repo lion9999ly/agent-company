@@ -147,6 +147,26 @@ def add_knowledge(title: str, domain: str, content: str, tags: List[str],
                 existing_fp = f"{existing_data.get('title', '')[:30]}||{existing_data.get('content', '')[:200]}"
                 if hashlib.md5(existing_fp.encode()).hexdigest() == content_hash:
                     return str(existing)  # 已存在，返回现有路径
+
+                # === 知识升级机制：同产品名+不同时间 = 更新而非新增 ===
+                if (title[:15].lower() in existing_data.get("title", "").lower() and
+                    existing_data.get("created_at", "") != datetime.now().strftime("%Y-%m-%d")):
+                    # Merge: 保留旧条目作为历史版本
+                    history = existing_data.get("_history", [])
+                    history.append({
+                        "content": existing_data.get("content", ""),
+                        "date": existing_data.get("created_at", ""),
+                        "confidence": existing_data.get("confidence", "")
+                    })
+                    existing_data["_history"] = history[-5:]  # 最多保留 5 个历史版本
+                    existing_data["content"] = content
+                    existing_data["created_at"] = datetime.now().strftime("%Y-%m-%d")
+                    existing_data["confidence"] = confidence
+                    existing_data["tags"] = list(set(existing_data.get("tags", []) + tags))
+                    existing_data["source"] = source
+                    existing.write_text(json.dumps(existing_data, ensure_ascii=False, indent=2), encoding="utf-8")
+                    print(f"[KB] 升级条目: {title[:40]}（保留 {len(history)} 个历史版本）")
+                    return str(existing)
             except:
                 continue
 
