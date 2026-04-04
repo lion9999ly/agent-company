@@ -1,0 +1,21 @@
+# Leo 的决策偏好画像（系统自动学习 + 手动修正）
+decision_preferences:
+  priority_dimensions:
+    - cost         # 成本敏感度
+    - time_to_market  # 上市速度
+    - tech_differentiation  # 技术差异化
+    - supply_chain_risk  # 供应链风险
+  risk_tolerance: "moderate"  # conservative / moderate / aggressive
+  info_style: "concise"  # concise / detailed / data_heavy
+  thinking_style: "big_picture_first"  # big_picture_first / detail_first
+  pet_peeves:
+    - "没有数据支撑的结论"
+    - "过长的报告"
+    - "模糊的建议（'可以考虑'而不是'建议选A因为XYZ'）"
+
+# 以下由系统从历史评价中自动提取，Leo 可修正
+auto_learned:
+  avg_rating_by_type: {}
+  preferred_report_length: 1500  # 字
+  topics_most_engaged: []
+  last_updated: null

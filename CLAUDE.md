@@ -384,4 +384,38 @@ python scripts/doc_sync_validator.py
 
 ---
 
+## 关键文件 URL（供 claude.ai 快速 fetch）
+
+```
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/CLAUDE.md
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/scripts/tonight_deep_research.py
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/src/utils/model_gateway.py
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/src/config/model_registry.yaml
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/scripts/feishu_handlers/text_router.py
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/scripts/meta_capability.py
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/scripts/critic_calibration.py
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/.ai-state/product_decision_tree.yaml
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/.ai-state/system_log_latest.md
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/.ai-state/research_task_pool.yaml
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/src/tools/knowledge_base.py
+```
+
+---
+
+## 三系统共享上下文
+
+### 当前项目阶段
+方案论证
+
+### 最近 Handoff 决策要点
+（由 handoff 处理器自动更新）
+
+### 系统运行统计
+（由 system_log_generator 自动更新）
+
+### 待执行改进清单
+见 .ai-state/improvement_backlog_complete.md
+
+---
+
 *本文档由 Claude Code 自动生成，遵循 `.ai-architecture/` 架构规范*

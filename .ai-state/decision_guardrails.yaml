@@ -1,0 +1,22 @@
+# 决策护栏 — Leo 不在时的自动响应规则
+guardrails:
+  - id: "goertek_risk"
+    trigger: "歌尔 AND (产能风险 OR 产线变动 OR 被包下)"
+    action: "auto_add_task"
+    task:
+      title: "[护栏触发] 替代供应商紧急评估"
+      goal: "深入评估立讯精密和舜宇光学作为歌尔的备选 JDM 合作伙伴"
+      priority: 1
+    notify: true
+
+  - id: "competitor_hud"
+    trigger: "竞品 AND (HUD 头盔 OR 智能头盔) AND (发布 OR 上市 OR 新品)"
+    action: "auto_deep_drill"
+    topic: "竞品新品分析"
+    notify: true
+
+  - id: "patent_risk"
+    trigger: "专利 AND (侵权 OR 诉讼 OR 骑行头盔)"
+    action: "notify_only"
+    notify: true
+    priority: "urgent"

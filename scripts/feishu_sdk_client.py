@@ -3333,6 +3333,23 @@ def main():
     except Exception as e:
         print(f"[HotReload] 启动失败: {e}")
 
+    # 启动健康监控（每 6 小时自检）
+    try:
+        def _health_monitor_loop():
+            import time as _time
+            _time.sleep(3600)  # 首次延迟 1 小时
+            while True:
+                _time.sleep(6 * 3600)  # 每 6 小时
+                try:
+                    from scripts.self_heal import run_self_heal_cycle
+                    run_self_heal_cycle()
+                except Exception as e:
+                    print(f"[HealthMonitor] 自检异常: {e}")
+        threading.Thread(target=_health_monitor_loop, daemon=True).start()
+        print("[HealthMonitor] 健康监控已启动（6h 间隔）")
+    except Exception as e:
+        print(f"[HealthMonitor] 启动失败: {e}")
+
     # 启动长连接
     cli = lark.ws.Client(APP_ID, APP_SECRET, event_handler=event_handler)
     cli.start()
