@@ -142,6 +142,11 @@ def _get_model_for_task(task_type: str) -> str:
     - 整合: gemini_2_5_pro（65K 上下文，能看完所有 Agent 输出）
     - Critic: gemini_3_1_pro + o3（双 Critic 交叉）
     """
+    # W3: 尝试使用学习到的最佳模型
+    learned_model = _select_best_model_learned(task_type)
+    if learned_model:
+        return learned_model
+
     task_model_map = {
         "discovery": "gemini_2_5_flash",
         "query_generation": "gemini_2_5_flash",
@@ -1479,6 +1484,12 @@ Schema:
 搜索结果:
 {raw_text[:4000]}
 
+额外字段要求（必须包含在输出的 JSON 中）：
+- confidence_score: 数值型，1.0-10.0，表示数据可信度
+- uncertainty_range: 如 "±10%" 或 "5-7小时"，表示数据不确定性范围
+- derived_from: 数据来源说明，如 "官方datasheet"、"新闻报道"
+- observed_at: 数据观测时间，如 "2024Q3"、"2025年3月"
+
 只输出 JSON，不要其他内容。"""
 
     result = _call_model(_get_model_for_task("data_extraction"), prompt, task_type="data_extraction")
@@ -1766,11 +1777,15 @@ def _run_critic_challenge(report: str, goal: str, agent_outputs: dict,
     # 尝试使用进化版 few-shot（基于人工标注），如果没有就用默认
     few_shot_to_use = CRITIC_FEW_SHOT
     try:
-        from scripts.critic_calibration import get_evolved_few_shot
+        from scripts.critic_calibration import get_evolved_few_shot, get_evolved_rules
         evolved_few_shot = get_evolved_few_shot()
         if evolved_few_shot:
             few_shot_to_use = evolved_few_shot
             print("  [Critic] 使用进化版 few-shot 示例")
+        # W6: 检查是否有进化版规则
+        evolved_rules = get_evolved_rules()
+        if evolved_rules:
+            print(f"  [Critic] 加载 {len(evolved_rules.get('p0_triggers', []))} 条进化规则")
     except ImportError:
         pass
 
@@ -2673,6 +2688,21 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
                 print(f"  [Synthesis Expand] {len(report)} chars")
         else:
             report = synthesis_result["response"]
+
+    # === Layer 4.5: 护栏检查（D模块集成）===
+    try:
+        from scripts.guardrail_engine import check_guardrails
+        triggered = check_guardrails(report, source="deep_research")
+        if triggered:
+            print(f"  [Guardrail] 触发 {len(triggered)} 个护栏")
+            for g in triggered[:3]:
+                action = g.get("action", "warn")
+                if action == "warn":
+                    report += f"\n\n⚠️ **注意**: {g.get('message', '检测到潜在风险')}"
+                elif action == "block":
+                    print(f"  [Guardrail] BLOCK: {g.get('id')}")
+    except ImportError:
+        pass
 
     # === Layer 5: Critic（所有路径统一执行）===
     report = _run_critic_challenge(report, goal, agent_outputs,

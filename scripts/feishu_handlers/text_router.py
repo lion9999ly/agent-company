@@ -299,6 +299,23 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_self_check(reply_target, send_reply)
         return
 
+    # === 2.25.5 深钻模式 ===
+    if text_stripped.startswith("深钻 ") or text_stripped.startswith("deep drill "):
+        topic = text_stripped.replace("深钻 ", "").replace("deep drill ", "").strip()
+        _handle_deep_drill(topic, reply_target, send_reply)
+        return
+
+    # === 2.25.6 沙盘推演 ===
+    if text_stripped.startswith("沙盘 ") or text_stripped.startswith("sandbox ") or text_stripped.startswith("what if "):
+        scenario = text_stripped.replace("沙盘 ", "").replace("sandbox ", "").replace("what if ", "").strip()
+        _handle_sandbox_what_if(scenario, reply_target, send_reply)
+        return
+
+    # === 2.25.7 压力测试 ===
+    if text_stripped.startswith("压力测试") or text_stripped.startswith("stress test"):
+        _handle_stress_test(reply_target, send_reply)
+        return
+
     # === 2.26 Demo 生成 ===
     if text_stripped in ("生成 HUD Demo", "HUD Demo", "hud demo"):
         _handle_generate_demo("hud", reply_target, reply_type, open_id, send_reply)
@@ -1606,6 +1623,71 @@ def _handle_self_check(reply_target: str, send_reply):
     threading.Thread(target=_run, daemon=True).start()
 
 
+def _handle_deep_drill(topic: str, reply_target: str, send_reply):
+    """深钻模式 — 对单个主题多轮深入研究"""
+    if not topic:
+        send_reply(reply_target, "请指定研究主题，如：深钻 歌尔产能")
+        return
+
+    send_reply(reply_target, f"🔬 开始深钻研究：{topic}\n预计 5-15 分钟...")
+
+    def _run():
+        try:
+            from scripts.tonight_deep_research import deep_drill
+            result = deep_drill(topic, progress_callback=lambda msg: send_reply(reply_target, msg))
+            send_reply(reply_target, f"✅ 深钻完成\n\n{result[:500]}...")
+        except Exception as e:
+            _safe_reply_error(send_reply, reply_target, "深钻研究", e)
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_sandbox_what_if(scenario: str, reply_target: str, send_reply):
+    """沙盘推演 — 参数变更影响分析"""
+    if not scenario:
+        send_reply(reply_target, "请指定推演场景，如：沙盘 电池改成1500mAh")
+        return
+
+    send_reply(reply_target, f"🎯 沙盘推演：{scenario[:50]}...")
+
+    def _run():
+        try:
+            from scripts.tonight_deep_research import sandbox_what_if
+            from src.tools.knowledge_base import format_knowledge_for_prompt, search_knowledge
+            # 获取 KB 上下文
+            kb_entries = search_knowledge(scenario, limit=5)
+            kb_context = format_knowledge_for_prompt(kb_entries) if kb_entries else ""
+            result = sandbox_what_if(scenario, kb_context)
+            send_reply(reply_target, result[:1500] if result else "推演失败")
+        except Exception as e:
+            _safe_reply_error(send_reply, reply_target, "沙盘推演", e)
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_stress_test(reply_target: str, send_reply):
+    """产品方案压力测试"""
+    send_reply(reply_target, "💪 开始产品方案压力测试...")
+
+    def _run():
+        try:
+            from scripts.tonight_deep_research import stress_test_product
+            # 读取产品定义
+            product_def_path = PROJECT_ROOT / ".ai-state" / "product_definition.md"
+            plan = ""
+            if product_def_path.exists():
+                plan = product_def_path.read_text(encoding="utf-8")
+            if not plan:
+                send_reply(reply_target, "⚠️ 未找到产品定义文件，请先上传产品方案")
+                return
+            result = stress_test_product(plan)
+            send_reply(reply_target, result[:2000] if result else "压力测试失败")
+        except Exception as e:
+            _safe_reply_error(send_reply, reply_target, "压力测试", e)
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
 def _handle_generate_demo(demo_type: str, reply_target: str, reply_type: str, open_id: str, send_reply):
     """Demo 全自主生成流水线"""
     send_reply(reply_target, f"🚀 开始自主生成 {demo_type.upper()} Demo...\n预计 5-10 分钟")
@@ -1857,6 +1939,15 @@ def _handle_answer_feedback(text: str, open_id: str, reply_target: str, send_rep
             user_id=open_id
         )
         del _last_kb_answer[open_id or "default"]
+
+        # 更新信任指数（D模块集成）
+        try:
+            from scripts.trust_tracker import update_trust
+            domain = "知识问答"  # 默认领域
+            update_trust(domain, feedback == "positive")
+        except ImportError:
+            pass
+
         if feedback == "positive":
             send_reply(reply_target, "✅ 感谢反馈！这条知识已标记为有帮助")
         else:
