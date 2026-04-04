@@ -1036,6 +1036,196 @@ def _run_self_assessment(report: str, task_title: str, search_count: int, struct
     return {}
 
 
+# ============================================================
+# W1: 搜索策略学习 — 记录什么搜索词有效
+# ============================================================
+
+SEARCH_LEARNING_PATH = Path(__file__).parent.parent / ".ai-state" / "search_learning.jsonl"
+SEARCH_BEST_PRACTICES_PATH = Path(__file__).parent.parent / ".ai-state" / "search_best_practices.yaml"
+
+def _record_search_result(query: str, model: str, tokens: int, useful_findings: int, quality: str):
+    """记录搜索结果用于学习"""
+    entry = {
+        "query": query,
+        "model": model,
+        "tokens": tokens,
+        "useful_findings": useful_findings,
+        "quality": quality,  # high/medium/low
+        "timestamp": time.strftime('%Y-%m-%d %H:%M')
+    }
+    SEARCH_LEARNING_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(SEARCH_LEARNING_PATH, 'a', encoding='utf-8') as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+
+def _evolve_search_strategy():
+    """从搜索历史中提取最佳实践"""
+    if not SEARCH_LEARNING_PATH.exists():
+        return
+
+    # 读取最近 50 条搜索记录
+    lines = SEARCH_LEARNING_PATH.read_text(encoding='utf-8').strip().split('\n')[-50:]
+    if len(lines) < 10:
+        return
+
+    records = []
+    for line in lines:
+        try:
+            records.append(json.loads(line))
+        except:
+            continue
+
+    # 按 quality 分组统计
+    quality_map = {"high": 3, "medium": 2, "low": 1}
+    model_stats = {}
+    keyword_patterns = {"price": [], "技术": [], "2024": [], "2025": [], "2026": []}
+
+    for r in records:
+        model = r.get("model", "")
+        quality = quality_map.get(r.get("quality", "low"), 1)
+        if model not in model_stats:
+            model_stats[model] = {"total": 0, "score": 0}
+        model_stats[model]["total"] += 1
+        model_stats[model]["score"] += quality
+
+        # 检查关键词模式
+        query = r.get("query", "").lower()
+        for kw in keyword_patterns:
+            if kw in query:
+                keyword_patterns[kw].append(quality)
+
+    # 生成最佳实践
+    best_practices = {
+        "model_ranking": sorted(model_stats.items(), key=lambda x: x[1]["score"]/x[1]["total"], reverse=True)[:3],
+        "keyword_effectiveness": {k: sum(v)/len(v) if v else 0 for k, v in keyword_patterns.items()},
+        "updated_at": time.strftime('%Y-%m-%d %H:%M')
+    }
+
+    with open(SEARCH_BEST_PRACTICES_PATH, 'w', encoding='utf-8') as f:
+        yaml.dump(best_practices, f, allow_unicode=True)
+    print(f"  [SearchLearning] 更新搜索最佳实践")
+
+
+def _get_optimized_search_model(query: str) -> str:
+    """基于学习结果选择最佳搜索模型"""
+    if not SEARCH_BEST_PRACTICES_PATH.exists():
+        return "o3_deep_research"  # 默认
+
+    try:
+        with open(SEARCH_BEST_PRACTICES_PATH, 'r', encoding='utf-8') as f:
+            practices = yaml.safe_load(f)
+
+        model_ranking = practices.get("model_ranking", [])
+        if model_ranking:
+            best_model = model_ranking[0][0]
+            return best_model
+    except:
+        pass
+    return "o3_deep_research"
+
+
+# ============================================================
+# W2: Agent prompt 自进化 — 从 Critic P0 学教训
+# ============================================================
+
+AGENT_LESSONS_PATH = Path(__file__).parent.parent / ".ai-state" / "agent_lessons.yaml"
+
+def _learn_from_p0(agent_role: str, p0_issue: str, cal_id: str = ""):
+    """从 P0 问题中学习，追加到 Agent 教训列表"""
+    if not AGENT_LESSONS_PATH.exists():
+        lessons = {}
+    else:
+        try:
+            with open(AGENT_LESSONS_PATH, 'r', encoding='utf-8') as f:
+                lessons = yaml.safe_load(f) or {}
+        except:
+            lessons = {}
+
+    if agent_role not in lessons:
+        lessons[agent_role] = []
+
+    lesson = f"{p0_issue[:100]}（来源: P0 {cal_id}）"
+    if lesson not in lessons[agent_role]:
+        lessons[agent_role].append(lesson)
+        with open(AGENT_LESSONS_PATH, 'w', encoding='utf-8') as f:
+            yaml.dump(lessons, f, allow_unicode=True)
+        print(f"  [AgentLesson] {agent_role} 新增教训: {p0_issue[:50]}...")
+
+
+def _get_agent_prompt_with_lessons(role: str, base_prompt: str) -> str:
+    """获取带教训注入的 Agent prompt"""
+    if not AGENT_LESSONS_PATH.exists():
+        return base_prompt
+
+    try:
+        with open(AGENT_LESSONS_PATH, 'r', encoding='utf-8') as f:
+            lessons = yaml.safe_load(f) or {}
+
+        role_lessons = lessons.get(role.upper(), [])
+        if role_lessons:
+            base_prompt += "\n\n## 从历史错误中学到的注意事项\n"
+            for lesson in role_lessons[-5:]:  # 最多显示 5 条
+                base_prompt += f"- {lesson}\n"
+    except:
+        pass
+    return base_prompt
+
+
+# ============================================================
+# W3: 模型效果学习 — 记录各模型任务效果
+# ============================================================
+
+MODEL_EFFECTIVENESS_PATH = Path(__file__).parent.parent / ".ai-state" / "model_effectiveness.jsonl"
+
+def _record_model_effectiveness(model: str, task_type: str, quality_score: int):
+    """记录模型在特定任务上的效果"""
+    entry = {
+        "model": model,
+        "task_type": task_type,
+        "quality_score": quality_score,  # 1-10
+        "timestamp": time.strftime('%Y-%m-%d %H:%M')
+    }
+    MODEL_EFFECTIVENESS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(MODEL_EFFECTIVENESS_PATH, 'a', encoding='utf-8') as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+
+def _select_best_model_learned(task_type: str) -> str:
+    """基于历史效果选择最佳模型"""
+    if not MODEL_EFFECTIVENESS_PATH.exists():
+        return None
+
+    # 读取历史记录
+    lines = MODEL_EFFECTIVENESS_PATH.read_text(encoding='utf-8').strip().split('\n')
+    if len(lines) < 10:
+        return None
+
+    # 按模型统计
+    model_scores = {}
+    for line in lines:
+        try:
+            entry = json.loads(line)
+            if entry.get("task_type") == task_type:
+                model = entry.get("model")
+                score = entry.get("quality_score", 5)
+                if model not in model_scores:
+                    model_scores[model] = {"total": 0, "sum": 0}
+                model_scores[model]["total"] += 1
+                model_scores[model]["sum"] += score
+        except:
+            continue
+
+    if not model_scores:
+        return None
+
+    # 选择平均分最高的
+    best = max(model_scores.items(), key=lambda x: x[1]["sum"]/x[1]["total"])
+    if best[1]["total"] >= 5:  # 至少 5 次记录
+        print(f"  [ModelLearn] {task_type} 最佳模型: {best[0]} (平均 {best[1]['sum']/best[1]['total']:.1f}分)")
+        return best[0]
+    return None
+
+
 def _match_expert_framework(task_goal: str, task_title: str) -> dict:
     """根据任务关键词匹配专家框架"""
     config_path = Path(__file__).parent.parent / "src" / "config" / "expert_frameworks.yaml"
