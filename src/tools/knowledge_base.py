@@ -185,6 +185,9 @@ def add_knowledge(title: str, domain: str, content: str, tags: List[str],
         "tags": tags,
         "confidence": confidence
     }
+    # === 竞品动态时间线：competitors 域自动添加 observed_at ===
+    if domain == "competitors":
+        entry["observed_at"] = datetime.now().strftime("%Y-%m-%d")
     filepath = domain_dir / filename
     filepath.write_text(json.dumps(entry, ensure_ascii=False, indent=2), encoding="utf-8")
     return str(filepath)
