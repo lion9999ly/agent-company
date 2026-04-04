@@ -17,6 +17,9 @@ _deep_learn_pending = {}
 # 教练模式状态：{open_id: True}
 _coach_mode = {}
 
+# 知识滴灌开关
+_drip_enabled = True
+
 
 def route_text_message(text: str, reply_target: str, reply_type: str, open_id: str, chat_id: str,
                        send_reply, session_id: str = None, mem=None):
@@ -171,6 +174,57 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
     if text_stripped.startswith("竞品推演") or text_stripped.startswith("competitor war game"):
         competitor = text_stripped.replace("竞品推演", "").replace("competitor war game", "").strip().strip(":：")
         _handle_competitor_wargame(competitor, reply_target, send_reply)
+        return
+
+    # === 2.18 知识滴灌 ===
+    if text_stripped in ("滴灌", "knowledge drip"):
+        _handle_drip_knowledge(reply_target, send_reply)
+        return
+    if text_stripped in ("关闭滴灌", "stop drip"):
+        _drip_enabled = False
+        send_reply(reply_target, "✅ 已关闭知识滴灌")
+        return
+    if text_stripped in ("开启滴灌", "start drip"):
+        _drip_enabled = True
+        send_reply(reply_target, "✅ 已开启知识滴灌")
+        return
+
+    # === 2.19 行动清单 ===
+    if text_stripped in ("待办", "todo", "行动清单", "action items"):
+        _handle_action_items(reply_target, send_reply)
+        return
+
+    # === 2.20 应知清单 ===
+    if text_stripped.startswith("应知清单") or text_stripped.startswith("due diligence"):
+        decision_id = text_stripped.replace("应知清单", "").replace("due diligence", "").strip().strip(":：")
+        _handle_due_diligence(decision_id, reply_target, send_reply)
+        return
+
+    # === 2.21 产出版本 Diff ===
+    if text_stripped.startswith("简报diff") or text_stripped.startswith("brief diff"):
+        output_id = text_stripped.replace("简报diff", "").replace("brief diff", "").strip().strip(":：")
+        _handle_output_diff(output_id, reply_target, send_reply)
+        return
+
+    # === 2.22 HUD 设计规范 ===
+    if text_stripped in ("HUD设计规范", "hud design spec", "HUD规范"):
+        _handle_hud_design_spec(reply_target, send_reply)
+        return
+
+    # === 2.23 Demo 场景脚本 ===
+    if text_stripped in ("Demo脚本", "demo script", "demo场景"):
+        _handle_demo_script(reply_target, send_reply)
+        return
+
+    # === 2.24 设置截止日 ===
+    if text_stripped.startswith("设置截止日") or text_stripped.startswith("set deadline"):
+        parts = text_stripped.replace("设置截止日", "").replace("set deadline", "").strip().split()
+        if len(parts) >= 2:
+            decision_id = parts[0].strip(":：")
+            deadline = parts[1]
+            _handle_set_deadline(decision_id, deadline, reply_target, send_reply)
+        else:
+            send_reply(reply_target, "格式: 设置截止日 decision_id 2026-04-30")
         return
 
     # === 3. 学习相关指令 ===
@@ -1178,6 +1232,235 @@ def _handle_fast_query(text: str, reply_target: str, send_reply):
             send_reply(reply_target, "抱歉，我暂时无法回答这个问题。")
     except Exception as e:
         send_reply(reply_target, f"处理异常: {str(e)[:200]}")
+
+
+def _handle_drip_knowledge(reply_target: str, send_reply):
+    """推送一条高价值知识滴灌"""
+    from src.tools.knowledge_base import KB_ROOT
+    from datetime import timedelta
+    import random
+
+    # 筛选：最近 7 天入库 + high confidence + 未被滴灌过
+    candidates = []
+    dripped_path = PROJECT_ROOT / ".ai-state" / "dripped_ids.json"
+    dripped = set()
+    if dripped_path.exists():
+        try:
+            dripped = set(json.loads(dripped_path.read_text(encoding='utf-8')))
+        except:
+            pass
+
+    for f in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(f.read_text(encoding='utf-8'))
+            if (data.get("confidence") in ("high", "authoritative") and
+                str(f) not in dripped and
+                data.get("created_at", "") >= (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")):
+                candidates.append((f, data))
+        except:
+            continue
+
+    if not candidates:
+        send_reply(reply_target, "暂无新的高价值知识可滴灌")
+        return
+
+    path, entry = random.choice(candidates)
+    # 用 Flash 生成一句话摘要
+    from src.utils.model_gateway import get_model_gateway
+    gw = get_model_gateway()
+    result = gw.call("gemini_2_5_flash",
+        f"用一句话总结这条知识的核心价值（30字以内）:\n{entry.get('title','')}: {entry.get('content','')[:300]}",
+        task_type="quick_summary")
+    if result.get("success"):
+        send_reply(reply_target, f"💡 你知道吗：{result['response'].strip()}")
+        dripped.add(str(path))
+        dripped_path.write_text(json.dumps(list(dripped)[-500:], ensure_ascii=False), encoding='utf-8')
+    else:
+        send_reply(reply_target, f"💡 你知道吗：{entry.get('title','')}")
+
+
+def _handle_action_items(reply_target: str, send_reply):
+    """显示待办事项"""
+    items_path = PROJECT_ROOT / ".ai-state" / "action_items.jsonl"
+    if not items_path.exists():
+        send_reply(reply_target, "📋 暂无待办事项")
+        return
+
+    try:
+        items = []
+        for line in items_path.read_text(encoding='utf-8').strip().split('\n')[-10:]:
+            if line.strip():
+                items.append(json.loads(line))
+
+        if not items:
+            send_reply(reply_target, "📋 暂无待办事项")
+            return
+
+        lines = ["📋 待办事项\n"]
+        for i, item in enumerate(items, 1):
+            status = "✅" if item.get("done") else "⬜"
+            lines.append(f"{i}. {status} {item.get('action', '')[:50]}")
+        send_reply(reply_target, "\n".join(lines))
+    except Exception as e:
+        send_reply(reply_target, f"读取失败: {e}")
+
+
+def _handle_due_diligence(decision_id: str, reply_target: str, send_reply):
+    """应知清单 — 检查决策所需知识是否完备"""
+    send_reply(reply_target, f"📋 正在检查应知清单: {decision_id}...")
+
+    def _run():
+        try:
+            import yaml as _yaml
+            from src.tools.knowledge_base import search_knowledge
+            gw = get_model_gateway()
+
+            # 标准 checklist 维度
+            checklist = [
+                ("技术可行性", "技术方案 实现 验证"),
+                ("供应链可靠性", "供应商 产能 交期"),
+                ("BOM成本", "BOM 成本 报价"),
+                ("专利风险", "专利 IP 授权"),
+                ("用户接受度", "用户 调研 需求"),
+                ("安全认证", "认证 标准 合规"),
+                ("售后维修", "售后 维修 保修"),
+                ("竞品应对", "竞品 对比 策略"),
+            ]
+
+            results = []
+            for dimension, keywords in checklist:
+                kb = search_knowledge(f"{decision_id} {keywords}", limit=3)
+                status = "✅" if len(kb) >= 2 else "❌"
+                results.append(f"{status} {dimension}: {len(kb)} 条知识")
+
+            send_reply(reply_target, f"📋 应知清单\n\n" + "\n".join(results))
+        except Exception as e:
+            send_reply(reply_target, f"检查失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_output_diff(output_id: str, reply_target: str, send_reply):
+    """产出版本 Diff"""
+    versions_dir = PROJECT_ROOT / ".ai-state" / "output_versions"
+    if not versions_dir.exists():
+        send_reply(reply_target, "暂无版本记录")
+        return
+
+    # 找到相关版本文件
+    files = sorted(versions_dir.glob(f"*{output_id}*.md"))[-2:]
+    if len(files) < 2:
+        send_reply(reply_target, f"版本记录不足（只有 {len(files)} 个版本）")
+        return
+
+    try:
+        v1 = files[-2].read_text(encoding='utf-8')
+        v2 = files[-1].read_text(encoding='utf-8')
+
+        from src.utils.model_gateway import get_model_gateway
+        gw = get_model_gateway()
+        result = gw.call("gemini_2_5_flash",
+            f"对比两个版本的核心差异（简洁列出 3-5 点）:\n\n版本1:\n{v1[:2000]}\n\n版本2:\n{v2[:2000]}",
+            task_type="compare")
+        if result.get("success"):
+            send_reply(reply_target, f"📊 版本差异\n\n{result['response']}")
+        else:
+            send_reply(reply_target, "对比失败")
+    except Exception as e:
+        send_reply(reply_target, f"Diff 失败: {e}")
+
+
+def _handle_hud_design_spec(reply_target: str, send_reply):
+    """HUD 设计规范生成器"""
+    send_reply(reply_target, "📐 正在生成 HUD 设计规范...")
+
+    def _run():
+        try:
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge
+            gw = get_model_gateway()
+
+            # 搜索相关约束
+            kb_results = search_knowledge("HUD 显示 布局 人因 视野", limit=15)
+            kb_text = "\n".join([f"- {r.get('title','')}: {r.get('content','')[:200]}" for r in kb_results])
+
+            prompt = (
+                f"基于以下知识，生成 HUD 显示设计规范。\n\n"
+                f"## 相关知识\n{kb_text}\n\n"
+                f"## 要求\n"
+                f"1. 信息布局规范（各信息位置）\n"
+                f"2. 色彩方案（日间/夜间）\n"
+                f"3. 字体大小规范（基于视距）\n"
+                f"4. 动画规范（过渡时间）\n"
+                f"5. 信息优先级\n"
+            )
+
+            result = gw.call("gpt_5_4", prompt, "你是 HUD 设计专家。", "content_generation")
+            if result.get("success"):
+                send_reply(reply_target, result["response"])
+            else:
+                send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
+        except Exception as e:
+            send_reply(reply_target, f"生成失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_demo_script(reply_target: str, send_reply):
+    """Demo 场景脚本生成器"""
+    send_reply(reply_target, "🎬 正在生成 Demo 场景脚本...")
+
+    def _run():
+        try:
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge
+            gw = get_model_gateway()
+
+            # 从 KB 搜索 PRD 和场景信息
+            kb_results = search_knowledge("PRD 功能 场景 用户", limit=10)
+            kb_text = "\n".join([f"- {r.get('title','')}: {r.get('content','')[:200]}" for r in kb_results])
+
+            prompt = (
+                f"基于以下产品知识，生成 Demo 场景脚本。\n\n"
+                f"## 产品知识\n{kb_text}\n\n"
+                f"## 要求\n"
+                f"1. 提取 5-8 个核心场景\n"
+                f"2. 每个场景：场景名称 + 用户动作 + 系统响应 + 预期效果\n"
+                f"3. 场景间有逻辑连贯性\n"
+                f"4. 适合 Demo 演示（每个场景 30-60 秒）\n"
+            )
+
+            result = gw.call("gpt_5_4", prompt, "你是产品演示专家。", "content_generation")
+            if result.get("success"):
+                send_reply(reply_target, result["response"])
+            else:
+                send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
+        except Exception as e:
+            send_reply(reply_target, f"生成失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_set_deadline(decision_id: str, deadline: str, reply_target: str, send_reply):
+    """设置决策截止日"""
+    try:
+        import yaml as _yaml
+        dt_path = PROJECT_ROOT / ".ai-state" / "product_decision_tree.yaml"
+        if not dt_path.exists():
+            send_reply(reply_target, "决策树文件不存在")
+            return
+
+        dt = _yaml.safe_load(dt_path.read_text(encoding='utf-8'))
+        for d in dt.get("decisions", []):
+            if decision_id.lower() in d.get("id", "").lower():
+                d["deadline"] = deadline
+                dt_path.write_text(_yaml.dump(dt, allow_unicode=True), encoding='utf-8')
+                send_reply(reply_target, f"✅ 已设置截止日: {d.get('question', '')[:30]} → {deadline}")
+                return
+
+        send_reply(reply_target, f"未找到决策: {decision_id}")
+    except Exception as e:
+        send_reply(reply_target, f"设置失败: {e}")
 
 
 def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: str, reply_type: str,
