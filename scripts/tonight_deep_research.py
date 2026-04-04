@@ -1018,7 +1018,7 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
             except:
                 pass
 
-    # === Layer 1: 并发双搜索 ===
+    # === Layer 1: 并发四通道搜索（升级版）===
     all_sources = []
     source_lock = threading.Lock()
 
@@ -1032,17 +1032,25 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
     )
 
     def _search_one_query(i: int, query: str) -> dict:
-        """单个 query 的双通道搜索（在线程中运行）"""
+        """单个 query 的四通道并行搜索（在线程中运行）
+
+        通道分配:
+        - o3-deep-research: 英文技术/专利/学术论文
+        - doubao-seed-pro: 中文互联网（小红书/B站/知乎）
+        - grok-4: 社交媒体实时动态/X-Twitter（新增）
+        - gemini-deep-research: Google学术/行业报告（新增）
+        - tavily: fallback 兜底
+        """
         source_text = ""
+        channel_results = {}
 
         # Channel A: o3-deep-research（英文技术 + 专利）
         o3_result = _call_with_backoff(
             "o3_deep_research", query,
             "Search for technical specifications, patents, and research papers.",
             "deep_research_search")
-        o3_text = ""
         if o3_result.get("success") and len(o3_result.get("response", "")) > 200:
-            o3_text = o3_result["response"][:3000]
+            channel_results["o3"] = o3_result["response"][:3000]
             model_used = o3_result.get("degraded_from", "o3_deep_research") if o3_result.get("degraded_from") else "o3"
             print(f"    [{i}] o3: {len(o3_result['response'])} 字 (via {model_used})")
 
@@ -1051,23 +1059,42 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
             "doubao_seed_pro", query,
             "搜索中文互联网信息，重点关注小红书、B站、知乎、雪球、1688等平台的相关内容。",
             "chinese_search")
-        doubao_text = ""
         if doubao_result.get("success") and len(doubao_result.get("response", "")) > 200:
-            doubao_text = doubao_result["response"][:3000]
+            channel_results["doubao"] = doubao_result["response"][:3000]
             print(f"    [{i}] doubao: {len(doubao_result['response'])} 字")
 
-        source_text = o3_text
-        if doubao_text:
-            source_text += "\n---\n" + doubao_text if source_text else doubao_text
+        # Channel C: grok-4（社交媒体实时动态 - 新增）
+        grok_result = _call_with_backoff(
+            "grok_4", query,
+            "Search for real-time social media discussions, Twitter/X posts, industry news, and KOL opinions. Focus on latest updates and user feedback.",
+            "grok_search")
+        if grok_result.get("success") and len(grok_result.get("response", "")) > 200:
+            channel_results["grok"] = grok_result["response"][:3000]
+            print(f"    [{i}] grok: {len(grok_result['response'])} 字")
 
-        # Fallback: tavily（仅当双通道都失败时）
+        # Channel D: gemini-deep-research（学术深挖 - 新增）
+        gemini_deep_result = _call_with_backoff(
+            "gemini_deep_research", query,
+            "Search for academic papers, Google Scholar results, industry reports, and detailed technical analysis.",
+            "gemini_deep_search")
+        if gemini_deep_result.get("success") and len(gemini_deep_result.get("response", "")) > 200:
+            channel_results["gemini_deep"] = gemini_deep_result["response"][:3000]
+            print(f"    [{i}] gemini_deep: {len(gemini_deep_result['response'])} 字")
+
+        # 合并所有通道结果
+        for channel, text in channel_results.items():
+            if source_text:
+                source_text += f"\n--- [{channel}] ---\n"
+            source_text += text
+
+        # Fallback: tavily（仅当所有通道都失败时）
         if not source_text:
             tavily_result = registry.call("tavily_search", query)
             if tavily_result.get("success") and len(tavily_result.get("data", "")) > 200:
                 source_text = tavily_result["data"][:3000]
                 print(f"    [{i}] tavily(fallback): {len(source_text)} 字")
 
-        return {"index": i, "query": query, "content": source_text}
+        return {"index": i, "query": query, "content": source_text, "channels": list(channel_results.keys())}
 
     # 展平 searches（discovery 可能返回嵌套 list）
     flat_searches = []
@@ -1078,8 +1105,8 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
             flat_searches.append(str(s))
     searches = flat_searches
 
-    # 并发搜索所有 query
-    print(f"  [L1] 并发搜索 {len(searches)} 个 query...")
+    # 并发搜索所有 query（四通道）
+    print(f"  [L1] 并发四通道搜索 {len(searches)} 个 query (o3 + doubao + grok + gemini_deep)...")
     with ThreadPoolExecutor(max_workers=8) as executor:
         futures = {
             executor.submit(_search_one_query, i, q): i
