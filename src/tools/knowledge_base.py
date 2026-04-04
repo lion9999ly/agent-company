@@ -287,7 +287,7 @@ def add_knowledge(title: str, domain: str, content: str, tags: List[str],
 
     Args:
         caller: 调用来源，影响 confidence 上限
-            - "user_share" / "doc_import" / "user_upload": 允许 high
+            - "user_share" / "doc_import" / "user_upload" / "team_member": 允许 high
             - "self_learning" / "auto" / "llm_generate": 上限 medium
             - "product_decision": 允许 authoritative
         confidence_score: 数值置信度 (0.0-1.0)
@@ -296,6 +296,11 @@ def add_knowledge(title: str, domain: str, content: str, tags: List[str],
     """
     import random
 
+    # === 组织学习：团队成员第一手信息直接设为 high ===
+    if caller == "team_member":
+        confidence = "high"
+        print(f"[KB] 团队成员第一手信息，confidence 设为 high — {title[:40]}")
+
     # === Guardrail 1: 内容最小长度 ===
     if len(content.strip()) < 30:
         print(f"[KB_GUARD] 拒绝入库: content 太短 ({len(content.strip())} 字) — {title[:40]}")
@@ -303,7 +308,7 @@ def add_knowledge(title: str, domain: str, content: str, tags: List[str],
 
     # === Guardrail 2: confidence 上限 ===
     TRUSTED_CALLERS = {"user_share", "doc_import", "user_upload", "product_decision",
-                       "user_feedback_analysis", "critic_rule"}
+                       "user_feedback_analysis", "critic_rule", "team_member"}
     if caller not in TRUSTED_CALLERS:
         if confidence == "high":
             confidence = "medium"
