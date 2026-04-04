@@ -117,6 +117,12 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_decision_brief(decision_id, reply_target, send_reply)
         return
 
+    # === 2.10 谈判准备简报 ===
+    if text_stripped.startswith("谈判准备") or text_stripped.startswith("negotiation"):
+        target_name = text_stripped.replace("谈判准备", "").replace("negotiation", "").strip().strip(":：")
+        _handle_negotiation_brief(target_name, reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -756,6 +762,51 @@ def _handle_decision_brief(decision_id: str, reply_target: str, send_reply):
             )
 
             result = gw.call("gpt_5_4", prompt, "你是产品决策顾问，输出结构化的决策简报。", "synthesis")
+            if result.get("success"):
+                send_reply(reply_target, result["response"])
+            else:
+                send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
+        except Exception as e:
+            send_reply(reply_target, f"生成失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_negotiation_brief(target_name: str, reply_target: str, send_reply):
+    """生成谈判准备简报"""
+    send_reply(reply_target, f"📋 正在生成谈判准备: {target_name}...")
+
+    def _run():
+        try:
+            import yaml as _yaml
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge
+            gw = get_model_gateway()
+
+            # 搜索相关 KB（对方产能/报价/竞品对比）
+            kb_results = search_knowledge(f"{target_name} 产能 报价 供应商", limit=15)
+            kb_text = "\n".join([f"- [{r.get('confidence','')}] {r.get('title','')}: {r.get('content','')[:200]}"
+                                for r in kb_results])
+
+            # 搜索竞品信息
+            competitor_results = search_knowledge(f"{target_name} 竞品 替代供应商", limit=10)
+            competitor_text = "\n".join([f"- {r.get('title','')}: {r.get('content','')[:150]}"
+                                        for r in competitor_results])
+
+            prompt = (
+                f"生成谈判准备简报。\n\n"
+                f"## 谈判对象\n{target_name}\n\n"
+                f"## 对方信息（产能/报价/历史合作）\n{kb_text}\n\n"
+                f"## 竞品/替代方案\n{competitor_text}\n\n"
+                f"## 要求\n"
+                f"1. 对方产能和报价分析（如果有数据）\n"
+                f"2. 竞品对比（至少 2-3 个替代方案）\n"
+                f"3. BATNA（我们的最佳替代方案）\n"
+                f"4. 谈判筹码分析（我们有什么对方想要的）\n"
+                f"5. 谈判策略建议（开局报价、让步节奏、底线）\n"
+            )
+
+            result = gw.call("gpt_5_4", prompt, "你是采购谈判顾问，输出结构化的谈判准备简报。", "synthesis")
             if result.get("success"):
                 send_reply(reply_target, result["response"])
             else:
