@@ -474,6 +474,331 @@ def _get_related_findings(task_title: str, task_goal: str, limit: int = 5) -> st
         text += f"- [{source}] {finding}\n"
     return text
 
+
+# ============================================================
+# A-4: G3 报告摘要层 — 生成 3 句话摘要
+# ============================================================
+
+def _generate_report_summary(report: str, task_title: str) -> dict:
+    """生成报告的 3 句话摘要"""
+    result = _call_model("gemini_2_5_flash",
+        f"为以下研究报告生成 3 句话摘要:\n"
+        f"第 1 句: 核心发现（最重要的一个结论）\n"
+        f"第 2 句: 关键数据点（最有决策价值的一个数字）\n"
+        f"第 3 句: 对产品决策的影响（这个发现意味着什么）\n\n"
+        f"报告标题: {task_title}\n"
+        f"报告内容:\n{report[:3000]}\n\n"
+        f"输出 JSON: {{\"core_finding\": \"...\", \"key_data\": \"...\", \"decision_impact\": \"...\"}}",
+        task_type="knowledge_extract")
+    if result.get("success"):
+        try:
+            return json.loads(re.sub(r'^```json\s*|\s*```$', '', result["response"].strip()))
+        except:
+            pass
+    return {}
+
+
+# ============================================================
+# A-5: G4 好奇心驱动 — 意外发现检测与任务追加
+# ============================================================
+
+def _process_serendipity(structured_data_list: list, progress_callback=None):
+    """处理意外发现，追加到任务池"""
+    serendipities = []
+    for data in structured_data_list:
+        if isinstance(data, dict):
+            for s in data.get("serendipity", []):
+                serendipities.append(s)
+
+    if not serendipities:
+        return
+
+    print(f"  [Curiosity] 发现 {len(serendipities)} 个意外线索")
+
+    pool = _load_task_pool()
+    for s in serendipities[:3]:
+        new_task = {
+            "id": f"curiosity_{int(time.time())}",
+            "title": f"[好奇心] {s.get('finding', '')[:40]}",
+            "goal": f"深入调查意外发现: {s.get('finding', '')}。潜在价值: {s.get('potential_value', '')}",
+            "priority": 3,
+            "source": "serendipity",
+            "discovered_at": time.strftime('%Y-%m-%d %H:%M'),
+            "searches": [s.get("finding", "")[:50]],
+        }
+        pool.append(new_task)
+        print(f"  [Curiosity] 追加任务: {new_task['title']}")
+    _save_task_pool(pool)
+
+
+# ============================================================
+# A-6: H1 经验法则提取 — 从 KB 提取可复用模式
+# ============================================================
+
+def _extract_experience_rules():
+    """从 KB 中提取经验法则"""
+    groups = {}
+    for f in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(f.read_text(encoding='utf-8'))
+            title = data.get("title", "")
+            for entity in ["歌尔", "立讯", "Cardo", "Sena", "JBD", "Sony", "OLED", "MicroLED"]:
+                if entity.lower() in title.lower():
+                    if entity not in groups:
+                        groups[entity] = []
+                    groups[entity].append(data)
+        except:
+            continue
+
+    rules_found = 0
+    for entity, entries in groups.items():
+        if len(entries) < 5:
+            continue
+
+        entries_text = "\n".join([f"- {e.get('title', '')}: {e.get('content', '')[:200]}" for e in entries[:10]])
+        result = _call_model("gemini_2_5_flash",
+            f"以下是关于 {entity} 的 {len(entries)} 条知识库条目:\n\n{entries_text}\n\n"
+            f"从中提取可复用的经验法则或模式（如果有的话）。\n"
+            f"例如: '该供应商首次报价通常是最终成本的 X%' 或 '该技术每年降价约 Y%'\n"
+            f"如果数据不足以提取可靠模式，输出'数据不足'。\n"
+            f"输出 JSON: [{{\"rule\": \"经验法则\", \"sample_count\": N, \"confidence\": 0.0-1.0}}]",
+            task_type="knowledge_extract")
+
+        if result.get("success") and "数据不足" not in result["response"]:
+            try:
+                rules = json.loads(re.sub(r'^```json\s*|\s*```$', '', result["response"].strip()))
+                for rule in rules:
+                    add_knowledge(
+                        title=f"[经验法则] {entity}: {rule.get('rule', '')[:50]}",
+                        domain="lessons",
+                        content=f"{rule.get('rule', '')}\n\n基于 {rule.get('sample_count', '?')} 个样本，置信度 {rule.get('confidence', '?')}",
+                        tags=["experience_rule", entity, "derived"],
+                        source="pattern_extraction",
+                        confidence="medium"
+                    )
+                    rules_found += 1
+            except:
+                pass
+
+    print(f"  [Rules] 提取 {rules_found} 条经验法则")
+
+
+# ============================================================
+# A-7: J1 趋势预测 — 时间序列数据外推
+# ============================================================
+
+PREDICTIONS_PATH = Path(__file__).parent.parent / ".ai-state" / "predictions.jsonl"
+
+def _generate_trend_predictions():
+    """对 KB 中有时间序列的数据做趋势外推"""
+    # 收集有多个时间点的指标
+    time_series_data = {}
+    for f in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(f.read_text(encoding='utf-8'))
+            content = data.get("content", "")
+            title = data.get("title", "")
+            # 提取数字和年份
+            year_matches = re.findall(r'(20\d{2})', content)
+            number_matches = re.findall(r'(\d+\.?\d*)\s*(美元|元|USD|\$|mm|g|mAh|W|V|%)', content)
+            if year_matches and number_matches:
+                for year, (value, unit) in zip(year_matches, number_matches):
+                    key = f"{title[:30]}_{unit}"
+                    if key not in time_series_data:
+                        time_series_data[key] = []
+                    time_series_data[key].append({"year": year, "value": float(value)})
+        except:
+            continue
+
+    predictions = []
+    for key, points in time_series_data.items():
+        if len(points) < 3:
+            continue
+        # 按年份排序
+        points.sort(key=lambda x: x["year"])
+        # 简单线性趋势预测
+        years = [int(p["year"]) for p in points]
+        values = [p["value"] for p in points]
+        if len(set(years)) < 2:
+            continue
+        # 线性回归
+        n = len(years)
+        sum_x = sum(years)
+        sum_y = sum(values)
+        sum_xy = sum(x * y for x, y in zip(years, values))
+        sum_xx = sum(x * x for x in years)
+        slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x) if n * sum_xx != sum_x * sum_x else 0
+        intercept = (sum_y - slope * sum_x) / n
+        # 预测未来 12 个月
+        next_year = max(years) + 1
+        predicted_value = slope * next_year + intercept
+        predictions.append({
+            "topic": key,
+            "historical": points,
+            "prediction_12m": round(predicted_value, 2),
+            "trend": "increasing" if slope > 0 else "decreasing",
+            "confidence": "low"  # 简单线性回归置信度低
+        })
+
+    if predictions:
+        with open(PREDICTIONS_PATH, 'a', encoding='utf-8') as f:
+            for pred in predictions:
+                pred["timestamp"] = time.strftime('%Y-%m-%d %H:%M')
+                f.write(json.dumps(pred, ensure_ascii=False) + "\n")
+        print(f"  [Trends] 生成 {len(predictions)} 个趋势预测")
+
+
+# ============================================================
+# A-8: J4 方案压力测试 — 极端场景分析
+# ============================================================
+
+def stress_test_product(plan_description: str = "", progress_callback=None) -> str:
+    """对产品方案做极端场景压力测试"""
+    # 生成 15-20 个极端场景
+    scenarios_prompt = (
+        f"你是产品风险分析师。针对以下产品方案，生成 15-20 个极端场景:\n\n"
+        f"{plan_description[:2000]}\n\n"
+        f"场景类型:\n"
+        f"- 环境极端（高温、极寒、暴雨、沙尘）\n"
+        f"- 使用极端（连续骑行 12h、摔车、高速冲击）\n"
+        f"- 技术故障（GPS 丢失、电池耗尽、系统崩溃）\n"
+        f"- 用户极端（老年用户、听力障碍、新手）\n"
+        f"- 供应链中断（芯片缺货、供应商倒闭）\n\n"
+        f"输出 JSON 数组: [{{\"scenario\": \"场景描述\", \"impact\": \"高/中/低\"}}]"
+    )
+    result = _call_model("gpt_5_4", scenarios_prompt, "只输出 JSON 数组。", "stress_test")
+    if not result.get("success"):
+        return "压力测试失败"
+
+    try:
+        scenarios = json.loads(re.sub(r'^```json\s*|\s*```$', '', result["response"].strip()))
+    except:
+        return "场景解析失败"
+
+    # 逐个场景检查方案是否有应对设计
+    test_results = []
+    for scenario in scenarios[:15]:
+        check_prompt = (
+            f"产品方案:\n{plan_description[:1500]}\n\n"
+            f"极端场景: {scenario.get('scenario', '')}\n\n"
+            f"检查方案中是否有应对此场景的设计。\n"
+            f"输出 JSON: {{\"handled\": true/false, \"gap\": \"缺失的应对措施（如果有）\"}}"
+        )
+        check_result = _call_model("gemini_2_5_flash", check_prompt, "只输出 JSON。", "stress_check")
+        if check_result.get("success"):
+            try:
+                check_data = json.loads(re.sub(r'^```json\s*|\s*```$', '', check_result["response"].strip()))
+                test_results.append({
+                    "scenario": scenario.get("scenario"),
+                    "impact": scenario.get("impact"),
+                    **check_data
+                })
+            except:
+                pass
+
+    # 生成韧性评估报告
+    handled_count = sum(1 for r in test_results if r.get("handled"))
+    resilience_score = handled_count / len(test_results) * 100 if test_results else 0
+
+    report = f"# 产品方案压力测试报告\n\n"
+    report += f"## 韧性评分: {resilience_score:.0f}%\n\n"
+    report += f"- 测试场景数: {len(test_results)}\n"
+    report += f"- 已覆盖场景: {handled_count}\n"
+    report += f"- 未覆盖场景: {len(test_results) - handled_count}\n\n"
+    report += "## 未覆盖场景详情\n\n"
+    for r in test_results:
+        if not r.get("handled"):
+            report += f"- **{r.get('scenario')}** (影响: {r.get('impact')})\n"
+            report += f"  缺失: {r.get('gap', '未说明')}\n\n"
+
+    return report
+
+
+# ============================================================
+# A-9: Kn1 知识综述生成 — 整合碎片知识
+# ============================================================
+
+def _generate_knowledge_synthesis():
+    """扫描 KB，对碎片知识生成综述"""
+    from collections import Counter
+
+    topic_groups = {}
+    for f in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(f.read_text(encoding='utf-8'))
+            if data.get("type") == "synthesis":
+                continue  # 跳过已有综述
+            title = data.get("title", "")
+            for keyword in ["HUD", "光学", "歌尔", "Cardo", "Sena", "MicroLED", "OLED", "Mesh", "ANC", "传感器", "认证"]:
+                if keyword.lower() in title.lower():
+                    if keyword not in topic_groups:
+                        topic_groups[keyword] = []
+                    topic_groups[keyword].append(data)
+        except:
+            continue
+
+    for topic, entries in topic_groups.items():
+        if len(entries) < 10:
+            continue
+
+        entries_text = "\n".join([f"- {e.get('title','')}: {e.get('content','')[:200]}" for e in entries[:20]])
+        result = _call_model("gpt_5_4",
+            f"以下是关于 '{topic}' 的 {len(entries)} 条知识库碎片。\n"
+            f"请整合成一篇结构化综述（1000-1500字），包含：\n"
+            f"1. 技术/市场现状概览\n2. 关键供应商/竞品对比\n3. 成本结构\n4. 风险和机会\n5. 决策建议\n\n"
+            f"知识碎片:\n{entries_text}",
+            "你是行业分析师，用数据说话。", "synthesis")
+
+        if result.get("success"):
+            add_knowledge(
+                title=f"[综述] {topic} 全景分析",
+                domain="lessons",
+                content=result["response"],
+                tags=["synthesis", topic],
+                source="auto_synthesis",
+                confidence="high"
+            )
+            print(f"  [Synthesis] 生成综述: {topic}（基于 {len(entries)} 条碎片）")
+
+
+# ============================================================
+# A-10: Kn2 类比推理引擎 — 跨领域推理
+# ============================================================
+
+def _try_analogy_reasoning(query: str, kb_results: list) -> str:
+    """当 KB 直接数据不足时，尝试类比推理"""
+    if len(kb_results) >= 3:
+        return ""  # 直接数据足够，不需要类比
+
+    analogy_domains = {
+        "骑行头盔 HUD": ["汽车 HUD", "战斗机 HUD", "AR 眼镜"],
+        "骑行头盔 ANC": ["TWS 耳机 ANC", "头戴式耳机 ANC"],
+        "骑行头盔 市场": ["智能手表市场", "运动相机市场", "TWS 耳机市场"],
+        "Mesh 组队": ["对讲机市场", "游戏语音组队"],
+    }
+
+    best_domain = None
+    for key, analogies in analogy_domains.items():
+        if any(kw in query for kw in key.split()):
+            best_domain = analogies
+            break
+
+    if not best_domain:
+        return ""
+
+    result = _call_model("gemini_2_5_flash",
+        f"问题: {query}\n"
+        f"直接数据不足。请用以下类似领域的数据做类比推理:\n"
+        f"类比领域: {', '.join(best_domain)}\n\n"
+        f"输出格式:\n⚡ 类比推理（非直接数据）\n"
+        f"类比来源: [领域]\n推理: [具体推理]\n置信度: [低/中]",
+        task_type="analogy")
+
+    if result.get("success"):
+        return f"\n\n{result['response']}"
+    return ""
+
+
 def _match_expert_framework(task_goal: str, task_title: str) -> dict:
     """根据任务关键词匹配专家框架"""
     config_path = Path(__file__).parent.parent / "src" / "config" / "expert_frameworks.yaml"
