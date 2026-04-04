@@ -106,6 +106,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_dashboard(reply_target, send_reply)
         return
 
+    # === 2.8 产品 One-Pager ===
+    if text_stripped in ("产品简介", "one pager", "产品概要", "产品介绍"):
+        _handle_one_pager(reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -655,6 +660,43 @@ def _handle_dashboard(reply_target: str, send_reply):
         pass
 
     send_reply(reply_target, "\n".join(lines))
+
+
+def _handle_one_pager(reply_target: str, send_reply):
+    """生成产品 One-Pager"""
+    send_reply(reply_target, "📄 正在生成产品简介...")
+
+    def _run():
+        try:
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge, get_knowledge_stats
+            gw = get_model_gateway()
+
+            # 收集 KB 精华
+            highlights = search_knowledge("智能骑行头盔 V1 核心功能 HUD 导航", limit=10)
+            kb_text = "\n".join([f"- {h.get('title','')}: {h.get('content','')[:200]}" for h in highlights])
+
+            prompt = (
+                f"基于以下知识库信息，生成一份智能骑行头盔的产品 One-Pager。\n\n"
+                f"## 知识库精华\n{kb_text}\n\n"
+                f"## 要求\n"
+                f"1. 标题 + 一句话副标题\n"
+                f"2. 3-4 个核心功能亮点（每个一句话）\n"
+                f"3. 目标用户和市场定位\n"
+                f"4. 技术差异化（和竞品比有什么独特的）\n"
+                f"5. V1 上市时间线\n\n"
+                f"语言要有感染力，像给投资人看的 pitch deck 第一页。"
+            )
+
+            result = gw.call("gpt_5_4", prompt, "你是产品营销专家。", "content_generation")
+            if result.get("success"):
+                send_reply(reply_target, result["response"])
+            else:
+                send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
+        except Exception as e:
+            send_reply(reply_target, f"生成失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
 
 
 def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: str, reply_type: str,
