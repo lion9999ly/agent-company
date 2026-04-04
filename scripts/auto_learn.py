@@ -25,6 +25,36 @@ from src.tools.knowledge_base import KB_ROOT, add_knowledge, get_knowledge_stats
 gateway = get_model_gateway()
 
 
+def _calculate_time_weighted_priority(base_priority: int, deadline: str) -> float:
+    """优先级 × 紧迫度系数
+
+    Args:
+        base_priority: 基础优先级 (1-3, 数字越小越优先)
+        deadline: 截止日期 (YYYY-MM-DD)
+
+    Returns:
+        加权优先级 (数字越小越优先)
+    """
+    if not deadline:
+        return float(base_priority)
+
+    try:
+        days_left = (datetime.strptime(deadline, "%Y-%m-%d") - datetime.now()).days
+    except:
+        return float(base_priority)
+
+    if days_left <= 0:
+        urgency = 5.0  # 已过期，最高紧迫
+    elif days_left <= 7:
+        urgency = 3.0
+    elif days_left <= 30:
+        urgency = 1.5
+    else:
+        urgency = 1.0
+
+    return base_priority * urgency
+
+
 def _find_kb_gaps() -> list:
     """分析知识库缺口，返回需要补充的搜索词列表
 
@@ -51,11 +81,16 @@ def _find_kb_gaps() -> list:
                     # 检查是否已解决
                     already = any(bk[:20].lower() in rt.lower() for rt in resolved_texts)
                     if not already:
+                        # 应用时间价值加权
+                        deadline = d.get("deadline", "")
+                        base_priority = d.get("priority", 2)
+                        weighted_priority = _calculate_time_weighted_priority(base_priority, deadline)
+
                         gaps.append({
                             "type": "decision_blocking",
                             "domain": "components",
                             "query": bk,
-                            "priority": d.get("priority", 2),
+                            "priority": weighted_priority,  # 使用加权优先级
                             "decision_id": d.get("id", ""),
                         })
         except Exception as e:
