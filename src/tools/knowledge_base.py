@@ -507,3 +507,67 @@ def add_report(title: str, domain: str, content: str, tags: List[str] = None,
     filepath = domain_dir / filename
     filepath.write_text(json.dumps(entry, ensure_ascii=False, indent=2), encoding="utf-8")
     return str(filepath)
+
+
+# ============================================================
+# 回答反馈记录
+# ============================================================
+
+FEEDBACK_LOG_PATH = KB_ROOT.parent / "answer_feedback.jsonl"
+
+def record_answer_feedback(question: str, kb_entry_ids: List[str], feedback: str, user_id: str = ""):
+    """记录用户对回答的反馈
+
+    Args:
+        question: 用户问题
+        kb_entry_ids: 引用的 KB 条目 ID 列表
+        feedback: "positive" 或 "negative"
+        user_id: 用户 ID（可选）
+    """
+    entry = {
+        "question": question,
+        "kb_entries": kb_entry_ids,
+        "feedback": feedback,
+        "user_id": user_id,
+        "timestamp": datetime.now().isoformat()
+    }
+
+    # 写入反馈日志
+    FEEDBACK_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(FEEDBACK_LOG_PATH, 'a', encoding='utf-8') as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+    # 如果是负面反馈，降低相关 KB 条目的 confidence
+    if feedback == "negative" and kb_entry_ids:
+        for entry_id in kb_entry_ids:
+            # 尝试找到对应的 KB 文件
+            for json_file in KB_ROOT.rglob("*.json"):
+                try:
+                    data = json.loads(json_file.read_text(encoding="utf-8"))
+                    if str(json_file) == entry_id or json_file.stem == entry_id:
+                        # 降低 confidence
+                        current = data.get("confidence", "medium")
+                        if current == "high":
+                            data["confidence"] = "medium"
+                        elif current == "medium":
+                            data["confidence"] = "low"
+                        data["_negative_feedback_count"] = data.get("_negative_feedback_count", 0) + 1
+                        json_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+                        break
+                except:
+                    continue
+
+    # 如果是正面反馈，增加 KB 条目的权重
+    if feedback == "positive" and kb_entry_ids:
+        for entry_id in kb_entry_ids:
+            for json_file in KB_ROOT.rglob("*.json"):
+                try:
+                    data = json.loads(json_file.read_text(encoding="utf-8"))
+                    if str(json_file) == entry_id or json_file.stem == entry_id:
+                        data["_positive_feedback_count"] = data.get("_positive_feedback_count", 0) + 1
+                        json_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+                        break
+                except:
+                    continue
+
+    return True

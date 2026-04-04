@@ -164,6 +164,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_calibration_reply(text_stripped, reply_target, send_reply)
         return
 
+    # === 2.5.5 回答反馈处理 ===
+    if text_stripped in ("👍", "👎", "👍👍", "👎👎"):
+        _handle_answer_feedback(text_stripped, open_id, reply_target, send_reply)
+        return
+
     # === 2.6 早报 ===
     if text_stripped in ("早报", "morning", "日报", "daily"):
         _handle_morning_brief(reply_target, send_reply)
@@ -1799,6 +1804,7 @@ def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: 
         # 搜索知识库
         kb_entries = search_knowledge(text, limit=5)
         kb_context = format_knowledge_for_prompt(kb_entries) if kb_entries else ""
+        kb_used = bool(kb_context)  # 标记是否使用了 KB 数据
 
         # 构建 prompt
         prompt = text
@@ -1809,12 +1815,55 @@ def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: 
         result = gateway.call_azure_openai("cpo", prompt, "", "chat")
 
         if result.get("success"):
-            send_reply(reply_target, result["response"])
+            reply_text = result["response"]
+            # 如果使用了 KB 数据，追加反馈提示
+            if kb_used:
+                reply_text += "\n\n📊 这个回答准确吗？回复 👍 或 👎"
+            send_reply(reply_target, reply_text)
+            # 记录本次回答供反馈使用
+            _last_kb_answer[open_id or "default"] = {
+                "question": text[:100],
+                "kb_entries": [e.get("id", "") for e in (kb_entries or [])],
+                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M")
+            }
         else:
             send_reply(reply_target, "抱歉，我暂时无法回答这个问题。")
 
     except Exception as e:
         _safe_reply_error(send_reply, reply_target, "智能对话", e)
+
+
+# 记录最近一次 KB 回答（用于反馈）
+_last_kb_answer = {}
+
+
+def _handle_answer_feedback(text: str, open_id: str, reply_target: str, send_reply):
+    """处理回答反馈（👍/👎）"""
+    last_answer = _last_kb_answer.get(open_id or "default")
+    if not last_answer:
+        send_reply(reply_target, "⚠️ 没有可评价的回答")
+        return
+
+    feedback = "positive" if "👍" in text else "negative" if "👎" in text else None
+    if not feedback:
+        return  # 不是反馈
+
+    try:
+        from src.tools.knowledge_base import record_answer_feedback
+        record_answer_feedback(
+            question=last_answer.get("question", ""),
+            kb_entry_ids=last_answer.get("kb_entries", []),
+            feedback=feedback,
+            user_id=open_id
+        )
+        del _last_kb_answer[open_id or "default"]
+        if feedback == "positive":
+            send_reply(reply_target, "✅ 感谢反馈！这条知识已标记为有帮助")
+        else:
+            send_reply(reply_target, "📝 感谢反馈！我会改进这条知识的质量")
+    except Exception as e:
+        print(f"[Feedback] 记录失败: {e}")
+        send_reply(reply_target, "反馈记录失败，但感谢你的意见！")
 
 
 # === 导出接口 ===
