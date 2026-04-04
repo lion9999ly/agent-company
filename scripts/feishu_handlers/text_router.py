@@ -49,7 +49,7 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         return
 
     # === 2.5 校准回复处理 ===
-    if text_stripped in ("1", "2", "3", "0"):
+    if text_stripped and all(c in "0123" for c in text_stripped) and len(text_stripped) <= 10:
         _handle_calibration_reply(text_stripped, reply_target, send_reply)
         return
 
@@ -250,48 +250,57 @@ def _handle_alignment(reply_target: str, send_reply):
 def _handle_calibration_reply(text: str, reply_target: str, send_reply):
     """处理 Critic 校准回复
 
-    用户回复 1/2/3/0 时，从最近的校准样本中获取 sample_id 并记录标注。
+    支持两种格式:
+    - 单字符: "1"/"2"/"3"/"0" → 标注最新一个样本（向后兼容）
+    - 批量字符串: "11213" → 依次标注多个样本
     """
     try:
-        from scripts.critic_calibration import record_label
+        from scripts.critic_calibration import record_label, _load_pending_samples
 
-        # 读取最近的校准样本
-        pending_path = PROJECT_ROOT / ".ai-state" / "critic_calibration_pending.json"
-        if not pending_path.exists():
-            send_reply(reply_target, "⚠️ 没有待校准的样本")
-            return
-
-        pending = json.loads(pending_path.read_text(encoding="utf-8"))
+        pending = _load_pending_samples()
         if not pending:
             send_reply(reply_target, "⚠️ 没有待校准的样本")
             return
 
-        # 取最新的样本
-        latest = pending[-1]
-        sample_id = latest.get("sample_id", "")
-        if not sample_id:
-            send_reply(reply_target, "⚠️ 样本 ID 无效")
-            return
-
-        # 映射回复到标签
         label_map = {"1": "accurate", "2": "too_loose", "3": "too_strict", "0": "skip"}
-        label = label_map.get(text, "")
 
-        if not label:
-            send_reply(reply_target, f"⚠️ 无效的回复: {text}")
+        # 检查是否全部是 1/2/3/0 字符
+        if not all(c in "0123" for c in text):
+            send_reply(reply_target, f"⚠️ 无效格式，请只使用 0/1/2/3")
             return
 
-        success = record_label(sample_id, label)
-        if success:
-            label_desc = {"accurate": "✅ 准确", "too_loose": "⬆️ 偏松", "too_strict": "⬇️ 偏紧", "skip": "⏭️ 跳过"}
-            send_reply(reply_target, f"✅ 校准已记录: {sample_id} = {label_desc.get(label, label)}")
+        if len(text) == 1:
+            # 单字符：标注最新一个（向后兼容）
+            latest = pending[-1]
+            label = label_map[text]
+            success = record_label(latest.get("sample_id", ""), label)
+            if success:
+                desc = {"accurate": "✅准确", "too_loose": "⬆️偏松", "too_strict": "⬇️偏紧", "skip": "⏭️跳过"}
+                send_reply(reply_target, f"✅ 已记录: {desc.get(label, label)}")
+            else:
+                send_reply(reply_target, "❌ 记录失败")
         else:
-            send_reply(reply_target, f"❌ 记录失败: 未找到样本 {sample_id}")
+            # 批量：依次标注最近 N 个样本
+            batch = pending[-len(text):]
+            if len(text) != len(batch):
+                send_reply(reply_target,
+                    f"⚠️ 样本数不匹配: 你回复了 {len(text)} 个，但只有 {len(batch)} 个待校准")
+                return
+
+            results = []
+            desc_map = {"accurate": "✅", "too_loose": "⬆️", "too_strict": "⬇️", "skip": "⏭️"}
+            for i, (char, sample) in enumerate(zip(text, batch)):
+                label = label_map.get(char, "skip")
+                success = record_label(sample.get("sample_id", ""), label)
+                results.append(f"{i+1}. {desc_map.get(label, '?')} {sample.get('level', '?')}: {sample.get('issue', '')[:30]}")
+
+            send_reply(reply_target,
+                f"✅ 批量校准完成 ({len(results)} 条)\n" + "\n".join(results))
 
     except ImportError:
         send_reply(reply_target, "⚠️ 校准模块未安装")
     except Exception as e:
-        send_reply(reply_target, f"❌ 校准处理异常: {e}")
+        send_reply(reply_target, f"❌ 校准异常: {e}")
 
 
 def _handle_add_topic(text: str, reply_target: str, send_reply):

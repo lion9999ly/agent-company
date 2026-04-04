@@ -334,6 +334,15 @@ def resolve_capability_gap(gap: dict, gateway) -> dict:
         gap_context=description
     )
 
+    # 推送飞书通知（如果有回调）
+    if verified and hasattr(resolve_capability_gap, '_feishu_callback'):
+        callback = resolve_capability_gap._feishu_callback
+        if callback:
+            try:
+                callback(f"🧬 元能力进化: 新增工具 [{plan.get('tool_name', '')}] — {plan.get('description', '')[:60]}")
+            except:
+                pass
+
     return {
         "success": verified,
         "tool_name": plan.get("tool_name", "unknown"),

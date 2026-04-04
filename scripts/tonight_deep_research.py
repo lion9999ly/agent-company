@@ -710,6 +710,9 @@ def _run_critic_challenge(report: str, goal: str, agent_outputs: dict,
     # === 元能力层: Critic 缺口扫描 ===
     try:
         from scripts.meta_capability import scan_capability_gaps, resolve_capability_gap
+        # 设置飞书回调（用于工具注册通知）
+        resolve_capability_gap._feishu_callback = progress_callback
+
         critic_gaps = scan_capability_gaps(critic_result.get("response", ""))
         resolved_tools = []
         if critic_gaps:
@@ -1151,14 +1154,15 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         f"研究任务：{title}\n目标：{goal}\n\n"
         f"判断这个任务需要以下哪些角色参与分析：\n"
         f"- CTO：技术可行性、参数对比、芯片/模组选型、风险评估\n"
-        f"- CMO：市场验证、竞争格局、定价策略、商业模式、用户画像\n"
+        f"- CMO：市场验证、竞争格局、定价策略、商业模式、用户画像、中文互联网信息\n"
         f"- CDO：产品形态、用户体验、工业设计、外观约束\n\n"
+        f"默认分配 CTO+CMO+CDO 全部三个角色，除非任务内容与某个角色完全无关。\n"
+        f"CMO 擅长中文互联网搜索和市场分析，大部分任务都应该包含 CMO。\n"
         f"只输出 JSON 数组，如 [\"CTO\", \"CMO\"] 或 [\"CTO\", \"CMO\", \"CDO\"]\n"
-        f"如果任务偏技术，CDO 可以不参与。如果任务偏商业/用户，CTO 可以精简参与。"
     )
 
     role_result = _call_model(_get_model_for_task("role_assign"), role_prompt, "只输出 JSON 数组。", "role_assign")
-    roles = ["CTO", "CMO"]  # 默认
+    roles = ["CTO", "CMO", "CDO"]  # 默认全部参与
     if role_result.get("success"):
         try:
             resp = role_result["response"].strip()
@@ -1846,6 +1850,18 @@ def _discover_new_tasks() -> list:
     3. 竞品动态
     4. 供应链变化
     """
+    # 收集已有任务标题（用于去重）
+    pool = _load_task_pool()
+    existing_titles = [t.get("title", "") for t in pool]
+
+    # 已完成的任务（从报告目录扫描）
+    reports_dir = Path(__file__).parent.parent / ".ai-state" / "reports"
+    if reports_dir.exists():
+        for f in reports_dir.glob("*.md"):
+            existing_titles.append(f.stem.replace("_", " "))
+
+    existing_titles_text = "\n".join(f"- {t}" for t in existing_titles[-30:])
+
     # 用 LLM 分析 KB 现状，生成研究建议
     kb_summary = _get_kb_summary()
 
@@ -1857,6 +1873,10 @@ def _discover_new_tasks() -> list:
         f"V1 关键技术: OLED+Free Form / Micro LED+树脂衍射光波导（并行路线）\n"
         f"主SoC: Qualcomm AR1 Gen 1\n"
         f"通信: Mesh Intercom\n\n"
+        f"## 已有任务（避免重复）\n"
+        f"以下任务已经存在或已完成，不要生成与它们高度重叠的新任务：\n"
+        f"{existing_titles_text}\n\n"
+        f"如果你要研究的方向与已有任务重叠超过 50%，请换一个角度或跳过。\n\n"
         f"## 任务\n"
         f"分析知识库的薄弱环节，生成 3-5 个新研究任务。\n"
         f"每个任务要有明确的研究目标和 6-8 个搜索关键词。\n"
@@ -1877,7 +1897,26 @@ def _discover_new_tasks() -> list:
             tasks = json.loads(resp)
             if isinstance(tasks, list):
                 print(f"  [Discover] 发现 {len(tasks)} 个新方向")
-                return tasks
+
+                # 去重：新任务标题不能与已有任务过于相似
+                deduped = []
+                for task in tasks:
+                    new_title = task.get("title", "")
+                    is_duplicate = False
+                    for existing in existing_titles:
+                        # 简单去重：超过 3 个相同的中文双字词
+                        new_words = set(re.findall(r'[\u4e00-\u9fff]{2,4}', new_title))
+                        old_words = set(re.findall(r'[\u4e00-\u9fff]{2,4}', existing))
+                        overlap = new_words & old_words
+                        if len(overlap) >= 3 and len(overlap) / max(len(new_words), 1) > 0.5:
+                            print(f"  [Discover] 去重: '{new_title}' 与 '{existing}' 重叠")
+                            is_duplicate = True
+                            break
+                    if not is_duplicate:
+                        deduped.append(task)
+
+                print(f"  [Discover] 去重后: {len(tasks)} → {len(deduped)}")
+                return deduped
         except:
             pass
     return []
@@ -1960,6 +1999,11 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
     4. 不够跑下一个就收尾
     """
     import queue
+    from src.tools.knowledge_base import get_knowledge_stats
+
+    # 记录 KB 初始状态
+    kb_stats_before = get_knowledge_stats()
+    kb_total_before = sum(kb_stats_before.values())
 
     start_time = time.time()
     deadline = start_time + max_hours * 3600
@@ -2041,8 +2085,49 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
         gov_report = "KB 治理模块未安装"
         print(f"  [Warn] {gov_report}")
 
-    # 汇总
+    # === 深度学习汇总报告 ===
+    from src.tools.knowledge_base import get_knowledge_stats
+
+    kb_stats_after = get_knowledge_stats()
+    kb_total_after = sum(kb_stats_after.values())
     total_hours = (time.time() - start_time) / 3600
+
+    summary_lines = [
+        f"📊 深度学习完成报告",
+        f"",
+        f"⏱️ 耗时: {total_hours:.1f}h / {max_hours}h",
+        f"📝 任务: {len(completed)} 个完成",
+    ]
+
+    for c in completed:
+        summary_lines.append(f"  • {c['title']} ({c.get('duration_min', '?')}min)")
+
+    summary_lines.append(f"")
+    summary_lines.append(f"📚 KB 变化: {kb_total_before} → {kb_total_after} (+{kb_total_after - kb_total_before})")
+
+    # Critic 统计
+    p0_total = sum(1 for c in completed if c.get("p0_count", 0) > 0)
+    summary_lines.append(f"🔍 Critic: {p0_total}/{len(completed)} 个任务触发 P0")
+
+    # 元能力层统计
+    try:
+        from scripts.meta_capability import load_registry
+        reg = load_registry()
+        new_tools = [t for t in reg.get("tools", [])
+                     if t.get("installed_at", "").startswith(time.strftime('%Y-%m-%d'))]
+        if new_tools:
+            summary_lines.append(f"🧬 元能力进化: +{len(new_tools)} 个新工具")
+            for t in new_tools:
+                summary_lines.append(f"  • {t['name']}: {t.get('description', '')[:40]}")
+    except:
+        pass
+
+    # KB 治理
+    if gov_report:
+        summary_lines.append(f"🗄️ KB 治理: {gov_report}")
+
+    summary = "\n".join(summary_lines)
+
     print(f"\n{'#'*60}")
     print(f"# 深度学习完成")
     print(f"# 耗时: {total_hours:.1f}h / {max_hours}h")
@@ -2058,11 +2143,15 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
     print(f"{'#'*60}")
 
     if progress_callback:
-        progress_callback(
-            f"🎓 深度学习完成: {len(completed)} 个任务, "
-            f"{total_hours:.1f}h"
-        )
-        progress_callback(f"🧬 {evolution_report[:200]}")
+        # 推送汇总报告
+        progress_callback(summary)
+
+        # 推送批量校准摘要
+        try:
+            from scripts.critic_calibration import push_batch_calibration_summary
+            push_batch_calibration_summary(reply_func=progress_callback)
+        except Exception as e:
+            print(f"  [Calibration] 批量摘要推送失败: {e}")
 
     return completed
 

@@ -86,42 +86,53 @@ def sample_for_calibration(critic_data: dict, report_excerpt: str,
 # ============================================================
 
 def push_calibration_to_feishu(samples: list, reply_func=None):
-    """推送校准样本到飞书
+    """推送校准批量摘要到飞书（不再逐条推送）
 
-    每个样本一条消息，带三个按钮:
-    - ✅ 准确
-    - ⬆️ 偏松（应更严）
-    - ⬇️ 偏紧（过度挑剔）
-
-    Args:
-        samples: sample_for_calibration() 的输出
-        reply_func: 飞书发送消息的函数
+    改为只保存到 pending，等 push_batch_calibration_summary() 统一推送。
     """
-    if not reply_func or not samples:
+    if not samples:
+        return
+    save_pending_samples(samples)
+    # 不再逐条推送，等深度学习结束后统一推送
+
+
+def push_batch_calibration_summary(reply_func=None):
+    """深度学习结束后，一次性推送批量校准摘要
+
+    格式:
+    🎯 今晚 Critic 校准（N 个样本）
+    1⃣ [P0] 任务名: 挑战摘要
+    2⃣ [P1] 任务名: 挑战摘要
+    ...
+    回复格式: 11213（依次对应每个样本，1=准确 2=偏松 3=偏紧 0=跳过）
+    """
+    pending = _load_pending_samples()
+    if not pending or not reply_func:
         return
 
-    for s in samples:
-        msg = (
-            f"🎯 Critic 校准 [{s['level']}]\n"
-            f"任务: {s['task_title']}\n"
-            f"挑战: {s['issue'][:150]}\n"
-        )
-        if s.get("evidence"):
-            msg += f"反证: {s['evidence'][:100]}\n"
+    # 只取最近一批（最多 10 个）
+    batch = pending[-10:]
 
-        msg += (
-            f"\n请评价这个 {s['level']} 判定是否准确:\n"
-            f"回复 1 = ✅ 准确\n"
-            f"回复 2 = ⬆️ 偏松（应更严，比如 P1 应该是 P0）\n"
-            f"回复 3 = ⬇️ 偏紧（过度挑剔，比如 P0 应该是 P1）\n"
-            f"回复 0 = 跳过\n"
-            f"[校准ID: {s['sample_id']}]"
-        )
+    lines = [f"🎯 Critic 校准（{len(batch)} 个样本）\n"]
+    emojis = ["1⃣", "2⃣", "3⃣", "4⃣", "5⃣", "6⃣", "7⃣", "8⃣", "9⃣", "🔟"]
 
-        try:
-            reply_func(msg)
-        except Exception as e:
-            print(f"  [Calibration] 飞书推送失败: {e}")
+    for i, s in enumerate(batch):
+        emoji = emojis[i] if i < len(emojis) else f"({i+1})"
+        issue_short = s.get("issue", "")[:60]
+        task_short = s.get("task_title", "")[:20]
+        lines.append(f"{emoji} [{s.get('level', '?')}] {task_short}: {issue_short}")
+
+    lines.append("")
+    lines.append("回复格式: " + "x" * len(batch) + "（依次对应每个样本）")
+    lines.append("1=✅准确  2=⬆️偏松  3=⬇️偏紧  0=跳过")
+    lines.append(f"例如: {'1' * len(batch)} 表示全部准确")
+    lines.append(f"\n[batch_cal:{len(batch)}]")  # 标记供 text_router 识别
+
+    msg = "\n".join(lines)
+    try:
+        reply_func(msg)
+    except Exception as e:
+        print(f"  [Calibration] 批量摘要推送失败: {e}")
 
 
 # ============================================================
