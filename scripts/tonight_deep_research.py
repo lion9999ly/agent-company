@@ -52,31 +52,58 @@ PROVIDER_SEMAPHORES = {
 
 
 def _get_sem_key(model_name: str) -> str:
-    """模型名 → 信号量 key"""
-    if "o3" in model_name and "deep" in model_name:
+    """模型名 → 信号量 key（升级版 - 全模型支持）"""
+    model_lower = model_name.lower()
+    if "o3" in model_lower and "deep" in model_lower:
+        return "o3_deep"
+    elif "o3_mini" in model_lower or "o3-mini" in model_lower:
+        return "o3_mini"
+    elif "o3" in model_lower:
         return "o3"
-    elif "doubao" in model_name:
+    elif "grok" in model_lower:
+        return "grok"
+    elif "gemini" in model_lower and "deep" in model_lower:
+        return "gemini_deep"
+    elif "doubao" in model_lower:
         return "doubao"
-    elif "flash" in model_name:
+    elif "flash" in model_lower:
         return "flash"
-    elif "gemini" in model_name and "pro" in model_name:
+    elif "gemini" in model_lower and "pro" in model_lower:
         return "gemini_pro"
-    elif "gpt_5_4" in model_name or "gpt-5.4" in model_name:
+    elif "gpt_5_4" in model_lower or "gpt-5.4" in model_lower:
         return "gpt54"
-    elif "4o" in model_name:
+    elif "gpt_5_3" in model_lower or "gpt-5.3" in model_lower:
+        return "gpt53"
+    elif "4o" in model_lower:
         return "gpt4o"
+    elif "deepseek_r1" in model_lower or "deepseek-r1" in model_lower:
+        return "deepseek_r1"
+    elif "qwen" in model_lower:
+        return "qwen"
+    elif "llama" in model_lower:
+        return "llama"
     return "gpt54"  # 默认保守
 
 
 # ============================================================
-# 降级映射表
+# 降级映射表（升级版 - 全模型支持）
 # ============================================================
 FALLBACK_MAP = {
-    "gpt_5_4": "gpt_4o_norway",
+    "gpt_5_4": "gpt_5_3",                 # 5.4 → 5.3
+    "gpt_5_3": "gpt_4o_norway",           # 5.3 → 4o
+    "o3": "deepseek_r1",                  # o3 → DeepSeek R1（同为推理专家）
+    "o3_mini": "gemini_2_5_flash",        # o3-mini → Flash
+    "deepseek_r1": "o3_mini",             # R1 → o3-mini
+    "grok_4": "gpt_4o_norway",            # Grok → 4o
+    "gemini_deep_research": "o3_deep_research",  # Gemini Deep → o3 Deep
+    "o3_deep_research": "gpt_5_4",        # o3 Deep → 5.4
     "doubao_seed_pro": "doubao_seed_lite",
     "gemini_3_1_pro": "gemini_3_pro",
     "gemini_3_pro": "gemini_2_5_pro",
-    "o3_deep_research": "gpt_5_4",  # o3 失败降级到 gpt-5.4
+    "gemini_2_5_pro": "gpt_5_3",          # Gemini Pro → 5.3
+    "qwen_3_32b": "deepseek_v3_2",        # Qwen → DeepSeek（都擅长中文）
+    "llama_4_maverick": "gpt_4o_norway",
+    "deepseek_v3_2": "qwen_3_32b",        # DeepSeek → Qwen（互为备选）
 }
 
 
@@ -86,46 +113,57 @@ FALLBACK_MAP = {
 # 注意：不使用 Claude 系列模型
 
 def _get_model_for_role(role: str) -> str:
-    """深度研究 v2: 各角色模型分配
+    """深度研究 v3: 各角色模型分配（升级版）
 
     原则:
     - CTO/CPO: gpt_5_4（最强推理）→ gpt_4o_norway
-    - CMO: doubao_seed_pro（中文互联网）→ doubao_seed_lite
+    - CMO: gpt_5_3（深度分析）+ doubao 补充中文市场数据
     - CDO: gemini_3_1_pro（多模态）→ gemini_3_pro
+    - 推理验证: o3（对 CTO 数值推算做独立验证）
+    - 中文交叉: qwen_3_32b（对 CMO 中文市场结论做交叉验证）
     """
     role_model_map = {
         "CTO": "gpt_5_4",
-        "CMO": "doubao_seed_pro",
+        "CMO": "gpt_5_3",        # 升级：用 5.3 做深度分析
         "CDO": "gemini_3_1_pro",
         "CPO": "gpt_5_4",
+        "VERIFIER": "o3",        # 新增：推理验证 Agent
+        "CHINESE_CROSS": "qwen_3_32b",  # 新增：中文交叉验证
     }
     return role_model_map.get(role.upper(), "gpt_5_4")
 
 
 def _get_model_for_task(task_type: str) -> str:
-    """深度研究 v2: 各环节模型分配
+    """深度研究 v3: 各环节模型分配（升级版 - 四通道搜索 + Gemini Pro 整合）
 
     分层:
-    - 搜索: o3_deep_research + doubao_seed_pro（并行）
+    - 搜索: o3_deep_research + doubao_seed_pro + grok_4 + gemini_deep_research（四通道并行）
     - 提炼: gemini_2_5_flash（便宜无限额）
-    - 整合: gpt_5_4（最强推理）
-    - Critic: gemini_3_1_pro（独立于 synthesis 模型）
+    - 整合: gemini_2_5_pro（65K 上下文，能看完所有 Agent 输出）
+    - Critic: gemini_3_1_pro + o3（双 Critic 交叉）
     """
     task_model_map = {
         "discovery": "gemini_2_5_flash",
         "query_generation": "gemini_2_5_flash",
         "data_extraction": "gemini_2_5_flash",    # Layer 2 提炼
         "role_assign": "gemini_2_5_flash",
-        "synthesis": "gpt_5_4",                    # Layer 4
-        "re_synthesis": "gpt_5_4",
-        "final_synthesis": "gpt_5_4",
-        "critic_challenge": "gemini_3_1_pro",      # Layer 5
+        "synthesis": "gemini_2_5_pro",             # Layer 4 整合（升级）
+        "re_synthesis": "gemini_2_5_pro",
+        "final_synthesis": "gemini_2_5_pro",
+        "critic_challenge": "gemini_3_1_pro",      # Layer 5 主审
+        "critic_cross": "o3",                      # Layer 5 交叉审查（新增）
         "consistency_check": "gemini_3_1_pro",
         "knowledge_extract": "gemini_2_5_flash",
         "fix": "gemini_2_5_pro",
         "cdo_fix": "gemini_2_5_pro",
         "chinese_search": "doubao_seed_pro",
         "deep_research_search": "o3_deep_research",
+        "grok_search": "grok_4",                   # 社交搜索（新增）
+        "gemini_deep_search": "gemini_deep_research",  # 学术深挖（新增）
+        "deep_drill_conclusion": "gpt_5_4",
+        "debate": "gpt_5_3",                       # Agent 辩论
+        "analogy": "gemini_2_5_flash",
+        "sandbox": "o3",                           # 沙盘推演用 o3（65K output）
     }
     return task_model_map.get(task_type, "gpt_5_4")
 

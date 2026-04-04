@@ -101,6 +101,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_morning_brief(reply_target, send_reply)
         return
 
+    # === 2.7 状态仪表盘 ===
+    if text_stripped in ("状态", "dashboard", "仪表盘", "status"):
+        _handle_dashboard(reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -581,6 +586,75 @@ def _generate_morning_brief() -> str:
             pass
 
     return "\n".join(lines)
+
+
+def _handle_dashboard(reply_target: str, send_reply):
+    """生成系统状态仪表盘"""
+    lines = [f"📊 agent_company 状态\n"]
+
+    # KB
+    try:
+        from src.tools.knowledge_base import get_knowledge_stats
+        stats = get_knowledge_stats()
+        total = sum(stats.values())
+        detail = " | ".join([f"{k}: {v}" for k, v in stats.items()])
+        lines.append(f"🧠 知识库: {total} 条 ({detail})")
+    except:
+        pass
+
+    # 任务
+    try:
+        tracker_path = PROJECT_ROOT / ".ai-state" / "task_tracker.jsonl"
+        if tracker_path.exists():
+            today = datetime.now().strftime('%Y-%m-%d')
+            today_tasks = sum(1 for l in tracker_path.read_text(encoding='utf-8').strip().split('\n')
+                             if today in l and '"completed"' in l)
+            lines.append(f"📝 今日任务: {today_tasks} 个完成")
+    except:
+        pass
+
+    # 元能力
+    try:
+        reg_path = PROJECT_ROOT / ".ai-state" / "tool_registry.json"
+        if reg_path.exists():
+            reg = json.loads(reg_path.read_text(encoding='utf-8'))
+            tools = [t for t in reg.get("tools", []) if t.get("status") == "active"]
+            if tools:
+                names = ", ".join([t["name"] for t in tools[:5]])
+                lines.append(f"🧬 元能力: {len(tools)} 个工具 ({names})")
+    except:
+        pass
+
+    # API 用量
+    try:
+        from src.utils.token_usage_tracker import get_tracker
+        tracker = get_tracker()
+        if hasattr(tracker, 'generate_daily_report'):
+            lines.append(f"💰 {tracker.generate_daily_report()}")
+    except:
+        pass
+
+    # Critic
+    try:
+        drift_path = PROJECT_ROOT / ".ai-state" / "critic_drift_log.jsonl"
+        if drift_path.exists():
+            last_lines = drift_path.read_text(encoding='utf-8').strip().split('\n')[-5:]
+            p0_rates = [json.loads(l).get("p0_rate", 0) for l in last_lines]
+            avg_p0 = sum(p0_rates) / len(p0_rates) if p0_rates else 0
+            lines.append(f"🔍 Critic: P0 率 {avg_p0:.0%}（最近 {len(p0_rates)} 次）")
+    except:
+        pass
+
+    # 校准
+    try:
+        cal_path = PROJECT_ROOT / ".ai-state" / "critic_calibration.jsonl"
+        if cal_path.exists():
+            count = sum(1 for _ in open(cal_path, encoding='utf-8'))
+            lines.append(f"🎯 校准: {count} 条已标注")
+    except:
+        pass
+
+    send_reply(reply_target, "\n".join(lines))
 
 
 def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: str, reply_type: str,
