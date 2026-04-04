@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-04 23:24",
+  "timestamp": "2026-04-04 23:48",
   "hard_tests": [
     {
       "name": "import_scripts.tonight_deep_research",
@@ -9,9 +9,7 @@
     {
       "name": "import_scripts.feishu_handlers.text_router",
       "category": "core",
-      "status": "fail",
-      "error": "SyntaxError: invalid syntax. Perhaps you forgot a comma? (text_router.py, line 220)",
-      "traceback": "mport__(module_path)\n  File \"D:\\Users\\uih00653\\my_agent_company\\pythonProject1\\scripts\\feishu_handlers\\__init__.py\", line 39, in <module>\n    from scripts.feishu_handlers.text_router import (\n  File \"D:\\Users\\uih00653\\my_agent_company\\pythonProject1\\scripts\\feishu_handlers\\text_router.py\", line 220\n    send_reply(reply_target, \"🧠 已进入教练模式。我只问问题，不给答案。\\n说\"退出教练\"结束。\\n\\n你目前最纠结的决策是什么？\")\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: invalid syntax. Perhaps you forgot a comma?\n"
+      "status": "pass"
     },
     {
       "name": "import_src.tools.knowledge_base",
@@ -145,16 +143,9 @@
   ],
   "summary": {
     "total": 26,
-    "passed": 23,
-    "failed": 3,
+    "passed": 24,
+    "failed": 2,
     "failed_items": [
-      {
-        "name": "import_scripts.feishu_handlers.text_router",
-        "category": "core",
-        "status": "fail",
-        "error": "SyntaxError: invalid syntax. Perhaps you forgot a comma? (text_router.py, line 220)",
-        "traceback": "mport__(module_path)\n  File \"D:\\Users\\uih00653\\my_agent_company\\pythonProject1\\scripts\\feishu_handlers\\__init__.py\", line 39, in <module>\n    from scripts.feishu_handlers.text_router import (\n  File \"D:\\Users\\uih00653\\my_agent_company\\pythonProject1\\scripts\\feishu_handlers\\text_router.py\", line 220\n    send_reply(reply_target, \"🧠 已进入教练模式。我只问问题，不给答案。\\n说\"退出教练\"结束。\\n\\n你目前最纠结的决策是什么？\")\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nSyntaxError: invalid syntax. Perhaps you forgot a comma?\n"
-      },
       {
         "name": "soft_status",
         "status": "skip",

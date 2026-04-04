@@ -229,7 +229,7 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
     # === 2.16 教练模式 ===
     if text_stripped in ("教练模式", "帮我理清思路", "coach", "coaching"):
         _coach_mode[open_id or "default"] = True
-        send_reply(reply_target, "🧠 已进入教练模式。我只问问题，不给答案。\n说"退出教练"结束。\n\n你目前最纠结的决策是什么？")
+        send_reply(reply_target, "已进入教练模式。我只问问题，不给答案。\n说\"退出教练\"结束。\n\n你目前最纠结的决策是什么？")
         return
 
     if text_stripped in ("退出教练", "exit coach"):
@@ -1728,7 +1728,7 @@ def _handle_generate_demo(demo_type: str, reply_target: str, reply_type: str, op
                 "design_spec_text": str(design_spec),
                 "version": 1,
             }
-            send_reply(reply_target, "🎨 Demo 已进入迭代模式。你可以直接说修改意见，如"导航箭头改大一点"、"颜色换成橙色"。说"退出Demo"结束。")
+            send_reply(reply_target, "Demo 已进入迭代模式。你可以直接说修改意见，如\"导航箭头改大一点\"。说\"退出Demo\"结束。")
 
         except Exception as e:
             _safe_reply_error(send_reply, reply_target, "Demo生成", e)

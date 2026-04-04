@@ -3,10 +3,11 @@
 @dependencies: test_suite, auto_fixer
 @last_modified: 2026-04-04
 """
-import json, time
+import json, time, sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
 
 
 def run_self_heal_cycle(send_reply=None, reply_target=None):
