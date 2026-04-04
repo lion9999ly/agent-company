@@ -123,6 +123,30 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_negotiation_brief(target_name, reply_target, send_reply)
         return
 
+    # === 2.11 注意力管理（关注焦点） ===
+    if text_stripped.startswith("关注焦点") or text_stripped.startswith("focus"):
+        focus_text = text_stripped.replace("关注焦点", "").replace("focus", "").strip().strip(":：")
+        _handle_set_focus(focus_text, reply_target, send_reply)
+        return
+
+    # === 2.12 决策复盘 ===
+    if text_stripped.startswith("决策复盘") or text_stripped.startswith("decision replay"):
+        decision_id = text_stripped.replace("决策复盘", "").replace("decision replay", "").strip().strip(":：")
+        _handle_decision_replay(decision_id, reply_target, send_reply)
+        return
+
+    # === 2.13 反事实推演 ===
+    if text_stripped.startswith("假如") or text_stripped.startswith("what if"):
+        scenario = text_stripped.replace("假如", "").replace("what if", "").strip().strip(":：")
+        _handle_counterfactual(scenario, reply_target, send_reply)
+        return
+
+    # === 2.14 入职知识包 ===
+    if text_stripped.startswith("入职包") or text_stripped.startswith("onboarding"):
+        role = text_stripped.replace("入职包", "").replace("onboarding", "").strip().strip(":：")
+        _handle_onboarding_pack(role, reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -807,6 +831,166 @@ def _handle_negotiation_brief(target_name: str, reply_target: str, send_reply):
             )
 
             result = gw.call("gpt_5_4", prompt, "你是采购谈判顾问，输出结构化的谈判准备简报。", "synthesis")
+            if result.get("success"):
+                send_reply(reply_target, result["response"])
+            else:
+                send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
+        except Exception as e:
+            send_reply(reply_target, f"生成失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_set_focus(focus_text: str, reply_target: str, send_reply):
+    """设置关注焦点"""
+    if not focus_text:
+        send_reply(reply_target, "请输入关注焦点，如：关注焦点 HUD显示方案决策")
+        return
+
+    focus_file = PROJECT_ROOT / ".ai-state" / "focus.yaml"
+    try:
+        import yaml as _yaml
+        focus_data = {"focus": focus_text, "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M")}
+        focus_file.parent.mkdir(parents=True, exist_ok=True)
+        focus_file.write_text(_yaml.dump(focus_data, allow_unicode=True), encoding="utf-8")
+        send_reply(reply_target, f"🎯 关注焦点已设置：{focus_text}\n早报和汇总报告将优先展示相关内容")
+    except Exception as e:
+        send_reply(reply_target, f"设置失败: {e}")
+
+
+def _handle_decision_replay(decision_id: str, reply_target: str, send_reply):
+    """决策复盘 — 重建决策时间线"""
+    send_reply(reply_target, f"📊 正在复盘决策: {decision_id}...")
+
+    def _run():
+        try:
+            import yaml as _yaml
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge
+            gw = get_model_gateway()
+
+            # 读决策树
+            dt_path = PROJECT_ROOT / ".ai-state" / "product_decision_tree.yaml"
+            decision = None
+            if dt_path.exists():
+                dt = _yaml.safe_load(dt_path.read_text(encoding='utf-8'))
+                for d in dt.get("decisions", []):
+                    if decision_id.lower() in d.get("id", "").lower() or decision_id in d.get("question", ""):
+                        decision = d
+                        break
+
+            if not decision:
+                send_reply(reply_target, f"⚠️ 未找到决策: {decision_id}")
+                return
+
+            # 收集决策历史（resolved_knowledge + 相关报告）
+            resolved = decision.get("resolved_knowledge", [])
+            history_text = "\n".join([f"- [{r.get('timestamp','')}] {r.get('knowledge','')}" for r in resolved])
+
+            # 搜索相关研究报告
+            reports_dir = PROJECT_ROOT / ".ai-state" / "reports"
+            if reports_dir.exists():
+                for f in reports_dir.glob("*.summary.json"):
+                    try:
+                        s = json.loads(f.read_text(encoding='utf-8'))
+                        if decision_id.lower() in s.get("task_title", "").lower():
+                            history_text += f"\n- [{s.get('timestamp','')}] 报告: {s.get('core_finding','')[:100]}"
+                    except:
+                        continue
+
+            prompt = (
+                f"重建决策时间线。\n\n"
+                f"## 决策问题\n{decision.get('question', '')}\n\n"
+                f"## 决策历史\n{history_text}\n\n"
+                f"## 要求\n"
+                f"1. 按时间顺序列出关键信息节点\n"
+                f"2. 标注每个节点对决策的影响\n"
+                f"3. 分析决策过程的质量（信息是否充分、时机是否合适）\n"
+                f"4. 提取可复用的经验教训\n"
+            )
+
+            result = gw.call("gpt_5_4", prompt, "你是决策分析师。", "synthesis")
+            if result.get("success"):
+                send_reply(reply_target, result["response"])
+            else:
+                send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
+        except Exception as e:
+            send_reply(reply_target, f"复盘失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_counterfactual(scenario: str, reply_target: str, send_reply):
+    """反事实推演 — What-If 分析"""
+    send_reply(reply_target, f"🔮 正在推演: {scenario}...")
+
+    def _run():
+        try:
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge
+            gw = get_model_gateway()
+
+            # 搜索相关 KB
+            kb_results = search_knowledge(scenario, limit=10)
+            kb_text = "\n".join([f"- {r.get('title','')}: {r.get('content','')[:150]}" for r in kb_results])
+
+            prompt = (
+                f"反事实推演：假设 '{scenario}'，会发生什么？\n\n"
+                f"## 相关背景知识\n{kb_text}\n\n"
+                f"## 要求\n"
+                f"1. 列出直接后果（1-3 步）\n"
+                f"2. 列出间接后果（3-5 步的连锁反应）\n"
+                f"3. 评估每个后果的概率和影响\n"
+                f"4. 给出应对建议\n"
+            )
+
+            result = gw.call("o3_mini", prompt, "你是战略分析师，擅长推演因果链条。", "reasoning")
+            if result.get("success"):
+                send_reply(reply_target, result["response"])
+            else:
+                send_reply(reply_target, f"推演失败: {result.get('error', '')[:200]}")
+        except Exception as e:
+            send_reply(reply_target, f"推演失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_onboarding_pack(role: str, reply_target: str, send_reply):
+    """生成入职知识包"""
+    send_reply(reply_target, f"📚 正在生成入职包: {role}...")
+
+    def _run():
+        try:
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge, get_knowledge_stats
+            gw = get_model_gateway()
+
+            # 根据角色收集不同领域的知识
+            role_domains = {
+                "技术": ["components", "technology", "supplier"],
+                "产品": ["market", "competitor", "user"],
+                "市场": ["market", "competitor", "brand"],
+                "供应链": ["supplier", "components", "cost"],
+            }
+            domains = role_domains.get(role, ["market", "components"])
+
+            kb_text = ""
+            for domain in domains:
+                results = search_knowledge(f"{domain} 智能头盔", limit=5)
+                kb_text += f"\n## {domain}\n"
+                kb_text += "\n".join([f"- {r.get('title','')}: {r.get('content','')[:200]}" for r in results])
+
+            prompt = (
+                f"为新员工生成入职知识包（角色：{role}）。\n\n"
+                f"## 相关知识\n{kb_text}\n\n"
+                f"## 要求\n"
+                f"1. 角色背景（这个角色在团队中的定位）\n"
+                f"2. 必读知识（5-8 条最重要的条目）\n"
+                f"3. 建议阅读顺序（按重要性排序）\n"
+                f"4. 试用期目标（30天内应该了解什么）\n"
+            )
+
+            result = gw.call("gpt_5_3", prompt, "你是团队导师。", "content_generation")
             if result.get("success"):
                 send_reply(reply_target, result["response"])
             else:
