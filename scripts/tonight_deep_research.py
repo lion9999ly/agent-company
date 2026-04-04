@@ -1862,6 +1862,25 @@ def _discover_new_tasks() -> list:
 
     existing_titles_text = "\n".join(f"- {t}" for t in existing_titles[-30:])
 
+    # 读取决策树
+    decision_tree_path = Path(__file__).parent.parent / ".ai-state" / "product_decision_tree.yaml"
+    decision_tree_text = ""
+    if decision_tree_path.exists():
+        try:
+            with open(decision_tree_path, 'r', encoding='utf-8') as f:
+                dt = yaml.safe_load(f)
+            open_decisions = [d for d in dt.get("decisions", []) if d.get("status") == "open"]
+            if open_decisions:
+                decision_tree_text = "\n## 待决策事项（优先填充这些知识缺口）\n"
+                for d in sorted(open_decisions, key=lambda x: x.get("priority", 99)):
+                    decision_tree_text += f"\n### {d['question']}\n"
+                    decision_tree_text += f"优先级: P{d.get('priority', 3)}\n"
+                    decision_tree_text += "需要的知识:\n"
+                    for bk in d.get("blocking_knowledge", []):
+                        decision_tree_text += f"  - {bk}\n"
+        except:
+            pass
+
     # 用 LLM 分析 KB 现状，生成研究建议
     kb_summary = _get_kb_summary()
 
@@ -1872,13 +1891,15 @@ def _discover_new_tasks() -> list:
         f"全脸头盔，HUD显示，语音控制，组队骑行，主动安全。\n"
         f"V1 关键技术: OLED+Free Form / Micro LED+树脂衍射光波导（并行路线）\n"
         f"主SoC: Qualcomm AR1 Gen 1\n"
-        f"通信: Mesh Intercom\n\n"
+        f"通信: Mesh Intercom\n"
+        f"{decision_tree_text}\n"
         f"## 已有任务（避免重复）\n"
         f"以下任务已经存在或已完成，不要生成与它们高度重叠的新任务：\n"
         f"{existing_titles_text}\n\n"
         f"如果你要研究的方向与已有任务重叠超过 50%，请换一个角度或跳过。\n\n"
         f"## 任务\n"
-        f"分析知识库的薄弱环节，生成 3-5 个新研究任务。\n"
+        f"优先生成能填充"待决策事项"中知识缺口的研究任务。\n"
+        f"每个任务的 goal 应该明确指向某个决策点的某个知识缺口。\n"
         f"每个任务要有明确的研究目标和 6-8 个搜索关键词。\n"
         f"优先级: 1=紧急（影响V1决策）, 2=重要（影响成本/供应链）, 3=储备\n\n"
         f"输出 JSON 数组:\n"
