@@ -20,6 +20,12 @@ _coach_mode = {}
 # 知识滴灌开关
 _drip_enabled = True
 
+# Demo 会话状态：{open_id: {"type": "hud", "html_path": "...", "design_spec": {...}, "version": 1}}
+_demo_sessions = {}
+
+# Demo 待确认问题：{open_id: {"question": "...", "options": [...], "callback": func}}
+_demo_pending_questions = {}
+
 
 def _check_permission(open_id: str, required_role: str) -> bool:
     """检查用户权限"""
@@ -280,6 +286,30 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
     if text_stripped in ("自检", "self check", "health check", "测试", "自愈"):
         _handle_self_check(reply_target, send_reply)
         return
+
+    # === 2.26 Demo 生成 ===
+    if text_stripped in ("生成 HUD Demo", "HUD Demo", "hud demo"):
+        _handle_generate_demo("hud", reply_target, reply_type, open_id, send_reply)
+        return
+
+    if text_stripped in ("生成 App Demo", "App Demo", "app demo"):
+        _handle_generate_demo("app", reply_target, reply_type, open_id, send_reply)
+        return
+
+    if text_stripped in ("退出Demo", "exit demo"):
+        if open_id in _demo_sessions:
+            session = _demo_sessions.pop(open_id)
+            send_reply(reply_target, f"✅ 已退出 Demo 迭代模式。最终版本: v{session.get('version', 1)}")
+        else:
+            send_reply(reply_target, "⚠️ 没有正在进行的 Demo")
+        return
+
+    # === 2.27 Demo 迭代修改 ===
+    if open_id in _demo_sessions:
+        demo_keywords = ["改", "调", "大一点", "小一点", "换", "移", "加", "删", "颜色", "位置", "字体", "动画"]
+        if any(kw in text_stripped for kw in demo_keywords):
+            _handle_demo_iteration(text_stripped, open_id, reply_target, send_reply)
+            return
 
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
@@ -1560,6 +1590,194 @@ def _handle_self_check(reply_target: str, send_reply):
             send_reply(reply_target, "\n".join(results))
         except Exception as e:
             send_reply(reply_target, f"自检异常: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_generate_demo(demo_type: str, reply_target: str, reply_type: str, open_id: str, send_reply):
+    """Demo 全自主生成流水线"""
+    send_reply(reply_target, f"🚀 开始自主生成 {demo_type.upper()} Demo...\n预计 5-10 分钟")
+
+    def _run():
+        try:
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge
+            gw = get_model_gateway()
+
+            # Step 1: 检查前置信息
+            send_reply(reply_target, "📚 检查设计信息...")
+            prerequisites = _ensure_demo_prerequisites(demo_type, gw)
+
+            # Step 2: 生成设计规范
+            send_reply(reply_target, "📐 生成设计规范...")
+            design_spec = _generate_demo_design_spec(demo_type, prerequisites, gw)
+
+            # Step 3: 生成 Demo 代码
+            send_reply(reply_target, "💻 生成 Demo 代码...")
+            html_code = _generate_demo_code(demo_type, design_spec, gw)
+
+            # Step 4: 保存 Demo 文件
+            demo_dir = PROJECT_ROOT / ".ai-state" / "demos"
+            demo_dir.mkdir(parents=True, exist_ok=True)
+            import time
+            timestamp = int(time.time())
+            html_path = demo_dir / f"{demo_type}_demo_{timestamp}.html"
+            html_path.write_text(html_code, encoding='utf-8')
+
+            # Step 5: 发送结果
+            send_reply(reply_target, f"✅ Demo 生成完成\n文件: {html_path}")
+
+            # Step 6: 进入迭代模式
+            _demo_sessions[open_id] = {
+                "type": demo_type,
+                "html_path": str(html_path),
+                "design_spec_text": str(design_spec),
+                "version": 1,
+            }
+            send_reply(reply_target, "🎨 Demo 已进入迭代模式。你可以直接说修改意见，如"导航箭头改大一点"、"颜色换成橙色"。说"退出Demo"结束。")
+
+        except Exception as e:
+            send_reply(reply_target, f"Demo 生成失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _ensure_demo_prerequisites(demo_type: str, gw) -> dict:
+    """检查并补齐 Demo 生成所需的前置信息"""
+    from src.tools.knowledge_base import search_knowledge, add_knowledge
+
+    required_knowledge = {
+        "hud": [
+            ("HUD 信息布局规范", "HUD layout specification display position"),
+            ("HUD 色彩方案", "HUD color scheme helmet visor daylight night"),
+            ("HUD 信息优先级", "HUD information priority navigation speed call"),
+        ],
+        "app": [
+            ("App 配对流程", "smart helmet app pairing bluetooth flow"),
+            ("App 骑行仪表盘", "motorcycle riding dashboard UI speedometer"),
+        ],
+    }
+
+    results = {}
+    for topic, search_query in required_knowledge.get(demo_type, []):
+        kb_results = search_knowledge(topic, limit=3)
+        if len(kb_results) >= 2:
+            results[topic] = kb_results
+        else:
+            # 自动补齐
+            quick_result = gw.call("gemini_2_5_flash", f"快速搜索: {search_query}", task_type="quick_search")
+            if quick_result.get("success"):
+                add_knowledge(title=f"[Demo准备] {topic}", domain="components",
+                             content=quick_result["response"], tags=["demo_prep"],
+                             source="auto_demo_prep", confidence="medium")
+                results[topic] = [{"content": quick_result["response"]}]
+
+    return results
+
+
+def _generate_demo_design_spec(demo_type: str, prerequisites: dict, gw) -> dict:
+    """生成 Demo 设计规范"""
+    kb_text = "\n".join([f"- {k}: {str(v)[:300]}" for k, v in prerequisites.items()])
+
+    result = gw.call("gpt_5_4",
+        f"为 {demo_type.upper()} Demo 生成设计规范。\n\n"
+        f"## 相关知识\n{kb_text}\n\n"
+        f"## 要求\n"
+        f"输出 JSON 格式的设计规范，包含:\n"
+        f"- layout: 布局结构\n"
+        f"- colors: 色彩方案\n"
+        f"- fonts: 字体规范\n"
+        f"- animations: 动画规范\n"
+        f"- components: 组件列表\n",
+        "输出纯 JSON，不要其他内容。", "content_generation")
+
+    if result.get("success"):
+        import re
+        resp = result["response"].strip()
+        resp = re.sub(r'^```json\s*', '', resp)
+        resp = re.sub(r'\s*```$', '', resp)
+        try:
+            return json.loads(resp)
+        except:
+            return {"raw": resp}
+    return {}
+
+
+def _generate_demo_code(demo_type: str, design_spec: dict, gw) -> str:
+    """生成 Demo HTML 代码"""
+    spec_text = json.dumps(design_spec, ensure_ascii=False, indent=2) if isinstance(design_spec, dict) else str(design_spec)
+
+    result = gw.call("gpt_5_4",
+        f"生成 {demo_type.upper()} Demo 的完整 HTML 代码。\n\n"
+        f"## 设计规范\n{spec_text}\n\n"
+        f"## 要求\n"
+        f"1. 单文件 HTML，内嵌 CSS 和 JS\n"
+        f"2. 响应式设计\n"
+        f"3. 动画流畅\n"
+        f"4. 适合演示\n\n"
+        f"只输出 HTML 代码，不要其他内容。",
+        "你是前端工程师。", "code_generation")
+
+    if result.get("success"):
+        code = result["response"].strip()
+        # 提取 HTML
+        if "<html" in code.lower():
+            import re
+            match = re.search(r'<html[^>]*>[\s\S]*</html>', code, re.IGNORECASE)
+            if match:
+                return match.group()
+        return code
+    return "<html><body>Demo generation failed</body></html>"
+
+
+def _handle_demo_iteration(text: str, open_id: str, reply_target: str, send_reply):
+    """处理 Demo 迭代修改请求"""
+    session = _demo_sessions.get(open_id)
+    if not session:
+        send_reply(reply_target, "⚠️ 没有正在进行的 Demo")
+        return
+
+    html_path = Path(session["html_path"])
+    if not html_path.exists():
+        send_reply(reply_target, "⚠️ Demo 文件不存在")
+        return
+
+    current_code = html_path.read_text(encoding='utf-8')
+    send_reply(reply_target, f"🔄 修改 Demo v{session['version']}...")
+
+    def _run():
+        try:
+            from src.utils.model_gateway import get_model_gateway
+            gw = get_model_gateway()
+
+            result = gw.call("gpt_5_4",
+                f"以下是当前 Demo 的 HTML 代码:\n\n```html\n{current_code[:10000]}\n```\n\n"
+                f"用户要求修改: {text}\n\n"
+                f"请输出修改后的完整 HTML 代码。只改用户要求的部分，保持其他不变。",
+                "你是前端工程师，精确修改 UI。", "code_generation")
+
+            if result.get("success"):
+                import re
+                new_code = result["response"]
+                if "<html" in new_code.lower():
+                    match = re.search(r'<html[^>]*>[\s\S]*</html>', new_code, re.IGNORECASE)
+                    if match:
+                        new_code = match.group()
+
+                # 保存新版本
+                new_version = session["version"] + 1
+                new_path = html_path.parent / f"{session['type']}_demo_v{new_version}.html"
+                new_path.write_text(new_code, encoding='utf-8')
+
+                # 更新 session
+                session["html_path"] = str(new_path)
+                session["version"] = new_version
+
+                send_reply(reply_target, f"✅ Demo v{new_version} 已更新（基于你的修改: {text[:30]}）")
+            else:
+                send_reply(reply_target, f"修改失败: {result.get('error', '')[:200]}")
+        except Exception as e:
+            send_reply(reply_target, f"修改失败: {e}")
 
     threading.Thread(target=_run, daemon=True).start()
 
