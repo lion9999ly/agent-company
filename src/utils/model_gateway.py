@@ -795,12 +795,12 @@ class ModelGateway:
     def call_azure_responses(self, model_name: str, prompt: str,
                               task_type: str = "deep_research",
                               tools: list = None) -> Dict[str, Any]:
-        """调用 Azure OpenAI Responses API（o3-deep-research 专用）
+        """调用 Azure OpenAI Chat Completions API（o3-deep-research 专用）
 
-        与 Chat Completions API 的区别:
-        - endpoint: /openai/deployments/{deployment}/responses
-        - 请求体: {"input": "...", "max_output_tokens": N}
-        - 响应体: {"output": [...], "usage": {...}}
+        注意：Responses API 端点不存在，改用 Chat Completions。
+        - endpoint: /openai/deployments/{deployment}/chat/completions
+        - 请求体: {"messages": [...], "max_completion_tokens": N}
+        - 响应体: {"choices": [...], "usage": {...}}
         """
         cfg = self.models.get(model_name)
         if not cfg or not cfg.api_key:
@@ -812,12 +812,14 @@ class ModelGateway:
         deployment_name = cfg.deployment or cfg.model
         api_version = cfg.api_version or "2025-04-01-preview"
 
+        # 使用 Chat Completions 端点（Responses API 404）
         url = (f"{cfg.endpoint.rstrip('/')}/openai/deployments/"
-               f"{deployment_name}/responses?api-version={api_version}")
+               f"{deployment_name}/chat/completions?api-version={api_version}")
 
+        # Chat Completions 格式请求体
         payload = {
-            "input": prompt,
-            "max_output_tokens": cfg.max_tokens or 16000,
+            "messages": [{"role": "user", "content": prompt}],
+            "max_completion_tokens": cfg.max_tokens or 16000,
         }
         if tools:
             payload["tools"] = tools
@@ -838,7 +840,7 @@ class ModelGateway:
 
             if resp.status_code == 404:
                 msg = (f"[MODEL_404] {model_name} deployment={deployment_name} "
-                       f"Responses API 404. URL: {url[:120]}")
+                       f"Chat Completions API 404. URL: {url[:120]}")
                 print(msg)
                 return {"success": False, "error": msg, "status_code": 404}
 
@@ -847,29 +849,19 @@ class ModelGateway:
                 print(msg)
                 return {"success": False, "error": msg, "status_code": resp.status_code}
 
-            # 解析 Responses API 输出
-            output = result.get("output", [])
-            text_parts = []
-            for item in output:
-                if item.get("type") == "message":
-                    for content in item.get("content", []):
-                        if content.get("type") == "output_text":
-                            text_parts.append(content.get("text", ""))
-                elif item.get("type") == "text":
-                    text_parts.append(item.get("text", ""))
-            text = "\n".join(text_parts)
-
-            # fallback 解析
-            if not text:
-                if isinstance(output, str):
-                    text = output
-                elif isinstance(output, list) and output:
-                    first = output[0]
-                    text = first if isinstance(first, str) else json.dumps(first, ensure_ascii=False)
+            # 解析 Chat Completions 输出
+            choices = result.get("choices", [])
+            text = ""
+            if choices:
+                msg = choices[0].get("message", {})
+                text = msg.get("content", "")
+                # o3 可能返回 cot_summary（reasoning summary）
+                if not text and "cot_summary" in msg:
+                    text = msg.get("cot_summary", "")
 
             usage = result.get("usage", {})
-            p_tok = usage.get("input_tokens", usage.get("prompt_tokens", 0))
-            c_tok = usage.get("output_tokens", usage.get("completion_tokens", 0))
+            p_tok = usage.get("prompt_tokens", 0)
+            c_tok = usage.get("completion_tokens", 0)
 
             if HAS_TRACKER:
                 get_tracker().record(model=cfg.model, provider="azure_responses",
