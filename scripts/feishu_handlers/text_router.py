@@ -21,6 +21,52 @@ _coach_mode = {}
 _drip_enabled = True
 
 
+def _check_permission(open_id: str, required_role: str) -> bool:
+    """检查用户权限"""
+    roles_file = PROJECT_ROOT / ".ai-state" / "access_control.yaml"
+    if not roles_file.exists():
+        return True  # 无权限文件时默认允许
+
+    try:
+        import yaml as _yaml
+        roles_data = _yaml.safe_load(roles_file.read_text(encoding='utf-8')) or {"roles": {}}
+        user_role = roles_data.get("roles", {}).get(open_id or "default", {}).get("role", "viewer")
+
+        role_hierarchy = {"viewer": 0, "member": 1, "manager": 2, "admin": 3}
+        return role_hierarchy.get(user_role, 0) >= role_hierarchy.get(required_role, 0)
+    except:
+        return True
+
+
+def _check_first_time_user(open_id: str, reply_target: str, send_reply):
+    """检查是否首次用户，发送引导消息"""
+    known_users_file = PROJECT_ROOT / ".ai-state" / "known_users.json"
+    user_key = open_id or "default"
+
+    try:
+        known_users = {}
+        if known_users_file.exists():
+            known_users = json.loads(known_users_file.read_text(encoding='utf-8'))
+
+        if user_key not in known_users:
+            # 首次用户，发送引导
+            known_users[user_key] = {"first_seen": datetime.now().strftime("%Y-%m-%d")}
+            known_users_file.parent.mkdir(parents=True, exist_ok=True)
+            known_users_file.write_text(json.dumps(known_users, ensure_ascii=False, indent=2), encoding='utf-8')
+
+            # 发送引导消息
+            send_reply(reply_target,
+                "👋 欢迎使用智能骑行头盔研发助手！\n\n"
+                "我可以帮你：\n"
+                "• 竞品分析、技术方案、市场策略\n"
+                "• 每日早报、决策简报、谈判准备\n"
+                "• 深度学习（夜间批量研究）\n\n"
+                "试试发送：帮助 或 早报"
+            )
+    except:
+        pass
+
+
 def route_text_message(text: str, reply_target: str, reply_type: str, open_id: str, chat_id: str,
                        send_reply, session_id: str = None, mem=None):
     """
@@ -43,6 +89,9 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
     text_upper = text_stripped.upper()
 
     log(f"text 路由, 长度={len(text)}")
+
+    # === 0. 新手引导 ===
+    _check_first_time_user(open_id, reply_target, send_reply)
 
     # === 1. 精确指令 ===
     if handle_command(text_stripped, reply_target, reply_type, open_id, chat_id, send_reply):
@@ -227,6 +276,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
             send_reply(reply_target, "格式: 设置截止日 decision_id 2026-04-30")
         return
 
+    # === 2.25 自检指令 ===
+    if text_stripped in ("自检", "self check", "health check", "测试", "自愈"):
+        _handle_self_check(reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -237,7 +291,10 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         return
 
     if text_stripped in ("深度学习", "夜间学习", "night learning", "deep learning"):
-        _handle_night_learning(reply_target, send_reply, open_id)
+        if not _check_permission(open_id, "manager"):
+            send_reply(reply_target, "⚠️ 此操作需要 manager 及以上权限")
+        else:
+            _handle_night_learning(reply_target, send_reply, open_id)
         return
 
     if text_stripped in ("自学习", "auto learn", "自动学习"):
@@ -1461,6 +1518,50 @@ def _handle_set_deadline(decision_id: str, deadline: str, reply_target: str, sen
         send_reply(reply_target, f"未找到决策: {decision_id}")
     except Exception as e:
         send_reply(reply_target, f"设置失败: {e}")
+
+
+def _handle_self_check(reply_target: str, send_reply):
+    """系统自检"""
+    send_reply(reply_target, "🔍 开始系统自检...")
+
+    def _run():
+        try:
+            from scripts.self_heal import run_self_heal_cycle
+            run_self_heal_cycle(send_reply=send_reply, reply_target=reply_target)
+        except ImportError:
+            # 如果 self_heal 不存在，做基础检查
+            results = ["🔍 系统自检结果\n"]
+
+            # KB 检查
+            try:
+                from src.tools.knowledge_base import get_knowledge_stats
+                stats = get_knowledge_stats()
+                total = sum(stats.values())
+                results.append(f"✅ 知识库: {total} 条")
+            except:
+                results.append("❌ 知识库异常")
+
+            # 模型网关检查
+            try:
+                from src.utils.model_gateway import get_model_gateway
+                gw = get_model_gateway()
+                results.append("✅ 模型网关正常")
+            except:
+                results.append("❌ 模型网关异常")
+
+            # 目录结构检查
+            required_dirs = [".ai-state", "knowledge_base"]
+            for d in required_dirs:
+                if (PROJECT_ROOT / d).exists():
+                    results.append(f"✅ {d}/ 存在")
+                else:
+                    results.append(f"❌ {d}/ 缺失")
+
+            send_reply(reply_target, "\n".join(results))
+        except Exception as e:
+            send_reply(reply_target, f"自检异常: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
 
 
 def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: str, reply_type: str,
