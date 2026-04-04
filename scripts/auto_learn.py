@@ -29,12 +29,37 @@ def _find_kb_gaps() -> list:
     """分析知识库缺口，返回需要补充的搜索词列表
 
     策略:
-    1. 域分布不均: 哪个 domain 条目最少？
-    2. 时效性: 哪些条目超过 30 天未更新？
-    3. 产品锚点覆盖: PRD 中提到的模块，KB 有没有对应知识？
-    4. 低 confidence 高频引用: 被多次引用但 confidence 只有 medium/low 的条目
+    1. 优先从决策树的 blocking_knowledge 获取缺口
+    2. 域分布不均: 哪个 domain 条目最少？
+    3. 时效性: 哪些条目超过 30 天未更新？
+    4. 产品锚点覆盖: PRD 中提到的模块，KB 有没有对应知识？
+    5. 低 confidence 高频引用: 被多次引用但 confidence 只有 medium/low 的条目
     """
     gaps = []
+
+    # 0. 优先: 从决策树获取阻塞知识缺口
+    dt_path = Path(__file__).parent.parent / ".ai-state" / "product_decision_tree.yaml"
+    if dt_path.exists():
+        try:
+            import yaml as _yaml
+            dt = _yaml.safe_load(dt_path.read_text(encoding='utf-8'))
+            for d in dt.get("decisions", []):
+                if d.get("status") != "open":
+                    continue
+                resolved_texts = [r.get("knowledge", "") for r in d.get("resolved_knowledge", [])]
+                for bk in d.get("blocking_knowledge", []):
+                    # 检查是否已解决
+                    already = any(bk[:20].lower() in rt.lower() for rt in resolved_texts)
+                    if not already:
+                        gaps.append({
+                            "type": "decision_blocking",
+                            "domain": "components",
+                            "query": bk,
+                            "priority": d.get("priority", 2),
+                            "decision_id": d.get("id", ""),
+                        })
+        except Exception as e:
+            print(f"[AutoLearn] 决策树读取失败: {e}")
 
     # 1. 域分布
     stats = get_knowledge_stats()
