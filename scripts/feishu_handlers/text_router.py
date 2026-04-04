@@ -27,6 +27,13 @@ _demo_sessions = {}
 _demo_pending_questions = {}
 
 
+def _safe_reply_error(send_reply, reply_target, task_name, error):
+    """统一错误处理：记录详细日志，返回友好提示"""
+    import traceback
+    print(f"[ERROR] {task_name}: {traceback.format_exc()}")
+    send_reply(reply_target, f"⚠️ {task_name} 遇到问题，已记录日志。请稍后重试。")
+
+
 def _check_permission(open_id: str, required_role: str) -> bool:
     """检查用户权限"""
     roles_file = PROJECT_ROOT / ".ai-state" / "access_control.yaml"
@@ -142,7 +149,7 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
                     completed = run_deep_learning(max_hours=hours, progress_callback=lambda msg: send_reply(reply_target, msg))
                     send_reply(reply_target, f"✅ 深度学习完成: {len(completed) if completed else 0} 个任务")
                 except Exception as e:
-                    send_reply(reply_target, f"深度学习执行失败: {e}")
+                    _safe_reply_error(send_reply, reply_target, "深度学习", e)
 
             threading.Thread(target=_run, daemon=True).start()
             return
@@ -456,7 +463,7 @@ def _handle_daily_learning(reply_target: str, send_reply):
             report = run_daily_learning(progress_callback=lambda msg: send_reply(reply_target, msg))
             send_reply(reply_target, report)
         except Exception as e:
-            send_reply(reply_target, f"学习执行失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "每日学习", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -469,7 +476,7 @@ def _handle_reset_learning(reply_target: str, send_reply):
             covered_file.unlink()
         send_reply(reply_target, "✅ 已重置学习覆盖记录，下次学习将重新搜索所有固定主题")
     except Exception as e:
-        send_reply(reply_target, f"重置失败: {e}")
+        _safe_reply_error(send_reply, reply_target, "重置学习", e)
 
 
 def _handle_night_learning(reply_target: str, send_reply, open_id: str = ""):
@@ -489,7 +496,7 @@ def _handle_kb_governance(reply_target: str, send_reply):
             report = run_governance()
             send_reply(reply_target, f"✅ KB 治理完成: {report}")
         except Exception as e:
-            send_reply(reply_target, f"KB 治理失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "KB治理", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -504,7 +511,7 @@ def _handle_auto_learn(reply_target: str, send_reply):
             result = auto_learn_cycle(progress_callback=lambda msg: send_reply(reply_target, msg))
             send_reply(reply_target, f"✅ 自学习完成: {result}")
         except Exception as e:
-            send_reply(reply_target, f"自学习执行失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "自学习", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -519,7 +526,7 @@ def _handle_alignment(reply_target: str, send_reply):
             report = generate_alignment_report()
             send_reply(reply_target, report)
         except Exception as e:
-            send_reply(reply_target, f"对齐报告生成失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "对齐报告", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -577,7 +584,7 @@ def _handle_calibration_reply(text: str, reply_target: str, send_reply):
     except ImportError:
         send_reply(reply_target, "⚠️ 校准模块未安装")
     except Exception as e:
-        send_reply(reply_target, f"❌ 校准异常: {e}")
+        _safe_reply_error(send_reply, reply_target, "校准处理", e)
 
 
 def _handle_add_topic(text: str, reply_target: str, send_reply):
@@ -611,7 +618,7 @@ def _handle_import_docs(reply_target: str, send_reply):
         else:
             send_reply(reply_target, "[Info] 收件箱为空，无文件需要处理。\n请把文件放入 .ai-state/inbox/ 目录")
     except Exception as e:
-        send_reply(reply_target, f"导入失败: {e}")
+        _safe_reply_error(send_reply, reply_target, "导入文档", e)
 
 
 def _handle_share_url(text: str, open_id: str, reply_target: str, reply_type: str, send_reply):
@@ -662,7 +669,7 @@ def _handle_article_import(text: str, open_id: str, reply_target: str, send_repl
 
         send_reply(reply_target, f"✅ 文章已入库：{title}")
     except Exception as e:
-        send_reply(reply_target, f"导入失败: {e}")
+        _safe_reply_error(send_reply, reply_target, "导入文档", e)
 
 
 def _handle_reference_files(text: str, reply_target: str, send_reply):
@@ -733,7 +740,7 @@ def _handle_reference_files(text: str, reply_target: str, send_reply):
                     send_reply(reply_target, f"[Research] {Path(full_path).name} 未解析到有效任务")
                 time.sleep(2)
         except Exception as e:
-            send_reply(reply_target, f"[Research] 执行失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "Research任务", e)
         finally:
             _long_task_running = False
 
@@ -758,7 +765,7 @@ def _handle_morning_brief(reply_target: str, send_reply):
             brief = _generate_morning_brief()
             send_reply(reply_target, brief)
         except Exception as e:
-            send_reply(reply_target, f"早报生成失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "早报生成", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -921,7 +928,7 @@ def _handle_one_pager(reply_target: str, send_reply):
             else:
                 send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
         except Exception as e:
-            send_reply(reply_target, f"生成失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "内容生成", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -982,7 +989,7 @@ def _handle_decision_brief(decision_id: str, reply_target: str, send_reply):
             else:
                 send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
         except Exception as e:
-            send_reply(reply_target, f"生成失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "内容生成", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1027,7 +1034,7 @@ def _handle_negotiation_brief(target_name: str, reply_target: str, send_reply):
             else:
                 send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
         except Exception as e:
-            send_reply(reply_target, f"生成失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "内容生成", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1046,7 +1053,7 @@ def _handle_set_focus(focus_text: str, reply_target: str, send_reply):
         focus_file.write_text(_yaml.dump(focus_data, allow_unicode=True), encoding="utf-8")
         send_reply(reply_target, f"🎯 关注焦点已设置：{focus_text}\n早报和汇总报告将优先展示相关内容")
     except Exception as e:
-        send_reply(reply_target, f"设置失败: {e}")
+        _safe_reply_error(send_reply, reply_target, "设置操作", e)
 
 
 def _handle_decision_replay(decision_id: str, reply_target: str, send_reply):
@@ -1106,7 +1113,7 @@ def _handle_decision_replay(decision_id: str, reply_target: str, send_reply):
             else:
                 send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
         except Exception as e:
-            send_reply(reply_target, f"复盘失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "复盘", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1141,7 +1148,7 @@ def _handle_counterfactual(scenario: str, reply_target: str, send_reply):
             else:
                 send_reply(reply_target, f"推演失败: {result.get('error', '')[:200]}")
         except Exception as e:
-            send_reply(reply_target, f"推演失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "推演", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1187,7 +1194,7 @@ def _handle_onboarding_pack(role: str, reply_target: str, send_reply):
             else:
                 send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
         except Exception as e:
-            send_reply(reply_target, f"生成失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "内容生成", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1210,7 +1217,7 @@ def _handle_set_role(role: str, open_id: str, reply_target: str, send_reply):
         roles_file.write_text(_yaml.dump(roles_data, allow_unicode=True), encoding="utf-8")
         send_reply(reply_target, f"✅ 已设置角色: {role}\n系统将根据角色调整回答深度和视角")
     except Exception as e:
-        send_reply(reply_target, f"设置失败: {e}")
+        _safe_reply_error(send_reply, reply_target, "设置操作", e)
 
 
 def _handle_coach_response(text: str, reply_target: str, send_reply):
@@ -1269,7 +1276,7 @@ def _handle_competitor_wargame(competitor: str, reply_target: str, send_reply):
             else:
                 send_reply(reply_target, f"推演失败: {result.get('error', '')[:200]}")
         except Exception as e:
-            send_reply(reply_target, f"推演失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "推演", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1318,7 +1325,7 @@ def _handle_fast_query(text: str, reply_target: str, send_reply):
         else:
             send_reply(reply_target, "抱歉，我暂时无法回答这个问题。")
     except Exception as e:
-        send_reply(reply_target, f"处理异常: {str(e)[:200]}")
+        _safe_reply_error(send_reply, reply_target, "智能对话", e)
 
 
 def _handle_drip_knowledge(reply_target: str, send_reply):
@@ -1389,7 +1396,7 @@ def _handle_action_items(reply_target: str, send_reply):
             lines.append(f"{i}. {status} {item.get('action', '')[:50]}")
         send_reply(reply_target, "\n".join(lines))
     except Exception as e:
-        send_reply(reply_target, f"读取失败: {e}")
+        _safe_reply_error(send_reply, reply_target, "读取", e)
 
 
 def _handle_due_diligence(decision_id: str, reply_target: str, send_reply):
@@ -1422,7 +1429,7 @@ def _handle_due_diligence(decision_id: str, reply_target: str, send_reply):
 
             send_reply(reply_target, f"📋 应知清单\n\n" + "\n".join(results))
         except Exception as e:
-            send_reply(reply_target, f"检查失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "应知清单检查", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1454,7 +1461,7 @@ def _handle_output_diff(output_id: str, reply_target: str, send_reply):
         else:
             send_reply(reply_target, "对比失败")
     except Exception as e:
-        send_reply(reply_target, f"Diff 失败: {e}")
+        _safe_reply_error(send_reply, reply_target, "Diff对比", e)
 
 
 def _handle_hud_design_spec(reply_target: str, send_reply):
@@ -1488,7 +1495,7 @@ def _handle_hud_design_spec(reply_target: str, send_reply):
             else:
                 send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
         except Exception as e:
-            send_reply(reply_target, f"生成失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "内容生成", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1523,7 +1530,7 @@ def _handle_demo_script(reply_target: str, send_reply):
             else:
                 send_reply(reply_target, f"生成失败: {result.get('error', '')[:200]}")
         except Exception as e:
-            send_reply(reply_target, f"生成失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "内容生成", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1547,7 +1554,7 @@ def _handle_set_deadline(decision_id: str, deadline: str, reply_target: str, sen
 
         send_reply(reply_target, f"未找到决策: {decision_id}")
     except Exception as e:
-        send_reply(reply_target, f"设置失败: {e}")
+        _safe_reply_error(send_reply, reply_target, "设置操作", e)
 
 
 def _handle_self_check(reply_target: str, send_reply):
@@ -1589,7 +1596,7 @@ def _handle_self_check(reply_target: str, send_reply):
 
             send_reply(reply_target, "\n".join(results))
         except Exception as e:
-            send_reply(reply_target, f"自检异常: {e}")
+            _safe_reply_error(send_reply, reply_target, "自检", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1637,7 +1644,7 @@ def _handle_generate_demo(demo_type: str, reply_target: str, reply_type: str, op
             send_reply(reply_target, "🎨 Demo 已进入迭代模式。你可以直接说修改意见，如"导航箭头改大一点"、"颜色换成橙色"。说"退出Demo"结束。")
 
         except Exception as e:
-            send_reply(reply_target, f"Demo 生成失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "Demo生成", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1777,7 +1784,7 @@ def _handle_demo_iteration(text: str, open_id: str, reply_target: str, send_repl
             else:
                 send_reply(reply_target, f"修改失败: {result.get('error', '')[:200]}")
         except Exception as e:
-            send_reply(reply_target, f"修改失败: {e}")
+            _safe_reply_error(send_reply, reply_target, "Demo修改", e)
 
     threading.Thread(target=_run, daemon=True).start()
 
@@ -1807,7 +1814,7 @@ def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: 
             send_reply(reply_target, "抱歉，我暂时无法回答这个问题。")
 
     except Exception as e:
-        send_reply(reply_target, f"处理异常: {str(e)[:200]}")
+        _safe_reply_error(send_reply, reply_target, "智能对话", e)
 
 
 # === 导出接口 ===
