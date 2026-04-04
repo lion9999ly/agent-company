@@ -98,3 +98,103 @@
     - "waveguide display outdoor brightness efficiency"
     - "helmet HUD contrast ratio sunlight measurement"
   completed: false
+
+# === Demo 研究任务 (P1) ===
+- id: "demo_competitor_layout"
+  title: "竞品布局实测"
+  goal: "Cardo/Sena/国产竞品 HUD 布局实测，信息排布、交互逻辑、视觉层级"
+  priority: 1
+  searches:
+    - "Cardo Packtalk Edge HUD layout interface design"
+    - "Sena 50S interface layout information hierarchy"
+    - "智能头盔 HUD 布局 信息排布 实测 2026"
+    - "helmet HUD UI layout best practices"
+  completed: false
+
+- id: "demo_human_factors"
+  title: "人因工程"
+  goal: "骑行 HUD 的人因工程要求：视距、视角、字体大小、信息密度"
+  priority: 1
+  searches:
+    - "motorcycle helmet HUD human factors design"
+    - "HUD visual ergonomics viewing distance angle"
+    - "AR HUD 字体大小 视距 人因工程 标准"
+    - "automotive HUD font size legibility research"
+  completed: false
+
+- id: "demo_sunlight_visibility"
+  title: "光照可见性"
+  goal: "不同光照条件下 HUD 可见性：日出、正午、黄昏、隧道、夜间"
+  priority: 1
+  searches:
+    - "HUD visibility different lighting conditions"
+    - "helmet display contrast ratio outdoor sunlight"
+    - "AR glasses sunlight visibility measurement"
+    - "头盔 HUD 光照 可见性 对比度 测试"
+  completed: false
+
+- id: "demo_color_scheme"
+  title: "色彩方案"
+  goal: "骑行 HUD 最佳色彩方案：背景色、前景色、警告色、夜间模式"
+  priority: 1
+  searches:
+    - "HUD color scheme design best practices"
+    - "motorcycle display night mode color"
+    - "AR HUD 色彩方案 警告色 夜间模式"
+    - "automotive instrument cluster color design"
+  completed: false
+
+- id: "demo_info_priority"
+  title: "信息优先级"
+  goal: "骑行场景信息优先级排序：导航、来电、消息、音乐、警告"
+  priority: 1
+  searches:
+    - "motorcycle helmet information display priority"
+    - "riding HUD information hierarchy navigation call"
+    - "骑行 HUD 信息优先级 导航 来电 警告"
+    - "AR HUD information prioritization research"
+  completed: false
+
+- id: "demo_competitor_app"
+  title: "竞品App流程"
+  goal: "Cardo/Sena/LIVALL App 配对、设置、固件升级流程分析"
+  priority: 1
+  searches:
+    - "Cardo Connect app pairing setup tutorial"
+    - "Sena Motorcycles app firmware update process"
+    - "LIVALL app 配对 设置 流程 评测"
+    - "smart helmet mobile app UX analysis"
+  completed: false
+
+- id: "demo_riding_ux"
+  title: "骑行UX"
+  goal: "骑行场景 UX 研究：手套操作、语音控制、按键盲操作"
+  priority: 1
+  searches:
+    - "motorcycle helmet glove-friendly interface"
+    - "riding voice control UX research"
+    - "骑行 手套操作 盲操作 按键 设计"
+    - "helmet controls tactile feedback design"
+  completed: false
+
+- id: "demo_group_map"
+  title: "组队地图"
+  goal: "组队骑行地图方案：成员位置、路线共享、离队提醒"
+  priority: 1
+  searches:
+    - "Cardo DMC group riding map feature"
+    - "motorcycle group riding GPS tracking app"
+    - "组队骑行 地图 位置共享 方案"
+    - "fleet tracking mesh network motorcycle"
+  completed: false
+
+- id: "demo_pairing_flow"
+  title: "配对流程"
+  goal: "蓝牙/WiFi 配对流程优化：首次配对、自动重连、多设备切换"
+  priority: 1
+  searches:
+    - "Bluetooth pairing UX best practices"
+    - "multi-device Bluetooth switch seamless"
+    - "蓝牙配对 首次配对 自动重连 UX"
+    - "Bluetooth multipoint connection helmet"
+  completed: false
