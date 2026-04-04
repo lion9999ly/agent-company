@@ -1844,6 +1844,58 @@ def _run_critic_challenge(report: str, goal: str, agent_outputs: dict,
         report += f"\n\n---\n## Critic Review\n{critic_result['response'][:1000]}"
         return report
 
+    # === Dual Critic: o3 交叉审查 ===
+    # 用 o3 对主 Critic 的结论进行交叉验证
+    print("  [Critic Cross] o3 开始交叉审查...")
+    cross_critic_prompt = (
+        f"你是第二独立审查员，用逻辑挑战报告中的漏洞。\n\n"
+        f"## 主审查员的结论\n"
+        f"P0 数量: {len(p0_list)}\n"
+        f"P1 数量: {len(p1_list)}\n\n"
+        f"## 报告目标\n{goal[:300]}\n\n"
+        f"## 报告内容\n{report[:6000]}\n\n"
+        f"## 你的任务\n"
+        f"1. 检查主审查员是否漏掉了关键的逻辑漏洞\n"
+        f"2. 检查报告中的数值推算是否合理\n"
+        f"3. 检查结论与数据之间的逻辑链条是否完整\n\n"
+        f"输出 JSON:\n"
+        f'{{\n'
+        f'  "additional_p0": [{{"issue": "主审查员漏掉的P0问题", "reason": "为什么这是P0"}}],\n'
+        f'  "logic_gaps": ["逻辑漏洞1", "逻辑漏洞2"],\n'
+        f'  "calculation_concerns": ["数值问题1"],\n'
+        f'  "agreement": "agree/partially_agree/disagree"\n'
+        f'}}\n'
+        f"如果同意主审查员的结论，additional_p0 为空数组。\n"
+        f"只输出 JSON。"
+    )
+    cross_result = _call_model("o3", cross_critic_prompt, "你是逻辑审查员。只输出 JSON。", "critic_cross")
+    if cross_result.get("success"):
+        try:
+            cross_resp = cross_result["response"].strip()
+            cross_resp = re.sub(r'^```json\s*', '', cross_resp)
+            cross_resp = re.sub(r'\s*```$', '', cross_resp)
+            cross_data = json.loads(cross_resp)
+
+            additional_p0 = cross_data.get("additional_p0", [])
+            if additional_p0:
+                print(f"  [Critic Cross] o3 发现 {len(additional_p0)} 个额外 P0")
+                for ap0 in additional_p0:
+                    p0_list.append({
+                        "issue": ap0.get("issue", ""),
+                        "evidence": f"[o3 交叉审查] {ap0.get('reason', '')}",
+                        "fix_required": "需要验证"
+                    })
+                needs_fix = True
+
+            logic_gaps = cross_data.get("logic_gaps", [])
+            if logic_gaps:
+                p2_list.extend([{"issue": f"[逻辑检查] {g}"} for g in logic_gaps])
+
+            # 记录交叉审查结果
+            report += f"\n\n<!-- Dual Critic: o3 {cross_data.get('agreement', 'unknown')} -->"
+        except Exception as e:
+            print(f"  [Critic Cross] 解析失败: {e}")
+
     # === 元能力层: Critic 缺口扫描 ===
     try:
         from scripts.meta_capability import scan_capability_gaps, resolve_capability_gap
