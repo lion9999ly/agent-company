@@ -1020,6 +1020,15 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
 
         return {"index": i, "query": query, "content": source_text}
 
+    # 展平 searches（discovery 可能返回嵌套 list）
+    flat_searches = []
+    for s in searches:
+        if isinstance(s, list):
+            flat_searches.extend([str(item) for item in s])
+        else:
+            flat_searches.append(str(s))
+    searches = flat_searches
+
     # 并发搜索所有 query
     print(f"  [L1] 并发搜索 {len(searches)} 个 query...")
     with ThreadPoolExecutor(max_workers=8) as executor:

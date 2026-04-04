@@ -1097,6 +1097,11 @@ class ModelGateway:
         except ImportError:
             return {"success": False, "error": "OpenAI SDK not installed"}
 
+        # 防御性转换
+        prompt = str(prompt) if not isinstance(prompt, str) else prompt
+        if system_prompt:
+            system_prompt = str(system_prompt) if not isinstance(system_prompt, str) else system_prompt
+
         messages = []
         if system_prompt:
             messages.append({"role": "system", "content": system_prompt})
