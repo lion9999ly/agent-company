@@ -1344,6 +1344,100 @@ class ModelGateway:
                 )
             return {"success": False, "error": str(e)}
 
+    def call_gemini_image(self, model_name: str, prompt: str) -> Dict[str, Any]:
+        """调用 Gemini 图片生成（Nano Banana 系列）
+
+        Args:
+            model_name: 模型名称（nano_banana_pro, nano_banana_2, gemini_flash_image 等）
+            prompt: 图片描述
+
+        Returns:
+            {"success": True, "image_b64": "...", "mime_type": "..."} 或 {"success": False, "error": "..."}
+        """
+        import requests as _requests
+        cfg = self.models.get(model_name)
+        if not cfg or not cfg.api_key:
+            return {"success": False, "error": f"Model {model_name} not configured"}
+
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{cfg.model}:generateContent"
+        payload = {
+            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+            "generationConfig": {"responseModalities": ["TEXT", "IMAGE"]}
+        }
+
+        start_time = time.time()
+        try:
+            resp = _requests.post(f"{url}?key={cfg.api_key}", json=payload, timeout=60)
+            data = resp.json()
+            latency_ms = int((time.time() - start_time) * 1000)
+
+            if resp.status_code == 200 and "candidates" in data:
+                for part in data["candidates"][0]["content"]["parts"]:
+                    if "inlineData" in part:
+                        if HAS_TRACKER:
+                            get_tracker().record(
+                                model=cfg.model,
+                                provider="gemini_image",
+                                prompt_tokens=len(prompt),
+                                completion_tokens=0,
+                                task_type="image_generation",
+                                success=True,
+                                latency_ms=latency_ms
+                            )
+                        return {
+                            "success": True,
+                            "image_b64": part["inlineData"]["data"],
+                            "mime_type": part["inlineData"]["mimeType"],
+                            "model": model_name
+                        }
+                # 只有文本，没有图片
+                text = "".join(p.get("text", "") for p in data["candidates"][0]["content"]["parts"])
+                return {"success": False, "error": f"No image returned, text: {text[:200]}"}
+
+            if HAS_TRACKER:
+                get_tracker().record(
+                    model=cfg.model,
+                    provider="gemini_image",
+                    prompt_tokens=0,
+                    completion_tokens=0,
+                    task_type="image_generation",
+                    success=False,
+                    latency_ms=latency_ms
+                )
+            return {"success": False, "error": str(data)[:300]}
+
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
+    def call_image_generation_multi(self, prompt: str, engines: list = None, size: str = "1024x1024") -> list:
+        """多引擎并行图片生成，返回所有结果
+
+        Args:
+            prompt: 图片描述
+            engines: 引擎列表，默认 ["nano_banana_pro", "seedream_3_0"]
+            size: 图片尺寸
+
+        Returns:
+            [{"success": True, "engine": "...", ...}, ...]
+        """
+        if engines is None:
+            engines = ["nano_banana_pro", "seedream_3_0"]
+
+        results = []
+        for engine in engines:
+            try:
+                if engine.startswith("nano_banana") or engine.startswith("gemini"):
+                    result = self.call_gemini_image(engine, prompt)
+                elif engine == "seedream_3_0":
+                    result = self.call_image_generation(prompt, model_name="seedream_3_0", size=size)
+                else:
+                    result = {"success": False, "error": f"Unknown engine: {engine}"}
+                result["engine"] = engine
+                results.append(result)
+            except Exception as e:
+                results.append({"success": False, "engine": engine, "error": str(e)})
+        return results
+
 
 # 全局实例
 _gateway: Optional[ModelGateway] = None

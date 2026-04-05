@@ -337,6 +337,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
             _handle_demo_iteration(text_stripped, open_id, reply_target, send_reply)
             return
 
+    # === 2.28 图片生成 ===
+    if text_stripped.startswith("生成图片") or text_stripped.startswith("出图"):
+        _handle_image_generation(text_stripped, reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -1912,6 +1917,61 @@ def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: 
         _safe_reply_error(send_reply, reply_target, "智能对话", e)
 
 
+def _handle_image_generation(text: str, reply_target: str, send_reply):
+    """多引擎图片生成：Nano Banana Pro + Seedream 并行"""
+    import base64
+    import time
+
+    # 提取 prompt
+    if text.startswith("生成图片"):
+        prompt = text.replace("生成图片", "").strip().strip(":：").strip()
+    elif text.startswith("出图"):
+        prompt = text.replace("出图", "").strip().strip(":：").strip()
+    else:
+        prompt = text
+
+    if not prompt:
+        send_reply(reply_target, "请提供图片描述，如：生成图片: 一个绿色摩托头盔的HUD显示速度60km/h")
+        return
+
+    send_reply(reply_target, f"🎨 正在生成图片...\n描述: {prompt[:100]}\n引擎: Nano Banana Pro + Seedream")
+
+    def _run():
+        try:
+            from src.utils.model_gateway import get_model_gateway
+            from scripts.feishu_sdk_client import send_image_reply
+
+            gw = get_model_gateway()
+            results = gw.call_image_generation_multi(prompt)
+
+            success_count = sum(1 for r in results if r.get("success"))
+            lines = [f"🎨 图片生成完成: {success_count}/{len(results)} 成功\n"]
+
+            for i, result in enumerate(results, 1):
+                engine = result.get("engine", "unknown")
+                if result.get("success"):
+                    lines.append(f"\n{i}. {engine}: 成功")
+
+                    # 发送图片
+                    if "image_b64" in result:
+                        # Gemini 返回 base64
+                        image_bytes = base64.b64decode(result["image_b64"])
+                        send_image_reply(reply_target.split(":")[-1], image_bytes)
+                    elif "image_url" in result:
+                        # Seedream 返回 URL
+                        lines.append(f"   URL: {result['image_url']}")
+                else:
+                    error = result.get("error", "unknown")[:100]
+                    lines.append(f"\n{i}. {engine}: 失败 - {error}")
+
+            send_reply(reply_target, "\n".join(lines))
+
+        except Exception as e:
+            send_reply(reply_target, f"图片生成失败: {e}")
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
 def _get_full_help_text() -> str:
     """生成分组的完整指令列表"""
     return """【智能骑行头盔研发助手 - 指令手册】
@@ -1933,6 +1993,10 @@ def _get_full_help_text() -> str:
 • 生成 HUD Demo - HUD原型生成
 • 生成 App Demo - App原型生成
 • Demo脚本 - Demo场景管理
+
+━━━ 图片类 ━━━
+• 生成图片 <描述> - 多引擎图片生成
+• 出图 <描述> - 同上
 
 ━━━ 知识类 ━━━
 • 知识库 - 查看KB统计
