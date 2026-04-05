@@ -37,3 +37,16 @@
 {"name": "fallback_chains", "passed": true, "message": "", "timestamp": "2026-04-05T14:56:00.189162"}
 {"name": "seedream_available", "passed": true, "message": "", "timestamp": "2026-04-05T14:56:00.189162"}
 {"name": "deepseek_r1_call", "passed": true, "message": "The answer to 1 + 1 is **2**.\n\nIf you're just star", "timestamp": "2026-04-05T14:56:12.658443"}
+{"name": "gateway_import", "passed": true, "message": "", "timestamp": "2026-04-05T17:59:39.346312"}
+{"name": "doubao_lite_call", "passed": true, "message": "如果之后你有任何需求，比如知识咨询、文案创作、行程规划、闲聊谈心等等，都可以随时告诉我哦😊", "timestamp": "2026-04-05T17:59:43.652793"}
+{"name": "gpt_4o_norway_call", "passed": true, "message": "OK 😊", "timestamp": "2026-04-05T17:59:47.163430"}
+{"name": "deepseek_v3_call", "passed": true, "message": "好的，收到您的确认。  \n\n如果您有任何问题、需要帮助，或者想继续讨论某个话题，随时告诉我。我会在这", "timestamp": "2026-04-05T17:59:49.760232"}
+{"name": "kb_import", "passed": true, "message": "", "timestamp": "2026-04-05T18:00:03.514273"}
+{"name": "kb_search", "passed": true, "message": "找到 3 条", "timestamp": "2026-04-05T18:00:04.682289"}
+{"name": "learning_file_write", "passed": true, "message": "", "timestamp": "2026-04-05T18:00:04.682289"}
+{"name": "decision_tree_read", "passed": true, "message": "2288 chars", "timestamp": "2026-04-05T18:00:04.682289"}
+{"name": "claude_cli_available", "passed": true, "message": "", "timestamp": "2026-04-05T18:00:04.684753"}
+{"name": "claude_cli_call", "passed": false, "message": "无响应", "timestamp": "2026-04-05T18:00:15.331318"}
+{"name": "fallback_chains", "passed": true, "message": "", "timestamp": "2026-04-05T18:00:15.398029"}
+{"name": "seedream_available", "passed": true, "message": "", "timestamp": "2026-04-05T18:00:15.398029"}
+{"name": "deepseek_r1_call", "passed": true, "message": "The answer to 1 + 1 is **2**.\n\nThis is a basic ari", "timestamp": "2026-04-05T18:00:29.538551"}
