@@ -137,29 +137,20 @@ def _request_via_feishu(question: str, context: str, urgency: str,
 
 
 def _call_claude_api_direct(question: str, context: str, request_id: str) -> str:
-    """直接调用 Claude Agent SDK
+    """直接调用 Claude（优先 CDP 模式，回退到 SDK）
 
-    通过 Node.js 桥接脚本调用 Claude Agent SDK
+    优先级：
+    1. CDP 模式 - 连接已运行的 Chrome（绕过 Cloudflare）
+    2. SDK 模式 - Node.js 桥接脚本
     """
-    # 构造完整 prompt（注入 product_anchor）
+    # 构造完整 prompt
     prompt = f"""## 来自 agent_company 的战略问题
 
 **问题：** {question}
 
 **上下文：**
 {context[:3000]}
-
-**产品锚点：**
 """
-    anchor_path = PROJECT_ROOT / ".ai-state" / "product_anchor.md"
-    if anchor_path.exists():
-        prompt += anchor_path.read_text(encoding='utf-8')[:2000]
-
-    prompt += """
-
-请给出你的判断和建议。如果需要更多信息，说明需要什么。
-"""
-
     # 保存请求记录
     request_data = {
         "id": request_id,
@@ -172,76 +163,68 @@ def _call_claude_api_direct(question: str, context: str, request_id: str) -> str
     request_path = THINKING_DIR / f"{request_id}.json"
     request_path.write_text(json.dumps(request_data, ensure_ascii=False, indent=2), encoding='utf-8')
 
-    # 调用 Node.js 桥接（使用干净的环境变量，确保调用真正的 Claude）
-    bridge_path = PROJECT_ROOT / "scripts" / "claude_sdk_bridge.js"
-    clean_env = _get_clean_env()
+    response = None
+
+    # 优先尝试 CDP 模式
     try:
-        result = subprocess.run(
-            ['node', str(bridge_path), prompt],
-            capture_output=True,
-            text=True,
-            encoding='utf-8',
-            timeout=120,  # 2 分钟超时
-            cwd=str(PROJECT_ROOT),
-            env=clean_env  # 关键：使用干净的 env，不走 GLM-5
-        )
-
-        if result.returncode == 0:
-            response_data = json.loads(result.stdout)
-
-            if response_data.get("success"):
-                # 更新请求状态
-                request_data["status"] = "answered"
-                request_data["response"] = response_data.get("assistantText", "") or response_data.get("result", "")
-                request_data["api_result"] = response_data
-                request_data["answered_at"] = time.strftime('%Y-%m-%d %H:%M')
-                request_path.write_text(json.dumps(request_data, ensure_ascii=False, indent=2), encoding='utf-8')
-
-                # 保存到历史
-                history_path = PROJECT_ROOT / ".ai-state" / "thinking_history.jsonl"
-                with open(history_path, 'a', encoding='utf-8') as f:
-                    f.write(json.dumps({
-                        "id": request_id,
-                        "question": question,
-                        "response": request_data["response"][:2000],
-                        "source": "direct_api",
-                        "timestamp": time.strftime('%Y-%m-%d %H:%M')
-                    }, ensure_ascii=False) + "\n")
-
-                print(f"[ThinkingLayer] API 直接调用成功 {request_id}")
-                return request_id
-            else:
-                error = response_data.get("error", "Unknown error")
-                request_data["status"] = "failed"
-                request_data["error"] = error
-                request_path.write_text(json.dumps(request_data, ensure_ascii=False, indent=2), encoding='utf-8')
-                print(f"[ThinkingLayer] API 调用失败: {error}")
-                return request_id
-        else:
-            error = result.stderr or "Process failed"
-            request_data["status"] = "failed"
-            request_data["error"] = error
-            request_path.write_text(json.dumps(request_data, ensure_ascii=False, indent=2), encoding='utf-8')
-            print(f"[ThinkingLayer] 桥接脚本失败: {error}")
-            return request_id
-
-    except subprocess.TimeoutExpired:
-        request_data["status"] = "timeout"
-        request_path.write_text(json.dumps(request_data, ensure_ascii=False, indent=2), encoding='utf-8')
-        print(f"[ThinkingLayer] API 调用超时")
-        return request_id
-    except json.JSONDecodeError as e:
-        request_data["status"] = "parse_error"
-        request_data["error"] = str(e)
-        request_path.write_text(json.dumps(request_data, ensure_ascii=False, indent=2), encoding='utf-8')
-        print(f"[ThinkingLayer] JSON 解析失败: {e}")
-        return request_id
+        from scripts.claude_bridge import call_claude_via_cdp, check_cdp_available
+        if check_cdp_available():
+            print(f"[ThinkingLayer] 使用 CDP 模式...")
+            response = call_claude_via_cdp(prompt, timeout=180)
+            if response:
+                print(f"[ThinkingLayer] CDP 调用成功")
     except Exception as e:
-        request_data["status"] = "error"
-        request_data["error"] = str(e)
+        print(f"[ThinkingLayer] CDP 模式失败: {e}")
+
+    # 回退到 SDK 模式
+    if not response:
+        print(f"[ThinkingLayer] 回退到 SDK 模式...")
+        bridge_path = PROJECT_ROOT / "scripts" / "claude_sdk_bridge.js"
+        clean_env = _get_clean_env()
+        try:
+            result = subprocess.run(
+                ['node', str(bridge_path), prompt],
+                capture_output=True,
+                text=True,
+                encoding='utf-8',
+                timeout=120,
+                cwd=str(PROJECT_ROOT),
+                env=clean_env
+            )
+
+            if result.returncode == 0:
+                response_data = json.loads(result.stdout)
+                if response_data.get("success"):
+                    response = response_data.get("assistantText", "") or response_data.get("result", "")
+        except Exception as e:
+            print(f"[ThinkingLayer] SDK 模式失败: {e}")
+
+    # 处理响应
+    if response:
+        request_data["status"] = "answered"
+        request_data["response"] = response[:2000]
+        request_data["answered_at"] = time.strftime('%Y-%m-%d %H:%M')
         request_path.write_text(json.dumps(request_data, ensure_ascii=False, indent=2), encoding='utf-8')
-        print(f"[ThinkingLayer] 异常: {e}")
-        return request_id
+
+        # 保存到历史
+        history_path = PROJECT_ROOT / ".ai-state" / "thinking_history.jsonl"
+        with open(history_path, 'a', encoding='utf-8') as f:
+            f.write(json.dumps({
+                "id": request_id,
+                "question": question,
+                "response": response[:2000],
+                "source": "cdp" if check_cdp_available() else "sdk",
+                "timestamp": time.strftime('%Y-%m-%d %H:%M')
+            }, ensure_ascii=False) + "\n")
+
+        print(f"[ThinkingLayer] 调用成功 {request_id}")
+    else:
+        request_data["status"] = "failed"
+        request_data["error"] = "No response"
+        request_path.write_text(json.dumps(request_data, ensure_ascii=False, indent=2), encoding='utf-8')
+        print(f"[ThinkingLayer] 调用失败: 无响应")
+
+    return request_id
 
 
 def process_claude_response(request_id: str, response: str) -> dict:
