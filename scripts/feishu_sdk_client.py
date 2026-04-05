@@ -3252,6 +3252,55 @@ def main():
     print("按 Ctrl+C 停止")
     print("=" * 50 + "\n")
 
+    # 定时任务调度器
+    LEO_OPEN_ID = "ou_8e5e4f183e9eca4241378e96bac3a751"
+
+    def _start_scheduled_tasks():
+        """启动定时任务调度器"""
+        import schedule
+
+        # 每天 00:00 深度学习 8h
+        def _run_deep_research():
+            try:
+                from scripts.tonight_deep_research import run_deep_learning
+                print("[Scheduler] 启动每日深度学习...")
+                run_deep_learning(max_hours=8)
+            except Exception as e:
+                print(f"[Scheduler] 深度学习失败: {e}")
+
+        # 每天 06:00 竞品监控
+        def _run_competitor_monitor():
+            try:
+                from scripts.competitor_monitor import run_competitor_monitor
+                print("[Scheduler] 启动竞品监控...")
+                run_competitor_monitor()
+            except Exception as e:
+                print(f"[Scheduler] 竞品监控失败: {e}")
+
+        # 每天 07:00 系统日报
+        def _run_daily_report():
+            try:
+                from scripts.daily_system_report import send_daily_report
+                print("[Scheduler] 发送系统日报...")
+                send_daily_report()
+            except Exception as e:
+                print(f"[Scheduler] 日报发送失败: {e}")
+
+        # 注册定时任务
+        schedule.every().day.at("00:00").do(_run_deep_research)
+        schedule.every().day.at("06:00").do(_run_competitor_monitor)
+        schedule.every().day.at("07:00").do(_run_daily_report)
+
+        # 后台线程运行调度器
+        def _scheduler_loop():
+            import time as _time
+            while True:
+                schedule.run_pending()
+                _time.sleep(60)
+
+        threading.Thread(target=_scheduler_loop, daemon=True).start()
+        print("[Scheduler] 定时任务已注册: 00:00深度学习, 06:00竞品监控, 07:00系统日报")
+
     # 初始化心跳
     _heartbeat_path = Path(__file__).parent.parent / ".ai-state" / "heartbeat.txt"
     _heartbeat_path.parent.mkdir(parents=True, exist_ok=True)
@@ -3274,6 +3323,12 @@ def main():
         start_daily_scheduler(interval_hours=0.5, feishu_notify=None)
     except Exception as e:
         print(f"[DailyLearning] 定时器启动失败: {e}")
+
+    # 启动定时任务调度器
+    try:
+        _start_scheduled_tasks()
+    except Exception as e:
+        print(f"[Scheduler] 定时任务启动失败: {e}")
 
     # 启动 watchdog 子线程
     try:
