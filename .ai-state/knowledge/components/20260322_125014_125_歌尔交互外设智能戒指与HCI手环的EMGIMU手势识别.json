@@ -13,7 +13,8 @@
     "EMG",
     "AR控制器",
     "HCI手环",
-    "IMU"
+    "IMU",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

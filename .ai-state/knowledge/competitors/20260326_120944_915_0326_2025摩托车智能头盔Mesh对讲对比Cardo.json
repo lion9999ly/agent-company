@@ -14,7 +14,8 @@
     "DMC",
     "头盔集成",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

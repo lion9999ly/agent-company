@@ -11,7 +11,11 @@
     "重量",
     "高端SKU",
     "deep_research",
-    "adhoc_第一代智能骑行头盔该"
+    "adhoc_第一代智能骑行头盔该",
+    "needs_reconciliation"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 1,
+  "_last_used": "2026-04-05T00:06:05.753864",
+  "_first_used": "2026-04-05T00:06:05.753864"
 }

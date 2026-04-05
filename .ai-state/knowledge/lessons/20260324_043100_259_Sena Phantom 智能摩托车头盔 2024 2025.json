@@ -13,7 +13,8 @@
     "天线",
     "电池",
     "night_expand",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

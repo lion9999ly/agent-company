@@ -15,7 +15,8 @@
     "技术",
     "HUD",
     "光学",
-    "供应商"
+    "供应商",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

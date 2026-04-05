@@ -14,7 +14,8 @@
     "60S",
     "DMC",
     "Bluetooth 5.2",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

@@ -15,7 +15,8 @@
     "声学",
     "JDM",
     "供应商",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

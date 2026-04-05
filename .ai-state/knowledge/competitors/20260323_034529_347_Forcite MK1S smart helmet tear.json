@@ -11,7 +11,8 @@
     "QCC5124",
     "摄像头",
     "night_expand",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

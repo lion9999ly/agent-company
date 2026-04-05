@@ -15,7 +15,8 @@
     "AR HUD",
     "摄像头模组",
     "供应商评估",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

@@ -16,7 +16,8 @@
     "材料供应链",
     "竞品基准",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

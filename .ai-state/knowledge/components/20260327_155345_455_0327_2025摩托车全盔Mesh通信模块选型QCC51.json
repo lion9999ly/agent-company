@@ -13,7 +13,8 @@
     "Nordic",
     "nRF5340",
     "对讲模块",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

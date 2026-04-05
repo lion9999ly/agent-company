@@ -13,7 +13,8 @@
     "Bluetooth 5.2",
     "JBL",
     "IP67",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

@@ -11,7 +11,8 @@
     "overhaul_deepened",
     "802.11ax",
     "night_deepened",
-    "Wi-Fi security"
+    "Wi-Fi security",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

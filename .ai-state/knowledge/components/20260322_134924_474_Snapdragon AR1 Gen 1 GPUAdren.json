@@ -11,7 +11,8 @@
     "overhaul_deepened",
     "Vulkan 1.1",
     "night_deepened",
-    "Adreno GPU"
+    "Adreno GPU",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

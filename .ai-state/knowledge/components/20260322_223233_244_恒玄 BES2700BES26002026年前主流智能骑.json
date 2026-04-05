@@ -13,7 +13,8 @@
     "低功耗",
     "成本优化",
     "deep_research",
-    "main_chipset_selection"
+    "main_chipset_selection",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

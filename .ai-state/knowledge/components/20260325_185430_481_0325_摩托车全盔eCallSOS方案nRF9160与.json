@@ -15,7 +15,8 @@
     "蜂窝通信",
     "GNSS",
     "安全认证",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

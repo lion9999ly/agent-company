@@ -15,7 +15,8 @@
     "蓝牙天线",
     "LE Audio",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

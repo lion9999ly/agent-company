@@ -14,7 +14,8 @@
     "IP67",
     "JBL",
     "非自行车头盔",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

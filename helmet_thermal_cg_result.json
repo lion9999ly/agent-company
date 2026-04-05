@@ -1,0 +1,169 @@
+{
+  "tool": "helmet_thermal_cg_estimator",
+  "thermal": {
+    "summary": {
+      "ambient_c": 25.0,
+      "power_total_w": 5.0,
+      "equivalent_resistance_k_per_w": 59.79990274202646,
+      "source_temp_c": 323.9995137101323,
+      "source_rise_c": 298.9995137101323,
+      "soc_temp_c": 323.9995137101323,
+      "soc_rise_c": 298.9995137101323,
+      "battery_temp_c": 84.79990274202646,
+      "battery_rise_c": 59.79990274202646,
+      "shell_surface_temp_c": 77.8901017318403,
+      "shell_surface_rise_c": 52.8901017318403,
+      "scalp_contact_temp_c": 135.25055815270366,
+      "scalp_contact_rise_c": 110.25055815270366
+    },
+    "branch_resistances": [
+      {
+        "name": "outer_shell_path",
+        "type": "shell",
+        "resistance_k_per_w": 176.66320346320344,
+        "area_mm2": 4000,
+        "h_w_m2k": 8
+      },
+      {
+        "name": "scalp_contact_path",
+        "type": "scalp",
+        "resistance_k_per_w": 90.4,
+        "area_mm2": 2500,
+        "h_w_m2k": 12
+      }
+    ],
+    "branch_heat_flow": [
+      {
+        "name": "outer_shell_path",
+        "type": "shell",
+        "heat_flow_w": 1.69248325541889,
+        "fraction": 0.338496651083778,
+        "resistance_k_per_w": 176.66320346320344
+      },
+      {
+        "name": "scalp_contact_path",
+        "type": "scalp",
+        "heat_flow_w": 3.3075167445811093,
+        "fraction": 0.6615033489162219,
+        "resistance_k_per_w": 90.4
+      }
+    ],
+    "node_temperatures": [
+      {
+        "branch": "outer_shell_path",
+        "node": "source",
+        "temp_c": 323.9995137101323
+      },
+      {
+        "branch": "outer_shell_path",
+        "node": "after_contact",
+        "temp_c": 323.6610170590485
+      },
+      {
+        "branch": "outer_shell_path",
+        "node": "after_layer_1_TIM",
+        "temp_c": 323.5199767877636
+      },
+      {
+        "branch": "outer_shell_path",
+        "node": "after_layer_2_EPS",
+        "temp_c": 81.73665458506505
+      },
+      {
+        "branch": "outer_shell_path",
+        "node": "after_layer_3_PC_shell",
+        "temp_c": 77.8901017318403
+      },
+      {
+        "branch": "outer_shell_path",
+        "node": "surface",
+        "temp_c": 77.8901017318403
+      },
+      {
+        "branch": "scalp_contact_path",
+        "node": "source",
+        "temp_c": 323.9995137101323
+      },
+      {
+        "branch": "scalp_contact_path",
+        "node": "after_contact",
+        "temp_c": 322.67650701229985
+      },
+      {
+        "branch": "scalp_contact_path",
+        "node": "after_layer_1_pad",
+        "temp_c": 157.3006697832444
+      },
+      {
+        "branch": "scalp_contact_path",
+        "node": "after_layer_2_fabric",
+        "temp_c": 135.25055815270366
+      },
+      {
+        "branch": "scalp_contact_path",
+        "node": "surface",
+        "temp_c": 135.25055815270366
+      }
+    ]
+  },
+  "cg": {
+    "summary": {
+      "total_mass_g": 875.0,
+      "cg_mm": {
+        "x": 1.542857142857143,
+        "y": -0.2857142857142857,
+        "z": 16.2
+      },
+      "offset_from_reference_mm": {
+        "x_mm": 1.542857142857143,
+        "y_mm": -0.2857142857142857,
+        "z_mm": 16.2
+      },
+      "front_back_offset_mm": 1.542857142857143,
+      "left_right_offset_mm": -0.2857142857142857,
+      "up_down_offset_mm": 16.2
+    },
+    "components": [
+      {
+        "name": "shell",
+        "mass_g": 450.0,
+        "x_mm": 0.0,
+        "y_mm": 0.0,
+        "z_mm": 20.0
+      },
+      {
+        "name": "eps",
+        "mass_g": 180.0,
+        "x_mm": 0.0,
+        "y_mm": 0.0,
+        "z_mm": 10.0
+      },
+      {
+        "name": "soc_module",
+        "mass_g": 35.0,
+        "x_mm": 60.0,
+        "y_mm": 10.0,
+        "z_mm": 15.0
+      },
+      {
+        "name": "battery",
+        "mass_g": 120.0,
+        "x_mm": -70.0,
+        "y_mm": -5.0,
+        "z_mm": 5.0
+      },
+      {
+        "name": "hud",
+        "mass_g": 90.0,
+        "x_mm": 85.0,
+        "y_mm": 0.0,
+        "z_mm": 25.0
+      }
+    ]
+  },
+  "notes": [
+    "Thermal model is a steady-state lumped 1D thermal resistance approximation, suitable for early engineering estimation and trade-off comparison.",
+    "For exact CAD-based CAE, export local wall thickness/area/material stack from CAD and map into thermal_paths, or replace this script with FEM/CFD workflow later.",
+    "CG uses mass-weighted coordinates in mm/g relative to user-defined reference origin."
+  ]
+}

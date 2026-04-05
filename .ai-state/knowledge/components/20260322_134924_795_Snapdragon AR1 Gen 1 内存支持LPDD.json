@@ -10,7 +10,8 @@
     "overhaul_deepened",
     "night_deepened",
     "LPDDR4x",
-    "2100MHz"
+    "2100MHz",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

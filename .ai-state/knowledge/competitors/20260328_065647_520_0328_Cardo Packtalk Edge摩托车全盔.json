@@ -16,7 +16,8 @@
     "Air Mount",
     "竞品分析",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

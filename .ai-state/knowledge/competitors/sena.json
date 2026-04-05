@@ -10,7 +10,8 @@
     "对讲",
     "蓝牙",
     "SENA",
-    "night_deepened"
+    "night_deepened",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

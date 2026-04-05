@@ -13,7 +13,8 @@
     "摄像头模组",
     "Goertek",
     "竞品分析",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

@@ -13,7 +13,8 @@
     "竞品校验",
     "Wave Intercom 60S",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

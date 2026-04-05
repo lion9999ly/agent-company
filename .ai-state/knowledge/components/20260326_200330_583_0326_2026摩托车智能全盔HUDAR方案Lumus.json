@@ -14,7 +14,8 @@
     "波导",
     "微显示器",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

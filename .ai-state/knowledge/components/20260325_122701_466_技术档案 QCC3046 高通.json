@@ -9,7 +9,8 @@
     "tech_profile",
     "audio_soc",
     "高通",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

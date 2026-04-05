@@ -17,7 +17,8 @@
     "Lumus",
     "optical module",
     "供应链判断",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

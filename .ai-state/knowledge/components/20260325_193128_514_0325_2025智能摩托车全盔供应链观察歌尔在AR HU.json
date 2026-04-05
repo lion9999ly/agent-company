@@ -13,7 +13,8 @@
     "ENC",
     "ODM",
     "JDM供应链",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

@@ -14,7 +14,8 @@
     "Goertek",
     "Beamforming",
     "MEMS麦克风",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

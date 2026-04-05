@@ -16,7 +16,11 @@
     "技术",
     "HUD",
     "光学",
-    "供应商"
+    "供应商",
+    "needs_reconciliation"
   ],
-  "confidence": "high"
+  "confidence": "high",
+  "_usage_count": 1,
+  "_last_used": "2026-04-05T00:06:05.755953",
+  "_first_used": "2026-04-05T00:06:05.755953"
 }

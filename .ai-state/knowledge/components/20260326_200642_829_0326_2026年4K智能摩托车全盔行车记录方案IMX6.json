@@ -15,7 +15,8 @@
     "夜视",
     "智能头盔",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

@@ -18,7 +18,8 @@
     "Shoei",
     "Forcite",
     "Sena",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

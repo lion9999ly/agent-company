@@ -10,7 +10,8 @@
     "aptX Adaptive",
     "ENC",
     "防水",
-    "night_expand"
+    "night_expand",
+    "needs_reconciliation"
   ],
   "confidence": "medium",
   "_usage_count": 32,

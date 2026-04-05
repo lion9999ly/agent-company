@@ -10,7 +10,8 @@
     "ISP",
     "AI拍摄眼镜",
     "芯片方案",
-    "internal"
+    "internal",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

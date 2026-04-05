@@ -12,7 +12,8 @@
     "定价策略",
     "渠道分销",
     "用户痛点",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

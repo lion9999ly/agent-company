@@ -13,7 +13,8 @@
     "DMC",
     "ECE 22.06",
     "smart full-face helmet",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

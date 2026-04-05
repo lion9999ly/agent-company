@@ -15,7 +15,8 @@
     "LTE Cat 1",
     "LTE-M",
     "NB-IoT",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

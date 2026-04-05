@@ -14,7 +14,8 @@
     "ECE 22.06",
     "供应商",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

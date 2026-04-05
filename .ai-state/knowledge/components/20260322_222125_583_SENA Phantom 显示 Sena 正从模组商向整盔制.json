@@ -11,7 +11,8 @@
     "整盔制造",
     "供应链延伸",
     "deep_research",
-    "competitor_supply_chain"
+    "competitor_supply_chain",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

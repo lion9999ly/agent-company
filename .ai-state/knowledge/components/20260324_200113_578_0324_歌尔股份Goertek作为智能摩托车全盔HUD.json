@@ -15,7 +15,8 @@
     "ENC",
     "供应商",
     "专利",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

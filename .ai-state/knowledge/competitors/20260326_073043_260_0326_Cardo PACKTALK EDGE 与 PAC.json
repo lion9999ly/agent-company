@@ -13,7 +13,8 @@
     "Mesh Intercom",
     "JBL",
     "Crash Detection",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high",
   "_usage_count": 7,

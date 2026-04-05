@@ -14,7 +14,8 @@
     "Sena",
     "Cardo",
     "供应商观察",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

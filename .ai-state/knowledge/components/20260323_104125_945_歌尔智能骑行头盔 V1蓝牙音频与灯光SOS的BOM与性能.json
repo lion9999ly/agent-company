@@ -11,7 +11,8 @@
     "LED尾灯",
     "SOS",
     "deep_research",
-    "adhoc_基于PRD_V0.1"
+    "adhoc_基于PRD_V0.1",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

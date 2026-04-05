@@ -16,7 +16,8 @@
     "LE Audio",
     "头盔通信模组",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

@@ -9,7 +9,8 @@
     "HUD",
     "2026",
     "microOLED",
-    "navigation"
+    "navigation",
+    "needs_reconciliation"
   ],
   "confidence": "medium",
   "_usage_count": 1,

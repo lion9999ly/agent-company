@@ -8,7 +8,8 @@
     "智能穿戴",
     "音频算法",
     "传感器集成",
-    "internal"
+    "internal",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

@@ -17,7 +17,8 @@
     "OEM",
     "JDM",
     "日本市场",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high",
   "_usage_count": 15,

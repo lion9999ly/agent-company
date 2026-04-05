@@ -15,7 +15,8 @@
     "xMEMS",
     "MEMS麦克风",
     "语音降噪",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

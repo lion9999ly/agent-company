@@ -11,7 +11,8 @@
     "拆解",
     "蓝牙",
     "night_expand",
-    "天线"
+    "天线",
+    "needs_reconciliation"
   ],
   "confidence": "medium",
   "_usage_count": 221,

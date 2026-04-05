@@ -16,7 +16,8 @@
     "碳纤维",
     "供应链推断",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

@@ -16,7 +16,8 @@
     "JDM",
     "ECE 22.06",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

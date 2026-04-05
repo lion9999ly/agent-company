@@ -16,7 +16,8 @@
     "Sena",
     "Bosch",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

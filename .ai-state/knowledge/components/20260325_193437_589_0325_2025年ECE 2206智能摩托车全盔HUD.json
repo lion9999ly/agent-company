@@ -17,7 +17,8 @@
     "Goertek",
     "波导",
     "MicroLED",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

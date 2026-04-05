@@ -16,7 +16,8 @@
     "supplier",
     "竞品",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

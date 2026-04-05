@@ -9,7 +9,8 @@
     "tech_profile",
     "ar_xr_soc",
     "qualcomm",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

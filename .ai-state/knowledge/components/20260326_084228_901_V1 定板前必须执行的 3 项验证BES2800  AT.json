@@ -13,7 +13,8 @@
     "风洞测试",
     "量产验证",
     "deep_research",
-    "tree_audio_soc"
+    "tree_audio_soc",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

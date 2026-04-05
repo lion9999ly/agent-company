@@ -13,7 +13,8 @@
     "低功耗",
     "ANC",
     "听力增强",
-    "Hearable"
+    "Hearable",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

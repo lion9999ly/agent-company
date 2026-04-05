@@ -15,7 +15,8 @@
     "Bluetooth LE Audio",
     "拆解",
     "规格书",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

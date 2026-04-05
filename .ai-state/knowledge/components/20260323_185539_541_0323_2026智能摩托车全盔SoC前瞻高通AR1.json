@@ -18,7 +18,8 @@
     "P0",
     "芯片",
     "SoC",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

@@ -9,7 +9,8 @@
     "Wi-Fi 7",
     "Bluetooth 5.4",
     "wireless",
-    "internal"
+    "internal",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

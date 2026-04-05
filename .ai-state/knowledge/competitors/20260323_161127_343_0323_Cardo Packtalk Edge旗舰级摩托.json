@@ -13,7 +13,8 @@
     "JBL 40mm",
     "Air Mount",
     "Mesh通信",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

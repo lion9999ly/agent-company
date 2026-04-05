@@ -9,7 +9,8 @@
     "材质",
     "2026",
     "composite",
-    "spec"
+    "spec",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

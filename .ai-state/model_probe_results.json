@@ -1,0 +1,198 @@
+[
+  {
+    "name": "gpt_5_4",
+    "provider": "azure_openai",
+    "deployment": "gpt-5.4",
+    "status": 400,
+    "error": "unsupported_parameter"
+  },
+  {
+    "name": "gpt_5_3",
+    "provider": "azure_openai",
+    "deployment": "gpt-5.3-chat-2026-03-03",
+    "status": 404,
+    "error": "DeploymentNotFound"
+  },
+  {
+    "name": "claude_opus_4_6",
+    "provider": "azure_openai",
+    "deployment": "claude-opus-4-6",
+    "status": 404,
+    "error": "DeploymentNotFound"
+  },
+  {
+    "name": "claude_sonnet_4_6",
+    "provider": "azure_openai",
+    "deployment": "claude-sonnet-4-6",
+    "status": 404,
+    "error": "DeploymentNotFound"
+  },
+  {
+    "name": "o3",
+    "provider": "azure_openai",
+    "deployment": "o3",
+    "status": 404,
+    "error": "404"
+  },
+  {
+    "name": "o3_mini",
+    "provider": "azure_openai",
+    "deployment": "o3-mini",
+    "status": 404,
+    "error": "404"
+  },
+  {
+    "name": "o3_deep_research",
+    "provider": "azure_openai",
+    "deployment": "o3-deep-research",
+    "status": 404,
+    "error": "404"
+  },
+  {
+    "name": "gpt_4o_norway",
+    "provider": "azure_openai",
+    "deployment": "gpt-4o",
+    "status": 200,
+    "error": null
+  },
+  {
+    "name": "grok_4",
+    "provider": "azure_openai",
+    "deployment": "grok-4-fast-reasoning",
+    "status": 404,
+    "error": "DeploymentNotFound"
+  },
+  {
+    "name": "gemini_3_1_pro",
+    "provider": "google",
+    "deployment": "gemini-3.1-pro-preview",
+    "status": 403,
+    "error": 403
+  },
+  {
+    "name": "gemini_3_pro",
+    "provider": "google",
+    "deployment": "gemini-3-pro-preview",
+    "status": 403,
+    "error": 403
+  },
+  {
+    "name": "gemini_2_5_pro",
+    "provider": "google",
+    "deployment": "gemini-2.5-pro",
+    "status": 403,
+    "error": 403
+  },
+  {
+    "name": "gemini_2_5_flash",
+    "provider": "google",
+    "deployment": "gemini-2.5-flash",
+    "status": 403,
+    "error": 403
+  },
+  {
+    "name": "gemini_deep_research",
+    "provider": "google",
+    "deployment": "deep-research-pro-preview-12-2025",
+    "status": 403,
+    "error": 403
+  },
+  {
+    "name": "doubao_seed_pro",
+    "provider": "volcengine",
+    "deployment": "doubao-seed-2-0-pro-260215",
+    "status": 200,
+    "error": null
+  },
+  {
+    "name": "doubao_seed_lite",
+    "provider": "volcengine",
+    "deployment": "doubao-seed-2-0-lite-260215",
+    "status": 200,
+    "error": null
+  },
+  {
+    "name": "deepseek_v3_volcengine",
+    "provider": "volcengine",
+    "deployment": "deepseek-v3-2-251201",
+    "status": 200,
+    "error": null
+  },
+  {
+    "name": "llama_4_maverick",
+    "provider": "azure_openai",
+    "deployment": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "status": 404,
+    "error": "DeploymentNotFound"
+  },
+  {
+    "name": "deepseek_v3_2",
+    "provider": "azure_openai",
+    "deployment": "DeepSeek-V3.2",
+    "status": 404,
+    "error": "DeploymentNotFound"
+  },
+  {
+    "name": "deepseek_r1",
+    "provider": "azure_openai",
+    "deployment": "DeepSeek-R1",
+    "status": 404,
+    "error": "DeploymentNotFound"
+  },
+  {
+    "name": "qwen_3_32b",
+    "provider": "azure_openai",
+    "deployment": "qwen-3-32b",
+    "status": 404,
+    "error": "DeploymentNotFound"
+  },
+  {
+    "name": "cpo",
+    "provider": "azure_openai",
+    "deployment": "gpt-5.4",
+    "status": 400,
+    "error": "unsupported_parameter"
+  },
+  {
+    "name": "cto",
+    "provider": "azure_openai",
+    "deployment": "gpt-5.4",
+    "status": 400,
+    "error": "unsupported_parameter"
+  },
+  {
+    "name": "cmo",
+    "provider": "azure_openai",
+    "deployment": "gpt-5.4",
+    "status": 400,
+    "error": "unsupported_parameter"
+  },
+  {
+    "name": "cdo",
+    "provider": "azure_openai",
+    "deployment": "gpt-5.4",
+    "status": 400,
+    "error": "unsupported_parameter"
+  },
+  {
+    "name": "critic_gemini",
+    "provider": "google",
+    "deployment": "gemini-3.1-pro-preview",
+    "status": 403,
+    "error": 403
+  },
+  {
+    "name": "critic_azure",
+    "provider": "azure_openai",
+    "deployment": "claude-opus-4-6",
+    "status": 404,
+    "error": "DeploymentNotFound"
+  },
+  {
+    "name": "cro",
+    "provider": "azure_openai",
+    "deployment": "claude-sonnet-4-6",
+    "status": 404,
+    "error": "DeploymentNotFound"
+  }
+]

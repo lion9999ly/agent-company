@@ -14,7 +14,8 @@
     "DMC",
     "smart helmet",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

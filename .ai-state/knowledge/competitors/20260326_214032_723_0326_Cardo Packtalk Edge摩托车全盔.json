@@ -15,7 +15,8 @@
     "蓝牙5.2",
     "智能头盔集成",
     "JDM",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

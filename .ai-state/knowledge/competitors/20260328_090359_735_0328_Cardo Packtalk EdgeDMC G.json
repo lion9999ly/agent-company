@@ -15,7 +15,8 @@
     "头盔集成",
     "SC2",
     "竞品分析",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

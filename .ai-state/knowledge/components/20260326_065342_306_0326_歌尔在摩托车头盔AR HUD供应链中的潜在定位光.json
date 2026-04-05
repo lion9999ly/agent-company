@@ -15,7 +15,8 @@
     "微显示器",
     "供应链",
     "ODM",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

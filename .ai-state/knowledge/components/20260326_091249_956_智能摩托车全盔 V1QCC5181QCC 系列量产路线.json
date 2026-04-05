@@ -11,7 +11,8 @@
     "BT5.4",
     "LE Audio",
     "deep_research",
-    "tree_mesh_intercom"
+    "tree_mesh_intercom",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

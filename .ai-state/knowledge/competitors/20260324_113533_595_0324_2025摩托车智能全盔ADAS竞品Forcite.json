@@ -13,7 +13,8 @@
     "Forcite MK1S",
     "CrossHelmet X1",
     "Sena",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high",
   "_usage_count": 1,

@@ -15,7 +15,8 @@
     "ANC",
     "ENC",
     "智能头盔供应链",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

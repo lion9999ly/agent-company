@@ -13,7 +13,8 @@
     "camera module",
     "smart helmet",
     "competitor",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

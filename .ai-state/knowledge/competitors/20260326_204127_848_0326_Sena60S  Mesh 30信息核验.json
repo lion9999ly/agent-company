@@ -12,7 +12,8 @@
     "竞品核验",
     "供应链风险",
     "FCC待核实",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

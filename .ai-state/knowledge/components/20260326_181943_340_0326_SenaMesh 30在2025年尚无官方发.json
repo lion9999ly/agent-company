@@ -13,7 +13,8 @@
     "对讲模块",
     "Harman Kardon",
     "供应商",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

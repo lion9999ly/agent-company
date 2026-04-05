@@ -10,7 +10,8 @@
     "成本评估",
     "验证指标",
     "deep_research",
-    "hud_decision"
+    "hud_decision",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

@@ -15,7 +15,8 @@
     "声学模组",
     "供应链",
     "JDM",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

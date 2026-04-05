@@ -11,7 +11,8 @@
     "Bosch",
     "传感器融合",
     "边缘AI",
-    "night_expand"
+    "night_expand",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

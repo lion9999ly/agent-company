@@ -12,7 +12,8 @@
     "internal",
     "night_deepened",
     "overhaul_deepened",
-    "耐高温"
+    "耐高温",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

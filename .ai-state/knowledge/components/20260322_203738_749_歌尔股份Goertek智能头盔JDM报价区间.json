@@ -11,7 +11,8 @@
     "HUD",
     "智能头盔",
     "deep_research",
-    "goertek_profile"
+    "goertek_profile",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

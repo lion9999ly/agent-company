@@ -5,7 +5,8 @@
   "source": "self_evolution",
   "created_at": "2026-03-27",
   "tags": [
-    "auto_evolution"
+    "auto_evolution",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

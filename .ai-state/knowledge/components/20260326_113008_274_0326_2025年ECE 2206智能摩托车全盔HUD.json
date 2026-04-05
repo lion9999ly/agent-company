@@ -13,7 +13,8 @@
     "Goertek",
     "供应链",
     "近眼显示",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

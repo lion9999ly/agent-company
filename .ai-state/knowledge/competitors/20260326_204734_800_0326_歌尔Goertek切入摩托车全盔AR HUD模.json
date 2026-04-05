@@ -13,7 +13,8 @@
     "摄像头模组",
     "JDM",
     "供应链",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

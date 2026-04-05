@@ -17,7 +17,8 @@
     "QCC5181",
     "Bluetooth LE Audio",
     "Mesh对讲",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

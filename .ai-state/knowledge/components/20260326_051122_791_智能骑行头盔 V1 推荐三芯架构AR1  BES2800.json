@@ -13,7 +13,8 @@
     "提示级ADAS",
     "手机协同",
     "deep_research",
-    "enrich_83"
+    "enrich_83",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

@@ -13,7 +13,8 @@
     "DMC",
     "JDM",
     "MIC认证",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

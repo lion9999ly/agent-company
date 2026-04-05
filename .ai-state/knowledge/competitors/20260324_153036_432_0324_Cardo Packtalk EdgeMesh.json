@@ -14,7 +14,8 @@
     "2025预测",
     "未发布产品",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

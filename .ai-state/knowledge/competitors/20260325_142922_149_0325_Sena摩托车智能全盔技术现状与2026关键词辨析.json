@@ -12,7 +12,8 @@
     "Harman Kardon",
     "竞品分析",
     "对讲系统",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

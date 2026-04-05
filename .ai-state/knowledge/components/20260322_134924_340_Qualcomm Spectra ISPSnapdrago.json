@@ -10,7 +10,8 @@
     "camera",
     "HDR",
     "EIS",
-    "internal"
+    "internal",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

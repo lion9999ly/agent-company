@@ -13,7 +13,8 @@
     "Sena",
     "Cardo",
     "智能头盔",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

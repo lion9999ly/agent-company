@@ -15,7 +15,8 @@
     "ECE 22.06",
     "JDM",
     "摄像头模组",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high",
   "_usage_count": 2,

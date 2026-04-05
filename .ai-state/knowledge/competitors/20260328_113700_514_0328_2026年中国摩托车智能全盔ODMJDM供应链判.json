@@ -15,7 +15,8 @@
     "Sunny Optical",
     "4K摄像头",
     "HUD",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

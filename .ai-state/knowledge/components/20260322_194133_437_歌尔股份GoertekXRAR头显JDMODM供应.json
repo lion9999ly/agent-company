@@ -20,7 +20,8 @@
     "Micro-OLED",
     "报价",
     "产能",
-    "jdm_study"
+    "jdm_study",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

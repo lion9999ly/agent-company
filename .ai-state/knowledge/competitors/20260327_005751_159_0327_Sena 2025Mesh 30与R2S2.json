@@ -15,7 +15,8 @@
     "S2R",
     "竞品核查",
     "摩托车全盔",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

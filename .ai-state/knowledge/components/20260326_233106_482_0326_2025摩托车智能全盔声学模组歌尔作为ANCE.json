@@ -15,7 +15,8 @@
     "微型扬声器",
     "声学模组",
     "供应商评估",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

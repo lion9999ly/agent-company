@@ -11,7 +11,8 @@
     "近眼显示",
     "阳光可视",
     "光学",
-    "night_expand"
+    "night_expand",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

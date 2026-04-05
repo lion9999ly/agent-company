@@ -5,7 +5,8 @@
   "tags": [
     "deep_research",
     "report",
-    "supplier_negotiation"
+    "supplier_negotiation",
+    "needs_reconciliation"
   ],
   "source": "deep_research:supplier_negotiation",
   "confidence": "high",

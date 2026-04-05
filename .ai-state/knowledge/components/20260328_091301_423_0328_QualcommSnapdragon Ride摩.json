@@ -16,7 +16,8 @@
     "摩托车全盔",
     "上游方案研判",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

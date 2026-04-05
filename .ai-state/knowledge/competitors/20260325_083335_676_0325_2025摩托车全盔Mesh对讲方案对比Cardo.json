@@ -15,7 +15,8 @@
     "Shoei SRL-Mesh",
     "DMC",
     "竞品分析",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

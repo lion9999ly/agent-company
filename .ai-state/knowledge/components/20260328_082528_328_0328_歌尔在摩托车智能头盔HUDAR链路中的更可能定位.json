@@ -18,7 +18,8 @@
     "JDM",
     "ODM",
     "供应链",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

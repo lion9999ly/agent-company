@@ -16,7 +16,8 @@
     "JDM",
     "摄像头",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

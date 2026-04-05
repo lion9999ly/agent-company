@@ -13,7 +13,8 @@
     "蓝牙音频SoC",
     "供应商模块",
     "专有协议",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium",
   "_usage_count": 1,

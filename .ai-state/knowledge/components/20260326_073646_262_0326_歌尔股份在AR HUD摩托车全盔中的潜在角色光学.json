@@ -14,7 +14,8 @@
     "摄像头模组",
     "ODM",
     "XR供应链",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

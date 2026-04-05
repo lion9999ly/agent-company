@@ -13,7 +13,8 @@
     "摩旅",
     "Mesh通信",
     "价格敏感度",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high",
   "_usage_count": 15,

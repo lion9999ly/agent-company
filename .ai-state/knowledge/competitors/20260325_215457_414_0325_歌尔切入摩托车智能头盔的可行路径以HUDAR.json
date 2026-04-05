@@ -15,7 +15,8 @@
     "声学",
     "ODM",
     "JDM",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

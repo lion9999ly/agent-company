@@ -13,7 +13,8 @@
     "信息冲突",
     "供应链待核验",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

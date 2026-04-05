@@ -9,7 +9,8 @@
     "chip",
     "intercom",
     "Sena SRL",
-    "2026"
+    "2026",
+    "needs_reconciliation"
   ],
   "confidence": "medium",
   "_usage_count": 15,

@@ -15,7 +15,8 @@
     "价格敏感度",
     "YouTube评测",
     "购买决策",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

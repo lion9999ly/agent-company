@@ -1,0 +1,182 @@
+{
+  "scenarios": [
+    {
+      "name": "Base_CN_US_EU",
+      "tasks": [
+        {
+          "task_id": "EVT_freeze",
+          "task_name": "EVT Design Freeze",
+          "category": "milestone",
+          "prep_days": 10
+        },
+        {
+          "task_id": "SRRC",
+          "task_name": "China SRRC",
+          "region": "CN",
+          "category": "radio",
+          "prep_days": 7,
+          "queue_days": 10,
+          "test_days": 12,
+          "cert_days": 15,
+          "rework_prob": 0.25,
+          "rework_days": 14,
+          "depends_on": "EVT_freeze"
+        },
+        {
+          "task_id": "CCC",
+          "task_name": "China CCC",
+          "region": "CN",
+          "category": "safety",
+          "prep_days": 5,
+          "queue_days": 7,
+          "test_days": 10,
+          "cert_days": 20,
+          "rework_prob": 0.15,
+          "rework_days": 10,
+          "depends_on": "EVT_freeze"
+        },
+        {
+          "task_id": "FCC",
+          "task_name": "US FCC",
+          "region": "US",
+          "category": "radio_emc",
+          "prep_days": 6,
+          "queue_days": 8,
+          "test_days": 10,
+          "cert_days": 12,
+          "rework_prob": 0.2,
+          "rework_days": 10,
+          "depends_on": "EVT_freeze"
+        },
+        {
+          "task_id": "CE",
+          "task_name": "EU CE",
+          "region": "EU",
+          "category": "radio_emc_safety",
+          "prep_days": 6,
+          "queue_days": 8,
+          "test_days": 12,
+          "cert_days": 10,
+          "rework_prob": 0.2,
+          "rework_days": 10,
+          "depends_on": "EVT_freeze"
+        },
+        {
+          "task_id": "UN38_3",
+          "task_name": "UN38.3 Battery Transport",
+          "region": "Global",
+          "category": "battery",
+          "prep_days": 3,
+          "queue_days": 5,
+          "test_days": 8,
+          "cert_days": 5,
+          "rework_prob": 0.1,
+          "rework_days": 7,
+          "depends_on": "EVT_freeze"
+        }
+      ]
+    },
+    {
+      "name": "Add_JP_KR",
+      "tasks": [
+        {
+          "task_id": "EVT_freeze",
+          "task_name": "EVT Design Freeze",
+          "category": "milestone",
+          "prep_days": 10
+        },
+        {
+          "task_id": "SRRC",
+          "task_name": "China SRRC",
+          "region": "CN",
+          "category": "radio",
+          "prep_days": 7,
+          "queue_days": 10,
+          "test_days": 12,
+          "cert_days": 15,
+          "rework_prob": 0.25,
+          "rework_days": 14,
+          "depends_on": "EVT_freeze"
+        },
+        {
+          "task_id": "CCC",
+          "task_name": "China CCC",
+          "region": "CN",
+          "category": "safety",
+          "prep_days": 5,
+          "queue_days": 7,
+          "test_days": 10,
+          "cert_days": 20,
+          "rework_prob": 0.15,
+          "rework_days": 10,
+          "depends_on": "EVT_freeze"
+        },
+        {
+          "task_id": "FCC",
+          "task_name": "US FCC",
+          "region": "US",
+          "category": "radio_emc",
+          "prep_days": 6,
+          "queue_days": 8,
+          "test_days": 10,
+          "cert_days": 12,
+          "rework_prob": 0.2,
+          "rework_days": 10,
+          "depends_on": "EVT_freeze"
+        },
+        {
+          "task_id": "CE",
+          "task_name": "EU CE",
+          "region": "EU",
+          "category": "radio_emc_safety",
+          "prep_days": 6,
+          "queue_days": 8,
+          "test_days": 12,
+          "cert_days": 10,
+          "rework_prob": 0.2,
+          "rework_days": 10,
+          "depends_on": "EVT_freeze"
+        },
+        {
+          "task_id": "TELEC",
+          "task_name": "Japan TELEC",
+          "region": "JP",
+          "category": "radio",
+          "prep_days": 5,
+          "queue_days": 12,
+          "test_days": 10,
+          "cert_days": 14,
+          "rework_prob": 0.2,
+          "rework_days": 12,
+          "depends_on": "EVT_freeze"
+        },
+        {
+          "task_id": "KC",
+          "task_name": "Korea KC",
+          "region": "KR",
+          "category": "radio_emc",
+          "prep_days": 5,
+          "queue_days": 10,
+          "test_days": 10,
+          "cert_days": 12,
+          "rework_prob": 0.2,
+          "rework_days": 10,
+          "depends_on": "EVT_freeze"
+        },
+        {
+          "task_id": "UN38_3",
+          "task_name": "UN38.3 Battery Transport",
+          "region": "Global",
+          "category": "battery",
+          "prep_days": 3,
+          "queue_days": 5,
+          "test_days": 8,
+          "cert_days": 5,
+          "rework_prob": 0.1,
+          "rework_days": 7,
+          "depends_on": "EVT_freeze"
+        }
+      ]
+    }
+  ]
+}

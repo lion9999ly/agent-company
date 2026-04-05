@@ -15,7 +15,8 @@
     "摄像头模组",
     "JDM",
     "ODM",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

@@ -16,7 +16,8 @@
     "蓝牙5.2",
     "Packtalk Edge",
     "Sena 50S",
-    "auto_evolution"
+    "auto_evolution",
+    "needs_reconciliation"
   ],
   "confidence": "medium",
   "_usage_count": 4,

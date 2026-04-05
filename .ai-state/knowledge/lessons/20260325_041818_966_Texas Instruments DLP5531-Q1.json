@@ -11,7 +11,8 @@
     "DLP5531-Q1",
     "waveguide",
     "optical engine",
-    "night_expand"
+    "night_expand",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

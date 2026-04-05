@@ -14,7 +14,8 @@
     "声学模组",
     "ODM",
     "供应商",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

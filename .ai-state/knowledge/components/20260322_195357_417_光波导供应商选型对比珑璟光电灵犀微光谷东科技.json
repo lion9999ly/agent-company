@@ -15,7 +15,8 @@
     "SRG衍射光波导",
     "FOV 30-50度",
     "2026",
-    "jdm_study"
+    "jdm_study",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

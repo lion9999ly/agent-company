@@ -16,7 +16,8 @@
     "竞品分析",
     "全盔",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

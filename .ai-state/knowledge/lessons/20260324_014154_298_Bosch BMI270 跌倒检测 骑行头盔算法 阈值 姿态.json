@@ -10,7 +10,8 @@
     "算法",
     "nRF5340",
     "IMU",
-    "night_expand"
+    "night_expand",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

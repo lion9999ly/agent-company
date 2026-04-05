@@ -15,7 +15,8 @@
     "摄像头模组",
     "XR供应链",
     "智能头盔供应商",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

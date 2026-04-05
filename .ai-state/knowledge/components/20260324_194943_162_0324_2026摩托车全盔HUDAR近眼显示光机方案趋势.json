@@ -17,7 +17,8 @@
     "P0",
     "HUD",
     "AR显示",
-    "光学"
+    "光学",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

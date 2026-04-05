@@ -11,7 +11,8 @@
     "近眼显示",
     "亮度",
     "户外可视",
-    "night_expand"
+    "night_expand",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

@@ -13,7 +13,8 @@
     "DMC",
     "Packtalk Edge",
     "60S",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

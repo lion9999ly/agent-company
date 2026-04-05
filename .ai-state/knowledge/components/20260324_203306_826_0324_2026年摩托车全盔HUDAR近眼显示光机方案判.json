@@ -17,7 +17,8 @@
     "HUD",
     "AR显示",
     "光学",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

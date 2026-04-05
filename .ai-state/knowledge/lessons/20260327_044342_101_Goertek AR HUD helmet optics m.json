@@ -11,7 +11,8 @@
     "waveguide",
     "helmet optics",
     "NED",
-    "night_expand"
+    "night_expand",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

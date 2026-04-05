@@ -19,7 +19,8 @@
     "蓝牙音频",
     "P0",
     "芯片",
-    "SoC"
+    "SoC",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

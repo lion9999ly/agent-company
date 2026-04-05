@@ -16,7 +16,8 @@
     "LE Audio",
     "Auracast",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

@@ -13,7 +13,8 @@
     "Bluetooth LE Audio",
     "JDM",
     "头盔通信芯片",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

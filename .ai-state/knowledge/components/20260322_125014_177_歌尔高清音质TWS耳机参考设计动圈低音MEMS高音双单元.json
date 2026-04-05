@@ -13,7 +13,8 @@
     "TWS",
     "AI ENC",
     "双单元",
-    "6MIC"
+    "6MIC",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

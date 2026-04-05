@@ -15,7 +15,8 @@
     "供应链",
     "Forcite MK1S",
     "Sena Impulse",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

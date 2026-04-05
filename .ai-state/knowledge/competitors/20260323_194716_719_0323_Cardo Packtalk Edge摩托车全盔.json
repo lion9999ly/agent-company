@@ -15,7 +15,8 @@
     "Bluetooth",
     "FCC",
     "全盔",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

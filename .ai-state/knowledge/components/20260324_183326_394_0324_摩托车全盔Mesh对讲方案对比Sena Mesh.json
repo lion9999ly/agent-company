@@ -15,7 +15,8 @@
     "SRL-Mesh",
     "头盔对讲",
     "2025竞品",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

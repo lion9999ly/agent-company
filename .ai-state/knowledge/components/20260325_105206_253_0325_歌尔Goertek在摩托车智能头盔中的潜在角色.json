@@ -18,7 +18,8 @@
     "ODM",
     "Tier-1",
     "dynamic",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

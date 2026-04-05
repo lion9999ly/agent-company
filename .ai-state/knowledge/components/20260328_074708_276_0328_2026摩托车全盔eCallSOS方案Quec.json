@@ -14,7 +14,8 @@
     "LTE Cat-1",
     "ECE 22.06",
     "认证",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

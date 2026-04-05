@@ -18,7 +18,8 @@
     "供应商",
     "歌尔",
     "JDM",
-    "speculative"
+    "speculative",
+    "needs_reconciliation"
   ],
   "confidence": "low"
 }

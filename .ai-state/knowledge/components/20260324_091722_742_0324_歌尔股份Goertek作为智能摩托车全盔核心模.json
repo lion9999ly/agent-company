@@ -16,7 +16,8 @@
     "ADAS",
     "ODM/OEM",
     "2026",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

@@ -15,7 +15,8 @@
     "IP67",
     "OTA",
     "专利壁垒",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high",
   "_usage_count": 9,

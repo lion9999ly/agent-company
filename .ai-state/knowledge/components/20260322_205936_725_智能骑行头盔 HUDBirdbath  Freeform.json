@@ -12,7 +12,8 @@
     "Waveguide",
     "量产路线",
     "deep_research",
-    "optical_suppliers"
+    "optical_suppliers",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

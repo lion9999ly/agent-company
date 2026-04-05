@@ -14,7 +14,8 @@
     "竞品分析",
     "P1",
     "通讯",
-    "Mesh"
+    "Mesh",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

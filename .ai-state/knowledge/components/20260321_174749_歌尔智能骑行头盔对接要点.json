@@ -8,7 +8,8 @@
     "HUD显示",
     "声学降噪",
     "摄像头防抖",
-    "internal"
+    "internal",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

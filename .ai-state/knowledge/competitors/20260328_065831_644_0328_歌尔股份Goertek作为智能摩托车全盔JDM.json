@@ -16,7 +16,8 @@
     "ANC",
     "摄像头",
     "声学供应商",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

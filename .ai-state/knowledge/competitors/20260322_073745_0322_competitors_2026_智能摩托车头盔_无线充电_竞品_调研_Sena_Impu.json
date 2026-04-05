@@ -9,7 +9,8 @@
     "无线充电",
     "Qi2",
     "磁吸充电",
-    "IP等级"
+    "IP等级",
+    "needs_reconciliation"
   ],
   "confidence": "medium",
   "_usage_count": 14,

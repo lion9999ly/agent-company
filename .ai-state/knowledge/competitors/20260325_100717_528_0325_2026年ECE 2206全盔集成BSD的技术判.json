@@ -15,7 +15,8 @@
     "77GHz",
     "Goertek",
     "ODM",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

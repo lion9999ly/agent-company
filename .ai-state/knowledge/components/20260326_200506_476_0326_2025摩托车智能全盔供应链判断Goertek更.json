@@ -15,7 +15,8 @@
     "声学模组",
     "ANC",
     "ODM供应商",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

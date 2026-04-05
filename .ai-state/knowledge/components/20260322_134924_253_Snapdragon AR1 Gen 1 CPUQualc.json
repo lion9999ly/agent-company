@@ -11,7 +11,8 @@
     "Kryo CPU",
     "night_deepened",
     "1.9GHz",
-    "4 cores"
+    "4 cores",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

@@ -10,7 +10,11 @@
     "i.MX RT1170",
     "光机",
     "功耗",
-    "night_expand"
+    "night_expand",
+    "needs_reconciliation"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "_usage_count": 1,
+  "_last_used": "2026-04-05T00:06:05.761187",
+  "_first_used": "2026-04-05T00:06:05.761187"
 }

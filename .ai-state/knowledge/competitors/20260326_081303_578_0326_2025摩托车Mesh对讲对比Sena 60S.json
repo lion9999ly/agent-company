@@ -12,7 +12,8 @@
     "Cardo Packtalk Edge",
     "Shoei SRL-Mesh",
     "竞品分析",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

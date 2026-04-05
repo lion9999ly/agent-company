@@ -13,7 +13,8 @@
     "波导模组",
     "Micro-OLED",
     "供应商评估",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }

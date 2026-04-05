@@ -15,7 +15,8 @@
     "Micro-OLED",
     "dynamic",
     "speculative",
-    "night_deepened"
+    "night_deepened",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

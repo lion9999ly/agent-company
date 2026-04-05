@@ -15,7 +15,8 @@
     "蓝牙5.2",
     "IP67",
     "竞品分析",
-    "dynamic"
+    "dynamic",
+    "needs_reconciliation"
   ],
   "confidence": "high"
 }
