@@ -27,6 +27,19 @@ from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prom
 
 
 # ==========================================
+# 产品锚点注入
+# ==========================================
+PRODUCT_ANCHOR_PATH = ROOT_DIR / ".ai-state" / "product_anchor.md"
+
+def get_product_anchor_context() -> str:
+    """获取产品锚点上下文，注入到 Agent system prompt"""
+    if PRODUCT_ANCHOR_PATH.exists():
+        content = PRODUCT_ANCHOR_PATH.read_text(encoding='utf-8')
+        return f"\n\n## 产品锚点（所有决策必须以此为基准）\n{content}"
+    return ""
+
+
+# ==========================================
 # 0. 物理安全防线配置
 # ==========================================
 class SecurityError(Exception):
@@ -746,6 +759,7 @@ def cto_coder_node(state: AgentGlobalState) -> dict:
     # 6. 调用 Azure OpenAI
     gateway = get_model_gateway()
     system_prompt = get_agent_prompt("cto")
+    system_prompt += get_product_anchor_context()  # 注入产品锚点
     if tech_research:
         system_prompt += f"\n\n## 技术调研数据（来自工具搜索，请参考真实数据）\n{tech_research}"
     api_result = gateway.call_azure_openai("cto", str(llm_context), system_prompt)
@@ -839,6 +853,7 @@ def cmo_strategist(state: AgentGlobalState) -> dict:
     # 5. 调用 Azure OpenAI (CMO) - 带 retry 机制
     gateway = get_model_gateway()
     system_prompt = get_agent_prompt("cmo")
+    system_prompt += get_product_anchor_context()  # 注入产品锚点
     # 如果有调研数据，追加到 system_prompt
     if research_data:
         system_prompt += f"\n\n## 市场调研数据（来自工具）\n{research_data}"
@@ -900,6 +915,7 @@ def cdo_designer_node(state: AgentGlobalState) -> dict:
     design_research = _cdo_research(task_desc)
     gateway = get_model_gateway()
     system_prompt = get_agent_prompt("cdo")
+    system_prompt += get_product_anchor_context()  # 注入产品锚点
     if design_research:
         system_prompt += f"\n\n## 设计趋势调研数据\n{design_research}"
 
