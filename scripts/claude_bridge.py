@@ -193,9 +193,16 @@ def call_claude_via_cdp(prompt: str, timeout: int = 180, port: int = CDP_PORT,
                     break
 
             if not target_page:
-                print("[Bridge-CDP] 未找到思考通道页面")
-                print(f"[Bridge-CDP] 请在 Chrome 中打开: {THINKING_CHANNEL_URL}")
-                return ""
+                # 思考通道 tab 不存在，自动打开
+                print("[Bridge-CDP] 思考通道 tab 不存在，自动打开...")
+                target_page = context.new_page()
+                target_page.goto(THINKING_CHANNEL_URL, wait_until="networkidle", timeout=30000)
+                time.sleep(5)
+                # 检查是否被 Cloudflare 拦截
+                if "challenge" in target_page.url.lower() or "verify" in target_page.content().lower():
+                    print("[Bridge-CDP] Cloudflare 验证，等待通过...")
+                    time.sleep(10)
+                print(f"[Bridge-CDP] 已打开思考通道: {target_page.url}")
 
             # 找输入框
             input_selectors = [
