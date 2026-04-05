@@ -342,6 +342,15 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_image_generation(text_stripped, reply_target, send_reply)
         return
 
+    # === 2.29 Claude 思考层 ===
+    if text_stripped.startswith("思考回复:"):
+        _handle_thinking_response(text_stripped, reply_target, send_reply)
+        return
+
+    if text_stripped in ("待回答", "pending thinking", "思考队列"):
+        _handle_pending_thinking(reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -1970,6 +1979,54 @@ def _handle_image_generation(text: str, reply_target: str, send_reply):
             send_reply(reply_target, f"图片生成失败: {e}")
 
     threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_thinking_response(text: str, reply_target: str, send_reply):
+    """处理 Claude 思考层的回答"""
+    # 解析 "思考回复:think_xxx Claude的回答内容"
+    try:
+        parts = text.replace("思考回复:", "").strip().split(None, 1)
+        if len(parts) < 2:
+            send_reply(reply_target, "格式错误。正确格式：思考回复:think_xxx Claude的回答内容")
+            return
+
+        request_id = parts[0].strip()
+        response = parts[1].strip()
+
+        from scripts.claude_thinking_layer import process_claude_response
+        result = process_claude_response(request_id, response)
+
+        if result.get("success"):
+            send_reply(reply_target, f"✅ 已收到 Claude 对 {request_id} 的回答\n已保存到思考历史。")
+        else:
+            send_reply(reply_target, f"❌ 处理失败: {result.get('error', 'unknown')}")
+
+    except Exception as e:
+        send_reply(reply_target, f"处理错误: {e}")
+
+
+def _handle_pending_thinking(reply_target: str, send_reply):
+    """显示待回答的思考请求"""
+    try:
+        from scripts.claude_thinking_layer import get_pending_requests
+        pending = get_pending_requests()
+
+        if not pending:
+            send_reply(reply_target, "📭 没有待回答的思考请求")
+            return
+
+        lines = [f"📋 待回答请求 ({len(pending)} 个):\n"]
+        for i, req in enumerate(pending[:5], 1):
+            urgency_icon = {"critical": "🔴", "normal": "🟡", "low": "🟢"}.get(req.get("urgency", "normal"), "🟡")
+            lines.append(f"{i}. {urgency_icon} {req.get('id', '?')}")
+            lines.append(f"   问题: {req.get('question', '')[:80]}...")
+            lines.append(f"   时间: {req.get('created_at', '?')}\n")
+
+        lines.append("回复格式: 思考回复:think_xxx Claude的回答内容")
+        send_reply(reply_target, "\n".join(lines))
+
+    except Exception as e:
+        send_reply(reply_target, f"查询错误: {e}")
 
 
 def _get_full_help_text() -> str:

@@ -3595,6 +3595,25 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
         except Exception as e:
             print(f"  [Calibration] 批量摘要推送失败: {e}")
 
+        # 推送战略问题（自动提交给思考层）
+        try:
+            from scripts.strategic_questions import run_strategic_questions_pipeline
+
+            # 构造研究摘要
+            research_summary = "\n".join([
+                f"- {c.get('title', '')}: {c.get('report_len', 0)} 字报告"
+                for c in completed[:5]
+            ])
+
+            run_strategic_questions_pipeline(
+                research_summary=research_summary,
+                research_topic=f"深度学习 {len(completed)} 个任务",
+                auto_submit_to_thinking=True,
+                urgency="normal"
+            )
+        except Exception as e:
+            print(f"[StrategicQuestions] {e}")
+
     return completed
 
 

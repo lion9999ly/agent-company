@@ -120,8 +120,17 @@ def send_strategic_questions(questions: list, research_topic: str = ""):
         print(f"[StrategicQuestions] 发送失败: {e}")
 
 
-def run_strategic_questions_pipeline(research_summary: str = "", research_topic: str = ""):
-    """完整流程：生成 + 发送"""
+def run_strategic_questions_pipeline(research_summary: str = "", research_topic: str = "",
+                                     auto_submit_to_thinking: bool = True,
+                                     urgency: str = "normal"):
+    """完整流程：生成 + 发送 + 可选提交思考层
+
+    Args:
+        research_summary: 研究摘要
+        research_topic: 研究主题
+        auto_submit_to_thinking: 是否自动提交给思考层
+        urgency: 问题紧急程度 "critical" / "normal" / "low"
+    """
     questions = generate_strategic_questions(research_summary, research_topic)
     if questions:
         send_strategic_questions(questions, research_topic)
@@ -135,6 +144,24 @@ def run_strategic_questions_pipeline(research_summary: str = "", research_topic:
         }
         with open(record_path, 'a', encoding='utf-8') as f:
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+        # 自动提交给思考层
+        if auto_submit_to_thinking and questions:
+            try:
+                from scripts.claude_thinking_layer import request_claude_thinking
+                top_question = questions[0].get("question", "")
+                context = f"研究主题: {research_topic}\n\n研究摘要:\n{research_summary[:1000]}"
+
+                request_id = request_claude_thinking(
+                    question=top_question,
+                    context=context,
+                    urgency=urgency,
+                    callback_action="update_product_anchor"
+                )
+                print(f"[StrategicQuestions] 已提交思考层: {request_id}")
+            except Exception as e:
+                print(f"[StrategicQuestions] 提交思考层失败: {e}")
+
     return questions
 
 
