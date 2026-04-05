@@ -169,16 +169,16 @@ model_registry:
     api_version: "2024-12-01-preview"
 
   # ============================================================
-  # 🌟 Gemini 阵列 (Google AI Studio) [ALL 403 - API KEY LEAKED]
-  # TODO: 需要 IT 同事重新生成 API Key
+  # 🌟 Gemini 阵列 (Google AI Studio) [RESTORED 2026-04-05]
+  # API Key: GEMINI_API_KEY (from .env)
   # ============================================================
 
-  # Gemini 3.1 Pro Preview - 最新旗舰 [403 API_KEY_LEAKED]
+  # Gemini 3.1 Pro Preview - 最新旗舰 [OK 2026-04-05]
   gemini_3_1_pro:
     provider: "google"
     model: "gemini-3.1-pro-preview"
     api_key_env: "GEMINI_API_KEY"
-    enabled: false
+    enabled: true
     purpose: "旗舰模型、复杂推理、多模态"
     capabilities: ["reasoning", "code", "analysis", "vision", "long_context"]
     cost_tier: "$$$"
@@ -186,12 +186,12 @@ model_registry:
     max_tokens: 65536
     temperature: 0.1
 
-  # Gemini 3 Pro Preview [403 API_KEY_LEAKED]
+  # Gemini 3 Pro Preview [OK 2026-04-05]
   gemini_3_pro:
     provider: "google"
     model: "gemini-3-pro-preview"
     api_key_env: "GEMINI_API_KEY"
-    enabled: false
+    enabled: true
     purpose: "第三代旗舰、多模态理解"
     capabilities: ["reasoning", "code", "analysis", "vision"]
     cost_tier: "$$"
@@ -199,12 +199,12 @@ model_registry:
     max_tokens: 32768
     temperature: 0.1
 
-  # Gemini 2.5 Pro - 稳定版 [403 API_KEY_LEAKED]
+  # Gemini 2.5 Pro - 稳定版 [OK 2026-04-05]
   gemini_2_5_pro:
     provider: "google"
     model: "gemini-2.5-pro"
     api_key_env: "GEMINI_API_KEY"
-    enabled: false
+    enabled: true
     purpose: "稳定旗舰、复杂任务"
     capabilities: ["reasoning", "code", "analysis", "vision"]
     cost_tier: "$$"
@@ -212,12 +212,12 @@ model_registry:
     max_tokens: 65536
     temperature: 0.1
 
-  # Gemini 2.5 Flash - 快速响应 [403 API_KEY_LEAKED]
+  # Gemini 2.5 Flash - 快速响应 [OK 2026-04-05]
   gemini_2_5_flash:
     provider: "google"
     model: "gemini-2.5-flash"
     api_key_env: "GEMINI_API_KEY"
-    enabled: false
+    enabled: true
     purpose: "快速问答、代码审查、搜索增强"
     capabilities: ["fast", "search", "multilingual", "reasoning"]
     cost_tier: "$"
@@ -225,12 +225,12 @@ model_registry:
     max_tokens: 8192
     temperature: 0.1
 
-  # Deep Research - 深度研究 [403 API_KEY_LEAKED]
+  # Deep Research - 深度研究 [OK 2026-04-05]
   gemini_deep_research:
     provider: "google"
     model: "deep-research-pro-preview-12-2025"
     api_key_env: "GEMINI_API_KEY"
-    enabled: false
+    enabled: true
     purpose: "竞品调研、市场分析、深度信息收集"
     capabilities: ["deep_research", "search", "analysis", "long_context"]
     cost_tier: "$$$"
