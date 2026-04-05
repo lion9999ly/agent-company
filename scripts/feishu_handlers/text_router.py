@@ -112,11 +112,8 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
 
     # === 2. 帮助 ===
     if text_stripped in ("帮助", "help", "?", "？", "能力", "你能做什么"):
-        try:
-            from src.utils.capability_registry import get_capabilities_summary
-            send_reply(reply_target, get_capabilities_summary())
-        except:
-            send_reply(reply_target, "我是智能骑行头盔研发助手，可以帮你做竞品分析、技术方案、市场策略等。")
+        help_text = _get_full_help_text()
+        send_reply(reply_target, help_text)
         return
 
     # === 2.4 深度学习时长回复 ===
@@ -186,43 +183,43 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
 
     # === 2.9 决策简报 ===
     if text_stripped.startswith("决策简报") or text_stripped.startswith("decision brief"):
-        decision_id = text_stripped.replace("决策简报", "").replace("decision brief", "").strip().strip(":：")
+        decision_id = text_stripped.replace("决策简报", "").replace("decision brief", "").strip().strip(":：").strip()
         _handle_decision_brief(decision_id, reply_target, send_reply)
         return
 
     # === 2.10 谈判准备简报 ===
     if text_stripped.startswith("谈判准备") or text_stripped.startswith("negotiation"):
-        target_name = text_stripped.replace("谈判准备", "").replace("negotiation", "").strip().strip(":：")
+        target_name = text_stripped.replace("谈判准备", "").replace("negotiation", "").strip().strip(":：").strip()
         _handle_negotiation_brief(target_name, reply_target, send_reply)
         return
 
     # === 2.11 注意力管理（关注焦点） ===
     if text_stripped.startswith("关注焦点") or text_stripped.startswith("focus"):
-        focus_text = text_stripped.replace("关注焦点", "").replace("focus", "").strip().strip(":：")
+        focus_text = text_stripped.replace("关注焦点", "").replace("focus", "").strip().strip(":：").strip()
         _handle_set_focus(focus_text, reply_target, send_reply)
         return
 
     # === 2.12 决策复盘 ===
     if text_stripped.startswith("决策复盘") or text_stripped.startswith("decision replay"):
-        decision_id = text_stripped.replace("决策复盘", "").replace("decision replay", "").strip().strip(":：")
+        decision_id = text_stripped.replace("决策复盘", "").replace("decision replay", "").strip().strip(":：").strip()
         _handle_decision_replay(decision_id, reply_target, send_reply)
         return
 
     # === 2.13 反事实推演 ===
     if text_stripped.startswith("假如") or text_stripped.startswith("what if"):
-        scenario = text_stripped.replace("假如", "").replace("what if", "").strip().strip(":：")
+        scenario = text_stripped.replace("假如", "").replace("what if", "").strip().strip(":：").strip()
         _handle_counterfactual(scenario, reply_target, send_reply)
         return
 
     # === 2.14 入职知识包 ===
     if text_stripped.startswith("入职包") or text_stripped.startswith("onboarding"):
-        role = text_stripped.replace("入职包", "").replace("onboarding", "").strip().strip(":：")
+        role = text_stripped.replace("入职包", "").replace("onboarding", "").strip().strip(":：").strip()
         _handle_onboarding_pack(role, reply_target, send_reply)
         return
 
     # === 2.15 多角色支持 ===
     if text_stripped.startswith("设置角色") or text_stripped.startswith("set role"):
-        role = text_stripped.replace("设置角色", "").replace("set role", "").strip().strip(":：")
+        role = text_stripped.replace("设置角色", "").replace("set role", "").strip().strip(":：").strip()
         _handle_set_role(role, open_id, reply_target, send_reply)
         return
 
@@ -239,7 +236,7 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
 
     # === 2.17 竞品战争推演 ===
     if text_stripped.startswith("竞品推演") or text_stripped.startswith("competitor war game"):
-        competitor = text_stripped.replace("竞品推演", "").replace("competitor war game", "").strip().strip(":：")
+        competitor = text_stripped.replace("竞品推演", "").replace("competitor war game", "").strip().strip(":：").strip()
         _handle_competitor_wargame(competitor, reply_target, send_reply)
         return
 
@@ -263,13 +260,13 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
 
     # === 2.20 应知清单 ===
     if text_stripped.startswith("应知清单") or text_stripped.startswith("due diligence"):
-        decision_id = text_stripped.replace("应知清单", "").replace("due diligence", "").strip().strip(":：")
+        decision_id = text_stripped.replace("应知清单", "").replace("due diligence", "").strip().strip(":：").strip()
         _handle_due_diligence(decision_id, reply_target, send_reply)
         return
 
     # === 2.21 产出版本 Diff ===
     if text_stripped.startswith("简报diff") or text_stripped.startswith("brief diff"):
-        output_id = text_stripped.replace("简报diff", "").replace("brief diff", "").strip().strip(":：")
+        output_id = text_stripped.replace("简报diff", "").replace("brief diff", "").strip().strip(":：").strip()
         _handle_output_diff(output_id, reply_target, send_reply)
         return
 
@@ -1913,6 +1910,50 @@ def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: 
 
     except Exception as e:
         _safe_reply_error(send_reply, reply_target, "智能对话", e)
+
+
+def _get_full_help_text() -> str:
+    """生成分组的完整指令列表"""
+    return """【智能骑行头盔研发助手 - 指令手册】
+
+━━━ 研发类 ━━━
+• 深钻 <主题> - 对一个主题进行多轮深挖
+• 沙盘 <场景> - 场景推演
+• 压力测试 <方案> - 极端条件验证
+• 决策简报 <ID> - 生成决策报告
+• 决策复盘 <ID> - 回顾决策过程
+
+━━━ 研究类 ━━━
+• 深度学习 - 启动夜间批量研究
+• 自学习 - 30分钟轻量探索
+• KB治理 - 知识库清洗
+• 竞品推演 <品牌> - 竞争模拟
+
+━━━ Demo类 ━━━
+• 生成 HUD Demo - HUD原型生成
+• 生成 App Demo - App原型生成
+• Demo脚本 - Demo场景管理
+
+━━━ 知识类 ━━━
+• 知识库 - 查看KB统计
+• 日报 - 系统运行日报
+• 导入 <文件> - 导入知识库
+• 搜索 <关键词> - KB搜索
+
+━━━ 设置类 ━━━
+• 设置角色 <角色> - 切换Agent角色
+• 关注焦点 <内容> - 设置关注点
+• 设置截止日 <日期> <任务> - 设定截止日
+
+━━━ 系统类 ━━━
+• 状态 - 系统状态
+• 帮助 - 本指令列表
+• 校准 - Critic校准
+
+━━━ 反馈类 ━━━
+• 👍 / 👎 - 对回答点赞/踩
+
+提示：直接发送技术问题，我会自动路由到合适的Agent处理。"""
 
 
 # 记录最近一次 KB 回答（用于反馈）

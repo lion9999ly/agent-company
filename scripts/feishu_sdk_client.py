@@ -3091,13 +3091,13 @@ def handle_message(event):
 
 
 def send_reply(target_id: str = None, text: str = "", id_type: str = None) -> bool:
-    """发送回复消息
+    """发送回复消息（支持长消息分块）
 
     如果不传参数，使用 _reply_context 中的默认值（群聊时自动回复到群里）
 
     Args:
         target_id: open_id（私聊）或 chat_id（群聊），None 时使用上下文
-        text: 回复内容
+        text: 回复内容（超过2000字自动分块发送）
         id_type: "open_id" 或 "chat_id"，None 时使用上下文
 
     Returns:
@@ -3113,6 +3113,50 @@ def send_reply(target_id: str = None, text: str = "", id_type: str = None) -> bo
         print("  [回复失败: 无目标ID]")
         return False
 
+    # 消息分块处理（飞书单条消息限制约 2000 字）
+    MAX_LEN = 1900  # 留一些余量
+    if len(text) > MAX_LEN:
+        chunks = _split_message(text, MAX_LEN)
+        success = True
+        for i, chunk in enumerate(chunks):
+            if i > 0:
+                import time
+                time.sleep(0.3)  # 避免频率限制
+            if not _send_single_message(target_id, chunk, id_type):
+                success = False
+        return success
+    else:
+        return _send_single_message(target_id, text, id_type)
+
+
+def _split_message(text: str, max_len: int) -> list:
+    """智能分割长消息，尽量在换行处分割"""
+    if len(text) <= max_len:
+        return [text]
+
+    chunks = []
+    remaining = text
+
+    while remaining:
+        if len(remaining) <= max_len:
+            chunks.append(remaining)
+            break
+
+        # 尝试在换行处分割
+        split_pos = remaining.rfind('\n', 0, max_len)
+        if split_pos > max_len // 2:
+            chunks.append(remaining[:split_pos + 1])
+            remaining = remaining[split_pos + 1:]
+        else:
+            # 没有合适的换行，直接截断
+            chunks.append(remaining[:max_len] + "...")
+            remaining = remaining[max_len:]
+
+    return chunks
+
+
+def _send_single_message(target_id: str, text: str, id_type: str) -> bool:
+    """发送单条消息"""
     token = get_tenant_access_token()
     if not token:
         print("  [回复失败: 无法获取token]")
