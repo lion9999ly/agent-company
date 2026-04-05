@@ -101,6 +101,7 @@ FALLBACK_MAP = {
     "gemini_3_1_pro": "gemini_3_pro",
     "gemini_3_pro": "gemini_2_5_pro",
     "gemini_2_5_pro": "gpt_5_3",          # Gemini Pro → 5.3
+    "gemini_2_5_flash": "gpt_4o_norway",  # Flash → 4o（L2提炼降级）
     "qwen_3_32b": "deepseek_v3_2",        # Qwen → DeepSeek（都擅长中文）
     "llama_4_maverick": "gpt_4o_norway",
     "deepseek_v3_2": "qwen_3_32b",        # DeepSeek → Qwen（互为备选）
@@ -1492,16 +1493,28 @@ Schema:
 
 只输出 JSON，不要其他内容。"""
 
-    result = _call_model(_get_model_for_task("data_extraction"), prompt, task_type="data_extraction")
+    model = _get_model_for_task("data_extraction")
+    print(f"[L2-Debug] 调用 {model} 提炼，输入长度 {len(raw_text)}")
+
+    result = _call_model(model, prompt, task_type="data_extraction")
+
+    print(f"[L2-Debug] 返回 success={result.get('success')}, error={str(result.get('error',''))[:200]}")
 
     if result.get("success"):
         try:
             resp = result["response"].strip()
             resp = re.sub(r'^```json\s*', '', resp)
             resp = re.sub(r'\s*```$', '', resp)
-            return json.loads(resp)
-        except:
+            parsed = json.loads(resp)
+            return parsed
+        except json.JSONDecodeError as e:
+            print(f"[L2-Debug] JSON解析失败: {e}, 响应前200字符: {resp[:200]}")
             return None
+        except Exception as e:
+            print(f"[L2-Debug] 解析异常: {type(e).__name__}: {e}")
+            return None
+    else:
+        print(f"[L2-Debug] 模型调用失败: {result.get('error', 'unknown error')}")
     return None
 
 
