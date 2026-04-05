@@ -238,57 +238,45 @@ model_registry:
     max_tokens: 65536
     temperature: 0.0
 
-  # Gemini 3.1 Flash Image - 图片生成 [OK 2026-04-05]
-  gemini_3_1_flash_image:
+  # ============================================================
+  # 🎨 Gemini 图片生成阵列 [OK 2026-04-05]
+  # ============================================================
+
+  # Nano Banana 2 - 快速图片生成/编辑
+  nano_banana_2:
     provider: "google"
     model: "gemini-3.1-flash-image-preview"
     api_key_env: "GEMINI_API_KEY"
     enabled: true
-    purpose: "概念渲染、产品效果图"
-    capabilities: ["image_generation", "vision"]
-    cost_tier: "$$"
-    performance: 4
-    max_tokens: 4096
-    temperature: 0.1
+    purpose: "快速图片生成/编辑"
+    capabilities: ["image_generation", "image_editing"]
 
-  # Gemini 3 Pro Image - 图片生成 [OK 2026-04-05]
-  gemini_3_pro_image:
+  # Nano Banana Pro - 高质量图片生成
+  nano_banana_pro:
     provider: "google"
     model: "gemini-3-pro-image-preview"
     api_key_env: "GEMINI_API_KEY"
     enabled: true
-    purpose: "高质量图片生成"
-    capabilities: ["image_generation", "vision"]
-    cost_tier: "$$"
-    performance: 5
-    max_tokens: 4096
-    temperature: 0.1
+    purpose: "高质量图片生成，4K，多语言文字"
+    capabilities: ["image_generation", "image_editing", "text_rendering"]
 
-  # Gemini 2.5 Flash Image - 图片生成 [OK 2026-04-05]
-  gemini_2_5_flash_image:
+  # Gemini Flash Image - 基础图片生成
+  gemini_flash_image:
     provider: "google"
     model: "gemini-2.5-flash-image"
     api_key_env: "GEMINI_API_KEY"
     enabled: true
-    purpose: "快速图片生成"
-    capabilities: ["image_generation", "vision"]
-    cost_tier: "$"
-    performance: 4
-    max_tokens: 4096
-    temperature: 0.1
+    purpose: "基础图片生成"
+    capabilities: ["image_generation"]
 
-  # Nano Banana Pro - 轻量图片生成 [OK 2026-04-05]
-  nano_banana_pro:
+  # Nano Banana Original - 原始轻量版
+  nano_banana_original:
     provider: "google"
     model: "nano-banana-pro-preview"
     api_key_env: "GEMINI_API_KEY"
     enabled: true
     purpose: "快速概念草图"
     capabilities: ["image_generation"]
-    cost_tier: "$"
-    performance: 3
-    max_tokens: 4096
-    temperature: 0.1
 
   # ============================================================
   # 🫘 火山引擎（豆包）阵列 [ALL PROBED OK 2026-04-05]
