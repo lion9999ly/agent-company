@@ -49,6 +49,15 @@ def auto_fix_failures(failed_items: list, max_rounds: int = 3) -> dict:
                 f"格式:\nFILE: path/to/file.py\nOLD:\n```\n旧代码\n```\nNEW:\n```\n新代码\n```"
             )
 
+            # 追加格式要求
+            fix_prompt += (
+                "\n\n必须用以下格式输出修复（严格遵守）:\n"
+                "FILE: scripts/example.py\n"
+                "OLD:\n```python\n原始代码\n```\n"
+                "NEW:\n```python\n新代码\n```\n\n"
+                "如果问题不在代码（如 API 不可用、配置问题），说明原因即可，不需要给代码修复。"
+            )
+
             if is_claude_cli_available():
                 fix_suggestion = call_claude_cli(fix_prompt, timeout=120, cwd=str(PROJECT_ROOT))
             else:
@@ -123,8 +132,8 @@ def _apply_fix(fix_suggestion: str) -> bool:
     """解析 CC 的修复建议并应用到文件"""
     # 解析 FILE: / OLD: / NEW: 格式
     file_match = re.search(r'FILE:\s*(.+)', fix_suggestion)
-    old_match = re.search(r'OLD:\s*```\n?(.*?)```', fix_suggestion, re.DOTALL)
-    new_match = re.search(r'NEW:\s*```\n?(.*?)```', fix_suggestion, re.DOTALL)
+    old_match = re.search(r'OLD:\s*```\w*\n?(.*?)```', fix_suggestion, re.DOTALL)
+    new_match = re.search(r'NEW:\s*```\w*\n?(.*?)```', fix_suggestion, re.DOTALL)
 
     if not all([file_match, old_match, new_match]):
         # 尝试其他格式：直接在代码块中
@@ -132,40 +141,71 @@ def _apply_fix(fix_suggestion: str) -> bool:
         code_blocks = re.findall(r'```(?:python)?\s*([\s\S]*?)```', fix_suggestion)
         if file_match and code_blocks:
             # 尝试用第一个代码块作为新代码
-            file_path = PROJECT_ROOT / file_match.group(1).strip()
+            file_path = _resolve_file_path(file_match.group(1).strip())
             if file_path.exists():
                 new_code = code_blocks[0].strip()
                 file_path.write_text(new_code, encoding='utf-8')
                 print(f"  [AutoFix] 已修改: {file_path}")
                 return True
+
+        # CLI fallback 解析
+        try:
+            extract_result = call_claude_cli(
+                f"从以下修复建议中提取代码修改。输出严格 JSON（不要 markdown）:"
+                f'{{"file": "路径", "old_code": "原始代码", "new_code": "新代码"}}'
+                f"如果不包含代码修改，输出: {{\"no_fix\": true}}\n\n{fix_suggestion[:2000]}",
+                timeout=30
+            )
+            if extract_result:
+                parsed = json.loads(extract_result.strip().replace('```json','').replace('```',''))
+                if not parsed.get("no_fix"):
+                    return _do_replace(parsed["file"], parsed.get("old_code", ""), parsed["new_code"])
+        except Exception as e:
+            print(f"  [AutoFix] CLI fallback 也失败: {e}")
+
         return False
 
-    file_path_str = file_match.group(1).strip()
-    # 处理可能的路径格式
-    if not file_path_str.startswith("scripts/") and not file_path_str.startswith("src/"):
-        # 尝试在 scripts 目录下查找
-        file_path = PROJECT_ROOT / "scripts" / file_path_str
-        if not file_path.exists():
-            file_path = PROJECT_ROOT / file_path_str
-    else:
-        file_path = PROJECT_ROOT / file_path_str
+    return _do_replace(file_match.group(1).strip(), old_match.group(1).strip(), new_match.group(1).strip())
 
-    old_code = old_match.group(1).strip()
-    new_code = new_match.group(1).strip()
+
+def _resolve_file_path(file_path_str: str) -> Path:
+    """解析文件路径，支持模糊匹配"""
+    file_path = PROJECT_ROOT / file_path_str
+    if file_path.exists():
+        return file_path
+
+    # 尝试加前缀
+    for prefix in ["scripts/", "src/", "scripts/feishu_handlers/", "src/utils/", "src/config/"]:
+        candidate = PROJECT_ROOT / prefix / file_path_str.split("/")[-1]
+        if candidate.exists():
+            return candidate
+
+    return file_path
+
+
+def _do_replace(file_path_str: str, old_code: str, new_code: str) -> bool:
+    """执行代码替换"""
+    file_path = _resolve_file_path(file_path_str)
 
     if not file_path.exists():
         print(f"  [AutoFix] 文件不存在: {file_path}")
         return False
 
     content = file_path.read_text(encoding='utf-8')
-    if old_code not in content:
+
+    if old_code and old_code in content:
+        content = content.replace(old_code, new_code, 1)
+        file_path.write_text(content, encoding='utf-8')
+        print(f"  [AutoFix] 已修改: {file_path}")
+        return True
+    elif not old_code:
+        # 没有旧代码，直接覆盖
+        file_path.write_text(new_code, encoding='utf-8')
+        print(f"  [AutoFix] 已创建/覆盖: {file_path}")
+        return True
+    else:
         print(f"  [AutoFix] 未找到旧代码片段")
         return False
-
-    content = content.replace(old_code, new_code, 1)
-    file_path.write_text(content, encoding='utf-8')
-    print(f"  [AutoFix] 已修改: {file_path}")
-    return True
 
 
 def _write_bug_report(unfixed: list):
