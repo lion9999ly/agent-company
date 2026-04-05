@@ -3350,6 +3350,21 @@ def main():
     except Exception as e:
         print(f"[HealthMonitor] 启动失败: {e}")
 
+    # 启动时扫描未处理的 handoff
+    try:
+        from scripts.handoff_processor import scan_unprocessed, execute_handoff
+        _pending_handoffs = scan_unprocessed()
+        if _pending_handoffs:
+            print(f"[Handoff] 发现 {len(_pending_handoffs)} 个未处理")
+            for _hf in _pending_handoffs:
+                try:
+                    result = execute_handoff(_hf)
+                    print(f"  [Handoff] {_hf.name}: {result.get('success', False)}")
+                except Exception as _he:
+                    print(f"  [Handoff] {_hf.name} 执行失败: {_he}")
+    except Exception as _e:
+        print(f"[Handoff] 扫描失败: {_e}")
+
     # 启动长连接
     cli = lark.ws.Client(APP_ID, APP_SECRET, event_handler=event_handler)
     cli.start()

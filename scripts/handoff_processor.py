@@ -1,7 +1,7 @@
 """Handoff 处理器 — 读取 claude.ai 生成的 handoff 文件
 @description: 扫描并处理 claude.ai 会话产生的 handoff 文件
-@dependencies: 无
-@last_modified: 2026-04-04
+@dependencies: claude_cli_helper
+@last_modified: 2026-04-05
 """
 import json, time
 from pathlib import Path
@@ -15,6 +15,11 @@ def scan_unprocessed() -> list:
     """扫描未处理的 handoff 文件"""
     unprocessed = []
     for f in sorted(HANDOFF_DIR.glob("handoff_*.md")):
+        meta = f.with_suffix('.processed')
+        if not meta.exists():
+            unprocessed.append(f)
+    # 也支持 test_ 开头的测试文件
+    for f in sorted(HANDOFF_DIR.glob("test_*.md")):
         meta = f.with_suffix('.processed')
         if not meta.exists():
             unprocessed.append(f)
@@ -38,6 +43,46 @@ def get_pending_tasks(handoff_path: Path) -> list:
         if 'git' in block or 'commit' in block:
             tasks.append(block.strip())
     return tasks
+
+
+def execute_handoff(handoff_path: Path) -> dict:
+    """执行 handoff 文件中的任务
+
+    Args:
+        handoff_path: handoff 文件路径
+
+    Returns:
+        执行结果
+    """
+    try:
+        from scripts.claude_cli_helper import call_claude_cli, is_claude_cli_available
+    except ImportError:
+        print(f"[Handoff] claude_cli_helper 不可用")
+        mark_processed(handoff_path)
+        return {"success": False, "reason": "claude_cli_helper not available"}
+
+    content = handoff_path.read_text(encoding='utf-8')
+    print(f"[Handoff] 执行: {handoff_path.name}")
+
+    if is_claude_cli_available():
+        result = call_claude_cli(
+            f"读取以下 handoff 内容，按顺序执行其中的待办任务：\n\n{content[:4000]}",
+            timeout=180,
+            cwd=str(PROJECT_ROOT)
+        )
+
+        if result:
+            mark_processed(handoff_path)
+            print(f"[Handoff] 完成: {handoff_path.name}")
+            return {"success": True, "output": result[:500]}
+        else:
+            print(f"[Handoff] CLI 返回空")
+            mark_processed(handoff_path)
+            return {"success": False, "reason": "CLI returned empty"}
+    else:
+        print(f"[Handoff] CLI 不可用，仅标记已读")
+        mark_processed(handoff_path)
+        return {"success": False, "reason": "CLI unavailable"}
 
 
 def process_all_handoffs():
