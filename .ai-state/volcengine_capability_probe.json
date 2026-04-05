@@ -1,0 +1,56 @@
+[
+  [
+    "Models List",
+    "api/v3/models",
+    200,
+    "{\"data\":[{\"created\":1714982195,\"domain\":\"\",\"features\":{},\"id\":\"doubao-lite-128k-240428\",\"name\":\"doub"
+  ],
+  [
+    "Image Vision",
+    "doubao-seed-2-0-pro",
+    400,
+    "{\"error\":{\"code\":\"InvalidParameter\",\"message\":\"Timeout while downloading url: https://upload.wikimed"
+  ],
+  [
+    "Image Vision",
+    "deepseek-v3-2",
+    400,
+    "{\"error\":{\"code\":\"InvalidParameter\",\"message\":\"Model do not support image input. Request id: 0217753"
+  ],
+  [
+    "Image Gen",
+    "seedream-*",
+    404,
+    "Model not found"
+  ],
+  [
+    "Video Gen",
+    "seedance-*",
+    404,
+    "Model not found"
+  ],
+  [
+    "Web Search",
+    "doubao-seed-2-0-pro",
+    400,
+    "{\"error\":{\"code\":\"MissingParameter\",\"message\":\"The request failed because it is missing `tools.funct"
+  ],
+  [
+    "Chat",
+    "doubao-seed-2-0-pro-260215",
+    200,
+    "OK"
+  ],
+  [
+    "Chat",
+    "doubao-seed-2-0-lite-260215",
+    200,
+    "OK"
+  ],
+  [
+    "Chat",
+    "deepseek-v3-2-251201",
+    200,
+    "OK"
+  ]
+]
