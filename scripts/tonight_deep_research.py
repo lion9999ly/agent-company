@@ -3251,6 +3251,34 @@ def _discover_new_tasks() -> list:
     return []
 
 
+def _discover_from_decision_tree() -> list:
+    """从决策树的未解决决策中生成研究任务"""
+    try:
+        dt_path = Path(__file__).parent.parent / ".ai-state" / "product_decision_tree.yaml"
+        if not dt_path.exists():
+            return []
+        dt = yaml.safe_load(dt_path.read_text(encoding='utf-8'))
+        tasks = []
+        for d in dt.get("decisions", []):
+            resolved = d.get("resolved_knowledge", 0)
+            needed = d.get("total_needed", 3)
+            if resolved < needed:
+                tasks.append({
+                    "id": f"dt_{d.get('id', 'unknown')}",
+                    "title": f"决策补充: {d.get('question', '')[:40]}",
+                    "goal": f"补充决策所需信息: {d.get('question', '')}。目前进度 {resolved}/{needed}。",
+                    "priority": 2,
+                    "searches": 4,
+                    "source": "decision_tree_gap"
+                })
+        if tasks:
+            print(f"  [DecisionTree] 发现 {len(tasks)} 个补充任务")
+        return tasks
+    except Exception as e:
+        print(f"  [DecisionTree] 发现失败: {e}")
+        return []
+
+
 def _get_kb_summary() -> str:
     """获取知识库摘要"""
     stats = get_knowledge_stats()
@@ -3330,6 +3358,44 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
     import queue
     from src.tools.knowledge_base import get_knowledge_stats
 
+    # API 健康检查
+    def _pre_flight_api_check():
+        """30 秒验证关键模型是否可用"""
+        results = {}
+        critical = ["gpt_5_4", "o3_deep_research"]
+        important = ["doubao_seed_pro", "gpt_4o_norway", "deepseek_v3_volcengine"]
+
+        for model in critical + important:
+            try:
+                r = _call_model(model, "Ping", task_type="health_check")
+                results[model] = "OK" if r.get("success") else f"FAIL: {str(r.get('error',''))[:30]}"
+            except Exception as e:
+                results[model] = f"FAIL: {str(e)[:30]}"
+
+        unavailable_critical = [m for m in critical if "FAIL" in results.get(m, "FAIL")]
+
+        status_msg = "API 健康检查:\n" + "\n".join([f"  {m}: {s}" for m, s in results.items()])
+
+        if unavailable_critical:
+            status_msg += f"\n\n核心模型不可用: {unavailable_critical}，深度学习暂停"
+            if progress_callback:
+                progress_callback(status_msg)
+            print(status_msg)
+            return False
+
+        if any("FAIL" in v for v in results.values()):
+            status_msg += "\n\n部分非核心模型不可用，将使用降级方案"
+        else:
+            status_msg += "\n\n所有模型可用"
+
+        if progress_callback:
+            progress_callback(status_msg)
+        print(status_msg)
+        return True
+
+    if not _pre_flight_api_check():
+        return {"status": "aborted", "reason": "API health check failed"}
+
     # 记录 KB 初始状态
     kb_stats_before = get_knowledge_stats()
     kb_total_before = sum(kb_stats_before.values())
@@ -3363,6 +3429,11 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
             # 2. 自主发现
             print(f"\n[Scheduler] 任务池空，自主发现新方向...")
             new_tasks = _discover_new_tasks()
+            if not new_tasks:
+                # Fallback: 从决策树缺口中发现
+                new_tasks = _discover_from_decision_tree()
+                if new_tasks:
+                    print(f"[Scheduler] 从决策树发现 {len(new_tasks)} 个补充任务")
             if new_tasks:
                 # 加入任务池
                 existing_pool = _load_task_pool()
