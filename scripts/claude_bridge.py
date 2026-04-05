@@ -141,27 +141,9 @@ def update_founder_mindset(update_text: str) -> bool:
         return False
 
 
-def call_claude_via_cdp(prompt: str, timeout: int = 180, port: int = CDP_PORT,
-                        inject_context: bool = True) -> str:
-    """通过 CDP 连接到已运行的 Chrome（推荐模式）
-
-    优点：绕过 Cloudflare，复用已登录状态
-    前置：Chrome 需要以 --remote-debugging-port 启动
-
-    启动方法：
-      powershell -ExecutionPolicy Bypass -File scripts/chrome_cdp_restart.ps1
-
-    或手动：
-      1. 关闭所有 Chrome
-      2. 启动: chrome.exe --remote-debugging-port=9333 --user-data-dir=%TEMP%\chrome-cdp-debug
-      3. 登录 claude.ai 并打开思考通道
-
-    Args:
-        prompt: 要发送的问题
-        timeout: 超时时间（秒）
-        port: CDP 端口
-        inject_context: 是否注入上下文（默认 True）
-    """
+def _call_claude_via_cdp_inner(prompt: str, timeout: int = 180, port: int = CDP_PORT,
+                                inject_context: bool = True) -> str:
+    """CDP 调用内部实现（无硬超时保护）"""
     result = ""
 
     # 构建完整 prompt（注入上下文）
@@ -329,6 +311,42 @@ def call_claude_via_cdp(prompt: str, timeout: int = 180, port: int = CDP_PORT,
             print(f"[Bridge-CDP] 错误: {e}")
 
     return result
+
+
+def call_claude_via_cdp(prompt: str, timeout: int = 180, inject_context: bool = True) -> str:
+    """通过 CDP 调用思考通道 — 带硬超时保护
+
+    优点：绕过 Cloudflare，复用已登录状态
+    前置：Chrome 需要以 --remote-debugging-port 启动
+
+    Args:
+        prompt: 要发送的问题
+        timeout: 超时时间（秒）
+        inject_context: 是否注入上下文（默认 True）
+
+    Returns:
+        回复内容，超时返回空字符串
+    """
+    import threading
+
+    result_container = {"result": ""}
+
+    def _inner():
+        try:
+            result_container["result"] = _call_claude_via_cdp_inner(prompt, timeout, CDP_PORT, inject_context)
+        except Exception as e:
+            print(f"[Bridge-CDP] 内部异常: {e}")
+            result_container["result"] = ""
+
+    thread = threading.Thread(target=_inner, daemon=True)
+    thread.start()
+    thread.join(timeout=timeout + 30)  # 给 30 秒缓冲
+
+    if thread.is_alive():
+        print(f"[Bridge-CDP] 硬超时 {timeout+30}s，强制返回空")
+        return ""
+
+    return result_container["result"]
 
 
 def check_cdp_available(port: int = CDP_PORT) -> bool:
