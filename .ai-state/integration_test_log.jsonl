@@ -1,0 +1,13 @@
+{"name": "gateway_import", "passed": true, "message": "", "timestamp": "2026-04-05T10:01:24.376611"}
+{"name": "doubao_lite_call", "passed": true, "message": "如果你之后有任何问题，不管是知识查询、生活解惑还是创意构思等等，随时都可以找我哦😊", "timestamp": "2026-04-05T10:01:30.138892"}
+{"name": "gpt_4o_norway_call", "passed": true, "message": "OK! 😊", "timestamp": "2026-04-05T10:01:33.241395"}
+{"name": "deepseek_v3_call", "passed": true, "message": "好的，收到确认！  \n\n如果您有任何问题、需要帮助，或者想继续某个话题，随时告诉我。我会在这里为您提", "timestamp": "2026-04-05T10:01:35.544509"}
+{"name": "kb_import", "passed": true, "message": "", "timestamp": "2026-04-05T10:01:47.734676"}
+{"name": "kb_search", "passed": true, "message": "找到 3 条", "timestamp": "2026-04-05T10:01:48.161103"}
+{"name": "learning_file_write", "passed": true, "message": "", "timestamp": "2026-04-05T10:01:48.162124"}
+{"name": "decision_tree_read", "passed": true, "message": "2288 chars", "timestamp": "2026-04-05T10:01:48.162124"}
+{"name": "claude_cli_available", "passed": true, "message": "", "timestamp": "2026-04-05T10:01:48.164119"}
+{"name": "claude_cli_call", "passed": false, "message": "无响应", "timestamp": "2026-04-05T10:01:58.708208"}
+{"name": "fallback_chains", "passed": true, "message": "", "timestamp": "2026-04-05T10:01:58.720293"}
+{"name": "seedream_available", "passed": true, "message": "", "timestamp": "2026-04-05T10:01:58.720293"}
+{"name": "deepseek_r1_call", "passed": true, "message": "The answer to 1 + 1 is **2**. \n\nThis is a basic ar", "timestamp": "2026-04-05T10:02:11.393417"}
