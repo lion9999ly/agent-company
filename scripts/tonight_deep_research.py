@@ -2375,7 +2375,18 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
     task_id = task["id"]
     title = task["title"]
     goal = task["goal"]
-    searches = task.get("searches", [])
+    searches_raw = task.get("searches", [])
+
+    # 处理 searches 的两种格式：int（数量）或 list（具体搜索词）
+    if isinstance(searches_raw, int):
+        search_count = searches_raw
+        searches = []  # 需要自动生成
+    elif isinstance(searches_raw, list):
+        search_count = len(searches_raw)
+        searches = searches_raw
+    else:
+        search_count = 0
+        searches = []
 
     # 如果有约束文件内容，注入到 goal 中
     if constraint_context:
@@ -2384,7 +2395,7 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
     print(f"\n{'='*60}")
     print(f"[Deep Research] {title}")
     print(f"[Goal] {goal[:200]}...")
-    print(f"[Sources] {len(searches)} searches")
+    print(f"[Sources] {search_count} searches")
     if constraint_context:
         print(f"[Constraints] 附带约束文件")
     print(f"{'='*60}")
