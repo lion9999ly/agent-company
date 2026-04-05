@@ -1,10 +1,11 @@
 """自动修复引擎 — 测试失败时自动分析+修复+验证
 @description: 使用 Claude CLI (Max 订阅) 分析错误并自动修复
-@dependencies: test_suite
-@last_modified: 2026-04-04
+@dependencies: test_suite, claude_cli_helper
+@last_modified: 2026-04-05
 """
 import subprocess, json, time, re
 from pathlib import Path
+from scripts.claude_cli_helper import call_claude_cli, is_claude_cli_available
 
 PROJECT_ROOT = Path(__file__).parent.parent
 FIX_LOG_PATH = PROJECT_ROOT / ".ai-state" / "auto_fix_log.jsonl"
@@ -38,7 +39,7 @@ def auto_fix_failures(failed_items: list, max_rounds: int = 3) -> dict:
         for round_num in range(1, max_rounds + 1):
             print(f"\n  [AutoFix] 修复 {item_name} (第 {round_num}/{max_rounds} 轮)")
 
-            # 用 CC (subprocess) 分析并修复 - 使用 Max 订阅
+            # 用 CC (Claude CLI) 分析并修复 - 使用 Max 订阅
             fix_prompt = (
                 f"测试 '{item_name}' 失败了。\n\n"
                 f"错误: {item.get('error', 'unknown')}\n"
@@ -48,17 +49,9 @@ def auto_fix_failures(failed_items: list, max_rounds: int = 3) -> dict:
                 f"格式:\nFILE: path/to/file.py\nOLD:\n```\n旧代码\n```\nNEW:\n```\n新代码\n```"
             )
 
-            try:
-                result = subprocess.run(
-                    ["claude", "-p", fix_prompt, "--output-format", "text"],
-                    capture_output=True, text=True, timeout=120,
-                    cwd=str(PROJECT_ROOT)
-                )
-                fix_suggestion = result.stdout.strip()
-            except subprocess.TimeoutExpired:
-                print(f"  [AutoFix] CC 响应超时")
-                continue
-            except FileNotFoundError:
+            if is_claude_cli_available():
+                fix_suggestion = call_claude_cli(fix_prompt, timeout=120, cwd=str(PROJECT_ROOT))
+            else:
                 print(f"  [AutoFix] CC CLI 不可用，回退到 model_gateway")
                 fix_suggestion = _fix_via_model_gateway(item)
 
