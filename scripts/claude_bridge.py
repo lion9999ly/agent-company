@@ -94,32 +94,72 @@ def call_claude_via_cdp(prompt: str, timeout: int = 180, port: int = CDP_PORT) -
             target_page.keyboard.press("Enter")
             print("[Bridge-CDP] 已发送消息，等待回复...")
 
-            # 等待回复完成
-            time.sleep(5)
+            # 等待回复开始（检测 Stop 按钮出现）
+            time.sleep(3)
             max_wait = timeout
             waited = 0
-            while waited < max_wait:
-                # 检查 Stop 按钮（回复进行中）
+            reply_started = False
+
+            # 先等待回复开始（Stop 按钮出现）
+            while waited < 30 and not reply_started:
                 stop_btn = target_page.query_selector('button[aria-label="Stop"]')
                 if stop_btn:
-                    if waited % 10 == 0:
-                        print(f"[Bridge-CDP] 回复中... ({waited}s)")
-                    time.sleep(2)
-                    waited += 2
-                    continue
-                time.sleep(2)
-                stop_btn = target_page.query_selector('button[aria-label="Stop"]')
-                if not stop_btn:
-                    print(f"[Bridge-CDP] 回复完成 ({waited}s)")
+                    reply_started = True
+                    print("[Bridge-CDP] 回复已开始生成...")
                     break
-                waited += 2
+                time.sleep(1)
+                waited += 1
 
-            # 获取最后一条回复
-            messages = target_page.query_selector_all(
-                '[data-testid="message-content"], .prose, div[class*="message"]'
-            )
-            if messages:
-                result = messages[-1].inner_text()
+            # 然后等待回复完成（Stop 按钮消失）
+            if reply_started:
+                waited = 0
+                while waited < max_wait:
+                    stop_btn = target_page.query_selector('button[aria-label="Stop"]')
+                    if stop_btn:
+                        if waited % 10 == 0:
+                            print(f"[Bridge-CDP] 回复中... ({waited}s)")
+                        time.sleep(2)
+                        waited += 2
+                        continue
+                    time.sleep(3)
+                    # 再次确认 Stop 按钮消失
+                    stop_btn = target_page.query_selector('button[aria-label="Stop"]')
+                    if not stop_btn:
+                        print(f"[Bridge-CDP] 回复完成 ({waited}s)")
+                        break
+                    waited += 3
+            else:
+                print("[Bridge-CDP] 回复未开始，可能网络问题或消息已存在")
+
+            # 获取 Claude 的回复（使用 JavaScript 直接获取）
+            # claude.ai 回复在 .font-claude-response 类中
+            time.sleep(3)  # 等待 DOM 更新
+
+            # 用 JS 获取最新的助手回复
+            js_code = """
+            () => {
+                // font-claude-response 是 Claude 回复的类名
+                const claudeResponses = document.querySelectorAll('.font-claude-response');
+                const results = [];
+                for (const r of claudeResponses) {
+                    const text = r.innerText.trim();
+                    if (text.length > 0 && text.length < 500) {
+                        results.push(text);
+                    }
+                }
+
+                // 返回倒数第二个（最后一个是项目名称）
+                if (results.length >= 2) {
+                    return results[results.length - 2];
+                } else if (results.length === 1) {
+                    return results[0];
+                }
+                return '';
+            }
+            """
+            result = target_page.evaluate(js_code)
+
+            if result:
                 print(f"[Bridge-CDP] 收到回复: {len(result)} 字符")
             else:
                 print("[Bridge-CDP] 未找到回复内容")
