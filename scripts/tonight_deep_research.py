@@ -102,11 +102,12 @@ FALLBACK_MAP = {
     "o3": "deepseek_r1_volcengine",
     "o3_mini": "doubao_seed_lite",
     "grok_4": "gpt_4o_norway",
-    "gemini_deep_research": "o3_deep_research",
-    "gemini_3_1_pro": "gpt_5_4",
-    "gemini_3_pro": "gpt_5_4",
+    # Gemini 降级链（恢复）
+    "gemini_3_1_pro": "gemini_2_5_pro",
     "gemini_2_5_pro": "gpt_5_4",
     "gemini_2_5_flash": "gpt_4o_norway",
+    "gemini_deep_research": "o3_deep_research",
+    # 其他
     "qwen_3_32b": "doubao_seed_pro",
     "llama_4_maverick": "gpt_4o_norway",
     "deepseek_v3_2": "deepseek_v3_volcengine",
@@ -155,17 +156,17 @@ def _get_model_for_task(task_type: str) -> str:
         return learned_model
 
     task_model_map = {
-        "discovery": "doubao_seed_lite",
-        "query_generation": "doubao_seed_lite",
-        "data_extraction": "gpt_4o_norway",
-        "role_assign": "doubao_seed_lite",
-        "synthesis": "gpt_5_4",
-        "re_synthesis": "gpt_5_4",
-        "final_synthesis": "gpt_5_4",
-        "critic_challenge": "gpt_5_4",
+        "discovery": "gemini_2_5_flash",
+        "query_generation": "gemini_2_5_flash",
+        "data_extraction": "gemini_2_5_flash",
+        "role_assign": "gemini_2_5_flash",
+        "synthesis": "gemini_2_5_pro",
+        "re_synthesis": "gemini_2_5_pro",
+        "final_synthesis": "gemini_2_5_pro",
+        "critic_challenge": "gemini_3_1_pro",
         "critic_cross": "deepseek_r1_volcengine",
-        "consistency_check": "gpt_5_4",
-        "knowledge_extract": "doubao_seed_lite",
+        "consistency_check": "gemini_3_1_pro",
+        "knowledge_extract": "gemini_2_5_flash",
         "fix": "gpt_5_4",
         "cdo_fix": "gpt_5_4",
         "chinese_search": "doubao_seed_pro",
@@ -174,7 +175,7 @@ def _get_model_for_task(task_type: str) -> str:
         "gemini_deep_search": "o3_deep_research",
         "deep_drill_conclusion": "gpt_5_4",
         "debate": "deepseek_v3_volcengine",
-        "analogy": "doubao_seed_lite",
+        "analogy": "gemini_2_5_flash",
         "sandbox": "deepseek_r1_volcengine",
     }
     return task_model_map.get(task_type, "gpt_5_4")
