@@ -2303,6 +2303,27 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
 
     hb.finish(f"搜索完成，{len(all_sources)}/{len(searches)} 有效")
 
+    # W1: 记录搜索效果
+    try:
+        import json as _json_w1
+        from pathlib import Path as _Path_w1
+        _learning_path = _Path_w1(__file__).parent.parent / ".ai-state" / "search_learning.jsonl"
+        _learning_path.parent.mkdir(parents=True, exist_ok=True)
+        for _src in all_sources:
+            try:
+                with open(_learning_path, 'a', encoding='utf-8') as _f:
+                    _f.write(_json_w1.dumps({
+                        "query": str(_src.get("query", ""))[:200],
+                        "task": title,
+                        "chars_returned": len(_src.get("content", "")),
+                        "timestamp": time.strftime('%Y-%m-%d %H:%M')
+                    }, ensure_ascii=False) + "\n")
+            except Exception as _e:
+                print(f"  [W1] 记录失败: {_e}")
+        print(f"  [W1] 搜索学习已记录: {len(all_sources)} 条")
+    except Exception as _e:
+        print(f"  [W1] 学习记录失败: {_e}")
+
     if not all_sources:
         return f"# {title}\n\n调研失败：所有搜索均无结果"
 
@@ -2739,6 +2760,42 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         confidence="high"
     )
     print(f"[KB Report] {report_kb_path}")
+
+    # C-5: 回流决策树
+    try:
+        import yaml as _yaml_c5
+        _dt_path = Path(__file__).parent.parent / ".ai-state" / "product_decision_tree.yaml"
+        if _dt_path.exists():
+            _dt = _yaml_c5.safe_load(_dt_path.read_text(encoding='utf-8'))
+            _report_lower = (report or "").lower()
+            for _d in _dt.get("decisions", []):
+                _q = _d.get("question", "")
+                # 用问题中的关键词匹配报告内容
+                _keywords = [w for w in _q.replace("？", "").replace("?", "").split() if len(w) > 1]
+                _match_count = sum(1 for kw in _keywords if kw.lower() in _report_lower)
+                if _match_count >= 2:  # 至少匹配 2 个关键词
+                    _d["resolved_knowledge"] = _d.get("resolved_knowledge", 0) + 1
+                    print(f"  [DecisionTree] {_d.get('id')}: +1 -> {_d['resolved_knowledge']}")
+            _dt_path.write_text(
+                _yaml_c5.dump(_dt, allow_unicode=True, default_flow_style=False),
+                encoding='utf-8'
+            )
+    except Exception as _e:
+        print(f"  [DecisionTree] 回流失败: {_e}")
+
+    # W3: 模型效果记录
+    try:
+        _meff_path = Path(__file__).parent.parent / ".ai-state" / "model_effectiveness.jsonl"
+        with open(_meff_path, 'a', encoding='utf-8') as _f:
+            _f.write(json.dumps({
+                "task": title,
+                "report_chars": len(report or ""),
+                "sources_count": len(all_sources),
+                "timestamp": time.strftime('%Y-%m-%d %H:%M')
+            }, ensure_ascii=False) + "\n")
+        print(f"  [W3] 模型效果已记录")
+    except Exception as _e:
+        print(f"  [W3] 记录失败: {_e}")
 
     # Step 5: 从报告中提取关键知识条目存入知识库（作为索引）
     extract_prompt = (
