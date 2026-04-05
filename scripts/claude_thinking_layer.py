@@ -4,6 +4,7 @@
 @last_modified: 2026-04-05
 """
 import json
+import os
 import time
 import subprocess
 from pathlib import Path
@@ -17,6 +18,23 @@ THINKING_DIR.mkdir(parents=True, exist_ok=True)
 DIRECT_API_ENABLED = True
 
 LEO_OPEN_ID = "ou_8e5e4f183e9eca4241378e96bac3a751"
+
+# Z.AI 环境变量列表（需要在思考层调用时清除）
+ZAI_ENV_KEYS = [
+    "ANTHROPIC_BASE_URL",
+    "ANTHROPIC_AUTH_TOKEN",
+    "ANTHROPIC_API_KEY",
+    "ANTHROPIC_MODEL",
+    "CLAUDE_BASE_URL",
+]
+
+
+def _get_clean_env() -> dict:
+    """获取干净的环境变量，移除 Z.AI 重定向"""
+    clean_env = {**os.environ}
+    for key in ZAI_ENV_KEYS:
+        clean_env.pop(key, None)
+    return clean_env
 
 
 def request_claude_thinking(question: str, context: str = "",
@@ -154,8 +172,9 @@ def _call_claude_api_direct(question: str, context: str, request_id: str) -> str
     request_path = THINKING_DIR / f"{request_id}.json"
     request_path.write_text(json.dumps(request_data, ensure_ascii=False, indent=2), encoding='utf-8')
 
-    # 调用 Node.js 桥接
+    # 调用 Node.js 桥接（使用干净的环境变量，确保调用真正的 Claude）
     bridge_path = PROJECT_ROOT / "scripts" / "claude_sdk_bridge.js"
+    clean_env = _get_clean_env()
     try:
         result = subprocess.run(
             ['node', str(bridge_path), prompt],
@@ -163,7 +182,8 @@ def _call_claude_api_direct(question: str, context: str, request_id: str) -> str
             text=True,
             encoding='utf-8',
             timeout=120,  # 2 分钟超时
-            cwd=str(PROJECT_ROOT)
+            cwd=str(PROJECT_ROOT),
+            env=clean_env  # 关键：使用干净的 env，不走 GLM-5
         )
 
         if result.returncode == 0:
