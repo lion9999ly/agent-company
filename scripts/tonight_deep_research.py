@@ -31,6 +31,81 @@ gateway = get_model_gateway()
 
 
 # ============================================================
+# 守夜模式：关键环节失败时自动调用思考通道诊断
+# ============================================================
+NIGHT_WATCH_ENABLED = True  # 守夜模式开关
+
+def _night_watch_diagnose(stage: str, error: str, context: str = ""):
+    """守夜诊断：关键环节失败时自动调用思考通道的 Claude 分析并尝试修复"""
+    if not NIGHT_WATCH_ENABLED:
+        return None
+    try:
+        from scripts.claude_bridge import call_claude_via_cdp
+        prompt = (
+            f"深度学习管道在 [{stage}] 阶段失败。\n\n"
+            f"错误信息: {error[:500]}\n\n"
+            f"上下文: {context[:500]}\n\n"
+            f"请分析根因，给出具体的修复建议。"
+            f"如果是模型调用失败，建议使用哪个替代模型。"
+            f"如果是代码问题，给出具体的修改方案。"
+        )
+        response = call_claude_via_cdp(prompt, inject_context=True)
+        if response:
+            print(f"[NightWatch] 架构师诊断 [{stage}]: {response[:300]}")
+            # 记录到诊断日志
+            diag_path = Path(__file__).parent.parent / ".ai-state" / "night_watch_log.jsonl"
+            diag_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(diag_path, 'a', encoding='utf-8') as f:
+                f.write(json.dumps({
+                    "stage": stage,
+                    "error": error[:300],
+                    "diagnosis": response[:1000],
+                    "timestamp": time.strftime('%Y-%m-%d %H:%M')
+                }, ensure_ascii=False) + "\n")
+            return response
+    except Exception as e:
+        print(f"[NightWatch] 诊断调用失败: {e}")
+    return None
+
+
+def _generate_night_report(task_results, send_reply=None, reply_target=None):
+    """生成守夜报告 — 推送到飞书"""
+    log_path = Path(__file__).parent.parent / ".ai-state" / "night_watch_log.jsonl"
+
+    # 统计
+    total_tasks = len(task_results) if task_results else 0
+    success_tasks = sum(1 for t in (task_results or []) if t.get("success"))
+
+    report_lines = [f"🌙 深度学习守夜报告 {time.strftime('%Y-%m-%d %H:%M')}"]
+    report_lines.append(f"任务完成: {success_tasks}/{total_tasks}")
+
+    # 守夜诊断记录
+    if log_path.exists():
+        diagnoses = log_path.read_text(encoding='utf-8').strip().split('\n')
+        today = time.strftime('%Y-%m-%d')
+        tonight_diags = [json.loads(d) for d in diagnoses if today in d]
+        if tonight_diags:
+            report_lines.append(f"\n⚠️ 今晚架构师介入 {len(tonight_diags)} 次:")
+            for d in tonight_diags:
+                report_lines.append(f"  [{d['stage']}] {d['diagnosis'][:100]}")
+        else:
+            report_lines.append("\n✅ 全程无异常，架构师未介入")
+
+    # 学习系统记录
+    for name, label in [("search_learning.jsonl", "搜索学习"), ("model_effectiveness.jsonl", "模型效果")]:
+        p = Path(__file__).parent.parent / ".ai-state" / name
+        if p.exists():
+            count = sum(1 for _ in open(p, encoding='utf-8'))
+            report_lines.append(f"📈 {label}: {count} 条记录")
+
+    report = "\n".join(report_lines)
+
+    if send_reply and reply_target:
+        send_reply(reply_target, report)
+    print(report)
+
+
+# ============================================================
 # 并发控制: 按 provider 限制并发数（升级版 - 19 模型支持）
 # ============================================================
 PROVIDER_SEMAPHORES = {
@@ -2367,6 +2442,9 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
         print(f"  [W1] 学习记录失败: {_e}")
 
     if not all_sources:
+        # 守夜诊断：Layer 1 搜索全部失败
+        _night_watch_diagnose("L1_搜索", f"全部搜索失败，{len(searches)} 个查询无结果",
+                              f"任务: {title}")
         return f"# {title}\n\n调研失败：所有搜索均无结果"
 
     # === Layer 2: 并发结构化提炼 ===
@@ -2392,6 +2470,11 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
                     structured_data_list.append(extracted)
 
     print(f"  [L2] 提炼完成: {len(structured_data_list)}/{len(all_sources)} 成功")
+
+    # 守夜诊断：Layer 2 提炼全部失败
+    if not structured_data_list and all_sources:
+        _night_watch_diagnose("L2_提炼", f"全部提炼失败，{len(all_sources)} 条搜索结果无法提取",
+                              f"任务: {title}, 搜索结果样本: {all_sources[0].get('content', '')[:200] if all_sources else ''}")
 
     # 序列化供后续层使用
     structured_dump = ""
@@ -2680,6 +2763,9 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
 
     if not agent_outputs:
         # 全部失败，fallback 到单 CPO 模式
+        # 守夜诊断：Layer 3 Agent 分析全部失败
+        _night_watch_diagnose("L3_Agent", f"全部 Agent 分析失败，{len(roles)} 个角色无输出",
+                              f"任务: {title}, 角色: {roles}")
         print("  [WARN] All agents failed, fallback to single CPO")
         synthesis_prompt_fallback = (
             f"## 研究任务\n{title}\n## 目标\n{goal}\n"
@@ -2743,6 +2829,9 @@ def deep_research_one(task: dict, progress_callback=None, constraint_context: st
                 report = retry_result["response"]
                 print(f"  [Synthesis Retry] OK {len(report)} chars")
             else:
+                # 守夜诊断：Layer 4 整合失败
+                _night_watch_diagnose("L4_整合", f"整合失败，重试也失败",
+                                      f"任务: {title}, Agent 数: {len(agent_outputs)}, 模型: {_get_model_for_task('synthesis')}")
                 # 最终 fallback：让 CPO 基于最长的 Agent 输出扩写
                 longest_role = max(agent_outputs.keys(), key=lambda r: len(agent_outputs[r]))
                 longest_output = agent_outputs[longest_role]
@@ -3621,6 +3710,9 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
             # should_alert_architect 会自动判断是否需要通知
         except Exception as e:
             print(f"[Briefing] {e}")
+
+        # 生成守夜报告
+        _generate_night_report(completed, progress_callback, None)
 
     return completed
 
