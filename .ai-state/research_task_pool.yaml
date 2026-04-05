@@ -190,3 +190,28 @@
   - 蓝牙配对 首次配对 自动重连 UX
   - Bluetooth multipoint connection helmet
   title: 配对流程
+- goal: 对比两种光学路线的成本、量产难度、强光可读性、重量、供应商成熟度，给出明确推荐
+  id: v1_optical_deep
+  priority: 1
+  searches: 6
+  title: V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导
+- goal: 评估创达的RUBIK AI Glass方案能否适配摩托车头盔场景，技术差距、合作模式、成本
+  id: supplier_thundersoft
+  priority: 1
+  searches: 5
+  title: 中科创达智能头盔合作可行性评估
+- goal: 前碰撞预警、车道偏离、盲区检测从汽车迁移到摩托车的算法修改量、传感器要求、验证周期
+  id: adas_motorcycle_adapt
+  priority: 1
+  searches: 6
+  title: Luna6 ADAS算法摩托车适配技术评估
+- goal: 技术方案、BOM成本估算、用户评价、弱点分析、我们的差异化机会
+  id: shoei_gt_air3_teardown
+  priority: 1
+  searches: 6
+  title: Shoei GT-Air 3 Smart 深度拆解分析
+- goal: 从小红书、Bilibili、摩托车论坛收集骑手对导航/通信/安全的真实痛点和付费意愿
+  id: rider_pain_points
+  priority: 2
+  searches: 5
+  title: 摩托车骑手智能设备需求调研
