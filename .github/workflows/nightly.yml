@@ -1,0 +1,24 @@
+name: Nightly Maintenance
+on:
+  schedule:
+    - cron: '0 16 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          anthropic_base_url: ${{ secrets.ANTHROPIC_BASE_URL }}
+          prompt: |
+            1. Run python scripts/verify_fallback_chains.py, fix broken chains
+            2. Run python scripts/integration_test.py, fix failing tests
+            3. Run python scripts/system_snapshot.py
+            4. If changes, commit and create PR

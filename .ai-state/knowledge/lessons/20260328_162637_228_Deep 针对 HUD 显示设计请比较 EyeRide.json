@@ -9,5 +9,8 @@
     "depth_v3",
     "speculative"
   ],
-  "confidence": "low"
+  "confidence": "low",
+  "_usage_count": 3,
+  "_last_used": "2026-04-05T10:11:11.548618",
+  "_first_used": "2026-04-05T09:05:24.513396"
 }
