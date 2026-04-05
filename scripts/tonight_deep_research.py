@@ -974,18 +974,53 @@ def _collect_competitive_ui(url: str, source_name: str):
 
 CALC_PATTERN = re.compile(r'\[CALC:\s*([^\]]+)\]')
 
+
+def _safe_eval_math(expr: str) -> float:
+    """安全的数学表达式求值（使用 AST，禁止函数调用和变量）"""
+    import ast
+    import operator
+
+    # 允许的操作符
+    OPERATORS = {
+        ast.Add: operator.add,
+        ast.Sub: operator.sub,
+        ast.Mult: operator.mul,
+        ast.Div: operator.truediv,
+        ast.USub: operator.neg,
+    }
+
+    def _eval(node):
+        if isinstance(node, ast.Constant):
+            if isinstance(node.value, (int, float)):
+                return node.value
+            raise ValueError("只允许数字")
+        elif isinstance(node, ast.BinOp):
+            left = _eval(node.left)
+            right = _eval(node.right)
+            op_type = type(node.op)
+            if op_type in OPERATORS:
+                return OPERATORS[op_type](left, right)
+            raise ValueError(f"不支持的操作符: {op_type}")
+        elif isinstance(node, ast.UnaryOp):
+            operand = _eval(node.operand)
+            op_type = type(node.op)
+            if op_type in OPERATORS:
+                return OPERATORS[op_type](operand)
+            raise ValueError(f"不支持的一元操作符: {op_type}")
+        else:
+            raise ValueError(f"不支持的语法: {type(node)}")
+
+    tree = ast.parse(expr, mode='eval')
+    return _eval(tree.body)
+
+
 def _evaluate_calculations(text: str) -> str:
-    """扫描输出中的 [CALC: expression] 标记，用 Python 执行并回填结果"""
+    """扫描输出中的 [CALC: expression] 标记，用安全求值执行并回填结果"""
     def replace_calc(match):
         expr = match.group(1)
         try:
-            # 安全评估：只允许数学运算
-            allowed_chars = set('0123456789.+-*/() ')
-            if all(c in allowed_chars for c in expr):
-                result = eval(expr)
-                return f"[CALC: {expr}] = {result:.2f}"
-            else:
-                return f"[CALC: {expr}] = (不安全表达式)"
+            result = _safe_eval_math(expr)
+            return f"[CALC: {expr}] = {result:.2f}"
         except Exception as e:
             return f"[CALC: {expr}] = (计算错误: {str(e)[:30]})"
 
