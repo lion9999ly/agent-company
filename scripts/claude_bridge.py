@@ -7,11 +7,20 @@
 
 CDP 模式启动方法：
   powershell -File scripts/chrome_cdp_restart.ps1
+
+三方记忆共享：
+  - founder_mindset.md: 创始人心智模型
+  - product_anchor.md: 产品锚点
+  - thinking_history.jsonl: 思考历史（含纠正记录）
 """
 import time
+import json
 import subprocess
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+
+# 项目根目录
+PROJECT_ROOT = Path(__file__).parent.parent
 
 # 思考通道的对话 URL
 THINKING_CHANNEL_URL = "https://claude.ai/chat/06d4bcbe-f474-4de9-9f88-ed187c0c687c"
@@ -23,7 +32,117 @@ CDP_PORT = 9333
 CHROME_USER_DATA = str(Path.home() / "AppData" / "Local" / "Google" / "Chrome" / "User Data")
 
 
-def call_claude_via_cdp(prompt: str, timeout: int = 180, port: int = CDP_PORT) -> str:
+def _build_thinking_context() -> str:
+    """构建思考上下文——让思考通道的 Claude 有完整记忆
+
+    三个来源：
+    1. founder_mindset.md: 创始人心智模型
+    2. product_anchor.md: 产品锚点
+    3. thinking_history.jsonl: 最近的思考历史（含纠正）
+    """
+    context_parts = []
+
+    # 1. 创始人心智模型
+    mindset_path = PROJECT_ROOT / ".ai-state" / "founder_mindset.md"
+    if mindset_path.exists():
+        content = mindset_path.read_text(encoding='utf-8')[:3000]
+        if content.strip():
+            context_parts.append(f"## 创始人心智模型\n{content}")
+
+    # 2. 产品锚点
+    anchor_path = PROJECT_ROOT / ".ai-state" / "product_anchor.md"
+    if anchor_path.exists():
+        content = anchor_path.read_text(encoding='utf-8')[:2000]
+        if content.strip():
+            context_parts.append(f"## 产品锚点\n{content}")
+
+    # 3. 最近的思考历史（最近 10 条）
+    history_path = PROJECT_ROOT / ".ai-state" / "thinking_history.jsonl"
+    if history_path.exists():
+        lines = history_path.read_text(encoding='utf-8').strip().split('\n')
+        recent = lines[-10:] if len(lines) > 10 else lines
+        history_entries = []
+        for line in recent:
+            try:
+                entry = json.loads(line)
+                q = entry.get('question', '')[:100]
+                r = entry.get('response', '')[:200]
+                correction = entry.get('correction', '')
+                if correction:
+                    history_entries.append(f"Q: {q}\nA: {r}\n[Leo 纠正]: {correction}")
+                else:
+                    history_entries.append(f"Q: {q}\nA: {r}")
+            except:
+                pass
+        if history_entries:
+            context_parts.append("## 最近的思考记录\n" + "\n---\n".join(history_entries))
+
+    return "\n\n".join(context_parts)
+
+
+def record_correction(request_id: str, correction: str) -> bool:
+    """记录纠正到思考历史
+
+    Args:
+        request_id: 请求 ID（如 think_1775383863）
+        correction: 纠正内容
+
+    Returns:
+        是否成功
+    """
+    history_path = PROJECT_ROOT / ".ai-state" / "thinking_history.jsonl"
+    if not history_path.exists():
+        return False
+
+    lines = history_path.read_text(encoding='utf-8').strip().split('\n')
+    updated = False
+    new_lines = []
+
+    for line in lines:
+        try:
+            entry = json.loads(line)
+            if entry.get('id') == request_id:
+                entry['correction'] = correction
+                entry['corrected_at'] = time.strftime('%Y-%m-%d %H:%M')
+                updated = True
+            new_lines.append(json.dumps(entry, ensure_ascii=False))
+        except:
+            new_lines.append(line)
+
+    if updated:
+        history_path.write_text('\n'.join(new_lines) + '\n', encoding='utf-8')
+        print(f"[Bridge] 已记录纠正: {request_id}")
+        return True
+
+    return False
+
+
+def update_founder_mindset(update_text: str) -> bool:
+    """更新创始人心智模型
+
+    Args:
+        update_text: 要追加的更新内容
+
+    Returns:
+        是否成功
+    """
+    mindset_path = PROJECT_ROOT / ".ai-state" / "founder_mindset.md"
+
+    timestamp = time.strftime('%Y-%m-%d %H:%M')
+    update_block = f"\n\n## 对齐更新 ({timestamp})\n{update_text}\n"
+
+    try:
+        with open(mindset_path, 'a', encoding='utf-8') as f:
+            f.write(update_block)
+        print(f"[Bridge] 已更新创始人心智模型")
+        return True
+    except Exception as e:
+        print(f"[Bridge] 更新失败: {e}")
+        return False
+
+
+def call_claude_via_cdp(prompt: str, timeout: int = 180, port: int = CDP_PORT,
+                        inject_context: bool = True) -> str:
     """通过 CDP 连接到已运行的 Chrome（推荐模式）
 
     优点：绕过 Cloudflare，复用已登录状态
@@ -36,8 +155,24 @@ def call_claude_via_cdp(prompt: str, timeout: int = 180, port: int = CDP_PORT) -
       1. 关闭所有 Chrome
       2. 启动: chrome.exe --remote-debugging-port=9333 --user-data-dir=%TEMP%\chrome-cdp-debug
       3. 登录 claude.ai 并打开思考通道
+
+    Args:
+        prompt: 要发送的问题
+        timeout: 超时时间（秒）
+        port: CDP 端口
+        inject_context: 是否注入上下文（默认 True）
     """
     result = ""
+
+    # 构建完整 prompt（注入上下文）
+    if inject_context:
+        context = _build_thinking_context()
+        if context:
+            full_prompt = f"[系统上下文 — 请基于以下信息回答]\n\n{context}\n\n---\n\n[当前问题]\n{prompt}"
+        else:
+            full_prompt = prompt
+    else:
+        full_prompt = prompt
 
     with sync_playwright() as p:
         try:
@@ -84,10 +219,10 @@ def call_claude_via_cdp(prompt: str, timeout: int = 180, port: int = CDP_PORT) -
                 print("[Bridge-CDP] 找不到输入框，可能页面未完全加载")
                 return ""
 
-            # 输入 prompt
+            # 输入 full_prompt（包含上下文）
             input_el.click()
             time.sleep(0.3)
-            target_page.keyboard.type(prompt, delay=10)
+            target_page.keyboard.type(full_prompt, delay=10)
             time.sleep(0.5)
 
             # 发送（按 Enter）
@@ -161,6 +296,22 @@ def call_claude_via_cdp(prompt: str, timeout: int = 180, port: int = CDP_PORT) -
 
             if result:
                 print(f"[Bridge-CDP] 收到回复: {len(result)} 字符")
+
+                # 保存到思考历史
+                request_id = f"think_{int(time.time())}"
+                history_path = PROJECT_ROOT / ".ai-state" / "thinking_history.jsonl"
+                try:
+                    history_path.parent.mkdir(parents=True, exist_ok=True)
+                    with open(history_path, 'a', encoding='utf-8') as f:
+                        f.write(json.dumps({
+                            "id": request_id,
+                            "question": prompt[:200],
+                            "response": result[:1000],
+                            "source": "cdp_bridge",
+                            "timestamp": time.strftime('%Y-%m-%d %H:%M')
+                        }, ensure_ascii=False) + "\n")
+                except Exception as e:
+                    print(f"[Bridge-CDP] 保存历史失败: {e}")
             else:
                 print("[Bridge-CDP] 未找到回复内容")
 

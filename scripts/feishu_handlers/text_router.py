@@ -351,6 +351,16 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_pending_thinking(reply_target, send_reply)
         return
 
+    # === 2.29.5 思考纠正 ===
+    if text_stripped.startswith("纠正:") or text_stripped.startswith("纠正："):
+        _handle_thinking_correction(text_stripped, reply_target, send_reply)
+        return
+
+    # === 2.29.6 对齐更新 ===
+    if text_stripped.startswith("对齐更新:") or text_stripped.startswith("对齐更新："):
+        _handle_alignment_update(text_stripped, reply_target, send_reply)
+        return
+
     # === 2.30 架构师简报 ===
     if text_stripped in ("简报", "briefing", "架构师简报"):
         _handle_architect_briefing(reply_target, send_reply)
@@ -2032,6 +2042,73 @@ def _handle_pending_thinking(reply_target: str, send_reply):
 
     except Exception as e:
         send_reply(reply_target, f"查询错误: {e}")
+
+
+def _handle_thinking_correction(text: str, reply_target: str, send_reply):
+    """处理思考纠正指令
+
+    格式: 纠正:think_xxx 纠正内容
+    示例: 纠正:think_1775383863 光学路线还没有决定，不能自作主张
+    """
+    try:
+        # 解析指令
+        parts = text.replace("纠正：", "纠正:").split(":", 1)
+        if len(parts) < 2:
+            send_reply(reply_target, "格式错误。正确格式: 纠正:think_xxx 纠正内容")
+            return
+
+        rest = parts[1].strip()
+        # 分离 request_id 和纠正内容
+        space_idx = rest.find(" ")
+        if space_idx == -1:
+            send_reply(reply_target, "格式错误。正确格式: 纠正:think_xxx 纠正内容")
+            return
+
+        request_id = rest[:space_idx].strip()
+        correction = rest[space_idx:].strip()
+
+        if not request_id.startswith("think_"):
+            send_reply(reply_target, f"request_id 格式错误，应以 think_ 开头: {request_id}")
+            return
+
+        # 记录纠正
+        from scripts.claude_bridge import record_correction
+        if record_correction(request_id, correction):
+            send_reply(reply_target, f"已记录纠正 [{request_id}]:\n{correction}\n\n下次思考通道调用时，Claude 会看到这条纠正。")
+        else:
+            send_reply(reply_target, f"记录失败，未找到 {request_id} 对应的记录")
+
+    except Exception as e:
+        send_reply(reply_target, f"处理纠正时出错: {e}")
+
+
+def _handle_alignment_update(text: str, reply_target: str, send_reply):
+    """处理对齐更新指令
+
+    格式: 对齐更新: 内容
+    示例: 对齐更新: 创始人确认V1不做Mesh组队，推到V2
+    """
+    try:
+        # 解析指令
+        parts = text.replace("对齐更新：", "对齐更新:").split(":", 1)
+        if len(parts) < 2:
+            send_reply(reply_target, "格式错误。正确格式: 对齐更新: 内容")
+            return
+
+        update_text = parts[1].strip()
+        if not update_text:
+            send_reply(reply_target, "更新内容不能为空")
+            return
+
+        # 更新创始人心智模型
+        from scripts.claude_bridge import update_founder_mindset
+        if update_founder_mindset(update_text):
+            send_reply(reply_target, f"已更新创始人心智模型:\n{update_text}\n\n下次思考通道调用时，Claude 会看到这条更新。")
+        else:
+            send_reply(reply_target, "更新失败")
+
+    except Exception as e:
+        send_reply(reply_target, f"处理对齐更新时出错: {e}")
 
 
 def _handle_architect_briefing(reply_target: str, send_reply):
