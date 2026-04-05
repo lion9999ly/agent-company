@@ -3669,8 +3669,9 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
     def _pre_flight_api_check():
         """30 秒验证关键模型是否可用"""
         results = {}
-        critical = ["gpt_5_4", "o3_deep_research"]
-        important = ["doubao_seed_pro", "gpt_4o_norway", "deepseek_v3_volcengine"]
+        critical = ["gpt_5_4", "o3_deep_research", "gemini_2_5_flash"]
+        important = ["doubao_seed_pro", "gpt_4o_norway", "deepseek_v3_volcengine",
+                     "gemini_2_5_pro", "gemini_3_1_pro", "deepseek_r1_volcengine"]
 
         for model in critical + important:
             try:
