@@ -199,7 +199,7 @@ def _soft_test_status_command(gw) -> dict:
         output = "\n".join(captured_output)
 
         # 用 Flash 判断质量
-        result = gw.call("gemini_2_5_flash",
+        result = gw.call("doubao_seed_lite",
             f"判断以下系统输出是否合理。\n\n"
             f"指令: 状态\n"
             f"输出:\n{output[:500]}\n\n"
@@ -232,7 +232,7 @@ def _soft_test_kb_search(gw) -> dict:
         results_text = "\n".join([f"- {r.get('title','')}: {r.get('content','')[:100]}" for r in results[:3]])
 
         # 用 Flash 判断相关性
-        result = gw.call("gemini_2_5_flash",
+        result = gw.call("doubao_seed_lite",
             f"判断以下知识库搜索结果是否与查询相关。\n\n"
             f"查询: HUD 显示方案\n结果:\n{results_text}\n\n"
             f"判断标准: 结果应该和 HUD、显示、光学相关。\n\n只回答 PASS 或 FAIL。",

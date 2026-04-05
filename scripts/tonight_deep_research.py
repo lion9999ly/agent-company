@@ -89,22 +89,28 @@ def _get_sem_key(model_name: str) -> str:
 # 降级映射表（升级版 - 全模型支持）
 # ============================================================
 FALLBACK_MAP = {
-    "gpt_5_4": "gpt_5_3",                 # 5.4 → 5.3
-    "gpt_5_3": "gpt_4o_norway",           # 5.3 → 4o
-    "o3": "deepseek_r1",                  # o3 → DeepSeek R1（同为推理专家）
-    "o3_mini": "gemini_2_5_flash",        # o3-mini → Flash
-    "deepseek_r1": "o3_mini",             # R1 → o3-mini
-    "grok_4": "gpt_4o_norway",            # Grok → 4o
-    "gemini_deep_research": "o3_deep_research",  # Gemini Deep → o3 Deep
-    "o3_deep_research": "gpt_5_4",        # o3 Deep → 5.4
+    "gpt_5_4": "gpt_4o_norway",
+    "gpt_4o_norway": "doubao_seed_pro",
+    "o3_deep_research": "gpt_5_4",
     "doubao_seed_pro": "doubao_seed_lite",
-    "gemini_3_1_pro": "gemini_3_pro",
-    "gemini_3_pro": "gemini_2_5_pro",
-    "gemini_2_5_pro": "gpt_5_3",          # Gemini Pro → 5.3
-    "gemini_2_5_flash": "gpt_4o_norway",  # Flash → 4o（L2提炼降级）
-    "qwen_3_32b": "deepseek_v3_2",        # Qwen → DeepSeek（都擅长中文）
+    "doubao_seed_lite": "gpt_4o_norway",
+    "deepseek_v3_volcengine": "deepseek_r1_volcengine",
+    "deepseek_r1_volcengine": "gpt_5_4",
+    "glm_4_7": "doubao_seed_pro",
+    "doubao_vision_pro": "gpt_5_4",
+    "gpt_5_3": "gpt_4o_norway",
+    "o3": "deepseek_r1_volcengine",
+    "o3_mini": "doubao_seed_lite",
+    "grok_4": "gpt_4o_norway",
+    "gemini_deep_research": "o3_deep_research",
+    "gemini_3_1_pro": "gpt_5_4",
+    "gemini_3_pro": "gpt_5_4",
+    "gemini_2_5_pro": "gpt_5_4",
+    "gemini_2_5_flash": "gpt_4o_norway",
+    "qwen_3_32b": "doubao_seed_pro",
     "llama_4_maverick": "gpt_4o_norway",
-    "deepseek_v3_2": "qwen_3_32b",        # DeepSeek → Qwen（互为备选）
+    "deepseek_v3_2": "deepseek_v3_volcengine",
+    "deepseek_r1": "deepseek_r1_volcengine",
 }
 
 
@@ -125,11 +131,11 @@ def _get_model_for_role(role: str) -> str:
     """
     role_model_map = {
         "CTO": "gpt_5_4",
-        "CMO": "gpt_5_3",        # 升级：用 5.3 做深度分析
-        "CDO": "gemini_3_1_pro",
+        "CMO": "gpt_4o_norway",
+        "CDO": "deepseek_v3_volcengine",
         "CPO": "gpt_5_4",
-        "VERIFIER": "o3",        # 新增：推理验证 Agent
-        "CHINESE_CROSS": "qwen_3_32b",  # 新增：中文交叉验证
+        "VERIFIER": "deepseek_r1_volcengine",
+        "CHINESE_CROSS": "doubao_seed_pro",
     }
     return role_model_map.get(role.upper(), "gpt_5_4")
 
@@ -149,27 +155,27 @@ def _get_model_for_task(task_type: str) -> str:
         return learned_model
 
     task_model_map = {
-        "discovery": "gemini_2_5_flash",
-        "query_generation": "gemini_2_5_flash",
-        "data_extraction": "gemini_2_5_flash",    # Layer 2 提炼
-        "role_assign": "gemini_2_5_flash",
-        "synthesis": "gemini_2_5_pro",             # Layer 4 整合（升级）
-        "re_synthesis": "gemini_2_5_pro",
-        "final_synthesis": "gemini_2_5_pro",
-        "critic_challenge": "gemini_3_1_pro",      # Layer 5 主审
-        "critic_cross": "o3",                      # Layer 5 交叉审查（新增）
-        "consistency_check": "gemini_3_1_pro",
-        "knowledge_extract": "gemini_2_5_flash",
-        "fix": "gemini_2_5_pro",
-        "cdo_fix": "gemini_2_5_pro",
+        "discovery": "doubao_seed_lite",
+        "query_generation": "doubao_seed_lite",
+        "data_extraction": "gpt_4o_norway",
+        "role_assign": "doubao_seed_lite",
+        "synthesis": "gpt_5_4",
+        "re_synthesis": "gpt_5_4",
+        "final_synthesis": "gpt_5_4",
+        "critic_challenge": "gpt_5_4",
+        "critic_cross": "deepseek_r1_volcengine",
+        "consistency_check": "gpt_5_4",
+        "knowledge_extract": "doubao_seed_lite",
+        "fix": "gpt_5_4",
+        "cdo_fix": "gpt_5_4",
         "chinese_search": "doubao_seed_pro",
         "deep_research_search": "o3_deep_research",
-        "grok_search": "grok_4",                   # 社交搜索（新增）
-        "gemini_deep_search": "gemini_deep_research",  # 学术深挖（新增）
+        "grok_search": "gpt_4o_norway",
+        "gemini_deep_search": "o3_deep_research",
         "deep_drill_conclusion": "gpt_5_4",
-        "debate": "gpt_5_3",                       # Agent 辩论
-        "analogy": "gemini_2_5_flash",
-        "sandbox": "o3",                           # 沙盘推演用 o3（65K output）
+        "debate": "deepseek_v3_volcengine",
+        "analogy": "doubao_seed_lite",
+        "sandbox": "deepseek_r1_volcengine",
     }
     return task_model_map.get(task_type, "gpt_5_4")
 
