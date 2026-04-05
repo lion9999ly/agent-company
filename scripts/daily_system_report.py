@@ -176,6 +176,13 @@ def send_daily_report():
     except Exception as e:
         print(f"[DailyReport] 发送失败: {e}")
 
+    # 生成架构师简报
+    try:
+        from scripts.architect_briefing import generate_briefing, should_alert_architect
+        generate_briefing()
+    except Exception as e:
+        print(f"[DailyReport] 简报生成失败: {e}")
+
     return report
 
 

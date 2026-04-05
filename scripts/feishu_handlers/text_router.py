@@ -351,6 +351,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_pending_thinking(reply_target, send_reply)
         return
 
+    # === 2.30 架构师简报 ===
+    if text_stripped in ("简报", "briefing", "架构师简报"):
+        _handle_architect_briefing(reply_target, send_reply)
+        return
+
     # === 3. 学习相关指令 ===
     if text_stripped in ("学习", "每日学习", "daily learning"):
         _handle_daily_learning(reply_target, send_reply)
@@ -2027,6 +2032,23 @@ def _handle_pending_thinking(reply_target: str, send_reply):
 
     except Exception as e:
         send_reply(reply_target, f"查询错误: {e}")
+
+
+def _handle_architect_briefing(reply_target: str, send_reply):
+    """生成并发送架构师简报"""
+    try:
+        from scripts.architect_briefing import generate_briefing
+        briefing = generate_briefing()
+
+        # 截取前 2000 字（飞书限制）
+        if len(briefing) > 2000:
+            briefing = briefing[:1900] + "\n\n... (已截断，查看完整版: .ai-state/architect_briefing.md)"
+
+        send_reply(reply_target, briefing)
+        send_reply(reply_target, "\n\n📋 此简报可发给 Claude 快速了解系统状态")
+
+    except Exception as e:
+        send_reply(reply_target, f"简报生成失败: {e}")
 
 
 def _get_full_help_text() -> str:

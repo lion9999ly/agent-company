@@ -3614,6 +3614,14 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
         except Exception as e:
             print(f"[StrategicQuestions] {e}")
 
+        # 生成架构师简报并检查是否需要通知
+        try:
+            from scripts.architect_briefing import generate_briefing, should_alert_architect
+            generate_briefing()
+            # should_alert_architect 会自动判断是否需要通知
+        except Exception as e:
+            print(f"[Briefing] {e}")
+
     return completed
 
 
