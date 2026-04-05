@@ -1074,8 +1074,16 @@ class ModelGateway:
             return {"success": False, "error": str(e)}
 
     def call_volcengine(self, model_name: str, prompt: str, system_prompt: str = None,
-                        task_type: str = "general") -> Dict[str, Any]:
-        """调用火山引擎（豆包）API — OpenAI SDK 兼容格式"""
+                        task_type: str = "general", image_url: str = None) -> Dict[str, Any]:
+        """调用火山引擎（豆包）API — OpenAI SDK 兼容格式
+
+        Args:
+            model_name: 模型名称
+            prompt: 用户提示
+            system_prompt: 系统提示
+            task_type: 任务类型
+            image_url: 图片URL（多模态理解）
+        """
         cfg = self.models.get(model_name)
         if not cfg or not cfg.api_key:
             return {"success": False, "error": f"Model {model_name} not configured or missing API key"}
@@ -1097,7 +1105,18 @@ class ModelGateway:
         messages = []
         if system_prompt:
             messages.append({"role": "system", "content": system_prompt})
-        messages.append({"role": "user", "content": prompt})
+
+        # 多模态支持：如果有图片，构建多内容消息
+        if image_url:
+            messages.append({
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": image_url}}
+                ]
+            })
+        else:
+            messages.append({"role": "user", "content": prompt})
 
         start_time = time.time()
         timeout = TIMEOUT_BY_TASK.get(task_type, 120)
@@ -1256,6 +1275,74 @@ class ModelGateway:
             except ValueError:
                 pass
         return 0.0
+
+    def call_image_generation(self, prompt: str, model_name: str = "seedream_3_0") -> Dict[str, Any]:
+        """调用图片生成模型（Seedream 3.0）
+
+        Args:
+            prompt: 图片描述
+            model_name: 模型名称，默认 seedream_3_0
+
+        Returns:
+            {"success": True, "image_url": "..."} 或 {"success": False, "error": "..."}
+        """
+        cfg = self.models.get(model_name)
+        if not cfg or not cfg.api_key:
+            return {"success": False, "error": f"Model {model_name} not configured or missing API key"}
+
+        endpoint = cfg.endpoint or "https://ark.cn-beijing.volces.com/api/v3"
+
+        try:
+            from openai import OpenAI
+            client = OpenAI(api_key=cfg.api_key, base_url=endpoint)
+
+            start_time = time.time()
+
+            # 图片生成 API
+            resp = client.images.generate(
+                model=cfg.model,
+                prompt=prompt,
+                size="1024x1024",
+                n=1
+            )
+
+            latency_ms = int((time.time() - start_time) * 1000)
+
+            if resp.data and len(resp.data) > 0:
+                image_url = resp.data[0].url
+
+                if HAS_TRACKER:
+                    get_tracker().record(
+                        model=cfg.model,
+                        provider="volcengine_image",
+                        prompt_tokens=len(prompt),
+                        completion_tokens=0,
+                        task_type="image_generation",
+                        success=True,
+                        latency_ms=latency_ms
+                    )
+
+                return {
+                    "success": True,
+                    "model": model_name,
+                    "image_url": image_url
+                }
+            else:
+                return {"success": False, "error": "No image generated"}
+
+        except Exception as e:
+            latency_ms = int((time.time() - start_time) * 1000) if 'start_time' in locals() else 0
+            if HAS_TRACKER:
+                get_tracker().record(
+                    model=cfg.model,
+                    provider="volcengine_image",
+                    prompt_tokens=0,
+                    completion_tokens=0,
+                    task_type="image_generation",
+                    success=False,
+                    latency_ms=latency_ms
+                )
+            return {"success": False, "error": str(e)}
 
 
 # 全局实例

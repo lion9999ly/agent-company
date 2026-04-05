@@ -885,7 +885,10 @@ def _cdo_research(task_desc: str) -> str:
 
 
 def cdo_designer_node(state: AgentGlobalState) -> dict:
-    """CDO(Carl) 设计节点：工业设计、外观造型、用户体验"""
+    """CDO(Carl) 设计节点：工业设计、外观造型、用户体验
+
+    支持多模态：如果有图片输入，使用 doubao_vision_pro 进行图片分析
+    """
     slicer = get_context_slicer()
     task_id = state.get("current_task_id", "default_task")
     my_contract = state.get("sub_tasks", {}).get(task_id,
@@ -899,7 +902,24 @@ def cdo_designer_node(state: AgentGlobalState) -> dict:
     system_prompt = get_agent_prompt("cdo")
     if design_research:
         system_prompt += f"\n\n## 设计趋势调研数据\n{design_research}"
-    api_result = gateway.call_azure_openai("cdo", str(llm_context), system_prompt)
+
+    # 检查是否有图片输入（多模态支持）
+    image_url = state.get("image_url") or my_contract.get("image_url")
+
+    if image_url:
+        # 有图片，使用 doubao_vision_pro 进行多模态分析
+        print(f"[CDO] 检测到图片输入，使用 doubao_vision_pro 进行分析")
+        api_result = gateway.call_volcengine(
+            "doubao_vision_pro",
+            str(llm_context),
+            system_prompt,
+            task_type="design_analysis",
+            image_url=image_url
+        )
+    else:
+        # 无图片，使用常规 Azure OpenAI
+        api_result = gateway.call_azure_openai("cdo", str(llm_context), system_prompt)
+
     if api_result.get("success"):
         design_output = api_result["response"]
     else:
