@@ -3091,99 +3091,17 @@ def handle_message(event):
 
 
 def send_reply(target_id: str = None, text: str = "", id_type: str = None) -> bool:
-    """发送回复消息（支持长消息分块）
+    """发送回复消息（代理到 chat_helpers.py）
 
-    如果不传参数，使用 _reply_context 中的默认值（群聊时自动回复到群里）
-
-    Args:
-        target_id: open_id（私聊）或 chat_id（群聊），None 时使用上下文
-        text: 回复内容（超过2000字自动分块发送）
-        id_type: "open_id" 或 "chat_id"，None 时使用上下文
-
-    Returns:
-        bool: 是否发送成功
+    注意：此函数已统一到 scripts.feishu_handlers.chat_helpers.send_reply
+    这里保留为向后兼容的代理入口
     """
-    # 使用上下文默认值
-    if target_id is None:
-        target_id = _reply_context.get("target")
-    if id_type is None:
-        id_type = _reply_context.get("type", "open_id")
-
-    if not target_id:
-        print("  [回复失败: 无目标ID]")
-        return False
-
-    # 消息分块处理（飞书单条消息限制约 2000 字）
-    MAX_LEN = 1900  # 留一些余量
-    if len(text) > MAX_LEN:
-        chunks = _split_message(text, MAX_LEN)
-        success = True
-        for i, chunk in enumerate(chunks):
-            if i > 0:
-                import time
-                time.sleep(0.3)  # 避免频率限制
-            if not _send_single_message(target_id, chunk, id_type):
-                success = False
-        return success
-    else:
-        return _send_single_message(target_id, text, id_type)
-
-
-def _split_message(text: str, max_len: int) -> list:
-    """智能分割长消息，尽量在换行处分割"""
-    if len(text) <= max_len:
-        return [text]
-
-    chunks = []
-    remaining = text
-
-    while remaining:
-        if len(remaining) <= max_len:
-            chunks.append(remaining)
-            break
-
-        # 尝试在换行处分割
-        split_pos = remaining.rfind('\n', 0, max_len)
-        if split_pos > max_len // 2:
-            chunks.append(remaining[:split_pos + 1])
-            remaining = remaining[split_pos + 1:]
-        else:
-            # 没有合适的换行，直接截断
-            chunks.append(remaining[:max_len] + "...")
-            remaining = remaining[max_len:]
-
-    return chunks
-
-
-def _send_single_message(target_id: str, text: str, id_type: str) -> bool:
-    """发送单条消息"""
-    token = get_tenant_access_token()
-    if not token:
-        print("  [回复失败: 无法获取token]")
-        return False
-
-    url = f"https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type={id_type}"
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "receive_id": target_id,
-        "msg_type": "text",
-        "content": json.dumps({"text": text})
-    }
-    try:
-        response = requests.post(url, headers=headers, json=data, timeout=10)
-        result = response.json()
-        if result.get("code") == 0:
-            print(f"  [回复成功: {id_type}]")
-            return True
-        else:
-            print(f"  [回复失败: {result}]")
-            return False
-    except Exception as e:
-        print(f"  [回复异常: {e}]")
-        return False
+    from scripts.feishu_handlers.chat_helpers import send_reply as _send_reply_impl
+    # 同步上下文到 chat_helpers
+    from scripts.feishu_handlers.chat_helpers import set_reply_context as _set_ctx
+    if _reply_context.get("target"):
+        _set_ctx(_reply_context["target"], _reply_context["type"])
+    return _send_reply_impl(target_id, text, id_type)
 
 
 def send_image_reply(target_id: str, image_bytes: bytes, id_type: str = "open_id") -> None:

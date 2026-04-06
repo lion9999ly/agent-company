@@ -27,6 +27,12 @@ from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prom
 
 
 # ==========================================
+# 项目路径定义（必须在 PRODUCT_ANCHOR_PATH 之前）
+# ==========================================
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+
+
+# ==========================================
 # 产品锚点注入
 # ==========================================
 PRODUCT_ANCHOR_PATH = ROOT_DIR / ".ai-state" / "product_anchor.md"
@@ -48,7 +54,7 @@ class SecurityError(Exception):
 
 
 # 定义项目根目录与受保护的目录
-ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+# ROOT_DIR 已在文件顶部定义
 ARCH_DIR = ROOT_DIR / ".ai-architecture"
 CONFIG_DIR = ROOT_DIR / "src" / "config"
 HASH_FILE = ROOT_DIR / ".ai-state" / "snapshot_hashes.json"
