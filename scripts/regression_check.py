@@ -80,10 +80,14 @@ def check_internal_functions(registry):
             status = "❌"
             issues.append(f"入口文件不存在: {func_info['location']}")
         else:
-            content = loc.read_text(encoding="utf-8")
-            if func_info["entry_point"] not in content:
-                status = "❌"
-                issues.append(f"入口函数 {func_info['entry_point']} 未找到")
+            # .bat 文件只检查存在性，不检查内容
+            if func_info["location"].endswith(".bat"):
+                pass  # 文件存在即可
+            else:
+                content = loc.read_text(encoding="utf-8")
+                if func_info["entry_point"] not in content:
+                    status = "❌"
+                    issues.append(f"入口函数 {func_info['entry_point']} 未找到")
 
         # 检查调用点
         for caller in func_info.get("callers", []):

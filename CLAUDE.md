@@ -444,4 +444,16 @@ python scripts/regression_check.py --quick   # 快速检查
 
 ---
 
+## 任务完成提示音
+
+每次完成用户在终端直接交给你的任务后，运行 `beep.bat` 发出提示音：
+
+```bash
+./beep.bat
+```
+
+这使用 Windows 内置扬声器发出两声蜂鸣，通知用户任务已完成。
+
+---
+
 *本文档由 Claude Code 自动生成，遵循 `.ai-architecture/` 架构规范*

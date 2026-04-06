@@ -186,6 +186,12 @@
       "entry_point": "get_model_gateway",
       "location": "src/utils/model_gateway/__init__.py",
       "callers": ["scripts/feishu_handlers/text_router.py", "scripts/roundtable/roundtable.py"]
+    },
+    "task_completion_beep": {
+      "entry_point": "beep.bat",
+      "location": "beep.bat",
+      "callers": [],
+      "note": "CC 终端任务完成提示音，每次完成用户在终端直接交给的任务后运行"
     }
   },
   "scheduled_tasks": {
