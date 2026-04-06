@@ -225,12 +225,12 @@ model_registry:
     max_tokens: 8192
     temperature: 0.1
 
-  # Deep Research - 深度研究 [OK 2026-04-05]
+  # Deep Research - 深度研究 [404 DeploymentNotFound 2026-04-06]
   gemini_deep_research:
     provider: "google"
     model: "deep-research-pro-preview-12-2025"
     api_key_env: "GEMINI_API_KEY"
-    enabled: true
+    enabled: false  # 404 DeploymentNotFound, 暂时禁用
     purpose: "竞品调研、市场分析、深度信息收集"
     capabilities: ["deep_research", "search", "analysis", "long_context"]
     cost_tier: "$$$"
