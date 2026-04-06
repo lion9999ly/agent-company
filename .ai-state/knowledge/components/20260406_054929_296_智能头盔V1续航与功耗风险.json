@@ -1,0 +1,19 @@
+{
+  "title": "智能头盔V1续航与功耗风险",
+  "domain": "components",
+  "content": "方案A（体验优先）采用全彩OLED和中等性能SoC，平均功耗预估3W左右，即使配备15Wh电池，理论续航仅4-5小时，极易跌破4小时目标红线，续航风险极高。相比之下，方案B（极致务实）采用单绿MicroLED和低功耗MCU，平均功耗约1.5W，配合13.5Wh电池可达7-8小时续航，轻松满足≥4小时目标，并为低温、老化留足余量。",
+  "source": "deep_research:auto_003",
+  "created_at": "2026-04-06",
+  "tags": [
+    "续航",
+    "功耗",
+    "电池",
+    "OLED",
+    "MicroLED",
+    "SoC",
+    "MCU",
+    "deep_research",
+    "auto_003"
+  ],
+  "confidence": "medium"
+}

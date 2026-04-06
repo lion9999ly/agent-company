@@ -1,0 +1,17 @@
+{
+  "title": "智能头盔电源管理架构：高集成度PMIC与分域供电策略",
+  "domain": "components",
+  "content": "智能头盔将采用“1S电池 + 前端充电管理/BMS + 主PMIC + 分域DC/DC”的高效电源管理架构。该架构通过高集成度PMIC结合分域供电（Domain-specific Power Supply）策略，对不同功能模块进行精细化电源管理，最大化能效。分域供电策略包括Always-on域（BLE、IMU）、Compute域（SoC/NPU动态调压）、Display域（HUD独立供电）和RF/Audio/Camera域（按需开启）。此精细化管理是实现平均功耗控制在2.2-4.7W（设计目标约3W），进而达成8小时续航目标的关键。",
+  "source": "deep_research:auto_power_management_battery",
+  "created_at": "2026-04-06",
+  "tags": [
+    "电源管理",
+    "PMIC",
+    "分域供电",
+    "能效",
+    "架构",
+    "deep_research",
+    "auto_power_management_battery"
+  ],
+  "confidence": "medium"
+}

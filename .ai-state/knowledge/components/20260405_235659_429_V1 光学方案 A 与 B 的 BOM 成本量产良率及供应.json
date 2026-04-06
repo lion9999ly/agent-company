@@ -1,0 +1,20 @@
+{
+  "title": "V1 光学方案 A 与 B 的 BOM 成本、量产良率及供应链对比",
+  "domain": "components",
+  "content": "在 BOM 成本和供应链成熟度方面，方案 A (OLED + FreeForm) 具有显著优势，光学模组成本为 $80-$150，量产良率高 (>85%)，供应商成熟且选择多。相比之下，方案 B (MicroLED + 衍射光波导) 的光学模组 BOM 成本显著更高，V1 单色版本为 $180-$400+，且量产良率低 (<50%)，供应商成熟度低，仅有少数关键供应商。选择方案 B 意味着需要承受更高的初期成本、潜在的产能受限风险以及更复杂的供应链管理门槛，需要与少数核心供应商深度绑定并联合开发。",
+  "source": "deep_research:v1_optical_deep",
+  "created_at": "2026-04-05",
+  "tags": [
+    "BOM 成本",
+    "量产良率",
+    "供应链",
+    "OLED",
+    "MicroLED",
+    "FreeForm",
+    "衍射光波导",
+    "V1",
+    "deep_research",
+    "v1_optical_deep"
+  ],
+  "confidence": "medium"
+}

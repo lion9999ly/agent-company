@@ -24,7 +24,6 @@ from scripts.deep_research.learning import (
     stress_test_product,
     sandbox_what_if,
 )
-from scripts.deep_research.models import FALLBACK_MAP
 
 # === 保持旧的 __main__ 入口兼容 ===
 if __name__ == "__main__":

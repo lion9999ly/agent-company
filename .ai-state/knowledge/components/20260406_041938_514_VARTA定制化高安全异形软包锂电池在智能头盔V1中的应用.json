@@ -1,0 +1,19 @@
+{
+  "title": "VARTA定制化高安全异形软包锂电池在智能头盔V1中的应用",
+  "domain": "components",
+  "content": "V1版本智能头盔将采用VARTA定制化高安全异形软包锂电池，目标容量为24-28Wh（对应3.7V标称电压下6500-7500mAh）。此方案在高端头盔领域有成功验证，具备碰撞断电等关键安全特性，能最大化利用头盔后部的异形空间，实现约80-85g的电池重量。该电池包在平均功耗3W下可支撑8-9.3小时，在4W下可支撑6-7小时，通过精细化电源管理，完全可以实现8小时的续航目标。整盔总重（含此电池）经验证约为1.61kg，满足≤1.65kg的设计约束。",
+  "source": "deep_research:auto_power_management_battery",
+  "created_at": "2026-04-06",
+  "tags": [
+    "电池",
+    "VARTA",
+    "锂电池",
+    "安全",
+    "续航",
+    "异形电池",
+    "V1版本",
+    "deep_research",
+    "auto_power_management_battery"
+  ],
+  "confidence": "medium"
+}

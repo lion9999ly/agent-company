@@ -1,0 +1,18 @@
+{
+  "title": "智能头盔V1不同方案的BOM成本与功能取舍 (TI)",
+  "domain": "components",
+  "content": "方案B（极致务实）因采用单色MicroLED、低功耗MCU且无无线充电，BOM成本预估可比方案A（体验优先）降低$30-$50。无线充电模块会额外增加15-25g重量、引入新热源、增加结构复杂度和成本。PMIC/BMS方面，TI方案成本约为国产方案的2-3倍。方案B在成本和研发周期上具有显著优势，但市场吸引力可能不足，定价天花板较低。",
+  "source": "deep_research:auto_003",
+  "created_at": "2026-04-06",
+  "tags": [
+    "BOM成本",
+    "无线充电",
+    "PMIC",
+    "MicroLED",
+    "MCU",
+    "TI",
+    "deep_research",
+    "auto_003"
+  ],
+  "confidence": "medium"
+}

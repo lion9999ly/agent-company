@@ -1,0 +1,17 @@
+{
+  "title": "智能头盔充电方案：USB-C接口支持15W-27W PD快充",
+  "domain": "components",
+  "content": "智能头盔将集成USB-C接口，支持15W-27W的PD快充技术。此充电方案旨在提供便捷的用户体验，实现45-60分钟内充电至80%的快速补能。快速充电被视为重要的加分项，能有效减少用户等待时间，提升产品吸引力。在确保电池安全与长续航的核心目标基础上，提供高效便捷的充电方式，是提升产品市场竞争力，满足用户对便利性需求的关键一环，尤其在5000-8000元人民币的价格区间内。",
+  "source": "deep_research:auto_power_management_battery",
+  "created_at": "2026-04-06",
+  "tags": [
+    "充电",
+    "USB-C",
+    "快充",
+    "PD",
+    "用户体验",
+    "deep_research",
+    "auto_power_management_battery"
+  ],
+  "confidence": "medium"
+}

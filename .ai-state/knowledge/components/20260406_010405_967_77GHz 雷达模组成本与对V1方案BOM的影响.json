@@ -1,0 +1,18 @@
+{
+  "title": "77GHz 雷达模组成本与对V1方案BOM的影响",
+  "domain": "components",
+  "content": "77GHz雷达模组的行业估算成本为每颗50美元至150美元，量产价格区间大（CTO分析，置信度Low-Medium 5.5/10）。如果V1版本选择集成雷达（如方案A），将导致传感器成本显著增加50美元至150美元，进而大幅推高整体物料清单（BOM）成本。相比之下，纯视觉加IMU的方案（如方案B）能将传感器及主控成本控制在较低水平，为CMO建议的150美元至250美元的大众市场定价提供空间。因此，是否引入雷达是影响产品定价、市场定位和BOM成本的关键决策点。",
+  "source": "deep_research:adas_motorcycle_adapt",
+  "created_at": "2026-04-06",
+  "tags": [
+    "硬件成本",
+    "雷达",
+    "BOM",
+    "传感器",
+    "定价策略",
+    "方案选择",
+    "deep_research",
+    "adas_motorcycle_adapt"
+  ],
+  "confidence": "medium"
+}

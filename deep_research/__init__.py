@@ -9,7 +9,6 @@ scripts/deep_research — 深度研究管道（重构自 tonight_deep_research.p
     deep_drill()              — 深钻模式
     stress_test_product()     — 压力测试
     sandbox_what_if()         — 沙盘推演
-    FALLBACK_MAP              — 模型降级映射表
 """
 from scripts.deep_research.runner import (
     run_all,
@@ -26,7 +25,6 @@ from scripts.deep_research.learning import (
     stress_test_product,
     sandbox_what_if,
 )
-from scripts.deep_research.models import FALLBACK_MAP
 
 __all__ = [
     "run_all",
@@ -38,5 +36,4 @@ __all__ = [
     "stress_test_product",
     "sandbox_what_if",
     "RESEARCH_TASKS",
-    "FALLBACK_MAP",
 ]

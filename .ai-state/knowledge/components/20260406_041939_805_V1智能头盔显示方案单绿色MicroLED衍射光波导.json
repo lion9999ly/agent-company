@@ -1,0 +1,18 @@
+{
+  "title": "V1智能头盔显示方案：单绿色MicroLED+衍射光波导",
+  "domain": "components",
+  "content": "V1版本智能头盔的显示方案将采纳单绿色MicroLED+衍射光波导技术。此方案旨在将光学模组的功耗与重量（10-25g）降至最低。相较于全彩OLED等高功耗方案，单绿色显示功耗可降低3-5倍，平均功耗控制在0.4-0.8W。这一选择为电池预留了充足的空间与重量预算，是实现8小时续航目标的关键决策。它优先考虑骑行场景下信息的可读性与对比度，而非色彩丰富度，避免了因追求“炫酷”功能导致功耗失控的失败案例。",
+  "source": "deep_research:auto_power_management_battery",
+  "created_at": "2026-04-06",
+  "tags": [
+    "显示",
+    "MicroLED",
+    "功耗",
+    "V1版本",
+    "光学模组",
+    "轻量化",
+    "deep_research",
+    "auto_power_management_battery"
+  ],
+  "confidence": "medium"
+}

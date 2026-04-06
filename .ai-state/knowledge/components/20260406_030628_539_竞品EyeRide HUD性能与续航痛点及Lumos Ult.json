@@ -1,0 +1,20 @@
+{
+  "title": "竞品EyeRide HUD性能与续航痛点及Lumos Ultra参考",
+  "domain": "components",
+  "content": "竞品EyeRide HUD提供20° FOV、3000 nits亮度和720p分辨率的显示，市场售价在$500-700之间。然而，用户反馈其**实际续航时间不足2小时**。这一数据点揭示了高亮度HUD在实际使用中面临的巨大功耗挑战，以及用户对续航的敏感度。同时，Lumos Ultra（自行车盔）已实现IPX6防水等级，电池容量1300mAh，重量约370g，售价$119-179，为防水和轻量化提供了参考。V1新增电子系统重量目标为≤180g，而高亮HUD的推算功耗为3-5W，轻量HUD为0.5-1W，这直接影响热管理和电池续航，并对V1整盔重量（基准盔1400g + 电子系统150-300g = 1550-1700g）构成挑战。",
+  "source": "deep_research:auto_helmet_integration_challenges",
+  "created_at": "2026-04-06",
+  "tags": [
+    "HUD",
+    "竞品分析",
+    "续航",
+    "功耗",
+    "EyeRide",
+    "Lumos Ultra",
+    "防水等级",
+    "重量",
+    "deep_research",
+    "auto_helmet_integration_challenges"
+  ],
+  "confidence": "medium"
+}

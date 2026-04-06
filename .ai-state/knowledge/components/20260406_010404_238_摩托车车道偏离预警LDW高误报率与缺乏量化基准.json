@@ -1,0 +1,18 @@
+{
+  "title": "摩托车车道偏离预警(LDW)高误报率与缺乏量化基准",
+  "domain": "components",
+  "content": "摩托车车道偏离预警（LDW）功能在从汽车算法迁移时，需要高达60%-80%的算法修改量。CTO分析指出，由于摩托车频繁的合法压弯（30°-45°+）和穿行行为与汽车LDW的算法假设完全冲突，高误报率几乎是必然的。报告明确指出，LDW缺乏可接受的量化基准（如每百公里误报次数），且其无法量化的、过高的误报率是潜在的产品失败单点，会严重摧毁用户信任，使其成为V1版本中极高技术风险的功能。",
+  "source": "deep_research:adas_motorcycle_adapt",
+  "created_at": "2026-04-06",
+  "tags": [
+    "LDW",
+    "算法修改",
+    "误报率",
+    "摩托车ADAS",
+    "技术风险",
+    "用户信任",
+    "deep_research",
+    "adas_motorcycle_adapt"
+  ],
+  "confidence": "medium"
+}

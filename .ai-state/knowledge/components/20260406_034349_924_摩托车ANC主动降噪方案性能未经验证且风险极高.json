@@ -1,0 +1,17 @@
+{
+  "title": "摩托车ANC主动降噪方案：性能未经验证且风险极高",
+  "domain": "components",
+  "content": "针对摩托车头盔环境的ANC主动降噪方案（方案B）存在极高风险。其在摩托车非平稳风噪环境下的实际降噪效果和语音识别性能优势“未经证实”，目前仅为理论推测，缺乏任何实证数据支持。若性能不达预期，将直接导致产品失败。该方案预估会使音频系统BOM成本增加$15-30+，并需要额外投入6-9个月的算法调试和结构验证。此外，ANC芯片和多麦克风处理将带来20-40%的额外待机功耗（基于TWS耳机数据类比），严重威胁整机续航，可能重蹈竞品EyeRide HUD续航崩盘的覆辙（EyeRide实际续航<2小时，标称8-12小时）。报告强调，在获得PoC验证的实证数据前，不应将方案B作为主要开发路径。",
+  "source": "deep_research:auto_noise_cancellation_voice",
+  "created_at": "2026-04-06",
+  "tags": [
+    "ANC",
+    "风险",
+    "成本",
+    "功耗",
+    "摩托车风噪",
+    "deep_research",
+    "auto_noise_cancellation_voice"
+  ],
+  "confidence": "medium"
+}

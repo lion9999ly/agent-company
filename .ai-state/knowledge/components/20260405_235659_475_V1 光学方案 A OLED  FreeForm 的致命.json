@@ -1,0 +1,19 @@
+{
+  "title": "V1 光学方案 A: OLED + FreeForm 的致命缺陷",
+  "domain": "components",
+  "content": "方案 A (OLED + FreeForm) 在摩托车头盔 HUD 核心应用场景下存在两大致命缺陷。首先，其结构可靠性差，光纤/连接件在摩托车高频振动下存在原理性断裂风险。EyeRide 竞品已出现大量用户投诉，验证此为大概率事件，可能导致 V1 上市后大规模返修或品牌声誉受损。其次，强光下可读性极差，到眼亮度仅 450-900 nits，远低于方案 B 的 >2000 nits，无法满足白天户外骑行的核心需求。这些缺陷被报告视为“Deal Breaker”，可能导致“品牌自杀”式风险，而非简单的体验瑕疵。",
+  "source": "deep_research:v1_optical_deep",
+  "created_at": "2026-04-05",
+  "tags": [
+    "OLED",
+    "FreeForm",
+    "结构可靠性",
+    "强光可读性",
+    "致命缺陷",
+    "EyeRide",
+    "V1",
+    "deep_research",
+    "v1_optical_deep"
+  ],
+  "confidence": "medium"
+}
