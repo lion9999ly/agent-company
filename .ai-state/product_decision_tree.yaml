@@ -19,7 +19,7 @@ decisions:
   id: v1_display
   priority: 1
   question: V1 HUD 用 OLED+FreeForm 还是 MicroLED+衍射光波导？
-  resolved_knowledge: 15
+  resolved_knowledge: 16
   status: open
 - affected_modules:
   - 系统架构

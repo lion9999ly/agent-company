@@ -178,3 +178,16 @@
 {"query": "骑行团队Mesh通讯方案", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 6000, "timestamp": "2026-04-06 07:04"}
 {"query": "Cardo 智能头盔通讯系统 DMC网状通讯", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 4396, "timestamp": "2026-04-06 07:04"}
 {"query": "与Sena竞争智能头盔通讯市场", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 4311, "timestamp": "2026-04-06 07:04"}
+{"query": "头盔唤醒词检测", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 4694, "timestamp": "2026-04-06 09:12"}
+{"query": "摩托车头盔语音控制", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 5839, "timestamp": "2026-04-06 09:12"}
+{"query": "高噪音环境NLP", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 6000, "timestamp": "2026-04-06 09:12"}
+{"query": "主动降噪头盔", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 3657, "timestamp": "2026-04-06 09:12"}
+{"query": "摩托车语音助手", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 6000, "timestamp": "2026-04-06 09:12"}
+{"query": "嘈杂环境语音识别", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 6000, "timestamp": "2026-04-06 09:12"}
+{"query": "AI语音控制头盔", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 4433, "timestamp": "2026-04-06 09:12"}
+{"query": "摩托车音频处理", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 5984, "timestamp": "2026-04-06 09:12"}
+{"query": "麦克风阵列技术", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 4831, "timestamp": "2026-04-06 09:12"}
+{"query": "噪音抑制", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 6000, "timestamp": "2026-04-06 09:12"}
+{"query": "语音增强", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 4142, "timestamp": "2026-04-06 09:12"}
+{"query": "鲁棒性语音识别", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 6000, "timestamp": "2026-04-06 09:12"}
+{"query": "语义理解", "task": "高噪音环境下语音控制用户体验与AI", "chars_returned": 6000, "timestamp": "2026-04-06 09:12"}

@@ -32,7 +32,9 @@
   - 空气动力学头盔设计
   source: auto_discover
   title: 全脸头盔结构集成与人机工程学
-- discovered_at: 2026-04-06 06:16
+- completed: true
+  completed_at: 2026-04-06 09:24
+  discovered_at: 2026-04-06 06:16
   goal: 研究针对高速、高噪音摩托车头盔环境的先进降噪技术、唤醒词检测和自然语言处理（NLP）解决方案。评估现有解决方案和潜在的AI模型，以实现鲁棒的命令识别和卓越的用户体验。
   id: auto_003
   priority: 2

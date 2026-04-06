@@ -1195,6 +1195,56 @@
       "installed_by": "meta_capability",
       "usage_count": 0,
       "last_used": null
+    },
+    {
+      "name": "smart_helmet_market_size_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理摩托车智能头盔市场的全球市场规模、增长率和区域分布数据的命令行工具。支持通过公开网页搜索、网页抓取与页面文本抽取，重点识别 market size / CAGR / regional share / forecast / global / North America / Europe / Asia-Pacific 等字段；支持保留来源链接、抓取时间、原文证据片段，并导出 CSV/Excel，辅助快速补齐市场潜力评估所需的 data_fetch 缺口。",
+      "invoke": "python .ai-state/tools/smart_helmet_market_size_research.py --output_dir .ai-state/output/smart_helmet_market_size_research --max_results_per_query 8 --delay_sec 1.0",
+      "verify_cmd": "python .ai-state/tools/smart_helmet_market_size_research.py --test",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 09:15",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "wake_word_noise_power_research",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：采集并结构化整理不同唤醒词检测算法（如 DNN、CNN、Transformer）在高噪音环境下的公开性能对比数据。支持关键词搜索、Crossref 文献检索、网页抓取、页面文本抽取、规则化提取算法名称、准确率/召回率/误唤醒率、噪声类型、SNR、功耗/能耗、芯片/平台、来源链接与证据片段，并导出 CSV/Excel，辅助补齐“不同唤醒词检测算法在高噪音环境下的唤醒准确率和功耗数据”缺口。",
+      "invoke": "python .ai-state/tools/wake_word_noise_power_research.py --keywords \"[\\\"wake word detection DNN CNN Transformer noisy environment accuracy power consumption\\\", \\\"keyword spotting high noise SNR power mW\\\"]\" --max-search-per-keyword 10 --out-prefix .ai-state/tools/output/wake_word_noise_power",
+      "verify_cmd": "python .ai-state/tools/wake_word_noise_power_research.py --test",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 09:16",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_wakeup_power_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理头盔唤醒模块在不同工作状态下的公开功耗数据的命令行工具。支持按关键词搜索公开网页与数据手册页面，抓取页面文本，抽取模块/芯片名称、工作状态（主动检测、待机、监听、休眠、运行等）、电流/功耗、电压、测试条件、来源链接与证据片段，并导出 CSV/Excel，辅助补齐“缺乏唤醒模块在主动检测状态下的具体功耗数据”这一 data_fetch 缺口。",
+      "invoke": "python .ai-state/tools/helmet_wakeup_power_research.py --keywords \"helmet wake up module power consumption active detection\" \"voice wake up module always listening current\" --max-results 10 --out outputs/helmet_wakeup_power_research",
+      "verify_cmd": "python .ai-state/tools/helmet_wakeup_power_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 09:17",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
     }
   ],
   "evolution_log": [
@@ -1664,6 +1714,24 @@
       "timestamp": "2026-04-06 07:10",
       "gap": "散热路径仿真与验证",
       "action": "registered helmet_thermal_field_simulator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 09:15",
+      "gap": "缺乏具体的市场规模和增长率数据，用于评估市场潜力",
+      "action": "registered smart_helmet_market_size_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 09:16",
+      "gap": "缺乏不同唤醒词检测算法的性能对比数据",
+      "action": "registered wake_word_noise_power_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 09:17",
+      "gap": "缺乏唤醒模块在主动检测状态下的具体功耗数据",
+      "action": "registered helmet_wakeup_power_research (write_script)",
       "result": "success"
     }
   ]
