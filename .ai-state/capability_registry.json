@@ -85,6 +85,12 @@
       "handler_function": "_handle_dashboard",
       "depends_on": ["src/utils/token_usage_tracker.py"]
     },
+    "日志": {
+      "match_patterns": ["日志", "最近日志", "log", "logs", "运行日志"],
+      "handler_file": "scripts/feishu_handlers/commands.py",
+      "handler_function": "_handle_view_logs",
+      "depends_on": []
+    },
     "状态": {
       "match_patterns": ["状态", "系统状态", "dashboard"],
       "handler_file": "scripts/feishu_handlers/text_router.py",
@@ -196,27 +202,21 @@
   },
   "scheduled_tasks": {
     "nightly_deep_learning": {
-      "trigger": "00:00",
+      "trigger": "01:00",
       "handler": "_run_deep_research",
-      "location": "scripts/feishu_sdk_client.py",
+      "location": "scripts/feishu_sdk_client_v2.py",
       "depends_on": ["scripts/tonight_deep_research.py"]
     },
     "morning_competitor_monitor": {
       "trigger": "06:00",
       "handler": "_run_competitor_monitor",
-      "location": "scripts/feishu_sdk_client.py",
+      "location": "scripts/feishu_sdk_client_v2.py",
       "depends_on": ["scripts/competitor_monitor.py"]
     },
     "morning_daily_report": {
       "trigger": "07:00",
       "handler": "_run_daily_report",
-      "location": "scripts/feishu_sdk_client.py",
-      "depends_on": []
-    },
-    "periodic_learning": {
-      "trigger": "every 2h",
-      "handler": "start_daily_scheduler",
-      "location": "scripts/daily_learning.py",
+      "location": "scripts/feishu_sdk_client_v2.py",
       "depends_on": []
     },
     "auto_learn": {

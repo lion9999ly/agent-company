@@ -138,15 +138,39 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
             # 清除 pending 状态并启动
             if pending_key in _deep_learn_pending:
                 del _deep_learn_pending[pending_key]
+
+            # 检查是否有正在运行的深度学习（防止定时任务和手动触发冲突）
+            try:
+                from scripts.feishu_sdk_client_v2 import _is_deep_learning_running, _set_deep_learning_running
+                if _is_deep_learning_running():
+                    send_reply(reply_target, "⚠️ 深度学习正在运行中，请等待完成后再启动新任务")
+                    return
+            except ImportError:
+                pass  # v2 未运行时忽略
+
             send_reply(reply_target, f"🎓 启动深度学习（{hours}h 窗口）...")
 
             def _run():
                 try:
+                    # 设置运行状态
+                    try:
+                        from scripts.feishu_sdk_client_v2 import _set_deep_learning_running
+                        _set_deep_learning_running(True)
+                    except ImportError:
+                        pass
+
                     from scripts.tonight_deep_research import run_deep_learning
                     completed = run_deep_learning(max_hours=hours, progress_callback=lambda msg: send_reply(reply_target, msg))
                     send_reply(reply_target, f"✅ 深度学习完成: {len(completed) if completed else 0} 个任务")
                 except Exception as e:
                     _safe_reply_error(send_reply, reply_target, "深度学习", e)
+                finally:
+                    # 清除运行状态
+                    try:
+                        from scripts.feishu_sdk_client_v2 import _set_deep_learning_running
+                        _set_deep_learning_running(False)
+                    except ImportError:
+                        pass
 
             threading.Thread(target=_run, daemon=True).start()
             return
@@ -1321,7 +1345,7 @@ def _handle_counterfactual(scenario: str, reply_target: str, send_reply):
                 f"4. 给出应对建议\n"
             )
 
-            result = gw.call("o3_mini", prompt, "你是战略分析师，擅长推演因果链条。", "reasoning")
+            result = gw.call("gemini_2_5_flash", prompt, "你是战略分析师，擅长推演因果链条。", "reasoning")
             if result.get("success"):
                 send_reply(reply_target, result["response"])
             else:
@@ -1461,10 +1485,10 @@ def _handle_competitor_wargame(competitor: str, reply_target: str, send_reply):
 
 
 def _classify_intent(text: str) -> str:
-    """用 o3-mini 分类用户意图"""
+    """用 gemini_2_5_flash 分类用户意图（快速+便宜）"""
     from src.utils.model_gateway import get_model_gateway
     gw = get_model_gateway()
-    result = gw.call("o3_mini",
+    result = gw.call("gemini_2_5_flash",
         f"用户说: {text}\n\n"
         f"判断意图类别（只输出类别名，不要解释）:\n"
         f"research_task — 需要多Agent协作的研发分析\n"

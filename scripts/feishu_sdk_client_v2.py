@@ -1,7 +1,7 @@
 """
 @description: 飞书长连接客户端 v2 - 模块化重构版
 @dependencies: lark-oapi, scripts/feishu_handlers/*
-@last_modified: 2026-03-28
+@last_modified: 2026-04-07
 
 使用方法：
     python scripts/feishu_sdk_client_v2.py
@@ -9,7 +9,10 @@
 import os
 import sys
 import json
+import threading
+import time
 from pathlib import Path
+from datetime import datetime
 
 # 项目根目录
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -170,6 +173,111 @@ def handle_message(event):
         traceback.print_exc()
 
 
+# === 防止定时任务和手动触发冲突 ===
+_deep_learning_running = False
+_deep_learning_lock = threading.Lock()
+
+
+def _is_deep_learning_running():
+    """检查深度学习是否正在运行"""
+    with _deep_learning_lock:
+        return _deep_learning_running
+
+
+def _set_deep_learning_running(running: bool):
+    """设置深度学习运行状态"""
+    global _deep_learning_running
+    with _deep_learning_lock:
+        _deep_learning_running = running
+
+
+# === 定时任务 ===
+LEO_OPEN_ID = "ou_8e5e4f183e9eca4241378e96bac3a751"
+
+
+def _start_scheduled_tasks():
+    """启动定时任务调度器"""
+    try:
+        import schedule
+    except ImportError:
+        print("[Scheduler] 缺少 schedule 库，跳过定时任务: pip install schedule")
+        return
+
+    # 每天 01:00 深度学习 7h
+    def _run_deep_research():
+        if _is_deep_learning_running():
+            print("[Scheduler] 深度学习正在运行，跳过本次定时触发")
+            return
+        try:
+            _set_deep_learning_running(True)
+            from scripts.tonight_deep_research import run_deep_learning
+            print("[Scheduler] 启动每日深度学习...")
+            run_deep_learning(max_hours=7, progress_callback=lambda msg: send_reply(LEO_OPEN_ID, msg, "open_id"))
+            # 深度学习完成后发送日报
+            from scripts.feishu_handlers.text_router import _handle_morning_brief
+            _handle_morning_brief(LEO_OPEN_ID, "open_id", send_reply)
+        except Exception as e:
+            print(f"[Scheduler] 深度学习失败: {e}")
+        finally:
+            _set_deep_learning_running(False)
+
+    # 每天 06:00 竞品监控
+    def _run_competitor_monitor():
+        try:
+            from scripts.competitor_monitor import run_competitor_monitor
+            print("[Scheduler] 启动竞品监控...")
+            run_competitor_monitor()
+        except Exception as e:
+            print(f"[Scheduler] 竞品监控失败: {e}")
+
+    # 每天 07:00 系统日报
+    def _run_daily_report():
+        try:
+            from scripts.daily_system_report import generate_daily_report
+            print("[Scheduler] 启动系统日报...")
+            generate_daily_report()
+        except Exception as e:
+            print(f"[Scheduler] 系统日报失败: {e}")
+
+    # 注册定时任务
+    schedule.every().day.at("01:00").do(_run_deep_research)
+    schedule.every().day.at("06:00").do(_run_competitor_monitor)
+    schedule.every().day.at("07:00").do(_run_daily_report)
+
+    # 后台线程运行调度器
+    def _scheduler_loop():
+        while True:
+            try:
+                schedule.run_pending()
+            except Exception as e:
+                print(f"[Scheduler] 调度器异常: {e}")
+            time.sleep(60)
+
+    threading.Thread(target=_scheduler_loop, daemon=True).start()
+    print("[Scheduler] 定时任务已注册:")
+    print("  - 01:00 深度学习 (7h)")
+    print("  - 06:00 竞品监控")
+    print("  - 07:00 系统日报")
+
+
+def _start_heartbeat():
+    """启动心跳"""
+    _heartbeat_path = Path(__file__).parent.parent / ".ai-state" / "heartbeat.txt"
+    _heartbeat_path.parent.mkdir(parents=True, exist_ok=True)
+    _heartbeat_path.write_text(datetime.now().isoformat(), encoding="utf-8")
+    print("[Heartbeat] 心跳已初始化")
+
+    def _heartbeat_loop():
+        while True:
+            time.sleep(30)
+            try:
+                _heartbeat_path.write_text(datetime.now().isoformat(), encoding="utf-8")
+            except:
+                pass
+
+    threading.Thread(target=_heartbeat_loop, daemon=True).start()
+
+
 # === 启动服务 ===
 def main():
     """启动飞书长连接客户端"""
@@ -195,6 +303,22 @@ def main():
         event_handler=event_handler,
         log_level=lark.LogLevel.DEBUG
     )
+
+    # 启动心跳
+    _start_heartbeat()
+
+    # 启动定时任务
+    try:
+        _start_scheduled_tasks()
+    except Exception as e:
+        print(f"[Scheduler] 定时任务启动失败: {e}")
+
+    # 启动每日定时学习（30min）
+    try:
+        from scripts.auto_learn import start_auto_learn_scheduler
+        start_auto_learn_scheduler()
+    except Exception as e:
+        print(f"[AutoLearn] 定时器启动失败: {e}")
 
     print("服务启动，等待消息...")
     cli.start()
