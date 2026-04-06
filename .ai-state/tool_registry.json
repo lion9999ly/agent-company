@@ -1245,6 +1245,22 @@
       "installed_by": "meta_capability",
       "usage_count": 0,
       "last_used": null
+    },
+    {
+      "name": "mesh_terrain_performance_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理 Mesh 网络在山地、隧道等复杂地形中的通信范围、稳定性、丢包、时延、跳数、测试环境与证据链接的命令行工具。支持基于关键词搜索公开网页与文献页面，抓取页面文本，规则提取 terrain/test range/stability/packet loss/latency/hops/frequency/power/device/protocol 等字段，输出 CSV/Excel/JSON，辅助补齐复杂地形 Mesh 网络性能测试数据缺口。",
+      "invoke": "python .ai-state/tools/mesh_terrain_performance_research.py --query \"mesh network mountain terrain communication range stability test\" --query \"mesh network tunnel communication range stability test\" --out-prefix .ai-state/tools/output/mesh_terrain_performance_research",
+      "verify_cmd": "python .ai-state/tools/mesh_terrain_performance_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml openpyxl"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 10:01",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
     }
   ],
   "evolution_log": [
@@ -1732,6 +1748,12 @@
       "timestamp": "2026-04-06 09:17",
       "gap": "缺乏唤醒模块在主动检测状态下的具体功耗数据",
       "action": "registered helmet_wakeup_power_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 10:01",
+      "gap": "Mesh网络在复杂地形中的性能测试数据",
+      "action": "registered mesh_terrain_performance_research (write_script)",
       "result": "success"
     }
   ]
