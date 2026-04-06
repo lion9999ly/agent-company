@@ -420,6 +420,43 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
             ).start()
             return
 
+    # === 3.6 圆桌系统 ===
+    if text_stripped.startswith("圆桌:") or text_stripped.startswith("圆桌："):
+        topic = text_stripped.split(":", 1)[1].strip() if ":" in text_stripped else text_stripped.split("：", 1)[1].strip()
+
+        # 查找预定义的 TaskSpec
+        from scripts.roundtable.task_spec import load_task_spec
+        spec = load_task_spec(topic)
+        if spec:
+            send_reply(reply_target, f"🔵 圆桌启动：{topic}")
+
+            def _run_roundtable():
+                try:
+                    import asyncio
+                    from scripts.roundtable import run_task
+                    from src.utils.model_gateway import get_model_gateway
+
+                    gw = get_model_gateway()
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+
+                    # 简化的飞书通知器
+                    class FeishuNotifier:
+                        def notify(self, msg):
+                            send_reply(reply_target, msg)
+
+                    feishu = FeishuNotifier()
+                    result = loop.run_until_complete(run_task(spec, gw, None, feishu))
+                    send_reply(reply_target, f"🎯 圆桌任务完成：{spec.output_path}")
+                except Exception as e:
+                    _safe_reply_error(send_reply, reply_target, "圆桌系统", e)
+
+            threading.Thread(target=_run_roundtable, daemon=True).start()
+            return
+        else:
+            send_reply(reply_target, f"未找到预定义任务：{topic}。请先创建 TaskSpec。")
+            return
+
     # === 4. 关注主题 ===
     if text_stripped.startswith("关注 ") or text_stripped.startswith("关注："):
         _handle_add_topic(text_stripped, reply_target, send_reply)
