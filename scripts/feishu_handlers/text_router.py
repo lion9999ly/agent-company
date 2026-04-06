@@ -367,14 +367,7 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         return
 
     # === 3. 学习相关指令 ===
-    if text_stripped in ("学习", "每日学习", "daily learning"):
-        _handle_daily_learning(reply_target, send_reply)
-        return
-
-    if text_stripped in ("重置学习", "reset learning", "重学"):
-        _handle_reset_learning(reply_target, send_reply)
-        return
-
+    # 3.1 深度学习（多小时）
     if text_stripped in ("深度学习", "夜间学习", "night learning", "deep learning"):
         if not _check_permission(open_id, "manager"):
             send_reply(reply_target, "⚠️ 此操作需要 manager 及以上权限")
@@ -382,16 +375,49 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
             _handle_night_learning(reply_target, send_reply, open_id)
         return
 
+    # 3.2 学习 XXX（单主题研究，合并原来的"研究 XXX"）
+    if text_stripped.startswith("学习 ") and len(text_stripped) > 3:
+        topic = text_stripped[3:].strip()
+        _handle_single_topic_research(topic, reply_target, send_reply)
+        return
+
+    # 3.3 学习关注 XXX（添加持续关注主题）
+    if text_stripped.startswith("学习关注 ") or text_stripped.startswith("学习 关注 "):
+        topic = text_stripped.replace("学习关注 ", "").replace("学习 关注 ", "").strip()
+        _handle_add_topic(f"关注 {topic}", reply_target, send_reply)
+        return
+
+    # 3.4 学习（无参数，触发每日学习）
+    if text_stripped in ("学习", "每日学习", "daily learning"):
+        _handle_daily_learning(reply_target, send_reply)
+        return
+
+    # 3.5 自学习
     if text_stripped in ("自学习", "auto learn", "自动学习"):
         _handle_auto_learn(reply_target, send_reply)
         return
 
-    if text_stripped in ("KB治理", "kb治理", "知识库治理"):
-        _handle_kb_governance(reply_target, send_reply)
+    # 3.6 重置学习
+    if text_stripped in ("重置学习", "reset learning", "重学"):
+        _handle_reset_learning(reply_target, send_reply)
         return
 
-    if text_stripped in ("对齐", "对齐报告", "alignment"):
-        _handle_alignment(reply_target, send_reply)
+    # === 4. 知识库管理 ===
+    if text_stripped == "知识库" or text_stripped == "kb":
+        _handle_kb_stats(reply_target, send_reply, detailed=False)
+        return
+
+    if text_stripped in ("知识库 详细", "知识库详细", "kb detailed"):
+        _handle_kb_stats(reply_target, send_reply, detailed=True)
+        return
+
+    if text_stripped.startswith("知识库 删除 ") or text_stripped.startswith("知识库删除 "):
+        entry_id = text_stripped.replace("知识库 删除 ", "").replace("知识库删除 ", "").strip()
+        _handle_kb_delete(entry_id, reply_target, send_reply)
+        return
+
+    if text_stripped in ("KB治理", "kb治理", "知识库治理"):
+        _handle_kb_governance(reply_target, send_reply)
         return
 
     # === 3.5 Demo 生成 ===
@@ -2324,6 +2350,116 @@ def _handle_answer_feedback(text: str, open_id: str, reply_target: str, send_rep
 
 
 # === 导出接口 ===
+
+# === 新增 handler：单主题研究 ===
+def _handle_single_topic_research(topic: str, reply_target: str, send_reply):
+    """处理单主题研究（学习 XXX）"""
+    send_reply(reply_target, f"🔍 开始研究：{topic}")
+
+    def _run():
+        try:
+            from src.utils.model_gateway import get_model_gateway
+            from src.tools.knowledge_base import search_knowledge, add_knowledge
+
+            gw = get_model_gateway()
+
+            # 先搜索 KB
+            kb_results = search_knowledge(topic, limit=5)
+            kb_context = "\n".join([r.get("content", "")[:300] for r in kb_results])
+
+            # 生成研究报告
+            prompt = f"""请对以下主题进行深度研究，输出结构化的研究报告。
+
+主题：{topic}
+
+已有知识库参考：
+{kb_context if kb_context else '暂无相关条目'}
+
+请输出：
+1. 核心概念定义
+2. 关键技术要点
+3. 行业现状与趋势
+4. 对智能骑行头盔项目的启示"""
+
+            result = gw.call("gpt_5_4", prompt, "你是产品研究专家", "research")
+
+            if result.get("success"):
+                report = result.get("response", "")
+
+                # 入库
+                add_knowledge(
+                    title=f"研究：{topic}",
+                    domain="lessons",
+                    content=report[:2000],
+                    tags=["单主题研究"],
+                    source="feishu_learning",
+                    confidence="medium"
+                )
+
+                send_reply(reply_target, f"✅ 研究完成\n\n{report[:800]}...")
+            else:
+                send_reply(reply_target, f"❌ 研究失败: {result.get('error', 'unknown')}")
+        except Exception as e:
+            _safe_reply_error(send_reply, reply_target, "单主题研究", e)
+
+    threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_kb_stats(reply_target: str, send_reply, detailed: bool = False):
+    """处理知识库统计"""
+    try:
+        from src.tools.knowledge_base import get_knowledge_stats
+
+        stats = get_knowledge_stats()
+
+        if detailed:
+            lines = ["📚 知识库详细统计\n"]
+            for domain, count in sorted(stats.items(), key=lambda x: -x[1]):
+                lines.append(f"  {domain}: {count} 条")
+            total = sum(stats.values())
+            lines.append(f"\n  总计: {total} 条")
+        else:
+            total = sum(stats.values())
+            lines = [f"📚 知识库: {total} 条"]
+            if stats:
+                top = sorted(stats.items(), key=lambda x: -x[1])[:3]
+                lines.append(f"  主要: {', '.join([f'{d}({c})' for d, c in top])}")
+
+        send_reply(reply_target, "\n".join(lines))
+    except Exception as e:
+        send_reply(reply_target, f"❌ 知识库统计失败: {e}")
+
+
+def _handle_kb_delete(entry_id: str, reply_target: str, send_reply):
+    """处理知识库删除"""
+    try:
+        from pathlib import Path
+
+        # 查找 KB 文件
+        kb_root = PROJECT_ROOT / ".ai-state" / "knowledge"
+
+        # 尝试按路径或标题匹配
+        deleted = False
+        for json_file in kb_root.rglob("*.json"):
+            try:
+                import json
+                data = json.loads(json_file.read_text(encoding="utf-8"))
+                title = data.get("title", "")
+                if entry_id in str(json_file) or entry_id.lower() in title.lower():
+                    # 重命名为 .deleted 而不是直接删除
+                    json_file.rename(json_file.with_suffix(".deleted"))
+                    send_reply(reply_target, f"✅ 已删除: {title}")
+                    deleted = True
+                    break
+            except:
+                continue
+
+        if not deleted:
+            send_reply(reply_target, f"⚠️ 未找到匹配条目: {entry_id}")
+    except Exception as e:
+        send_reply(reply_target, f"❌ 删除失败: {e}")
+
+
 __all__ = [
     "route_text_message",
 ]

@@ -418,4 +418,30 @@ https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/src/t
 
 ---
 
+## 重构/拆分规则
+
+任何涉及文件拆分、重命名、模块重组的任务，必须执行以下步骤：
+
+1. **重构前**：运行 `python scripts/regression_check.py`，保存结果为 `pre_refactor_check.txt`
+2. **执行重构**
+3. **重构后**：再次运行 `python scripts/regression_check.py`，保存结果为 `post_refactor_check.txt`
+4. **对比两份结果**：任何从 ✅ 变为 ❌ 或 ⚠️ 的项都是 bug，必须修复后才能 commit
+5. **如果新增了功能**：必须同步更新 `.ai-state/capability_registry.json`
+
+违反此规则的 commit 视为不合格。
+
+---
+
+## 能力注册表
+
+所有飞书指令、内部功能、定时任务登记在 `.ai-state/capability_registry.json`。
+
+**验证命令：**
+```bash
+python scripts/regression_check.py          # 全量检查
+python scripts/regression_check.py --quick   # 快速检查
+```
+
+---
+
 *本文档由 Claude Code 自动生成，遵循 `.ai-architecture/` 架构规范*

@@ -1,0 +1,245 @@
+{
+  "version": "2026-04-06",
+  "feishu_commands": {
+    "深度学习": {
+      "match_patterns": ["深度学习", "夜间学习", "deep learning"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_night_learning",
+      "depends_on": ["scripts/tonight_deep_research.py"]
+    },
+    "学习": {
+      "match_patterns": ["学习", "每日学习"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_daily_learning",
+      "depends_on": ["scripts/daily_learning.py"]
+    },
+    "学习XXX": {
+      "match_patterns": ["学习 "],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_single_topic_research",
+      "depends_on": ["src/utils/model_gateway/__init__.py"]
+    },
+    "学习关注": {
+      "match_patterns": ["学习关注 ", "学习 关注 "],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_add_topic",
+      "depends_on": []
+    },
+    "自学习": {
+      "match_patterns": ["自学习", "auto learn"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_auto_learn",
+      "depends_on": ["scripts/auto_learn.py"]
+    },
+    "关注": {
+      "match_patterns": ["关注 "],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_add_topic",
+      "depends_on": []
+    },
+    "圆桌": {
+      "match_patterns": ["圆桌:", "圆桌："],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "scripts.roundtable.run_task",
+      "depends_on": ["scripts/roundtable/__init__.py"]
+    },
+    "知识库治理": {
+      "match_patterns": ["KB治理", "kb治理", "知识库治理"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_kb_governance",
+      "depends_on": ["scripts/kb_governance.py"]
+    },
+    "知识库": {
+      "match_patterns": ["知识库", "kb"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_kb_stats",
+      "depends_on": ["src/tools/knowledge_base.py"]
+    },
+    "知识库详细": {
+      "match_patterns": ["知识库 详细", "知识库详细"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_kb_stats",
+      "depends_on": ["src/tools/knowledge_base.py"]
+    },
+    "知识库删除": {
+      "match_patterns": ["知识库 删除", "知识库删除"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_kb_delete",
+      "depends_on": []
+    },
+    "日报": {
+      "match_patterns": ["日报", "早报"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_morning_brief",
+      "depends_on": []
+    },
+    "对齐": {
+      "match_patterns": ["对齐", "对齐报告"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_alignment",
+      "depends_on": []
+    },
+    "token": {
+      "match_patterns": ["token", "tokens", "用量", "token统计"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_dashboard",
+      "depends_on": ["src/utils/token_usage_tracker.py"]
+    },
+    "状态": {
+      "match_patterns": ["状态", "系统状态", "dashboard"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_dashboard",
+      "depends_on": []
+    },
+    "产品简介": {
+      "match_patterns": ["产品简介", "one pager", "产品概要"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_one_pager",
+      "depends_on": []
+    },
+    "决策简报": {
+      "match_patterns": ["决策简报"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_decision_brief",
+      "depends_on": []
+    },
+    "Demo生成": {
+      "match_patterns": ["生成hud demo", "生成app demo", "hud demo", "app demo"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_demo_generate",
+      "depends_on": ["scripts/demo_generator.py"],
+      "note": "待迁移到圆桌系统"
+    },
+    "Demo状态": {
+      "match_patterns": ["demo状态", "demo status"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_demo_status",
+      "depends_on": ["scripts/demo_generator.py"]
+    },
+    "深钻": {
+      "match_patterns": ["深钻 "],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_deep_drill",
+      "depends_on": []
+    },
+    "导入文档": {
+      "match_patterns": ["导入文档", "导入", "import"],
+      "handler_file": "scripts/feishu_handlers/text_router.py",
+      "handler_function": "_handle_import_docs",
+      "depends_on": []
+    },
+    "重载模块": {
+      "match_patterns": ["重载模块"],
+      "handler_file": "scripts/feishu_handlers/commands.py",
+      "handler_function": "reload_modules",
+      "depends_on": []
+    },
+    "PRD生成": {
+      "match_patterns": ["PRD", "清单"],
+      "handler_file": "scripts/feishu_handlers/structured_doc.py",
+      "handler_function": "try_structured_doc_fast_track",
+      "depends_on": []
+    }
+  },
+  "internal_functions": {
+    "token_logging": {
+      "entry_point": "record_usage",
+      "location": "src/utils/model_gateway/config.py",
+      "callers": [
+        "src/utils/model_gateway/providers/azure_openai.py",
+        "src/utils/model_gateway/providers/gemini.py",
+        "src/utils/model_gateway/providers/volcengine.py",
+        "src/utils/model_gateway/providers/others.py"
+      ]
+    },
+    "token_tracker": {
+      "entry_point": "get_tracker",
+      "location": "src/utils/token_usage_tracker.py",
+      "callers": ["scripts/feishu_handlers/text_router.py"]
+    },
+    "url_share_detection": {
+      "entry_point": "_has_shareable_url",
+      "location": "scripts/feishu_handlers/text_router.py",
+      "callers": ["scripts/feishu_handlers/text_router.py"]
+    },
+    "image_ocr": {
+      "entry_point": "handle_image_message",
+      "location": "scripts/feishu_handlers/image_handler.py",
+      "callers": ["scripts/feishu_sdk_client_v2.py"]
+    },
+    "audio_transcribe": {
+      "entry_point": "handle_audio_message",
+      "location": "scripts/feishu_handlers/image_handler.py",
+      "callers": ["scripts/feishu_sdk_client_v2.py"]
+    },
+    "message_dedup": {
+      "entry_point": "_processed_msgs",
+      "location": "scripts/feishu_sdk_client_v2.py",
+      "callers": ["scripts/feishu_sdk_client_v2.py"]
+    },
+    "knowledge_base": {
+      "entry_point": "search_knowledge",
+      "location": "src/tools/knowledge_base.py",
+      "callers": ["scripts/feishu_handlers/text_router.py", "scripts/roundtable/crystallizer.py"]
+    },
+    "model_gateway": {
+      "entry_point": "get_model_gateway",
+      "location": "src/utils/model_gateway/__init__.py",
+      "callers": ["scripts/feishu_handlers/text_router.py", "scripts/roundtable/roundtable.py"]
+    }
+  },
+  "scheduled_tasks": {
+    "nightly_deep_learning": {
+      "trigger": "00:00",
+      "handler": "_run_deep_research",
+      "location": "scripts/feishu_sdk_client.py",
+      "depends_on": ["scripts/tonight_deep_research.py"]
+    },
+    "morning_competitor_monitor": {
+      "trigger": "06:00",
+      "handler": "_run_competitor_monitor",
+      "location": "scripts/feishu_sdk_client.py",
+      "depends_on": ["scripts/competitor_monitor.py"]
+    },
+    "morning_daily_report": {
+      "trigger": "07:00",
+      "handler": "_run_daily_report",
+      "location": "scripts/feishu_sdk_client.py",
+      "depends_on": []
+    },
+    "periodic_learning": {
+      "trigger": "every 2h",
+      "handler": "start_daily_scheduler",
+      "location": "scripts/daily_learning.py",
+      "depends_on": []
+    },
+    "auto_learn": {
+      "trigger": "every 30min",
+      "handler": "start_auto_learn_scheduler",
+      "location": "scripts/auto_learn.py",
+      "depends_on": []
+    }
+  },
+  "deprecated": {
+    "设置目标": {
+      "reason": "产品目标在 product_anchor.md 管理，不通过飞书修改",
+      "removed_at": "2026-04-06"
+    },
+    "进化记录": {
+      "reason": "被圆桌知识结晶机制替代",
+      "removed_at": "2026-04-06"
+    },
+    "深度研究": {
+      "reason": "合并到深度学习入口",
+      "removed_at": "2026-04-06"
+    },
+    "今晚研究": {
+      "reason": "合并到学习入口",
+      "removed_at": "2026-04-06"
+    },
+    "JDM学习": {
+      "reason": "合并到学习入口",
+      "removed_at": "2026-04-06"
+    }
+  }
+}
