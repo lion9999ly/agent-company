@@ -15,6 +15,9 @@ import re
 import sys
 from pathlib import Path
 
+# 获取当前 venv 的 pip 路径（Windows: .venv\Scripts\pip.exe, Linux: .venv/bin/pip）
+_VENV_PIP = str(Path(sys.executable).parent / "pip")
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -262,7 +265,7 @@ def resolve_capability_gap(gap: dict, gateway) -> dict:
             print(f"  [Meta] 安装: {cmd}")
             try:
                 subprocess.run(
-                    ["pip", "install", package, "--break-system-packages"],
+                    [_VENV_PIP, "install", package, "--break-system-packages"],
                     capture_output=True, text=True, timeout=120
                 )
             except Exception as e:
