@@ -1,0 +1,54 @@
+{
+  "hud_scenarios": [
+    {
+      "id": "daily_commute",
+      "name": "日常通勤",
+      "duration_sec": 75,
+      "events": [
+        { "t": 0, "action": "boot_sequence", "desc": "开机自检" },
+        { "t": 5, "action": "bluetooth_connect", "desc": "蓝牙连接" },
+        { "t": 10, "action": "nav_start", "dest": "公司", "desc": "导航启动" },
+        { "t": 20, "action": "speed_change", "value": 45 },
+        { "t": 30, "action": "nav_turn", "direction": "right", "distance": "200m" },
+        { "t": 40, "action": "nav_turn", "direction": "left", "distance": "500m" },
+        { "t": 55, "action": "speed_change", "value": 60 },
+        { "t": 65, "action": "speed_change", "value": 0 },
+        { "t": 70, "action": "nav_arrive", "desc": "到达目的地" }
+      ]
+    },
+    {
+      "id": "emergency",
+      "name": "紧急场景",
+      "duration_sec": 60,
+      "events": [
+        { "t": 0, "action": "speed_change", "value": 55 },
+        { "t": 5, "action": "nav_turn", "direction": "straight", "distance": "1.2km" },
+        { "t": 10, "action": "incoming_call", "caller": "老婆" },
+        { "t": 15, "action": "call_accept" },
+        { "t": 25, "action": "call_end" },
+        { "t": 30, "action": "warning_fcw", "distance": "30m", "direction": "front" },
+        { "t": 33, "action": "warning_clear" },
+        { "t": 40, "action": "warning_bsd", "direction": "rear_right" },
+        { "t": 43, "action": "warning_clear" },
+        { "t": 50, "action": "nav_reroute", "desc": "偏航重算" }
+      ]
+    },
+    {
+      "id": "group_ride",
+      "name": "组队骑行",
+      "duration_sec": 70,
+      "events": [
+        { "t": 0, "action": "group_create", "name": "周末摩旅" },
+        { "t": 5, "action": "group_join", "rider": "老张" },
+        { "t": 8, "action": "group_join", "rider": "小王" },
+        { "t": 12, "action": "group_voice_on" },
+        { "t": 15, "action": "speed_change", "value": 70 },
+        { "t": 30, "action": "nav_turn", "direction": "right", "distance": "300m" },
+        { "t": 40, "action": "group_straggler", "rider": "小王", "desc": "掉队提醒" },
+        { "t": 50, "action": "group_rejoin", "rider": "小王" },
+        { "t": 60, "action": "speed_change", "value": 0 },
+        { "t": 65, "action": "group_end" }
+      ]
+    }
+  ]
+}

@@ -394,6 +394,32 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         _handle_alignment(reply_target, send_reply)
         return
 
+    # === 3.5 Demo 生成 ===
+    demo_commands = {
+        "生成hud demo": "hud", "生成huddemo": "hud", "hud demo": "hud",
+        "生成app demo": "app", "生成appdemo": "app", "app demo": "app",
+    }
+    status_commands = ["demo状态", "demo status", "demo状态查询"]
+
+    for cmd, demo_type in demo_commands.items():
+        if cmd in text_stripped.lower():
+            send_reply(reply_target, f"🚀 {demo_type.upper()} Demo 生成已启动，会在飞书实时通知进度...")
+            threading.Thread(
+                target=_handle_demo_generate,
+                args=(demo_type, reply_target, send_reply),
+                daemon=True
+            ).start()
+            return
+
+    for cmd in status_commands:
+        if cmd in text_stripped.lower():
+            threading.Thread(
+                target=_handle_demo_status,
+                args=(reply_target, send_reply),
+                daemon=True
+            ).start()
+            return
+
     # === 4. 关注主题 ===
     if text_stripped.startswith("关注 ") or text_stripped.startswith("关注："):
         _handle_add_topic(text_stripped, reply_target, send_reply)
@@ -577,6 +603,48 @@ def _handle_alignment(reply_target: str, send_reply):
             _safe_reply_error(send_reply, reply_target, "对齐报告", e)
 
     threading.Thread(target=_run, daemon=True).start()
+
+
+def _handle_demo_generate(demo_type: str, reply_target: str, send_reply):
+    """处理 Demo 生成（后台线程）"""
+    import asyncio
+
+    async def _run():
+        try:
+            from scripts.demo_generator import DemoGenerator
+
+            async def feishu_notify(msg: str):
+                send_reply(reply_target, msg)
+
+            gen = DemoGenerator(feishu_notify=feishu_notify)
+
+            if demo_type == "hud":
+                path = await gen.generate_hud_demo()
+            else:
+                path = await gen.generate_app_demo()
+
+        except Exception as e:
+            import traceback
+            print(f"[ERROR] Demo 生成: {traceback.format_exc()}")
+            send_reply(reply_target, f"❌ Demo 生成失败: {str(e)[:100]}")
+
+    asyncio.run(_run())
+
+
+def _handle_demo_status(reply_target: str, send_reply):
+    """处理 Demo 状态查询（后台线程）"""
+    import asyncio
+
+    async def _run():
+        try:
+            from scripts.demo_generator import DemoGenerator
+            gen = DemoGenerator()
+            status = await gen.get_status()
+            send_reply(reply_target, status)
+        except Exception as e:
+            send_reply(reply_target, f"❌ 状态查询失败: {str(e)[:50]}")
+
+    asyncio.run(_run())
 
 
 def _handle_calibration_reply(text: str, reply_target: str, send_reply):

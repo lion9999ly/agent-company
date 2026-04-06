@@ -1,0 +1,44 @@
+{
+  "layout": {
+    "LT": { "role": "速度+骑行状态", "type": "persistent" },
+    "RT": { "role": "设备状态图标", "type": "persistent" },
+    "RB": { "role": "导航主区", "type": "dynamic" },
+    "LB": { "role": "通知/来电/音乐", "type": "dynamic" }
+  },
+  "page_states": {
+    "riding_main": { "LT": "速度", "RT": "电量+蓝牙+信号", "RB": null, "LB": null },
+    "navigation":  { "LT": "速度", "RT": "设备状态", "RB": "转向箭头+距离+ETA", "LB": "路名" },
+    "incoming_call": { "LT": "速度", "RT": "设备状态", "RB": "保持导航或空", "LB": "来电者+接听/拒接" },
+    "music":       { "LT": "速度", "RT": "设备状态", "RB": "保持导航或空", "LB": "曲名+播放状态" },
+    "group_ride":  { "LT": "速度", "RT": "队友数+语音状态", "RB": "队友位置标记", "LB": "队伍消息" },
+    "warning":     { "LT": "⚠️方向闪烁", "RT": "⚠️方向闪烁", "RB": "预警类型+距离", "LB": "预警指令" },
+    "recording":   { "LT": "速度", "RT": "录制时长+存储", "RB": "保持导航或空", "LB": "REC指示" }
+  },
+  "priority_order": ["warning", "incoming_call", "navigation", "group_ride", "music", "recording", "riding_main"],
+  "warning_direction_map": {
+    "front_left": ["LT"], "front_right": ["RT"], "front": ["LT", "RT"],
+    "rear_left": ["LB"], "rear_right": ["RB"], "rear": ["LB", "RB"]
+  },
+  "speed_tiers": {
+    "S0": { "range": "0", "max_elements": 6, "label": "静止" },
+    "S1": { "range": "1-30", "max_elements": 4, "label": "低速" },
+    "S2": { "range": "31-80", "max_elements": 3, "label": "中速" },
+    "S3": { "range": "81+", "max_elements": 2, "label": "高速" }
+  },
+  "colors": {
+    "normal": "#00FF41", "caution": "#FFD700", "danger": "#FF0000",
+    "info": "#00BFFF", "inactive": "#666666", "bg": "#000000"
+  },
+  "ab_compare": {
+    "enabled": true,
+    "path_a": { "name": "Free Form (OLED)", "color_mode": "monochrome_green", "fov_placeholder": "TBD" },
+    "path_b": { "name": "衍射光波导 (MicroLED)", "color_mode": "monochrome_green", "fov_placeholder": "TBD" }
+  },
+  "icons": {
+    "nav_left": "nav_arrow_left.png", "nav_right": "nav_arrow_right.png",
+    "nav_uturn": "nav_u_turn.png", "speed": "speed_indicator.png",
+    "bsd": "adas_warning_bsd.png", "fcw": "adas_warning_fcw.png",
+    "call": "incoming_call.png", "group": "group_ride.png",
+    "battery": "battery_indicator.png", "recording": "recording_dot.png"
+  }
+}

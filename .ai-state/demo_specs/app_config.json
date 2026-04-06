@@ -1,0 +1,33 @@
+{
+  "tabs": [
+    { "id": "device", "label": "设备", "icon": "smartphone" },
+    { "id": "community", "label": "社区", "icon": "users" },
+    { "id": "shop", "label": "商城", "icon": "shopping-bag" },
+    { "id": "profile", "label": "我的", "icon": "user" }
+  ],
+  "pages": {
+    "device": {
+      "dashboard": { "title": "设备首页", "components": ["connection_status", "helmet_battery", "quick_actions", "recent_rides"] },
+      "navigation": { "title": "导航", "components": ["map_placeholder", "destination_input", "send_to_helmet"] },
+      "adas_settings": { "title": "ADAS设置", "components": ["bsd_toggle", "fcw_toggle", "ldw_toggle", "sensitivity_slider"] },
+      "group_ride": { "title": "组队骑行", "components": ["teammate_list", "map_positions", "voice_channel_status", "create_join_buttons"] },
+      "dashcam": { "title": "行车记录", "components": ["recording_status", "clip_gallery", "storage_info"] },
+      "hud_settings": { "title": "HUD设置", "components": ["brightness_slider", "layout_preview", "info_density"] }
+    },
+    "community": {
+      "feed": { "title": "骑行动态", "components": ["ride_posts", "photo_cards"] },
+      "routes": { "title": "路线分享", "components": ["route_list", "difficulty_tags"] }
+    },
+    "shop": {
+      "store": { "title": "配件商城", "components": ["product_grid", "categories"] }
+    },
+    "profile": {
+      "settings": { "title": "设置", "components": ["volume", "firmware_version", "about"] },
+      "ride_history": { "title": "骑行历史", "components": ["ride_list", "stats_summary"] }
+    }
+  },
+  "theme": {
+    "primary": "#00FF41", "bg_dark": "#0A0A0A", "bg_card": "#1A1A1A",
+    "text_primary": "#FFFFFF", "text_secondary": "#999999"
+  }
+}

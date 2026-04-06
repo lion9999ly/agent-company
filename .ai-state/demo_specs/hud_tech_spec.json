@@ -1,0 +1,122 @@
+{
+  "css_variables": {
+    "colors": {
+      "--color-normal": "#00FF41",
+      "--color-caution": "#FFD700",
+      "--color-danger": "#FF0000",
+      "--color-info": "#00BFFF",
+      "--color-inactive": "#666666",
+      "--color-bg": "#000000",
+      "--color-primary-monochrome": "#00FF41"
+    },
+    "fonts": {
+      "--font-family-primary": "'Roboto Mono', monospace",
+      "--font-size-base": "24px",
+      "--font-size-lg": "calc(var(--font-size-base) * 1.5)",
+      "--font-size-md": "var(--font-size-base)",
+      "--font-size-sm": "calc(var(--font-size-base) * 0.75)",
+      "--font-weight-normal": "400",
+      "--font-weight-bold": "700"
+    },
+    "sizes": {
+      "--spacing-unit": "8px",
+      "--padding-sm": "var(--spacing-unit)",
+      "--padding-md": "calc(var(--spacing-unit) * 2)",
+      "--padding-lg": "calc(var(--spacing-unit) * 3)",
+      "--icon-size-sm": "24px",
+      "--icon-size-md": "32px",
+      "--icon-size-lg": "48px",
+      "--border-radius-sm": "4px"
+    }
+  },
+  "animation_timing": {
+    "state_transition": {
+      "duration_ms": 300,
+      "easing": "ease-in-out"
+    },
+    "element_fade": {
+      "duration_ms": 200,
+      "easing": "ease-out"
+    },
+    "data_update_transition": {
+      "duration_ms": 150,
+      "easing": "ease-out"
+    },
+    "warning_flash_cycle": {
+      "duration_ms": 1000,
+      "on_phase_ms": 500,
+      "off_phase_ms": 500,
+      "easing": "steps(1)"
+    }
+  },
+  "event_handlers": {
+    "KEY_ACCEPT_CALL": "接听来电",
+    "KEY_REJECT_CALL": "拒接来电",
+    "KEY_MUSIC_PLAY_PAUSE": "切换音乐播放/暂停",
+    "KEY_MUSIC_NEXT": "下一曲",
+    "KEY_MUSIC_PREV": "上一曲",
+    "KEY_RECORDING_TOGGLE": "切换录制状态",
+    "KEY_GROUP_VOICE_TOGGLE": "切换组队语音对讲",
+    "KEY_NAV_MUTE_TOGGLE": "切换导航语音播报",
+    "KEY_MENU_TOGGLE": "切换主菜单显示"
+  },
+  "speed_tier_rules": [
+    {
+      "tier": "S0",
+      "range": "0",
+      "max_elements": 6,
+      "label": "静止"
+    },
+    {
+      "tier": "S1",
+      "range": "1-30",
+      "max_elements": 4,
+      "label": "低速"
+    },
+    {
+      "tier": "S2",
+      "range": "31-80",
+      "max_elements": 3,
+      "label": "中速"
+    },
+    {
+      "tier": "S3",
+      "range": "81+",
+      "max_elements": 2,
+      "label": "高速"
+    }
+  ],
+  "warning_flash": {
+    "timing": {
+      "duration_ms": 500,
+      "interval_ms": 1000,
+      "easing": "steps(1)"
+    },
+    "colors": {
+      "active_color": "var(--color-danger)",
+      "inactive_color": "transparent"
+    },
+    "regions_map": {
+      "front_left": [
+        "LT"
+      ],
+      "front_right": [
+        "RT"
+      ],
+      "front": [
+        "LT",
+        "RT"
+      ],
+      "rear_left": [
+        "LB"
+      ],
+      "rear_right": [
+        "RB"
+      ],
+      "rear": [
+        "LB",
+        "RB"
+      ]
+    }
+  }
+}
