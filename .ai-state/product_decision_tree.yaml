@@ -19,7 +19,7 @@ decisions:
   id: v1_display
   priority: 1
   question: V1 HUD 用 OLED+FreeForm 还是 MicroLED+衍射光波导？
-  resolved_knowledge: 16
+  resolved_knowledge: 18
   status: open
 - affected_modules:
   - 系统架构
@@ -46,6 +46,7 @@ decisions:
   id: v1_intercom
   priority: 1
   question: Mesh Intercom 自研还是授权 Cardo DMC？
+  resolved_knowledge: 1
   status: open
 - affected_modules:
   - 音乐
@@ -101,4 +102,22 @@ decisions:
   id: v1_jdm_partner
   priority: 1
   question: JDM 合作伙伴选歌尔、立讯还是其他？
+  status: open
+- id: v1_hud_demo
+  question: "HUD Demo 是否可以用于内部评审和供应商沟通？"
+  blocking_knowledge:
+    - "HUD 像素级布局规范"
+    - "HUD 信息优先级最终版"
+    - "ADAS 预警图标设计"
+  total_needed: 3
+  resolved_knowledge: 0
+  status: open
+- id: v1_app_demo
+  question: "App Demo 是否可以用于内部评审？"
+  blocking_knowledge:
+    - "App 信息架构"
+    - "配对流程定义"
+    - "组队地图交互设计"
+  total_needed: 3
+  resolved_knowledge: 0
   status: open

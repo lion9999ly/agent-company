@@ -1,66 +1,97 @@
 - completed: true
-  completed_at: 2026-04-06 06:39
-  discovered_at: 2026-04-06 06:16
-  goal: 研究摩托车/头盔领域现有的主动安全系统，识别适合智能全脸头盔的传感器类型（如雷达、摄像头、激光雷达、超声波），数据融合技术，以及有效的预警机制，以实现V1产品的主动安全功能。
+  completed_at: 2026-04-06 15:01
+  discovered_at: 2026-04-06 10:08
+  goal: 深入研究将主动安全功能（如碰撞预警、盲点监测）集成到全脸头盔中的可行性、关键技术和法规标准。识别适合头盔的小型化传感器、边缘计算单元，并探索有效的预警机制（如触觉、听觉、视觉）。
   id: auto_001
   priority: 1
   searches:
-  - 摩托车主动安全系统
-  - 头盔传感器融合技术
-  - ADAS摩托车应用
-  - 盲点检测头盔
-  - 碰撞预警摩托车
-  - 智能头盔雷达集成
-  - AI摩托车安全
-  - 骑行辅助系统
+  - 摩托车头盔主动安全系统
+  - 头盔小型化雷达传感器
+  - 头盔碰撞检测边缘AI
+  - 摩托车盲点监测头盔
+  - 头盔触觉反馈安全预警
+  - ISO 26262 头盔应用
   source: auto_discover
-  title: 主动安全系统设计与传感器融合
-- completed: true
-  completed_at: 2026-04-06 07:16
-  discovered_at: 2026-04-06 06:16
-  goal: 深入研究如何将智能组件（HUD投影仪、电池、SoC、扬声器、麦克风等）有效地集成到全脸头盔外壳中，同时不损害头盔的安全性、空气动力学性能、通风、重量平衡和用户舒适度。重点关注材料科学、结构完整性和人机工程学设计。
+  title: 智能头盔主动安全系统集成与标准研究
+- discovered_at: 2026-04-06 10:08
+  goal: 研究适用于头盔集成的尖端HUD显示技术（如波导、Micro-LED、LCoS），重点关注亮度、视场角、功耗和尺寸。分析HUD用户界面/用户体验的最佳实践，以最大程度地减少骑行时的干扰并提高实用性。
   id: auto_002
   priority: 1
   searches:
-  - 全脸头盔智能集成
-  - 头盔材料冲击性能
-  - 智能头盔重量分布
-  - 头盔通风设计优化
-  - 摩托车头盔人机工程学
-  - 集成头盔结构设计
-  - 头盔安全标准智能
-  - 空气动力学头盔设计
+  - 头盔HUD显示技术对比
+  - 波导显示头盔
+  - Micro-LED头盔HUD
+  - LCoS头盔显示器
+  - 摩托车HUD UI设计原则
+  - 增强现实头盔显示挑战
   source: auto_discover
-  title: 全脸头盔结构集成与人机工程学
-- completed: true
-  completed_at: 2026-04-06 09:24
-  discovered_at: 2026-04-06 06:16
-  goal: 研究针对高速、高噪音摩托车头盔环境的先进降噪技术、唤醒词检测和自然语言处理（NLP）解决方案。评估现有解决方案和潜在的AI模型，以实现鲁棒的命令识别和卓越的用户体验。
+  title: 先进HUD显示技术与用户界面设计研究
+- discovered_at: 2026-04-06 10:08
+  goal: 调查最先进的语音控制技术，重点关注在高速骑行环境（风噪、发动机噪音）下仍能保持鲁棒性的降噪算法、麦克风阵列和唤醒词检测技术。识别合适的芯片组和软件解决方案。
   id: auto_003
   priority: 2
   searches:
-  - 摩托车头盔语音控制
-  - 高噪音环境NLP
-  - 头盔唤醒词检测
-  - 主动降噪头盔
-  - 摩托车语音助手
-  - 嘈杂环境语音识别
-  - AI语音控制头盔
-  - 摩托车音频处理
+  - 头盔语音控制降噪
+  - 风噪下摩托车语音识别
+  - 头盔波束成形麦克风阵列
+  - 嘈杂环境唤醒词检测
+  - 头盔音频DSP
+  - AI降噪头盔
   source: auto_discover
-  title: 高噪音环境下语音控制用户体验与AI
-- discovered_at: 2026-04-06 06:16
-  goal: 探索除基本语音通信之外的“组队骑行”高级功能，例如共享导航、团队追踪、紧急警报以及通过Mesh Intercom实现无缝数据共享。研究如何将这些功能与HUD及其他头盔系统集成，以提供增强的团队骑行体验。
+  title: 嘈杂环境下的头盔语音控制与降噪技术研究
+- discovered_at: 2026-04-06 10:08
+  goal: 对现有集成多功能（如通信、导航、基础显示）的智能头盔进行有针对性的分析。对它们在HUD、语音控制和通信等特定功能上的性能、用户反馈、定价和具体实现进行对标，识别市场空白和产品机会。
   id: auto_004
   priority: 2
   searches:
-  - Mesh Intercom高级功能
-  - 摩托车编队导航
-  - 组队骑行通信系统
-  - 智能头盔团队追踪
-  - 摩托车紧急警报系统
-  - Mesh网络数据共享
-  - HUD组队骑行集成
-  - 摩托车车队技术
+  - 智能摩托车头盔对比
+  - 集成HUD语音控制头盔
+  - 最佳智能头盔功能
+  - 智能头盔市场分析
+  - 摩托车头盔主动安全竞品
   source: auto_discover
-  title: 组队骑行高级功能与Mesh Intercom集成
+  title: 集成智能头盔竞争格局与功能对标分析
+- id: demo_hud_screenshots
+  title: "竞品 HUD 界面截图与布局分析"
+  goal: "收集 Shoei GT-Air 3 Smart、EyeRide V2/V3、Forcite MK1、iC-R 的 HUD 界面截图或视频截帧。分析每个产品的信息布局位置、同时显示元素数量、色彩方案、字体大小。输出结构化对比表。"
+  priority: 1
+  searches:
+    - "Shoei GT-Air 3 Smart HUD display interface screenshot"
+    - "EyeRide V2 HUD helmet display layout"
+    - "Forcite MK1 HUD interface review screenshot"
+    - "iC-R smart helmet HUD display demo"
+    - "motorcycle helmet HUD UI layout comparison 2026"
+    - "EyeLights nano OLED HUD interface"
+  source: demo_prep
+- id: demo_app_screenshots
+  title: "竞品 App 界面截图与信息架构分析"
+  goal: "收集 Cardo App、Sena App、Shoei Smart App 的界面截图。分析配对流程、骑行仪表盘、组队地图、设置页的信息架构和交互模式。"
+  priority: 1
+  searches:
+    - "Cardo Packtalk app interface screenshot 2026"
+    - "Sena 50S app UI design screenshot"
+    - "motorcycle helmet app pairing flow UI"
+    - "group ride app map interface design"
+    - "motorcycle riding dashboard app UI UX"
+    - "smart helmet companion app review screenshot"
+  source: demo_prep
+- id: demo_hud_pixel_spec
+  title: "HUD 像素级布局规范 v0.2"
+  goal: "基于 hud_display_principles.md v0.1 和竞品分析，输出像素级 HUD 布局规范：画布尺寸、四角信息区坐标、字体大小、图标尺寸、色彩 hex 值、动画时序。输出 JSON 格式。"
+  priority: 2
+  searches:
+    - "motorcycle helmet HUD field of view degrees pixels"
+    - "AR HUD minimum readable font size arcmin"
+    - "heads up display color scheme high contrast daylight"
+    - "HUD UI design guideline automotive motorcycle"
+  source: demo_prep
+- id: demo_app_ia
+  title: "App 信息架构 v0.1"
+  goal: "设计智能骑行头盔配套 App 的信息架构。包含：配对流程（5步）、骑行仪表盘（信息项+布局）、组队地图（功能列表）、录像回放、设置页。输出页面流图 + 每页信息项列表。"
+  priority: 2
+  searches:
+    - "smart helmet app information architecture"
+    - "motorcycle companion app feature list 2026"
+    - "riding dashboard UI information hierarchy"
+    - "group ride app feature requirements"
+  source: demo_prep
