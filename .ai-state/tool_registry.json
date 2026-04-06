@@ -590,6 +590,611 @@
       "installed_by": "meta_capability",
       "usage_count": 0,
       "last_used": null
+    },
+    {
+      "name": "microled_waveguide_yield_cost_research",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：面向公开供应链网页、行业新闻、研究摘要与搜索结果页，系统化采集 MicroLED + 衍射光波导相关的量产良率、制造良率、BOM 成本、模组成本、光机成本、波导成本、显示器件成本等公开线索；支持关键词搜索、网页抓取、页面文本抽取、规则化字段提取、证据留存、结果去重，并导出 CSV/Excel/JSON，辅助人工补齐最新量产良率和成本数据缺口。工具不承诺获取受限成交数据，但可最大化结构化收集公开可得证据。",
+      "invoke": "python .ai-state/tools/microled_waveguide_yield_cost_research.py --query \"MicroLED diffraction waveguide yield cost AR glasses\" --query \"衍射光波导 MicroLED 良率 成本\" --max-results 10 --out-dir .ai-state/output/microled_waveguide_yield_cost_research",
+      "verify_cmd": "python .ai-state/tools/microled_waveguide_yield_cost_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-05 23:49",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "oled_microled_supplychain_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理 OLED/MicroLED 微显示与模组供应链公开资料，重点抓取至少 3 家供应商的 datasheet、产品页、新闻稿、报价线索与分销页面；区分面板亮度与到眼亮度，抽取眼盒、VID、良率/试产良率、单价/MOQ/报价条件等字段，保留证据链接并导出 CSV/Excel，辅助补齐量产参数对比数据缺口。",
+      "invoke": "python .ai-state/tools/oled_microled_supplychain_research.py --outdir outputs/oled_microled_supplychain_research --max-results 8",
+      "verify_cmd": "python .ai-state/tools/oled_microled_supplychain_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-05 23:50",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "structured_scheme_a_b_data_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理方案A与方案B相关的底层公开数据，用于交叉验证具体产品、关键参数、成本/价格、良率线索与证据链接。工具支持：1) 读取方案关键词配置；2) 调用搜索引擎结果页与目标网页抓取；3) 规则抽取产品名、型号、参数、价格/MOQ/币种、良率相关表述；4) 保存原始证据与结构化结果到 CSV/Excel/JSON，便于后续人工校验与分析。",
+      "invoke": "python .ai-state/tools/structured_scheme_a_b_data_fetcher.py --config {input_json} --output-dir {output_dir} --max-results-per-keyword 5 --pause 1.0",
+      "verify_cmd": "python .ai-state/tools/structured_scheme_a_b_data_fetcher.py --init-config .ai-state/tools/structured_scheme_a_b_data_fetcher.sample.json && python .ai-state/tools/structured_scheme_a_b_data_fetcher.py --config .ai-state/tools/structured_scheme_a_b_data_fetcher.sample.json --output-dir .ai-state/tools/structured_scheme_a_b_output --max-results-per-keyword 1 --pause 1.0",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-05 23:55",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "battery_low_temp_curve_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理低温环境下电池性能衰减曲线相关公开实验数据与供应商测试报告线索的命令行工具。支持基于关键词搜索公开网页与 PDF/文档链接，抓取页面文本，抽取温度、容量保持率、内阻增长、放电倍率、循环条件、样品型号、来源链接等字段，并导出 CSV/Excel，辅助验证低温环境下电池性能的具体衰减曲线。",
+      "invoke": "python .ai-state/tools/battery_low_temp_curve_research.py --keywords \"low temperature battery performance curve pdf\" \"battery capacity retention -20C datasheet pdf\" --max-results-per-keyword 10 --output .ai-state/data/battery_low_temp_curve_research.xlsx",
+      "verify_cmd": "python .ai-state/tools/battery_low_temp_curve_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search pdfplumber"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 00:20",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "oled_angular_brightness_attenuation_estimator",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：计算 OLED 屏幕在不同观察角度与环境光照条件下的亮度衰减，并给出到眼/到观察者方向的有效亮度、环境反射导致的黑位抬升、对比度与可读性指标。工具支持两种模式：1) 工程近似模型模式：基于 Lambertian / cosine-power / exp 衰减模型、表面反射率、环境照度(lux)与可选实验校准点进行估算；2) 实验数据拟合模式：导入角度-相对亮度 CSV/Excel 数据，自动拟合角度衰减曲线并批量计算不同光照场景结果。适合在缺少完整光学仿真软件时补齐工程估算能力，并为后续接入实测数据留出接口。",
+      "invoke": "python .ai-state/tools/oled_angular_brightness_attenuation_estimator.py --center-luminance-nits 1000 --black-luminance-nits 0.5 --angles 0,15,30,45,60,75 --ambient-lux 0,1000,10000,100000 --reflectance 0.05 --model mixed --n 1.2 --k 0.002 --output {output}",
+      "verify_cmd": "python .ai-state/tools/oled_angular_brightness_attenuation_estimator.py --test",
+      "dependencies": [
+        "numpy scipy matplotlib"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 00:21",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "hud_sample_test_plan_generator",
+      "type": "write_script",
+      "path": ".ai-state/tools/hud_sample_test_plan_generator.py",
+      "description": "该缺口本质上需要线下获取创达 HUD 样机并在环境箱、振动台、太阳模拟/高照度条件下完成实测，无法通过纯软件直接获取真实测试数据。因此补齐方案应聚焦于：1) 生成可执行的样机实测计划；2) 固化测试矩阵（-20℃/25℃/55℃、100k lux、振动工况）；3) 统一记录亮度、FOV、虚像距离、可读性、功耗结果；4) 输出实验记录模板、判定规则与待办清单，支撑人工/实验室完成 data_fetch。现有工具可做建模或公开资料采集，但不能替代样机实测，因此新增一个“测试计划与记录模板生成器”最合适。",
+      "invoke": "python .ai-state/tools/hud_sample_test_plan_generator.py --sample-id {sample_id} --outdir {outdir}",
+      "verify_cmd": "python .ai-state/tools/hud_sample_test_plan_generator.py --sample-id TEST001 --outdir .ai-state/tools/_verify_hud_plan",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 00:22",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "motorcycle_adas_fp_fn_validator",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：验证摩托车 ADAS 算法在不同动态场景下的误报率（False Positive Rate）和漏报率（False Negative Rate）。支持导入算法检测结果与真值标注（CSV/Excel/JSON），按时间窗或 frame_id 对齐事件，基于 IoU/类别/距离阈值进行目标匹配，统计 TP/FP/FN/TN，并按场景标签（如白天/夜间、城市/高速、晴雨、弯道/直道、跟车/超车、静止/动态目标等）输出 precision、recall、FPR、FNR、miss rate、每小时误报数、混淆明细和汇总 Excel/CSV 报告。适合在缺少专用评测平台时，对已有日志进行工程化离线验证。",
+      "invoke": "python .ai-state/tools/motorcycle_adas_fp_fn_validator.py --pred {predictions.csv} --gt {ground_truth.xlsx} --output-prefix .ai-state/tools/output/motorcycle_adas_eval --iou-thr 0.5 --time-thr 0.05 --score-thr 0.3 --class-map \"cyclist:pedestrian,bike:vehicle\"",
+      "verify_cmd": "python .ai-state/tools/motorcycle_adas_fp_fn_validator.py --self-test",
+      "dependencies": [
+        "numpy"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 00:54",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "imu_radar_cost_performance_optimizer",
+      "type": "write_script",
+      "path": ".ai-state/tools/imu_radar_cost_performance_optimizer.py",
+      "description": "命令行工具：评估 IMU+雷达组合方案的成本与性能优化空间。支持单方案与 CSV/Excel 批量输入，统一建模 IMU 与雷达的 BOM 成本、功耗、刷新率、量程、速度精度、角度精度、检测率、误检率、时延、环境适应性等指标；支持按场景权重进行归一化评分，计算成本-性能比、Pareto 前沿、增量成本对应的性能收益、降本/提效敏感性分析，并输出 CSV/Excel/JSON 汇总结果，辅助筛选最优传感器组合与优化方向。",
+      "invoke": "python .ai-state/tools/imu_radar_cost_performance_optimizer.py --input {input_csv_or_xlsx_or_json} --output-prefix .ai-state/output/imu_radar_eval/result",
+      "verify_cmd": "python .ai-state/tools/imu_radar_cost_performance_optimizer.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 00:55",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "fcw_bsd_range_latency_model",
+      "type": "write_script",
+      "path": ".ai-state/tools/fcw_bsd_range_latency_model.py",
+      "description": "命令行工具：基于目标安装位、FOV、车速分布、TTC 阈值、摄像头帧率、IMU 漂移和 HUD 提示延迟，联合计算 FCW/BSD 的最小可用探测距离、横向覆盖需求与误报容忍阈值。支持单场景输入与 CSV/Excel 批量输入，输出 40/60/80/100 km/h 下的分项时延预算、最小探测距离、按 FOV/安装位换算的覆盖宽度、以及基于误报率/每小时告警次数的容忍阈值建议。",
+      "invoke": "python .ai-state/tools/fcw_bsd_range_latency_model.py --mode FCW --speeds 40,60,80,100 --ttc-threshold-s 2.0 --camera-fps 30 --imu-drift-deg-s 0.2 --hud-latency-ms 150 --hfov-deg 52 --install-y-m 0.0 --false-alerts-per-hour-tolerance 1.0 --output {output}",
+      "verify_cmd": "python .ai-state/tools/fcw_bsd_range_latency_model.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 00:56",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "motorcycle_single_light_missrate_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理公开资料中视觉ADAS在摩托车单车灯（single headlight / motorcycle headlamp）及小目标障碍物场景下的实测漏报率、识别率、召回率、误检率等数据的命令行工具。支持关键词搜索、网页抓取、Crossref文献检索、页面文本抽取、规则化提取指标（miss rate / false negative / recall / detection rate / precision / mAP）、场景标签（night / low light / single headlight / motorcycle / small obstacle / vulnerable road user）、测试条件与来源链接，并导出CSV/Excel，辅助补齐“获取单车灯场景识别率”数据缺口。",
+      "invoke": "python .ai-state/tools/motorcycle_single_light_missrate_research.py --enable-web --enable-crossref --query \"motorcycle single headlight ADAS miss rate\" --query \"small obstacle detection miss rate ADAS night camera\" --output-dir outputs/motorcycle_single_light_missrate_research",
+      "verify_cmd": "python .ai-state/tools/motorcycle_single_light_missrate_research.py --test",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 01:02",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "smart_helmet_market_research",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：补齐智能头盔市场规模、增长率、竞争格局等公开数据采集与结构化整理能力。支持通过网页搜索结果页、公开网页抓取、页面文本抽取与规则化字段提取，重点识别市场规模（market size）、增长率（CAGR/growth rate）、预测年份、区域、细分市场、主要厂商/竞争格局、来源机构与证据链接；输出 CSV/Excel/JSON，便于后续深度研究任务直接引用与人工复核。",
+      "invoke": "python .ai-state/tools/smart_helmet_market_research.py --queries \"smart helmet market size CAGR\" \"smart helmet market share key players\" --max-results 8 --output-prefix smart_helmet_market_data",
+      "verify_cmd": "python .ai-state/tools/smart_helmet_market_research.py --test",
+      "dependencies": [
+        "beautifulsoup4"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 01:27",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "hud_optical_pose_readability_model",
+      "type": "write_script",
+      "path": ".ai-state/tools/hud_optical_pose_readability_model.py",
+      "description": "建立 HUD 光机在日间直射/夜间逆光条件下的亮度与可读性模型，并联合评估出瞳、FOV、亮度 nits、透过率、眼盒尺寸与骑行姿态变化之间的关系；同时估算不同安装位置/安装角度对视场遮挡、可见率与可读性的影响。工具支持单组命令行输入与 CSV/Excel 批量输入，输出每个场景下的到眼亮度、环境背景亮度、对比度、可读性分级、眼盒命中率、FOV 裁切率、遮挡率与综合评分。",
+      "invoke": "python .ai-state/tools/hud_optical_pose_readability_model.py --input {input} --output {output}",
+      "verify_cmd": "python .ai-state/tools/hud_optical_pose_readability_model.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 01:28",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "ece_helmet_accessory_regulation_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "检索并结构化提取 ECE 22.06 中与头盔附件/accessories、protective helmet、type approval、modification、user removable equipment 相关的公开法规文本与证据链接，辅助确认用户自行插拔智能模块是否可能影响整盔认证有效性。工具支持：1) 通过 UNECE 官方法规页面与公开镜像页面抓取文本/PDF链接；2) 关键词定位相关条款；3) 输出命中片段、上下文、来源链接、时间戳到 CSV/Excel/JSON；4) 生成面向合规判断的证据摘要。该工具不替代法务/认证机构正式意见，但可高效补齐 data_fetch 能力缺口。",
+      "invoke": "python .ai-state/tools/ece_helmet_accessory_regulation_fetcher.py --out-dir .ai-state/data/ece_helmet_accessory_regulation_fetcher --urls https://unece.org/transport/standards/transport/vehicle-regulations-wp29/addenda-21-40-regulation-no-22-revision-5 https://unece.org/fileadmin/DAM/trans/main/wp29/wp29regs/2023/R022r6e.pdf --keywords accessories accessory removable detachable modification \"type approval\" projection intercom camera communication",
+      "verify_cmd": "python .ai-state/tools/ece_helmet_accessory_regulation_fetcher.py --test",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml",
+        "pdfplumber"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 01:35",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_wtp_social_forum_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理小红书、Bilibili、摩托车论坛中与骑行头盔导航、安全、通信功能相关的真实用户付费意愿证据。工具支持关键词搜索结果页抓取、页面正文与评论文本抽取、价格/预算/值不值/愿不愿付费等表达识别、功能标签归类、来源平台标注、证据留存与 CSV/Excel 导出。默认优先使用公开网页与搜索引擎结果页，不依赖登录态；对小红书/B站等反爬较强站点，支持通过搜索结果落地页、公开页面 HTML、以及人工补充 URL 列表方式增强采集覆盖。",
+      "invoke": "python .ai-state/tools/helmet_wtp_social_forum_research.py --output-dir output/helmet_wtp_social_forum_research --keywords-file {keywords_file} --seed-urls {seed_urls}",
+      "verify_cmd": "python .ai-state/tools/helmet_wtp_social_forum_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml openpyxl"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 02:00",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_fit_feedback_research",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：补齐“头盔舒适性与亚洲头型兼容性测试”数据采集与分析能力。支持三类输入源：1) 本地佩戴反馈问卷 CSV/Excel 汇总；2) 生成适用于头盔宽头型/亚洲头型适配验证的标准化问卷模板；3) 对公开网页/论坛/电商评论/评测页面进行关键词证据采集，抽取与头围、头宽、太阳穴压迫、夹头、前额压点、耳部干涉、稳定性、舒适性相关的用户反馈。工具输出清洗后的明细数据、按头型分组的舒适性统计、宽头型风险标记、证据链接汇总及 Excel 报告，辅助验证头盔对宽头型的适配性。",
+      "invoke": "python .ai-state/tools/helmet_fit_feedback_research.py --input {input} --output_dir {output_dir} && python .ai-state/tools/helmet_fit_feedback_research.py --generate_template --template_path {template_path} && python .ai-state/tools/helmet_fit_feedback_research.py --web_research --output_dir {output_dir}",
+      "verify_cmd": "python .ai-state/tools/helmet_fit_feedback_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 02:02",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "sensor_suite_cost_performance_battery_model",
+      "type": "write_script",
+      "path": ".ai-state/tools/sensor_suite_cost_performance_battery_model.py",
+      "description": "命令行工具：建立不同传感器套件（毫米波雷达、摄像头、超声波、IMU、GNSS 等）的成本-性能-功耗-续航综合计算模型。支持单组参数与 CSV/Excel 批量输入；按传感器级输入单价、数量、平均功耗、占空比、性能指标（探测距离、FOV、角分辨率、距离精度、速度精度、夜间能力、天气鲁棒性、分类能力、延迟等）与权重，计算 BOM 成本、平均功耗、对头盔续航影响、单位成本性能比、单位功耗性能比、综合性价比，并输出明细表与方案排序。适合补齐“需要传感器功耗、成本和性能数据的详细计算模型”的 calculation 能力缺口。",
+      "invoke": "python .ai-state/tools/sensor_suite_cost_performance_battery_model.py --input {input} --battery-wh 18 --system-baseline-w 3.5 --output-prefix {output_prefix}",
+      "verify_cmd": "python .ai-state/tools/sensor_suite_cost_performance_battery_model.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 02:27",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "motorcycle_v2x_standards_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理摩托车 V2X 技术标准（DSRC、C-V2X）最新进展与适配性数据的命令行工具。支持从工信部、CCSA、中国信通院、标准全文公开系统、研究机构网页及公开 PDF/HTML 页面抓取资料，按关键词检索并抽取标准编号、标准名称、发布/实施日期、发布机构、技术路线（DSRC/C-V2X/LTE-V2X/NR-V2X）、适用对象（摩托车/两轮车/车联网）、版本状态、摘要、来源链接等字段，导出 CSV/Excel/JSON，辅助补齐 data_fetch 缺口。",
+      "invoke": "python .ai-state/tools/motorcycle_v2x_standards_fetcher.py --keywords \"摩托车 C-V2X\" \"摩托车 DSRC\" \"工信部 车联网 标准\" --max-results 8 --output-dir outputs/motorcycle_v2x_standards --format all",
+      "verify_cmd": "python .ai-state/tools/motorcycle_v2x_standards_fetcher.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml pdfplumber openpyxl"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 02:28",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_runtime_thermal_simulator",
+      "type": "write_script",
+      "path": ".ai-state/tools/helmet_runtime_thermal_simulator.py",
+      "description": "命令行工具：基于头盔结构、供电方案和热设计，计算“HUD + 摄像头/雷达 + 蓝牙音频”组合下的整机续航、峰值/平均功耗、稳态表面温升，并支持简化一阶 RC 热模型的瞬态温升仿真。支持单组 JSON 输入或 CSV/Excel 批量输入；按电池容量、各模块平均/峰值功耗、占空比、DC-DC/电源效率、壳体/EPS/界面层热阻、导热系数、散热面积、对流系数、环境温度进行工程化估算，输出 JSON/CSV/Excel 结果，适合在缺少完整 CAE 环境时快速补齐续航与热仿真能力。",
+      "invoke": "python .ai-state/tools/helmet_runtime_thermal_simulator.py --input {input}.json --output {output}.json --transient",
+      "verify_cmd": "python .ai-state/tools/helmet_runtime_thermal_simulator.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 02:29",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "smart_helmet_market_data_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理智能头盔市场份额、市场规模、增长率/CAGR 等公开商业数据的命令行工具。支持通过搜索引擎结果页、公开市场研究页面、新闻稿、行业文章进行关键词检索与网页抓取，抽取 market size / CAGR / forecast year / region / company share 等字段，保留来源链接、发布时间、证据片段，并导出 CSV/Excel，辅助验证最新市场规模与增速预测。工具优先抓取公开可访问页面，不绕过付费墙；适合补齐 data_fetch 缺口。",
+      "invoke": "python .ai-state/tools/smart_helmet_market_data_fetcher.py --out .ai-state/tools/output/smart_helmet_market_data.xlsx --max-results 10 --query \"smart helmet market size CAGR\" --query \"smart helmet market share companies\"",
+      "verify_cmd": "python .ai-state/tools/smart_helmet_market_data_fetcher.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 02:56",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_cg_neck_moment_calculator",
+      "type": "write_script",
+      "path": ".ai-state/tools/helmet_cg_neck_moment_calculator.py",
+      "description": "命令行工具：基于目标头盔CAD/BOM导出的部件质量与三维安装坐标，计算整盔相对基准头盔或参考点的前后/左右/上下重心偏移(mm)，并在50/80/120 km/h下基于迎风面积、阻力系数、空气密度与风压中心位置估算颈部附加力矩。支持JSON单案输入，以及CSV/Excel部件清单输入；可选输入基准头盔质量与CG，输出JSON/CSV/Excel结果，适合在缺少完整CAE环境时进行工程化快速估算。",
+      "invoke": "python .ai-state/tools/helmet_cg_neck_moment_calculator.py --input {input_json} --components {components_csv_or_xlsx} --output-prefix {output_prefix}",
+      "verify_cmd": "python .ai-state/tools/helmet_cg_neck_moment_calculator.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 02:57",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "cycling_noise_cancellation_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理骑行场景下不同降噪技术（ENC、ANC、DSP）在不同风速、噪音环境与测试条件下的公开对比实验数据。工具支持关键词搜索、Crossref 文献检索、网页抓取、页面文本抽取、规则化提取技术类型、风速、噪声环境、降噪效果（dB/百分比/主观评分）、麦克风配置、测试对象、来源链接与证据片段，并导出 CSV/Excel，辅助补齐“骑行场景下不同降噪技术性能对比实验数据”缺口。",
+      "invoke": "python .ai-state/tools/cycling_noise_cancellation_research.py --query \"ENC ANC cycling wind noise test\" --query \"helmet intercom ANC ENC wind speed dB\" --output-dir outputs/cycling_noise_cancellation_research",
+      "verify_cmd": "python .ai-state/tools/cycling_noise_cancellation_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 03:34",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "voice_control_satisfaction_research",
+      "type": "write_script",
+      "path": ".ai-state/tools/voice_control_satisfaction_research.py",
+      "description": "命令行工具：补齐“用户对语音控制功能的长期满意度调研数据”采集与分析能力。支持三类输入源：1) 本地问卷/使用日志 CSV/Excel 汇总，分析语音控制实际使用频率、满意度、长期留存趋势、分人群差异；2) 公开网页/论坛/评测页面抓取与关键词证据采集，辅助收集用户对语音控制功能的真实反馈；3) 生成可直接投放的长期满意度调研问卷模板。输出清洗后的明细数据、频率分布、满意度统计、频率-满意度交叉分析、时间趋势汇总与 Excel 报告。",
+      "invoke": "python .ai-state/tools/voice_control_satisfaction_research.py --input {input} --output {output.xlsx} --web --max-results 5 --survey-template {survey_template.xlsx}",
+      "verify_cmd": "python .ai-state/tools/voice_control_satisfaction_research.py --test --output .ai-state/tools/voice_control_satisfaction_test.xlsx --survey-template .ai-state/tools/voice_control_survey_template.xlsx",
+      "dependencies": [
+        "beautifulsoup4"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 03:35",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_asr_wind_noise_test_matrix_builder",
+      "type": "write_script",
+      "path": null,
+      "description": "建立不同车速/盔型/面罩状态/麦位下的风噪-SNR-ASR识别率测试矩阵，并支持导入原始音频清单、批量计算音频指标、调用本地 Whisper 或 Azure Speech 进行转写、对比参考文本计算准确率/WER/CER，最终输出结构化 CSV/Excel 测试矩阵。适用于补齐“40/60/80/100/120km/h、全盔/揭面盔、面罩开闭、不同麦位条件下的原始音频与ASR准确率”数据采集与整理能力。",
+      "invoke": "python .ai-state/tools/helmet_asr_wind_noise_test_matrix_builder.py --write-template-manifest D:\\Users\\uih00653\\my_agent_company\\pythonProject1\\wind_asr_manifest.xlsx && python .ai-state/tools/helmet_asr_wind_noise_test_matrix_builder.py --manifest D:\\Users\\uih00653\\my_agent_company\\pythonProject1\\wind_asr_manifest.xlsx --audio-root D:\\Users\\uih00653\\my_agent_company\\pythonProject1\\audio_samples --asr-engine whisper_local --whisper-model base --output-prefix D:\\Users\\uih00653\\my_agent_company\\pythonProject1\\outputs\\helmet_wind_asr_matrix",
+      "verify_cmd": "python .ai-state/tools/helmet_asr_wind_noise_test_matrix_builder.py --self-test",
+      "dependencies": [
+        "openpyxl"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 03:36",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "cycling_battery_endurance_simulator",
+      "type": "write_script",
+      "path": ".ai-state/tools/cycling_battery_endurance_simulator.py",
+      "description": "命令行工具：模拟骑行场景下不同电池技术（如 VARTA 微型电池、三星 SDI 异形电池）的实际续航时间。支持按电池容量/标称电压/内阻/温度系数/振动退化系数/放电倍率修正建模，并结合骑行工况（平均系统功耗、峰值占空比、环境温度、昼夜温差、路面振动强度、骑行时长）估算有效可用能量、平均功耗、续航时间与相对基线衰减。支持单组参数、JSON/CSV/Excel 批量输入，输出 CSV/Excel/JSON 结果，适合在缺少完整电化学仿真环境时进行工程化续航比较。",
+      "invoke": "python .ai-state/tools/cycling_battery_endurance_simulator.py --input {input} --output {output}",
+      "verify_cmd": "python .ai-state/tools/cycling_battery_endurance_simulator.py --self-test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 04:07",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_battery_cost_benefit_analyzer",
+      "type": "write_script",
+      "path": ".ai-state/tools/helmet_battery_cost_benefit_analyzer.py",
+      "description": "命令行工具：用于分析异形电池与常规电池在头盔设计中的成本增加与续航提升比例。支持单组参数或 CSV/Excel 批量输入，基于电池可用体积、体积利用率、能量密度、BMS/结构附加成本、NRE 摊销、系统平均功耗等参数，计算两种方案的电池容量、续航时间、成本、单位续航成本、成本增幅、续航增幅、每增加 1 小时续航的边际成本，并输出 CSV/Excel/JSON 汇总结果，适合在缺少详细供应链报价时进行工程化成本效益估算。",
+      "invoke": "python .ai-state/tools/helmet_battery_cost_benefit_analyzer.py --input {input} --output {output}",
+      "verify_cmd": "python .ai-state/tools/helmet_battery_cost_benefit_analyzer.py --self-test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 04:08",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_user_profile_purchase_behavior_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理骑行头盔/智能骑行头盔市场的具体用户画像与购买行为数据的命令行工具。支持通过公开网页搜索结果页抓取、网页正文抽取、问卷/市场报告页面证据采集与本地 CSV/Excel 汇总三种方式补齐数据缺口；重点抽取年龄、收入水平、骑行频率、骑行类型、购买预算、购买渠道、购买驱动、品牌偏好、功能偏好、价格敏感度等字段，并输出 CSV/Excel 供后续功能优先级和定价策略分析。",
+      "invoke": "python .ai-state/tools/helmet_user_profile_purchase_behavior_research.py --keywords \"smart cycling helmet user survey age income riding frequency\" \"bike helmet buyer demographics income age survey\" --max-results-per-keyword 5 --output-prefix .ai-state/output/helmet_user_profile_purchase_behavior",
+      "verify_cmd": "python .ai-state/tools/helmet_user_profile_purchase_behavior_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 04:43",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "hud_adas_cost_power_estimator",
+      "type": "write_script",
+      "path": ".ai-state/tools/hud_adas_cost_power_estimator.py",
+      "description": "命令行工具：统一评估 HUD 显示与 ADAS 功能在不同硬件配置下的功耗、BOM 成本、NRE 摊销成本与商业可行性。支持单方案与 CSV/Excel 批量输入，按模块建模 HUD（显示面板、光机/光学、驱动）与 ADAS（SoC/NPU、摄像头、雷达、存储、PMIC、散热、连接）功耗和成本；支持按 duty cycle、利用率、工作模式、产量摊销、毛利率目标进行计算，输出总功耗、续航影响、总成本、目标售价、毛利率、方案排序与敏感性结果。",
+      "invoke": "python .ai-state/tools/hud_adas_cost_power_estimator.py --input {input} --output {output}",
+      "verify_cmd": "python .ai-state/tools/hud_adas_cost_power_estimator.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 04:44",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "device_weight_cg_budget",
+      "type": "write_script",
+      "path": ".ai-state/tools/device_weight_cg_budget.py",
+      "description": "命令行工具：基于目标电池容量、摄像头模组、HUD模组和结构件进行整机重量与重心预算。支持两类输入：1) 直接通过参数输入电池容量、系统电压/电芯比能量、各模组重量与坐标；2) 从 CSV/Excel 读取部件清单（名称、类别、质量/容量、数量、坐标、尺寸、备注）。工具可自动按电池容量反推电池质量，汇总整机总重、各类别占比、三轴重心坐标，并输出相对参考点的前后/左右/上下偏移；支持方案对比、敏感性分析（如不同容量电池对总重/CG影响）以及导出 CSV/Excel/JSON，适合在缺少完整 CAD/CAE 环境时做工程化重量/重心预算。",
+      "invoke": "python .ai-state/tools/device_weight_cg_budget.py --battery_capacity_mah 1500 --battery_x_mm -20 --battery_y_mm 0 --battery_z_mm 5 --camera_mass_g 8 --camera_x_mm 35 --camera_y_mm 10 --camera_z_mm 8 --hud_mass_g 22 --hud_x_mm 45 --hud_y_mm 0 --hud_z_mm 12 --structure_mass_g 65 --structure_x_mm 0 --structure_y_mm 0 --structure_z_mm 0 --ref_x_mm 0 --ref_y_mm 0 --ref_z_mm 0 --battery_sensitivity_mah 1200,1500,1800 --output_prefix .ai-state/tools/device_weight_cg_budget_result",
+      "verify_cmd": "python .ai-state/tools/device_weight_cg_budget.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 04:45",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "competitor_market_sales_research",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：补齐“竞品市场份额和销售数据”公开资料采集与结构化整理能力。支持基于关键词批量搜索公开网页，抓取并抽取竞品品牌/产品、销量、销售额、市场份额、时间范围、地区、渠道、来源类型与证据链接；支持从搜索结果页、新闻稿、行业报告摘要、电商销量页、媒体文章中提取结构化线索，输出 CSV/Excel/JSON，辅助人工快速汇总竞品市场份额与销售数据证据。",
+      "invoke": "python .ai-state/tools/competitor_market_sales_research.py --category \"{category}\" --competitors \"{competitors}\" --regions \"{regions}\" --years \"{years}\" --extra-keywords \"{extra_keywords}\" --engine bing --topk 8 --max-pages 20 --output \".ai-state/tools/competitor_market_sales_output.xlsx\"",
+      "verify_cmd": "python .ai-state/tools/competitor_market_sales_research.py --test",
+      "dependencies": [
+        "beautifulsoup4"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 05:11",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "hud_vibration_readability_model",
+      "type": "write_script",
+      "path": null,
+      "description": "建立“视角字号-亮度-振动频率-识别正确率/识别时间”实验建模工具。支持基于单次试验明细或聚合数据，拟合 HUD 字符在不同车速/振动频率/亮度/视角字号条件下的识别正确率（二项逻辑回归）与识别时间（对数线性回归）模型；支持加入受试者随机差异的近似控制（受试者哑变量）、批量场景预测、最小可读字号反推（满足目标正确率与最大识别时间阈值），并导出 CSV/Excel/JSON 结果，适合补齐该 calculation 缺口。",
+      "invoke": "python .ai-state/tools/hud_vibration_readability_model.py --input {input_trials.csv} --predict-input {scenarios.csv} --output .ai-state/tools/hud_vibration_readability_predictions.xlsx --summary-output .ai-state/tools/hud_vibration_readability_summary.json --threshold-output .ai-state/tools/hud_vibration_readability_thresholds.xlsx --target-correct 0.9 --max-time-ms 800 --size-min 6 --size-max 40 --size-step 0.5",
+      "verify_cmd": "python .ai-state/tools/hud_vibration_readability_model.py --test",
+      "dependencies": [
+        "numpy",
+        "scikit-learn"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 05:12",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "font_angular_resolution_calculator",
+      "type": "write_script",
+      "path": ".ai-state/tools/font_angular_resolution_calculator.py",
+      "description": "命令行工具：计算给定 FOV 与分辨率下指定字号对应的水平/垂直视角大小（deg / arcmin / 像素），并与人眼最小可读角分辨率标准进行对比。支持基于 pt→px 换算或直接输入像素字高，支持设置字体宽高比、显示宽高比、振动环境可读阈值，输出 JSON/CSV 风格结果，适合快速补齐 20° FOV、720p 下 12pt/18pt 字体角分辨率估算能力。",
+      "invoke": "python .ai-state/tools/font_angular_resolution_calculator.py --vertical-fov 20 --vertical-resolution 720 --aspect-ratio 1.7777777778 --font-pts 12,18 --dpi 96 --width-height-ratio 0.55 --vibration-threshold-arcmin 20 --pretty",
+      "verify_cmd": "python .ai-state/tools/font_angular_resolution_calculator.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 05:19",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "thermal_path_2d_simulator",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：用于验证散热路径设计的热传导效率，模拟热源经多层材料传导至外壳时的二维稳态温度分布。支持参数化定义热源区域、外壳区域、材料分区、导热系数、边界对流条件与网格分辨率，采用有限差分 + 迭代求解生成温度场，并输出温度矩阵、关键点温度、热流估算及温度分布热力图。适合在缺少专业CAE环境时，对热源到外壳的传热路径进行工程化快速验证与方案比较。",
+      "invoke": "python .ai-state/tools/thermal_path_2d_simulator.py --input {input_json} --output_dir {output_dir}",
+      "verify_cmd": "python .ai-state/tools/thermal_path_2d_simulator.py --test --output_dir .ai-state/tools/thermal_path_2d_simulator_test_output",
+      "dependencies": [
+        "numpy matplotlib"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 05:42",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "ece_2206_helmet_report_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理不同品牌智能头盔在 ECE 22.06 认证下的公开测试报告、认证页面、实验室/监管机构文档与媒体二次引用证据。工具支持关键词搜索、网页抓取、PDF/HTML 文本抽取、规则化提取品牌/型号/认证标准/实验室/证书编号/测试项目（如 oblique impact、rotational acceleration、linear acceleration、多点冲击等）/是否包含分数或结论/来源链接，并导出 CSV/Excel/JSON，辅助人工验证竞品在多方向冲击测试、旋转力测试等具体指标上的公开可得证据与数据缺口边界。",
+      "invoke": "python .ai-state/tools/ece_2206_helmet_report_research.py --brands \"Shoei,Arai,AGV,HJC,Schuberth,Nolan,Shark,LS2,Scorpion,Forcite,CrossHelmet,LIVALL,Sena\" --max-results 8 --out .ai-state/tools/ece_2206_helmet_report_research.xlsx --save-raw",
+      "verify_cmd": "python .ai-state/tools/ece_2206_helmet_report_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search pdfplumber pypdf"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 06:05",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_regulation_clause_fetch_mapper",
+      "type": "write_script",
+      "path": null,
+      "description": "抓取并结构化整理 ECE R22.06、DOT FMVSS 218、EU RED/EMC 协调标准的官方页面、可公开获取的原文/摘要/目录信息，提取与 HUD 光学模组、视野遮挡、外凸件、EMC 测试相关的条文级证据，并映射到 HUD、摄像头、蓝牙、胎压、语音模块的具体测试项。工具支持 URL 直抓、关键词搜索结果页抓取、PDF/HTML 文本抽取、规则化条款切分、关键词映射、证据留存与 Excel/CSV/JSON 导出。",
+      "invoke": "python .ai-state/tools/helmet_regulation_clause_fetch_mapper.py --sources {input_json} --out .ai-state/tools/output/helmet_regulation_clause_fetch_mapper",
+      "verify_cmd": "python .ai-state/tools/helmet_regulation_clause_fetch_mapper.py --test",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml",
+        "pdfplumber",
+        "openpyxl"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 06:07",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "adas_false_positive_rate_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理公开资料中 ADAS 误报率/虚警率/false positive/nuisance alert 数据，重点覆盖摩托车、骑行辅助、智能头盔与相关两轮车安全系统。工具支持关键词搜索、网页抓取、Crossref 文献检索、页面文本抽取与规则化字段提取，输出包含产品/品牌/场景/指标值/单位/测试条件/来源链接/证据片段的 CSV/Excel，辅助评估算法优化优先级。",
+      "invoke": "python .ai-state/tools/adas_false_positive_rate_research.py --out-dir outputs/adas_false_positive_rate_research --max-results-per-query 8",
+      "verify_cmd": "python .ai-state/tools/adas_false_positive_rate_research.py --test",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 06:33",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_sensor_battery_impact_simulator",
+      "type": "write_script",
+      "path": ".ai-state/tools/helmet_sensor_battery_impact_simulator.py",
+      "description": "命令行工具：模拟 24GHz 雷达、77GHz 雷达及其他传感器方案对头盔总功耗与电池续航的影响。支持单方案命令行输入，以及 CSV/Excel/JSON 批量输入多方案；可配置电池容量/电压、系统基线功耗、各传感器平均功耗、占空比、工作时长占比、DC-DC效率与安全折减系数，输出各方案的总功耗、总能量、续航小时数、相对基线续航变化，并生成 CSV/Excel/JSON 结果，适合用于快速比较不同传感器组合对续航的工程影响。",
+      "invoke": "python .ai-state/tools/helmet_sensor_battery_impact_simulator.py --input {input} --output {output}",
+      "verify_cmd": "python .ai-state/tools/helmet_sensor_battery_impact_simulator.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 06:34",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_coupled_thermal_simulator",
+      "type": "write_script",
+      "path": ".ai-state/tools/helmet_coupled_thermal_simulator.py",
+      "description": "建立头盔壳体-空气流场-热源耦合的工程化稳态热仿真工具。采用多节点热阻网络 + 车速相关外表面对流换热 + 头皮接触热阻/接触面积 + 壳体/EPS/内衬导热路径近似，计算 SoC 1.5W、HUD 0.6W、电池充电 5W 峰值等热源在 0/40/80/120 km/h 下的稳态节点温度、皮肤接触面温度与温升曲线，并校核 40°C 皮肤接触阈值。支持单场景 JSON 输入与批量速度扫描，输出 JSON/CSV/Excel。",
+      "invoke": "python .ai-state/tools/helmet_coupled_thermal_simulator.py --input {input_json} --output-prefix {output_prefix}",
+      "verify_cmd": "python .ai-state/tools/helmet_coupled_thermal_simulator.py --test --output-prefix .ai-state/tools/tmp/helmet_coupled_thermal_test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-06 07:08",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_cg_neck_moment_aero_estimator",
+      "type": "write_script",
+      "path": null,
+      "description": "编写命令行工具，基于基础头盔与智能模块的质量-坐标清单，精确计算整体3D重心、相对基线重心偏移，并在给定头部转动中心/颈部参考点下估算重力导致的颈部力矩变化；同时基于风速、迎风面积、压力中心坐标、阻力系数与头部姿态，计算气动力与附加力矩，并评估重心变化对总力矩的补偿/恶化效果。工具支持 JSON/CSV/Excel 输入、单场景与多风速批量分析、结果导出为 JSON/CSV/Excel。该方案不能替代完整 CAD/CFD，但可在缺少 CAE 环境时提供工程上可追溯、可复算的高精度参数化估算能力，并可直接承接 CAD 导出的部件质量与坐标数据。",
+      "invoke": "python .ai-state/tools/helmet_cg_neck_moment_aero_estimator.py --input {input_json} --output-prefix {output_prefix}",
+      "verify_cmd": "python .ai-state/tools/helmet_cg_neck_moment_aero_estimator.py --test --output-prefix .ai-state/tools/helmet_cg_neck_moment_aero_estimator_test",
+      "dependencies": [
+        "numpy"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 07:09",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_thermal_field_simulator",
+      "type": "write_script",
+      "path": null,
+      "description": "建立头盔壳体/EPS/电子件/散热组件的二维稳态热场仿真与可视化工具。采用参数化截面网格有限差分近似，支持定义壳体、EPS、空气腔、SoC、电池、散热片/导热垫等区域材料与热源，边界支持静止/20kmh/60kmh三种风速对应的对流换热系数。输出温度场热图、热点分布、内衬接触面最高温度、壳体散热占比等结果，用于在缺少完整CAE环境时补齐散热路径仿真与验证能力。",
+      "invoke": "python .ai-state/tools/helmet_thermal_field_simulator.py --config {input_json_or_yaml} --outdir {output_dir}",
+      "verify_cmd": "python .ai-state/tools/helmet_thermal_field_simulator.py --test --outdir .ai-state/tools/thermal_test_output",
+      "dependencies": [
+        "numpy matplotlib pyyaml"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 07:10",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
     }
   ],
   "evolution_log": [
@@ -825,6 +1430,240 @@
       "timestamp": "2026-04-05 04:09",
       "gap": "需要按 iOS/Android 各版本验证 BLE 后台扫描、重连时延与权限弹窗差异",
       "action": "registered ble_mobile_os_matrix_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-05 23:49",
+      "gap": "需要获取 MicroLED+衍射光波导的最新量产良率和成本数据",
+      "action": "registered microled_waveguide_yield_cost_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-05 23:50",
+      "gap": "需要真实供应链数据对比 OLED/MicroLED 模组在到眼亮度、眼盒、VID、良率和单价上的量产参数",
+      "action": "registered oled_microled_supplychain_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-05 23:55",
+      "gap": "获取底层结构化数据",
+      "action": "registered structured_scheme_a_b_data_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 00:20",
+      "gap": "验证低温环境下电池性能的具体衰减曲线",
+      "action": "registered battery_low_temp_curve_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 00:21",
+      "gap": "计算OLED屏幕在不同角度和光照条件下的亮度衰减",
+      "action": "registered oled_angular_brightness_attenuation_estimator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 00:22",
+      "gap": "需要创达样机实测 HUD 亮度、FOV、虚像距离、振动与高低温下可读性",
+      "action": "registered hud_sample_test_plan_generator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 00:54",
+      "gap": "验证摩托车ADAS算法在不同动态场景下的误报率和漏报率",
+      "action": "registered motorcycle_adas_fp_fn_validator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 00:55",
+      "gap": "评估IMU+雷达组合的成本和性能优化空间",
+      "action": "registered imu_radar_cost_performance_optimizer (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 00:56",
+      "gap": "需要基于目标安装位、FOV、车速分布和预警时延，计算 FCW/BSD 的最小可用探测距离与误报容忍阈值",
+      "action": "registered fcw_bsd_range_latency_model (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 01:02",
+      "gap": "获取单车灯场景识别率",
+      "action": "registered motorcycle_single_light_missrate_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 01:27",
+      "gap": "智能头盔市场规模与增长率的具体数据",
+      "action": "registered smart_helmet_market_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 01:28",
+      "gap": "需要建立HUD光机在日间直射/夜间逆光条件下的亮度与可读性模型，并评估不同安装位置对视场遮挡的影响",
+      "action": "registered hud_optical_pose_readability_model (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 01:35",
+      "gap": "需要查询DOT/ECE关于头盔模块化设备的认证法规",
+      "action": "registered ece_helmet_accessory_regulation_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 02:00",
+      "gap": "骑行头盔用户对不同功能的付费意愿调查",
+      "action": "registered helmet_wtp_social_forum_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 02:02",
+      "gap": "头盔舒适性与亚洲头型兼容性测试",
+      "action": "registered helmet_fit_feedback_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 02:27",
+      "gap": "需要计算不同传感器套件（如毫米波雷达、摄像头、超声波传感器）的成本与性能比，以及其对头盔续航的影响",
+      "action": "registered sensor_suite_cost_performance_battery_model (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 02:28",
+      "gap": "需要获取摩托车V2X技术标准（如DSRC、C-V2X）的最新进展和适配性数据",
+      "action": "registered motorcycle_v2x_standards_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 02:29",
+      "gap": "需要基于目标头盔结构、供电方案和热设计，计算“HUD+摄像头/雷达+蓝牙音频”组合下的整机续航与表面温升",
+      "action": "registered helmet_runtime_thermal_simulator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 02:56",
+      "gap": "需要获取智能头盔市场份额、增长率等商业数据",
+      "action": "registered smart_helmet_market_data_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 02:57",
+      "gap": "需要基于目标头盔CAD、电子BOM和安装位置计算整盔重心偏移与颈部力矩",
+      "action": "registered helmet_cg_neck_moment_calculator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 03:34",
+      "gap": "骑行场景下不同降噪技术（ENC、ANC、DSP）的性能对比实验数据",
+      "action": "registered cycling_noise_cancellation_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 03:35",
+      "gap": "用户对语音控制功能的长期满意度调研数据",
+      "action": "registered voice_control_satisfaction_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 03:36",
+      "gap": "需要建立不同车速/盔型/麦位下的风噪-SNR-识别率测试矩阵",
+      "action": "registered helmet_asr_wind_noise_test_matrix_builder (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 04:07",
+      "gap": "骑行场景下不同电池技术的实际续航时间模拟",
+      "action": "registered cycling_battery_endurance_simulator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 04:08",
+      "gap": "异形电池与常规电池的成本效益分析",
+      "action": "registered helmet_battery_cost_benefit_analyzer (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 04:43",
+      "gap": "骑行头盔市场的具体用户画像与购买行为数据",
+      "action": "registered helmet_user_profile_purchase_behavior_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 04:44",
+      "gap": "高端功能（如HUD显示、ADAS）的技术成本与功耗评估",
+      "action": "registered hud_adas_cost_power_estimator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 04:45",
+      "gap": "需要基于目标电池容量、摄像头模组、HUD模组和结构件做整机重量/重心预算",
+      "action": "registered device_weight_cg_budget (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 05:11",
+      "gap": "竞品市场份额和销售数据",
+      "action": "registered competitor_market_sales_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 05:12",
+      "gap": "需要验证不同车速/振动频率下HUD字符最小可读字号与识别时间",
+      "action": "registered hud_vibration_readability_model (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 05:19",
+      "gap": "需要计算特定FOV和分辨率下的字体角分辨率",
+      "action": "registered font_angular_resolution_calculator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 05:42",
+      "gap": "需要验证散热路径设计的热传导效率",
+      "action": "registered thermal_path_2d_simulator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 06:05",
+      "gap": "需要获取不同品牌智能头盔在ECE 22.06认证下的详细测试报告或分数",
+      "action": "registered ece_2206_helmet_report_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 06:07",
+      "gap": "需要调取ECE R22.06、DOT FMVSS 218、EU RED/EMC协调标准原文，确认HUD光学模组、视野遮挡、外凸件、EMC测试的条文级要求",
+      "action": "registered helmet_regulation_clause_fetch_mapper (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 06:33",
+      "gap": "需要ADAS误报率的具体量化数据，以评估算法优化的优先级",
+      "action": "registered adas_false_positive_rate_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 06:34",
+      "gap": "需要计算不同传感器方案的功耗对头盔续航的影响",
+      "action": "registered helmet_sensor_battery_impact_simulator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 07:08",
+      "gap": "需要建立头盔壳体-空气流场-热源耦合热仿真，验证40°C皮肤接触阈值",
+      "action": "registered helmet_coupled_thermal_simulator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 07:09",
+      "gap": "精确计算重心偏移量与颈部力矩变化",
+      "action": "registered helmet_cg_neck_moment_aero_estimator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 07:10",
+      "gap": "散热路径仿真与验证",
+      "action": "registered helmet_thermal_field_simulator (write_script)",
       "result": "success"
     }
   ]

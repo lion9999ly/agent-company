@@ -5,7 +5,8 @@
   "tags": [
     "deep_research",
     "report",
-    "v1_optical_deep"
+    "v1_optical_deep",
+    "needs_reconciliation"
   ],
   "source": "deep_research:v1_optical_deep",
   "confidence": "high",

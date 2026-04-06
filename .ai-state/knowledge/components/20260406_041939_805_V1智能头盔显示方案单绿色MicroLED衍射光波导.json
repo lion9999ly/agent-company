@@ -12,7 +12,8 @@
     "光学模组",
     "轻量化",
     "deep_research",
-    "auto_power_management_battery"
+    "auto_power_management_battery",
+    "needs_reconciliation"
   ],
   "confidence": "medium"
 }

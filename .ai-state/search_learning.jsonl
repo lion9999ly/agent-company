@@ -2,3 +2,179 @@
 {"test": "integration", "timestamp": "2026-04-05T10:11:11.551086"}
 {"test": "integration", "timestamp": "2026-04-05T14:55:47.089141"}
 {"test": "integration", "timestamp": "2026-04-05T18:00:04.682289"}
+{"query": "OLED微显示 自由曲面棱镜 成本 量产", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 3213, "timestamp": "2026-04-05 23:45"}
+{"query": "Sony ECX339AF OLED 亮度 户外 可读性", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 5061, "timestamp": "2026-04-05 23:45"}
+{"query": "MicroLED 衍射光波导 供应商 成熟度", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 3768, "timestamp": "2026-04-05 23:45"}
+{"query": "JBD MicroLED 显示器 功耗 强光", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 2999, "timestamp": "2026-04-05 23:45"}
+{"query": "Diffraction waveguide AR glasses Lumus WaveOptics cost", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 6000, "timestamp": "2026-04-05 23:45"}
+{"query": "Freeform optics manufacturing challenges Schott Corning", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 6000, "timestamp": "2026-04-05 23:45"}
+{"query": "MicroLED vs OLED AR display power consumption weight", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 6000, "timestamp": "2026-04-05 23:45"}
+{"query": "智能骑行头盔 AR 显示方案 对比", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 4881, "timestamp": "2026-04-05 23:45"}
+{"query": "OLED+FreeForm Pancake 光学方案 智能头盔显示", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 3588, "timestamp": "2026-04-05 23:45"}
+{"query": "MicroLED+衍射光波导 AR光学方案 智能头盔显示", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 6000, "timestamp": "2026-04-05 23:45"}
+{"query": "MicroLED 微显示器 百万尼特级亮度", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 5314, "timestamp": "2026-04-05 23:45"}
+{"query": "Micro-OLED 硅基OLED 微显示器 4K高PPI", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 4055, "timestamp": "2026-04-05 23:45"}
+{"query": "Pancake透镜 光学模组 轻薄化设计", "task": "V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导", "chars_returned": 4910, "timestamp": "2026-04-05 23:45"}
+{"query": "中科创达 RUBIK AI Glass 摩托车头盔 应用", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 3143, "timestamp": "2026-04-06 00:17"}
+{"query": "RUBIK AI Glass 户外强光 可视性 摩托车", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:17"}
+{"query": "ThunderSoft RUBIK AR Glass motorcycle HUD technical challenges", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:17"}
+{"query": "ThunderSoft RUBIK AI Glass 成本 摩托车头盔", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:17"}
+{"query": "中科创达 智能头盔 合作模式 评估", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 4049, "timestamp": "2026-04-06 00:17"}
+{"query": "AR HUD 摩托车头盔 震动 防水 防尘 标准", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 3406, "timestamp": "2026-04-06 00:17"}
+{"query": "ThunderSoft AR Glass outdoor temperature range motorcycle", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:17"}
+{"query": "中科创达 RUBIK AI Glass 方案 适配 摩托车", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 3146, "timestamp": "2026-04-06 00:17"}
+{"query": "Qualcomm Snapdragon XR 智能头盔芯片", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 4208, "timestamp": "2026-04-06 00:17"}
+{"query": "Sena Cardo 智能头盔通讯系统", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 4624, "timestamp": "2026-04-06 00:17"}
+{"query": "Shoei Arai Bell HJC 智能头盔合作", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:17"}
+{"query": "NVIDIA Jetson 智能头盔AI方案", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:17"}
+{"query": "AR显示模组 智能头盔技术", "task": "中科创达智能头盔合作可行性评估", "chars_returned": 5080, "timestamp": "2026-04-06 00:17"}
+{"query": "两轮车前碰撞预警算法修改量", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 2926, "timestamp": "2026-04-06 00:50"}
+{"query": "Mobileye motorcycle ADAS algorithm modification", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:50"}
+{"query": "Bosch motorcycle ADAS sensor requirements", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:50"}
+{"query": "Motorcycle Lane Departure Warning validation cycle", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 5442, "timestamp": "2026-04-06 00:50"}
+{"query": "Damon Motors CoPilot ADAS sensor suite", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:50"}
+{"query": "Ride Vision ADAS car vs motorcycle algorithm", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:50"}
+{"query": "汽车ADAS算法摩托车移植难度", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:50"}
+{"query": "BMW Motorrad ADAS algorithm porting challenges", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:50"}
+{"query": "Bosch 摩托车ADAS 智能头盔集成", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 4070, "timestamp": "2026-04-06 00:50"}
+{"query": "Mobileye EyeQ芯片 摩托车视觉感知", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 5464, "timestamp": "2026-04-06 00:50"}
+{"query": "Qualcomm Snapdragon Ride V2X 骑行通讯", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 6000, "timestamp": "2026-04-06 00:50"}
+{"query": "NVIDIA Jetson 边缘AI 智能穿戴", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 4128, "timestamp": "2026-04-06 00:50"}
+{"query": "BMW Motorrad ADAS 骑行装备", "task": "Luna6 ADAS算法摩托车适配技术评估", "chars_returned": 4695, "timestamp": "2026-04-06 00:50"}
+{"query": "Shoei GT-Air 3 Smart BOM cost estimate", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 4906, "timestamp": "2026-04-06 01:23"}
+{"query": "Shoei GT-Air 3 Smart teardown analysis", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 6000, "timestamp": "2026-04-06 01:23"}
+{"query": "Shoei GT-Air 3 Smart 技术方案分析", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 4104, "timestamp": "2026-04-06 01:23"}
+{"query": "Shoei GT-Air 3 Smart 用户评价 缺点", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 4692, "timestamp": "2026-04-06 01:23"}
+{"query": "Shoei GT-Air 3 Smart internal components", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 6000, "timestamp": "2026-04-06 01:23"}
+{"query": "Shoei GT-Air 3 Smart smart features breakdown", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 5740, "timestamp": "2026-04-06 01:23"}
+{"query": "Shoei GT-Air 3 Smart common issues", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 6000, "timestamp": "2026-04-06 01:23"}
+{"query": "Shoei GT-Air 3 Smart 智能模块成本", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 2152, "timestamp": "2026-04-06 01:23"}
+{"query": "Sena 智能头盔通讯系统 Mesh 2.0", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 3430, "timestamp": "2026-04-06 01:23"}
+{"query": "Shoei GT-Air 3 Smart 智能头盔", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 6000, "timestamp": "2026-04-06 01:23"}
+{"query": "Pinlock EVO 防雾镜片供应商", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 2626, "timestamp": "2026-04-06 01:23"}
+{"query": "智能骑行头盔 锂离子电池 USB-C 快充方案", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 4002, "timestamp": "2026-04-06 01:23"}
+{"query": "头盔集成 碰撞检测传感器 加速度计 陀螺仪", "task": "Shoei GT-Air 3 Smart 深度拆解分析", "chars_returned": 5748, "timestamp": "2026-04-06 01:23"}
+{"query": "Forcite helmet review issues price", "task": "摩托车骑手智能设备需求调研", "chars_returned": 6000, "timestamp": "2026-04-06 01:56"}
+{"query": "智能头盔 摩托车 骑行安全 需求", "task": "摩托车骑手智能设备需求调研", "chars_returned": 5084, "timestamp": "2026-04-06 01:56"}
+{"query": "Sena Cardo 对讲机 痛点 导航", "task": "摩托车骑手智能设备需求调研", "chars_returned": 6000, "timestamp": "2026-04-06 01:56"}
+{"query": "Motorcycle HUD display pain points", "task": "摩托车骑手智能设备需求调研", "chars_returned": 6000, "timestamp": "2026-04-06 01:56"}
+{"query": "摩友 智能设备 导航 不便 付费", "task": "摩托车骑手智能设备需求调研", "chars_returned": 3424, "timestamp": "2026-04-06 01:56"}
+{"query": "FreedConn 维迈通 智能头盔 缺点 改进", "task": "摩托车骑手智能设备需求调研", "chars_returned": 6000, "timestamp": "2026-04-06 01:56"}
+{"query": "骑行记录仪 摩托车 痛点 价格", "task": "摩托车骑手智能设备需求调研", "chars_returned": 6000, "timestamp": "2026-04-06 01:56"}
+{"query": "Shoei Arai 智能头盔改装 需求", "task": "摩托车骑手智能设备需求调研", "chars_returned": 4208, "timestamp": "2026-04-06 01:56"}
+{"query": "Mesh网络技术 智能骑行头盔 对讲方案", "task": "摩托车骑手智能设备需求调研", "chars_returned": 4851, "timestamp": "2026-04-06 01:56"}
+{"query": "头盔HUD AR显示 摩托车导航", "task": "摩托车骑手智能设备需求调研", "chars_returned": 3715, "timestamp": "2026-04-06 01:56"}
+{"query": "V2X C-V2X 摩托车安全通信", "task": "摩托车骑手智能设备需求调研", "chars_returned": 4098, "timestamp": "2026-04-06 01:56"}
+{"query": "智能头盔 行车记录 事故检测 摄像头", "task": "摩托车骑手智能设备需求调研", "chars_returned": 6000, "timestamp": "2026-04-06 01:56"}
+{"query": "智能头盔 语音控制 AI芯片 交互", "task": "摩托车骑手智能设备需求调研", "chars_returned": 6000, "timestamp": "2026-04-06 01:56"}
+{"query": "盲点检测头盔", "task": "智能头盔主动安全系统架构与传感器融合", "chars_returned": 6000, "timestamp": "2026-04-06 02:23"}
+{"query": "摩托车碰撞预警系统", "task": "智能头盔主动安全系统架构与传感器融合", "chars_returned": 3496, "timestamp": "2026-04-06 02:23"}
+{"query": "摩托车头盔主动安全", "task": "智能头盔主动安全系统架构与传感器融合", "chars_returned": 5946, "timestamp": "2026-04-06 02:23"}
+{"query": "骑手警报系统人机界面", "task": "智能头盔主动安全系统架构与传感器融合", "chars_returned": 3518, "timestamp": "2026-04-06 02:23"}
+{"query": "摩托车ADAS", "task": "智能头盔主动安全系统架构与传感器融合", "chars_returned": 5261, "timestamp": "2026-04-06 02:23"}
+{"query": "头盔传感器融合算法", "task": "智能头盔主动安全系统架构与传感器融合", "chars_returned": 5907, "timestamp": "2026-04-06 02:23"}
+{"query": "实时安全系统头盔", "task": "智能头盔主动安全系统架构与传感器融合", "chars_returned": 6000, "timestamp": "2026-04-06 02:23"}
+{"query": "摩托车V2X安全", "task": "智能头盔主动安全系统架构与传感器融合", "chars_returned": 6000, "timestamp": "2026-04-06 02:23"}
+{"query": "智能头盔电子集成", "task": "全脸头盔HUD与电子元件集成挑战", "chars_returned": 4700, "timestamp": "2026-04-06 02:52"}
+{"query": "HUD集成摩托车头盔", "task": "全脸头盔HUD与电子元件集成挑战", "chars_returned": 5469, "timestamp": "2026-04-06 02:52"}
+{"query": "全脸头盔设计挑战", "task": "全脸头盔HUD与电子元件集成挑战", "chars_returned": 4076, "timestamp": "2026-04-06 02:52"}
+{"query": "智能头盔重量分布", "task": "全脸头盔HUD与电子元件集成挑战", "chars_returned": 5795, "timestamp": "2026-04-06 02:52"}
+{"query": "头盔电子结构完整性", "task": "全脸头盔HUD与电子元件集成挑战", "chars_returned": 3906, "timestamp": "2026-04-06 02:52"}
+{"query": "头盔通风电子设备", "task": "全脸头盔HUD与电子元件集成挑战", "chars_returned": 3565, "timestamp": "2026-04-06 02:52"}
+{"query": "智能头盔舒适性设计", "task": "全脸头盔HUD与电子元件集成挑战", "chars_returned": 3797, "timestamp": "2026-04-06 02:52"}
+{"query": "摩托车头盔安全标准电子", "task": "全脸头盔HUD与电子元件集成挑战", "chars_returned": 6000, "timestamp": "2026-04-06 02:52"}
+{"query": "摩托车麦克风阵列设计", "task": "头盔内语音控制高级降噪技术", "chars_returned": 5329, "timestamp": "2026-04-06 03:30"}
+{"query": "头盔语音控制降噪", "task": "头盔内语音控制高级降噪技术", "chars_returned": 3818, "timestamp": "2026-04-06 03:30"}
+{"query": "头盔音频风噪抑制", "task": "头盔内语音控制高级降噪技术", "chars_returned": 3873, "timestamp": "2026-04-06 03:30"}
+{"query": "嘈杂环境语音识别", "task": "头盔内语音控制高级降噪技术", "chars_returned": 3739, "timestamp": "2026-04-06 03:30"}
+{"query": "头盔主动降噪", "task": "头盔内语音控制高级降噪技术", "chars_returned": 3364, "timestamp": "2026-04-06 03:30"}
+{"query": "头盔波束成形麦克风", "task": "头盔内语音控制高级降噪技术", "chars_returned": 3202, "timestamp": "2026-04-06 03:30"}
+{"query": "语音助手头盔性能", "task": "头盔内语音控制高级降噪技术", "chars_returned": 6000, "timestamp": "2026-04-06 03:30"}
+{"query": "摩托车音频处理", "task": "头盔内语音控制高级降噪技术", "chars_returned": 4788, "timestamp": "2026-04-06 03:30"}
+{"query": "Qualcomm ANC ENC 多麦克风波束成形", "task": "头盔内语音控制高级降噪技术", "chars_returned": 6000, "timestamp": "2026-04-06 03:30"}
+{"query": "Qualcomm Snapdragon Sound QCC系列 蓝牙音频SoC", "task": "头盔内语音控制高级降噪技术", "chars_returned": 4589, "timestamp": "2026-04-06 03:30"}
+{"query": "Analog Devices MEMS麦克风 高信噪比", "task": "头盔内语音控制高级降噪技术", "chars_returned": 3461, "timestamp": "2026-04-06 03:30"}
+{"query": "Analog Devices SHARC DSP SigmaDSP ANC算法", "task": "头盔内语音控制高级降噪技术", "chars_returned": 6000, "timestamp": "2026-04-06 03:30"}
+{"query": "Cerence Drive 语音AI NLP NLU", "task": "头盔内语音控制高级降噪技术", "chars_returned": 3328, "timestamp": "2026-04-06 03:30"}
+{"query": "Cerence 极端噪音语音识别 离线在线能力", "task": "头盔内语音控制高级降噪技术", "chars_returned": 4056, "timestamp": "2026-04-06 03:30"}
+{"query": "Cirrus Logic 低功耗音频DSP", "task": "头盔内语音控制高级降噪技术", "chars_returned": 5298, "timestamp": "2026-04-06 03:30"}
+{"query": "Cirrus Logic 智能编解码器 ANC功能", "task": "头盔内语音控制高级降噪技术", "chars_returned": 6000, "timestamp": "2026-04-06 03:30"}
+{"query": "Sensory TrulyHandsfree 语音唤醒 低功耗", "task": "头盔内语音控制高级降噪技术", "chars_returned": 6000, "timestamp": "2026-04-06 03:30"}
+{"query": "Sensory VoiceGenie 嘈杂环境语音识别", "task": "头盔内语音控制高级降噪技术", "chars_returned": 3289, "timestamp": "2026-04-06 03:30"}
+{"query": "智能头盔电池续航", "task": "智能头盔电源管理与电池技术", "chars_returned": 5511, "timestamp": "2026-04-06 04:03"}
+{"query": "微型高密度电池", "task": "智能头盔电源管理与电池技术", "chars_returned": 6000, "timestamp": "2026-04-06 04:03"}
+{"query": "可穿戴电源管理IC", "task": "智能头盔电源管理与电池技术", "chars_returned": 6000, "timestamp": "2026-04-06 04:03"}
+{"query": "摩托车头盔能量收集", "task": "智能头盔电源管理与电池技术", "chars_returned": 5937, "timestamp": "2026-04-06 04:03"}
+{"query": "头盔电子电池安全", "task": "智能头盔电源管理与电池技术", "chars_returned": 4909, "timestamp": "2026-04-06 04:03"}
+{"query": "头盔低功耗SoC设计", "task": "智能头盔电源管理与电池技术", "chars_returned": 5764, "timestamp": "2026-04-06 04:03"}
+{"query": "智能头盔无线充电", "task": "智能头盔电源管理与电池技术", "chars_returned": 3220, "timestamp": "2026-04-06 04:03"}
+{"query": "智能设备功耗优化", "task": "智能头盔电源管理与电池技术", "chars_returned": 4551, "timestamp": "2026-04-06 04:03"}
+{"query": "Samsung SDI 智能头盔异形电池 高能量密度", "task": "智能头盔电源管理与电池技术", "chars_returned": 3820, "timestamp": "2026-04-06 04:03"}
+{"query": "VARTA 微型定制电池 高端智能头盔", "task": "智能头盔电源管理与电池技术", "chars_returned": 3795, "timestamp": "2026-04-06 04:03"}
+{"query": "Texas Instruments PMIC 智能头盔电源管理 高效率", "task": "智能头盔电源管理与电池技术", "chars_returned": 6000, "timestamp": "2026-04-06 04:03"}
+{"query": "Qualcomm 骁龙平台集成PMIC AR/VR设备电源管理", "task": "智能头盔电源管理与电池技术", "chars_returned": 4206, "timestamp": "2026-04-06 04:03"}
+{"query": "LG Energy Solution 小型电池 快充解决方案", "task": "智能头盔电源管理与电池技术", "chars_returned": 3267, "timestamp": "2026-04-06 04:03"}
+{"query": "摩托车头盔主动安全系统", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 3813, "timestamp": "2026-04-06 04:39"}
+{"query": "智能头盔摄像头ADAS", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 3424, "timestamp": "2026-04-06 04:39"}
+{"query": "智能头盔传感器融合", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 6000, "timestamp": "2026-04-06 04:39"}
+{"query": "头盔集成雷达技术", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 6000, "timestamp": "2026-04-06 04:39"}
+{"query": "摩托车防撞头盔技术", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 4488, "timestamp": "2026-04-06 04:39"}
+{"query": "主动安全功能优先级", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 4013, "timestamp": "2026-04-06 04:39"}
+{"query": "高分辨率摄像头供应商 智能骑行头盔 前后视录像", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 5667, "timestamp": "2026-04-06 04:39"}
+{"query": "头盔传感器集成挑战", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 6000, "timestamp": "2026-04-06 04:39"}
+{"query": "微型毫米波雷达方案商 摩托车头盔 盲点监测", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 3354, "timestamp": "2026-04-06 04:39"}
+{"query": "智能穿戴ODM供应商 骑行头盔 传感器融合平台", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 4082, "timestamp": "2026-04-06 04:39"}
+{"query": "低功耗AI芯片供应商 智能骑行头盔 边缘计算", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 6000, "timestamp": "2026-04-06 04:39"}
+{"query": "DMS方案商 智能头盔 疲劳分心监测", "task": "主动安全功能优先级与传感器融合研究", "chars_returned": 6000, "timestamp": "2026-04-06 04:39"}
+{"query": "可快速浏览信息设计", "task": "HUD用户界面/用户体验设计原则研究", "chars_returned": 6000, "timestamp": "2026-04-06 05:06"}
+{"query": "头盔显示器UX原则", "task": "HUD用户界面/用户体验设计原则研究", "chars_returned": 6000, "timestamp": "2026-04-06 05:06"}
+{"query": "摩托车HUD UI设计", "task": "HUD用户界面/用户体验设计原则研究", "chars_returned": 4155, "timestamp": "2026-04-06 05:06"}
+{"query": "最小化干扰HUD", "task": "HUD用户界面/用户体验设计原则研究", "chars_returned": 3038, "timestamp": "2026-04-06 05:06"}
+{"query": "增强现实头盔界面", "task": "HUD用户界面/用户体验设计原则研究", "chars_returned": 4173, "timestamp": "2026-04-06 05:06"}
+{"query": "摩托车导航HUD设计", "task": "HUD用户界面/用户体验设计原则研究", "chars_returned": 6000, "timestamp": "2026-04-06 05:06"}
+{"query": "语音控制HUD集成", "task": "HUD用户界面/用户体验设计原则研究", "chars_returned": 5721, "timestamp": "2026-04-06 05:06"}
+{"query": "智能头盔电池续航", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 6000, "timestamp": "2026-04-06 05:38"}
+{"query": "摩托车头盔功耗分析", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 3363, "timestamp": "2026-04-06 05:38"}
+{"query": "紧凑高能量密度电池", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 4586, "timestamp": "2026-04-06 05:38"}
+{"query": "可穿戴设备电池安全", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 5584, "timestamp": "2026-04-06 05:38"}
+{"query": "电源管理IC头盔应用", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 6000, "timestamp": "2026-04-06 05:38"}
+{"query": "头盔无线充电技术", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 5884, "timestamp": "2026-04-06 05:38"}
+{"query": "智能头盔 PMIC 供应商 高效率 多路输出", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 4612, "timestamp": "2026-04-06 05:38"}
+{"query": "头盔快充方案", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 5923, "timestamp": "2026-04-06 05:38"}
+{"query": "智能头盔 锂电池 固态电池 高能量密度 硅碳负极", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 3472, "timestamp": "2026-04-06 05:38"}
+{"query": "智能头盔 BMS 方案商 精确电量计 电池保护", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 6000, "timestamp": "2026-04-06 05:38"}
+{"query": "智能头盔 快充方案 USB-PD 无线充电 Qi", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 4050, "timestamp": "2026-04-06 05:38"}
+{"query": "智能头盔 AR显示 摄像头 通讯模块 供应商", "task": "智能头盔电源管理与电池技术方案研究", "chars_returned": 6000, "timestamp": "2026-04-06 05:38"}
+{"query": "摩托车头盔安全标准", "task": "集成智能头盔的法规遵从性与认证要求", "chars_returned": 4160, "timestamp": "2026-04-06 06:02"}
+{"query": "ECE 22.06电子设备", "task": "集成智能头盔的法规遵从性与认证要求", "chars_returned": 4423, "timestamp": "2026-04-06 06:02"}
+{"query": "智能头盔产品认证", "task": "集成智能头盔的法规遵从性与认证要求", "chars_returned": 6000, "timestamp": "2026-04-06 06:02"}
+{"query": "FCC CE智能头盔", "task": "集成智能头盔的法规遵从性与认证要求", "chars_returned": 3309, "timestamp": "2026-04-06 06:02"}
+{"query": "DOT头盔集成技术", "task": "集成智能头盔的法规遵从性与认证要求", "chars_returned": 3430, "timestamp": "2026-04-06 06:02"}
+{"query": "EMC测试头盔", "task": "集成智能头盔的法规遵从性与认证要求", "chars_returned": 3214, "timestamp": "2026-04-06 06:02"}
+{"query": "AR头盔法规遵从性", "task": "集成智能头盔的法规遵从性与认证要求", "chars_returned": 4330, "timestamp": "2026-04-06 06:02"}
+{"query": "ADAS摩托车应用", "task": "主动安全系统设计与传感器融合", "chars_returned": 4144, "timestamp": "2026-04-06 06:29"}
+{"query": "头盔传感器融合技术", "task": "主动安全系统设计与传感器融合", "chars_returned": 3993, "timestamp": "2026-04-06 06:29"}
+{"query": "摩托车主动安全系统", "task": "主动安全系统设计与传感器融合", "chars_returned": 4300, "timestamp": "2026-04-06 06:29"}
+{"query": "智能头盔雷达集成", "task": "主动安全系统设计与传感器融合", "chars_returned": 3736, "timestamp": "2026-04-06 06:29"}
+{"query": "碰撞预警摩托车", "task": "主动安全系统设计与传感器融合", "chars_returned": 3448, "timestamp": "2026-04-06 06:29"}
+{"query": "盲点检测头盔", "task": "主动安全系统设计与传感器融合", "chars_returned": 2755, "timestamp": "2026-04-06 06:29"}
+{"query": "AI摩托车安全", "task": "主动安全系统设计与传感器融合", "chars_returned": 3948, "timestamp": "2026-04-06 06:29"}
+{"query": "骑行辅助系统", "task": "主动安全系统设计与传感器融合", "chars_returned": 3088, "timestamp": "2026-04-06 06:29"}
+{"query": "智能头盔重量分布", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 6000, "timestamp": "2026-04-06 07:04"}
+{"query": "全脸头盔智能集成", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 3618, "timestamp": "2026-04-06 07:04"}
+{"query": "头盔材料冲击性能", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 6000, "timestamp": "2026-04-06 07:04"}
+{"query": "头盔通风设计优化", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 4999, "timestamp": "2026-04-06 07:04"}
+{"query": "集成头盔结构设计", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 4794, "timestamp": "2026-04-06 07:04"}
+{"query": "摩托车头盔人机工程学", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 6000, "timestamp": "2026-04-06 07:04"}
+{"query": "头盔安全标准智能", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 4160, "timestamp": "2026-04-06 07:04"}
+{"query": "空气动力学头盔设计", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 6000, "timestamp": "2026-04-06 07:04"}
+{"query": "日本东丽 碳纤维 高端头盔外壳材料", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 3369, "timestamp": "2026-04-06 07:04"}
+{"query": "轻量化 高强度复合材料技术", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 6000, "timestamp": "2026-04-06 07:04"}
+{"query": "MIPS 多向冲击保护系统 减少旋转冲击", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 5431, "timestamp": "2026-04-06 07:04"}
+{"query": "头盔安全技术标准提升", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 3294, "timestamp": "2026-04-06 07:04"}
+{"query": "Fidlock 磁力扣 快速便捷固定系统", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 6000, "timestamp": "2026-04-06 07:04"}
+{"query": "提升头盔佩戴体验", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 6000, "timestamp": "2026-04-06 07:04"}
+{"query": "Sena 智能头盔通讯系统 蓝牙对讲", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 3528, "timestamp": "2026-04-06 07:04"}
+{"query": "骑行团队Mesh通讯方案", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 6000, "timestamp": "2026-04-06 07:04"}
+{"query": "Cardo 智能头盔通讯系统 DMC网状通讯", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 4396, "timestamp": "2026-04-06 07:04"}
+{"query": "与Sena竞争智能头盔通讯市场", "task": "全脸头盔结构集成与人机工程学", "chars_returned": 4311, "timestamp": "2026-04-06 07:04"}

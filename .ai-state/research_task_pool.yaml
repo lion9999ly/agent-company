@@ -1,217 +1,64 @@
 - completed: true
-  completed_at: 2026-04-05 00:24
-  goal: OLED+Free Form vs Micro LED+衍射光波导的完整供应链对比，含良率、交期、MOQ、BOM
-  id: supply_chain_optical
+  completed_at: 2026-04-06 06:39
+  discovered_at: 2026-04-06 06:16
+  goal: 研究摩托车/头盔领域现有的主动安全系统，识别适合智能全脸头盔的传感器类型（如雷达、摄像头、激光雷达、超声波），数据融合技术，以及有效的预警机制，以实现V1产品的主动安全功能。
+  id: auto_001
   priority: 1
   searches:
-  - motorcycle helmet HUD optical module supplier BOM cost 2026
-  - OLED micro display free form lens supplier price comparison
-  - Micro LED resin diffractive waveguide supplier 量产良率 交期
-  - JBD Micro LED display module specs price MOQ 2026
-  - Sony ECX 系列 OLED microdisplay specs comparison
-  - 珑璟光电 灵犀微光 谷东科技 光波导 参数 价格
-  - AR HUD optical engine comparison waveguide birdbath freeform 2026
-  - helmet HUD display reliability outdoor sunlight brightness nits
-  title: 光学方案供应链深度调研
+  - 摩托车主动安全系统
+  - 头盔传感器融合技术
+  - ADAS摩托车应用
+  - 盲点检测头盔
+  - 碰撞预警摩托车
+  - 智能头盔雷达集成
+  - AI摩托车安全
+  - 骑行辅助系统
+  source: auto_discover
+  title: 主动安全系统设计与传感器融合
 - completed: true
-  completed_at: 2026-04-05 00:36
-  goal: 骑行头盔用扬声器/麦克风/ANC方案的供应商对比，含风噪处理能力实测
-  id: supply_chain_audio
+  completed_at: 2026-04-06 07:16
+  discovered_at: 2026-04-06 06:16
+  goal: 深入研究如何将智能组件（HUD投影仪、电池、SoC、扬声器、麦克风等）有效地集成到全脸头盔外壳中，同时不损害头盔的安全性、空气动力学性能、通风、重量平衡和用户舒适度。重点关注材料科学、结构完整性和人机工程学设计。
+  id: auto_002
   priority: 1
   searches:
-  - 骨传导扬声器 头盔 供应商 韶音 歌尔 瑞声 参数 价格 2026
-  - helmet speaker wind noise cancellation MEMS microphone
-  - ANC chipset BES2700 QCC5181 comparison motorcycle helmet
-  - smart helmet audio solution IP67 waterproof speaker
-  title: 声学方案供应链深度调研
-- completed: true
-  completed_at: 2026-04-05 00:50
-  goal: Qualcomm AR1 Gen 1 的实际性能、功耗、散热、供货情况验证
-  id: supply_chain_soc
-  priority: 1
-  searches:
-  - Qualcomm AR1 Gen 1 XR platform specs power consumption thermal
-  - Qualcomm AR1 供货 交期 最小起订量 方案商 2026
-  - motorcycle helmet SoC alternatives MediaTek Genio Amlogic
-  - AR1 Gen 1 reference design smart glasses module
-  title: 主SoC选型验证
-- completed: true
-  completed_at: 2026-04-05 01:04
-  goal: Cardo Packtalk/Sena/LIVALL/Jarvish 的硬件拆解、BOM估算、用户口碑
-  id: competitor_deep_dive
+  - 全脸头盔智能集成
+  - 头盔材料冲击性能
+  - 智能头盔重量分布
+  - 头盔通风设计优化
+  - 摩托车头盔人机工程学
+  - 集成头盔结构设计
+  - 头盔安全标准智能
+  - 空气动力学头盔设计
+  source: auto_discover
+  title: 全脸头盔结构集成与人机工程学
+- discovered_at: 2026-04-06 06:16
+  goal: 研究针对高速、高噪音摩托车头盔环境的先进降噪技术、唤醒词检测和自然语言处理（NLP）解决方案。评估现有解决方案和潜在的AI模型，以实现鲁棒的命令识别和卓越的用户体验。
+  id: auto_003
   priority: 2
   searches:
-  - Cardo Packtalk Edge teardown BOM cost analysis
-  - Sena 50S vs Cardo comparison 2026 user review
-  - LIVALL smart helmet review problems issues
-  - Jarvish X-AR helmet review 实测 评价 问题
-  - 智能头盔 小红书 用户评测 吐槽 2026
-  title: 竞品深度拆解
-- completed: true
-  completed_at: 2026-04-05 01:18
-  goal: DOT/ECE/SNELL认证流程、周期、成本，以及HUD对认证的影响
-  id: certification_roadmap
+  - 摩托车头盔语音控制
+  - 高噪音环境NLP
+  - 头盔唤醒词检测
+  - 主动降噪头盔
+  - 摩托车语音助手
+  - 嘈杂环境语音识别
+  - AI语音控制头盔
+  - 摩托车音频处理
+  source: auto_discover
+  title: 高噪音环境下语音控制用户体验与AI
+- discovered_at: 2026-04-06 06:16
+  goal: 探索除基本语音通信之外的“组队骑行”高级功能，例如共享导航、团队追踪、紧急警报以及通过Mesh Intercom实现无缝数据共享。研究如何将这些功能与HUD及其他头盔系统集成，以提供增强的团队骑行体验。
+  id: auto_004
   priority: 2
   searches:
-  - motorcycle helmet DOT ECE certification process cost timeline
-  - helmet HUD certification impact ECE 22.06
-  - SNELL认证 费用 周期 测试项目 2026
-  - motorcycle helmet electronic components certification requirements
-  title: 安全认证路线图
-- completed: true
-  completed_at: 2026-04-05 01:31
-  goal: Cardo DMC vs 自研Mesh的技术可行性、延迟、功耗、频段限制
-  id: mesh_intercom_protocol
-  priority: 2
-  searches:
-  - Cardo DMC mesh intercom protocol technical analysis
-  - Bluetooth mesh vs proprietary mesh motorcycle intercom latency
-  - mesh network 骑行 对讲 功耗 延迟 频段
-  - LoRa vs Bluetooth mesh motorcycle communication
-  title: Mesh Intercom 协议深度分析
-- completed: true
-  completed_at: 2026-04-05 01:47
-  goal: SoC+显示模组+电池在全封闭头盔内的散热方案
-  id: thermal_management
-  priority: 3
-  searches:
-  - smart helmet thermal management heat dissipation solution
-  - AR glasses thermal design copper heat pipe graphene
-  - 头盔内 散热 方案 石墨片 热管 仿真
-  - qualcomm AR1 thermal design guide smart glasses
-  title: 头盔散热方案调研
-- completed: true
-  completed_at: 2026-04-05 01:58
-  goal: 户外阳光下 HUD 显示的亮度需求、方案对比、实测数据
-  id: display_sunlight_readability
-  priority: 2
-  searches:
-  - HUD display sunlight readability nits brightness requirement
-  - OLED vs Micro LED sunlight visibility comparison
-  - waveguide display outdoor brightness efficiency
-  - helmet HUD contrast ratio sunlight measurement
-  title: 强光下显示可读性
-- completed: true
-  completed_at: 2026-04-05 02:16
-  goal: Cardo/Sena/国产竞品 HUD 布局实测，信息排布、交互逻辑、视觉层级
-  id: demo_competitor_layout
-  priority: 1
-  searches:
-  - Cardo Packtalk Edge HUD layout interface design
-  - Sena 50S interface layout information hierarchy
-  - 智能头盔 HUD 布局 信息排布 实测 2026
-  - helmet HUD UI layout best practices
-  title: 竞品布局实测
-- completed: true
-  completed_at: 2026-04-05 02:32
-  goal: 骑行 HUD 的人因工程要求：视距、视角、字体大小、信息密度
-  id: demo_human_factors
-  priority: 1
-  searches:
-  - motorcycle helmet HUD human factors design
-  - HUD visual ergonomics viewing distance angle
-  - AR HUD 字体大小 视距 人因工程 标准
-  - automotive HUD font size legibility research
-  title: 人因工程
-- completed: true
-  completed_at: 2026-04-05 02:44
-  goal: 不同光照条件下 HUD 可见性：日出、正午、黄昏、隧道、夜间
-  id: demo_sunlight_visibility
-  priority: 1
-  searches:
-  - HUD visibility different lighting conditions
-  - helmet display contrast ratio outdoor sunlight
-  - AR glasses sunlight visibility measurement
-  - 头盔 HUD 光照 可见性 对比度 测试
-  title: 光照可见性
-- completed: true
-  completed_at: 2026-04-05 02:59
-  goal: 骑行 HUD 最佳色彩方案：背景色、前景色、警告色、夜间模式
-  id: demo_color_scheme
-  priority: 1
-  searches:
-  - HUD color scheme design best practices
-  - motorcycle display night mode color
-  - AR HUD 色彩方案 警告色 夜间模式
-  - automotive instrument cluster color design
-  title: 色彩方案
-- completed: true
-  completed_at: 2026-04-05 03:12
-  goal: 骑行场景信息优先级排序：导航、来电、消息、音乐、警告
-  id: demo_info_priority
-  priority: 1
-  searches:
-  - motorcycle helmet information display priority
-  - riding HUD information hierarchy navigation call
-  - 骑行 HUD 信息优先级 导航 来电 警告
-  - AR HUD information prioritization research
-  title: 信息优先级
-- completed: true
-  completed_at: 2026-04-05 03:24
-  goal: Cardo/Sena/LIVALL App 配对、设置、固件升级流程分析
-  id: demo_competitor_app
-  priority: 1
-  searches:
-  - Cardo Connect app pairing setup tutorial
-  - Sena Motorcycles app firmware update process
-  - LIVALL app 配对 设置 流程 评测
-  - smart helmet mobile app UX analysis
-  title: 竞品App流程
-- completed: true
-  completed_at: 2026-04-05 03:44
-  goal: 骑行场景 UX 研究：手套操作、语音控制、按键盲操作
-  id: demo_riding_ux
-  priority: 1
-  searches:
-  - motorcycle helmet glove-friendly interface
-  - riding voice control UX research
-  - 骑行 手套操作 盲操作 按键 设计
-  - helmet controls tactile feedback design
-  title: 骑行UX
-- completed: true
-  completed_at: 2026-04-05 03:57
-  goal: 组队骑行地图方案：成员位置、路线共享、离队提醒
-  id: demo_group_map
-  priority: 1
-  searches:
-  - Cardo DMC group riding map feature
-  - motorcycle group riding GPS tracking app
-  - 组队骑行 地图 位置共享 方案
-  - fleet tracking mesh network motorcycle
-  title: 组队地图
-- completed: true
-  completed_at: 2026-04-05 04:11
-  goal: 蓝牙/WiFi 配对流程优化：首次配对、自动重连、多设备切换
-  id: demo_pairing_flow
-  priority: 1
-  searches:
-  - Bluetooth pairing UX best practices
-  - multi-device Bluetooth switch seamless
-  - 蓝牙配对 首次配对 自动重连 UX
-  - Bluetooth multipoint connection helmet
-  title: 配对流程
-- goal: 对比两种光学路线的成本、量产难度、强光可读性、重量、供应商成熟度，给出明确推荐
-  id: v1_optical_deep
-  priority: 1
-  searches: 6
-  title: V1光学方案深度对比：OLED+FreeForm vs MicroLED+衍射光波导
-- goal: 评估创达的RUBIK AI Glass方案能否适配摩托车头盔场景，技术差距、合作模式、成本
-  id: supplier_thundersoft
-  priority: 1
-  searches: 5
-  title: 中科创达智能头盔合作可行性评估
-- goal: 前碰撞预警、车道偏离、盲区检测从汽车迁移到摩托车的算法修改量、传感器要求、验证周期
-  id: adas_motorcycle_adapt
-  priority: 1
-  searches: 6
-  title: Luna6 ADAS算法摩托车适配技术评估
-- goal: 技术方案、BOM成本估算、用户评价、弱点分析、我们的差异化机会
-  id: shoei_gt_air3_teardown
-  priority: 1
-  searches: 6
-  title: Shoei GT-Air 3 Smart 深度拆解分析
-- goal: 从小红书、Bilibili、摩托车论坛收集骑手对导航/通信/安全的真实痛点和付费意愿
-  id: rider_pain_points
-  priority: 2
-  searches: 5
-  title: 摩托车骑手智能设备需求调研
+  - Mesh Intercom高级功能
+  - 摩托车编队导航
+  - 组队骑行通信系统
+  - 智能头盔团队追踪
+  - 摩托车紧急警报系统
+  - Mesh网络数据共享
+  - HUD组队骑行集成
+  - 摩托车车队技术
+  source: auto_discover
+  title: 组队骑行高级功能与Mesh Intercom集成
