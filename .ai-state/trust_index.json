@@ -1,0 +1,42 @@
+{
+  "光学方案": {
+    "score": 0.5,
+    "samples": 0,
+    "correct": 0
+  },
+  "成本估算": {
+    "score": 0.5,
+    "samples": 0,
+    "correct": 0
+  },
+  "供应商评价": {
+    "score": 0.5,
+    "samples": 0,
+    "correct": 0
+  },
+  "技术参数": {
+    "score": 0.5,
+    "samples": 0,
+    "correct": 0
+  },
+  "市场分析": {
+    "score": 0.5,
+    "samples": 0,
+    "correct": 0
+  },
+  "用户洞察": {
+    "score": 0.5,
+    "samples": 0,
+    "correct": 0
+  },
+  "竞品分析": {
+    "score": 0.5,
+    "samples": 0,
+    "correct": 0
+  },
+  "知识问答": {
+    "score": 0.0,
+    "samples": 1,
+    "correct": 0
+  }
+}

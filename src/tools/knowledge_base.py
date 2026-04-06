@@ -571,3 +571,77 @@ def record_answer_feedback(question: str, kb_entry_ids: List[str], feedback: str
                     continue
 
     return True
+
+
+def update_knowledge_flag(entry_id: str, flag: str, reason: str = "") -> bool:
+    """给 KB 条目添加标记（如 needs_verification）
+
+    Args:
+        entry_id: 条目 ID（可以是文件路径或标题关键词）
+        flag: 标记名称（如 "needs_verification", "contradiction_detected"）
+        reason: 标记原因
+
+    Returns:
+        是否成功
+    """
+    # 查找匹配的 KB 文件
+    for json_file in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(json_file.read_text(encoding="utf-8"))
+
+            # 匹配：文件路径、标题关键词
+            if str(json_file) == entry_id or json_file.stem == entry_id:
+                continue  # 跳过，下面处理
+            if entry_id.lower() not in data.get("title", "").lower():
+                continue
+
+            # 添加 flag
+            flags = data.get("_flags", [])
+            flags.append({
+                "flag": flag,
+                "reason": reason,
+                "time": datetime.now().isoformat()
+            })
+            data["_flags"] = flags
+
+            # 写回
+            json_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            return True
+        except:
+            continue
+
+    return False
+
+
+def get_recent_entries(minutes: int = 60) -> list:
+    """获取最近 N 分钟内新增的 KB 条目
+
+    Args:
+        minutes: 时间窗口（分钟）
+
+    Returns:
+        条目列表
+    """
+    from datetime import timedelta
+
+    cutoff = datetime.now() - timedelta(minutes=minutes)
+    recent = []
+
+    for json_file in KB_ROOT.rglob("*.json"):
+        try:
+            data = json.loads(json_file.read_text(encoding="utf-8"))
+
+            # 检查创建时间
+            created_str = data.get("created_at", "")
+            if created_str:
+                try:
+                    created = datetime.strptime(created_str, "%Y-%m-%d")
+                    if created >= cutoff:
+                        data["_path"] = str(json_file)
+                        recent.append(data)
+                except:
+                    pass
+        except:
+            continue
+
+    return recent

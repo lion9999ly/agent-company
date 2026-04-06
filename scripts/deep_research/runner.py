@@ -11,7 +11,9 @@ import yaml
 from datetime import datetime
 from pathlib import Path
 
-from src.tools.knowledge_base import get_knowledge_stats, KB_ROOT
+from src.tools.knowledge_base import (
+    get_knowledge_stats, KB_ROOT, get_recent_entries, update_knowledge_flag
+)
 from scripts.meta_capability import generate_evolution_report
 
 from scripts.deep_research.models import call_model, get_model_for_task
@@ -469,6 +471,151 @@ def _check_cross_consistency(reports: list, progress_callback=None):
 
 
 # ============================================================
+# 学习管道出口质量网
+# ============================================================
+def _post_learning_quality_check(progress_callback=None) -> dict:
+    """两层质量检查：矛盾检测 + 元认知审查
+
+    在 KB 写入完成后调用，发现问题时标记条目（不阻止入库）。
+    任何异常都不中断学习流程。
+
+    Returns:
+        {"contradictions": int, "sense_check_issues": int, "flagged_entries": list}
+    """
+    result = {"contradictions": 0, "sense_check_issues": 0, "flagged_entries": []}
+
+    try:
+        # Step 1: 获取最近入库的 KB 条目（过去 60 分钟）
+        recent_entries = get_recent_entries(minutes=60)
+        if not recent_entries:
+            print("[QualityNet] 无近期 KB 条目，跳过检查")
+            return result
+
+        print(f"[QualityNet] 检查 {len(recent_entries)} 个近期 KB 条目...")
+
+        # Step 2: 加载决策树，获取已定结论
+        decision_tree_path = AI_STATE / "product_decision_tree.yaml"
+        if not decision_tree_path.exists():
+            print("[QualityNet] 决策树文件不存在，跳过矛盾检测")
+            return result
+
+        with open(decision_tree_path, 'r', encoding='utf-8') as f:
+            decision_tree = yaml.safe_load(f)
+
+        decided_items = [
+            d for d in decision_tree.get("decisions", [])
+            if d.get("status") == "decided" and d.get("decided_value")
+        ]
+
+        if not decided_items:
+            print("[QualityNet] 无已定结论，跳过矛盾检测")
+            return result
+
+        # Step 3: 矛盾检测（用 gemini_2_5_flash，轻量快）
+        kb_summary = "\n".join([
+            f"- [{e.get('type', 'unknown')}] {e.get('title', '')[:100]}: {e.get('content', '')[:200]}"
+            for e in recent_entries[:10]
+        ])
+
+        decisions_summary = "\n".join([
+            f"- {d.get('question', '')}: 已定结论 = {d.get('decided_value', '')}"
+            for d in decided_items[:10]
+        ])
+
+        contra_prompt = f"""检查以下新入库的知识条目是否与已有决策结论矛盾。
+
+已有决策结论：
+{decisions_summary}
+
+新入库知识条目：
+{kb_summary}
+
+如有矛盾，输出 JSON：
+{{"contradictions": [{{"kb_entry": "标题", "decision": "问题", "conflict": "冲突描述"}}]}}
+如无矛盾，输出：{{"contradictions": []}}"""
+
+        contra_result = call_model("gemini_2_5_flash", contra_prompt,
+            "只输出 JSON，无其他文字。", "quality_check")
+
+        if contra_result.get("success"):
+            try:
+                resp = contra_result["response"].strip()
+                resp = re.sub(r'^```json\s*', '', resp)
+                resp = re.sub(r'\s*```$', '', resp)
+                data = json.loads(resp)
+                contradictions = data.get("contradictions", [])
+
+                if contradictions:
+                    print(f"[QualityNet] ⚠️ 发现 {len(contradictions)} 个矛盾")
+                    result["contradictions"] = len(contradictions)
+
+                    # 标记相关条目
+                    for c in contradictions:
+                        kb_title = c.get("kb_entry", "")
+                        for entry in recent_entries:
+                            if kb_title in entry.get("title", ""):
+                                flag_ok = update_knowledge_flag(
+                                    entry.get("id", ""),
+                                    "contradiction_detected",
+                                    c.get("conflict", "")
+                                )
+                                if flag_ok:
+                                    result["flagged_entries"].append(entry.get("id", ""))
+                                    print(f"  → 已标记: {entry.get('title', '')[:50]}")
+
+                    if progress_callback:
+                        progress_callback(f"⚠️ KB矛盾检测: 发现 {len(contradictions)} 个冲突，已标记")
+                else:
+                    print("[QualityNet] ✅ 无矛盾")
+            except Exception as e:
+                print(f"[QualityNet] 矛盾检测解析失败: {e}")
+
+        # Step 4: 元认知 sense check（思考通道，60s超时，不可用就跳过）
+        try:
+            from scripts import claude_bridge
+
+            sense_prompt = f"""刚完成一轮深度学习，新增了 {len(recent_entries)} 个 KB 条目。
+从产品战略视角看，这些新增知识：
+1. 是否有价值？会不会是噪音？
+2. 是否遗漏重要角度？
+3. 有没有方向性问题？
+
+简要回复，不超过100字。如果没问题回复"没问题"。"""
+
+            sense_result = claude_bridge.call_claude_via_cdp(
+                sense_prompt, timeout=60, inject_context=True
+            )
+
+            if sense_result and "没问题" not in sense_result:
+                print(f"[QualityNet] 元认知审查发现问题: {sense_result[:200]}")
+                result["sense_check_issues"] = 1
+
+                # 标记最近的条目需要验证
+                for entry in recent_entries[:3]:
+                    flag_ok = update_knowledge_flag(
+                        entry.get("id", ""),
+                        "needs_verification",
+                        f"元认知审查: {sense_result[:100]}"
+                    )
+                    if flag_ok:
+                        result["flagged_entries"].append(entry.get("id", ""))
+
+                if progress_callback:
+                    progress_callback(f"🧠 元认知审查: {sense_result[:100]}")
+            else:
+                print("[QualityNet] ✅ 元认知审查通过")
+        except Exception as e:
+            # 思考通道不可用就跳过，不报错
+            print(f"[QualityNet] 元认知审查跳过（思考通道不可用）: {e}")
+
+    except Exception as e:
+        # 整个质量网的任何异常都不中断学习流程
+        print(f"[QualityNet] 质量网异常（已吞掉，不影响流程）: {e}")
+
+    return result
+
+
+# ============================================================
 # 深度学习主调度器
 # ============================================================
 def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
@@ -552,6 +699,10 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
     except ImportError:
         gov_report = "KB 治理模块未安装"
 
+    # 收尾: 质量网（两层检查）
+    print(f"\n[Scheduler] 运行出口质量网...")
+    quality_result = _post_learning_quality_check(progress_callback)
+
     # 汇总报告
     kb_stats_after = get_knowledge_stats()
     kb_total_after = sum(kb_stats_after.values())
@@ -581,6 +732,12 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
 
     if gov_report:
         summary_lines.append(f"🗄️ KB 治理: {gov_report}")
+
+    # 质量网结果
+    if quality_result.get("contradictions") or quality_result.get("sense_check_issues"):
+        summary_lines.append(f"🔍 质量网: {quality_result['contradictions']} 矛盾, {quality_result['sense_check_issues']} 元认知问题")
+        if quality_result.get("flagged_entries"):
+            summary_lines.append(f"  → 已标记 {len(quality_result['flagged_entries'])} 条待验证")
 
     summary = "\n".join(summary_lines)
 
