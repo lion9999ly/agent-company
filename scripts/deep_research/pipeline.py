@@ -30,6 +30,9 @@ from scripts.deep_research.learning import (
     get_agent_prompt_with_lessons,
 )
 from scripts.deep_research.night_watch import diagnose as night_watch_diagnose
+from scripts.deep_research.health_monitor import (
+    record_model_404, record_l2_result, record_search_empty
+)
 
 registry = ToolRegistry()
 
@@ -348,24 +351,32 @@ def deep_research_one(task: dict, progress_callback=None,
             "deep_research_search")
         if o3_result.get("success") and len(o3_result.get("response", "")) > 200:
             channel_results["o3"] = o3_result["response"][:3000]
+        elif "404" in str(o3_result.get("error", "")):
+            record_model_404("o3_deep_research")
 
         # Channel B: doubao
         doubao_result = call_with_backoff("doubao_seed_pro", query,
             "搜索中文互联网信息。", "chinese_search")
         if doubao_result.get("success") and len(doubao_result.get("response", "")) > 200:
             channel_results["doubao"] = doubao_result["response"][:3000]
+        elif "404" in str(doubao_result.get("error", "")):
+            record_model_404("doubao_seed_pro")
 
         # Channel C: grok
         grok_result = call_with_backoff("grok_4", query,
             "Search for real-time social media discussions.", "grok_search")
         if grok_result.get("success") and len(grok_result.get("response", "")) > 200:
             channel_results["grok"] = grok_result["response"][:3000]
+        elif "404" in str(grok_result.get("error", "")):
+            record_model_404("grok_4")
 
         # Channel D: gemini-deep
         gemini_deep_result = call_with_backoff("gemini_deep_research", query,
             "Search for academic papers and industry reports.", "gemini_deep_search")
         if gemini_deep_result.get("success") and len(gemini_deep_result.get("response", "")) > 200:
             channel_results["gemini_deep"] = gemini_deep_result["response"][:3000]
+        elif "404" in str(gemini_deep_result.get("error", "")):
+            record_model_404("gemini_deep_research")
 
         # 合并 + 去重（基于前 200 字 hash）
         seen_hashes = set()
@@ -423,6 +434,7 @@ def deep_research_one(task: dict, progress_callback=None,
         print(f"  [W1] 学习记录失败: {e}")
 
     if not all_sources:
+        record_search_empty()
         night_watch_diagnose("L1_搜索", f"全部搜索失败，{len(searches)} 个查询无结果",
                              f"任务: {title}")
         return f"# {title}\n\n调研失败：所有搜索均无结果"
@@ -441,6 +453,7 @@ def deep_research_one(task: dict, progress_callback=None,
         futures = {executor.submit(_extract_one, src): src for src in all_sources}
         for future in as_completed(futures):
             extracted = future.result()
+            record_l2_result(bool(extracted))
             if extracted:
                 with struct_lock:
                     structured_data_list.append(extracted)
