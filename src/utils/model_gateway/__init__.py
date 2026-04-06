@@ -44,6 +44,22 @@ from src.utils.model_gateway.providers.others import (
 class ModelGateway:
     """多模型网关 — 统一调用接口 + 智能路由"""
 
+    # Peer model 映射（禁用模型的替代）
+    PEER_MODELS = {
+        "o3_mini": "doubao_seed_lite",
+        "o3": "deepseek_r1_volcengine",
+        "gpt_5_3": "gpt_4o_norway",
+        "claude_opus_4_6": "gpt_5_4",
+        "claude_sonnet_4_6": "gpt_4o_norway",
+        "grok_4": "gpt_4o_norway",
+        "gemini_deep_research": "o3_deep_research",
+        "deepseek_v3_2": "deepseek_v3_volcengine",
+        "deepseek_r1": "deepseek_r1_volcengine",
+        "qwen_3_32b": "doubao_seed_pro",
+        "llama_4_maverick": "gpt_4o_norway",
+        "gemini_3_1_pro": "gemini_2_5_pro",
+    }
+
     def __init__(self, config_path: str = None):
         try:
             from dotenv import load_dotenv
@@ -89,6 +105,7 @@ class ModelGateway:
                 purpose=cfg.get('purpose', 'general'),
                 max_tokens=cfg.get('max_tokens', 4096),
                 temperature=cfg.get('temperature', 0.1),
+                enabled=cfg.get('enabled', True),
                 endpoint=endpoint,
                 deployment=cfg.get('deployment', cfg.get('model', 'gpt-4o')),
                 api_version=cfg.get('api_version', '2024-12-01-preview'),
@@ -143,15 +160,45 @@ class ModelGateway:
     # ============================================================
     # 核心路由: call() — 文本调用
     # ============================================================
+    def _get_peer_model(self, model_name: str) -> str:
+        """获取禁用模型的替代模型"""
+        peer = self.PEER_MODELS.get(model_name)
+        if peer:
+            peer_cfg = self.models.get(peer)
+            if peer_cfg and peer_cfg.enabled:
+                return peer
+        # 尝试 FALLBACK_MAP
+        from scripts.deep_research.models import FALLBACK_MAP
+        fallback = FALLBACK_MAP.get(model_name)
+        if fallback:
+            fb_cfg = self.models.get(fallback)
+            if fb_cfg and fb_cfg.enabled:
+                return fallback
+        return None
+
     def call(self, model_name: str, prompt: str, system_prompt: str = None,
              task_type: str = "general") -> Dict[str, Any]:
         """统一文本调用接口
 
-        关键改进: 图像生成模型不再走 call_gemini()，而是路由到 call_image()
+        关键改进:
+        - 禁用模型自动路由到 peer model
+        - 图像生成模型不再走 call_gemini()，而是路由到 call_image()
         """
         cfg = self.models.get(model_name)
         if not cfg:
             return {"success": False, "error": f"Unknown model: {model_name}"}
+
+        # === 检查模型是否启用 ===
+        if not cfg.enabled:
+            peer = self._get_peer_model(model_name)
+            if peer:
+                print(f"[ModelGateway] {model_name} disabled, routing to {peer}")
+                # 递归调用 peer model
+                result = self.call(peer, prompt, system_prompt, task_type)
+                result["routed_from"] = model_name
+                return result
+            else:
+                return {"success": False, "error": f"Model {model_name} is disabled and has no peer model"}
 
         # === 图像生成模型拦截：不走文本通道 ===
         if "image_generation" in cfg.capabilities and task_type == "image_generation":
@@ -230,6 +277,18 @@ class ModelGateway:
         if not cfg:
             return {"success": False, "error": f"Unknown model: {model_name}"}
 
+        # enabled 检查
+        if not cfg.enabled:
+            # 尝试其他图像模型
+            image_models = ["nano_banana_pro", "seedream_3_0", "nano_banana_2"]
+            for alt in image_models:
+                if alt != model_name:
+                    alt_cfg = self.models.get(alt)
+                    if alt_cfg and alt_cfg.enabled:
+                        print(f"[ModelGateway] {model_name} disabled for image, routing to {alt}")
+                        return self.call_image(prompt, alt, size, save_path)
+            return {"success": False, "error": f"Model {model_name} is disabled and no image model available"}
+
         if cfg.provider == "google":
             result = call_gemini_image_gen(cfg, model_name, prompt)
         elif cfg.provider == "volcengine":
@@ -271,6 +330,17 @@ class ModelGateway:
         cfg = self.models.get(model_name)
         if not cfg:
             return {"success": False, "error": f"Unknown model: {model_name}"}
+        # enabled 检查
+        if not cfg.enabled:
+            peer = self._get_peer_model(model_name)
+            if peer:
+                print(f"[ModelGateway] {model_name} disabled for vision, routing to {peer}")
+                peer_cfg = self.models.get(peer)
+                if peer_cfg and peer_cfg.provider == "google":
+                    result = call_gemini_vision(peer_cfg, peer, image_bytes, prompt, system_prompt, task_type)
+                    result["routed_from"] = model_name
+                    return result
+            return {"success": False, "error": f"Model {model_name} is disabled and has no vision-capable peer"}
         return call_gemini_vision(cfg, model_name, image_bytes, prompt, system_prompt, task_type)
 
     def call_gemini_audio(self, model_name: str, audio_bytes: bytes, prompt: str,
@@ -278,15 +348,23 @@ class ModelGateway:
         cfg = self.models.get(model_name)
         if not cfg:
             return {"success": False, "error": f"Unknown model: {model_name}"}
+        # enabled 检查
+        if not cfg.enabled:
+            peer = self._get_peer_model(model_name)
+            if peer:
+                print(f"[ModelGateway] {model_name} disabled for audio, routing to {peer}")
+                peer_cfg = self.models.get(peer)
+                if peer_cfg and peer_cfg.provider == "google":
+                    result = call_gemini_audio(peer_cfg, peer, audio_bytes, prompt, system_prompt, task_type)
+                    result["routed_from"] = model_name
+                    return result
+            return {"success": False, "error": f"Model {model_name} is disabled and has no audio-capable peer"}
         return call_gemini_audio(cfg, model_name, audio_bytes, prompt, system_prompt, task_type)
 
     def call_gemini(self, model_name: str, prompt: str, system_prompt: str = None,
                     task_type: str = "general") -> Dict[str, Any]:
-        """向后兼容：直接调 gemini text"""
-        cfg = self.models.get(model_name)
-        if not cfg:
-            return {"success": False, "error": f"Unknown model: {model_name}"}
-        return call_gemini(cfg, model_name, prompt, system_prompt, task_type)
+        """向后兼容：直接调 gemini text（通过统一 call 入口）"""
+        return self.call(model_name, prompt, system_prompt, task_type)
 
     def call_gemini_image(self, model_name: str, prompt: str) -> Dict[str, Any]:
         """向后兼容：调 gemini 图像生成"""
@@ -294,27 +372,18 @@ class ModelGateway:
 
     def call_azure_openai(self, model_name: str, prompt: str, system_prompt: str = None,
                           task_type: str = "general", max_tokens: int = None) -> Dict[str, Any]:
-        """向后兼容"""
-        cfg = self.models.get(model_name)
-        if not cfg:
-            return {"success": False, "error": f"Unknown model: {model_name}"}
-        return call_azure_openai(cfg, model_name, prompt, system_prompt, task_type, max_tokens)
+        """向后兼容（通过统一 call 入口）"""
+        return self.call(model_name, prompt, system_prompt, task_type)
 
     def call_azure_responses(self, model_name: str, prompt: str,
                              task_type: str = "deep_research", tools: list = None) -> Dict[str, Any]:
-        """向后兼容"""
-        cfg = self.models.get(model_name)
-        if not cfg:
-            return {"success": False, "error": f"Unknown model: {model_name}"}
-        return call_azure_responses(cfg, model_name, prompt, task_type, tools)
+        """向后兼容（通过统一 call 入口）"""
+        return self.call(model_name, prompt, None, task_type)
 
     def call_volcengine(self, model_name: str, prompt: str, system_prompt: str = None,
                         task_type: str = "general", image_url: str = None) -> Dict[str, Any]:
-        """向后兼容"""
-        cfg = self.models.get(model_name)
-        if not cfg:
-            return {"success": False, "error": f"Unknown model: {model_name}"}
-        return call_volcengine(cfg, model_name, prompt, system_prompt, task_type, image_url)
+        """向后兼容（通过统一 call 入口）"""
+        return self.call(model_name, prompt, system_prompt, task_type)
 
     def call_image_generation(self, prompt: str, model_name: str = "seedream_3_0",
                               size: str = "1024x1024") -> Dict[str, Any]:
