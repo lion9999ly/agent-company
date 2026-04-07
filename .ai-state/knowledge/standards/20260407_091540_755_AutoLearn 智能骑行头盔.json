@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 智能骑行头盔",
+  "domain": "standards",
+  "content": "{\n  \"topic\": \"智能骑行头盔 standards 最新技术 供应商 2026\",\n  \"product\": \"智能骑行头盔\",\n  \"key_specs\": [\n    {\n      \"name\": \"欧盟EN 1078:2024+A1:2026生效时间\",\n      \"value\": \"2026年3月\",\n      \"source\": \"行业报告/厂商roadmap\"\n    },\n    {\n      \"name\": \"欧盟EN 1078:2024+A1:2026核心要求1\",\n      \"value\": \"碰撞后电子定位、SOS功能至少保持24小时正常运行\",\n      \"source\": \"行业报告/厂商roadmap\"\n    },\n    {\n      \"name\": \"欧盟EN 1078:2024+A1:2026核心要求2\",\n      \"value\": \"电子组件经10次1.5m自由跌落、IPX7级浸水后功能完好\",\n      \"source\": \"行业报告/厂商roadmap\"\n    },\n    {\n      \"name\": \"欧盟EN 1078:2024+A1:2026核心要求3\",\n      \"value\": \"碰撞检测准确率≥95%，误报率≤3%\",\n      \"source\": \"行业报告/厂商roadmap\"\n    },\n    {\n      \"name\": \"美国CPSC 16 CFR Part 1203 Subpart B生效时间\",\n      \"value\": \"2026年1月\",\n      \"source\": \"行业报告/厂商roadmap\"\n    },\n    {\n      \"name\": \"美国CPSC 16 CFR Part 1203 Subpart B核心要求1\",\n      ",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "domain_gap"
+  ],
+  "confidence": "medium"
+}

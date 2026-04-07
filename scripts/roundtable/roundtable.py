@@ -7,7 +7,7 @@ import asyncio
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Any, Optional
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from src.utils.model_gateway import get_model_gateway
 from scripts.roundtable.crystallizer import Crystallizer, CrystalContext
@@ -23,10 +23,10 @@ from scripts.roundtable.resilience import Resilience, ParkedException
 class Phase1Output:
     """Phase 1 输出（独立思考）"""
     role: str
-    constraints: List[str]      # 约束清单
-    judgments: List[str]        # 关键判断
-    uncertainties: List[str]    # 不确定项
-    claims: List[Any]           # 解析后的 Claim 对象
+    constraints: List[str] = field(default_factory=list)      # 约束清单
+    judgments: List[str] = field(default_factory=list)        # 关键判断
+    uncertainties: List[str] = field(default_factory=list)    # 不确定项
+    claims: List[Any] = field(default_factory=list)           # 解析后的 Claim 对象
 
 
 @dataclass

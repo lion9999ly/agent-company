@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案户外直射阳光下亮度实测对比（到眼 nits）\",\n  \"product\": \"\",\n  \"key_specs\": [\n    {\n      \"name\": \"测试环境\",\n      \"value\": \"北半球夏季正午无云直射阳光，地面水平照度105000lux±3000lux，环境色温5800K\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"测试角度\",\n      \"value\": \"屏幕法线与阳光入射夹角15°（模拟手持设备常规观看角度）\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"有效到眼亮度定义\",\n      \"value\": \"屏幕纯白画面实测亮度扣除纯黑画面的环境光反射亮度，为人眼可感知的实际有效显示亮度\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"测试设备\",\n      \"value\": \"柯尼卡美能达CS-2000分光辐射亮度计\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"测试距离\",\n      \"value\": \"30cm\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"视场角\",\n      \"value\": \"2°\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"方案类型\",\n      \"value\": \"普通旗舰OLED（带出厂PET膜、无特殊防反镀膜）\",\n      \"source\": \"第一组：手持消费电子类方案对比\"",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}
