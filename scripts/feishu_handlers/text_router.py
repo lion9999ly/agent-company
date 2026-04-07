@@ -473,10 +473,13 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
     # === 3.6 圆桌系统 ===
     if text_stripped.startswith("圆桌:") or text_stripped.startswith("圆桌："):
         topic = text_stripped.split(":", 1)[1].strip() if ":" in text_stripped else text_stripped.split("：", 1)[1].strip()
+        log(f"[圆桌] 收到请求，topic={topic}")
 
         # 查找预定义的 TaskSpec
         from scripts.roundtable.task_spec import load_task_spec
         spec = load_task_spec(topic)
+        log(f"[圆桌] TaskSpec 加载结果: {spec is not None}")
+
         if spec:
             send_reply(reply_target, f"🔵 圆桌启动：{topic}")
 
@@ -486,7 +489,9 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
                     from scripts.roundtable import run_task
                     from src.utils.model_gateway import get_model_gateway
                     from src.tools import knowledge_base as kb_module
+                    from scripts.feishu_handlers.chat_helpers import log as _log
 
+                    _log("[圆桌] 后台线程启动")
                     gw = get_model_gateway()
                     loop = asyncio.new_event_loop()
                     asyncio.set_event_loop(loop)
@@ -497,9 +502,13 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
                             send_reply(reply_target, msg)
 
                     feishu = FeishuNotifier()
+                    _log(f"[圆桌] 开始执行 run_task, topic={spec.topic}")
                     result = loop.run_until_complete(run_task(spec, gw, kb_module, feishu))
+                    _log(f"[圆桌] run_task 完成")
                     send_reply(reply_target, f"🎯 圆桌任务完成：{spec.output_path}")
                 except Exception as e:
+                    import traceback
+                    _log(f"[圆桌] 异常: {e}\n{traceback.format_exc()}")
                     _safe_reply_error(send_reply, reply_target, "圆桌系统", e)
 
             threading.Thread(target=_run_roundtable, daemon=True).start()

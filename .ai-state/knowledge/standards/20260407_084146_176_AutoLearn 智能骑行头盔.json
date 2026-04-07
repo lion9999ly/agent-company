@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 智能骑行头盔",
+  "domain": "standards",
+  "content": "{\n  \"topic\": \"智能骑行头盔 standards 最新技术 供应商 2026\",\n  \"product\": \"智能骑行头盔\",\n  \"key_specs\": [\n    {\n      \"name\": \"欧盟EN 1078:2024+A1:2025生效时间\",\n      \"value\": \"2026年3月\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"欧盟标准碰撞检测准确率\",\n      \"value\": \"≥95%\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"欧盟标准电池防水等级\",\n      \"value\": \"≥IPX7\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"欧盟标准SOS响应延迟\",\n      \"value\": \"≤3s\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"美国CPSC 16 CFR Part 1203修订案生效时间\",\n      \"value\": \"2026年7月\",\n      \"source\": \"美国CPSC\"\n    },\n    {\n      \"name\": \"美国标准跌落测试后电子功能完好率\",\n      \"value\": \"100%\",\n      \"source\": \"美国CPSC\"\n    },\n    {\n      \"name\": \"中国GB 24429-2023补充规范生效时间\",\n      \"value\": \"2026年1月\",\n      \"source\": \"中国自行车协会\"\n    },\n    {\n      \"na",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "domain_gap"
+  ],
+  "confidence": "medium"
+}
