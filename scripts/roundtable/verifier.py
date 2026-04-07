@@ -216,12 +216,15 @@ class Verifier:
 
         if result.get("success"):
             response = result.get("response", "")
+
             # 解析结果
+            parsed_any = False
             for line in response.split("\n"):
                 if "❌" in line:
                     # 提取缺陷描述
                     match = re.search(r"标准(\d+).*❌.*缺陷[:：]\s*(.+)", line)
                     if match:
+                        parsed_any = True
                         idx = int(match.group(1)) - 1
                         if idx < len(unchecked_criteria):
                             desc = match.group(2).strip()
@@ -231,6 +234,17 @@ class Verifier:
                                 expected="满足该标准",
                                 severity="P0",
                             ))
+                elif "✅" in line or "✓" in line:
+                    parsed_any = True
+
+            # 解析失败检查：如果完全没有解析出任何结果，不能默认通过
+            if not parsed_any and unchecked_criteria:
+                issues.append(Issue(
+                    criterion="LLM 审查解析失败",
+                    description=f"无法解析 LLM 输出格式，共 {len(unchecked_criteria)} 条标准未验证",
+                    expected="每条标准应有明确的 ✅ 或 ❌ 标记",
+                    severity="P0",
+                ))
 
         return issues
 
