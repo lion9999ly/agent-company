@@ -377,10 +377,20 @@
     content:"";
     position:absolute;
     inset:0;
-    width:18%;
+    background:rgba(255,255,255,.08);
+    border-radius:999px;
+  }
+
+  .timeline-fill{
+    position:absolute;
+    left:0;
+    top:0;
+    height:100%;
+    width:0%;
     background:linear-gradient(90deg, rgba(74,144,226,.75), rgba(90,200,250,.55));
     border-radius:999px;
     box-shadow:var(--glow-nav);
+    transition:width 0.15s ease-out;
   }
 
   #control-panel,
@@ -448,10 +458,15 @@
 
   .mode-b{
     --mode-blur:2px;
-    --mode-sat:1.12;
-    --mode-bright:1.04;
+    --mode-sat:0.85;
+    --mode-bright:1.08;
+    --accent:#00ff88;
+    --line:rgba(0,255,136,.15);
+    --bg:rgba(0,20,8,.75);
   }
 
+  /* B方案：全绿波导视觉效果 */
+  .mode-b #hud-container,
   .mode-b .zone,
   .mode-b #timeline-bar,
   .mode-b .hud-top-hint,
@@ -459,8 +474,40 @@
   .mode-b #sandbox-panel{
     box-shadow:
       0 8px 30px rgba(0,0,0,.28),
-      0 0 0 1px rgba(255,255,255,.03) inset,
-      0 0 18px rgba(255,255,255,.06);
+      0 0 0 1px rgba(0,255,136,.08) inset,
+      0 0 18px rgba(0,255,136,.12);
+  }
+
+  /* B方案：滤除非绿色 */
+  .mode-b .zone-content,
+  .mode-b .zone-title,
+  .mode-b .zone-sub,
+  .mode-b .panel-title,
+  .mode-b .panel-row,
+  .mode-b .sandbox-btn{
+    filter:hue-rotate(0deg) saturate(1.2);
+    color:#00ff88 !important;
+  }
+
+  /* B方案：图标全绿 */
+  .mode-b .zone-icon,
+  .mode-b .zone-title svg,
+  .mode-b .icon-svg{
+    filter:drop-shadow(0 0 4px rgba(0,255,136,.6));
+    color:#00ff88;
+  }
+
+  /* B方案：背景泛绿 */
+  .mode-b .road-perspective{
+    opacity:0.12;
+    filter:sepia(0.3) hue-rotate(80deg);
+  }
+
+  /* B方案：预警仍为红 */
+  .mode-b .fcw-alert,
+  .mode-b [data-mode="ADAS"] .zone-icon{
+    color:#ff3b30 !important;
+    filter:drop-shadow(0 0 8px rgba(255,59,48,.8));
   }
 
   [data-speed="S2"] #lb-zone .music-optional,
@@ -539,12 +586,20 @@
     transform-origin:bottom center;
   }
   .lane-line.left{
-    left:calc(50% - 40px);
-    transform:rotate(-8deg);
+    left:calc(50% - 80px);
+    transform:rotate(-12deg);
   }
   .lane-line.right{
-    right:calc(50% - 40px);
-    transform:rotate(8deg);
+    right:calc(50% - 80px);
+    transform:rotate(12deg);
+  }
+  /* 中央虚线 */
+  .lane-line.center{
+    left:50%;
+    right:auto;
+    transform:translateX(-50%) rotate(0deg);
+    width:1px;
+    background:repeating-linear-gradient(180deg, rgba(255,255,255,0.25) 0 15px, transparent 15px 30px);
   }
 
   /* === 2. 头盔护目镜边框 === */
@@ -605,6 +660,7 @@
     <!-- 中央路景底图 -->
     <div class="road-perspective" aria-hidden="true">
       <div class="lane-line left"></div>
+      <div class="lane-line center"></div>
       <div class="lane-line right"></div>
     </div>
 
@@ -1717,20 +1773,20 @@
     // 清空原有内容，保留标题
     sandboxPanel.innerHTML = '<div class="panel-title">Sandbox</div>';
 
-    // ADAS 类按钮
+    // ADAS 类按钮（修正事件类型）
     const adasGroup = createButtonGroup('ADAS', [
-      { label: 'FCW前向', event: { type: 'ADAS', zone: 'FCW', side: 'front' } },
-      { label: '左后BSD', event: { type: 'ADAS', zone: 'BSD', side: 'left' } },
-      { label: '右后BSD', event: { type: 'ADAS', zone: 'BSD', side: 'right' } },
-      { label: '后方接近', event: { type: 'ADAS', zone: 'REAR', side: 'rear' } },
-      { label: '清除预警', action: 'clearADAS' }
+      { label: 'FCW前向', event: { type: 'ADAS_FC' } },
+      { label: '左后BSD', event: { type: 'ADAS_BS_L' } },
+      { label: '右后BSD', event: { type: 'ADAS_BS_R' } },
+      { label: '后方接近', event: { type: 'ADAS_REAR' } },
+      { label: '清除预警', event: { type: 'ADAS_CLEAR' } }
     ]);
 
-    // 通讯类按钮
+    // 通讯类按钮（修正事件类型）
     const commGroup = createButtonGroup('通讯', [
-      { label: '来电', event: { type: 'CALL', state: 'ringing' } },
-      { label: '挂断', event: { type: 'CALL', state: 'ended' } },
-      { label: '语音指令', event: { type: 'VOICE', command: 'wake' } }
+      { label: '来电', event: { type: 'CALL_IN', caller: '阿杰' } },
+      { label: '挂断', event: { type: 'CALL_END' } },
+      { label: '语音指令', event: { type: 'VOICE', text: '导航去科技园南门' } }
     ]);
 
     // 录制类按钮
@@ -1809,7 +1865,7 @@
     } else if (btn.action) {
       switch (btn.action) {
         case 'clearADAS':
-          if (window.emitEvent) window.emitEvent('CLEAR_ADAS');
+          if (window.emitEvent) window.emitEvent({ type: 'ADAS_CLEAR' });
           break;
         case 'setOpticsA':
           if (hudContainer) hudContainer.classList.remove('mode-b');
@@ -1848,29 +1904,68 @@
     var zones = [ltZone, rtZone, rbZone, lbZone];
     var delay = 0;
 
-    // 依次点亮四角
+    // 自检清单
+    var checklist = [
+      { item: '光学系统', status: 'pending' },
+      { item: '通信模块', status: 'pending' },
+      { item: '定位服务', status: 'pending' },
+      { item: 'ADAS感知', status: 'pending' }
+    ];
+
+    // 显示自检清单到 lt-zone
+    function updateChecklist(index, status) {
+      if (!ltZone) return;
+      checklist[index].status = status;
+      var html = '<div class="boot-checklist" style="font-size:12px;color:#00ffcc;">';
+      html += '<div style="font-size:14px;margin-bottom:8px;">⏳ 系统自检</div>';
+      checklist.forEach(function(c) {
+        var icon = c.status === 'ok' ? '✅' : c.status === 'pending' ? '⏳' : '❌';
+        var color = c.status === 'ok' ? '#00ff88' : c.status === 'pending' ? '#ffaa00' : '#ff3b30';
+        html += '<div style="margin:4px 0;color:' + color + '">' + icon + ' ' + c.item + '</div>';
+      });
+      html += '</div>';
+      ltZone.innerHTML = html;
+    }
+
+    // 初始显示
+    updateChecklist(-1, 'pending');
+
+    // 依次点亮四角 + 更新清单
     zones.forEach(function(zone, index) {
       setTimeout(function() {
         if (zone) {
           zone.style.transition = 'box-shadow 0.3s';
           zone.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.8)';
         }
+        // 更新对应清单项
+        if (index < checklist.length) {
+          updateChecklist(index, 'ok');
+        }
       }, delay);
-      delay += 300;
+      delay += 400;
 
       // 恢复
       setTimeout(function() {
         if (zone) {
           zone.style.boxShadow = '';
         }
-      }, delay + 200);
+      }, delay + 150);
     });
 
     // 自检完成，进入 IDLE
     setTimeout(function() {
-      if (window.setMode) {
-        window.setMode('IDLE');
+      if (ltZone) {
+        var html = '<div class="boot-complete" style="font-size:12px;color:#00ff88;">';
+        html += '<div style="font-size:14px;margin-bottom:4px;">✅ 系统就绪</div>';
+        html += '<div style="color:#aaa;font-size:10px;">所有模块正常</div>';
+        html += '</div>';
+        ltZone.innerHTML = html;
       }
+      setTimeout(function() {
+        if (window.setMode) {
+          window.setMode('IDLE');
+        }
+      }, 800);
     }, delay + 500);
   }
 
