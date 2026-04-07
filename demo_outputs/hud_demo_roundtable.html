@@ -489,10 +489,134 @@
     background:
       radial-gradient(circle at center, rgba(0,0,0,0) 0 62%, rgba(0,0,0,.02) 100%);
   }
+
+  /* === 1. 中央路景底图 === */
+  .road-perspective{
+    position:absolute;
+    left:50%;
+    top:40%;
+    width:60%;
+    height:50%;
+    transform:translate(-50%, 0);
+    pointer-events:none;
+    z-index:1;
+    opacity:0.18;
+    background:
+      /* 路面渐变 */
+      linear-gradient(180deg, transparent 0%, #1a1a1a 30%, #0a0a0a 100%);
+    overflow:hidden;
+  }
+  .road-perspective::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:0;
+    width:2px;
+    height:100%;
+    transform:translateX(-50%);
+    background:linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.3) 100%);
+  }
+  .road-perspective::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:0;
+    width:0;
+    height:0;
+    transform:translateX(-50%);
+    border-left:80px solid transparent;
+    border-right:80px solid transparent;
+    border-bottom:100% solid transparent;
+    border-bottom-color:rgba(255,255,255,0.03);
+    clip-path:polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%);
+  }
+  .lane-line{
+    position:absolute;
+    bottom:0;
+    width:2px;
+    height:100%;
+    background:repeating-linear-gradient(180deg, rgba(255,255,255,0.4) 0 20px, transparent 20px 40px);
+    transform-origin:bottom center;
+  }
+  .lane-line.left{
+    left:calc(50% - 40px);
+    transform:rotate(-8deg);
+  }
+  .lane-line.right{
+    right:calc(50% - 40px);
+    transform:rotate(8deg);
+  }
+
+  /* === 2. 头盔护目镜边框 === */
+  .visor-frame{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:100;
+    background:
+      /* 顶部更暗 */
+      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(0,0,0,0.4) 0%, transparent 50%),
+      /* 底部更暗 */
+      radial-gradient(ellipse 120% 50% at 50% 100%, rgba(0,0,0,0.35) 0%, transparent 50%),
+      /* 左右边缘 */
+      radial-gradient(ellipse 50% 100% at 0% 50%, rgba(0,0,0,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 100% at 100% 50%, rgba(0,0,0,0.25) 0%, transparent 60%);
+  }
+  .visor-frame::before{
+    content:"";
+    position:absolute;
+    inset:8px;
+    border-radius:50% 50% 45% 45% / 60% 60% 40% 40%;
+    border:1px solid rgba(255,255,255,0.05);
+    pointer-events:none;
+  }
+
+  /* === 3. 中央前向碰撞预警 === */
+  .fcw-alert{
+    position:absolute;
+    top:25%;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:50;
+    text-align:center;
+    animation:fcw-pulse 0.5s ease-in-out infinite alternate;
+  }
+  .fcw-alert .fcw-title{
+    font-size:32px;
+    font-weight:800;
+    color:#FF3B30;
+    text-shadow:0 0 30px rgba(255,59,48,0.8), 0 0 60px rgba(255,59,48,0.5);
+    letter-spacing:0.1em;
+  }
+  .fcw-alert .fcw-sub{
+    font-size:18px;
+    color:#FF6B5B;
+    margin-top:8px;
+    text-shadow:0 0 20px rgba(255,59,48,0.6);
+  }
+  @keyframes fcw-pulse{
+    0%{ opacity:1; transform:translateX(-50%) scale(1); }
+    100%{ opacity:0.7; transform:translateX(-50%) scale(1.02); }
+  }
 </style>
 </head>
 <body>
   <div id="hud-container" class="mode-a" data-speed="S0" data-mode="BOOT">
+    <!-- 中央路景底图 -->
+    <div class="road-perspective" aria-hidden="true">
+      <div class="lane-line left"></div>
+      <div class="lane-line right"></div>
+    </div>
+
+    <!-- 头盔护目镜边框 -->
+    <div class="visor-frame" aria-hidden="true"></div>
+
+    <!-- 中央前向碰撞预警（默认隐藏） -->
+    <div class="fcw-alert" id="fcw-alert" style="display:none;">
+      <div class="fcw-title">前向碰撞预警</div>
+      <div class="fcw-sub">立即减速</div>
+    </div>
+
     <div class="hud-top-hint" id="top-hint">语音、组队等轻提示</div>
 
     <div id="lt-zone" class="zone">
@@ -785,16 +909,15 @@
         break;
 
       case 'ADAS_FC':
+        // 前向碰撞预警：显示在中央偏上位置，不在 rb-zone
         pushOverlay('ADAS', {
           adasType: 'FC',
-          zones: ['lt-zone', 'rt-zone'],
+          zones: [],  // 不在角落显示
           color: '#FF3B30',
           timeout: e.timeout
         });
-        if (typeof window.flashWarning === 'function') {
-          window.flashWarning('lt-zone', '#FF3B30');
-          window.flashWarning('rt-zone', '#FF3B30');
-        }
+        // 显示中央 FCW 警告
+        showFCWAlert(e.timeout || 2200);
         break;
 
       case 'ADAS_BS_L':
@@ -1089,14 +1212,7 @@
 
     if (overlay && overlay.type === 'ADAS') {
       const adasType = overlay.payload && overlay.payload.adasType;
-      if (adasType === 'FC') {
-        return `
-          <div class="zone-title">Navigation</div>
-          <div class="nav-primary warning-main">前向碰撞预警</div>
-          <div class="nav-distance" style="color:${COLORS.warn}">立即减速</div>
-          <div class="nav-secondary">危险来自前方，中央视野不投射遮挡</div>
-        `;
-      }
+      // FC (前向碰撞) 不在 rb-zone 显示，改为中央预警
       if (adasType === 'BS_R') {
         return `
           <div class="zone-title">Navigation</div>
@@ -1138,6 +1254,20 @@
     el.innerHTML = content;
     return true;
   };
+
+  // === 中央前向碰撞预警 ===
+  function showFCWAlert(timeout) {
+    const fcwEl = document.getElementById('fcw-alert');
+    if (!fcwEl) return;
+    fcwEl.style.display = 'block';
+    // 播放警报音效（可选）
+    // new Audio('alert.mp3').play().catch(()=>{});
+    if (showFCWAlert._timer) clearTimeout(showFCWAlert._timer);
+    showFCWAlert._timer = setTimeout(() => {
+      fcwEl.style.display = 'none';
+    }, timeout || 2200);
+  }
+  window.showFCWAlert = showFCWAlert;
 
   window.__hudRenderAll = function __hudRenderAll() {
     const state = getState();
