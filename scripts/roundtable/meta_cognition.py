@@ -2,12 +2,22 @@
 @description: 元认知层 — Claude 思考通道嵌入圆桌系统
               不参与打球，判断这场球赛打得对不对。
 @dependencies: claude_bridge, asyncio, typing
-@last_modified: 2026-04-06
+@last_modified: 2026-04-07
 """
 import asyncio
 from typing import Optional, Dict, Any, List
 from pathlib import Path
 from datetime import datetime
+
+# ============================================================
+# ⚠️ 临时禁用 — 等待 CDP 桥接协议重新设计
+# 启用条件：完成以下三项
+#   1. 频率限制（每个任务最多调 3 次思考通道）
+#   2. 内容去重（已推送过的不重复推）
+#   3. 长度限制（≤1000 字摘要，不推全文）
+# 启用前必须经 Leo 确认
+# ============================================================
+META_COGNITION_ENABLED = False
 
 
 class MetaCognition:
@@ -104,6 +114,9 @@ class MetaCognition:
             如果发现问题，返回问题描述（注入到下一个 Phase 的上下文）
             如果没问题或超时，返回 None
         """
+        if not META_COGNITION_ENABLED:
+            return None
+
         # 构建输出摘要
         summary_lines = []
         for role, output in phase_outputs.items():
@@ -147,6 +160,9 @@ class MetaCognition:
             如果有追问，返回追问内容
             如果批准或超时，返回 None
         """
+        if not META_COGNITION_ENABLED:
+            return None
+
         prompt = f"""以下是圆桌讨论收敛后的执行摘要，即将用于生成{task_topic}。
 
 {summary[:1500]}
@@ -177,6 +193,9 @@ class MetaCognition:
             如果有问题，返回问题描述
             如果通过或超时，返回 None
         """
+        if not META_COGNITION_ENABLED:
+            return None
+
         # 截取输出摘要
         output_summary = output[:2000] if len(output) > 2000 else output
 
@@ -212,6 +231,9 @@ Verifier 已通过所有验收标准。
         Returns:
             每条结论的级别映射 {"结论": "A/B/C"}
         """
+        if not META_COGNITION_ENABLED:
+            return {}
+
         conclusions_text = "\n".join(f"{i+1}. {c}" for i, c in enumerate(new_conclusions[:10]))
 
         prompt = f"""圆桌讨论{task_topic}产出了以下新结论。
@@ -254,6 +276,13 @@ C. 不值得记录 — 过于细节或临时性的判断
         Returns:
             诊断结果 {"diagnosis": str, "action": str, "details": str}
         """
+        if not META_COGNITION_ENABLED:
+            return {
+                "diagnosis": "元认知层已禁用",
+                "action": "retry",
+                "details": "META_COGNITION_ENABLED=False"
+            }
+
         attempts = context.get("attempts", [])
 
         prompt = f"""圆桌系统在{phase}环节反复出错。
