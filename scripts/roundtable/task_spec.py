@@ -97,12 +97,57 @@ class TaskSpec:
 
 
 def load_task_spec(topic: str) -> Optional[TaskSpec]:
-    """从预定义文件加载 TaskSpec
+    """从预定义文件加载 TaskSpec，支持模糊匹配
 
     存放位置：.ai-state/task_specs/{topic}.json
+
+    匹配优先级：
+    1. 精确匹配文件名
+    2. 归一化匹配（去空格、转下划线、转小写）
+    3. 子串匹配（topic 包含文件名或反之）
+    4. JSON 内部 topic 字段匹配
     """
+    import json
+    import re
     from pathlib import Path
-    spec_path = Path(".ai-state/task_specs") / f"{topic}.json"
-    if spec_path.exists():
-        return TaskSpec.from_json_file(str(spec_path))
+
+    specs_dir = Path(".ai-state/task_specs")
+    if not specs_dir.exists():
+        return None
+
+    # 归一化函数
+    def normalize(s: str) -> str:
+        s = s.strip().lower()
+        s = re.sub(r'[\s\u3000]+', '_', s)          # 空格/全角空格 → _
+        s = re.sub(r'[^\w\u4e00-\u9fff]', '', s)    # 去非字母数字非中文
+        return s
+
+    # 1. 精确匹配（原逻辑）
+    exact = specs_dir / f"{topic}.json"
+    if exact.exists():
+        return TaskSpec.from_json_file(str(exact))
+
+    norm_topic = normalize(topic)
+
+    # 2. 归一化匹配
+    for f in specs_dir.glob("*.json"):
+        norm_file = normalize(f.stem)
+        if norm_file == norm_topic:
+            return TaskSpec.from_json_file(str(f))
+
+    # 3. 子串匹配
+    for f in specs_dir.glob("*.json"):
+        norm_file = normalize(f.stem)
+        if norm_topic in norm_file or norm_file in norm_topic:
+            return TaskSpec.from_json_file(str(f))
+
+    # 4. JSON 内部 topic 字段匹配
+    for f in specs_dir.glob("*.json"):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+            if normalize(data.get("topic", "")) == norm_topic:
+                return TaskSpec.from_json_file(str(f))
+        except Exception:
+            continue
+
     return None
