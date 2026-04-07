@@ -1,0 +1,265 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUD Demo</title>
+    <style>
+        /* CONFIG */
+        :root {
+            --bg-color: black;
+            --text-color: white;
+            --speed-color: white;
+            --nav-color: blue;
+            --alert-color: red;
+            --team-color: cyan;
+            --music-color: purple;
+            --inactive-color: gray;
+            --green-mode-color: #00FF00;
+            --font-size-large: 2rem;
+            --font-size-medium: 1.5rem;
+            --font-size-small: 1rem;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .hud-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hud-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+        }
+
+        .hud-corner {
+            width: 20%;
+            text-align: center;
+            font-size: var(--font-size-large);
+        }
+
+        .hud-center {
+            flex-grow: 1;
+        }
+
+        .hud-center::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hud-bottom {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 10%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hud-sandbox {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 20%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .sandbox-button {
+            display: block;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background-color: var(--inactive-color);
+            color: var(--text-color);
+            border: none;
+            cursor: pointer;
+        }
+
+        .sandbox-button.active {
+            background-color: var(--alert-color);
+        }
+
+        .timeline {
+            width: 80%;
+            height: 5px;
+            background-color: var(--inactive-color);
+            position: relative;
+        }
+
+        .timeline-progress {
+            height: 100%;
+            background-color: var(--alert-color);
+            width: 0;
+        }
+
+        .optical-mode {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5rem;
+            background-color: var(--inactive-color);
+            color: var(--text-color);
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="hud-container">
+        <!-- Top Row -->
+        <div class="hud-row">
+            <div id="lt" class="hud-corner">LT: Speed</div>
+            <div class="hud-center"></div>
+            <div id="rt" class="hud-corner">RT: System</div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="hud-row">
+            <div id="lb" class="hud-corner">LB: Info</div>
+            <div class="hud-center"></div>
+            <div id="rb" class="hud-corner">RB: Main</div>
+        </div>
+
+        <!-- Bottom Timeline -->
+        <div class="hud-bottom">
+            <div class="timeline">
+                <div class="timeline-progress"></div>
+            </div>
+        </div>
+
+        <!-- Sandbox Panel -->
+        <div class="hud-sandbox">
+            <button class="sandbox-button" onclick="emitEvent('alert')">Trigger Alert</button>
+            <button class="sandbox-button" onclick="emitEvent('call')">Trigger Call</button>
+            <button class="sandbox-button" onclick="emitEvent('nav')">Trigger Navigation</button>
+            <button class="sandbox-button" onclick="emitEvent('team')">Trigger Team</button>
+            <button class="sandbox-button" onclick="emitEvent('music')">Trigger Music</button>
+            <button class="sandbox-button" onclick="emitEvent('record')">Trigger Record</button>
+            <button class="sandbox-button" onclick="emitEvent('main')">Trigger Main</button>
+        </div>
+
+        <!-- Optical Mode Toggle -->
+        <button class="optical-mode" onclick="toggleOpticalMode()">Toggle Optical Mode</button>
+    </div>
+
+    <script>
+        /* CONFIG */
+        const MODES = {
+            ALERT: 'alert',
+            CALL: 'call',
+            NAV: 'nav',
+            TEAM: 'team',
+            MUSIC: 'music',
+            RECORD: 'record',
+            MAIN: 'main'
+        };
+
+        const SPEED_LEVELS = {
+            S0: 'S0',
+            S1: 'S1',
+            S2: 'S2',
+            S3: 'S3'
+        };
+
+        /* STORE */
+        let currentMode = MODES.MAIN;
+        let opticalMode = 'A'; // A: Full Color, B: Green Waveguide
+        let speedLevel = SPEED_LEVELS.S0;
+
+        /* FSM */
+        function setMode(mode) {
+            currentMode = mode;
+            render();
+        }
+
+        function emitEvent(type) {
+            setMode(type);
+        }
+
+        function toggleOpticalMode() {
+            opticalMode = opticalMode === 'A' ? 'B' : 'A';
+            document.body.style.color = opticalMode === 'B' ? 'var(--green-mode-color)' : 'var(--text-color)';
+        }
+
+        /* RENDER */
+        function render() {
+            document.querySelectorAll('.sandbox-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`.sandbox-button[onclick="emitEvent('${currentMode}')"]`).classList.add('active');
+
+            // Update HUD corners
+            document.getElementById('lt').textContent = `LT: ${currentMode === MODES.ALERT ? 'ALERT' : 'Speed'}`;
+            document.getElementById('rt').textContent = `RT: ${currentMode === MODES.CALL ? 'CALL' : 'System'}`;
+            document.getElementById('lb').textContent = `LB: ${currentMode === MODES.NAV ? 'NAV' : 'Info'}`;
+            document.getElementById('rb').textContent = `RB: ${currentMode === MODES.MUSIC ? 'MUSIC' : 'Main'}`;
+        }
+
+        /* INPUT */
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case '1': emitEvent(MODES.ALERT); break;
+                case '2': emitEvent(MODES.CALL); break;
+                case '3': emitEvent(MODES.NAV); break;
+                case '4': emitEvent(MODES.TEAM); break;
+                case '5': emitEvent(MODES.MUSIC); break;
+                case '6': emitEvent(MODES.RECORD); break;
+                case '7': emitEvent(MODES.MAIN); break;
+                case 'o': toggleOpticalMode(); break;
+            }
+        });
+
+        /* SCRIPT */
+        function playScript() {
+            const script = [
+                { type: MODES.ALERT, delay: 2000 },
+                { type: MODES.CALL, delay: 2000 },
+                { type: MODES.NAV, delay: 2000 },
+                { type: MODES.TEAM, delay: 2000 },
+                { type: MODES.MUSIC, delay: 2000 },
+                { type: MODES.RECORD, delay: 2000 },
+                { type: MODES.MAIN, delay: 2000 }
+            ];
+
+            let index = 0;
+
+            function next() {
+                if (index < script.length) {
+                    const { type, delay } = script[index];
+                    emitEvent(type);
+                    index++;
+                    setTimeout(next, delay);
+                }
+            }
+
+            next();
+        }
+
+        /* DEBUG */
+        window.onload = () => {
+            render();
+            playScript();
+        };
+    </script>
+</body>
+</html>
+```

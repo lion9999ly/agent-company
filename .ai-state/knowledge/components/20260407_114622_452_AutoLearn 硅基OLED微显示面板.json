@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 硅基OLED微显示面板",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"OLED 微显示面板供应商交期和 MOQ（Sony ECX 系列 vs 京东方）\",\n  \"product\": \"硅基OLED微显示面板\",\n  \"key_specs\": [\n    {\n      \"name\": \"供应商\",\n      \"value\": \"Sony\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"产品系列\",\n      \"value\": \"ECX系列\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"主要规格\",\n      \"value\": \"0.39英寸FHD, 0.5英寸4K\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"热门型号\",\n      \"value\": \"ECX339A (0.5英寸4K)\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"目标市场\",\n      \"value\": \"消费级AR/VR, 专业相机取景器\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"量产MOQ (常规)\",\n      \"value\": \"1万-2万片/单型号单次订单\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"量产MOQ (热门型号)\",\n      \"value\": \"2万片起/单型号单次订单\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

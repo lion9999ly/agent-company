@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案户外直射阳光下亮度实测对比（到眼 nits）\",\n  \"product\": \"\",\n  \"key_specs\": [\n    {\n      \"name\": \"测试环境\",\n      \"value\": \"夏季正午无云直射阳光\",\n      \"source\": \"统一基准条件\"\n    },\n    {\n      \"name\": \"屏幕方向\",\n      \"value\": \"正对阳光入射方向\",\n      \"source\": \"统一基准条件\"\n    },\n    {\n      \"name\": \"环境照度\",\n      \"value\": \"102000lux\",\n      \"source\": \"统一基准条件\"\n    },\n    {\n      \"name\": \"测试距离\",\n      \"value\": \"30cm\",\n      \"source\": \"统一基准条件\"\n    },\n    {\n      \"name\": \"到眼亮度定义\",\n      \"value\": \"包含屏幕反射光的实际入眼总亮度\",\n      \"source\": \"统一基准条件\"\n    },\n    {\n      \"name\": \"有效可视对比度阈值\",\n      \"value\": \"≥3:1\",\n      \"source\": \"统一基准条件\"\n    },\n    {\n      \"name\": \"屏幕自身峰值激发亮度（阳光模式触发后）\",\n      \"value\": \"1180nits\",\n      \"source\": \"消费级手持设备类对比 - 方案A：普通中端机型常规高亮LCD方案（无特殊低反涂层）\"\n    },\n    {\n      \"name\": \"屏幕表面反射率\",\n      \"value\": \"4.8%\",\n ",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

@@ -283,6 +283,7 @@ def start_auto_learn_scheduler(interval_minutes: float = 30, progress_callback=N
     """启动自学习定时调度器
 
     使用 threading.Timer 循环
+    启动时不立即执行，等第一个周期到了再跑
     """
     import threading
 
@@ -293,8 +294,11 @@ def start_auto_learn_scheduler(interval_minutes: float = 30, progress_callback=N
         timer.daemon = True
         timer.start()
 
-    print(f"[AutoLearn] 启动 {interval_minutes}min 周期调度器")
-    _schedule_next()
+    print(f"[AutoLearn] 启动 {interval_minutes}min 周期调度器（首个周期将在 {interval_minutes} 分钟后执行）")
+    # 先等待第一个周期，不立即执行
+    timer = threading.Timer(interval_minutes * 60, _schedule_next)
+    timer.daemon = True
+    timer.start()
 
 
 if __name__ == "__main__":

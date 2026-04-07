@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] MicroLED 微显示面板",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"MicroLED 微显示面板供应商交期和 MOQ（JBD）\",\n  \"product\": \"MicroLED 微显示面板\",\n  \"key_specs\": [\n    {\n      \"name\": \"工程样片MOQ - 常规标准品 - 头部合作客户\",\n      \"value\": \"5-10片\",\n      \"source\": \"2024年上半年AR/消费电子供应链公开调研数据\"\n    },\n    {\n      \"name\": \"工程样片MOQ - 常规标准品 - 中小/新客户 (单色款)\",\n      \"value\": \"10-50片\",\n      \"source\": \"2024年上半年AR/消费电子供应链公开调研数据\"\n    },\n    {\n      \"name\": \"工程样片MOQ - 常规标准品 - 中小/新客户 (全彩款)\",\n      \"value\": \"50-100片\",\n      \"source\": \"2024年上半年AR/消费电子供应链公开调研数据\"\n    },\n    {\n      \"name\": \"工程样片MOQ - 定制化样片 (通用)\",\n      \"value\": \"100片起\",\n      \"source\": \"2024年上半年AR/消费电子供应链公开调研数据\"\n    },\n    {\n      \"name\": \"工程样片MOQ - 定制化样片 (工业级/车载特殊规格)\",\n      \"value\": \"500片起\",\n      \"source\": \"2024年上半年AR/消费电子供应链公开调研数据\"\n    },\n    {\n      \"name\": \"量产订单MOQ - 标准单色款\",\n      \"value\": \"月订单1000-5000片\",\n      \"sou",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

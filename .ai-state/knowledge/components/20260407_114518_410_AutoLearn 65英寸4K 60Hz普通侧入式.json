@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ['65英寸4K 60Hz普通侧入式LCD方案', '65英寸4K 60Hz 240分区MiniLED直下式LCD方案']",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案的完整 BOM 成本对比（含光学模组+驱动+结构件）\",\n  \"product\": [\n    \"65英寸4K 60Hz普通侧入式LCD方案\",\n    \"65英寸4K 60Hz 240分区MiniLED直下式LCD方案\"\n  ],\n  \"key_specs\": [\n    {\n      \"name\": \"尺寸\",\n      \"value\": \"65英寸\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"分辨率\",\n      \"value\": \"4K\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"刷新率\",\n      \"value\": \"60Hz\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"技术路线1\",\n      \"value\": \"普通侧入式LCD\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"技术路线2\",\n      \"value\": \"240分区MiniLED直下式LCD\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"报价时间\",\n      \"value\": \"2024年H1\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"地区\",\n      \"value\": \"国内\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"起订批量\",\n      \"value\": \"100K\",\n      \"source\": \"",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}
