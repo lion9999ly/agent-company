@@ -54,9 +54,9 @@ class Resilience:
         self.attempt_history: Dict[str, List[dict]] = {}  # 跟踪每个环节的尝试历史
 
     async def _notify(self, msg: str):
-        """发送通知"""
+        """发送通知（兼容同步/异步 notify）"""
         if self.feishu and hasattr(self.feishu, 'notify'):
-            await self.feishu.notify(msg)
+            self.feishu.notify(msg)
         print(f"[Resilience] {msg}")
 
     async def execute(self, fn: Callable, context: dict) -> Any:

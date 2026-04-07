@@ -134,7 +134,7 @@ class Roundtable:
             # 有问题，记录但不自动修改（人工介入）
             self._log_phase("pre_check", "Critic", response)
             if self.feishu:
-                await self.feishu.notify(f"⚠️ TaskSpec 审查发现问题，请人工确认")
+                self.feishu.notify(f"⚠️ TaskSpec 审查发现问题，请人工确认")
 
         return task
 
@@ -159,12 +159,12 @@ class Roundtable:
             if blind_spot:
                 context.meta_injection = f"[元认知提醒] {blind_spot}"
                 if self.feishu:
-                    await self.feishu.notify(f"🧠 元认知层发现盲点：{blind_spot[:80]}...")
+                    self.feishu.notify(f"🧠 元认知层发现盲点：{blind_spot[:80]}...")
 
         while iteration < max_iterations:
             iteration += 1
             if self.feishu:
-                await self.feishu.notify(f"🔵 圆桌第 {iteration} 轮")
+                self.feishu.notify(f"🔵 圆桌第 {iteration} 轮")
 
             # Phase 2: 方案生成
             proposal = await self._phase_2_propose(task, context, phase1_outputs)
@@ -176,7 +176,7 @@ class Roundtable:
                 if direction_check:
                     context.meta_injection = f"[元认知提醒] {direction_check}"
                     if self.feishu:
-                        await self.feishu.notify(f"🧠 元认知层提醒：{direction_check[:80]}...")
+                        self.feishu.notify(f"🧠 元认知层提醒：{direction_check[:80]}...")
 
             # Phase 3: 定向审查
             phase3_outputs = await self._phase_3_review(task, phase1_outputs, proposal)
@@ -199,7 +199,7 @@ class Roundtable:
                     leo_check = await self.meta.review_executive_summary(exec_summary, task.topic)
                     if leo_check:
                         if self.feishu:
-                            await self.feishu.notify(f"🧠 Leo 视角追问：{leo_check[:100]}...")
+                            self.feishu.notify(f"🧠 Leo 视角追问：{leo_check[:100]}...")
                         # 补充回应（简化处理：记录到日志）
                         self._log_phase("meta_leo_check", "MetaCognition", f"追问: {leo_check}")
 
@@ -221,7 +221,7 @@ class Roundtable:
             # 有 P0 问题，迭代修复
             if critic_result.p0_issues:
                 if self.feishu:
-                    await self.feishu.notify(f"🔄 发现 {len(critic_result.p0_issues)} 个 P0 问题，迭代修复")
+                    self.feishu.notify(f"🔄 发现 {len(critic_result.p0_issues)} 个 P0 问题，迭代修复")
 
                 # 将 P0 问题反馈给 proposer，修改方案
                 feedback = self._build_p0_feedback(critic_result, phase3_outputs)
@@ -231,13 +231,13 @@ class Roundtable:
             # 有未解决分歧
             if critic_result.unresolved_conflicts:
                 if self.feishu:
-                    await self.feishu.notify(f"⚠️ 发现未解决分歧，需人工裁决")
+                    self.feishu.notify(f"⚠️ 发现未解决分歧，需人工裁决")
                 # 等待人工介入（简化处理：标记后继续）
                 break
 
         # 达到最大轮数
         if self.feishu:
-            await self.feishu.notify(f"⚠️ 达到最大迭代轮数 {max_iterations}")
+            self.feishu.notify(f"⚠️ 达到最大迭代轮数 {max_iterations}")
 
         exec_summary = await self._generate_executive_summary(proposal, phase3_outputs, phase1_outputs)
 
@@ -341,7 +341,7 @@ class Roundtable:
             except ParkedException as e:
                 parked.append((role, e))
                 if self.feishu:
-                    await self.feishu.notify(f"⏸ {role} 暂存，等待模型恢复")
+                    self.feishu.notify(f"⏸ {role} 暂存，等待模型恢复")
 
         # 断点续跑：等待一段时间后重试暂存的角色
         if parked:
@@ -350,10 +350,10 @@ class Roundtable:
                 try:
                     outputs[role] = await think(role)
                     if self.feishu:
-                        await self.feishu.notify(f"✅ {role} 已恢复")
+                        self.feishu.notify(f"✅ {role} 已恢复")
                 except ParkedException:
                     if self.feishu:
-                        await self.feishu.notify(f"⚠️ {role} 仍不可用，用已有信息继续")
+                        self.feishu.notify(f"⚠️ {role} 仍不可用，用已有信息继续")
 
         return outputs
 
