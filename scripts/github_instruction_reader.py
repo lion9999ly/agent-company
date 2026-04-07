@@ -1,11 +1,17 @@
 """
 @description: 从 GitHub Issue 读取 Claude Chat 指令并执行
-@dependencies: requests, python-dotenv
+@dependencies: requests, python-dotenv, subprocess
 @last_modified: 2026-04-07
+
+Issue body 接入 CC agent 模式：
+- 优先：调用 claude CLI（有完整文件系统访问能力）
+- 备选：调用最强模型 gpt_5_4（注入项目上下文）
 """
 import os
 import json
 import requests
+import subprocess
+import tempfile
 from pathlib import Path
 from datetime import datetime
 
@@ -128,9 +134,10 @@ def handle_fetch_instruction(text: str, reply_target: str, send_reply,
     - "拉取指令" → 读取最新 open issue
     - "执行 issue#2" 或 "执行 issue 2" → 读取指定 issue
 
-    读取后直接执行 Issue body 中的指令，像收到飞书消息一样处理。
+    Issue body 接入 CC agent 模式（有完整文件系统访问能力）
     """
     import re
+    import shutil
 
     # 解析 issue 编号
     issue_number = None
@@ -160,29 +167,98 @@ def handle_fetch_instruction(text: str, reply_target: str, send_reply,
 内容：{body_preview}
 ---""")
 
-    # 关键：把 Issue body 当作飞书消息重新路由执行
-    if body and body.strip():
-        try:
-            from scripts.feishu_handlers.text_router import route_text_message
-            # 调用路由处理 Issue body
-            route_text_message(
-                body.strip(),
-                reply_target,
-                reply_type or "chat_id",
-                open_id or "",
-                chat_id or reply_target,
-                send_reply
-            )
-            # 执行完后在 Issue 下评论
-            reply_to_issue(result["number"], f"✅ 指令已执行\n\n**标题**: {result['title']}\n\n**执行时间**: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
-            send_reply(reply_target, f"✅ Issue #{result['number']} 执行完成")
-        except Exception as e:
-            error_msg = f"❌ 执行失败: {str(e)[:200]}"
-            send_reply(reply_target, error_msg)
-            reply_to_issue(result["number"], f"❌ 执行失败\n\n```\n{str(e)[:500]}\n```")
-    else:
+    if not body or not body.strip():
         send_reply(reply_target, "⚠️ Issue 内容为空，无指令可执行")
         reply_to_issue(result["number"], "⚠️ Issue 内容为空")
+        return result
+
+    # === 方案1：调用 CC agent 模式（优先）===
+    claude_path = shutil.which("claude")
+
+    if claude_path:
+        try:
+            send_reply(reply_target, "🤖 CC Agent 模式启动...")
+
+            # 调用 claude CLI
+            process = subprocess.Popen(
+                ["claude", "-p", body.strip()],
+                cwd=str(PROJECT_ROOT),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                encoding="utf-8",
+                errors="replace"
+            )
+
+            # 设置超时（5分钟）
+            stdout, stderr = process.communicate(timeout=300)
+
+            # 发送结果到飞书（截取前 3000 字）
+            if stdout:
+                output = stdout.strip()
+                if len(output) > 3000:
+                    output = output[:3000] + "\n... (已截断)"
+                send_reply(reply_target, f"📤 执行结果：\n{output}")
+            else:
+                send_reply(reply_target, f"⚠️ 无输出")
+
+            if stderr:
+                send_reply(reply_target, f"⚠️ 错误信息：{stderr[:500]}")
+
+            # 在 Issue 下评论
+            comment = f"✅ 指令已执行（CC Agent 模式）\n\n**执行时间**: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n**结果摘要**:\n```\n{(stdout or '无输出')[:500]}\n```"
+            reply_to_issue(result["number"], comment)
+            send_reply(reply_target, f"✅ Issue #{result['number']} 执行完成")
+
+            return result
+
+        except subprocess.TimeoutExpired:
+            process.kill()
+            send_reply(reply_target, "⏱️ 执行超时（5分钟），已终止")
+            reply_to_issue(result["number"], "⏱️ 执行超时")
+            return result
+        except Exception as e:
+            send_reply(reply_target, f"⚠️ CC Agent 调用失败: {str(e)[:100]}，尝试备选方案...")
+
+    # === 方案2：备选 - 调用最强模型 ===
+    try:
+        send_reply(reply_target, "🤖 备选方案：调用 GPT-5.4 执行...")
+
+        from src.utils.model_gateway import get_model_gateway
+        gw = get_model_gateway()
+
+        system_prompt = f"""你是一个有完整文件系统访问能力的 AI 助手。
+项目根目录: {PROJECT_ROOT}
+
+你有权限：
+- 读取任何文件
+- 修改代码文件
+- 执行 bash 命令（通过输出命令让调用方执行）
+
+请直接执行用户请求的任务。如果需要修改文件，直接输出修改后的完整内容。"""
+
+        model_result = gw.call(
+            model_name="gpt_5_4",
+            prompt=body.strip(),
+            system_prompt=system_prompt,
+            task_type="agent"
+        )
+
+        if model_result.get("success"):
+            response = model_result.get("response", "")
+            if len(response) > 3000:
+                response = response[:3000] + "\n... (已截断)"
+            send_reply(reply_target, f"📤 执行结果：\n{response}")
+            reply_to_issue(result["number"], f"✅ 指令已执行（GPT-5.4 模式）\n\n```\n{response[:500]}\n```")
+            send_reply(reply_target, f"✅ Issue #{result['number']} 执行完成")
+        else:
+            error = model_result.get("error", "未知错误")
+            send_reply(reply_target, f"❌ 模型调用失败: {error}")
+            reply_to_issue(result["number"], f"❌ 执行失败\n\n{error}")
+
+    except Exception as e:
+        send_reply(reply_target, f"❌ 执行失败: {str(e)[:200]}")
+        reply_to_issue(result["number"], f"❌ 执行失败\n\n```\n{str(e)[:500]}\n```")
 
     return result
 
