@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 65寸4K 60Hz消费级电视",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案的完整 BOM 成本对比（含光学模组+驱动+结构件）\",\n  \"product\": \"65寸4K 60Hz消费级电视\",\n  \"key_specs\": [\n    {\n      \"name\": \"产品类型\",\n      \"value\": \"消费级电视\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"尺寸\",\n      \"value\": \"65寸\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"分辨率\",\n      \"value\": \"4K\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"刷新率\",\n      \"value\": \"60Hz\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"成本核算年份\",\n      \"value\": \"2024年\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"成本核算区域\",\n      \"value\": \"大陆供应链\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"成本类型\",\n      \"value\": \"量产不含税物料成本\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"数据来源\",\n      \"value\": \"TrendForce、群智咨询\",\n      \"source\": \"文本\"\n    }\n  ],\n  \"suppliers\": [],\n  \"prices\": [\n    {\n      \"scenar",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

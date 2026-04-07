@@ -1,0 +1,1 @@
+Phase3Output(role='CMO', passed=[], failed=[], confidence_issues=[], suggestions=[])

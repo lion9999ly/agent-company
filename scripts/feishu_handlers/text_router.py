@@ -470,6 +470,17 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
             ).start()
             return
 
+    # === 3.5 GitHub 指令读取 ===
+    if text_stripped in ("拉取指令", "读取指令", "fetch instruction"):
+        from scripts.github_instruction_reader import handle_fetch_instruction
+        handle_fetch_instruction(text_stripped, reply_target, send_reply)
+        return
+
+    if text_stripped.startswith("执行 issue") or text_stripped.startswith("执行issue"):
+        from scripts.github_instruction_reader import handle_fetch_instruction
+        handle_fetch_instruction(text_stripped, reply_target, send_reply)
+        return
+
     # === 3.6 圆桌系统 ===
     if text_stripped.startswith("圆桌:") or text_stripped.startswith("圆桌："):
         topic = text_stripped.split(":", 1)[1].strip() if ":" in text_stripped else text_stripped.split("：", 1)[1].strip()

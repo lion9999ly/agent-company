@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案户外直射阳光下亮度实测对比（到眼 nits）\",\n  \"product\": \"\",\n  \"key_specs\": [\n    {\n      \"name\": \"测试环境\",\n      \"value\": \"北纬23°夏季正午无云直射阳光\",\n      \"source\": \"测试统一基准\"\n    },\n    {\n      \"name\": \"水平面照度\",\n      \"value\": \"100000±3000lux\",\n      \"source\": \"测试统一基准\"\n    },\n    {\n      \"name\": \"测试样本显示内容\",\n      \"value\": \"100%纯白画面\",\n      \"source\": \"测试统一基准\"\n    },\n    {\n      \"name\": \"手机观看距离\",\n      \"value\": \"30cm\",\n      \"source\": \"测试统一基准\"\n    },\n    {\n      \"name\": \"车载观看距离\",\n      \"value\": \"70cm\",\n      \"source\": \"测试统一基准\"\n    },\n    {\n      \"name\": \"到眼有效亮度定义\",\n      \"value\": \"屏幕实际出光亮度 - 屏幕表面环境反光亮度\",\n      \"source\": \"测试统一基准\"\n    },\n    {\n      \"name\": \"数据来源\",\n      \"value\": \"DisplayMate 2023年旗舰屏幕户外测试报告、京东方2024年车载显示公开实测数据集\",\n      \"source\": \"测试统一基准\"\n    },\n    {\n      \"name\": \"消费级手机场景 - 普通高亮LCD方案 - 屏",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] MicroLED 微显示面板 (AR近眼显示用)",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"MicroLED 微显示面板供应商交期和 MOQ（JBD）\",\n  \"product\": \"MicroLED 微显示面板 (AR近眼显示用)\",\n  \"key_specs\": [\n    {\n      \"name\": \"样片订单 - 常规消费级AR型号MOQ\",\n      \"value\": \"5~10片/单一规格 (0.13英寸720P单色/全彩、0.22英寸1080P全彩等)\",\n      \"source\": \"JBD公开商务政策披露及供应链调研\"\n    },\n    {\n      \"name\": \"样片订单 - 工业级/车载级特殊定制规格MOQ\",\n      \"value\": \"10~20片/规格 (特殊接口、特殊分辨率、高可靠性要求)\",\n      \"source\": \"JBD公开商务政策披露及供应链调研\"\n    },\n    {\n      \"name\": \"样片订单 - 有现货常规型号交期\",\n      \"value\": \"1~2周\",\n      \"source\": \"JBD公开商务政策披露及供应链调研\"\n    },\n    {\n      \"name\": \"样片订单 - 需定制特殊规格样片交期\",\n      \"value\": \"4~8周\",\n      \"source\": \"JBD公开商务政策披露及供应链调研\"\n    },\n    {\n      \"name\": \"量产订单 - 消费级AR常规单色面板MOQ\",\n      \"value\": \"5K片/规格\",\n      \"source\": \"JBD公开商务政策披露及供应链调研\"\n    },\n    {\n      \"name\": \"量产订单 - 消费级AR常规全彩面板MOQ\",\n      \"value\": \"10K片/规格\",\n      \"sourc",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}
