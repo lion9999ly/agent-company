@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] None",
+  "domain": "standards",
+  "content": "{\n  \"topic\": \"智能骑行头盔 standards 最新技术 供应商 2026\",\n  \"product\": null,\n  \"key_specs\": [\n    {\n      \"name\": \"安全标准 (美国)\",\n      \"value\": \"CPSC\",\n      \"source\": \"II. Standards\"\n    },\n    {\n      \"name\": \"安全标准 (欧洲)\",\n      \"value\": \"EN 1078\",\n      \"source\": \"II. Standards\"\n    },\n    {\n      \"name\": \"安全标准 (基础认证)\",\n      \"value\": \"Snell B90\",\n      \"source\": \"II. Standards\"\n    },\n    {\n      \"name\": \"安全标准 (中国 - 自行车头盔)\",\n      \"value\": \"GB 24429-2009\",\n      \"source\": \"II. Standards\"\n    },\n    {\n      \"name\": \"安全标准 (中国 - 摩托车头盔)\",\n      \"value\": \"GB 811-2010\",\n      \"source\": \"II. Standards\"\n    },\n    {\n      \"name\": \"技术特点\",\n      \"value\": \"蓝牙连接\",\n      \"source\": \"III. Latest Technology\"\n    },\n    {\n      \"name\": \"技术特点\",\n      \"value\": \"内置音频\",\n      \"source\": \"III. Latest Technology\"\n    },\n  ",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "domain_gap"
+  ],
+  "confidence": "medium"
+}

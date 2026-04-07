@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 智能骑行头盔",
+  "domain": "standards",
+  "content": "{\n  \"topic\": \"智能骑行头盔 standards 最新技术 供应商 2026\",\n  \"product\": \"智能骑行头盔\",\n  \"key_specs\": [\n    {\n      \"name\": \"中国标准碰撞预警准确率\",\n      \"value\": \"≥95%\",\n      \"source\": \"GB/T 43178-2023\"\n    },\n    {\n      \"name\": \"中国标准SOS定位误差\",\n      \"value\": \"≤5m\",\n      \"source\": \"GB/T 43178-2023\"\n    },\n    {\n      \"name\": \"中国标准电池阻燃等级\",\n      \"value\": \"V-0\",\n      \"source\": \"GB/T 43178-2023\"\n    },\n    {\n      \"name\": \"中国标准电池循环寿命\",\n      \"value\": \"≥500次\",\n      \"source\": \"GB/T 43178-2023\"\n    },\n    {\n      \"name\": \"欧盟标准碰撞检测响应时间\",\n      \"value\": \"≤2s\",\n      \"source\": \"EN 17389\"\n    },\n    {\n      \"name\": \"欧盟标准误报率\",\n      \"value\": \"≤3%\",\n      \"source\": \"EN 17389\"\n    },\n    {\n      \"name\": \"欧盟标准SOS定位精度\",\n      \"value\": \"≤10m\",\n      \"source\": \"EN 17389\"\n    },\n    {\n      \"name\": \"欧盟标准射频辐射值\",\n      \"value\": \"",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "domain_gap"
+  ],
+  "confidence": "medium"
+}

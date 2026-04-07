@@ -485,6 +485,7 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
                     import asyncio
                     from scripts.roundtable import run_task
                     from src.utils.model_gateway import get_model_gateway
+                    from src.tools import knowledge_base as kb_module
 
                     gw = get_model_gateway()
                     loop = asyncio.new_event_loop()
@@ -496,7 +497,7 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
                             send_reply(reply_target, msg)
 
                     feishu = FeishuNotifier()
-                    result = loop.run_until_complete(run_task(spec, gw, None, feishu))
+                    result = loop.run_until_complete(run_task(spec, gw, kb_module, feishu))
                     send_reply(reply_target, f"🎯 圆桌任务完成：{spec.output_path}")
                 except Exception as e:
                     _safe_reply_error(send_reply, reply_target, "圆桌系统", e)
