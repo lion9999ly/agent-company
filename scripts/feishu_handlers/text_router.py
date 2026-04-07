@@ -492,9 +492,15 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
                     from scripts.feishu_handlers.chat_helpers import log as _log
 
                     _log("[圆桌] 后台线程启动")
+
+                    _log("[圆桌] 获取 model_gateway...")
                     gw = get_model_gateway()
+                    _log(f"[圆桌] model_gateway 获取成功, models={len(gw.models)}")
+
+                    _log("[圆桌] 创建 event loop...")
                     loop = asyncio.new_event_loop()
                     asyncio.set_event_loop(loop)
+                    _log("[圆桌] event loop 创建成功")
 
                     # 简化的飞书通知器
                     class FeishuNotifier:
