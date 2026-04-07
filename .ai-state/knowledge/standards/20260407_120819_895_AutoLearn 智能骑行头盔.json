@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 智能骑行头盔",
+  "domain": "standards",
+  "content": "{\n  \"topic\": \"智能骑行头盔的标准、最新技术与供应商（2026年展望）\",\n  \"product\": \"智能骑行头盔\",\n  \"key_specs\": [\n    {\n      \"name\": \"安全标准\",\n      \"value\": \"中国国家标准 GB 24429-2009（体育用头盔-自行车、滑板和轮滑运动头盔的安全要求）\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"安全标准\",\n      \"value\": \"欧盟 EN 1078 标准（适用于自行车和滑板头盔）\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"安全标准\",\n      \"value\": \"美国 CPSC 标准（消费者产品安全委员会的自行车头盔标准）\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"安全标准\",\n      \"value\": \"欧盟 NTA 8776 标准（适用于速度电动自行车）\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"电气安全标准\",\n      \"value\": \"电池安全、EMC（电磁兼容）\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"最新技术\",\n      \"value\": \"智能照明系统（集成前灯、后灯、转向信号灯）\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"最新技术\",\n      \"value\": \"蓝牙连接（与智能手机连接用于接听电话、导航等）\",\n      \"source\": \"搜索",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "domain_gap"
+  ],
+  "confidence": "medium"
+}

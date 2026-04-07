@@ -1,13 +1,14 @@
 """
 @description: 自学习 30min 周期 — 轻量增量知识补充
 @dependencies: src.utils.model_gateway, src.tools.knowledge_base
-@last_modified: 2026-03-31
+@last_modified: 2026-04-07
 
 设计:
 - 每 30 分钟自动触发
 - 只跑 Layer 1（搜索）+ Layer 2（提炼）+ 直接入库
 - 不走 Agent 分析，不生成报告
 - 相当于"知识库的 heartbeat"
+- 已覆盖的搜索词不会重复搜索（7 天后过期重试）
 """
 import json
 import time
@@ -23,6 +24,38 @@ from src.utils.model_gateway import get_model_gateway
 from src.tools.knowledge_base import KB_ROOT, add_knowledge, get_knowledge_stats
 
 gateway = get_model_gateway()
+
+# 已覆盖搜索词记录（防止重复搜索）
+COVERED_FILE = PROJECT_ROOT / ".ai-state" / "auto_learn_covered.json"
+COVERED_EXPIRY_DAYS = 7  # 已覆盖记录 7 天后过期，允许重新搜索
+
+
+def _load_covered_topics() -> dict:
+    """加载已覆盖的搜索词"""
+    if not COVERED_FILE.exists():
+        return {}
+    try:
+        data = json.loads(COVERED_FILE.read_text(encoding="utf-8"))
+        # 过滤过期记录
+        cutoff = datetime.now() - timedelta(days=COVERED_EXPIRY_DAYS)
+        filtered = {}
+        for query, timestamp in data.items():
+            try:
+                if datetime.fromisoformat(timestamp) > cutoff:
+                    filtered[query] = timestamp
+            except:
+                continue
+        return filtered
+    except:
+        return {}
+
+
+def _save_covered_topic(query: str):
+    """保存已覆盖的搜索词"""
+    covered = _load_covered_topics()
+    covered[query] = datetime.now().isoformat()
+    COVERED_FILE.parent.mkdir(parents=True, exist_ok=True)
+    COVERED_FILE.write_text(json.dumps(covered, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def _calculate_time_weighted_priority(base_priority: int, deadline: str) -> float:
@@ -64,8 +97,15 @@ def _find_kb_gaps() -> list:
     3. 时效性: 哪些条目超过 30 天未更新？
     4. 产品锚点覆盖: PRD 中提到的模块，KB 有没有对应知识？
     5. 低 confidence 高频引用: 被多次引用但 confidence 只有 medium/low 的条目
+
+    已覆盖的搜索词会被跳过（7 天后过期重试）
     """
     gaps = []
+
+    # 加载已覆盖的搜索词
+    covered = _load_covered_topics()
+    if covered:
+        print(f"[AutoLearn] 已覆盖搜索词: {len(covered)} 个（7天内不重复）")
 
     # 0. 优先: 从决策树获取阻塞知识缺口
     dt_path = Path(__file__).parent.parent / ".ai-state" / "product_decision_tree.yaml"
@@ -166,7 +206,21 @@ def _find_kb_gaps() -> list:
 
     # 按优先级排序，取 top 5-8
     gaps.sort(key=lambda x: x["priority"])
-    return gaps[:8]
+
+    # 过滤已覆盖的搜索词
+    filtered_gaps = []
+    skipped = 0
+    for gap in gaps[:8]:
+        query = gap["query"]
+        if query in covered:
+            skipped += 1
+            continue
+        filtered_gaps.append(gap)
+
+    if skipped > 0:
+        print(f"[AutoLearn] 跳过 {skipped} 个已覆盖的搜索词")
+
+    return filtered_gaps
 
 
 def _call_model(model_name: str, prompt: str, system_prompt: str = "", task_type: str = "auto_learn") -> dict:
@@ -244,6 +298,8 @@ def auto_learn_cycle(progress_callback=None):
             source_text += "\n" + doubao_result["response"][:2000]
 
         if not source_text:
+            # 搜索无结果也标记为已处理
+            _save_covered_topic(query)
             continue
 
         # Layer 2: 提炼
@@ -267,6 +323,15 @@ def auto_learn_cycle(progress_callback=None):
                     confidence="medium"  # 自学习产出标记为 medium
                 )
                 added_total += 1
+                # 标记该搜索词为已覆盖
+                _save_covered_topic(query)
+                print(f"[AutoLearn] 已覆盖: {query[:40]}")
+            else:
+                # 内容质量不足也标记为已处理（避免重复搜索低质量结果）
+                _save_covered_topic(query)
+        else:
+            # 提取失败也标记为已处理
+            _save_covered_topic(query)
 
         time.sleep(3)
 
