@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] MicroLED 微显示面板",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"MicroLED 微显示面板供应商交期和 MOQ（JBD）\",\n  \"product\": \"MicroLED 微显示面板\",\n  \"key_specs\": [\n    {\n      \"name\": \"MOQ - 研发评估样片 - 公版标准品 - 单色面板 (0.13英寸绿光款)\",\n      \"value\": \"5-10pcs\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"MOQ - 研发评估样片 - 公版标准品 - 单片全彩面板 (0.22/0.39英寸款)\",\n      \"value\": \"3-5pcs\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"MOQ - 小批量试产订单 - 公版标准品 - 单色面板\",\n      \"value\": \"1000pcs/款\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"MOQ - 小批量试产订单 - 公版标准品 - 全彩面板\",\n      \"value\": \"500pcs/款\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"MOQ - 小批量试产订单 - 定制改型 (调整接口、驱动参数)\",\n      \"value\": \"2000pcs/款起\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"MOQ - 大规模量产订单 - 消费级商用 - 低分辨率单色面板\",\n      \"value\": \"10000pcs/款\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"na",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

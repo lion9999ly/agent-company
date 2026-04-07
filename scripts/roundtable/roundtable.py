@@ -619,6 +619,17 @@ class Roundtable:
             p0 = self._extract_section(response, "P0 问题")
             p1 = self._extract_section(response, "P1 问题")
 
+            # 解析失败检查：如果所有段落都解析失败，不能默认通过
+            if not acceptance_results and not p0 and not p1:
+                return CriticResult(
+                    passed=False,
+                    p0_issues=["Critic 输出格式解析失败，无法判定是否通过"],
+                    acceptance_results="[解析失败] " + response[:500],
+                    confidence_issues=[],
+                    unresolved_conflicts=[],
+                    p1_issues=[],
+                )
+
             # 判断是否通过
             passed = "❌" not in acceptance_results and len(p0) == 0
 
@@ -692,10 +703,10 @@ class Roundtable:
         model = get_role_model("Echo")
 
         prompt = f"""【最终方案】
-{proposal[:800]}
+{proposal[:3000]}
 
 【确认的约束】
-{chr(10).join(all_constraints[:10])}
+{chr(10).join(all_constraints[:20])}
 
 请压缩为执行摘要（约 500 字），包含：
 1. 方案核心描述（只有结论，无讨论过程）
@@ -757,17 +768,57 @@ class Roundtable:
         return "\n".join(lines)
 
     def _extract_section(self, text: str, section_name: str) -> List[str]:
-        """从结构化文本中提取指定部分"""
+        """从结构化文本中提取指定部分，支持多种标题格式"""
         lines = []
         in_section = False
+
+        # 支持多种标题格式
+        # "## 验收标准审查" / "## 验收标准" / "### 验收标准审查"
+        section_patterns = [
+            f"## {section_name}",
+            f"### {section_name}",
+            f"## {section_name.replace('审查', '')}",  # 去掉"审查"后缀
+            f"### {section_name.replace('审查', '')}",
+        ]
+
         for line in text.split("\n"):
-            if line.startswith(f"## {section_name}"):
-                in_section = True
+            # 检查是否进入目标段落
+            if not in_section:
+                for pattern in section_patterns:
+                    if line.strip().startswith(pattern):
+                        in_section = True
+                        break
                 continue
-            if in_section and line.startswith("## "):
+
+            # 检查是否离开目标段落（遇到新的 ## 或 ###）
+            if line.startswith("## ") or line.startswith("### "):
                 break
-            if in_section and line.strip():
+
+            if line.strip():
                 lines.append(line.strip())
+
+        # 如果精确匹配失败，尝试关键词搜索
+        if not lines:
+            # 简化关键词：从 section_name 提取核心词
+            keywords = {
+                "验收标准审查": ["验收标准", "验收"],
+                "P0 问题": ["P0", "P0问题", "P0 问题"],
+                "P1 问题": ["P1", "P1问题", "P1 问题"],
+                "置信度审查": ["置信度"],
+            }
+            search_keys = keywords.get(section_name, [section_name])
+
+            in_section = False
+            for line in text.split("\n"):
+                # 检查是否包含关键词（作为标题）
+                if any(key in line for key in search_keys) and (line.startswith("#") or line.startswith("-")):
+                    in_section = True
+                    continue
+                if in_section and (line.startswith("## ") or line.startswith("### ")):
+                    break
+                if in_section and line.strip():
+                    lines.append(line.strip())
+
         return lines
 
     def _log_phase(self, phase: str, role: str, content: Any):

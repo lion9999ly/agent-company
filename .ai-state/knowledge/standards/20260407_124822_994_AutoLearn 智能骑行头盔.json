@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 智能骑行头盔",
+  "domain": "standards",
+  "content": "{\n  \"topic\": \"智能骑行头盔 standards 最新技术 供应商 2026\",\n  \"product\": \"智能骑行头盔\",\n  \"key_specs\": [\n    {\n      \"name\": \"欧盟EN 1078修订版生效时间\",\n      \"value\": \"2026年1月强制实施\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"欧盟EN 1078修订版碰撞自动求救触发准确率\",\n      \"value\": \"≥98%\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"欧盟EN 1078修订版误报率\",\n      \"value\": \"≤1%\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"欧盟EN 1078修订版跌倒检测响应时间\",\n      \"value\": \"≤0.8s\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"欧盟EN 1078修订版电池耐温范围\",\n      \"value\": \"-20℃~60℃环境下无漏液/起火风险\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"欧盟EN 1078修订版电磁兼容性\",\n      \"value\": \"符合车载通信抗干扰要求\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"美国ASTM F1952-24修订版生效时间\",\n      \"value\": \"2026年成为加州、纽约州强制准入标准\",\n     ",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "domain_gap"
+  ],
+  "confidence": "medium"
+}

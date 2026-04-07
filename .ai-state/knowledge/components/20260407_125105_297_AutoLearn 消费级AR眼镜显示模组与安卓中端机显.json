@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 消费级AR眼镜显示模组与安卓中端机显示模组",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案的完整 BOM 成本对比（含光学模组+驱动+结构件）\",\n  \"product\": \"消费级AR眼镜显示模组与安卓中端机显示模组\",\n  \"key_specs\": [\n    {\n      \"name\": \"数据年份\",\n      \"value\": \"2024\",\n      \"source\": \"搜索结果开头\"\n    },\n    {\n      \"name\": \"数据来源区域\",\n      \"value\": \"中国大陆供应链\",\n      \"source\": \"搜索结果开头\"\n    },\n    {\n      \"name\": \"批量采购量\",\n      \"value\": \"100K及以上\",\n      \"source\": \"搜索结果开头\"\n    },\n    {\n      \"name\": \"报价类型\",\n      \"value\": \"不含税报价\",\n      \"source\": \"搜索结果开头\"\n    },\n    {\n      \"name\": \"小批量采购成本上浮\",\n      \"value\": \"30%-100%\",\n      \"source\": \"搜索结果开头\"\n    },\n    {\n      \"name\": \"AR眼镜规格\",\n      \"value\": \"1080P 40°FOV 双目\",\n      \"source\": \"第一组标题\"\n    },\n    {\n      \"name\": \"安卓手机显示模组尺寸\",\n      \"value\": \"6.7英寸\",\n      \"source\": \"第二组标题\"\n    },\n    {\n      \"name\": \"安卓手机显示模组分辨率\",\n      \"value\": \"1080P\",\n      \"source\": \"第二组标",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

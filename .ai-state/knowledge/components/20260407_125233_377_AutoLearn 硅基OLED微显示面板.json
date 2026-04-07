@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 硅基OLED微显示面板",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"OLED 微显示面板供应商交期和 MOQ（Sony ECX 系列 vs 京东方）\",\n  \"product\": \"硅基OLED微显示面板\",\n  \"key_specs\": [\n    {\n      \"name\": \"Sony ECX系列 - 样品/小批量MOQ (贸易商)\",\n      \"value\": \"10-100pcs (纯研发样品1-10pcs)\",\n      \"source\": \"CINNO Research、Digitimes供应链报告、国内硬件厂商公开采购信息\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - 样品/小批量MOQ (原厂直供)\",\n      \"value\": \"1000pcs起\",\n      \"source\": \"CINNO Research、Digitimes供应链报告、国内硬件厂商公开采购信息\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - 量产MOQ (原厂直供, 季度)\",\n      \"value\": \"5000-10000pcs\",\n      \"source\": \"CINNO Research、Digitimes供应链报告、国内硬件厂商公开采购信息\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - 量产MOQ (核心合作客户, 季度)\",\n      \"value\": \"3000pcs\",\n      \"source\": \"CINNO Research、Digitimes供应链报告、国内硬件厂商公开采购信息\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - 样品/小批量交期 (贸易商现货)\",\n      \"value\": \"1-2周\",\n      \"so",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}
