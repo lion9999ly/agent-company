@@ -121,11 +121,14 @@ def save_instruction_locally(issue_data: dict) -> str:
 
 
 # === 飞书指令入口 ===
-def handle_fetch_instruction(text: str, reply_target: str, send_reply):
+def handle_fetch_instruction(text: str, reply_target: str, send_reply,
+                              reply_type: str = None, open_id: str = None, chat_id: str = None):
     """
     处理飞书指令：
     - "拉取指令" → 读取最新 open issue
     - "执行 issue#2" 或 "执行 issue 2" → 读取指定 issue
+
+    读取后直接执行 Issue body 中的指令，像收到飞书消息一样处理。
     """
     import re
 
@@ -141,25 +144,45 @@ def handle_fetch_instruction(text: str, reply_target: str, send_reply):
 
     if not result["success"]:
         send_reply(reply_target, f"❌ 读取失败：{result['error']}")
-        return
+        return None
 
     # 保存到本地
     local_path = save_instruction_locally(result)
 
-    # 飞书展示指令内容（截取前 500 字）
-    body_preview = result["body"][:500]
-    if len(result["body"]) > 500:
-        body_preview += "\n... (已截断，完整内容见本地文件)"
+    # 飞书展示指令摘要
+    body = result["body"]
+    body_preview = body[:200]
+    if len(body) > 200:
+        body_preview += "..."
 
-    msg = f"""📋 指令已读取：Issue #{result['number']}
+    send_reply(reply_target, f"""📋 开始执行 Issue #{result['number']}
 标题：{result['title']}
-来源：{result['url']}
-已保存：{local_path}
+内容：{body_preview}
+---""")
 
---- 指令内容 ---
-{body_preview}
-"""
-    send_reply(reply_target, msg)
+    # 关键：把 Issue body 当作飞书消息重新路由执行
+    if body and body.strip():
+        try:
+            from scripts.feishu_handlers.text_router import route_text_message
+            # 调用路由处理 Issue body
+            route_text_message(
+                body.strip(),
+                reply_target,
+                reply_type or "chat_id",
+                open_id or "",
+                chat_id or reply_target,
+                send_reply
+            )
+            # 执行完后在 Issue 下评论
+            reply_to_issue(result["number"], f"✅ 指令已执行\n\n**标题**: {result['title']}\n\n**执行时间**: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+            send_reply(reply_target, f"✅ Issue #{result['number']} 执行完成")
+        except Exception as e:
+            error_msg = f"❌ 执行失败: {str(e)[:200]}"
+            send_reply(reply_target, error_msg)
+            reply_to_issue(result["number"], f"❌ 执行失败\n\n```\n{str(e)[:500]}\n```")
+    else:
+        send_reply(reply_target, "⚠️ Issue 内容为空，无指令可执行")
+        reply_to_issue(result["number"], "⚠️ Issue 内容为空")
 
     return result
 
