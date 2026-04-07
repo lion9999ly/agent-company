@@ -173,25 +173,48 @@ def handle_fetch_instruction(text: str, reply_target: str, send_reply,
         return result
 
     # === 方案1：调用 CC agent 模式（优先）===
+    # Windows 上需要找到 .cmd 文件
+    import platform
+    is_windows = platform.system() == "Windows"
+
     claude_path = shutil.which("claude")
+    if is_windows and not claude_path:
+        # 尝试 .cmd 扩展名
+        claude_path = shutil.which("claude.cmd")
 
     if claude_path:
         try:
             send_reply(reply_target, "🤖 CC Agent 模式启动...")
 
-            # 调用 claude CLI
-            process = subprocess.Popen(
-                ["claude", "-p", body.strip()],
-                cwd=str(PROJECT_ROOT),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-                encoding="utf-8",
-                errors="replace"
-            )
-
-            # 设置超时（5分钟）
-            stdout, stderr = process.communicate(timeout=300)
+            # Windows 上 .cmd 文件需要通过 shell 执行
+            if is_windows:
+                # 使用 stdin 传递 prompt，避免命令行特殊字符问题
+                cmd_str = f'"{claude_path}"'
+                process = subprocess.Popen(
+                    cmd_str,
+                    cwd=str(PROJECT_ROOT),
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    shell=True
+                )
+                # 通过 stdin 发送指令
+                stdout, stderr = process.communicate(input=body.strip(), timeout=300)
+            else:
+                process = subprocess.Popen(
+                    [claude_path],
+                    cwd=str(PROJECT_ROOT),
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace"
+                )
+                stdout, stderr = process.communicate(input=body.strip(), timeout=300)
 
             # 发送结果到飞书（截取前 3000 字）
             if stdout:
