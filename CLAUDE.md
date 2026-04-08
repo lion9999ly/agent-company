@@ -1,6 +1,6 @@
 # CLAUDE.md 版本号（每次修改必须更新此版本号）
 
-**VERSION: 20260408.1**
+**VERSION: 20260408.2**
 
 ## 版本号检查规则（最高优先级）
 
@@ -390,6 +390,8 @@ python scripts/doc_sync_validator.py
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-04-08 | **Thinking Layer**: 新增咨询规则、GitHub Issue 指令通道文档、CLAUDE.md v20260408.2 |
+| 2026-04-08 | **Agent模式**: 移除 --no-input 标志修复、SDK重启机制完善 |
 | 2026-04-07 | **Bug修复**: Phase1Output默认值、load_task_spec模糊匹配、meta_cognition禁用开关 |
 | 2026-04-07 | **文档更新**: CLAUDE.md v20260407.1，新增圆桌系统、已知违规标注 |
 | 2026-04-07 | **根目录清理**: 删除垃圾文件、备份文件 |
@@ -499,6 +501,39 @@ https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/scrip
 
 ### 待执行改进清单
 见 .ai-state/improvement_backlog_complete.md
+
+---
+
+## Thinking Layer 咨询规则
+
+当你遇到以下类型的问题时，应通过 thinking layer（claude_bridge.py）咨询 Claude Chat：
+
+### 需要咨询 Claude Chat 的问题类型
+- **架构设计决策**：新增模块怎么设计、模块间接口怎么定义
+- **产品判断**：feature 优先级、用户体验取舍
+- **竞品分析的深度解读**：需要人类视角的战略洞察
+- **任何影响范围大的决定**：不确定但可能影响项目方向的决策
+
+### 不需要咨询 Claude Chat 的问题类型
+- **bug 修复**：直接修
+- **配置变更**：直接改
+- **日常执行任务**：直接跑（如运行脚本、生成报告）
+
+### 咨询流程
+1. 查询 `thinking_history.jsonl` 中是否有类似问题的历史记录
+2. 如有历史记录，参考历史结论执行
+3. 如无历史，调用 `claude_bridge.call_claude_thinking(prompt)` 咨询
+4. 咨询结果自动保存到 `thinking_history.jsonl`
+
+### CDP 桥接状态
+- CDP 端口（9333）：当前**不可用**
+- 启用方法：运行 `powershell -File scripts/chrome_cdp_restart.ps1`
+- Fallback：Profile 模式 / Edge 模式
+
+### Claude Chat 指令通道（反向）
+Claude Chat → CC 的指令传递通过 GitHub Issue：
+- 见 `.ai-state/instruction_channel.md`
+- 飞书指令："拉取指令" 执行 GitHub Issue
 
 ---
 
