@@ -13,6 +13,7 @@
 用法：
     python scripts/auto_restart_and_verify.py           # 完整流程
     python scripts/auto_restart_and_verify.py --no-push  # 不发送飞书
+    python scripts/auto_restart_and_verify.py --verify-only  # 只验证不重启
 """
 import os
 import sys
@@ -34,6 +35,7 @@ LEO_OPEN_ID = "ou_8e5e4f183e9eca4241378e96bac3a751"
 
 SDK_SCRIPT = "scripts/feishu_sdk_client_v2.py"
 SDK_LOG = PROJECT_ROOT / ".ai-state" / "feishu_debug.log"
+PID_FILE = PROJECT_ROOT / ".ai-state" / "sdk.pid"
 
 
 class VerifyResult:
@@ -58,41 +60,37 @@ def stop_sdk():
     """停止 SDK 进程"""
     print("\n[1/3] 停止 SDK 进程...")
 
+    # 尝试从 PID 文件读取
+    if PID_FILE.exists():
+        try:
+            pid = int(PID_FILE.read_text().strip())
+            subprocess.run(['taskkill', '/F', '/PID', str(pid)], capture_output=True, timeout=10)
+            print(f"  [OK] 已停止 SDK 进程 PID: {pid}")
+            PID_FILE.unlink()
+            time.sleep(2)
+            return True
+        except:
+            pass
+
+    # 查找运行中的 SDK 进程（通过命令行参数识别）
     try:
-        # Windows: 使用 tasklist + taskkill
-        result = subprocess.run(
-            ['tasklist', '/FI', 'IMAGENAME eq python.exe', '/FO', 'CSV', '/NH'],
-            capture_output=True, text=True, timeout=30, encoding='gbk'
-        )
-
-        # 解析输出，查找运行中的 python 进程
-        pids = []
-        for line in result.stdout.strip().split('\n'):
-            if 'python.exe' in line.lower():
-                # 格式: "python.exe","PID","Session Name","Session#","Mem Usage"
-                parts = line.split(',')
-                if len(parts) >= 2:
-                    pid = parts[1].strip().strip('"')
-                    if pid.isdigit():
-                        pids.append(pid)
-
-        if pids:
-            for pid in pids:
-                try:
-                    subprocess.run(['taskkill', '/F', '/PID', pid], capture_output=True, timeout=10)
-                    print(f"  [OK] 已停止进程 PID: {pid}")
-                except:
-                    pass
-        else:
-            print("  [INFO] 未找到运行中的 python 进程")
-
-        # 等待进程完全退出
+        import psutil
+        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+            try:
+                if proc.info['name'] == 'python.exe':
+                    cmdline = ' '.join(proc.info.get('cmdline', []))
+                    if 'feishu_sdk_client' in cmdline:
+                        proc.kill()
+                        print(f"  [OK] 已停止 SDK 进程 PID: {proc.info['pid']}")
+            except:
+                continue
         time.sleep(2)
         return True
+    except ImportError:
+        pass
 
-    except Exception as e:
-        print(f"  [WARN] 停止进程异常: {e}")
-        return False
+    print("  [INFO] 未找到运行中的 SDK 进程")
+    return True
 
 
 def start_sdk():
@@ -111,14 +109,17 @@ def start_sdk():
             SDK_LOG.write_text("", encoding="utf-8")
 
         # 后台启动
-        subprocess.Popen(
+        proc = subprocess.Popen(
             [sys.executable, str(sdk_path)],
             cwd=str(PROJECT_ROOT),
             creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL
         )
-        print(f"  [OK] SDK 进程已启动")
+
+        # 记录 PID
+        PID_FILE.write_text(str(proc.pid))
+        print(f"  [OK] SDK 进程已启动 PID: {proc.pid}")
         return True
 
     except Exception as e:
@@ -348,7 +349,6 @@ def generate_report(results: list, restart_ok: bool = True) -> str:
     for r in results:
         icon = "[OK]" if r.passed else "[X]"
         detail = r.details[0] if r.details else (r.error or "-")
-        # 截断过长的详情
         if len(detail) > 50:
             detail = detail[:50] + "..."
         lines.append(f"| {icon} | {r.name} | {detail} |")
@@ -363,7 +363,6 @@ def send_to_feishu(report: str) -> bool:
     """发送报告到飞书（直接调用 API，不依赖 SDK）"""
     import requests
 
-    # 获取 token
     token_url = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal"
     try:
         resp = requests.post(
@@ -379,14 +378,12 @@ def send_to_feishu(report: str) -> bool:
         print(f"  [ERROR] 获取 token 失败: {e}")
         return False
 
-    # 发送消息
     msg_url = "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id"
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
 
-    # 截断报告
     content = report[:3500] if len(report) > 3500 else report
 
     data = {
@@ -411,32 +408,8 @@ def send_to_feishu(report: str) -> bool:
 
 # ==================== 主流程 ====================
 
-def main(no_push: bool = False):
-    """主入口"""
-    print("=" * 50)
-    print("SDK 自动重启 + 验证")
-    print("=" * 50)
-
-    restart_ok = True
-
-    # 1. 停止 SDK
-    if not stop_sdk():
-        print("[WARN] 停止 SDK 失败，继续尝试启动")
-
-    # 2. 启动 SDK
-    if not start_sdk():
-        print("[ERROR] 启动 SDK 失败")
-        restart_ok = False
-
-    # 3. 等待就绪
-    if restart_ok:
-        wait_for_sdk_ready(timeout=30)
-
-    # 4. 执行验证
-    print("\n" + "=" * 50)
-    print("[3/3] 执行验证")
-    print("=" * 50)
-
+def run_verification():
+    """执行验证"""
     results = []
 
     print("\n[1/6] 状态指令...")
@@ -457,6 +430,37 @@ def main(no_push: bool = False):
     print("[6/6] 路由匹配...")
     results.append(verify_route_matching())
 
+    return results
+
+
+def main(verify_only: bool = False, no_push: bool = False):
+    """主入口"""
+    print("=" * 50)
+    print("SDK 自动重启 + 验证")
+    print("=" * 50)
+
+    restart_ok = True
+
+    if not verify_only:
+        # 1. 停止 SDK
+        stop_sdk()
+
+        # 2. 启动 SDK
+        if not start_sdk():
+            print("[ERROR] 启动 SDK 失败")
+            restart_ok = False
+
+        # 3. 等待就绪
+        if restart_ok:
+            wait_for_sdk_ready(timeout=30)
+
+    # 4. 执行验证
+    print("\n" + "=" * 50)
+    print("[3/3] 执行验证")
+    print("=" * 50)
+
+    results = run_verification()
+
     # 5. 生成报告
     report = generate_report(results, restart_ok)
 
@@ -466,7 +470,7 @@ def main(no_push: bool = False):
     report_path.write_text(report, encoding="utf-8")
     print(f"\n报告已写入: {report_path}")
 
-    # 6. 发送飞书（默认必须发送）
+    # 6. 发送飞书
     if not no_push:
         print("\n发送报告到飞书...")
         send_to_feishu(report)
@@ -492,6 +496,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-push", action="store_true", help="不发送飞书")
+    parser.add_argument("--verify-only", action="store_true", help="只验证不重启 SDK")
     args = parser.parse_args()
 
-    exit(main(no_push=args.no_push))
+    exit(main(verify_only=args.verify_only, no_push=args.no_push))
