@@ -1,18 +1,16 @@
 """
-@description: 自动重启 SDK 并验证飞书路由
-@dependencies: subprocess, time, requests
+@description: 自动验证脚本 - 直接调用底层函数验证
+@dependencies: pathlib, json, model_gateway, roundtable
 @last_modified: 2026-04-08
 
 用法：
     python scripts/auto_restart_and_verify.py
-    python scripts/auto_restart_and_verify.py --no-restart  # 只验证不重启
+    python scripts/auto_restart_and_verify.py --no-push  # 不发送飞书
 """
 import os
 import sys
 import json
 import time
-import subprocess
-import requests
 from pathlib import Path
 from datetime import datetime
 
@@ -24,244 +22,346 @@ load_dotenv()
 
 APP_ID = os.getenv("FEISHU_APP_ID", "")
 APP_SECRET = os.getenv("FEISHU_APP_SECRET", "")
-
-# 验证测试的 Open ID（发送测试消息的目标）
 LEO_OPEN_ID = "ou_8e5e4f183e9eca4241378e96bac3a751"
 
-# 测试用例：指令 -> 预期关键词
-TEST_CASES = [
-    ("状态", ["知识库", "系统"]),
-    ("监控范围", ["竞品监控", "直接竞品"]),
-    ("帮助", ["指令", "研发"]),
-    ("早报", ["早报", "决策"]),
-    ("知识库", ["知识库"]),
-]
+
+class VerifyResult:
+    """验证结果"""
+    def __init__(self, name: str):
+        self.name = name
+        self.passed = False
+        self.error = None
+        self.details = []
+
+    def success(self, detail: str = ""):
+        self.passed = True
+        if detail:
+            self.details.append(detail)
+
+    def fail(self, error: str):
+        self.passed = False
+        self.error = error
 
 
-def get_tenant_access_token() -> str:
-    """获取飞书 tenant_access_token"""
+def verify_system_status() -> VerifyResult:
+    """验证1: 状态指令 - 读取 system_status.md"""
+    result = VerifyResult("状态指令")
+
+    try:
+        status_path = PROJECT_ROOT / ".ai-state" / "system_status.md"
+
+        if not status_path.exists():
+            result.fail("system_status.md 文件不存在")
+            return result
+
+        content = status_path.read_text(encoding="utf-8")
+
+        # 检查内容有效性
+        if "最近变更" in content or len(content) > 100:
+            result.success(f"文件存在，内容长度: {len(content)} 字符")
+        else:
+            result.fail("内容不符合预期（缺少'最近变更'或内容过短）")
+
+    except Exception as e:
+        result.fail(str(e))
+
+    return result
+
+
+def verify_monitor_config() -> VerifyResult:
+    """验证2: 监控范围 - 读取 competitor_monitor_config.json"""
+    result = VerifyResult("监控范围")
+
+    try:
+        config_path = PROJECT_ROOT / ".ai-state" / "competitor_monitor_config.json"
+
+        if not config_path.exists():
+            result.fail("competitor_monitor_config.json 文件不存在")
+            return result
+
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+        layers = config.get("monitor_layers", config.get("layers", {}))
+
+        # 检查6层结构
+        if len(layers) < 6:
+            result.fail(f"监控层数不足: {len(layers)} < 6")
+            return result
+
+        # 检查关键层存在
+        layer_keys = list(layers.keys())
+        result.success(f"共 {len(layers)} 层: {', '.join(layer_keys[:3])}...")
+
+    except Exception as e:
+        result.fail(str(e))
+
+    return result
+
+
+def verify_task_spec() -> VerifyResult:
+    """验证3: 圆桌 TaskSpec 加载"""
+    result = VerifyResult("圆桌 TaskSpec")
+
+    try:
+        from scripts.roundtable.task_spec import load_task_spec
+
+        spec = load_task_spec("hud_demo")
+
+        if spec is None:
+            result.fail("hud_demo TaskSpec 加载失败（返回 None）")
+            return result
+
+        # 检查关键字段
+        checks = []
+
+        # generator_input_mode
+        mode = getattr(spec, "generator_input_mode", None)
+        if mode:
+            checks.append(f"generator_input_mode={mode}")
+        else:
+            result.fail("缺少 generator_input_mode")
+            return result
+
+        # acceptance_criteria
+        criteria = getattr(spec, "acceptance_criteria", [])
+        if len(criteria) >= 10:
+            checks.append(f"acceptance_criteria={len(criteria)}条")
+        else:
+            result.fail(f"acceptance_criteria 不足: {len(criteria)} < 10")
+            return result
+
+        result.success(", ".join(checks))
+
+    except ImportError as e:
+        result.fail(f"导入失败: {e}")
+    except Exception as e:
+        result.fail(str(e))
+
+    return result
+
+
+def verify_verifier_rules() -> VerifyResult:
+    """验证4: Verifier 规则库"""
+    result = VerifyResult("Verifier 规则库")
+
+    try:
+        rules_dir = PROJECT_ROOT / ".ai-state" / "verifier_rules"
+
+        if not rules_dir.exists():
+            result.fail("verifier_rules 目录不存在")
+            return result
+
+        # 检查 global.json
+        global_rule = rules_dir / "global.json"
+        if not global_rule.exists():
+            result.fail("global.json 不存在")
+            return result
+
+        # 统计规则文件
+        rule_files = list(rules_dir.glob("*.json"))
+        result.success(f"共 {len(rule_files)} 个规则文件，含 global.json")
+
+    except Exception as e:
+        result.fail(str(e))
+
+    return result
+
+
+def verify_model_gateway() -> VerifyResult:
+    """验证5: model_gateway 调用"""
+    result = VerifyResult("Model Gateway")
+
+    try:
+        from src.utils.model_gateway import get_model_gateway
+
+        gw = get_model_gateway()
+
+        # 简单测试调用
+        test_result = gw.call("gpt_5_4", "回复OK", "测试连接", "test")
+
+        if test_result.get("success"):
+            response = test_result.get("response", "")[:50]
+            result.success(f"调用成功，响应: {response}")
+        else:
+            error = test_result.get("error", "unknown")[:100]
+            result.fail(f"调用失败: {error}")
+
+    except ImportError as e:
+        result.fail(f"导入失败: {e}")
+    except Exception as e:
+        result.fail(str(e))
+
+    return result
+
+
+def verify_route_matching() -> VerifyResult:
+    """验证6: 飞书路由匹配"""
+    result = VerifyResult("路由匹配")
+
+    try:
+        test_cases = [
+            ("状态", "text_router.py", '"状态"'),
+            ("监控范围", "text_router.py", '"监控范围"'),
+            ("圆桌:", "roundtable_handler.py", 'startswith("圆桌:")'),
+            ("拉取指令", "import_handlers.py", '"拉取指令"'),
+        ]
+
+        matched = []
+        failed = []
+
+        for command, handler_file, expected_pattern in test_cases:
+            handler_path = PROJECT_ROOT / "scripts" / "feishu_handlers" / handler_file
+            if handler_path.exists():
+                content = handler_path.read_text(encoding="utf-8")
+                # 简化匹配：检查关键字符串是否存在
+                key = expected_pattern.replace('"', '').replace('startswith(', '').replace(')', '')
+                if key in content:
+                    matched.append(command.rstrip(":"))
+                else:
+                    failed.append(f"{command.rstrip(':')}(路由缺失)")
+            else:
+                failed.append(f"{command.rstrip(':')}(文件缺失)")
+
+        if failed:
+            result.fail(f"匹配失败: {', '.join(failed)}")
+        else:
+            result.success(f"全部匹配: {', '.join(matched)}")
+
+    except Exception as e:
+        result.fail(str(e))
+
+    return result
+
+
+def generate_report(results: list) -> str:
+    """生成验证报告"""
+    lines = [
+        f"# 自动验证报告",
+        f"",
+        f"**时间**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        f"",
+        f"## 结果汇总",
+        f"",
+    ]
+
+    passed = sum(1 for r in results if r.passed)
+    total = len(results)
+
+    lines.append(f"| 状态 | 项目 | 详情 |")
+    lines.append(f"|------|------|------|")
+
+    for r in results:
+        icon = "✅" if r.passed else "❌"
+        detail = r.details[0] if r.details else (r.error or "-")
+        lines.append(f"| {icon} | {r.name} | {detail} |")
+
+    lines.append(f"")
+    lines.append(f"**通过率**: {passed}/{total}")
+
+    return "\n".join(lines)
+
+
+def send_to_feishu(report: str):
+    """发送报告到飞书"""
+    import requests
+
+    # 获取 token
     url = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal"
     try:
         resp = requests.post(url, json={"app_id": APP_ID, "app_secret": APP_SECRET}, timeout=10)
-        result = resp.json()
-        if result.get("tenant_access_token"):
-            return result["tenant_access_token"]
-        else:
-            print(f"[Token Error] {result}")
-            return ""
+        token = resp.json().get("tenant_access_token", "")
+        if not token:
+            print("[WARN] 无法获取飞书 token")
+            return False
     except Exception as e:
-        print(f"[Token Exception] {e}")
-        return ""
+        print(f"[WARN] 获取 token 失败: {e}")
+        return False
 
-
-def send_feishu_message(open_id: str, text: str, token: str) -> bool:
-    """发送飞书消息"""
-    url = "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id"
+    # 发送消息
+    msg_url = "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id"
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
+
+    # 截断报告
+    content = report[:3500] if len(report) > 3500 else report
+
     data = {
-        "receive_id": open_id,
+        "receive_id": LEO_OPEN_ID,
         "msg_type": "text",
-        "content": json.dumps({"text": text})
+        "content": json.dumps({"text": content})
     }
+
     try:
-        resp = requests.post(url, headers=headers, json=data, timeout=10)
-        result = resp.json()
-        return result.get("code") == 0
+        resp = requests.post(msg_url, headers=headers, json=data, timeout=10)
+        return resp.json().get("code") == 0
     except Exception as e:
-        print(f"[Send Error] {e}")
+        print(f"[WARN] 发送飞书失败: {e}")
         return False
 
 
-def stop_sdk_process():
-    """停止当前 SDK 进程"""
-    print("\n[1/5] 停止 SDK 进程...")
-
-    # Windows: 使用 taskkill
-    try:
-        # 使用 WMIC 查找运行 feishu_sdk_client_v2.py 的进程
-        result = subprocess.run(
-            ['wmic', 'process', 'where', 'commandline like "%feishu_sdk_client_v2%"', 'get', 'processid'],
-            capture_output=True, text=True, timeout=30
-        )
-
-        # 提取 PID
-        pids = []
-        for line in result.stdout.strip().split('\n'):
-            line = line.strip()
-            if line.isdigit():
-                pids.append(line)
-
-        if pids:
-            for pid in pids:
-                try:
-                    subprocess.run(['taskkill', '/F', '/PID', pid], capture_output=True, timeout=10)
-                    print(f"  [OK] 已停止进程 PID: {pid}")
-                except:
-                    pass
-        else:
-            print("  [INFO] 未找到运行中的 SDK 进程")
-
-        return True
-    except Exception as e:
-        print(f"  [WARN] 停止进程异常: {e}")
-        return False
-
-
-def start_sdk_process():
-    """启动 SDK 进程"""
-    print("\n[2/5] 启动 SDK 进程...")
-
-    sdk_path = PROJECT_ROOT / "scripts" / "feishu_sdk_client_v2.py"
-
-    try:
-        # 使用 pythonw 在后台运行（无窗口）
-        subprocess.Popen(
-            [sys.executable, str(sdk_path)],
-            cwd=str(PROJECT_ROOT),
-            creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
-        )
-        print("  [OK] SDK 进程已启动")
-        return True
-    except Exception as e:
-        print(f"  [X] 启动失败: {e}")
-        return False
-
-
-def wait_for_sdk_ready(seconds: int = 10):
-    """等待 SDK 就绪"""
-    print(f"\n[3/5] 等待 SDK 就绪 ({seconds}s)...")
-    time.sleep(seconds)
-    print("  [OK] 等待完成")
-
-
-def run_verification_tests():
-    """运行验证测试"""
-    print("\n[4/5] 运行验证测试...")
-
-    token = get_tenant_access_token()
-    if not token:
-        print("  [X] 无法获取 token，跳过测试")
-        return []
-
-    results = []
-
-    for i, (command, expected_keywords) in enumerate(TEST_CASES, 1):
-        print(f"\n  测试 {i}/{len(TEST_CASES)}: {command}")
-
-        # 发送测试消息
-        success = send_feishu_message(LEO_OPEN_ID, command, token)
-
-        if success:
-            print(f"    [OK] 已发送: {command}")
-            results.append({
-                "command": command,
-                "status": "sent",
-                "expected_keywords": expected_keywords
-            })
-        else:
-            print(f"    [X] 发送失败: {command}")
-            results.append({
-                "command": command,
-                "status": "failed",
-                "expected_keywords": expected_keywords
-            })
-
-        # 间隔 2 秒避免频率限制
-        time.sleep(2)
-
-    return results
-
-
-def send_summary_report(results: list):
-    """发送汇总报告"""
-    print("\n[5/5] 发送汇总报告...")
-
-    token = get_tenant_access_token()
-    if not token:
-        print("  [X] 无法获取 token")
-        return
-
-    # 统计
-    total = len(results)
-    sent = sum(1 for r in results if r["status"] == "sent")
-    failed = total - sent
-
-    # 构建报告
-    lines = [
-        f"🤖 自动验证报告",
-        f"时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-        f"",
-        f"📊 测试结果: {sent}/{total} 通过",
-        f"",
-        f"测试项:"
-    ]
-
-    for r in results:
-        icon = "[OK]" if r["status"] == "sent" else "[X]"
-        lines.append(f"  {icon} {r['command']}")
-
-    lines.append(f"")
-    lines.append(f"💡 请检查飞书回复是否包含预期关键词")
-
-    report = "\n".join(lines)
-
-    # 发送报告
-    success = send_feishu_message(LEO_OPEN_ID, report, token)
-
-    if success:
-        print("  [OK] 汇总报告已发送")
-    else:
-        print("  [X] 汇总报告发送失败")
-
-
-def main(no_restart: bool = False):
+def main(no_push: bool = False):
     """主入口"""
     print("=" * 50)
-    print("飞书 SDK 自动重启与验证")
+    print("自动验证脚本")
     print("=" * 50)
 
-    if no_restart:
-        print("\n[跳过] --no-restart 模式，不重启 SDK")
-    else:
-        # 1. 停止 SDK
-        stop_sdk_process()
+    # 执行所有验证
+    results = []
 
-        # 2. 等待进程完全退出
-        time.sleep(3)
+    print("\n[1/6] 验证状态指令...")
+    results.append(verify_system_status())
 
-        # 3. 启动 SDK
-        start_sdk_process()
+    print("[2/6] 验证监控范围...")
+    results.append(verify_monitor_config())
 
-        # 4. 等待就绪
-        wait_for_sdk_ready(10)
+    print("[3/6] 验证圆桌 TaskSpec...")
+    results.append(verify_task_spec())
 
-    # 5. 运行验证测试
-    results = run_verification_tests()
+    print("[4/6] 验证 Verifier 规则库...")
+    results.append(verify_verifier_rules())
 
-    # 6. 发送汇总报告
-    send_summary_report(results)
+    print("[5/6] 验证 Model Gateway...")
+    results.append(verify_model_gateway())
 
+    print("[6/6] 验证路由匹配...")
+    results.append(verify_route_matching())
+
+    # 生成报告
+    report = generate_report(results)
+
+    # 写入文件
+    report_path = PROJECT_ROOT / ".ai-state" / "verify_report.md"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(report, encoding="utf-8")
+    print(f"\n报告已写入: {report_path}")
+
+    # 发送飞书
+    if not no_push:
+        print("\n发送报告到飞书...")
+        if send_to_feishu(report):
+            print("[OK] 报告已发送")
+        else:
+            print("[WARN] 发送失败")
+
+    # 打印结果
     print("\n" + "=" * 50)
-    print("验证完成")
+    for r in results:
+        icon = "[OK]" if r.passed else "[X]"
+        print(f"{icon} {r.name}")
+        if not r.passed:
+            print(f"    Error: {r.error}")
     print("=" * 50)
 
-    # 播放提示音
-    try:
-        beep_path = PROJECT_ROOT / "beep.bat"
-        subprocess.run([str(beep_path)], shell=True, capture_output=True)
-    except:
-        pass
+    # 返回退出码
+    passed = sum(1 for r in results if r.passed)
+    return 0 if passed == len(results) else 1
 
 
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--no-restart", action="store_true", help="只验证不重启")
+    parser.add_argument("--no-push", action="store_true", help="不发送飞书")
     args = parser.parse_args()
 
-    main(no_restart=args.no_restart)
+    exit(main(no_push=args.no_push))
