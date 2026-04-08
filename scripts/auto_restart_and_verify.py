@@ -81,19 +81,32 @@ def stop_sdk_process():
 
     # Windows: 使用 taskkill
     try:
-        # 查找 python 进程运行 feishu_sdk_client_v2.py
+        # 使用 WMIC 查找运行 feishu_sdk_client_v2.py 的进程
         result = subprocess.run(
-            ['tasklist', '/FI', 'IMAGENAME eq python.exe', '/FO', 'CSV', '/NH'],
-            capture_output=True, text=True, encoding='gbk'
+            ['wmic', 'process', 'where', 'commandline like "%feishu_sdk_client_v2%"', 'get', 'processid'],
+            capture_output=True, text=True, timeout=30
         )
 
-        # 直接杀掉所有 python 进程（简单粗暴，适合开发环境）
-        subprocess.run(['taskkill', '/F', '/IM', 'python.exe'],
-                      capture_output=True, timeout=10)
-        print("  ✓ 已停止 python 进程")
+        # 提取 PID
+        pids = []
+        for line in result.stdout.strip().split('\n'):
+            line = line.strip()
+            if line.isdigit():
+                pids.append(line)
+
+        if pids:
+            for pid in pids:
+                try:
+                    subprocess.run(['taskkill', '/F', '/PID', pid], capture_output=True, timeout=10)
+                    print(f"  [OK] 已停止进程 PID: {pid}")
+                except:
+                    pass
+        else:
+            print("  [INFO] 未找到运行中的 SDK 进程")
+
         return True
     except Exception as e:
-        print(f"  ⚠ 停止进程异常: {e}")
+        print(f"  [WARN] 停止进程异常: {e}")
         return False
 
 
@@ -112,10 +125,10 @@ def start_sdk_process():
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL
         )
-        print("  ✓ SDK 进程已启动")
+        print("  [OK] SDK 进程已启动")
         return True
     except Exception as e:
-        print(f"  ✗ 启动失败: {e}")
+        print(f"  [X] 启动失败: {e}")
         return False
 
 
@@ -123,7 +136,7 @@ def wait_for_sdk_ready(seconds: int = 10):
     """等待 SDK 就绪"""
     print(f"\n[3/5] 等待 SDK 就绪 ({seconds}s)...")
     time.sleep(seconds)
-    print("  ✓ 等待完成")
+    print("  [OK] 等待完成")
 
 
 def run_verification_tests():
@@ -132,7 +145,7 @@ def run_verification_tests():
 
     token = get_tenant_access_token()
     if not token:
-        print("  ✗ 无法获取 token，跳过测试")
+        print("  [X] 无法获取 token，跳过测试")
         return []
 
     results = []
@@ -144,14 +157,14 @@ def run_verification_tests():
         success = send_feishu_message(LEO_OPEN_ID, command, token)
 
         if success:
-            print(f"    ✓ 已发送: {command}")
+            print(f"    [OK] 已发送: {command}")
             results.append({
                 "command": command,
                 "status": "sent",
                 "expected_keywords": expected_keywords
             })
         else:
-            print(f"    ✗ 发送失败: {command}")
+            print(f"    [X] 发送失败: {command}")
             results.append({
                 "command": command,
                 "status": "failed",
@@ -170,7 +183,7 @@ def send_summary_report(results: list):
 
     token = get_tenant_access_token()
     if not token:
-        print("  ✗ 无法获取 token")
+        print("  [X] 无法获取 token")
         return
 
     # 统计
@@ -189,7 +202,7 @@ def send_summary_report(results: list):
     ]
 
     for r in results:
-        icon = "✓" if r["status"] == "sent" else "✗"
+        icon = "[OK]" if r["status"] == "sent" else "[X]"
         lines.append(f"  {icon} {r['command']}")
 
     lines.append(f"")
@@ -201,9 +214,9 @@ def send_summary_report(results: list):
     success = send_feishu_message(LEO_OPEN_ID, report, token)
 
     if success:
-        print("  ✓ 汇总报告已发送")
+        print("  [OK] 汇总报告已发送")
     else:
-        print("  ✗ 汇总报告发送失败")
+        print("  [X] 汇总报告发送失败")
 
 
 def main(no_restart: bool = False):
