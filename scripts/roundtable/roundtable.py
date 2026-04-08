@@ -158,15 +158,28 @@ class Roundtable:
         convergence_trace: List[int] = []  # v2: P0 数量追踪（震荡检测）
         baseline_proposal: Optional[str] = None  # v2: 震荡时锁定的基线方案
 
-        # 创建本次讨论的日志目录
+        # v2: 创建快照目录（roundtable_runs/{topic}_{timestamp}/）
+        runs_dir = Path("roundtable_runs")
+        runs_dir.mkdir(parents=True, exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         safe_topic = "".join(c for c in task.topic[:20] if c.isalnum() or c in "_-").strip()
+        self.current_run_dir = runs_dir / f"{safe_topic}_{timestamp}"
+        self.current_run_dir.mkdir(parents=True, exist_ok=True)
+
+        # 保留旧日志目录（兼容）
         self.current_log_dir = self.log_dir / f"{safe_topic}_{timestamp}"
         self.current_log_dir.mkdir(parents=True, exist_ok=True)
+
+        # v2: 保存输入 TaskSpec
+        self._save_snapshot("input_task_spec.json", task.to_dict())
 
         # Phase 1: 独立思考
         phase1_outputs = await self._phase_1_independent(task, context)
         self._log_phase_outputs("phase1", phase1_outputs)
+
+        # v2: 保存 crystal context summary
+        if context:
+            self._save_snapshot("crystal_context_summary.md", str(context.role_slices)[:5000])
 
         # === 元认知层：Phase 1 后盲点检测 ===
         if self.meta and META_COGNITION_ENABLED:
@@ -221,6 +234,15 @@ class Roundtable:
             convergence_trace.append(p0_count)
             self._log_phase("convergence_trace", "System", f"Round {proposal_iteration}: P0={p0_count}")
 
+            # v2: 保存最终 Critic 结果
+            self._save_snapshot("phase4_critic_final.md",
+                f"# Critic Result\n\n## P0 Issues ({len(critic_result.p0_issues)})\n" +
+                "\n".join(f"- {issue}" for issue in critic_result.p0_issues) +
+                f"\n\n## P1 Issues ({len(critic_result.p1_issues)})\n" +
+                "\n".join(f"- {issue}" for issue in critic_result.p1_issues) +
+                f"\n\n## Passed: {critic_result.passed}"
+            )
+
             # 收敛判断（方案层）
             if critic_result.passed and not critic_result.p0_issues:
                 # 方案层通过，进入代码层
@@ -262,6 +284,12 @@ class Roundtable:
             rounds=iteration,
             reviewer_amendments=self._collect_reviewer_amendments(phase3_outputs),  # v2: 新增
         )
+
+        # v2: 保存快照
+        self._save_snapshot("phase2_proposal_full.md", proposal)
+        self._save_convergence_trace(convergence_trace)
+        self._save_snapshot("generator_input_actual.md",
+            f"# Generator Input\n\n## Final Proposal\n{proposal[:3000]}\n\n## Reviewer Amendments\n{result.reviewer_amendments[:1000] if result.reviewer_amendments else 'None'}")
 
         # 保存元认知日志
         if self.meta and META_COGNITION_ENABLED:
@@ -1034,3 +1062,36 @@ class Roundtable:
         """记录多个 Phase 输出"""
         for role, output in outputs.items():
             self._log_phase(phase, role, output)
+
+    def _save_snapshot(self, filename: str, content: Any):
+        """v2: 保存快照到 roundtable_runs/
+
+        支持的文件类型：
+        - input_task_spec.json
+        - crystal_context_summary.md
+        - phase2_proposal_full.md
+        - phase4_critic_final.md
+        - generator_input_actual.md
+        - generator_output_raw.html
+        - verifier_result.md
+        - convergence_trace.jsonl
+        """
+        if not hasattr(self, "current_run_dir"):
+            return
+
+        filepath = self.current_run_dir / filename
+
+        if isinstance(content, dict):
+            filepath.write_text(json.dumps(content, ensure_ascii=False, indent=2), encoding="utf-8")
+        elif isinstance(content, str):
+            # 截断过长的字符串
+            if len(content) > 100000:
+                content = content[:100000] + "\n... (truncated)"
+            filepath.write_text(content, encoding="utf-8")
+        else:
+            filepath.write_text(str(content), encoding="utf-8")
+
+    def _save_convergence_trace(self, trace: List[int]):
+        """v2: 保存收敛轨迹"""
+        lines = [json.dumps({"round": i+1, "p0_count": count}) for i, count in enumerate(trace)]
+        self._save_snapshot("convergence_trace.jsonl", "\n".join(lines))

@@ -232,19 +232,13 @@ JS 函数签名：
 直接输出代码，不要解释。
 """
 
-            result = self.gw.call(
-                model_name="gpt_5_4",
+            # v2: 分段失败重试 + 换模型
+            code = await self._generate_segment_with_retry(
                 prompt=prompt,
-                system_prompt="你是专业的 HTML/JS 开发者，输出代码片段，不解释。",
-                task_type="generation",
+                segment_name=seg['name'],
+                segment_index=i
             )
-
-            if result.get("success"):
-                code = result.get("response", "")
-                segments_code.append(code)
-            else:
-                print(f"  [Generator] 段 {i+1} 生成失败")
-                segments_code.append(f"<!-- Segment {i+1} generation failed -->")
+            segments_code.append(code)
 
         # 拼装成完整 HTML
         full_html = self._assemble_html(segments_code, task, rt_result)
@@ -255,6 +249,51 @@ JS 函数签名：
             print(f"  [Generator] HTML 验证警告: {validation_result['errors']}")
 
         return full_html
+
+    async def _generate_segment_with_retry(self, prompt: str, segment_name: str,
+                                            segment_index: int) -> str:
+        """v2: 分段生成带重试 + 换模型
+
+        重试链：gpt_5_4 → gpt_5_4（重试）→ gemini_3_1_pro
+        """
+        # 模型重试链
+        models = ["gpt_5_4", "gpt_5_4", "gemini_3_1_pro"]
+        last_error = None
+
+        for attempt, model in enumerate(models):
+            result = self.gw.call(
+                model_name=model,
+                prompt=prompt,
+                system_prompt="你是专业的 HTML/JS 开发者，输出代码片段，不解释。",
+                task_type="generation",
+            )
+
+            if result.get("success"):
+                code = result.get("response", "")
+                if self._validate_segment(code, segment_index):
+                    if attempt > 0:
+                        print(f"  [Generator] 段 {segment_index+1} 重试成功（模型: {model}）")
+                    return code
+                else:
+                    last_error = "段验证失败"
+            else:
+                last_error = result.get("error", "模型调用失败")
+
+        # 所有重试失败
+        print(f"  [Generator] 段 {segment_index+1} ({segment_name}) 3次失败: {last_error}")
+        return f"<!-- Segment {segment_index+1} ({segment_name}) generation failed: {last_error} -->"
+
+    def _validate_segment(self, code: str, segment_index: int) -> bool:
+        """验证分段代码基本质量"""
+        if not code or len(code) < 50:
+            return False
+
+        # 段1 应该包含 HTML 骨架
+        if segment_index == 0:
+            return "<!DOCTYPE" in code or "<html" in code or "<style" in code
+
+        # 段2-5 应该包含 JS 代码
+        return "function" in code or "const " in code or "var " in code or "<script" in code
 
     def _assemble_html(self, segments: List[str], task: TaskSpec, rt_result: RoundtableResult) -> str:
         """拼装成完整 HTML"""
