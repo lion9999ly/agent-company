@@ -1058,8 +1058,23 @@ def _generate_morning_brief() -> str:
 
 
 def _handle_dashboard(reply_target: str, send_reply):
-    """生成系统状态仪表盘"""
+    """生成系统状态仪表盘（v2: 包含 system_status.md 内容）"""
     lines = [f"📊 agent_company 状态\n"]
+
+    # v2: 优先显示 system_status.md
+    status_path = PROJECT_ROOT / ".ai-state" / "system_status.md"
+    if status_path.exists():
+        try:
+            status_content = status_path.read_text(encoding="utf-8")
+            # 提取关键部分（去掉标题和分隔线）
+            for line in status_content.split("\n"):
+                if line.startswith("# ") or line.startswith("> ") or line.startswith("---"):
+                    continue
+                if line.strip():
+                    lines.append(line)
+            lines.append("")  # 空行分隔
+        except:
+            pass
 
     # KB
     try:
