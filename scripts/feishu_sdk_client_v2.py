@@ -125,13 +125,18 @@ def handle_message(event):
             print(f"  消息类型: text, 内容: {text[:50]}...")
 
             # === v2.1: 使用 Agent 模式（飞书 → Claude Code CLI）===
+            print(f"  [DEBUG] USE_AGENT_MODE={USE_AGENT_MODE}")
             if USE_AGENT_MODE:
                 try:
                     from scripts.agent import handle_message as agent_handle_message
-                    print(f"  [Agent模式] 调用 agent.handle_message")
+                    print(f"  [Agent模式] 调用 agent.handle_message(text, chat_id={chat_id}, open_id={open_id})")
                     agent_handle_message(text, chat_id, open_id)
+                    print(f"  [Agent模式] agent.handle_message 返回")
                 except Exception as e:
-                    print(f"  [Agent模式失败] {e}，降级到旧路由器")
+                    import traceback
+                    print(f"  [Agent模式失败] {e}")
+                    traceback.print_exc()
+                    print(f"  [降级] 使用旧路由器")
                     route_text_message(
                         text=text,
                         reply_target=reply_target,
@@ -143,6 +148,7 @@ def handle_message(event):
                     )
             else:
                 # 旧路由器
+                print(f"  [旧路由器] USE_AGENT_MODE=False")
                 route_text_message(
                     text=text,
                     reply_target=reply_target,
