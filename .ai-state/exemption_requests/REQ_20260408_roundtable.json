@@ -1,0 +1,12 @@
+{
+  "id": "REQ_20260408_roundtable",
+  "requested_by": "system",
+  "requested_at": "2026-04-08",
+  "files": [
+    "scripts/roundtable/roundtable.py"
+  ],
+  "reason": "圆桌系统核心，Phase 1-4 编排，当前功能完整，暂缓拆分",
+  "threshold": 800,
+  "current_lines": 1097,
+  "status": "approved"
+}

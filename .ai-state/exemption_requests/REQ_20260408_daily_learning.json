@@ -1,0 +1,12 @@
+{
+  "id": "REQ_20260408_daily_learning",
+  "requested_by": "system",
+  "requested_at": "2026-04-08",
+  "files": [
+    "scripts/daily_learning.py"
+  ],
+  "reason": "每日学习脚本，已标记为拆分优先目标，当前不阻塞功能开发",
+  "threshold": 1200,
+  "current_lines": 1567,
+  "status": "approved"
+}

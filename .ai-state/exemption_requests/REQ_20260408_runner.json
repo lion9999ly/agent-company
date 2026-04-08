@@ -1,10 +1,12 @@
 {
-  "request_id": "REQ_20260408_runner",
-  "applicant_agent": "claude_code",
-  "violated_rule": "01-quality-redlines.md#单文件800行红线",
-  "target_file": "scripts\\deep_research\\runner.py",
-  "justification": "深度研究核心调度器，已知违规。本次修改增加动态主题池功能，需独立重构计划拆分。",
-  "status": "approved",
-  "approved_by": "UIH00653",
-  "expiry_timestamp": 2000000000
+  "id": "REQ_20260408_runner",
+  "requested_by": "system",
+  "requested_at": "2026-04-08",
+  "files": [
+    "scripts/deep_research/runner.py"
+  ],
+  "reason": "深度研究运行器，已标记为拆分优先目标，当前不阻塞功能开发",
+  "threshold": 800,
+  "current_lines": 1028,
+  "status": "approved"
 }

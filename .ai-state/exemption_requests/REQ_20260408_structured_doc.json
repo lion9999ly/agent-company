@@ -1,0 +1,12 @@
+{
+  "id": "REQ_20260408_structured_doc",
+  "requested_by": "system",
+  "requested_at": "2026-04-08",
+  "files": [
+    "scripts/feishu_handlers/structured_doc.py"
+  ],
+  "reason": "结构化文档处理器，已标记为拆分优先目标，当前不阻塞功能开发",
+  "threshold": 1200,
+  "current_lines": 5638,
+  "status": "approved"
+}

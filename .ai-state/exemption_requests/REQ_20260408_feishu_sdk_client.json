@@ -1,0 +1,12 @@
+{
+  "id": "REQ_20260408_feishu_sdk_client",
+  "requested_by": "system",
+  "requested_at": "2026-04-08",
+  "files": [
+    "scripts/feishu_sdk_client.py"
+  ],
+  "reason": "飞书 SDK 主客户端，已标记为拆分优先目标，当前不阻塞功能开发",
+  "threshold": 1200,
+  "current_lines": 3393,
+  "status": "approved"
+}

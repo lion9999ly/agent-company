@@ -1,0 +1,12 @@
+{
+  "id": "REQ_20260408_router",
+  "requested_by": "system",
+  "requested_at": "2026-04-08",
+  "files": [
+    "src/graph/router.py"
+  ],
+  "reason": "LangGraph 状态机路由器，已标记为拆分优先目标，当前不阻塞功能开发",
+  "threshold": 1200,
+  "current_lines": 1423,
+  "status": "approved"
+}

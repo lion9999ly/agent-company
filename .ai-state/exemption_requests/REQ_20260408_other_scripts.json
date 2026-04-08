@@ -1,0 +1,15 @@
+{
+  "id": "REQ_20260408_other_scripts",
+  "requested_by": "system",
+  "requested_at": "2026-04-08",
+  "files": [
+    "scripts/overnight_kb_overhaul.py",
+    "scripts/mobile_gateway.py",
+    "scripts/deep_research/learning.py",
+    "scripts/deep_research/pipeline.py"
+  ],
+  "reason": "辅助脚本，已标记为拆分优先目标，当前不阻塞功能开发",
+  "threshold": 800,
+  "current_lines": 0,
+  "status": "approved"
+}

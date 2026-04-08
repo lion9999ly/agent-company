@@ -1,11 +1,17 @@
 """
-@description: 回归验证脚本 - 读取 capability_registry.json，逐条验证功能完整性
+@description: 回归验证脚本 - 功能完整性检查 + 文件行数检查
 @dependencies: json, importlib, sys
-@last_modified: 2026-04-06
+@last_modified: 2026-04-08
 
 用法：
   python scripts/regression_check.py          # 全量检查
-  python scripts/regression_check.py --quick   # 快速检查（只验证文件和函数存在性）
+  python scripts/regression_check.py --quick   # 快速检查（跳过行数检查）
+  python scripts/regression_check.py --lines   # 只检查行数
+
+行数阈值：
+  WARNING: >= 800 行
+  ERROR:   >= 1200 行
+  豁免: .ai-state/exemption_requests/REQ_*.json
 """
 
 import json
@@ -15,6 +21,10 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+# 行数阈值
+WARNING_THRESHOLD = 800
+ERROR_THRESHOLD = 1200
+
 
 def load_registry():
     """加载能力注册表"""
@@ -23,6 +33,64 @@ def load_registry():
         print(f"❌ 注册表不存在: {reg_path}")
         return None
     return json.loads(reg_path.read_text(encoding="utf-8"))
+
+
+def load_exemptions():
+    """加载豁免列表"""
+    exemptions = {}  # {relative_path: reason}
+    exemption_dir = PROJECT_ROOT / ".ai-state" / "exemption_requests"
+
+    if not exemption_dir.exists():
+        return exemptions
+
+    for f in exemption_dir.glob("REQ_*.json"):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+            for file_path in data.get("files", []):
+                # 统一路径格式
+                rel_path = file_path.replace("\\", "/")
+                exemptions[rel_path] = data.get("reason", "未说明原因")
+        except:
+            continue
+
+    return exemptions
+
+
+def check_file_lines():
+    """检查所有 .py 文件行数"""
+    results = []
+    exemptions = load_exemptions()
+
+    for py_file in PROJECT_ROOT.rglob("*.py"):
+        # 跳过 .venv 和虚拟环境
+        if ".venv" in str(py_file) or "site-packages" in str(py_file):
+            continue
+
+        # 跳过 __pycache__
+        if "__pycache__" in str(py_file):
+            continue
+
+        rel_path = str(py_file.relative_to(PROJECT_ROOT)).replace("\\", "/")
+        lines = len(py_file.read_text(encoding="utf-8").splitlines())
+
+        # 检查是否在豁免列表
+        if rel_path in exemptions:
+            status = "⊘"  # 豁免
+            issue = f"[豁免] {exemptions[rel_path]}"
+        elif lines >= ERROR_THRESHOLD:
+            status = "❌"
+            issue = f"行数 {lines} >= {ERROR_THRESHOLD} (ERROR)"
+        elif lines >= WARNING_THRESHOLD:
+            status = "⚠️"
+            issue = f"行数 {lines} >= {WARNING_THRESHOLD} (WARNING)"
+        else:
+            continue  # 无问题，跳过
+
+        results.append((rel_path, status, lines, issue))
+
+    # 按行数降序排序
+    results.sort(key=lambda x: -x[2])
+    return results
 
 
 def check_feishu_commands(registry):
@@ -140,16 +208,50 @@ def main():
     import io
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
+    # 解析命令行参数
+    args = sys.argv[1:]
+    quick_mode = "--quick" in args
+    lines_only = "--lines" in args
+
+    fail_count = 0
+
+    # 行数检查
+    if not quick_mode:
+        print("=" * 60)
+        print("文件行数检查")
+        print(f"阈值: WARNING >= {WARNING_THRESHOLD}, ERROR >= {ERROR_THRESHOLD}")
+        print("=" * 60)
+
+        line_results = check_file_lines()
+        error_count = 0
+        warning_count = 0
+
+        for rel_path, status, lines, issue in line_results:
+            print(f"  {status} {rel_path} ({lines} 行)")
+            print(f"      → {issue}")
+            if status == "❌":
+                error_count += 1
+                fail_count += 1
+            elif status == "⚠️":
+                warning_count += 1
+
+        if not line_results:
+            print("  ✅ 所有文件行数合规")
+        else:
+            print(f"\n  统计: {error_count} ERROR, {warning_count} WARNING")
+
+        if lines_only:
+            return fail_count
+
+    # 功能回归检查
     registry = load_registry()
     if not registry:
         return 1
 
-    print("=" * 60)
+    print("\n" + "=" * 60)
     print("功能回归验证报告")
     print(f"注册表版本: {registry.get('version', 'unknown')}")
     print("=" * 60)
-
-    fail_count = 0
 
     # 飞书指令
     print("\n--- 飞书指令 ---")

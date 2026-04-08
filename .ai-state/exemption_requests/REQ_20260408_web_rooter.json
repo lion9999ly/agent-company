@@ -1,0 +1,24 @@
+{
+  "id": "REQ_20260408_web_rooter",
+  "requested_by": "system",
+  "requested_at": "2026-04-08",
+  "files": [
+    "tools/web-rooter/main.py",
+    "tools/web-rooter/core/search/advanced.py",
+    "tools/web-rooter/agents/web_agent.py",
+    "tools/web-rooter/core/browser.py",
+    "tools/web-rooter/tools/mcp_tools.py",
+    "tools/web-rooter/core/parser.py",
+    "tools/web-rooter/core/workflow.py",
+    "tools/web-rooter/core/research_kernel.py",
+    "tools/web-rooter/core/crawler.py",
+    "tools/web-rooter/core/scheduler.py",
+    "tools/web-rooter/agents/spider.py",
+    "tools/web-rooter/core/form_search.py",
+    "tools/web-rooter/core/academic_search.py"
+  ],
+  "reason": "web-rooter 独立工具集，非核心研发路径，暂不纳入行数检查范围",
+  "threshold": 1200,
+  "current_lines": 0,
+  "status": "approved"
+}

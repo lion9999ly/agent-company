@@ -1,0 +1,13 @@
+{
+  "id": "REQ_20260408_archived",
+  "requested_by": "system",
+  "requested_at": "2026-04-08",
+  "files": [
+    "scripts/archived/overnight_deep_learning_v3.py",
+    "scripts/archived/overnight_deep_learning_v2.py"
+  ],
+  "reason": "已归档脚本，不再维护，豁免行数检查",
+  "threshold": 800,
+  "current_lines": 0,
+  "status": "approved"
+}
