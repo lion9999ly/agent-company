@@ -1,10 +1,14 @@
 """
 @description: 飞书长连接客户端 v2 - 模块化重构版
-@dependencies: lark-oapi, scripts/feishu_handlers/*
-@last_modified: 2026-04-07
+@dependencies: lark-oapi, scripts/feishu_handlers/*, scripts/agent
+@last_modified: 2026-04-08
 
 使用方法：
     python scripts/feishu_sdk_client_v2.py
+
+v2.1 更新：
+    - 集成 agent.py (飞书消息 → 快速通道 / Claude Code CLI)
+    - 保留旧路由器作为降级方案
 """
 import os
 import sys
@@ -39,6 +43,10 @@ except ImportError:
 from scripts.feishu_handlers.chat_helpers import send_reply, log, get_session_id, set_reply_context, APP_ID, APP_SECRET
 from scripts.feishu_handlers.text_router import route_text_message
 from scripts.feishu_handlers.image_handler import handle_image_message, handle_audio_message, handle_file_message
+
+# === 新架构：Agent 模式 ===
+# 使用 agent.py 作为消息处理器（飞书 → Claude Code CLI）
+USE_AGENT_MODE = os.getenv("USE_AGENT_MODE", "true").lower() == "true"
 
 # === 消息去重 ===
 _processed_msgs = set()
@@ -116,16 +124,34 @@ def handle_message(event):
 
             print(f"  消息类型: text, 内容: {text[:50]}...")
 
-            # 交给文本路由器
-            route_text_message(
-                text=text,
-                reply_target=reply_target,
-                reply_type=reply_type,
-                open_id=open_id,
-                chat_id=chat_id,
-                send_reply=send_reply,
-                session_id=session_id
-            )
+            # === v2.1: 使用 Agent 模式（飞书 → Claude Code CLI）===
+            if USE_AGENT_MODE:
+                try:
+                    from scripts.agent import handle_message as agent_handle_message
+                    print(f"  [Agent模式] 调用 agent.handle_message")
+                    agent_handle_message(text, chat_id, open_id)
+                except Exception as e:
+                    print(f"  [Agent模式失败] {e}，降级到旧路由器")
+                    route_text_message(
+                        text=text,
+                        reply_target=reply_target,
+                        reply_type=reply_type,
+                        open_id=open_id,
+                        chat_id=chat_id,
+                        send_reply=send_reply,
+                        session_id=session_id
+                    )
+            else:
+                # 旧路由器
+                route_text_message(
+                    text=text,
+                    reply_target=reply_target,
+                    reply_type=reply_type,
+                    open_id=open_id,
+                    chat_id=chat_id,
+                    send_reply=send_reply,
+                    session_id=session_id
+                )
 
         elif msg_type == "image":
             print(f"  消息类型: image")
