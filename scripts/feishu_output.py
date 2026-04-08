@@ -5,6 +5,8 @@
 """
 import subprocess
 import json
+import shutil
+import os
 from pathlib import Path
 from typing import Optional
 
@@ -12,6 +14,30 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # 飞书文档 ID 存储（首次创建后记录）
 DOC_REGISTRY_PATH = PROJECT_ROOT / ".ai-state" / "feishu_doc_registry.json"
+
+
+def _find_lark_cli() -> str:
+    """查找 lark-cli 可执行文件路径"""
+    # 尝试直接调用（依赖 PATH）
+    result = shutil.which("lark-cli")
+    if result:
+        return result
+
+    # Windows npm 安装路径
+    common_paths = [
+        "C:\\Users\\uih00653\\nodejs\\lark-cli.cmd",
+        os.path.expanduser("~\\nodejs\\lark-cli.cmd"),
+        "lark-cli",  # 回退到 PATH
+    ]
+
+    for path in common_paths:
+        if Path(path).exists() or path == "lark-cli":
+            return path
+
+    return "lark-cli"  # 默认回退
+
+
+LARK_CLI = _find_lark_cli()
 
 
 def _load_registry() -> dict:
@@ -73,7 +99,7 @@ def get_or_create_doc(title: str, initial_content: str = "") -> tuple:
 
     # 创建新文档
     result = subprocess.run(
-        ["lark-cli", "docs", "+create",
+        [LARK_CLI, "docs", "+create",
          "--title", title,
          "--markdown", initial_content or f"# {title}\n\n初始化中...",
          "--as", "bot"],
@@ -105,7 +131,7 @@ def update_doc(title: str, content: str) -> Optional[str]:
 
     # 更新已有文档
     result = subprocess.run(
-        ["lark-cli", "docs", "+update",
+        [LARK_CLI, "docs", "+update",
          "--document-id", doc_id,
          "--markdown", content,
          "--as", "bot"],
@@ -122,7 +148,7 @@ def create_doc(title: str, content: str) -> Optional[str]:
         doc_url 或 None
     """
     result = subprocess.run(
-        ["lark-cli", "docs", "+create",
+        [LARK_CLI, "docs", "+create",
          "--title", title,
          "--markdown", content,
          "--as", "bot"],
@@ -168,7 +194,7 @@ def get_or_create_bitable(name: str) -> Optional[str]:
 
     # 创建多维表格
     result = subprocess.run(
-        ["lark-cli", "bitable", "+create",
+        [LARK_CLI, "bitable", "+create",
          "--name", name,
          "--as", "bot"],
         capture_output=True, text=True, timeout=30
@@ -197,7 +223,7 @@ def add_bitable_record(app_token: str, table_id: str, record: dict) -> bool:
         是否成功
     """
     result = subprocess.run(
-        ["lark-cli", "bitable", "+records-create",
+        [LARK_CLI, "bitable", "+records-create",
          "--app-token", app_token,
          "--table-id", table_id,
          "--record", json.dumps(record, ensure_ascii=False),
