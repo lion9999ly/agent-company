@@ -31,6 +31,31 @@ load_dotenv()
 LEO_OPEN_ID = os.getenv("LEO_OPEN_ID", "ou_8e5e4f183e9eca4241378e96bac3a751")
 LEO_CHAT_ID = os.getenv("LEO_CHAT_ID", "oc_43bca641a75a5beed8215541845c7b73")
 
+# Claude Code CLI 路径（Windows nodejs 安装）
+NODEJS_PATH = Path.home() / "nodejs"
+CLAUDE_CLI_PATH = NODEJS_PATH / "claude.cmd"
+
+# Z.AI 环境变量列表（需要在调用 Claude Code CLI 时清除）
+ZAI_ENV_KEYS = [
+    "ANTHROPIC_BASE_URL",
+    "ANTHROPIC_AUTH_TOKEN",
+    "ANTHROPIC_API_KEY",
+    "ANTHROPIC_MODEL",
+    "CLAUDE_BASE_URL",
+]
+
+
+def _get_clean_env() -> dict:
+    """获取干净的环境变量，移除 Z.AI 重定向，并添加 nodejs 到 PATH"""
+    clean_env = {**os.environ}
+    for key in ZAI_ENV_KEYS:
+        clean_env.pop(key, None)
+    # 确保 nodejs 在 PATH 中
+    nodejs_path = str(NODEJS_PATH)
+    if nodejs_path not in clean_env.get("PATH", ""):
+        clean_env["PATH"] = nodejs_path + ";" + clean_env.get("PATH", "")
+    return clean_env
+
 # 飞书 CLI 路径
 from scripts.feishu_output import LARK_CLI
 
@@ -236,13 +261,22 @@ def try_fast_commands(text: str, chat_id: str) -> bool:
 # 飞书 CLI 发送消息
 # ============================================================
 
-def cli_send_message(text: str, chat_id: str = None) -> bool:
-    """通过飞书 CLI 发送消息"""
-    target = chat_id or LEO_CHAT_ID
+def cli_send_message(text: str, chat_id: str) -> bool:
+    """通过飞书 CLI 发送消息
+
+    Args:
+        text: 消息内容
+        chat_id: 目标聊天 ID（从飞书事件提取，必需）
+    """
+    if not chat_id:
+        print(f"[LarkCLI] 错误: chat_id 为空，无法发送")
+        return False
+
+    print(f"[LarkCLI] 发送到 chat_id={chat_id}, 内容长度={len(text)}")
     try:
         result = subprocess.run(
             [LARK_CLI, "im", "+messages-send",
-             "--chat-id", target, "--text", text, "--as", "bot"],
+             "--chat-id", chat_id, "--text", text, "--as", "bot"],
             capture_output=True, text=True, timeout=15,
             encoding='utf-8', errors='ignore'
         )
@@ -279,14 +313,22 @@ def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
     """通过 Claude Code CLI 处理自然语言"""
     prompt = build_prompt(message_text, chat_id, open_id)
 
+    # 清除 Z.AI 环境变量，确保调用真正的 Claude Code CLI
+    clean_env = _get_clean_env()
+
+    # 使用完整的 Claude CLI 路径
+    claude_cmd = str(CLAUDE_CLI_PATH) if CLAUDE_CLI_PATH.exists() else "claude"
+
     try:
         result = subprocess.run(
-            ["claude", "-p", prompt],
+            [claude_cmd, "-p", prompt],
             cwd=str(PROJECT_ROOT),
             capture_output=True,
             text=True,
             timeout=120,  # 2分钟超时
-            encoding='utf-8', errors='ignore'
+            encoding='utf-8', errors='ignore',
+            env=clean_env,  # 使用干净的环境变量
+            shell=True  # Windows 需要 shell=True 找到 .cmd 文件
         )
 
         if result.returncode == 0 and result.stdout.strip():
