@@ -233,10 +233,16 @@ def _find_kb_gaps() -> list:
     # 按优先级排序，取 top 5-8
     gaps.sort(key=lambda x: x["priority"])
 
+    # DEBUG: 打印 top 10
+    print(f"[AutoLearn-DEBUG] gaps before filter: {len(gaps)}, top 10:")
+    for i, g in enumerate(gaps[:10]):
+        in_c = g["query"] in covered
+        print(f"  {i+1}. priority={g['priority']}, in_covered={in_c}, type={g['type']}")
+
     # 过滤已覆盖的搜索词
     filtered_gaps = []
     skipped = 0
-    for gap in gaps[:10]:  # 扩大到10个
+    for gap in gaps[:20]:  # 扩大到20个，确保有足够的候选
         query = gap["query"]
         if query in covered:
             skipped += 1
@@ -246,6 +252,7 @@ def _find_kb_gaps() -> list:
     if skipped > 0:
         print(f"[AutoLearn] 跳过 {skipped} 个已覆盖的搜索词")
 
+    print(f"[AutoLearn-DEBUG] filtered_gaps: {len(filtered_gaps)}")
     return filtered_gaps[:8]  # 返回最多8个
 
 

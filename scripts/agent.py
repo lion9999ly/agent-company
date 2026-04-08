@@ -311,13 +311,19 @@ def build_prompt(message_text: str, chat_id: str, open_id: str) -> str:
 
 def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
     """通过 Claude Code CLI 处理自然语言"""
+    # DEBUG: 打印收到的参数
+    print(f"[Agent-Debug] 收到文本: '{message_text[:100]}...' (len={len(message_text)})")
+    print(f"[Agent-Debug] chat_id: {chat_id}, open_id: {open_id}")
+
     prompt = build_prompt(message_text, chat_id, open_id)
+    print(f"[Agent-Debug] CLI prompt 长度: {len(prompt)}")
 
     # 清除 Z.AI 环境变量，确保调用真正的 Claude Code CLI
     clean_env = _get_clean_env()
 
     # 使用完整的 Claude CLI 路径
     claude_cmd = str(CLAUDE_CLI_PATH) if CLAUDE_CLI_PATH.exists() else "claude"
+    print(f"[Agent-Debug] claude_cmd: {claude_cmd}")
 
     try:
         result = subprocess.run(
