@@ -93,10 +93,11 @@ def _find_kb_gaps() -> list:
 
     策略:
     1. 优先从决策树的 blocking_knowledge 获取缺口
-    2. 域分布不均: 哪个 domain 条目最少？
-    3. 时效性: 哪些条目超过 30 天未更新？
-    4. 产品锚点覆盖: PRD 中提到的模块，KB 有没有对应知识？
-    5. 低 confidence 高频引用: 被多次引用但 confidence 只有 medium/low 的条目
+    2. 从 research_task_pool.yaml 获取未完成任务
+    3. 域分布不均: 哪个 domain 条目最少？
+    4. 时效性: 哪些条目超过 30 天未更新？
+    5. 产品锚点覆盖: PRD 中提到的模块，KB 有没有对应知识？
+    6. 竞品关键词补充
 
     已覆盖的搜索词会被跳过（7 天后过期重试）
     """
@@ -135,6 +136,30 @@ def _find_kb_gaps() -> list:
                         })
         except Exception as e:
             print(f"[AutoLearn] 决策树读取失败: {e}")
+
+    # 0.5 新增: 从 research_task_pool.yaml 获取未完成任务
+    rtp_path = Path(__file__).parent.parent / ".ai-state" / "research_task_pool.yaml"
+    if rtp_path.exists():
+        try:
+            import yaml as _yaml
+            tasks = _yaml.safe_load(rtp_path.read_text(encoding='utf-8'))
+            if tasks:
+                for task in tasks:
+                    if task.get("completed"):
+                        continue
+                    # 取第一个搜索词作为 query
+                    searches = task.get("searches", [])
+                    if searches:
+                        for search in searches[:1]:  # 只取第一个
+                            gaps.append({
+                                "type": "research_pool",
+                                "domain": "components",
+                                "query": search,
+                                "priority": task.get("priority", 2),
+                                "task_id": task.get("id", ""),
+                            })
+        except Exception as e:
+            print(f"[AutoLearn] research_task_pool 读取失败: {e}")
 
     # 1. 域分布
     stats = get_knowledge_stats()
@@ -184,7 +209,8 @@ def _find_kb_gaps() -> list:
         "HUD", "光波导", "waveguide", "OLED", "Micro LED",
         "mesh intercom", "Cardo", "骨传导", "ANC",
         "Qualcomm AR1", "主SoC", "胎压", "TPMS",
-        "DOT", "ECE", "SNELL", "安全认证"
+        "DOT", "ECE", "SNELL", "安全认证",
+        "lark-cli", "飞书 CLI",  # 新增：追踪飞书CLI能力
     ]
     for kw in anchor_keywords:
         # 检查 KB 中是否有足够条目
@@ -210,7 +236,7 @@ def _find_kb_gaps() -> list:
     # 过滤已覆盖的搜索词
     filtered_gaps = []
     skipped = 0
-    for gap in gaps[:8]:
+    for gap in gaps[:10]:  # 扩大到10个
         query = gap["query"]
         if query in covered:
             skipped += 1
@@ -220,7 +246,7 @@ def _find_kb_gaps() -> list:
     if skipped > 0:
         print(f"[AutoLearn] 跳过 {skipped} 个已覆盖的搜索词")
 
-    return filtered_gaps
+    return filtered_gaps[:8]  # 返回最多8个
 
 
 def _call_model(model_name: str, prompt: str, system_prompt: str = "", task_type: str = "auto_learn") -> dict:

@@ -194,6 +194,7 @@ class Roundtable:
         proposal_iteration = 0
         proposal = ""
         phase3_outputs = {}
+        prev_critic_result: Optional[CriticResult] = None  # v2: 用于因果链标注
 
         while proposal_iteration < MAX_PROPOSAL_ROUNDS:
             proposal_iteration += 1
@@ -256,9 +257,17 @@ class Roundtable:
                 recent = convergence_trace[-OSCILLATION_THRESHOLD:]
                 if all(x >= convergence_trace[-OSCILLATION_THRESHOLD] for x in recent):
                     if self.feishu:
-                        self.feishu.notify(f"⚠️ 检测到震荡，锁定基线方案")
+                        self.feishu.notify(f"⚠️ 检测到震荡（P0 不下降），锁定基线方案")
                     baseline_proposal = proposal
                     # 强制进入代码层，由 Generator + Verifier 处理
+                    break
+
+            # v2: 新增 - P0 反弹检测（比上一轮增加）
+            if len(convergence_trace) >= 2:
+                if convergence_trace[-1] > convergence_trace[-2]:
+                    if self.feishu:
+                        self.feishu.notify(f"⚠️ P0 反弹 ({convergence_trace[-2]} → {convergence_trace[-1]})，锁定基线")
+                    baseline_proposal = proposal
                     break
 
             # 有 P0 问题，迭代修复
@@ -267,7 +276,8 @@ class Roundtable:
                     self.feishu.notify(f"🔄 方案层发现 {len(critic_result.p0_issues)} 个 P0 问题，迭代修复")
 
                 # 将 P0 问题反馈给 proposer，修改方案
-                feedback = self._build_p0_feedback(critic_result, phase3_outputs, None)  # v2: 因果链参数
+                feedback = self._build_p0_feedback(critic_result, phase3_outputs, prev_critic_result)  # v2: 因果链参数
+                prev_critic_result = critic_result  # v2: 保存当前结果用于下一轮对比
                 phase1_outputs = await self._phase_1_rethink(task, context, feedback, phase1_outputs)
                 continue
 
@@ -954,18 +964,43 @@ class Roundtable:
         v2 新增：
         - 对每个 P0 问题标注：[新增]/[遗留]/[回归]
         - prev_critic_result 用于对比上一轮 P0 问题
+        - 使用关键词匹配而非精确匹配，提高标注准确性
         """
         lines = ["## P0 问题清单"]
 
+        def _extract_keywords(issue: str) -> set:
+            """提取问题的关键词（用于模糊匹配）"""
+            # 移除常见词，提取关键词
+            keywords = set()
+            for word in issue.split():
+                if len(word) > 2 and word not in ["没有", "缺少", "需要", "应该", "必须", "问题"]:
+                    keywords.add(word.lower())
+            return keywords
+
+        def _issues_similar(issue1: str, issue2: str) -> bool:
+            """判断两个问题是否相似"""
+            kw1 = _extract_keywords(issue1)
+            kw2 = _extract_keywords(issue2)
+            if not kw1 or not kw2:
+                return False
+            # 如果超过50%关键词重叠，认为是相似问题
+            overlap = len(kw1 & kw2)
+            return overlap > 0.5 * min(len(kw1), len(kw2))
+
         # v2: 因果链标注
         if prev_critic_result:
-            prev_p0_set = set(prev_critic_result.p0_issues)
+            prev_p0_list = prev_critic_result.p0_issues
             for issue in critic_result.p0_issues:
-                # 简化匹配：检查是否在上一轮 P0 中
-                if issue in prev_p0_set:
+                # 检查是否与上一轮某个问题相似
+                is_leftover = False
+                for prev_issue in prev_p0_list:
+                    if _issues_similar(issue, prev_issue):
+                        is_leftover = True
+                        break
+
+                if is_leftover:
                     lines.append(f"- [遗留] {issue}")
                 else:
-                    # 检查是否是回归（简化：通过关键词匹配）
                     lines.append(f"- [新增] {issue}")
         else:
             # 第一轮，全部标注为新增

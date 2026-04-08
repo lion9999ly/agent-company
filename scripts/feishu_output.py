@@ -97,14 +97,16 @@ def get_or_create_doc(title: str, initial_content: str = "") -> tuple:
         entry = registry[title]
         return entry.get("doc_id"), entry.get("doc_url")
 
-    # 创建新文档
+    # 创建新文档（使用 stdin 传递内容，避免 Windows 命令行截断）
+    content = initial_content or f"# {title}\n\n初始化中..."
     result = subprocess.run(
         [LARK_CLI, "docs", "+create",
          "--title", title,
-         "--markdown", initial_content or f"# {title}\n\n初始化中...",
+         "--markdown", "-",  # 使用 stdin
          "--as", "bot"],
+        input=content,
         capture_output=True, text=True, timeout=30,
-        encoding='utf-8', errors='ignore'
+        encoding='utf-8'
     )
 
     doc_id = _extract_doc_id(result.stdout)
@@ -130,14 +132,15 @@ def update_doc(title: str, content: str) -> Optional[str]:
         doc_id, doc_url = get_or_create_doc(title, content)
         return doc_url
 
-    # 更新已有文档
+    # 更新已有文档（使用 stdin 传递内容）
     result = subprocess.run(
         [LARK_CLI, "docs", "+update",
          "--doc", doc_id,
-         "--markdown", content,
+         "--markdown", "-",  # 使用 stdin
          "--as", "bot"],
+        input=content,
         capture_output=True, text=True, timeout=30,
-        encoding='utf-8', errors='ignore'
+        encoding='utf-8'
     )
 
     return doc_url
@@ -152,10 +155,11 @@ def create_doc(title: str, content: str) -> Optional[str]:
     result = subprocess.run(
         [LARK_CLI, "docs", "+create",
          "--title", title,
-         "--markdown", content,
+         "--markdown", "-",  # 使用 stdin
          "--as", "bot"],
+        input=content,
         capture_output=True, text=True, timeout=30,
-        encoding='utf-8', errors='ignore'
+        encoding='utf-8'
     )
 
     return _extract_doc_url(result.stdout)
