@@ -132,6 +132,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
         learning_handlers._handle_kb_governance(reply_target, send_reply)
         return
 
+    # 监控范围
+    if text_stripped in ("监控范围", "monitor scope", "竞品监控"):
+        _handle_monitor_scope(reply_target, send_reply)
+        return
+
     # === 9. 结构化文档快速通道 ===
     try:
         from scripts.feishu_handlers.structured_doc import try_structured_doc_fast_track
@@ -312,7 +317,27 @@ def _generate_morning_brief() -> str:
 
 
 def _handle_dashboard(reply_target: str, send_reply: Callable):
-    """生成系统状态仪表盘"""
+    """生成系统状态仪表盘（v2: 优先读取 system_status.md）"""
+    status_path = PROJECT_ROOT / ".ai-state" / "system_status.md"
+
+    # v2: 优先返回 system_status.md 完整内容
+    if status_path.exists():
+        try:
+            content = status_path.read_text(encoding="utf-8")
+            # 去掉 YAML frontmatter（如果有）
+            if content.startswith("---"):
+                parts = content.split("---", 2)
+                if len(parts) >= 3:
+                    content = parts[2].strip()
+            # 截断到飞书消息限制
+            if len(content) > 3500:
+                content = content[:3400] + "\n\n... (已截断)"
+            send_reply(reply_target, content)
+            return
+        except:
+            pass
+
+    # 回退：简化信息
     lines = [f"📊 agent_company 状态\n"]
 
     # KB
@@ -421,6 +446,48 @@ def _handle_kb_stats(reply_target: str, send_reply: Callable, detailed: bool = F
             send_reply(reply_target, f"📚 知识库: {total} 条")
     except Exception as e:
         send_reply(reply_target, f"❌ KB 统计失败: {str(e)[:50]}")
+
+
+def _handle_monitor_scope(reply_target: str, send_reply: Callable):
+    """展示竞品监控 6 层范围"""
+    config_path = PROJECT_ROOT / ".ai-state" / "competitor_monitor_config.json"
+
+    if not config_path.exists():
+        send_reply(reply_target, "⚠️ 监控配置文件不存在")
+        return
+
+    try:
+        data = json.loads(config_path.read_text(encoding="utf-8"))
+        lines = ["🔍 竞品监控范围（6 层）\n"]
+
+        layers = data.get("monitor_layers", {})
+        for layer_key, layer_info in layers.items():
+            desc = layer_info.get("description", layer_key)
+            lines.append(f"\n【{desc}】")
+
+            # 品牌或主题
+            if "brands" in layer_info:
+                brands = layer_info["brands"]
+                lines.append(f"  品牌: {', '.join(brands[:5])}" + ("..." if len(brands) > 5 else ""))
+            if "topics" in layer_info:
+                topics = layer_info["topics"]
+                lines.append(f"  主题: {', '.join(topics[:5])}" + ("..." if len(topics) > 5 else ""))
+
+            # 搜索关键词（取前2个）
+            keywords = layer_info.get("search_keywords", [])[:2]
+            if keywords:
+                lines.append(f"  关键词: {'; '.join(keywords)}")
+
+        # 输出规则
+        output_rules = data.get("output_rules", {})
+        if output_rules.get("no_update_no_push"):
+            lines.append("\n📌 规则: 无更新不推送")
+        if output_rules.get("require_substantial_content"):
+            lines.append("📌 规则: 需实质性内容")
+
+        send_reply(reply_target, "\n".join(lines))
+    except Exception as e:
+        send_reply(reply_target, f"❌ 读取监控配置失败: {str(e)[:50]}")
 
 
 def _get_full_help_text() -> str:
