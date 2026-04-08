@@ -4,6 +4,7 @@
 @last_modified: 2026-04-08
 """
 import re
+import sys
 import json
 import threading
 from pathlib import Path
@@ -135,6 +136,11 @@ def route_text_message(text: str, reply_target: str, reply_type: str, open_id: s
     # 监控范围
     if text_stripped in ("监控范围", "monitor scope", "竞品监控"):
         _handle_monitor_scope(reply_target, send_reply)
+        return
+
+    # 自检/验证
+    if text_stripped in ("自检", "验证", "self check", "verify"):
+        _handle_self_verify(reply_target, send_reply)
         return
 
     # === 9. 结构化文档快速通道 ===
@@ -488,6 +494,28 @@ def _handle_monitor_scope(reply_target: str, send_reply: Callable):
         send_reply(reply_target, "\n".join(lines))
     except Exception as e:
         send_reply(reply_target, f"❌ 读取监控配置失败: {str(e)[:50]}")
+
+
+def _handle_self_verify(reply_target: str, send_reply: Callable):
+    """触发自动验证（重启 SDK + 发送测试消息）"""
+    send_reply(reply_target, "🔄 启动自动验证...\n将重启 SDK 并发送测试消息，预计 30 秒完成。")
+
+    def _run():
+        try:
+            import subprocess
+            verify_script = PROJECT_ROOT / "scripts" / "auto_restart_and_verify.py"
+            result = subprocess.run(
+                [sys.executable, str(verify_script)],
+                cwd=str(PROJECT_ROOT),
+                capture_output=True,
+                text=True,
+                timeout=120
+            )
+            # 验证脚本会自己发送报告
+        except Exception as e:
+            send_reply(reply_target, f"❌ 自动验证失败: {str(e)[:100]}")
+
+    threading.Thread(target=_run, daemon=True).start()
 
 
 def _get_full_help_text() -> str:
