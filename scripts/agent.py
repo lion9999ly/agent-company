@@ -111,7 +111,8 @@ def handle_self_verify(chat_id: str):
         result = subprocess.run(
             [sys.executable, str(PROJECT_ROOT / "scripts" / "auto_restart_and_verify.py"),
              "--verify-only", "--no-push"],
-            cwd=str(PROJECT_ROOT), capture_output=True, text=True, timeout=60
+            cwd=str(PROJECT_ROOT), capture_output=True, text=True, timeout=60,
+            encoding='utf-8', errors='ignore'
         )
         # 读取报告
         report_path = PROJECT_ROOT / ".ai-state" / "verify_report.md"
@@ -242,7 +243,8 @@ def cli_send_message(text: str, chat_id: str = None) -> bool:
         result = subprocess.run(
             [LARK_CLI, "im", "+messages-send",
              "--chat-id", target, "--text", text, "--as", "bot"],
-            capture_output=True, text=True, timeout=15
+            capture_output=True, text=True, timeout=15,
+            encoding='utf-8', errors='ignore'
         )
         if result.returncode == 0:
             return True
@@ -283,7 +285,8 @@ def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
             cwd=str(PROJECT_ROOT),
             capture_output=True,
             text=True,
-            timeout=120  # 2分钟超时
+            timeout=120,  # 2分钟超时
+            encoding='utf-8', errors='ignore'
         )
 
         if result.returncode == 0 and result.stdout.strip():
@@ -362,7 +365,8 @@ def run_standalone():
             result = subprocess.run(
                 [LARK_CLI, "im", "+chat-messages-list",
                  "--chat-id", LEO_CHAT_ID, "--page-size", "1", "--as", "bot"],
-                capture_output=True, text=True, timeout=10
+                capture_output=True, text=True, timeout=10,
+                encoding='utf-8', errors='ignore'
             )
 
             if result.returncode == 0:

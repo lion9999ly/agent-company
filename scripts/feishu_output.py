@@ -103,7 +103,8 @@ def get_or_create_doc(title: str, initial_content: str = "") -> tuple:
          "--title", title,
          "--markdown", initial_content or f"# {title}\n\n初始化中...",
          "--as", "bot"],
-        capture_output=True, text=True, timeout=30
+        capture_output=True, text=True, timeout=30,
+        encoding='utf-8', errors='ignore'
     )
 
     doc_id = _extract_doc_id(result.stdout)
@@ -135,7 +136,8 @@ def update_doc(title: str, content: str) -> Optional[str]:
          "--document-id", doc_id,
          "--markdown", content,
          "--as", "bot"],
-        capture_output=True, text=True, timeout=30
+        capture_output=True, text=True, timeout=30,
+        encoding='utf-8', errors='ignore'
     )
 
     return doc_url
@@ -152,7 +154,8 @@ def create_doc(title: str, content: str) -> Optional[str]:
          "--title", title,
          "--markdown", content,
          "--as", "bot"],
-        capture_output=True, text=True, timeout=30
+        capture_output=True, text=True, timeout=30,
+        encoding='utf-8', errors='ignore'
     )
 
     return _extract_doc_url(result.stdout)
@@ -197,7 +200,8 @@ def get_or_create_bitable(name: str) -> Optional[str]:
         [LARK_CLI, "bitable", "+create",
          "--name", name,
          "--as", "bot"],
-        capture_output=True, text=True, timeout=30
+        capture_output=True, text=True, timeout=30,
+        encoding='utf-8', errors='ignore'
     )
 
     try:
@@ -228,7 +232,8 @@ def add_bitable_record(app_token: str, table_id: str, record: dict) -> bool:
          "--table-id", table_id,
          "--record", json.dumps(record, ensure_ascii=False),
          "--as", "bot"],
-        capture_output=True, text=True, timeout=15
+        capture_output=True, text=True, timeout=15,
+        encoding='utf-8', errors='ignore'
     )
 
     try:
