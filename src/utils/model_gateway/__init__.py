@@ -1,5 +1,5 @@
 """
-src/utils/model_gateway — 多模型网关（重构自 model_gateway.py）
+src/utils/model_gateway — 多模型网关（v2 重构版）
 
 公开接口（向后兼容）:
     get_model_gateway()    — 获取全局 ModelGateway 实例
@@ -7,18 +7,22 @@ src/utils/model_gateway — 多模型网关（重构自 model_gateway.py）
     call_for_refine()      — 提炼环节便捷调用
 
 ModelGateway 方法:
-    .call()                — 统一文本调用（自动路由到正确 provider）
+    .call()                — 统一文本调用（dispatch dict 路由）
     .call_image()          — 统一图像生成调用
     .call_gemini_vision()  — Gemini 图像理解
     .call_gemini_audio()   — Gemini 音频理解
     .dual_review()         — 双模型评审
+
+v2 重构：
+    - Provider 使用统一的 call_openai_compatible()
+    - call() 改为 dispatch dict
 """
 import os
 import re
 import yaml
 import base64
 from pathlib import Path
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Callable
 from datetime import datetime
 
 from src.utils.model_gateway.config import (
@@ -75,6 +79,18 @@ class ModelGateway:
         self.routing_rules: Dict[str, Any] = {}
         self._parse_models()
         self._parse_routing_rules()
+
+        # v2: Provider dispatch dict
+        self._provider_dispatch = self._build_provider_dispatch()
+
+    def _build_provider_dispatch(self) -> Dict[str, Callable]:
+        """构建 provider 路由表"""
+        return {
+            "alibaba": lambda cfg, mn, p, sp, tt: call_qwen(cfg, mn, p, sp, tt),
+            "zhipu": lambda cfg, mn, p, sp, tt: call_zhipu(cfg, mn, p, sp, tt),
+            "deepseek": lambda cfg, mn, p, sp, tt: call_deepseek(cfg, mn, p, sp, tt),
+            "volcengine": lambda cfg, mn, p, sp, tt: call_volcengine(cfg, mn, p, sp, tt),
+        }
 
     def _load_config(self, path: Path) -> dict:
         if not path.exists():
@@ -235,7 +251,7 @@ class ModelGateway:
             return result
 
         elif cfg.provider == "alibaba":
-            return call_qwen(cfg, model_name, prompt, system_prompt)
+            return self._provider_dispatch["alibaba"](cfg, model_name, prompt, system_prompt, task_type)
 
         elif cfg.provider == "azure_openai":
             if "deep-research" in (cfg.deployment or "").lower() or "deep-research" in cfg.model.lower():
@@ -245,15 +261,19 @@ class ModelGateway:
             return call_azure_openai(cfg, model_name, prompt, system_prompt, task_type)
 
         elif cfg.provider == "volcengine":
-            return call_volcengine(cfg, model_name, prompt, system_prompt, task_type)
+            return self._provider_dispatch["volcengine"](cfg, model_name, prompt, system_prompt, task_type)
 
         elif cfg.provider == "zhipu":
-            return call_zhipu(cfg, model_name, prompt, system_prompt, task_type)
+            return self._provider_dispatch["zhipu"](cfg, model_name, prompt, system_prompt, task_type)
 
         elif cfg.provider == "deepseek":
-            return call_deepseek(cfg, model_name, prompt, system_prompt, task_type)
+            return self._provider_dispatch["deepseek"](cfg, model_name, prompt, system_prompt, task_type)
 
         else:
+            # v2: 尝试 dispatch dict
+            handler = self._provider_dispatch.get(cfg.provider)
+            if handler:
+                return handler(cfg, model_name, prompt, system_prompt, task_type)
             return {"success": False, "error": f"Unsupported provider: {cfg.provider}"}
 
     # ============================================================

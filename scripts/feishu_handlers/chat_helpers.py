@@ -189,6 +189,13 @@ def send_image_reply(target_id: str, image_bytes: bytes, id_type: str = "open_id
         log(f"  [图片发送异常: {e}]")
 
 
+def _safe_reply_error(send_reply, reply_target, task_name, error):
+    """统一错误处理：记录详细日志，返回友好提示"""
+    import traceback
+    log(f"[ERROR] {task_name}: {traceback.format_exc()}")
+    send_reply(reply_target, f"⚠️ {task_name} 遇到问题，已记录日志。请稍后重试。")
+
+
 def get_session_id(open_id: str, chat_id: str) -> str:
     """生成会话 ID（用于对话记忆）"""
     if chat_id:
@@ -204,6 +211,7 @@ __all__ = [
     "get_tenant_access_token",
     "set_reply_context",
     "get_session_id",
+    "_safe_reply_error",
     "APP_ID",
     "APP_SECRET",
 ]

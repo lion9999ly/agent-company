@@ -1,45 +1,59 @@
 """
 模型网关 — 火山引擎 Provider
-包含: call_volcengine (text/vision), call_volcengine_image_gen (seedream)
+
+v2: 文本调用统一到 openai_compatible.call_openai_compatible()
+仅保留图像生成专用逻辑
 """
 import base64
 import time
 import requests
 from typing import Dict, Any
 
-from src.utils.model_gateway.config import ModelConfig, TIMEOUT_BY_TASK, record_usage
+from src.utils.model_gateway.config import ModelConfig, record_usage
+from src.utils.model_gateway.providers.openai_compatible import call_openai_compatible
 
 
 def call_volcengine(cfg: ModelConfig, model_name: str, prompt: str,
                     system_prompt: str = None, task_type: str = "general",
                     image_url: str = None) -> Dict[str, Any]:
-    """调用火山引擎 API（豆包/DeepSeek/GLM）— OpenAI SDK 兼容格式"""
+    """调用火山引擎 API（豆包/DeepSeek/GLM）— OpenAI SDK 兼容格式
+
+    v2: 使用统一的 call_openai_compatible()
+    """
     endpoint = cfg.endpoint or "https://ark.cn-beijing.volces.com/api/v3"
 
+    # 如果有图片，需要特殊处理
+    if image_url:
+        return _call_volcengine_vision(cfg, model_name, prompt, system_prompt, task_type, endpoint, image_url)
+
+    return call_openai_compatible(
+        cfg, model_name, prompt, system_prompt, task_type,
+        endpoint_override=endpoint,
+        use_openai_sdk=True,
+    )
+
+
+def _call_volcengine_vision(cfg: ModelConfig, model_name: str, prompt: str,
+                             system_prompt: str, task_type: str,
+                             endpoint: str, image_url: str) -> Dict[str, Any]:
+    """火山引擎视觉调用"""
     try:
         from openai import OpenAI
         client = OpenAI(api_key=cfg.api_key, base_url=endpoint)
     except ImportError:
         return {"success": False, "error": "OpenAI SDK not installed"}
 
-    prompt = str(prompt) if not isinstance(prompt, str) else prompt
-    if system_prompt:
-        system_prompt = str(system_prompt) if not isinstance(system_prompt, str) else system_prompt
-
     messages = []
     if system_prompt:
         messages.append({"role": "system", "content": system_prompt})
 
-    if image_url:
-        messages.append({
-            "role": "user",
-            "content": [
-                {"type": "text", "text": prompt},
-                {"type": "image_url", "image_url": {"url": image_url}}
-            ]
-        })
-    else:
-        messages.append({"role": "user", "content": prompt})
+    messages.append({
+        "role": "user",
+        "content": [
+            {"type": "text", "text": prompt},
+            {"type": "image_url", "image_url": {"url": image_url}}
+        ]
+    })
 
     start_time = time.time()
     try:

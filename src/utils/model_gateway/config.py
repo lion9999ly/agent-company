@@ -72,6 +72,7 @@ class ModelConfig:
     purpose: str
     max_tokens: int
     temperature: float
+    enabled: bool = True
     endpoint: Optional[str] = None
     deployment: Optional[str] = None
     api_version: Optional[str] = None
