@@ -30,11 +30,13 @@
     },
     "adjacent_tech": {
       "description": "相邻技术",
-      "topics": ["汽车HUD", "车载语音", "端侧AI", "Mesh通讯", "AR眼镜"],
+      "topics": ["汽车HUD", "车载语音", "端侧AI", "Mesh通讯", "AR眼镜", "飞书CLI"],
       "search_keywords": [
         "汽车 HUD 技术 发展 2026",
         "端侧 AI 语音识别 2026",
-        "Mesh通讯 摩托车 头盔 2026"
+        "Mesh通讯 摩托车 头盔 2026",
+        "飞书 CLI 更新 changelog 2026",
+        "lark-cli new features github releases"
       ]
     },
     "regulations": {

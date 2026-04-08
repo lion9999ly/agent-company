@@ -133,7 +133,7 @@ def update_doc(title: str, content: str) -> Optional[str]:
     # 更新已有文档
     result = subprocess.run(
         [LARK_CLI, "docs", "+update",
-         "--document-id", doc_id,
+         "--doc", doc_id,
          "--markdown", content,
          "--as", "bot"],
         capture_output=True, text=True, timeout=30,
