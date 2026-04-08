@@ -10,6 +10,7 @@ import time
 import yaml
 from datetime import datetime
 from pathlib import Path
+from typing import Optional, Dict, Any, List
 
 from src.tools.knowledge_base import (
     get_knowledge_stats, KB_ROOT, get_recent_entries, update_knowledge_flag
@@ -332,37 +333,156 @@ def _pre_flight_api_check(progress_callback=None) -> bool:
 
 
 # ============================================================
-# run_all（内置任务）
+# run_all（v2: 动态主题池）
 # ============================================================
+def _get_dynamic_topics() -> List[Dict]:
+    """v2: 动态选择研究主题
+
+    优先级：
+    1. 决策树数据需求（最高优先级）
+    2. KB 弱知识补强
+    3. 竞品深挖
+    4. 固定池未覆盖项
+    """
+    topics = []
+
+    # 1. 决策树数据需求
+    try:
+        dt_path = AI_STATE / "product_decision_tree.yaml"
+        if dt_path.exists():
+            dt = yaml.safe_load(dt_path.read_text(encoding='utf-8'))
+            for d in dt.get("decisions", []):
+                resolved = d.get("resolved_knowledge", 0)
+                needed = d.get("total_needed", 3)
+                if resolved < needed:
+                    question = d.get('question', '')
+                    topics.append({
+                        "id": f"dt_{d.get('id', 'unknown')}",
+                        "title": f"决策补充: {question[:40]}",
+                        "goal": f"为决策「{question}」补充数据支撑",
+                        "priority": 1,
+                        "source": "decision_tree",
+                        "searches": [f"{question} 2026", f"{question} 分析 数据"]
+                    })
+    except Exception as e:
+        print(f"  [DynamicTopics] 决策树读取失败: {e}")
+
+    # 2. KB 弱知识补强（检查最近7天未覆盖的领域）
+    try:
+        stats = get_knowledge_stats()
+        weak_domains = []
+        for domain, count in stats.items():
+            if count < 5:  # 少于5条的领域视为薄弱
+                weak_domains.append(domain)
+
+        if weak_domains:
+            # 选择最薄弱的领域
+            weakest = sorted(weak_domains, key=lambda d: stats.get(d, 0))[:3]
+            for domain in weakest:
+                topics.append({
+                    "id": f"kb_weak_{domain}",
+                    "title": f"KB补强: {domain}",
+                    "goal": f"补充 {domain} 领域的知识储备",
+                    "priority": 2,
+                    "source": "kb_weak",
+                    "searches": [f"{domain} 智能头盔 2026", f"{domain} 最新 技术 产品"]
+                })
+    except Exception as e:
+        print(f"  [DynamicTopics] KB统计失败: {e}")
+
+    # 3. 竞品深挖（从 covered_topics 中找出未研究的竞品）
+    covered_path = AI_STATE / "auto_learn_covered.json"
+    covered_topics = set()
+    if covered_path.exists():
+        try:
+            covered_data = json.loads(covered_path.read_text(encoding='utf-8'))
+            covered_topics = set(covered_data.get("topics", []))
+        except:
+            pass
+
+    competitor_keywords = ["Sena", "Cardo", "EyeLights", "Shoei", "Lumos", "iC-R", "MOTOEYE"]
+    for comp in competitor_keywords:
+        if comp not in " ".join(covered_topics):
+            topics.append({
+                "id": f"competitor_{comp.lower()}",
+                "title": f"竞品深挖: {comp}",
+                "goal": f"深入分析 {comp} 的产品、技术、市场策略",
+                "priority": 2,
+                "source": "competitor",
+                "searches": [f"{comp} motorcycle helmet HUD 2026", f"{comp} 智能头盔 产品 参数"]
+            })
+
+    # 4. 固定池未覆盖项（如果动态主题不足，补充固定任务）
+    if len(topics) < 3:
+        for task in RESEARCH_TASKS:
+            if not any(t.get("id") == task.get("id") for t in topics):
+                task["source"] = "fixed_pool"
+                task["priority"] = 3
+                topics.append(task)
+                if len(topics) >= 5:
+                    break
+
+    # 按优先级排序
+    topics.sort(key=lambda t: t.get("priority", 3))
+
+    return topics[:5]  # 最多返回5个主题
+
+
 def run_all(progress_callback=None):
+    """v2: 使用动态主题池"""
     current_hour = datetime.now().hour
     is_night = current_hour >= 23 or current_hour < 7
 
+    # v2: 动态选择主题
+    tasks = _get_dynamic_topics()
+    if not tasks:
+        tasks = RESEARCH_TASKS[:3]  # 兜底
+
     print(f"\n{'#' * 60}")
-    print(f"# 智能骑行头盔 JDM 供应商选型 — 深度研究")
-    print(f"# 共 {len(RESEARCH_TASKS)} 个任务")
+    print(f"# 智能骑行头盔 — 深度研究（v2 动态主题池）")
+    print(f"# 共 {len(tasks)} 个任务（来源: {', '.join(set(t.get('source', 'unknown') for t in tasks))}）")
     print(f"{'#' * 60}")
 
     effective_callback = None if is_night else progress_callback
 
     reports = []
-    for idx, task in enumerate(RESEARCH_TASKS, 1):
+    for idx, task in enumerate(tasks, 1):
         if effective_callback:
-            effective_callback(f"🔍 [{idx}/{len(RESEARCH_TASKS)}] 开始: {task['title']}")
+            effective_callback(f"🔍 [{idx}/{len(tasks)}] 开始: {task['title']}")
         report = deep_research_one(task, progress_callback=effective_callback)
-        reports.append({"title": task["title"], "report": report})
+        reports.append({"title": task["title"], "report": report, "source": task.get("source", "unknown")})
         print(f"\n✅ {task['title']} 完成 ({len(report)} 字)")
         time.sleep(5)
 
-    summary_path = REPORT_DIR / f"jdm_summary_{time.strftime('%Y%m%d_%H%M')}.md"
-    summary = "# JDM 供应商选型 — 深度研究汇总\n\n"
+        # v2: 标记 covered
+        _mark_topic_covered(task)
+
+    summary_path = REPORT_DIR / f"dynamic_summary_{time.strftime('%Y%m%d_%H%M')}.md"
+    summary = "# 深度研究汇总（v2 动态主题池）\n\n"
     summary += f"> 生成时间: {time.strftime('%Y-%m-%d %H:%M')}\n\n"
     for r in reports:
-        summary += f"\n---\n\n# {r['title']}\n\n{r['report']}\n"
+        summary += f"\n---\n\n# {r['title']} (来源: {r['source']})\n\n{r['report']}\n"
     summary_path.write_text(summary, encoding="utf-8")
 
     print(f"\n# 全部完成！报告: {summary_path}")
     return str(summary_path)
+
+
+def _mark_topic_covered(task: Dict):
+    """标记主题已覆盖（用于去重）"""
+    covered_path = AI_STATE / "auto_learn_covered.json"
+    covered_data = {"topics": [], "updated": ""}
+    if covered_path.exists():
+        try:
+            covered_data = json.loads(covered_path.read_text(encoding='utf-8'))
+        except:
+            pass
+
+    topic_key = task.get("title", "")[:50]
+    if topic_key and topic_key not in covered_data.get("topics", []):
+        covered_data.setdefault("topics", []).append(topic_key)
+        covered_data["updated"] = time.strftime('%Y-%m-%d %H:%M')
+        covered_path.write_text(json.dumps(covered_data, ensure_ascii=False, indent=2), encoding='utf-8')
 
 
 # ============================================================
@@ -473,11 +593,15 @@ def _check_cross_consistency(reports: list, progress_callback=None):
 # ============================================================
 # 学习管道出口质量网
 # ============================================================
-def _post_learning_quality_check(progress_callback=None) -> dict:
+def _post_learning_quality_check(progress_callback=None, runtime_context: str = None) -> dict:
     """两层质量检查：矛盾检测 + 元认知审查
 
     在 KB 写入完成后调用，发现问题时标记条目（不阻止入库）。
     任何异常都不中断学习流程。
+
+    Args:
+        progress_callback: 进度回调函数
+        runtime_context: 运行时上下文摘要（用于 sense check）
 
     Returns:
         {"contradictions": int, "sense_check_issues": int, "flagged_entries": list}
@@ -575,12 +699,17 @@ def _post_learning_quality_check(progress_callback=None) -> dict:
             from scripts import claude_bridge
 
             sense_prompt = f"""刚完成一轮深度学习，新增了 {len(recent_entries)} 个 KB 条目。
-从产品战略视角看，这些新增知识：
-1. 是否有价值？会不会是噪音？
+
+【运行时摘要】
+{runtime_context or '无运行日志'}
+
+从产品战略视角看：
+1. 这些新增知识是否有价值？会不会是噪音？
 2. 是否遗漏重要角度？
 3. 有没有方向性问题？
+4. 运行日志中的失败/超时是否影响了结论可信度？
 
-简要回复，不超过100字。如果没问题回复"没问题"。"""
+简要回复，不超过150字。如果没问题回复"没问题"。"""
 
             sense_result = claude_bridge.call_claude_via_cdp(
                 sense_prompt, timeout=60, inject_context=True
@@ -618,10 +747,108 @@ def _post_learning_quality_check(progress_callback=None) -> dict:
 # ============================================================
 # 深度学习主调度器
 # ============================================================
+# 运行日志收集器（用于可观测性）
+# ============================================================
+class RuntimeLogCollector:
+    """运行日志收集器 — 收集关键事件摘要"""
+
+    def __init__(self):
+        self.events = []
+        self.task_stats = {
+            "total_queries": 0,
+            "search_timeout": 0,
+            "l2_success": 0,
+            "l2_failed": 0,
+            "kb_written": 0,
+            "model_failures": {},
+        }
+
+    def log(self, event: str, details: str = ""):
+        """记录运行事件"""
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        entry = f"[运行时] {timestamp} {event}"
+        if details:
+            entry += f" — {details}"
+        self.events.append(entry)
+        print(entry)  # 同时打印到终端
+
+    def count_query(self):
+        self.task_stats["total_queries"] += 1
+
+    def count_timeout(self):
+        self.task_stats["search_timeout"] += 1
+
+    def count_l2_success(self):
+        self.task_stats["l2_success"] += 1
+
+    def count_l2_failed(self):
+        self.task_stats["l2_failed"] += 1
+
+    def count_kb_written(self, count: int = 1):
+        self.task_stats["kb_written"] += count
+
+    def count_model_failure(self, model: str):
+        self.task_stats["model_failures"][model] = self.task_stats["model_failures"].get(model, 0) + 1
+
+    def get_summary(self) -> str:
+        """生成运行摘要（用于注入上下文）"""
+        lines = []
+        stats = self.task_stats
+
+        if stats["total_queries"] > 0:
+            lines.append(f"本轮 {stats['total_queries']} 个 query")
+            if stats["search_timeout"] > 0:
+                lines.append(f"  • {stats['search_timeout']} 个搜索超时")
+            if stats["l2_success"] > 0 or stats["l2_failed"] > 0:
+                rate = stats["l2_success"] / (stats["l2_success"] + stats["l2_failed"]) * 100 if (stats["l2_success"] + stats["l2_failed"]) > 0 else 0
+                lines.append(f"  • L2 提取成功率 {rate:.0f}% ({stats['l2_success']}/{stats['l2_success'] + stats['l2_failed']})")
+
+        if stats["kb_written"] > 0:
+            lines.append(f"  • KB 写入 {stats['kb_written']} 条")
+
+        if stats["model_failures"]:
+            failures = ", ".join([f"{m} {c}次" for m, c in stats["model_failures"].items()])
+            lines.append(f"  • 模型调用失败: {failures}")
+
+        # 最近的关键事件（最后 10 条）
+        if self.events:
+            recent = self.events[-10:]
+            lines.append("关键事件:")
+            for e in recent:
+                lines.append(f"  {e}")
+
+        return "\n".join(lines)
+
+
+# 全局运行日志收集器（单次深度学习周期）
+_runtime_collector: Optional[RuntimeLogCollector] = None
+
+
+def get_runtime_collector() -> RuntimeLogCollector:
+    """获取当前运行日志收集器"""
+    global _runtime_collector
+    if _runtime_collector is None:
+        _runtime_collector = RuntimeLogCollector()
+    return _runtime_collector
+
+
+def reset_runtime_collector():
+    """重置运行日志收集器（每次深度学习开始时调用）"""
+    global _runtime_collector
+    _runtime_collector = RuntimeLogCollector()
+
+
+# ============================================================
 def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
     set_feishu_callback(progress_callback, None)
 
+    # 重置运行日志收集器
+    reset_runtime_collector()
+    collector = get_runtime_collector()
+    collector.log("深度学习启动", f"{max_hours}h 窗口")
+
     if not _pre_flight_api_check(progress_callback):
+        collector.log("API健康检查失败", "终止")
         return {"status": "aborted", "reason": "API health check failed"}
 
     kb_stats_before = get_knowledge_stats()
@@ -701,9 +928,10 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
 
     # 收尾: 质量网（两层检查）
     print(f"\n[Scheduler] 运行出口质量网...")
-    quality_result = _post_learning_quality_check(progress_callback)
+    runtime_summary = collector.get_summary()
+    quality_result = _post_learning_quality_check(progress_callback, runtime_context=runtime_summary)
 
-    # 汇总报告
+    # 汇总报告（含运行日志摘要）
     kb_stats_after = get_knowledge_stats()
     kb_total_after = sum(kb_stats_after.values())
     total_hours = (time.time() - start_time) / 3600
@@ -717,6 +945,13 @@ def run_deep_learning(max_hours: float = 7.0, progress_callback=None):
     for c in completed:
         summary_lines.append(f"  • {c['title']} ({c.get('duration_min', '?')}min)")
     summary_lines.append(f"")
+
+    # 运行日志摘要
+    if runtime_summary:
+        summary_lines.append("🔍 运行时摘要:")
+        summary_lines.append(runtime_summary)
+        summary_lines.append(f"")
+
     summary_lines.append(f"📚 KB 变化: {kb_total_before} → {kb_total_after} (+{kb_total_after - kb_total_before})")
 
     # 元能力层统计

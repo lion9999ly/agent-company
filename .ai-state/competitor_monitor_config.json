@@ -1,0 +1,74 @@
+{
+  "monitor_layers": {
+    "direct_competitors": {
+      "description": "直接竞品",
+      "brands": ["Shoei Smart", "洛克兄弟", "MOTOEYE", "EyeLights", "iC-R", "Sena", "Cardo"],
+      "search_keywords": [
+        "智能骑行头盔 HUD 2026",
+        "motorcycle helmet HUD product 2026",
+        "智能头盔 产品 发布 2026"
+      ]
+    },
+    "tech_supply_chain": {
+      "description": "技术供应链",
+      "topics": ["JBD", "Sony ECX", "京东方", "FreeForm", "光波导", "高通AR"],
+      "search_keywords": [
+        "JBD micro display 2026",
+        "Sony ECX OLED micro display 2026",
+        "光波导 技术 进展 2026",
+        "AR chip Qualcomm 2026"
+      ]
+    },
+    "riding_ecosystem": {
+      "description": "骑行生态",
+      "topics": ["摩托车市场", "摩旅用户", "小红书抖音KOL", "政策"],
+      "search_keywords": [
+        "摩托车市场 趋势 2026 中国",
+        "摩旅 用户画像 需求 2026",
+        "摩托车 政策 法规 2026"
+      ]
+    },
+    "adjacent_tech": {
+      "description": "相邻技术",
+      "topics": ["汽车HUD", "车载语音", "端侧AI", "Mesh通讯", "AR眼镜"],
+      "search_keywords": [
+        "汽车 HUD 技术 发展 2026",
+        "端侧 AI 语音识别 2026",
+        "Mesh通讯 摩托车 头盔 2026"
+      ]
+    },
+    "regulations": {
+      "description": "法规标准",
+      "topics": ["ECE 22.06", "GB 811", "两轮ADAS强制", "HUD合法性"],
+      "search_keywords": [
+        "ECE 22.06 helmet regulation 2026",
+        "摩托车 ADAS 法规 2026",
+        "HUD 显示 法规 交通安全 2026"
+      ]
+    },
+    "cross_reference": {
+      "description": "跨界参考",
+      "topics": ["滑雪头盔", "自行车头盔", "智能硬件融资", "Bosch两轮"],
+      "search_keywords": [
+        "智能头盔 融资 2026",
+        "Bosch motorcycle ADAS 2026",
+        "AR helmet funding 2026"
+      ]
+    }
+  },
+  "time_filters": {
+    "current_year": true,
+    "discard_months_old": 6,
+    "fallback_months": 12
+  },
+  "output_rules": {
+    "no_update_no_push": true,
+    "require_substantial_content": true
+  },
+  "impact_analysis": {
+    "enabled": true,
+    "model": "gpt_4o_norway",
+    "dimensions": ["技术选型", "竞品动态", "市场趋势", "供应链", "法规", "用户需求"],
+    "relevance_levels": ["high", "medium", "low"]
+  }
+}

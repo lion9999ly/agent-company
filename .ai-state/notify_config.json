@@ -1,0 +1,37 @@
+{
+  "deep_research": {
+    "start": true,
+    "progress": false,
+    "complete": true,
+    "error": true,
+    "description": "深度学习（7h管道）：开始+完成+异常，静默进度"
+  },
+  "competitor_monitor": {
+    "start": false,
+    "no_update": false,
+    "has_update": true,
+    "error": true,
+    "description": "竞品监控：仅推送有更新的，静默无更新"
+  },
+  "auto_learn": {
+    "start": false,
+    "progress": false,
+    "complete": false,
+    "error": true,
+    "description": "自学习（30min）：静默运行，仅推送异常"
+  },
+  "roundtable": {
+    "start": true,
+    "phase_complete": false,
+    "convergence": true,
+    "task_complete": true,
+    "error": true,
+    "description": "圆桌：开始+收敛+完成+异常，静默中间阶段"
+  },
+  "kb_governance": {
+    "start": false,
+    "complete": true,
+    "error": true,
+    "description": "KB治理：完成+异常"
+  }
+}
