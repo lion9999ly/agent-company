@@ -360,50 +360,112 @@ def generate_report(results: list, restart_ok: bool = True) -> str:
 
 
 def send_to_feishu(report: str) -> bool:
-    """发送报告到飞书（直接调用 API，不依赖 SDK）"""
-    import requests
+    """发送报告到飞书（创建云文档 + 发送链接）"""
+    from scripts.feishu_output import update_doc
 
-    token_url = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal"
-    try:
-        resp = requests.post(
-            token_url,
-            json={"app_id": APP_ID, "app_secret": APP_SECRET},
-            timeout=10
-        )
-        token = resp.json().get("tenant_access_token", "")
-        if not token:
-            print("  [ERROR] 无法获取飞书 token")
-            return False
-    except Exception as e:
-        print(f"  [ERROR] 获取 token 失败: {e}")
-        return False
+    # 创建/更新飞书云文档
+    doc_url = update_doc("验证报告", report)
 
-    msg_url = "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id"
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
+    if doc_url:
+        # 发送简短消息 + 文档链接
+        import requests
 
-    content = report[:3500] if len(report) > 3500 else report
-
-    data = {
-        "receive_id": LEO_OPEN_ID,
-        "msg_type": "text",
-        "content": json.dumps({"text": content})
-    }
-
-    try:
-        resp = requests.post(msg_url, headers=headers, json=data, timeout=10)
-        result = resp.json()
-        if result.get("code") == 0:
-            print("  [OK] 报告已发送到飞书")
-            return True
+        # 提取通过率
+        passed_match = report.split("**通过率**: ")
+        if len(passed_match) > 1:
+            rate = passed_match[1].split("\n")[0]
         else:
-            print(f"  [ERROR] 发送失败: {result.get('msg', result)}")
+            rate = "N/A"
+
+        short_msg = f"🔍 验证完成：{rate}\n📄 详情：{doc_url}"
+
+        # 直接调用飞书 API 发送短消息
+        token_url = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal"
+        try:
+            resp = requests.post(
+                token_url,
+                json={"app_id": APP_ID, "app_secret": APP_SECRET},
+                timeout=10
+            )
+            token = resp.json().get("tenant_access_token", "")
+            if not token:
+                print("  [ERROR] 无法获取飞书 token")
+                return False
+        except Exception as e:
+            print(f"  [ERROR] 获取 token 失败: {e}")
             return False
-    except Exception as e:
-        print(f"  [ERROR] 发送飞书失败: {e}")
-        return False
+
+        msg_url = "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id"
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+
+        data = {
+            "receive_id": LEO_OPEN_ID,
+            "msg_type": "text",
+            "content": json.dumps({"text": short_msg})
+        }
+
+        try:
+            resp = requests.post(msg_url, headers=headers, json=data, timeout=10)
+            result = resp.json()
+            if result.get("code") == 0:
+                print(f"  [OK] 报告已发送到飞书，云文档：{doc_url}")
+                return True
+            else:
+                print(f"  [ERROR] 发送失败: {result.get('msg', result)}")
+                return False
+        except Exception as e:
+            print(f"  [ERROR] 发送飞书失败: {e}")
+            return False
+
+    else:
+        # 回退：直接发送完整报告（截断）
+        print("  [WARN] 云文档创建失败，回退到直接消息")
+        import requests
+
+        token_url = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal"
+        try:
+            resp = requests.post(
+                token_url,
+                json={"app_id": APP_ID, "app_secret": APP_SECRET},
+                timeout=10
+            )
+            token = resp.json().get("tenant_access_token", "")
+            if not token:
+                print("  [ERROR] 无法获取飞书 token")
+                return False
+        except Exception as e:
+            print(f"  [ERROR] 获取 token 失败: {e}")
+            return False
+
+        msg_url = "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=open_id"
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+
+        content = report[:3500] if len(report) > 3500 else report
+
+        data = {
+            "receive_id": LEO_OPEN_ID,
+            "msg_type": "text",
+            "content": json.dumps({"text": content})
+        }
+
+        try:
+            resp = requests.post(msg_url, headers=headers, json=data, timeout=10)
+            result = resp.json()
+            if result.get("code") == 0:
+                print("  [OK] 报告已发送到飞书（直接消息）")
+                return True
+            else:
+                print(f"  [ERROR] 发送失败: {result.get('msg', result)}")
+                return False
+        except Exception as e:
+            print(f"  [ERROR] 发送飞书失败: {e}")
+            return False
 
 
 # ==================== 主流程 ====================

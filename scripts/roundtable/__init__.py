@@ -17,7 +17,7 @@ from scripts.roundtable.meta_cognition import MetaCognition
 from scripts.roundtable.resilience import Resilience, ParkedException
 
 
-async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> str:
+async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
     """一个任务的完整生命周期
 
     流程：
@@ -28,6 +28,16 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> str:
     4. 审查闭环（迭代）
     5. 输出
     6. 知识回写
+
+    Returns:
+        dict: {
+            "output": str,           # 生成的 HTML 内容
+            "output_path": str,      # 本地文件路径
+            "executive_summary": str, # 执行摘要
+            "rounds": int,           # 迭代轮数
+            "full_log_path": str,    # 讨论记录路径
+            "verify_summary": str,   # 验收通过情况
+        }
     """
     # 兼容同步/异步 notify 的包装函数
     async def _notify(msg):
@@ -62,11 +72,13 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> str:
     # 4. 审查闭环
     ver = Verifier(gw)
     iteration = 0
+    verify_summary = ""
 
     while iteration < task.max_iterations:
         vr = await ver.verify(task, output)
         if vr.passed:
             await _notify(f"✅ 审查通过")
+            verify_summary = _format_verify_summary(vr)
             break
 
         if vr.stuck:
@@ -87,7 +99,29 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> str:
 
     await _notify(f"🎯 任务完成：{task.output_path}")
 
-    return output
+    # 返回完整结果（供飞书输出使用）
+    return {
+        "output": output,
+        "output_path": task.output_path,
+        "executive_summary": result.executive_summary,
+        "rounds": result.rounds,
+        "full_log_path": result.full_log_path,
+        "verify_summary": verify_summary,
+        "topic": task.topic,
+    }
+
+
+def _format_verify_summary(vr) -> str:
+    """格式化验收结果摘要"""
+    lines = []
+    if hasattr(vr, 'acceptance_results') and vr.acceptance_results:
+        for item in vr.acceptance_results:
+            lines.append(f"- {item}")
+    if hasattr(vr, 'passed') and vr.passed:
+        lines.append(f"\n**通过**: ✅")
+    elif hasattr(vr, 'issues') and vr.issues:
+        lines.append(f"\n**问题数**: {len(vr.issues)}")
+    return "\n".join(lines) if lines else "审查通过"
 
 
 def run_task_by_topic(topic: str, gw=None, kb=None, feishu=None):

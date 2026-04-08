@@ -323,10 +323,12 @@ def _generate_morning_brief() -> str:
 
 
 def _handle_dashboard(reply_target: str, send_reply: Callable):
-    """生成系统状态仪表盘（v2: 优先读取 system_status.md）"""
+    """生成系统状态仪表盘（v3: 飞书云文档输出）"""
     status_path = PROJECT_ROOT / ".ai-state" / "system_status.md"
 
-    # v2: 优先返回 system_status.md 完整内容
+    from scripts.feishu_output import update_doc
+
+    # v3: 优先更新飞书云文档，返回链接
     if status_path.exists():
         try:
             content = status_path.read_text(encoding="utf-8")
@@ -335,15 +337,16 @@ def _handle_dashboard(reply_target: str, send_reply: Callable):
                 parts = content.split("---", 2)
                 if len(parts) >= 3:
                     content = parts[2].strip()
-            # 截断到飞书消息限制
-            if len(content) > 3500:
-                content = content[:3400] + "\n\n... (已截断)"
-            send_reply(reply_target, content)
-            return
-        except:
-            pass
+            # 更新飞书云文档
+            doc_url = update_doc("系统状态", content)
+            if doc_url:
+                send_reply(reply_target, f"📊 系统状态已更新\n🔗 {doc_url}")
+                return
+        except Exception as e:
+            from scripts.feishu_handlers.chat_helpers import log
+            log(f"[状态] 云文档更新失败: {e}")
 
-    # 回退：简化信息
+    # 回退：简化信息（直接消息）
     lines = [f"📊 agent_company 状态\n"]
 
     # KB

@@ -1,8 +1,9 @@
 # 📋 模型API配置文件
 # @description: Multi-Agent异构模型阵列配置 + 智能路由
-# @last_modified: 2026-04-05
+# @last_modified: 2026-04-08
 # @security: API Key 已迁移至环境变量
 # @probe_result: 2026-04-05 测试，实际可用: gpt-5.4, gpt-4o(Norway), o3-deep-research(Norway), doubao系列, deepseek-v3-volcengine
+# @new_models: 2026-04-08 新增 gpt-5.3-codex, grok-3 (Azure SHARE endpoint)
 
 # ============================================================
 # 模型能力矩阵 (用于智能路由决策)
@@ -54,6 +55,38 @@ model_registry:
     performance: 5
     max_tokens: 16384
     temperature: 0.2
+    api_version: "2024-12-01-preview"
+
+  # GPT-5.3 Codex - 代码生成专家 [NEW 2026-04-08]
+  gpt_5_3_codex:
+    provider: "azure_openai"
+    model: "gpt-5.3-codex"
+    deployment: "gpt-5.3-codex"
+    api_key_env: "AZURE_OPENAI_KEY_SHARE"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT_SHARE"
+    enabled: true
+    purpose: "代码生成、HTML输出、JSON结构化、调试"
+    capabilities: ["code", "html", "json", "debug"]
+    cost_tier: "$$$"
+    performance: 5
+    max_tokens: 8192
+    temperature: 0.1
+    api_version: "2024-12-01-preview"
+
+  # Grok-3 - xAI 推理模型 [NEW 2026-04-08]
+  grok_3:
+    provider: "azure_openai"
+    model: "grok-3"
+    deployment: "grok-3"
+    api_key_env: "AZURE_OPENAI_KEY_SHARE"
+    endpoint_env: "AZURE_OPENAI_ENDPOINT_SHARE"
+    enabled: true
+    purpose: "交叉评审、推理分析"
+    capabilities: ["analysis", "review", "reasoning"]
+    cost_tier: "$$$"
+    performance: 4
+    max_tokens: 4096
+    temperature: 0.1
     api_version: "2024-12-01-preview"
 
   # Claude Opus 4.6 - Anthropic 旗舰 [DEPLOYMENT NOT FOUND]
@@ -555,7 +588,7 @@ routing_rules:
   task_model_mapping:
     # 代码类任务
     code_review: ["claude_sonnet_4_6", "gemini_2_5_flash", "cro"]
-    code_generation: ["gpt_5_4", "cto", "claude_opus_4_6"]
+    code_generation: ["gpt_5_3_codex", "gpt_5_4", "gpt_4o_norway", "cto"]
     code_debug: ["o3", "deepseek_r1", "gpt_5_4"]
 
     # 架构设计类
@@ -578,15 +611,19 @@ routing_rules:
 
     # 多语言类
     multilingual: ["gemini_3_1_pro", "qwen_3_32b"]
-    chinese_task: ["qwen_3_32b", "deepseek_v3_2", "gemini_3_1_pro"]
+    chinese_task: ["doubao_seed_pro", "deepseek_v3_volcengine", "gemini_3_1_pro"]
 
     # 硬件类
-    hardware_review: ["deepseek_v3_2", "qwen_3_32b", "o3"]
+    hardware_review: ["deepseek_v3_volcengine", "glm_4_7", "o3"]
 
     # 复杂推理类
     complex_reasoning: ["o3", "claude_opus_4_6", "gemini_3_1_pro"]
     math_problem: ["o3", "deepseek_r1", "o3_mini"]
-    logic_analysis: ["o3", "claude_opus_4_6", "deepseek_r1"]
+    logic_analysis: ["o3", "claude_opus_4_6", "deepseek_r1_volcengine"]
+
+    # 评审类
+    critic_cross_review: ["grok_3", "gemini_3_1_pro", "doubao_seed_pro"]
+    critic_calibration: ["doubao_seed_pro", "gemini_2_5_flash"]
 
   # 成本控制
   cost_control:

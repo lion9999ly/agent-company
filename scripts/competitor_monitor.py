@@ -1,7 +1,7 @@
 """竞品监控器 — 每天搜索竞品关键词，有新内容推送飞书
-@description: 定时监控竞品动态，发现新内容时推送通知
-@dependencies: model_gateway, feishu_sdk_client
-@last_modified: 2026-04-05
+@description: 定时监控竞品动态，发现新内容时写入飞书多维表格
+@dependencies: model_gateway, feishu_sdk_client, feishu_output
+@last_modified: 2026-04-08
 """
 import json
 import time
@@ -23,6 +23,12 @@ COMPETITOR_KEYWORDS = [
     "歌尔股份 AR眼镜",
     "JBD MicroLED",
 ]
+
+# 多维表格配置（首次创建后记录）
+BITABLE_CONFIG = {
+    "name": "竞品监控",
+    "default_table_id": "tblXXXXXX",  # 需在首次创建后填入
+}
 
 
 def load_monitor_state() -> dict:
@@ -102,17 +108,43 @@ def run_competitor_monitor():
 
 
 def _send_feishu_notification(findings: list):
-    """发送飞书通知"""
+    """发送飞书通知 + 写入多维表格"""
     try:
+        from scripts.feishu_output import get_or_create_bitable, add_bitable_record
         from scripts.feishu_sdk_client import send_reply
 
-        lines = [f"【竞品监控日报】{datetime.now().strftime('%Y-%m-%d')}"]
-        lines.append(f"\n发现 {len(findings)} 条新动态:\n")
+        # 获取或创建多维表格
+        app_token = get_or_create_bitable(BITABLE_CONFIG["name"])
+        table_id = BITABLE_CONFIG.get("default_table_id", "tblXXXXXX")
 
-        for i, item in enumerate(findings[:5], 1):
-            lines.append(f"{i}. **{item['keyword']}**")
-            lines.append(f"   {item['summary'][:200]}...")
-            lines.append("")
+        # 写入多维表格（如果有 app_token）
+        records_added = 0
+        if app_token and table_id != "tblXXXXXX":
+            for item in findings:
+                record = {
+                    "日期": datetime.now().strftime("%Y-%m-%d"),
+                    "关键词": item.get("keyword", ""),
+                    "摘要": item.get("summary", "")[:500],
+                    "时间戳": item.get("timestamp", ""),
+                }
+                if add_bitable_record(app_token, table_id, record):
+                    records_added += 1
+
+        # 发送飞书通知（简化版，引导到多维表格）
+        lines = [f"🔔 竞品监控完成"]
+        lines.append(f"\n发现 {len(findings)} 条新动态")
+
+        if records_added > 0:
+            lines.append(f"📊 已写入多维表格：{records_added} 条记录")
+            # 如果有 bitable URL，可以加上
+            bitable_url = _get_bitable_url(app_token)
+            if bitable_url:
+                lines.append(f"🔗 {bitable_url}")
+        else:
+            # 回退：直接显示摘要
+            for i, item in enumerate(findings[:3], 1):
+                lines.append(f"\n{i}. **{item['keyword']}**")
+                lines.append(f"   {item['summary'][:150]}...")
 
         lines.append("\n---\n*由自动监控系统生成*")
 
@@ -120,6 +152,13 @@ def _send_feishu_notification(findings: list):
 
     except Exception as e:
         print(f"[Monitor] 飞书推送失败: {e}")
+
+
+def _get_bitable_url(app_token: str) -> str:
+    """获取多维表格 URL"""
+    if app_token:
+        return f"https://feishu.cn/base/{app_token}"
+    return ""
 
 
 if __name__ == "__main__":
