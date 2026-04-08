@@ -1,0 +1,8 @@
+[
+  {
+    "type": "line_count_range",
+    "params": {"min_lines": 10, "max_lines": 5000},
+    "criterion": "文件大小合理范围",
+    "severity": "P1"
+  }
+]

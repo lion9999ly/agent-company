@@ -1,7 +1,12 @@
 """
 @description: 生成器 - 拿圆桌结论生成具体产物（分段生成版）
 @dependencies: model_gateway, task_spec, roundtable
-@last_modified: 2026-04-07
+@last_modified: 2026-04-08
+
+v2 新增：
+- generator_input_mode: 动态选择输入源（raw_proposal / executive_summary / auto）
+- raw_proposal 模式用于代码类输出，保留完整技术细节
+- executive_summary 模式用于文档类输出，精简版本
 
 分段生成策略：
 - 段1: CSS + HTML 骨架（布局、配色变量、基础结构）
@@ -31,14 +36,16 @@ class RoundtableResult:
     confidence_map: Dict[str, str]
     full_log_path: str
     rounds: int
+    reviewer_amendments: str = ""  # v2: Reviewer 补充修改
 
 
 class Generator:
     """生成器
 
     职责：
-    - 拿圆桌收敛后的执行摘要，分 5 段生成产物
+    - 拿圆桌收敛后的方案，分 5 段生成产物
     - 根据缺陷清单定点修复
+    - v2: 支持 generator_input_mode 动态选择输入源
     """
 
     # 输出类型对应的模型
@@ -47,6 +54,17 @@ class Generator:
         "markdown": "gpt_5_4",
         "json": "gpt_5_4",
         "code": "gpt_5_4",
+    }
+
+    # v2: auto 模式下输出类型到输入模式的映射
+    OUTPUT_TYPE_INPUT_MODE = {
+        "html": "raw_proposal",
+        "code": "raw_proposal",
+        "json": "raw_proposal",
+        "jsx": "raw_proposal",
+        "markdown": "executive_summary",
+        "report": "executive_summary",
+        "pptx": "executive_summary",
     }
 
     # 分段定义
@@ -76,8 +94,27 @@ class Generator:
     def __init__(self, gw=None):
         self.gw = gw or get_model_gateway()
 
+    def _get_input_source(self, task: TaskSpec, rt_result: RoundtableResult) -> str:
+        """v2: 根据 generator_input_mode 选择输入源"""
+        mode = task.generator_input_mode
+
+        if mode == "auto":
+            mode = self.OUTPUT_TYPE_INPUT_MODE.get(task.output_type, "executive_summary")
+
+        if mode == "raw_proposal":
+            # 使用完整方案 + Reviewer 补充修改
+            source = rt_result.final_proposal
+            if rt_result.reviewer_amendments:
+                source += f"\n\n【Reviewer 补充修改】\n{rt_result.reviewer_amendments}"
+            return source
+        else:
+            # 使用执行摘要
+            return rt_result.executive_summary
+
     async def generate(self, task: TaskSpec, rt_result: RoundtableResult) -> str:
         """生成产物（分段生成版）
+
+        v2: 支持 generator_input_mode 动态选择输入源
 
         Args:
             task: TaskSpec
@@ -86,19 +123,30 @@ class Generator:
         Returns:
             生成的产物内容
         """
+        # v2: 选择输入源
+        input_source = self._get_input_source(task, rt_result)
+        print(f"  [Generator] 输入模式: {task.generator_input_mode}, 源长度: {len(input_source)} 字")
+
         if task.output_type != "html":
             # 非 HTML 直接单次生成
-            return await self._generate_single(task, rt_result)
+            return await self._generate_single(task, rt_result, input_source)
 
         # HTML 分段生成
-        return await self._generate_html_segmented(task, rt_result)
+        return await self._generate_html_segmented(task, rt_result, input_source)
 
-    async def _generate_single(self, task: TaskSpec, rt_result: RoundtableResult) -> str:
-        """单次生成（非 HTML 类型）"""
+    async def _generate_single(self, task: TaskSpec, rt_result: RoundtableResult,
+                                input_source: str = "") -> str:
+        """单次生成（非 HTML 类型）
+
+        v2: 使用 input_source 而非 executive_summary
+        """
         model_name = self.OUTPUT_TYPE_MODEL.get(task.output_type, "gpt_5_4")
 
-        prompt = f"""【执行摘要】
-{rt_result.executive_summary}
+        # v2: 使用动态选择的输入源
+        source = input_source or rt_result.executive_summary
+
+        prompt = f"""【输入源】
+{source[:5000]}
 
 【硬约束】
 {chr(10).join(rt_result.all_constraints[:10])}
@@ -106,7 +154,7 @@ class Generator:
 【验收标准】
 {chr(10).join(task.acceptance_criteria)}
 
-请根据执行摘要生成完整产物。直接输出内容，不解释。"""
+请根据输入源生成完整产物。直接输出内容，不解释。"""
 
         result = self.gw.call(
             model_name=model_name,
@@ -119,10 +167,16 @@ class Generator:
             return result.get("response", "")
         return ""
 
-    async def _generate_html_segmented(self, task: TaskSpec, rt_result: RoundtableResult) -> str:
-        """HTML 分段生成"""
+    async def _generate_html_segmented(self, task: TaskSpec, rt_result: RoundtableResult,
+                                        input_source: str = "") -> str:
+        """HTML 分段生成
 
+        v2: 使用 input_source 而非 executive_summary
+        """
         segments_code = []
+
+        # v2: 使用动态选择的输入源
+        source = input_source or rt_result.executive_summary
 
         # 接口约定（各段必须遵守）
         interface_contract = """
@@ -159,8 +213,8 @@ JS 函数签名：
 ```
 """
 
-            prompt = f"""【执行摘要（本轮任务相关部分）】
-{rt_result.executive_summary}
+            prompt = f"""【输入源（本轮任务相关部分）】
+{source[:3000]}
 
 【本轮任务：{seg['name']}】
 {seg['desc']}

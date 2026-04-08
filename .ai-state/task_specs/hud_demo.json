@@ -45,6 +45,8 @@
   },
   "output_type": "html",
   "output_path": "demo_outputs/hud_demo_roundtable.html",
+  "generator_input_mode": "raw_proposal",
+  "auto_verify_rules": [],
   "max_iterations": 10,
   "timeout_minutes": 60
 }

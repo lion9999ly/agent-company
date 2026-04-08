@@ -1,7 +1,7 @@
 """
 @description: 圆桌核心 - Phase 1-4 编排、碰撞检测、收敛逻辑
 @dependencies: model_gateway, crystallizer, confidence, roles, task_spec, memory, meta_cognition, resilience
-@last_modified: 2026-04-06
+@last_modified: 2026-04-08
 """
 import asyncio
 from pathlib import Path
@@ -15,8 +15,13 @@ from scripts.roundtable.confidence import extract_all_claims, detect_conflict, r
 from scripts.roundtable.roles import get_role_model, get_role_prompt, ROLE_REGISTRY
 from scripts.roundtable.task_spec import TaskSpec
 from scripts.roundtable.memory import create_decision_memo
-from scripts.roundtable.meta_cognition import MetaCognition
+from scripts.roundtable.meta_cognition import MetaCognition, META_COGNITION_ENABLED
 from scripts.roundtable.resilience import Resilience, ParkedException
+
+
+# === v2 新增：收敛分层常量 ===
+MAX_PROPOSAL_ROUNDS = 3  # 方案层最多 3 轮
+OSCILLATION_THRESHOLD = 3  # 震荡检测窗口
 
 
 @dataclass
@@ -59,6 +64,7 @@ class RoundtableResult:
     confidence_map: Dict[str, str]   # 各决策点的置信度
     full_log_path: str               # 完整讨论记录路径
     rounds: int                      # 实际迭代轮数
+    reviewer_amendments: str = ""    # v2: Reviewer 补充修改（Phase 3 ❌ 项合并）
 
 
 class Roundtable:
@@ -139,9 +145,18 @@ class Roundtable:
         return task
 
     async def discuss(self, task: TaskSpec, context: CrystalContext) -> RoundtableResult:
-        """圆桌讨论主流程"""
+        """圆桌讨论主流程（v2: 收敛分层）
+
+        两层迭代：
+        - 方案层：最多 3 轮，Critic 只审查方案是否覆盖验收标准、约束是否矛盾
+        - 代码层：Generator + Verifier 闭环，不回方案讨论
+
+        震荡检测：如果 P0 数量连续 3 轮不下降，锁定基线
+        """
         iteration = 0
         max_iterations = task.max_iterations
+        convergence_trace: List[int] = []  # v2: P0 数量追踪（震荡检测）
+        baseline_proposal: Optional[str] = None  # v2: 震荡时锁定的基线方案
 
         # 创建本次讨论的日志目录
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -154,24 +169,36 @@ class Roundtable:
         self._log_phase_outputs("phase1", phase1_outputs)
 
         # === 元认知层：Phase 1 后盲点检测 ===
-        if self.meta:
+        if self.meta and META_COGNITION_ENABLED:
             blind_spot = await self.meta.check_blind_spots("Phase 1: 独立思考", phase1_outputs)
             if blind_spot:
                 context.meta_injection = f"[元认知提醒] {blind_spot}"
                 if self.feishu:
                     self.feishu.notify(f"🧠 元认知层发现盲点：{blind_spot[:80]}...")
 
-        while iteration < max_iterations:
+        # ======== 方案层（最多 MAX_PROPOSAL_ROUNDS 轮）========
+        proposal_iteration = 0
+        proposal = ""
+        phase3_outputs = {}
+
+        while proposal_iteration < MAX_PROPOSAL_ROUNDS:
+            proposal_iteration += 1
             iteration += 1
             if self.feishu:
-                self.feishu.notify(f"🔵 圆桌第 {iteration} 轮")
+                self.feishu.notify(f"🔵 方案层第 {proposal_iteration} 轮")
 
             # Phase 2: 方案生成
-            proposal = await self._phase_2_propose(task, context, phase1_outputs)
+            proposer_prompt_extra = ""
+            # v2: 震荡检测 - 如果 P0 数量不下降，锁定基线
+            if baseline_proposal and len(convergence_trace) >= OSCILLATION_THRESHOLD:
+                if convergence_trace[-1] >= convergence_trace[-OSCILLATION_THRESHOLD]:
+                    proposer_prompt_extra = "\n⚠️ 修复震荡。方案已锁定为基线。只改 P0 段落，不重写其他部分。"
+
+            proposal = await self._phase_2_propose(task, context, phase1_outputs, proposer_prompt_extra, baseline_proposal)
             self._log_phase("phase2_proposal", task.proposer, proposal)
 
             # === 元认知层：Phase 2 后方向检查 ===
-            if self.meta:
+            if self.meta and META_COGNITION_ENABLED:
                 direction_check = await self.meta.check_blind_spots("Phase 2: 方案生成", {"proposal": proposal})
                 if direction_check:
                     context.meta_injection = f"[元认知提醒] {direction_check}"
@@ -185,74 +212,62 @@ class Roundtable:
             # 碰撞检测
             had_collision = await self._check_collision_quality(phase1_outputs, phase3_outputs)
 
-            # Phase 4: Critic 终审
-            critic_result = await self._phase_4_critic(task, proposal, phase3_outputs, had_collision)
-            self._log_phase("phase4_critic", "Critic", critic_result)
+            # Phase 4: Critic 终审（方案层专用 prompt）
+            critic_result = await self._phase_4_critic_proposal(task, proposal, phase3_outputs, had_collision)
+            self._log_phase("phase4_critic_proposal", "Critic", critic_result)
 
-            # 收敛判断
+            # v2: 记录 P0 数量（震荡检测）
+            p0_count = len(critic_result.p0_issues)
+            convergence_trace.append(p0_count)
+            self._log_phase("convergence_trace", "System", f"Round {proposal_iteration}: P0={p0_count}")
+
+            # 收敛判断（方案层）
             if critic_result.passed and not critic_result.p0_issues:
-                # 全部通过，收敛
-                exec_summary = await self._generate_executive_summary(proposal, phase3_outputs, phase1_outputs)
+                # 方案层通过，进入代码层
+                if self.feishu:
+                    self.feishu.notify(f"✅ 方案层收敛（{proposal_iteration} 轮），进入代码生成")
+                break
 
-                # === 元认知层：执行摘要审查 ===
-                if self.meta:
-                    leo_check = await self.meta.review_executive_summary(exec_summary, task.topic)
-                    if leo_check:
-                        if self.feishu:
-                            self.feishu.notify(f"🧠 Leo 视角追问：{leo_check[:100]}...")
-                        # 补充回应（简化处理：记录到日志）
-                        self._log_phase("meta_leo_check", "MetaCognition", f"追问: {leo_check}")
-
-                result = RoundtableResult(
-                    final_proposal=proposal,
-                    executive_summary=exec_summary,
-                    all_constraints=self._collect_constraints(phase1_outputs),
-                    confidence_map=self._build_confidence_map(phase1_outputs, phase3_outputs),
-                    full_log_path=str(self.current_log_dir),
-                    rounds=iteration,
-                )
-
-                # 保存元认知日志
-                if self.meta:
-                    self.meta.finalize_logs(task.topic)
-
-                return result
+            # v2: 震荡检测 - 连续 OSCILLATION_THRESHOLD 轮不下降
+            if len(convergence_trace) >= OSCILLATION_THRESHOLD:
+                recent = convergence_trace[-OSCILLATION_THRESHOLD:]
+                if all(x >= convergence_trace[-OSCILLATION_THRESHOLD] for x in recent):
+                    if self.feishu:
+                        self.feishu.notify(f"⚠️ 检测到震荡，锁定基线方案")
+                    baseline_proposal = proposal
+                    # 强制进入代码层，由 Generator + Verifier 处理
+                    break
 
             # 有 P0 问题，迭代修复
             if critic_result.p0_issues:
                 if self.feishu:
-                    self.feishu.notify(f"🔄 发现 {len(critic_result.p0_issues)} 个 P0 问题，迭代修复")
+                    self.feishu.notify(f"🔄 方案层发现 {len(critic_result.p0_issues)} 个 P0 问题，迭代修复")
 
                 # 将 P0 问题反馈给 proposer，修改方案
-                feedback = self._build_p0_feedback(critic_result, phase3_outputs)
+                feedback = self._build_p0_feedback(critic_result, phase3_outputs, None)  # v2: 因果链参数
                 phase1_outputs = await self._phase_1_rethink(task, context, feedback, phase1_outputs)
                 continue
 
-            # 有未解决分歧
-            if critic_result.unresolved_conflicts:
-                if self.feishu:
-                    self.feishu.notify(f"⚠️ 发现未解决分歧，需人工裁决")
-                # 等待人工介入（简化处理：标记后继续）
-                break
-
-        # 达到最大轮数
-        if self.feishu:
-            self.feishu.notify(f"⚠️ 达到最大迭代轮数 {max_iterations}")
-
+        # ======== 代码层（Generator + Verifier 闭环）========
+        # 生成执行摘要
         exec_summary = await self._generate_executive_summary(proposal, phase3_outputs, phase1_outputs)
 
-        # 保存元认知日志
-        if self.meta:
-            self.meta.finalize_logs(task.topic)
-
-        return RoundtableResult(
+        # 构建圆桌结果（传递给 Generator）
+        result = RoundtableResult(
             final_proposal=proposal,
             executive_summary=exec_summary,
             all_constraints=self._collect_constraints(phase1_outputs),
-            confidence_map={},
+            confidence_map=self._build_confidence_map(phase1_outputs, phase3_outputs),
             full_log_path=str(self.current_log_dir),
             rounds=iteration,
+            reviewer_amendments=self._collect_reviewer_amendments(phase3_outputs),  # v2: 新增
         )
+
+        # 保存元认知日志
+        if self.meta and META_COGNITION_ENABLED:
+            self.meta.finalize_logs(task.topic)
+
+        return result
 
     async def _phase_1_independent(self, task: TaskSpec, context: CrystalContext) -> Dict[str, Phase1Output]:
         """Phase 1: 独立思考（并行）
@@ -358,11 +373,17 @@ class Roundtable:
         return outputs
 
     async def _phase_2_propose(self, task: TaskSpec, context: CrystalContext,
-                               phase1_outputs: Dict[str, Phase1Output]) -> str:
+                               phase1_outputs: Dict[str, Phase1Output],
+                               proposer_prompt_extra: str = "",
+                               baseline_proposal: Optional[str] = None) -> str:
         """Phase 2: 方案生成（proposer 串行）
 
         Phase 1 三份输出同时公开给 proposer。
         proposer 出具体方案，每个决策点标注回应的约束。
+
+        v2 新增：
+        - proposer_prompt_extra: 震荡检测时的额外提示
+        - baseline_proposal: 震荡时锁定的基线方案
 
         支持韧性机制：通过 resilience.execute() 包装 LLM 调用
         """
@@ -381,7 +402,18 @@ class Roundtable:
             for c in output.constraints:
                 all_constraints.append(f"[{role}] {c}")
 
+        # v2: 基线方案提示
+        baseline_hint = ""
+        if baseline_proposal:
+            baseline_hint = f"""
+【已锁定的基线方案】
+{baseline_proposal[:500]}
+请在此基础上修改，不要重写整个方案。
+"""
+
         prompt = f"""{proposer_context}
+
+{baseline_hint}
 
 【所有角色的约束清单】
 {chr(10).join(all_constraints)}
@@ -389,6 +421,7 @@ class Roundtable:
 【任务】
 议题：{task.topic}
 目标：{task.goal}
+{proposer_prompt_extra}
 
 请基于所有约束的交集，输出具体方案。
 方案中每个决策点必须标注回应了哪条约束。
@@ -644,6 +677,134 @@ class Roundtable:
 
         return CriticResult(passed=False, acceptance_results=[], confidence_issues=[], unresolved_conflicts=[], p0_issues=["Critic 模型调用失败"], p1_issues=[])
 
+    async def _phase_4_critic_proposal(self, task: TaskSpec, proposal: str,
+                                        phase3_outputs: Dict[str, Phase3Output],
+                                        had_collision: bool) -> CriticResult:
+        """Phase 4: Critic 终审（方案层专用）
+
+        v2 新增：方案层审查，只关注方案是否覆盖验收标准、约束是否矛盾、逻辑是否自洽。
+        不检查：代码可实现性。
+
+        支持韧性机制：通过 resilience.execute() 包装 LLM 调用
+        """
+        # 收集审查结论
+        all_passed = []
+        all_failed = []
+        all_conf_issues = []
+
+        for role, output in phase3_outputs.items():
+            all_passed.extend(output.passed)
+            all_failed.extend(output.failed)
+            all_conf_issues.extend(output.confidence_issues)
+
+        base_prompt = get_role_prompt("Critic", task.role_prompts.get("Critic", ""))
+        model = get_role_model("Critic")
+
+        collision_hint = ""
+        if not had_collision:
+            collision_hint = """
+【特别注意】
+各角色似乎过于一致。请主动寻找方案中的盲点、
+未覆盖的验收标准、和被回避的困难问题。"""
+
+        # v2: 方案层专用 prompt
+        prompt = f"""【重要：你在审查方案文档，不是代码】
+
+【proposer 方案摘要】
+{proposal[:1500]}
+
+【审查结论】
+通过项：
+{chr(10).join(all_passed[:10]) if all_passed else '无'}
+
+不通过项：
+{chr(10).join(all_failed[:10]) if all_failed else '无'}
+
+置信度质疑：
+{chr(10).join(all_conf_issues[:5]) if all_conf_issues else '无'}
+
+【验收标准】
+{chr(10).join(f'{i+1}. {c}' for i, c in enumerate(task.acceptance_criteria))}
+{collision_hint}
+
+请逐条验收标准审查，但只关注：
+- 方案是否覆盖所有验收标准（有描述即可，不要求具体代码）
+- 约束之间是否矛盾
+- 逻辑是否自洽
+
+不检查：
+- 代码可实现性（这由 Generator + Verifier 闭环处理）
+
+输出格式：
+## 验收标准审查（方案层）
+- 标准1：✅ 覆盖 / ❌ 未覆盖 — 原因：...
+- 标准2：...
+
+## 约束矛盾检查
+（列出矛盾的约束，如有）
+
+## P0 问题（方案层必须解决）
+对每个 P0 问题标注：
+- [新增] 本轮新出现
+- [遗留] 上轮未修复
+- [回归] 上轮已修但又出现（说明上轮哪个修改导致回归）
+1. ...
+
+## P1 问题（建议优化）
+1. ...
+"""
+
+        # 通过韧性机制调用 LLM
+        async def _call_llm():
+            return self.gw.call(
+                model_name=model,
+                prompt=prompt,
+                system_prompt=base_prompt,
+                task_type="review",
+            )
+
+        if self.resilience:
+            result = await self.resilience.execute(
+                fn=_call_llm,
+                context={"role": "Critic", "phase": "phase_4_proposal", "model": model, "task": task.topic}
+            )
+        else:
+            result = await _call_llm()
+
+        if result.get("success"):
+            response = result.get("response", "")
+
+            # 解析结果
+            acceptance_results = self._extract_section(response, "验收标准审查")
+            conf_issues = self._extract_section(response, "约束矛盾检查")
+            p0 = self._extract_section(response, "P0 问题")
+            p1 = self._extract_section(response, "P1 问题")
+
+            # 解析失败检查
+            if not acceptance_results and not p0 and not p1:
+                return CriticResult(
+                    passed=False,
+                    p0_issues=["Critic 输出格式解析失败，无法判定是否通过"],
+                    acceptance_results="[解析失败] " + response[:500],
+                    confidence_issues=[],
+                    unresolved_conflicts=[],
+                    p1_issues=[],
+                )
+
+            # 判断是否通过
+            passed = "❌" not in acceptance_results and len(p0) == 0
+
+            return CriticResult(
+                acceptance_results=acceptance_results,
+                confidence_issues=conf_issues,
+                unresolved_conflicts=[],
+                p0_issues=p0,
+                p1_issues=p1,
+                passed=passed,
+            )
+
+        return CriticResult(passed=False, acceptance_results=[], confidence_issues=[], unresolved_conflicts=[], p0_issues=["Critic 模型调用失败"], p1_issues=[])
+
     async def _phase_1_rethink(self, task: TaskSpec, context: CrystalContext,
                                feedback: str, original_outputs: Dict) -> Dict[str, Phase1Output]:
         """基于 P0 反馈重新思考"""
@@ -757,15 +918,49 @@ class Roundtable:
                     conf_map[key] = f"{claim.claim_type}·{claim.confidence}"
         return conf_map
 
-    def _build_p0_feedback(self, critic_result: CriticResult, phase3_outputs: Dict) -> str:
-        """构建 P0 反馈文本"""
+    def _build_p0_feedback(self, critic_result: CriticResult, phase3_outputs: Dict,
+                            prev_critic_result: Optional[CriticResult] = None) -> str:
+        """构建 P0 反馈文本（v2: 支持因果链标注）
+
+        v2 新增：
+        - 对每个 P0 问题标注：[新增]/[遗留]/[回归]
+        - prev_critic_result 用于对比上一轮 P0 问题
+        """
         lines = ["## P0 问题清单"]
-        lines.extend(critic_result.p0_issues)
+
+        # v2: 因果链标注
+        if prev_critic_result:
+            prev_p0_set = set(prev_critic_result.p0_issues)
+            for issue in critic_result.p0_issues:
+                # 简化匹配：检查是否在上一轮 P0 中
+                if issue in prev_p0_set:
+                    lines.append(f"- [遗留] {issue}")
+                else:
+                    # 检查是否是回归（简化：通过关键词匹配）
+                    lines.append(f"- [新增] {issue}")
+        else:
+            # 第一轮，全部标注为新增
+            for issue in critic_result.p0_issues:
+                lines.append(f"- [新增] {issue}")
+
         lines.append("\n## Reviewer 建议")
         for role, output in phase3_outputs.items():
             if output.suggestions:
                 lines.append(f"[{role}] " + "\n".join(output.suggestions))
         return "\n".join(lines)
+
+    def _collect_reviewer_amendments(self, phase3_outputs: Dict[str, Phase3Output]) -> str:
+        """收集 Reviewer 的补充修改建议（v2 新增）
+
+        用于 Generator 输入，合并 Phase 3 的 ❌ 项
+        """
+        amendments = []
+        for role, output in phase3_outputs.items():
+            if output.failed:
+                amendments.append(f"[{role}] " + "\n".join(output.failed))
+            if output.suggestions:
+                amendments.append(f"[{role}] 建议: " + "\n".join(output.suggestions))
+        return "\n".join(amendments)
 
     def _extract_section(self, text: str, section_name: str) -> List[str]:
         """从结构化文本中提取指定部分，支持多种标题格式"""

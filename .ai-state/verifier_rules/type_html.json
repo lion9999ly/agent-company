@@ -1,0 +1,20 @@
+[
+  {
+    "type": "html_valid",
+    "params": {},
+    "criterion": "HTML 格式有效",
+    "severity": "P0"
+  },
+  {
+    "type": "no_external_deps",
+    "params": {},
+    "criterion": "零外部依赖",
+    "severity": "P1"
+  },
+  {
+    "type": "keyword_exists",
+    "params": {"keyword": "</script>"},
+    "criterion": "script 标签闭合",
+    "severity": "P0"
+  }
+]

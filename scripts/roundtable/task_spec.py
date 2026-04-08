@@ -44,6 +44,14 @@ class TaskSpec:
     output_type: str                    # "html" | "markdown" | "json" | "code"
     output_path: str                    # 输出文件路径
 
+    # ── v2 新增：Generator 输入模式 ──
+    generator_input_mode: str = "auto"  # "raw_proposal" | "executive_summary" | "auto"
+    # auto 逻辑：html/code/json/jsx → raw_proposal; markdown/report/pptx → executive_summary
+
+    # ── v2 新增：Verifier 自动验证规则 ──
+    auto_verify_rules: List[Dict] = field(default_factory=list)
+    # 规则类型：no_external_deps, keyword_exists, keyword_count, file_size_range, line_count_range, html_valid, json_parseable
+
     # ── 可选扩展 ──
     max_iterations: int = 10            # 最大迭代轮数（防止死循环）
     timeout_minutes: int = 60           # 任务超时时间
@@ -63,6 +71,8 @@ class TaskSpec:
             "role_prompts": self.role_prompts,
             "output_type": self.output_type,
             "output_path": self.output_path,
+            "generator_input_mode": self.generator_input_mode,  # v2
+            "auto_verify_rules": self.auto_verify_rules,  # v2
             "max_iterations": self.max_iterations,
             "timeout_minutes": self.timeout_minutes,
         }
@@ -83,6 +93,8 @@ class TaskSpec:
             role_prompts=data.get("role_prompts", {}),
             output_type=data.get("output_type", "html"),
             output_path=data.get("output_path", ""),
+            generator_input_mode=data.get("generator_input_mode", "auto"),  # v2
+            auto_verify_rules=data.get("auto_verify_rules", []),  # v2
             max_iterations=data.get("max_iterations", 10),
             timeout_minutes=data.get("timeout_minutes", 60),
         )
