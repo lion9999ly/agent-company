@@ -281,7 +281,7 @@ def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
 
     try:
         result = subprocess.run(
-            ["claude", "-p", prompt, "--no-input"],
+            ["claude", "-p", prompt],
             cwd=str(PROJECT_ROOT),
             capture_output=True,
             text=True,
