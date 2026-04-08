@@ -15,6 +15,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 # 飞书文档 ID 存储（首次创建后记录）
 DOC_REGISTRY_PATH = PROJECT_ROOT / ".ai-state" / "feishu_doc_registry.json"
 
+# Leo 的 open_id（用于添加编辑权限）
+LEO_OPEN_ID = os.getenv("LEO_OPEN_ID", "ou_8e5e4f183e9eca4241378e96bac3a751")
+
 
 def _find_lark_cli() -> str:
     """查找 lark-cli 可执行文件路径"""
@@ -85,6 +88,43 @@ def _extract_doc_url(output: str) -> Optional[str]:
     return None
 
 
+def _add_edit_permission(doc_id: str, doc_type: str = "docx") -> bool:
+    """给 Leo 添加文档编辑权限
+
+    Args:
+        doc_id: 文档 ID
+        doc_type: 文档类型 (docx, sheet, bitable, etc.)
+
+    Returns:
+        是否成功
+    """
+    try:
+        result = subprocess.run(
+            [LARK_CLI, "drive", "permission.members", "create",
+             "--params", json.dumps({"token": doc_id, "type": doc_type}),
+             "--data", json.dumps({
+                 "member_type": "openid",
+                 "member_id": LEO_OPEN_ID,
+                 "perm": "edit",
+                 "type": "user"
+             }),
+             "--as", "bot"],
+            capture_output=True, text=True, timeout=15,
+            encoding='utf-8', errors='ignore'
+        )
+
+        if result.returncode == 0:
+            try:
+                data = json.loads(result.stdout)
+                return data.get("code", -1) == 0
+            except:
+                pass
+        return False
+    except Exception as e:
+        print(f"[FeishuOutput] 添加权限失败: {e}")
+        return False
+
+
 def get_or_create_doc(title: str, initial_content: str = "") -> tuple:
     """获取已有文档 ID，或创建新文档
 
@@ -113,6 +153,9 @@ def get_or_create_doc(title: str, initial_content: str = "") -> tuple:
     doc_url = _extract_doc_url(result.stdout)
 
     if doc_id:
+        # 给 Leo 添加编辑权限
+        _add_edit_permission(doc_id, "docx")
+
         registry[title] = {"doc_id": doc_id, "doc_url": doc_url}
         _save_registry(registry)
 
@@ -162,7 +205,14 @@ def create_doc(title: str, content: str) -> Optional[str]:
         encoding='utf-8'
     )
 
-    return _extract_doc_url(result.stdout)
+    doc_id = _extract_doc_id(result.stdout)
+    doc_url = _extract_doc_url(result.stdout)
+
+    if doc_id:
+        # 给 Leo 添加编辑权限
+        _add_edit_permission(doc_id, "docx")
+
+    return doc_url
 
 
 def notify_with_doc(reply_target: str, send_reply, title: str, content: str,
@@ -212,6 +262,9 @@ def get_or_create_bitable(name: str) -> Optional[str]:
         data = json.loads(result.stdout)
         app_token = data.get("data", {}).get("app", {}).get("app_token")
         if app_token:
+            # 给 Leo 添加编辑权限
+            _add_edit_permission(app_token, "bitable")
+
             registry[key] = {"app_token": app_token}
             _save_registry(registry)
         return app_token
