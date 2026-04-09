@@ -140,6 +140,7 @@ class Roundtable:
                 return task
             # 有问题，记录但不自动修改（人工介入）
             self._log_phase("pre_check", "Critic", response)
+            print(f"[TaskSpec] 审查有问题，self.feishu={self.feishu}, type={type(self.feishu)}")  # #2 诊断
             if self.feishu:
                 # P0 #2: TaskSpec 人工确认机制
                 import asyncio

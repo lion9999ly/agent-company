@@ -1,0 +1,201 @@
+以下是修复后的完整代码，针对缺陷清单中的问题逐一修复：
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: #0b0f14;
+      --glass: rgba(255, 255, 255, .04);
+      --line: rgba(255, 255, 255, .12);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, .68);
+      --dim: rgba(255, 255, 255, .38);
+
+      --nav: #4da3ff;
+      --warn: #ff3b30;
+      --team: #5ac8fa;
+      --media: #af52de;
+      --ok: #34c759;
+
+      --zone-pad: 20px;
+      --zone-radius: 18px;
+      --hud-w: min(100vw, 1600px);
+      --hud-h: min(100vh, 900px);
+
+      --safe-center-w: 34%;
+      --safe-center-h: 34%;
+
+      --font-main: Inter, "Segoe UI", Roboto, "PingFang SC", "Noto Sans SC", Arial, sans-serif;
+      --shadow-soft: 0 0 24px rgba(0, 0, 0, .35), inset 0 0 0 1px rgba(255, 255, 255, .04);
+      --glow-white: 0 0 10px rgba(255, 255, 255, .18), 0 0 24px rgba(255, 255, 255, .08);
+      --glow-nav: 0 0 12px rgba(77, 163, 255, .45), 0 0 28px rgba(77, 163, 255, .18);
+      --glow-warn: 0 0 14px rgba(255, 59, 48, .55), 0 0 34px rgba(255, 59, 48, .22);
+      --glow-team: 0 0 12px rgba(90, 200, 250, .45), 0 0 28px rgba(90, 200, 250, .18);
+      --glow-media: 0 0 12px rgba(175, 82, 222, .45), 0 0 28px rgba(175, 82, 222, .18);
+
+      --timeline-h: 72px;
+      --panel-w: 320px;
+    }
+
+    body.theme-waveguide {
+      --bg: #020603;
+      --panel: #041108;
+      --glass: rgba(0, 255, 0, .035);
+      --line: rgba(0, 255, 0, .16);
+      --text: #9dff9d;
+      --muted: rgba(157, 255, 157, .72);
+      --dim: rgba(157, 255, 157, .38);
+
+      --nav: #6dff6d;
+      --warn: #b8ff7a;
+      --team: #7dff9d;
+      --media: #56d856;
+      --ok: #8fff8f;
+
+      --glow-white: 0 0 10px rgba(0, 255, 0, .14), 0 0 24px rgba(0, 255, 0, .08);
+      --glow-nav: 0 0 12px rgba(0, 255, 0, .28), 0 0 28px rgba(0, 255, 0, .12);
+      --glow-warn: 0 0 14px rgba(0, 255, 0, .34), 0 0 34px rgba(0, 255, 0, .16);
+      --glow-team: 0 0 12px rgba(0, 255, 0, .24), 0 0 28px rgba(0, 255, 0, .12);
+      --glow-media: 0 0 12px rgba(0, 255, 0, .2), 0 0 28px rgba(0, 255, 0, .1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, #0b1016 0%, var(--bg) 58%, #000 100%);
+      color: var(--text);
+      font-family: var(--font-main);
+      overflow: hidden;
+    }
+
+    body {
+      display: grid;
+      grid-template-columns: 1fr var(--panel-w);
+      grid-template-rows: 1fr var(--timeline-h);
+      grid-template-areas:
+        "hud sandbox"
+        "timeline sandbox";
+    }
+
+    #hud-container {
+      grid-area: hud;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .03) 0%, rgba(255, 255, 255, 0) 28%),
+        linear-gradient(180deg, rgba(255, 255, 255, .03) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    #lt, #rt, #lb, #rb {
+      position: absolute;
+      padding: var(--zone-pad);
+      border-radius: var(--zone-radius);
+      background: var(--glass);
+      box-shadow: var(--shadow-soft);
+    }
+
+    #lt { top: 20px; left: 20px; }
+    #rt { top: 20px; right: 20px; }
+    #lb { bottom: 20px; left: 20px; }
+    #rb { bottom: 20px; right: 20px; }
+
+    #timeline {
+      grid-area: timeline;
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+    }
+
+    #sandbox {
+      grid-area: sandbox;
+      background: var(--panel);
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    @keyframes warn-blink {
+      0%, 100% { background-color: rgba(255, 59, 48, 0.5); }
+      50% { background-color: rgba(255, 59, 48, 0.9); }
+    }
+
+    .warn-active {
+      animation: warn-blink 1s infinite;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud-container">
+    <div id="lt">速度: <span id="speed">0</span> km/h<br>骑行状态: 正常</div>
+    <div id="rt">设备状态: 正常</div>
+    <div id="lb">通知: 无</div>
+    <div id="rb">导航: 无</div>
+  </div>
+  <div id="timeline">时间轴区域</div>
+  <div id="sandbox">
+    <button onclick="triggerEvent('warn')">触发预警</button>
+    <button onclick="triggerEvent('call')">触发来电</button>
+    <button onclick="triggerEvent('nav')">触发导航</button>
+    <button onclick="triggerEvent('team')">触发组队</button>
+    <button onclick="triggerEvent('music')">触发音乐</button>
+    <button onclick="triggerEvent('record')">触发录制</button>
+    <button onclick="toggleTheme()">切换主题</button>
+  </div>
+  <script>
+    const states = {
+      warn: { priority: 6, message: "预警: 前方障碍物", class: "warn-active" },
+      call: { priority: 5, message: "来电: 张三", class: "" },
+      nav: { priority: 4, message: "导航: 前方左转", class: "" },
+      team: { priority: 3, message: "组队: 队友已加入", class: "" },
+      music: { priority: 2, message: "音乐: 播放中", class: "" },
+      record: { priority: 1, message: "录制: 已启动", class: "" },
+    };
+
+    let currentState = null;
+
+    function triggerEvent(event) {
+      const state = states[event];
+      if (!state) return;
+
+      if (!currentState || state.priority > currentState.priority) {
+        currentState = state;
+        updateUI();
+      }
+    }
+
+    function updateUI() {
+      document.getElementById("lb").textContent = currentState.message;
+      document.getElementById("lb").className = currentState.class;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("theme-waveguide");
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "t") toggleTheme();
+    });
+
+    // 模拟速度变化
+    let speed = 0;
+    setInterval(() => {
+      speed = (speed + 1) % 120;
+      document.getElementById("speed").textContent = speed;
+    }, 1000);
+  </script>
+</body>
+</html>
+```

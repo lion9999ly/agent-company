@@ -1,12 +1,13 @@
 """
 @description: 飞书输出工具 — 统一输出到飞书云文档/多维表格
 @dependencies: subprocess, lark-cli
-@last_modified: 2026-04-08
+@last_modified: 2026-04-09
 """
 import subprocess
 import json
 import shutil
 import os
+import time
 from pathlib import Path
 from typing import Optional
 
@@ -137,30 +138,42 @@ def get_or_create_doc(title: str, initial_content: str = "") -> tuple:
 
     if title in registry:
         entry = registry[title]
+        print(f"[get_or_create_doc] 从 registry 找到: {entry}")
         return entry.get("doc_id"), entry.get("doc_url")
 
     # 创建新文档（使用临时文件传递内容，避免 Windows stdin 问题）
     content = initial_content or f"# {title}\n\n初始化中..."
+    # #1 修复: lark-cli 要求相对路径，不能用系统临时目录
     temp_file = None
     try:
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False, encoding='utf-8')
+        # 使用当前工作目录下的临时文件
+        temp_path = f".temp_doc_{int(time.time() * 1000)}.md"
+        temp_file = open(temp_path, 'w', encoding='utf-8')
         temp_file.write(content)
         temp_file.close()
 
+        print(f"[get_or_create_doc] lark-cli docs +create 调用...")
         result = subprocess.run(
             [LARK_CLI, "docs", "+create",
              "--title", title,
-             "--markdown", f"@{temp_file.name}",  # 使用 @file 方式
+             "--markdown", f"@{temp_path}",  # 相对路径
              "--as", "bot"],
             capture_output=True, text=True, timeout=30,
             encoding='utf-8'
         )
+        print(f"[get_or_create_doc] stdout: {result.stdout[:300] if result.stdout else 'empty'}")
+        print(f"[get_or_create_doc] stderr: {result.stderr[:300] if result.stderr else 'empty'}")
+        print(f"[get_or_create_doc] returncode: {result.returncode}")
     finally:
-        if temp_file and os.path.exists(temp_file.name):
-            os.unlink(temp_file.name)
+        if temp_file:
+            try:
+                os.unlink(temp_path)
+            except:
+                pass
 
     doc_id = _extract_doc_id(result.stdout)
     doc_url = _extract_doc_url(result.stdout)
+    print(f"[get_or_create_doc] 解析结果: doc_id={doc_id}, doc_url={doc_url}")
 
     if doc_id:
         # 给 Leo 添加编辑权限
@@ -180,31 +193,42 @@ def update_doc(title: str, content: str) -> Optional[str]:
     """
     import tempfile
 
+    print(f"[update_doc] 调用: title={title[:30]}, content_len={len(content)}")
     doc_id, doc_url = get_or_create_doc(title)
+    print(f"[update_doc] get_or_create_doc 返回: doc_id={doc_id}, doc_url={doc_url}")
 
     if not doc_id:
         # 创建新文档
+        print(f"[update_doc] doc_id 为空，尝试创建新文档")
         doc_id, doc_url = get_or_create_doc(title, content)
+        print(f"[update_doc] 创建结果: doc_id={doc_id}, doc_url={doc_url}")
         return doc_url
 
     # 更新已有文档（使用临时文件传递内容）
+    # #1 修复: lark-cli 要求相对路径
+    temp_path = f".temp_doc_update_{int(time.time() * 1000)}.md"
     temp_file = None
     try:
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False, encoding='utf-8')
+        temp_file = open(temp_path, 'w', encoding='utf-8')
         temp_file.write(content)
         temp_file.close()
 
         result = subprocess.run(
             [LARK_CLI, "docs", "+update",
              "--doc", doc_id,
-             "--markdown", f"@{temp_file.name}",  # 使用 @file 方式
+             "--markdown", f"@{temp_path}",  # 相对路径
              "--as", "bot"],
             capture_output=True, text=True, timeout=30,
             encoding='utf-8'
         )
+        print(f"[update_doc] lark-cli update stdout: {result.stdout[:200] if result.stdout else 'empty'}")
+        print(f"[update_doc] lark-cli update stderr: {result.stderr[:200] if result.stderr else 'empty'}")
     finally:
-        if temp_file and os.path.exists(temp_file.name):
-            os.unlink(temp_file.name)
+        if temp_file:
+            try:
+                os.unlink(temp_path)
+            except:
+                pass
 
     return doc_url
 

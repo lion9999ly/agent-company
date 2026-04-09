@@ -168,7 +168,8 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
     # #9: 自动创建 GitHub Issue 并更新 inbox
     issue_url = None
     try:
-        import subprocess
+        import requests
+        import os
         from datetime import datetime
 
         # 生成摘要内容
@@ -190,24 +191,30 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
 """
         issue_title = f"[圆桌] {task.topic[:30]} - {datetime.now().strftime('%Y-%m-%d')}"
 
-        # 使用 gh CLI 创建 Issue
-        result_gh = subprocess.run(
-            ["gh", "issue", "create",
-             "--title", issue_title,
-             "--body", issue_body,
-             "--label", "roundtable"],
-            cwd=str(PROJECT_ROOT),
-            capture_output=True, text=True, timeout=30
-        )
-
-        if result_gh.returncode == 0:
-            issue_url = result_gh.stdout.strip()
-            print(f"[Issue] 创建成功: {issue_url}")
-            await _notify(f"📋 GitHub Issue: {issue_url}")
+        # #3 修复: 使用 requests 替代 gh CLI
+        github_token = os.environ.get("GITHUB_TOKEN", "")
+        if github_token:
+            headers = {
+                "Authorization": f"token {github_token}",
+                "Accept": "application/vnd.github.v3+json"
+            }
+            payload = {
+                "title": issue_title,
+                "body": issue_body,
+                "labels": ["roundtable"]
+            }
+            resp = requests.post(
+                "https://api.github.com/repos/lion9999ly/agent-company/issues",
+                headers=headers, json=payload, timeout=30
+            )
+            if resp.status_code == 201:
+                issue_url = resp.json().get("html_url", "")
+                print(f"[Issue] 创建成功: {issue_url}")
+                await _notify(f"📋 GitHub Issue: {issue_url}")
+            else:
+                print(f"[Issue] 创建失败: {resp.status_code} {resp.text[:100]}")
         else:
-            print(f"[Issue] 创建失败: {result_gh.stderr[:100]}")
-    except FileNotFoundError:
-        print("[Issue] gh CLI 未安装，跳过")
+            print("[Issue] GITHUB_TOKEN 未设置，跳过")
     except Exception as e:
         print(f"[Issue] 创建异常: {e}")
 
