@@ -1,15 +1,24 @@
 """
 @description: 圆桌系统公开接口
 @dependencies: task_spec, crystallizer, roundtable, generator, verifier, memory, meta_cognition, resilience
-@last_modified: 2026-04-07
+@last_modified: 2026-04-10
 """
 
 import asyncio
 import time
 import hashlib
 import json
+import subprocess
+import os
 from pathlib import Path
 from typing import Optional
+from datetime import datetime
+
+# 加载 .env 环境变量
+from dotenv import load_dotenv
+load_dotenv()
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 from scripts.roundtable.task_spec import TaskSpec, load_task_spec
 from scripts.roundtable.crystallizer import Crystallizer
@@ -157,7 +166,7 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
         print(f"[云文档] update_doc 返回: {doc_url}")
         if doc_url:
             print(f"[云文档] 生成成功: {doc_url}")
-            await _notify(f"📄 云文档: {doc_url}")
+            await _notify(f"云文档: {doc_url}")  # #6 修复: 移除 emoji 避免 GBK 编码问题
         else:
             print(f"[云文档] 生成失败: update_doc 返回空")
     except ImportError as e:
@@ -169,8 +178,6 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
     issue_url = None
     try:
         import requests
-        import os
-        from datetime import datetime
 
         # 生成摘要内容
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -210,7 +217,7 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
             if resp.status_code == 201:
                 issue_url = resp.json().get("html_url", "")
                 print(f"[Issue] 创建成功: {issue_url}")
-                await _notify(f"📋 GitHub Issue: {issue_url}")
+                await _notify(f"Issue: {issue_url}")  # #6 修复: 移除 emoji 避免 GBK 编码问题
             else:
                 print(f"[Issue] 创建失败: {resp.status_code} {resp.text[:100]}")
         else:
@@ -220,8 +227,7 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
 
     # 更新 claude_chat_inbox.md 并 push
     try:
-        from pathlib import Path as PPath
-        inbox_path = PPath(".ai-state/claude_chat_inbox.md")
+        inbox_path = PROJECT_ROOT / ".ai-state" / "claude_chat_inbox.md"
         inbox_content = ""
         if inbox_path.exists():
             inbox_content = inbox_path.read_text(encoding="utf-8")
@@ -242,10 +248,10 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
         inbox_path.write_text(inbox_content + new_entry, encoding="utf-8")
         print(f"[Inbox] 已更新")
 
-        # git add + commit + push
-        subprocess.run(["git", "add", str(inbox_path)], cwd=str(PROJECT_ROOT), capture_output=True)
-        subprocess.run(["git", "commit", "-m", f"docs: 圆桌完成 - {task.topic[:20]}"], cwd=str(PROJECT_ROOT), capture_output=True)
-        push_result = subprocess.run(["git", "push", "origin", "main"], cwd=str(PROJECT_ROOT), capture_output=True, text=True)
+        # git add + commit + push  # #6 修复: 加 encoding 避免 GBK 编码问题
+        subprocess.run(["git", "add", str(inbox_path)], cwd=str(PROJECT_ROOT), capture_output=True, encoding='utf-8', errors='ignore')
+        subprocess.run(["git", "commit", "-m", f"docs: 圆桌完成 - {task.topic[:20]}"], cwd=str(PROJECT_ROOT), capture_output=True, encoding='utf-8', errors='ignore')
+        push_result = subprocess.run(["git", "push", "origin", "main"], cwd=str(PROJECT_ROOT), capture_output=True, text=True, encoding='utf-8', errors='ignore')
         if push_result.returncode == 0:
             print(f"[Inbox] 已推送到 GitHub")
         else:
