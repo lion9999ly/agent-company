@@ -310,6 +310,7 @@ def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
 
     prompt = build_prompt(message_text, chat_id, open_id)
     print(f"[Agent-Debug] CLI prompt 长度: {len(prompt)}")
+    print(f"[Agent-Debug] prompt 前 200 字: {prompt[:200]}")
 
     # 清除 Z.AI 环境变量，确保调用真正的 Claude Code CLI
     clean_env = _get_clean_env()
@@ -318,22 +319,24 @@ def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
     claude_cmd = str(CLAUDE_CLI_PATH) if CLAUDE_CLI_PATH.exists() else "claude"
     print(f"[Agent-Debug] claude_cmd: {claude_cmd}")
 
-    # 写入临时文件传递 prompt（避免 Windows 命令行截断）
-    temp_file = None
+    # 使用 stdin 模式传递 prompt（避免 -p 参数被误解析）
     try:
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False, encoding='utf-8')
-        temp_file.write(prompt)
-        temp_file.close()
-
+        print(f"[Agent-Debug] CLI 命令: {claude_cmd} (stdin mode)")
         result = subprocess.run(
-            [claude_cmd, "-p", temp_file.name],
+            [claude_cmd],
+            input=prompt,  # 通过 stdin 传递
             cwd=str(PROJECT_ROOT),
             capture_output=True,
             text=True,
             timeout=120,  # 2分钟超时
             encoding='utf-8', errors='ignore',
-            env=clean_env  # 不使用 shell=True
+            env=clean_env
         )
+
+        print(f"[Agent-Debug] returncode: {result.returncode}")
+        print(f"[Agent-Debug] stdout 前 100 字: {result.stdout[:100] if result.stdout else 'empty'}")
+        if result.stderr:
+            print(f"[Agent-Debug] stderr: {result.stderr[:200]}")
 
         if result.returncode == 0 and result.stdout.strip():
             response = result.stdout.strip()
@@ -351,13 +354,6 @@ def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
         cli_send_message("⚠️ Claude Code CLI 未安装，请安装后使用", chat_id)
     except Exception as e:
         cli_send_message(f"⚠️ 处理异常：{str(e)[:100]}", chat_id)
-    finally:
-        # 清理临时文件
-        if temp_file and os.path.exists(temp_file.name):
-            try:
-                os.unlink(temp_file.name)
-            except:
-                pass
 
 
 # ============================================================
