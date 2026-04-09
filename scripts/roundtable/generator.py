@@ -254,10 +254,10 @@ JS 函数签名：
                                             segment_index: int) -> str:
         """v2: 分段生成带重试 + 换模型
 
-        重试链：gpt_5_4 → gpt_5_4（重试）→ gemini_3_1_pro
+        重试链：gpt_5_3_codex → gpt_5_4 → gemini_3_1_pro
         """
-        # 模型重试链
-        models = ["gpt_5_4", "gpt_5_4", "gemini_3_1_pro"]
+        # 模型重试链（代码生成优先用 codex）
+        models = ["gpt_5_3_codex", "gpt_5_4", "gemini_3_1_pro"]
         last_error = None
 
         for attempt, model in enumerate(models):
@@ -312,22 +312,31 @@ JS 函数签名：
             if script_match:
                 script_parts.append(script_match.group(1))
             else:
-                script_parts.append(seg)
+                # 裸 JS 代码：主动包裹 script 标签
+                # 检查是否是 JS 代码（包含 function/const/var/let 等）
+                if re.search(r'\b(function|const|var|let|class|import|export)\b', seg):
+                    script_parts.append(seg)  # 稍后统一包裹
+                else:
+                    script_parts.append(seg)
 
         # 确保 segment1 有 </body></html> 闭合
         if "</html>" not in segment1:
             # 需要添加闭合标签
             if "</body>" not in segment1:
-                close_tags = "\n".join(script_parts) + "\n</body>\n</html>"
+                # 包裹裸 JS 为 script 标签
+                script_content = "\n".join(script_parts)
+                close_tags = f"\n<script>\n{script_content}\n</script>\n</body>\n</html>"
             else:
                 # 在 </body> 前插入 scripts
-                segment1 = segment1.replace("</body>", "\n".join(script_parts) + "\n</body>")
+                script_content = "\n".join(script_parts)
+                segment1 = segment1.replace("</body>", f"\n<script>\n{script_content}\n</script>\n</body>")
                 close_tags = "</html>"
         else:
             close_tags = ""
 
         if close_tags and "</html>" not in segment1:
-            full_html = segment1 + "\n<script>\n" + "\n".join(script_parts) + "\n</script>\n</body>\n</html>"
+            script_content = "\n".join(script_parts)
+            full_html = segment1 + f"\n<script>\n{script_content}\n</script>\n</body>\n</html>"
         else:
             full_html = segment1
 
@@ -358,25 +367,32 @@ JS 函数签名：
         return {"passed": len(errors) == 0, "errors": errors}
 
     async def fix(self, current_output: str, issues: List[str],
-                  rt_result: RoundtableResult) -> str:
+                  rt_result: RoundtableResult, task: TaskSpec = None) -> str:
         """定点修复
 
         Args:
             current_output: 当前输出代码
             issues: 具体缺陷清单
             rt_result: 圆桌结果（用于理解原始意图）
+            task: TaskSpec（用于选择输入模式）
 
         Returns:
             修复后的输出
         """
+        # 使用 _get_input_source 选择输入源
+        if task:
+            input_source = self._get_input_source(task, rt_result)
+        else:
+            input_source = rt_result.executive_summary
+
         prompt = f"""【当前输出】
 {current_output[:3000]}
 
 【缺陷清单】
 {chr(10).join(issues)}
 
-【原始意图（执行摘要）】
-{rt_result.executive_summary[:1000]}
+【原始意图】
+{input_source[:1500]}
 
 请根据缺陷清单定点修复输出。
 只修复指出的问题，不要重写其他部分。

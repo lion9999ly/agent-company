@@ -107,12 +107,83 @@ def _handle_import_docs(reply_target: str, send_reply: Callable):
 
 
 def _handle_share_url(text: str, open_id: str, reply_target: str, reply_type: str, send_reply: Callable):
-    """处理 URL 分享"""
+    """处理 URL 分享
+
+    P2 #21: 使用 feishu_sdk_client.handle_share_content（WebSocket 回调）
+    注意：handle_share_content 内部有自己的 send_reply，需要适配
+    """
     try:
-        from scripts.feishu_sdk_client import handle_share_content
-        handle_share_content(open_id, text=text, reply_target=reply_target, reply_type=reply_type)
-    except:
-        send_reply(reply_target, "🔗 检测到链接，但分享处理功能暂未导入。")
+        # 尝试使用 feishu_sdk_client 的 handle_share_content
+        # 但需要适配其内部 send_reply 调用
+        from scripts.feishu_sdk_client import handle_share_content as _orig_share
+
+        # 创建一个包装器让 handle_share_content 能用我们的 send_reply
+        # handle_share_content 期望 reply_target 是 open_id/chat_id
+        # 它内部直接调用 send_reply(reply_target, msg)
+        # 我们需要临时替换 send_reply 或直接处理
+        import importlib
+        import scripts.feishu_sdk_client as sdk_module
+
+        # 临时注入我们的 send_reply
+        original_send_reply = getattr(sdk_module, 'send_reply', None)
+        sdk_module.send_reply = lambda target, msg: send_reply(reply_target, msg)
+
+        try:
+            _orig_share(open_id, text=text, reply_target=reply_target)
+        finally:
+            # 恢复原始 send_reply
+            if original_send_reply:
+                sdk_module.send_reply = original_send_reply
+            else:
+                delattr(sdk_module, 'send_reply')
+
+    except ImportError:
+        # feishu_sdk_client 不可用时，使用简化版 URL 处理
+        _handle_url_share_simple(text, open_id, reply_target, send_reply)
+    except Exception as e:
+        send_reply(reply_target, f"🔗 检测到链接，但分享处理失败: {str(e)[:50]}")
+
+
+def _handle_url_share_simple(text: str, open_id: str, reply_target: str, send_reply: Callable):
+    """简化版 URL 分享处理（当 feishu_sdk_client 不可用时）"""
+    import re
+    from pathlib import Path
+
+    url_match = re.search(r'https?://[^\s]+', text)
+    if not url_match:
+        send_reply(reply_target, "🔗 未检测到有效链接")
+        return
+
+    url = url_match.group(0)
+    send_reply(reply_target, f"🔗 检测到链接：{url[:50]}...\n正在处理...")
+
+    try:
+        from src.utils.model_gateway import get_model_gateway
+        gw = get_model_gateway()
+
+        # 尝试抓取 URL 内容
+        result = gw.call("doubao_seed_pro",
+            f"搜索并总结这个链接的内容：{url}",
+            task_type="url_share")
+
+        if result.get("success"):
+            summary = result["response"][:500]
+
+            # 入库
+            from src.tools.knowledge_base import add_knowledge
+            add_knowledge(
+                title=f"分享链接: {url[:30]}",
+                domain="lessons",
+                content=summary,
+                tags=["url_share", "user_share"],
+                source=f"url_share:{url}",
+                confidence="low"
+            )
+            send_reply(reply_target, f"✅ 链接内容已入库")
+        else:
+            send_reply(reply_target, "⚠️ 链接处理失败，请稍后重试")
+    except Exception as e:
+        send_reply(reply_target, f"⚠️ 链接处理异常: {str(e)[:50]}")
 
 
 def _handle_article_import(text: str, open_id: str, reply_target: str, send_reply: Callable):
