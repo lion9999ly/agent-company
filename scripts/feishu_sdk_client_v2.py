@@ -1,7 +1,7 @@
 """
 @description: 飞书长连接客户端 v2 - 模块化重构版
 @dependencies: lark-oapi, scripts/feishu_handlers/*, scripts/agent
-@last_modified: 2026-04-08
+@last_modified: 2026-04-10
 
 使用方法：
     python scripts/feishu_sdk_client_v2.py
@@ -9,6 +9,7 @@
 v2.1 更新：
     - 集成 agent.py (飞书消息 → 快速通道 / Claude Code CLI)
     - 保留旧路由器作为降级方案
+    - #7 修复: 强制 UTF-8 编码解决 Windows GBK 问题
 """
 import os
 import sys
@@ -17,6 +18,10 @@ import threading
 import time
 from pathlib import Path
 from datetime import datetime
+
+# #7 修复: 强制 UTF-8 编码，从根源解决 Windows GBK 问题
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
 # 项目根目录
 PROJECT_ROOT = Path(__file__).resolve().parent.parent

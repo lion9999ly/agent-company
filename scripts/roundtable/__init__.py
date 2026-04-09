@@ -105,37 +105,46 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
     except Exception as e:
         print(f"[Roundtable] 审查闭环异常: {type(e).__name__}: {e}")
         verify_summary = f"审查异常中断: {e}"
-        await _notify(f"⚠️ 审查闭环异常: {type(e).__name__}，跳过审查继续输出")
+        await _notify(f"审查闭环异常: {type(e).__name__}，跳过审查继续输出")
 
-    # 5. 输出（P1 #3: 添加时间戳）
+    # 5. 输出（P1 #3: 添加时间戳）# P0 修复: 加 try-except 保护
     from datetime import datetime
     import shutil
+    actual_output_path = str(Path(task.output_path).parent / f"{Path(task.output_path).stem}_latest{Path(task.output_path).suffix}")
 
-    output_dir = Path(task.output_path).parent
-    output_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        output_dir = Path(task.output_path).parent
+        output_dir.mkdir(parents=True, exist_ok=True)
 
-    # 生成带时间戳的文件名
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    base_name = Path(task.output_path).stem
-    ext = Path(task.output_path).suffix
-    timestamped_path = output_dir / f"{base_name}_{timestamp}{ext}"
+        # 生成带时间戳的文件名
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        base_name = Path(task.output_path).stem
+        ext = Path(task.output_path).suffix
+        timestamped_path = output_dir / f"{base_name}_{timestamp}{ext}"
 
-    # 写入带时间戳的文件
-    timestamped_path.write_text(output, encoding="utf-8")
-    print(f"[Roundtable] 输出文件: {timestamped_path}")
+        # 写入带时间戳的文件
+        timestamped_path.write_text(output, encoding="utf-8")
+        print(f"[Roundtable] 输出文件: {timestamped_path}")
 
-    # 同时创建 latest 版本（复制）
-    latest_path = output_dir / f"{base_name}_latest{ext}"
-    shutil.copy2(timestamped_path, latest_path)
-    print(f"[Roundtable] Latest 版本: {latest_path}")
+        # 同时创建 latest 版本（复制）
+        latest_path = output_dir / f"{base_name}_latest{ext}"
+        shutil.copy2(timestamped_path, latest_path)
+        print(f"[Roundtable] Latest 版本: {latest_path}")
 
-    # 更新返回路径为带时间戳版本
-    actual_output_path = str(timestamped_path)
+        # 更新返回路径为带时间戳版本
+        actual_output_path = str(timestamped_path)
+    except Exception as e:
+        print(f"[Roundtable] 步骤5输出异常: {type(e).__name__}: {e}")
+        await _notify(f"输出文件异常: {type(e).__name__}，使用默认路径")
 
-    # 6. 知识回写
-    await crystallizer.crystallize_learnings(task, result)
+    # 6. 知识回写 # P0 修复: 加 try-except 保护
+    try:
+        await crystallizer.crystallize_learnings(task, result)
+    except Exception as e:
+        print(f"[Roundtable] 步骤6知识回写异常: {type(e).__name__}: {e}")
+        await _notify(f"知识回写异常: {type(e).__name__}，跳过继续执行")
 
-    await _notify(f"🎯 任务完成：{actual_output_path}")
+    await _notify(f"任务完成：{actual_output_path}")
 
     # 7. 生成飞书云文档（P0 #1 修复 - 第二轮）
     print("[云文档] 开始生成")
