@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] OLED微显示面板",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"OLED 微显示面板供应商交期和 MOQ（Sony ECX 系列 vs 京东方）\",\n  \"product\": \"OLED微显示面板\",\n  \"key_specs\": [\n    {\n      \"name\": \"Sony ECX系列 - 原厂直签标准批量订单 MOQ\",\n      \"value\": \"通用消费级型号1000-3000片/款；工业宽温/定制化型号5000片/款起\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - 原厂直签标准批量订单 交期\",\n      \"value\": \"标准品12-16周；定制参数款20-24周\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - 分销商小批量试产 MOQ\",\n      \"value\": \"10-50片/款\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - 分销商小批量试产 交期\",\n      \"value\": \"现货渠道1-3周，调货渠道4-8周\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - 头部核心客户 MOQ\",\n      \"value\": \"可协商低至500片/款\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - 头部核心客户 交期\",\n      \"value\": \"优先排产，可压缩至8-10周\",\n      ",
+  "source": "auto_learn",
+  "created_at": "2026-04-09",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

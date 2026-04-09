@@ -1,3 +1,6 @@
+# Day 17 系统全量审计 - 文件 2: agent.py
+
+```python
 """
 @description: 飞书 Bot Agent - 飞书消息 → Claude Code CLI 架构
 @dependencies: lark-cli, subprocess, feishu_sdk_client_v2 (WebSocket)
@@ -65,23 +68,56 @@ from scripts.feishu_output import LARK_CLI
 # ============================================================
 
 def handle_status(chat_id: str):
-    """状态指令快速通道 - 共享 text_router 实现"""
+    """状态指令快速通道"""
     from scripts.feishu_handlers.text_router import _handle_dashboard
+    from scripts.feishu_output import update_doc
+    import subprocess
 
-    def fake_send_reply(target, msg):
-        cli_send_message(msg, chat_id)
+    status_path = PROJECT_ROOT / ".ai-state" / "system_status.md"
+    if status_path.exists():
+        content = status_path.read_text(encoding="utf-8")
+        if content.startswith("---"):
+            parts = content.split("---", 2)
+            if len(parts) >= 3:
+                content = parts[2].strip()
+        doc_url = update_doc("系统状态", content)
+        if doc_url:
+            cli_send_message(f"📊 系统状态已更新\n🔗 {doc_url}", chat_id)
+            return
 
-    _handle_dashboard(chat_id, fake_send_reply)
+    # 回退
+    cli_send_message("📊 系统状态文件不存在，请运行 auto_restart_and_verify.py", chat_id)
 
 
 def handle_monitor_scope(chat_id: str):
-    """监控范围快速通道 - 共享 text_router 实现"""
-    from scripts.feishu_handlers.text_router import _handle_monitor_scope
-
-    def fake_send_reply(target, msg):
-        cli_send_message(msg, chat_id)
-
-    _handle_monitor_scope(chat_id, fake_send_reply)
+    """监控范围快速通道"""
+    # 修复：读取正确的文件名
+    scope_path = PROJECT_ROOT / ".ai-state" / "competitor_monitor_config.json"
+    if scope_path.exists():
+        try:
+            scope = json.loads(scope_path.read_text(encoding="utf-8"))
+            layers = scope.get("monitor_layers", {})
+            msg = f"📡 监控范围（6 层）\n\n"
+            for layer_key, layer_info in layers.items():
+                desc = layer_info.get("description", layer_key)
+                msg += f"【{desc}】\n"
+                # 品牌或主题
+                if "brands" in layer_info:
+                    brands = layer_info["brands"]
+                    msg += f"  品牌: {', '.join(brands[:5])}" + ("..." if len(brands) > 5 else "") + "\n"
+                if "topics" in layer_info:
+                    topics = layer_info["topics"]
+                    msg += f"  主题: {', '.join(topics[:5])}" + ("..." if len(topics) > 5 else "") + "\n"
+                # 搜索关键词（取前2个）
+                keywords = layer_info.get("search_keywords", [])[:2]
+                if keywords:
+                    msg += f"  关键词: {'; '.join(keywords)}\n"
+                msg += "\n"
+            cli_send_message(msg, chat_id)
+        except Exception as e:
+            cli_send_message(f"⚠️ 监控范围解析失败: {e}", chat_id)
+    else:
+        cli_send_message("⚠️ monitor_scope.json 不存在", chat_id)
 
 
 def handle_help(chat_id: str):
@@ -109,13 +145,36 @@ def handle_help(chat_id: str):
 
 
 def handle_self_verify(chat_id: str):
-    """自检快速通道 - 共享 text_router 实现"""
-    from scripts.feishu_handlers.text_router import _handle_self_verify
+    """自检快速通道"""
+    cli_send_message("🔍 开始系统自检...", chat_id)
 
-    def fake_send_reply(target, msg):
-        cli_send_message(msg, chat_id)
+    def _run():
+        import subprocess
+        result = subprocess.run(
+            [sys.executable, str(PROJECT_ROOT / "scripts" / "auto_restart_and_verify.py"),
+             "--verify-only", "--no-push"],
+            cwd=str(PROJECT_ROOT), capture_output=True, text=True, timeout=60,
+            encoding='utf-8', errors='ignore'
+        )
+        # 读取报告
+        report_path = PROJECT_ROOT / ".ai-state" / "verify_report.md"
+        if report_path.exists():
+            report = report_path.read_text(encoding="utf-8")
+            passed = report.split("**通过率**: ")
+            if len(passed) > 1:
+                rate = passed[1].split("\n")[0]
+            else:
+                rate = "N/A"
+            from scripts.feishu_output import update_doc
+            doc_url = update_doc("验证报告", report)
+            if doc_url:
+                cli_send_message(f"🔍 自检完成：{rate}\n📄 详情：{doc_url}", chat_id)
+            else:
+                cli_send_message(f"🔍 自检完成：{rate}", chat_id)
+        else:
+            cli_send_message(f"⚠️ 自检失败: {result.stderr[:200] if result.stderr else 'unknown'}", chat_id)
 
-    _handle_self_verify(chat_id, fake_send_reply)
+    threading.Thread(target=_run, daemon=True).start()
 
 
 def handle_roundtable(text: str, chat_id: str):
@@ -302,8 +361,6 @@ def build_prompt(message_text: str, chat_id: str, open_id: str) -> str:
 
 def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
     """通过 Claude Code CLI 处理自然语言"""
-    import tempfile
-
     # DEBUG: 打印收到的参数
     print(f"[Agent-Debug] 收到文本: '{message_text[:100]}...' (len={len(message_text)})")
     print(f"[Agent-Debug] chat_id: {chat_id}, open_id: {open_id}")
@@ -318,21 +375,16 @@ def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
     claude_cmd = str(CLAUDE_CLI_PATH) if CLAUDE_CLI_PATH.exists() else "claude"
     print(f"[Agent-Debug] claude_cmd: {claude_cmd}")
 
-    # 写入临时文件传递 prompt（避免 Windows 命令行截断）
-    temp_file = None
     try:
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False, encoding='utf-8')
-        temp_file.write(prompt)
-        temp_file.close()
-
         result = subprocess.run(
-            [claude_cmd, "-p", temp_file.name],
+            [claude_cmd, "-p", prompt],
             cwd=str(PROJECT_ROOT),
             capture_output=True,
             text=True,
             timeout=120,  # 2分钟超时
             encoding='utf-8', errors='ignore',
-            env=clean_env  # 不使用 shell=True
+            env=clean_env,  # 使用干净的环境变量
+            shell=True  # Windows 需要 shell=True 找到 .cmd 文件
         )
 
         if result.returncode == 0 and result.stdout.strip():
@@ -351,13 +403,6 @@ def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
         cli_send_message("⚠️ Claude Code CLI 未安装，请安装后使用", chat_id)
     except Exception as e:
         cli_send_message(f"⚠️ 处理异常：{str(e)[:100]}", chat_id)
-    finally:
-        # 清理临时文件
-        if temp_file and os.path.exists(temp_file.name):
-            try:
-                os.unlink(temp_file.name)
-            except:
-                pass
 
 
 # ============================================================
@@ -461,3 +506,4 @@ if __name__ == "__main__":
         # WebSocket 模式需要 feishu_sdk_client_v2.py 调用
         print("[Agent] WebSocket 模式需通过 feishu_sdk_client_v2.py 启动")
         print("使用 --standalone 参数运行轮询模式")
+```
