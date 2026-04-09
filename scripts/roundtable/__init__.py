@@ -64,34 +64,6 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
     rt = Roundtable(gw, feishu)
     task = await rt.pre_check_task_spec(task, context)
 
-    # #2 TaskSpec 有问题时等待用户确认
-    if hasattr(task, '_review_issues') and task._review_issues:
-        # 写等待文件
-        topic_hash = hashlib.md5(task.topic.encode()).hexdigest()[:8]
-        waiting_file = Path(".ai-state") / f"taskspec_waiting_{topic_hash}.txt"
-        waiting_file.write_text(json.dumps(task._review_issues, ensure_ascii=False), encoding="utf-8")
-
-        await _notify(f"⚠️ TaskSpec 审查发现问题，请在飞书回复「确认」继续或「跳过」跳过审查")
-
-        # 轮询等待确认文件（超时 5 分钟）
-        confirm_file = Path(".ai-state") / f"taskspec_confirm_{topic_hash}.txt"
-        timeout = 300  # 5 分钟
-        start = time.time()
-        while time.time() - start < timeout:
-            if confirm_file.exists():
-                action = confirm_file.read_text(encoding="utf-8").strip()
-                confirm_file.unlink()
-                print(f"[Roundtable] TaskSpec 用户确认: {action}")
-                await _notify(f"✅ 收到「{action}」，继续执行")
-                break
-            await asyncio.sleep(2)
-        else:
-            # 超时自动跳过
-            if waiting_file.exists():
-                waiting_file.unlink()
-            print(f"[Roundtable] TaskSpec 确认超时，自动跳过")
-            await _notify(f"⏰ TaskSpec 确认超时（5分钟），自动继续")
-
     # 2. 圆桌讨论
     result = await rt.discuss(task, context)
     await _notify(f"🔵 圆桌收敛，共 {result.rounds} 轮")

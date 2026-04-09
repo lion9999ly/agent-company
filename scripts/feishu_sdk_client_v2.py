@@ -92,6 +92,16 @@ def handle_message(event):
                 print(f"[Skip] 来自当前 bot 的消息 (app_id: {sender_app_id[:10]}...)")
                 return
 
+        # 过滤系统通知消息（圆桌/agent 自己发的通知不应该被再次处理）
+        SYSTEM_PREFIXES = ['🔵', '📚', '⚠️', '🔄', '✅', '🎯', '📄', '📋', '✨', '⏰',
+                           '**roundtable_runs', '**命令分析', '[云文档]', '[Generator]', '[Verifier]']
+        if msg_type == "text":
+            text_preview = json.loads(message.content).get("text", "")[:20] if message.content else ""
+            for prefix in SYSTEM_PREFIXES:
+                if text_preview.startswith(prefix):
+                    print(f"[Skip] 系统通知消息: {text_preview[:30]}...")
+                    return
+
         open_id = sender.sender_id.open_id if sender.sender_id else ""
         content = json.loads(message.content) if message.content else {}
 
