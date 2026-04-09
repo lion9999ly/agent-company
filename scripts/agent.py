@@ -218,7 +218,35 @@ FAST_COMMANDS = {
     "自学习": handle_auto_learn,
     "KB治理": handle_kb_govern,
     "日志": lambda chat_id: handle_logs("日志", chat_id),
+    "确认": lambda chat_id: _handle_taskspec_confirm("确认", chat_id),
+    "跳过": lambda chat_id: _handle_taskspec_confirm("跳过", chat_id),
 }
+
+
+def _handle_taskspec_confirm(action: str, chat_id: str):
+    """#2 修复: 处理 TaskSpec 确认/跳过回复"""
+    import glob
+
+    # 查找等待确认的文件
+    waiting_files = list(PROJECT_ROOT.glob(".ai-state/taskspec_waiting_*.txt"))
+
+    if not waiting_files:
+        cli_send_message("⚠️ 当前没有等待确认的 TaskSpec", chat_id)
+        return
+
+    # 取最新的等待文件
+    waiting_file = max(waiting_files, key=lambda f: f.stat().st_mtime)
+    topic = waiting_file.name.replace("taskspec_waiting_", "").replace(".txt", "")
+
+    # 写入确认文件
+    confirm_file = PROJECT_ROOT / ".ai-state" / f"taskspec_confirm_{topic}.txt"
+    confirm_file.write_text(action, encoding="utf-8")
+
+    # 删除等待文件
+    waiting_file.unlink()
+
+    cli_send_message(f"✅ 已收到「{action}」，TaskSpec ({topic[:20]}) 处理中...", chat_id)
+    print(f"[Agent] TaskSpec {action}: {topic}")
 
 FAST_PREFIXES = {
     "圆桌:": handle_roundtable,

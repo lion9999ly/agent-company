@@ -77,9 +77,19 @@ def handle_message(event):
 
         # 过滤机器人自己的消息
         sender_type = getattr(sender, 'sender_type', '')
+        print(f"  sender_type={sender_type}")  # #2 诊断日志
+
         if sender_type == 'app':
             print("[Skip] 机器人自己的消息")
             return
+
+        # #2 额外过滤：检查 sender 的 app_id 是否与当前 bot 相同
+        sender_id = getattr(sender, 'sender_id', None)
+        if sender_id:
+            sender_app_id = getattr(sender_id, 'app_id', '')
+            if sender_app_id and sender_app_id == APP_ID:
+                print(f"[Skip] 来自当前 bot 的消息 (app_id: {sender_app_id[:10]}...)")
+                return
 
         open_id = sender.sender_id.open_id if sender.sender_id else ""
         content = json.loads(message.content) if message.content else {}

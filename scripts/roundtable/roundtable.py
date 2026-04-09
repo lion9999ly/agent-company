@@ -146,8 +146,16 @@ class Roundtable:
                 from pathlib import Path
                 import time
 
+                safe_topic = "".join(c for c in task.topic[:20] if c.isalnum() or c in "_-").strip()
+
+                # 创建等待文件（让 agent.py 知道有 TaskSpec 在等待确认）
+                waiting_file = Path(".ai-state") / f"taskspec_waiting_{safe_topic}.txt"
+                waiting_file.parent.mkdir(parents=True, exist_ok=True)
+                waiting_file.write_text(str(time.time()), encoding="utf-8")
+                print(f"[Roundtable] 等待文件已创建: {waiting_file}")
+
                 # 创建确认文件路径
-                confirm_file = Path(".ai-state") / f"taskspec_confirm_{task.topic[:20]}.txt"
+                confirm_file = Path(".ai-state") / f"taskspec_confirm_{safe_topic}.txt"
 
                 # 发送通知，告知用户确认方式
                 self.feishu.notify(
@@ -156,7 +164,9 @@ class Roundtable:
                     f"5分钟无响应将自动跳过。"
                 )
 
-                # 等待用户确认（轮询飞书消息或确认文件）
+                print(f"[Roundtable] TaskSpec 等待确认中... (超时 300s)")
+
+                # 等待用户确认（轮询确认文件）
                 start_time = time.time()
                 timeout = 300  # 5分钟超时
                 confirmed = False
@@ -164,21 +174,24 @@ class Roundtable:
                 while time.time() - start_time < timeout:
                     await asyncio.sleep(10)  # 每10秒检查一次
 
-                    # 方式1: 检查确认文件
+                    # 检查确认文件
                     if confirm_file.exists():
                         content = confirm_file.read_text(encoding="utf-8").strip()
                         if content == "确认":
                             confirmed = True
                             confirm_file.unlink()
+                            waiting_file.unlink()  # 删除等待文件
                             print(f"[Roundtable] TaskSpec 已人工确认")
                             break
                         elif content == "跳过":
                             confirm_file.unlink()
+                            waiting_file.unlink()  # 删除等待文件
                             print(f"[Roundtable] TaskSpec 问题已跳过")
                             break
 
                 if not confirmed:
                     # 超时自动跳过
+                    waiting_file.unlink()  # 删除等待文件
                     print(f"[Roundtable] TaskSpec 审查超时，自动跳过")
                     self._log_phase("pre_check", "timeout", "TaskSpec 审查超时，自动跳过")
 

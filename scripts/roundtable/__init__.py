@@ -120,10 +120,12 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
 
     await _notify(f"🎯 任务完成：{actual_output_path}")
 
-    # 7. 生成飞书云文档（P0 #1 修复）
+    # 7. 生成飞书云文档（P0 #1 修复 - 第二轮）
+    print("[云文档] 开始生成")
     doc_url = None
     try:
         from scripts.feishu_output import update_doc
+        print(f"[云文档] update_doc 已导入，准备调用")
         # 组装云文档内容
         doc_content = f"""# {task.topic}
 
@@ -142,14 +144,99 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
 ---
 *由圆桌系统自动生成*
 """
+        print(f"[云文档] 内容长度: {len(doc_content)} 字符")
         doc_url = update_doc(f"圆桌: {task.topic}", doc_content)
+        print(f"[云文档] update_doc 返回: {doc_url}")
         if doc_url:
-            print(f"[Roundtable] 云文档生成成功: {doc_url}")
+            print(f"[云文档] 生成成功: {doc_url}")
             await _notify(f"📄 云文档: {doc_url}")
         else:
-            print(f"[Roundtable] 云文档生成失败: update_doc 返回空")
+            print(f"[云文档] 生成失败: update_doc 返回空")
+    except ImportError as e:
+        print(f"[云文档] 导入失败: {e}")
     except Exception as e:
-        print(f"[Roundtable] 云文档生成异常: {e}")
+        print(f"[云文档] 生成异常: {type(e).__name__}: {e}")
+
+    # #9: 自动创建 GitHub Issue 并更新 inbox
+    issue_url = None
+    try:
+        import subprocess
+        from datetime import datetime
+
+        # 生成摘要内容
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+        passed_str = '通过' if verify_summary and '通过' in verify_summary else '待改进'
+        issue_body = f"""## 圆桌结果
+
+- **议题**: {task.topic}
+- **结果**: {passed_str}
+- **迭代轮数**: {result.rounds}
+- **执行摘要**:
+{result.executive_summary[:500]}
+
+## 产出文件
+- `{actual_output_path}`
+
+---
+*由圆桌系统自动生成*
+"""
+        issue_title = f"[圆桌] {task.topic[:30]} - {datetime.now().strftime('%Y-%m-%d')}"
+
+        # 使用 gh CLI 创建 Issue
+        result_gh = subprocess.run(
+            ["gh", "issue", "create",
+             "--title", issue_title,
+             "--body", issue_body,
+             "--label", "roundtable"],
+            cwd=str(PROJECT_ROOT),
+            capture_output=True, text=True, timeout=30
+        )
+
+        if result_gh.returncode == 0:
+            issue_url = result_gh.stdout.strip()
+            print(f"[Issue] 创建成功: {issue_url}")
+            await _notify(f"📋 GitHub Issue: {issue_url}")
+        else:
+            print(f"[Issue] 创建失败: {result_gh.stderr[:100]}")
+    except FileNotFoundError:
+        print("[Issue] gh CLI 未安装，跳过")
+    except Exception as e:
+        print(f"[Issue] 创建异常: {e}")
+
+    # 更新 claude_chat_inbox.md 并 push
+    try:
+        from pathlib import Path as PPath
+        inbox_path = PPath(".ai-state/claude_chat_inbox.md")
+        inbox_content = ""
+        if inbox_path.exists():
+            inbox_content = inbox_path.read_text(encoding="utf-8")
+
+        # 追加新摘要
+        new_entry = f"""
+---
+
+## [圆桌] {task.topic[:30]} - {datetime.now().strftime('%Y-%m-%d %H:%M')}
+
+- **结果**: {passed_str}
+- **关键数据**: 迭代 {result.rounds} 轮
+- **产出文件**: `{actual_output_path}`
+"""
+        if issue_url:
+            new_entry += f"- **GitHub Issue**: {issue_url}\n"
+
+        inbox_path.write_text(inbox_content + new_entry, encoding="utf-8")
+        print(f"[Inbox] 已更新")
+
+        # git add + commit + push
+        subprocess.run(["git", "add", str(inbox_path)], cwd=str(PROJECT_ROOT), capture_output=True)
+        subprocess.run(["git", "commit", "-m", f"docs: 圆桌完成 - {task.topic[:20]}"], cwd=str(PROJECT_ROOT), capture_output=True)
+        push_result = subprocess.run(["git", "push", "origin", "main"], cwd=str(PROJECT_ROOT), capture_output=True, text=True)
+        if push_result.returncode == 0:
+            print(f"[Inbox] 已推送到 GitHub")
+        else:
+            print(f"[Inbox] 推送失败: {push_result.stderr[:100]}")
+    except Exception as e:
+        print(f"[Inbox] 更新异常: {e}")
 
     # 返回完整结果（供飞书输出使用）
     return {
