@@ -302,7 +302,6 @@ def build_prompt(message_text: str, chat_id: str, open_id: str) -> str:
 
 def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
     """通过 Claude Code CLI 处理自然语言"""
-    import tempfile
 
     # DEBUG: 打印收到的参数
     print(f"[Agent-Debug] 收到文本: '{message_text[:100]}...' (len={len(message_text)})")
@@ -319,11 +318,12 @@ def handle_with_claude_code(message_text: str, chat_id: str, open_id: str):
     claude_cmd = str(CLAUDE_CLI_PATH) if CLAUDE_CLI_PATH.exists() else "claude"
     print(f"[Agent-Debug] claude_cmd: {claude_cmd}")
 
-    # 使用 stdin 模式传递 prompt（避免 -p 参数被误解析）
+    # 使用 stdin + -p 模式传递 prompt
+    # 注意：必须同时使用 -p 和 stdin，否则会进入交互模式
     try:
-        print(f"[Agent-Debug] CLI 命令: {claude_cmd} (stdin mode)")
+        print(f"[Agent-Debug] CLI 命令: {claude_cmd} -p (stdin mode)")
         result = subprocess.run(
-            [claude_cmd],
+            [claude_cmd, "-p"],  # -p 必须，否则进入交互模式
             input=prompt,  # 通过 stdin 传递
             cwd=str(PROJECT_ROOT),
             capture_output=True,
