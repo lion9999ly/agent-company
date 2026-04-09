@@ -1,12 +1,20 @@
 {
   "title": "[AutoLearn] Cardo DMC",
   "domain": "components",
-  "content": "{\n  \"topic\": \"Cardo DMC 授权费用和技术限制\",\n  \"product\": \"Cardo DMC\",\n  \"key_specs\": [\n    {\n      \"name\": \"支持芯片方案\",\n      \"value\": \"Nordic nRF52系列、nRF53系列指定型号\",\n      \"source\": \"技术及商务限制 - 硬件适配限制\"\n    },\n    {\n      \"name\": \"射频参数认证\",\n      \"value\": \"必须通过Cardo官方实验室认证\",\n      \"source\": \"技术及商务限制 - 硬件适配限制\"\n    },\n    {\n      \"name\": \"DMC连续对讲模式续航要求\",\n      \"value\": \"不低于6小时\",\n      \"source\": \"技术及商务限制 - 硬件适配限制\"\n    },\n    {\n      \"name\": \"DMC组网规模（普通授权）\",\n      \"value\": \"最多8人同时对讲\",\n      \"source\": \"技术及商务限制 - 功能权限限制\"\n    },\n    {\n      \"name\": \"DMC单跳通信距离（普通授权）\",\n      \"value\": \"≤1km\",\n      \"source\": \"技术及商务限制 - 功能权限限制\"\n    },\n    {\n      \"name\": \"DMC组网规模（旗舰级授权）\",\n      \"value\": \"15人组网\",\n      \"source\": \"技术及商务限制 - 功能权限限制\"\n    },\n    {\n      \"name\": \"DMC通信距离（旗舰级授权）\",\n      \"value\": \"2公里多跳中继\",\n      \"source\":",
+  "content": "{\n  \"topic\": \"Cardo Packtalk app interface screenshot 2026\",\n  \"product\": \"Cardo Packtalk app\",\n  \"key_specs\": [\n    {\n      \"name\": \"动态首页界面类型\",\n      \"value\": \"3D骑行场景实时渲染界面\",\n      \"source\": \"行业预测\"\n    },\n    {\n      \"name\": \"动态首页同步骑行数据类型数量\",\n      \"value\": \"12类\",\n      \"source\": \"行业预测\"\n    },\n    {\n      \"name\": \"动态首页数据刷新延迟\",\n      \"value\": \"≤80ms\",\n      \"source\": \"行业预测\"\n    },\n    {\n      \"name\": \"对讲设置页AI降噪场景识别种类\",\n      \"value\": \"17种\",\n      \"source\": \"行业预测\"\n    },\n    {\n      \"name\": \"对讲设置页背景噪音抑制率\",\n      \"value\": \"最高达92%\",\n      \"source\": \"行业预测\"\n    },\n    {\n      \"name\": \"对讲设置页DMC群组最大人数\",\n      \"value\": \"64人\",\n      \"source\": \"行业预测\"\n    },\n    {\n      \"name\": \"对讲设置页群组设置效率提升\",\n      \"value\": \"60% (较2024款)\",\n      \"source\": \"行业预测\"\n    },\n    {\n      \"name\": \"音效设置页JBL音效预设种类\",\n      \"v",
   "source": "auto_learn",
-  "created_at": "2026-04-07",
+  "created_at": "2026-04-08",
   "tags": [
-    "auto_learn",
-    "decision_blocking"
+    "research_pool",
+    "decision_blocking",
+    "auto_learn"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "_history": [
+    {
+      "content": "{\n  \"topic\": \"Cardo DMC 授权费用和技术限制\",\n  \"product\": \"Cardo DMC\",\n  \"key_specs\": [\n    {\n      \"name\": \"支持芯片方案\",\n      \"value\": \"Nordic nRF52系列、nRF53系列指定型号\",\n      \"source\": \"技术及商务限制 - 硬件适配限制\"\n    },\n    {\n      \"name\": \"射频参数认证\",\n      \"value\": \"必须通过Cardo官方实验室认证\",\n      \"source\": \"技术及商务限制 - 硬件适配限制\"\n    },\n    {\n      \"name\": \"DMC连续对讲模式续航要求\",\n      \"value\": \"不低于6小时\",\n      \"source\": \"技术及商务限制 - 硬件适配限制\"\n    },\n    {\n      \"name\": \"DMC组网规模（普通授权）\",\n      \"value\": \"最多8人同时对讲\",\n      \"source\": \"技术及商务限制 - 功能权限限制\"\n    },\n    {\n      \"name\": \"DMC单跳通信距离（普通授权）\",\n      \"value\": \"≤1km\",\n      \"source\": \"技术及商务限制 - 功能权限限制\"\n    },\n    {\n      \"name\": \"DMC组网规模（旗舰级授权）\",\n      \"value\": \"15人组网\",\n      \"source\": \"技术及商务限制 - 功能权限限制\"\n    },\n    {\n      \"name\": \"DMC通信距离（旗舰级授权）\",\n      \"value\": \"2公里多跳中继\",\n      \"source\":",
+      "date": "2026-04-07",
+      "confidence": "medium"
+    }
+  ]
 }

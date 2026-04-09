@@ -7,96 +7,116 @@
       "--color-info": "#00BFFF",
       "--color-inactive": "#666666",
       "--color-bg": "#000000",
-      "--color-primary-monochrome": "#00FF41"
+      "--color-monochrome-green": "#00FF41"
     },
     "fonts": {
       "--font-family-primary": "'Roboto Mono', monospace",
-      "--font-size-base": "24px",
-      "--font-size-lg": "calc(var(--font-size-base) * 1.5)",
-      "--font-size-md": "var(--font-size-base)",
-      "--font-size-sm": "calc(var(--font-size-base) * 0.75)",
+      "--font-size-base": "16px",
+      "--font-size-small": "0.75em",
+      "--font-size-medium": "1em",
+      "--font-size-large": "1.5em",
+      "--font-size-huge": "2.5em",
       "--font-weight-normal": "400",
       "--font-weight-bold": "700"
     },
     "sizes": {
       "--spacing-unit": "8px",
-      "--padding-sm": "var(--spacing-unit)",
-      "--padding-md": "calc(var(--spacing-unit) * 2)",
-      "--padding-lg": "calc(var(--spacing-unit) * 3)",
-      "--icon-size-sm": "24px",
-      "--icon-size-md": "32px",
-      "--icon-size-lg": "48px",
-      "--border-radius-sm": "4px"
+      "--icon-size-small": "16px",
+      "--icon-size-medium": "24px",
+      "--icon-size-large": "32px",
+      "--border-radius-small": "4px",
+      "--border-radius-medium": "8px"
     }
   },
   "animation_timing": {
-    "state_transition": {
-      "duration_ms": 300,
+    "fade_in_out": {
+      "duration": "0.3s",
       "easing": "ease-in-out"
     },
-    "element_fade": {
-      "duration_ms": 200,
-      "easing": "ease-out"
+    "state_transition": {
+      "duration": "0.4s",
+      "easing": "ease-in-out"
     },
-    "data_update_transition": {
-      "duration_ms": 150,
-      "easing": "ease-out"
+    "warning_flash": {
+      "duration": "0.5s",
+      "easing": "linear",
+      "iterations": "infinite"
     },
-    "warning_flash_cycle": {
-      "duration_ms": 1000,
-      "on_phase_ms": 500,
-      "off_phase_ms": 500,
-      "easing": "steps(1)"
+    "icon_pulse": {
+      "duration": "1s",
+      "easing": "ease-in-out",
+      "iterations": "infinite"
     }
   },
   "event_handlers": {
-    "KEY_ACCEPT_CALL": "接听来电",
-    "KEY_REJECT_CALL": "拒接来电",
-    "KEY_MUSIC_PLAY_PAUSE": "切换音乐播放/暂停",
-    "KEY_MUSIC_NEXT": "下一曲",
-    "KEY_MUSIC_PREV": "上一曲",
-    "KEY_RECORDING_TOGGLE": "切换录制状态",
-    "KEY_GROUP_VOICE_TOGGLE": "切换组队语音对讲",
-    "KEY_NAV_MUTE_TOGGLE": "切换导航语音播报",
-    "KEY_MENU_TOGGLE": "切换主菜单显示"
+    "keyboard_mapping": {
+      "call_accept": "Enter",
+      "call_reject": "Escape",
+      "music_play_pause": "Space",
+      "music_next": "ArrowRight",
+      "music_prev": "ArrowLeft",
+      "menu_up": "ArrowUp",
+      "menu_down": "ArrowDown",
+      "menu_select": "Enter",
+      "menu_back": "Escape"
+    },
+    "voice_commands": {
+      "accept_call": "接听",
+      "reject_call": "拒接",
+      "play_music": "播放音乐",
+      "pause_music": "暂停音乐",
+      "next_song": "下一首",
+      "previous_song": "上一首",
+      "mute_navigation": "静音导航",
+      "unmute_navigation": "开启导航语音"
+    }
   },
-  "speed_tier_rules": [
-    {
-      "tier": "S0",
+  "speed_tier_rules": {
+    "S0": {
       "range": "0",
       "max_elements": 6,
       "label": "静止"
     },
-    {
-      "tier": "S1",
+    "S1": {
       "range": "1-30",
       "max_elements": 4,
       "label": "低速"
     },
-    {
-      "tier": "S2",
+    "S2": {
       "range": "31-80",
       "max_elements": 3,
       "label": "中速"
     },
-    {
-      "tier": "S3",
+    "S3": {
       "range": "81+",
       "max_elements": 2,
       "label": "高速"
     }
-  ],
+  },
   "warning_flash": {
-    "timing": {
-      "duration_ms": 500,
-      "interval_ms": 1000,
-      "easing": "steps(1)"
-    },
-    "colors": {
-      "active_color": "var(--color-danger)",
-      "inactive_color": "transparent"
-    },
-    "regions_map": {
+    "animation_name": "hud-warning-flash",
+    "duration": "0.5s",
+    "iterations": "infinite",
+    "easing": "linear",
+    "keyframes": [
+      {
+        "offset": 0,
+        "background_color": "var(--color-danger)",
+        "color": "var(--color-bg)"
+      },
+      {
+        "offset": 0.5,
+        "background_color": "var(--color-bg)",
+        "color": "var(--color-danger)"
+      },
+      {
+        "offset": 1,
+        "background_color": "var(--color-danger)",
+        "color": "var(--color-bg)"
+      }
+    ],
+    "apply_to_regions_on_warning": true,
+    "direction_mapping": {
       "front_left": [
         "LT"
       ],

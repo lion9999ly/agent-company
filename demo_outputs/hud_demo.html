@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HUD Demo</title>
   <style>
-    /* CSS Variables */
     :root {
       --color-normal: #00FF41;
       --color-caution: #FFD700;
@@ -13,190 +12,1361 @@
       --color-info: #00BFFF;
       --color-inactive: #666666;
       --color-bg: #000000;
-      --color-primary-monochrome: #00FF41;
+      --color-monochrome-green: #00FF41;
 
       --font-family-primary: 'Roboto Mono', monospace;
-      --font-size-base: 24px;
-      --font-size-lg: calc(var(--font-size-base) * 1.5);
-      --font-size-md: var(--font-size-base);
-      --font-size-sm: calc(var(--font-size-base) * 0.75);
+      --font-size-base: 16px;
+      --font-size-small: 0.75em;
+      --font-size-medium: 1em;
+      --font-size-large: 1.5em;
+      --font-size-huge: 2.5em;
       --font-weight-normal: 400;
       --font-weight-bold: 700;
 
       --spacing-unit: 8px;
-      --padding-sm: var(--spacing-unit);
-      --padding-md: calc(var(--spacing-unit) * 2);
-      --padding-lg: calc(var(--spacing-unit) * 3);
-      --icon-size-sm: 24px;
-      --icon-size-md: 32px;
-      --icon-size-lg: 48px;
-      --border-radius-sm: 4px;
+      --icon-size-small: 16px;
+      --icon-size-medium: 24px;
+      --icon-size-large: 32px;
+      --border-radius-small: 4px;
+      --border-radius-medium: 8px;
+
+      --hud-color: var(--color-monochrome-green);
+      --panel-bg: rgba(0, 255, 65, 0.06);
+      --panel-border: rgba(0, 255, 65, 0.28);
+      --panel-glow: rgba(0, 255, 65, 0.18);
+      --muted: rgba(0, 255, 65, 0.6);
+      --timeline-h: 92px;
+      --topbar-h: 54px;
+      --drawer-w: 320px;
     }
 
-    /* Global Styles */
-    body {
+    * { box-sizing: border-box; }
+
+    html, body {
       margin: 0;
-      padding: 0;
-      background-color: var(--color-bg);
-      color: var(--color-normal);
+      width: 100%;
+      height: 100%;
+      background: var(--color-bg);
+      color: var(--hud-color);
       font-family: var(--font-family-primary);
-      font-size: var(--font-size-md);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at center, rgba(0,255,65,0.05), transparent 38%),
+        radial-gradient(circle at center, rgba(0,255,65,0.03), transparent 60%),
+        linear-gradient(to bottom, rgba(255,255,255,0.02), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    .app {
+      position: relative;
+      width: 100vw;
       height: 100vh;
+      background: #000;
+    }
+
+    .topbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--topbar-h);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 16px;
+      z-index: 20;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.75), rgba(0,0,0,0.15));
+    }
+
+    .ab-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      border: 1px solid var(--panel-border);
+      border-radius: 999px;
+      background: rgba(0,255,65,0.05);
+      box-shadow: 0 0 18px var(--panel-glow);
+    }
+
+    .ab-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font: inherit;
+      transition: all .25s ease;
+    }
+
+    .ab-btn.active {
+      color: #000;
+      background: var(--hud-color);
+      box-shadow: 0 0 12px var(--hud-color);
+    }
+
+    .top-meta {
+      position: absolute;
+      right: 16px;
+      top: 10px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .chip {
+      padding: 4px 8px;
+      border: 1px solid var(--panel-border);
+      border-radius: 999px;
+      background: rgba(0,255,65,0.04);
+    }
+
+    .hud-stage {
+      position: absolute;
+      inset: var(--topbar-h) 0 var(--timeline-h) 0;
       overflow: hidden;
     }
 
-    #hud {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: grid;
-      grid-template-areas:
-        "LT . RT"
-        ". . ."
-        "LB . RB";
-      grid-template-rows: 1fr 1fr 1fr;
-      grid-template-columns: 1fr 1fr 1fr;
+    .fov-frame {
+      position: absolute;
+      inset: 2.5% 3.5%;
+      border: 1px solid rgba(0,255,65,0.12);
+      border-radius: 18px;
+      pointer-events: none;
     }
 
-    .hud-section {
+    .fov-frame::before,
+    .fov-frame::after {
+      content: "";
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border: 1px solid rgba(0,255,65,0.18);
+    }
+
+    .fov-frame::before {
+      top: 12px;
+      left: 12px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .fov-frame::after {
+      right: 12px;
+      bottom: 12px;
+      border-left: none;
+      border-top: none;
+    }
+
+    .region {
+      position: absolute;
+      min-width: 220px;
+      max-width: 32vw;
+      min-height: 92px;
+      padding: 14px 16px;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--border-radius-medium);
+      background: var(--panel-bg);
+      box-shadow: 0 0 18px var(--panel-glow), inset 0 0 18px rgba(0,255,65,0.04);
+      backdrop-filter: blur(2px);
+      transition: all .4s ease-in-out, opacity .3s ease-in-out;
+    }
+
+    .region.hidden {
+      opacity: 0.18;
+      border-color: rgba(0,255,65,0.08);
+      background: rgba(0,255,65,0.02);
+    }
+
+    .region.lt { top: 5%; left: 4%; }
+    .region.rt { top: 5%; right: 4%; text-align: right; }
+    .region.lb { bottom: 7%; left: 4%; }
+    .region.rb { bottom: 7%; right: 4%; text-align: right; }
+
+    .region.flash {
+      animation: hud-warning-flash 0.5s linear infinite;
+    }
+
+    @keyframes hud-warning-flash {
+      0%   { background-color: var(--color-danger); color: var(--color-bg); border-color: var(--color-danger); }
+      50%  { background-color: var(--color-bg); color: var(--color-danger); border-color: var(--color-danger); }
+      100% { background-color: var(--color-danger); color: var(--color-bg); border-color: var(--color-danger); }
+    }
+
+    .title {
+      font-size: 12px;
+      letter-spacing: 1px;
+      opacity: .7;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .speed-wrap {
       display: flex;
-      justify-content: center;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .speed-value {
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: .9;
+      font-weight: var(--font-weight-bold);
+      text-shadow: 0 0 12px currentColor;
+    }
+
+    .speed-unit {
+      font-size: 16px;
+      opacity: .8;
+      margin-bottom: 8px;
+    }
+
+    .subline, .meta-line, .small-line {
+      font-size: 13px;
+      opacity: .85;
+      line-height: 1.5;
+    }
+
+    .small-line { font-size: 12px; opacity: .72; }
+
+    .nav-main {
+      display: flex;
       align-items: center;
-      padding: var(--padding-md);
-      text-align: center;
-      font-size: var(--font-size-md);
-      border-radius: var(--border-radius-sm);
+      justify-content: flex-end;
+      gap: 14px;
     }
 
-    #LT { grid-area: LT; }
-    #RT { grid-area: RT; }
-    #LB { grid-area: LB; }
-    #RB { grid-area: RB; }
-
-    .hud-section.dynamic {
-      background-color: var(--color-inactive);
+    .nav-arrow {
+      font-size: clamp(42px, 5vw, 72px);
+      line-height: 1;
+      font-weight: 700;
+      text-shadow: 0 0 12px currentColor;
     }
 
-    .hud-section.persistent {
-      background-color: var(--color-bg);
+    .nav-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-end;
+    }
+
+    .nav-distance {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .nav-eta {
+      font-size: 13px;
+      opacity: .8;
+    }
+
+    .status-icons, .group-icons, .recording-meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
     }
 
     .icon {
-      width: var(--icon-size-md);
-      height: var(--icon-size-md);
-      background-color: var(--color-info);
-      border-radius: 50%;
-      margin: var(--padding-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 8px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      font-size: 11px;
+      line-height: 1;
+      box-shadow: 0 0 8px rgba(0,255,65,0.15);
     }
 
-    /* A/B Mode Toggle */
-    #ab-toggle {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: var(--color-bg);
-      color: var(--color-normal);
-      padding: var(--padding-sm) var(--padding-md);
-      border-radius: var(--border-radius-sm);
-      font-size: var(--font-size-sm);
+    .icon.pulse {
+      animation: icon-pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes icon-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.08); opacity: .7; }
+    }
+
+    .icon-battery::before { content: "BAT"; }
+    .icon-speed::before { content: "SPD"; }
+    .icon-nav_left::before { content: "←"; }
+    .icon-nav_right::before { content: "→"; }
+    .icon-nav_uturn::before { content: "↺"; }
+    .icon-bsd::before { content: "BSD"; }
+    .icon-fcw::before { content: "FCW"; }
+    .icon-call::before { content: "CALL"; }
+    .icon-group::before { content: "GRP"; }
+    .icon-recording::before { content: "REC"; }
+
+    .call-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      border: 1px solid currentColor;
+      background: transparent;
+      color: inherit;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 12px;
       cursor: pointer;
-      z-index: 10;
     }
 
-    /* Timeline */
-    #timeline {
+    .action-btn.accept { color: var(--color-normal); }
+    .action-btn.reject { color: var(--color-danger); }
+
+    .warning-text {
+      color: var(--color-danger);
+      font-weight: 700;
+      text-shadow: 0 0 10px var(--color-danger);
+    }
+
+    .info-text { color: var(--color-info); }
+    .caution-text { color: var(--color-caution); }
+
+    .center-empty {
       position: absolute;
-      bottom: 0;
+      inset: 22% 24% 24% 24%;
+      border: 1px dashed rgba(0,255,65,0.08);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(0,255,65,0.18);
+      font-size: 14px;
+      letter-spacing: 2px;
+      pointer-events: none;
+    }
+
+    .timeline {
+      position: absolute;
       left: 0;
-      width: 100%;
-      height: 4px;
-      background-color: var(--color-inactive);
-    }
-
-    #timeline-progress {
-      width: 0;
-      height: 100%;
-      background-color: var(--color-normal);
-      transition: width 0.1s linear;
-    }
-
-    /* Event Drawer */
-    #event-drawer {
-      position: absolute;
       right: 0;
+      bottom: 0;
+      height: var(--timeline-h);
+      padding: 10px 16px 14px;
+      border-top: 1px solid var(--panel-border);
+      background: linear-gradient(to top, rgba(0,0,0,0.92), rgba(0,0,0,0.55));
+      z-index: 15;
+    }
+
+    .timeline-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .timeline button, .drawer-toggle, .sandbox button, select, input[type="range"] {
+      font: inherit;
+    }
+
+    .btn {
+      border: 1px solid var(--panel-border);
+      background: rgba(0,255,65,0.05);
+      color: var(--hud-color);
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn.active {
+      background: var(--hud-color);
+      color: #000;
+    }
+
+    .timeline-track {
+      position: relative;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(0,255,65,0.08);
+      overflow: hidden;
+      border: 1px solid rgba(0,255,65,0.16);
+    }
+
+    .timeline-progress {
+      position: absolute;
+      left: 0;
       top: 0;
-      width: 300px;
-      height: 100%;
-      background-color: var(--color-bg);
-      color: var(--color-normal);
-      padding: var(--padding-md);
-      overflow-y: auto;
-      display: none;
+      bottom: 0;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(0,255,65,0.35), rgba(0,255,65,0.9));
+      box-shadow: 0 0 12px var(--hud-color);
     }
 
-    #event-drawer.open {
+    .timeline-events {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .timeline-marker {
+      position: absolute;
+      top: -2px;
+      width: 2px;
+      height: 16px;
+      background: var(--color-caution);
+      box-shadow: 0 0 8px var(--color-caution);
+    }
+
+    .timeline-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .drawer-toggle {
+      position: absolute;
+      right: 16px;
+      top: calc(var(--topbar-h) + 16px);
+      z-index: 30;
+      border: 1px solid var(--panel-border);
+      background: rgba(0,255,65,0.08);
+      color: var(--hud-color);
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 0 12px var(--panel-glow);
+    }
+
+    .sandbox {
+      position: absolute;
+      top: var(--topbar-h);
+      right: 0;
+      bottom: var(--timeline-h);
+      width: var(--drawer-w);
+      transform: translateX(100%);
+      transition: transform .35s ease;
+      border-left: 1px solid var(--panel-border);
+      background: rgba(0,0,0,0.92);
+      z-index: 25;
+      padding: 16px;
+      overflow: auto;
+    }
+
+    .sandbox.open {
+      transform: translateX(0);
+    }
+
+    .sandbox h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .sandbox .section {
+      margin-bottom: 16px;
+      padding: 12px;
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      background: rgba(0,255,65,0.04);
+    }
+
+    .sandbox .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .sandbox .row > * {
+      flex: 1 1 auto;
+    }
+
+    .sandbox label {
       display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
     }
 
-    /* Warning Flash */
-    .warning-flash {
-      animation: warning-flash 1s steps(1) infinite;
+    .sandbox select, .sandbox input[type="text"], .sandbox input[type="number"] {
+      width: 100%;
+      background: #071107;
+      color: var(--hud-color);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 8px;
+      outline: none;
     }
 
-    @keyframes warning-flash {
-      0%, 50% { background-color: var(--color-danger); }
-      51%, 100% { background-color: transparent; }
+    .kbd-hint {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .footer-note {
+      font-size: 11px;
+      color: rgba(0,255,65,0.45);
+      margin-top: 10px;
+    }
+
+    .density-badge {
+      color: var(--color-caution);
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    .hidden-mobile {
+      display: inline;
+    }
+
+    @media (max-width: 1100px) {
+      .region { min-width: 180px; max-width: 40vw; }
+      .center-empty { inset: 24% 18% 24% 18%; }
+      .sandbox { width: min(86vw, 320px); }
     }
   </style>
 </head>
 <body>
-  <div id="hud">
-    <div id="LT" class="hud-section persistent">速度</div>
-    <div id="RT" class="hud-section persistent">设备状态</div>
-    <div id="LB" class="hud-section dynamic">通知/来电/音乐</div>
-    <div id="RB" class="hud-section dynamic">导航主区</div>
-  </div>
+  <div class="app" id="app">
+    <div class="topbar">
+      <div class="ab-switch">
+        <button class="ab-btn active" data-ab="a">A · Free Form (OLED)</button>
+        <button class="ab-btn" data-ab="b">B · 衍射光波导 (MicroLED)</button>
+      </div>
+      <div class="top-meta">
+        <div class="chip" id="modeChip">AUTO</div>
+        <div class="chip" id="scenarioChip">日常通勤</div>
+        <div class="chip" id="speedTierChip">S0 静止</div>
+      </div>
+    </div>
 
-  <div id="ab-toggle">A/B 模式切换</div>
-  <div id="timeline">
-    <div id="timeline-progress"></div>
-  </div>
-  <div id="event-drawer">
-    <h3>事件面板</h3>
-    <ul>
-      <li>事件 1</li>
-      <li>事件 2</li>
-      <li>事件 3</li>
-    </ul>
+    <button class="drawer-toggle" id="drawerToggle">手动沙盒</button>
+
+    <div class="hud-stage">
+      <div class="fov-frame"></div>
+      <div class="center-empty">CENTER CLEAR / 护目镜中央留空</div>
+
+      <div class="region lt" id="regionLT"></div>
+      <div class="region rt" id="regionRT"></div>
+      <div class="region lb" id="regionLB"></div>
+      <div class="region rb" id="regionRB"></div>
+    </div>
+
+    <aside class="sandbox" id="sandbox">
+      <h3>手动沙盒模式</h3>
+
+      <div class="section">
+        <label>模式</label>
+        <div class="row">
+          <button class="btn active" id="autoModeBtn">自动剧本</button>
+          <button class="btn" id="manualModeBtn">手动沙盒</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <label>导航事件</label>
+        <div class="row">
+          <button class="btn" data-manual="nav-left">左转</button>
+          <button class="btn" data-manual="nav-right">右转</button>
+          <button class="btn" data-manual="nav-uturn">掉头</button>
+        </div>
+        <div class="row">
+          <button class="btn" data-manual="nav-clear">清除导航</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <label>预警事件</label>
+        <div class="row">
+          <button class="btn" data-manual="warn-bsd">BSD</button>
+          <button class="btn" data-manual="warn-fcw">FCW</button>
+          <button class="btn" data-manual="warn-clear">清除预警</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <label>通信 / 媒体</label>
+        <div class="row">
+          <button class="btn" data-manual="call">来电</button>
+          <button class="btn" data-manual="music">音乐</button>
+          <button class="btn" data-manual="record">录制</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <label>组队骑行</label>
+        <div class="row">
+          <button class="btn" data-manual="group-start">开始组队</button>
+          <button class="btn" data-manual="group-msg">队伍消息</button>
+          <button class="btn" data-manual="group-end">结束组队</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <label for="speedRange">速度</label>
+        <input id="speedRange" type="range" min="0" max="120" value="0" />
+        <div class="row">
+          <button class="btn" data-manual="speed-minus">-10</button>
+          <button class="btn" data-manual="speed-plus">+10</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <label>快捷键</label>
+        <div class="kbd-hint">
+          ← 右侧主导航显示左转<br/>
+          → 右侧主导航显示右转<br/>
+          U 掉头<br/>
+          B BSD 盲区预警<br/>
+          F FCW 前碰预警<br/>
+          C 来电<br/>
+          R 录制<br/>
+          G 组队<br/>
+          + / - 速度增减<br/>
+          Enter 接听 / Space 音乐播放暂停 / Esc 拒接或返回
+        </div>
+      </div>
+
+      <div class="footer-note">零依赖单文件 HUD Demo</div>
+    </aside>
+
+    <div class="timeline">
+      <div class="timeline-top">
+        <select id="scenarioSelect" class="btn">
+          <option value="daily_commute">日常通勤</option>
+          <option value="emergency">紧急场景</option>
+          <option value="group_ride">组队骑行</option>
+        </select>
+        <button class="btn" id="playBtn">播放</button>
+        <button class="btn" id="pauseBtn">暂停</button>
+        <button class="btn" id="resetBtn">重置</button>
+        <button class="btn" id="stepBtn">步进 +1s</button>
+      </div>
+      <div class="timeline-track" id="timelineTrack">
+        <div class="timeline-progress" id="timelineProgress"></div>
+        <div class="timeline-events" id="timelineEvents"></div>
+      </div>
+      <div class="timeline-meta">
+        <div id="timelineTime">00s / 75s</div>
+        <div id="timelineDesc">等待播放</div>
+      </div>
+    </div>
   </div>
 
   <script>
-    // JavaScript for HUD Demo
-    const abToggle = document.getElementById('ab-toggle');
-    const timelineProgress = document.getElementById('timeline-progress');
-    const eventDrawer = document.getElementById('event-drawer');
+    const CONFIG = {
+      layout: {
+        LT: { role: "速度+骑行状态", type: "persistent" },
+        RT: { role: "设备状态图标", type: "persistent" },
+        RB: { role: "导航主区", type: "dynamic" },
+        LB: { role: "通知/来电/音乐", type: "dynamic" }
+      },
+      priority_order: ["warning", "incoming_call", "navigation", "group_ride", "music", "recording", "riding_main"],
+      warning_direction_map: {
+        front_left: ["LT"],
+        front_right: ["RT"],
+        front: ["LT", "RT"],
+        rear_left: ["LB"],
+        rear_right: ["RB"],
+        rear: ["LB", "RB"]
+      },
+      speed_tiers: {
+        S0: { range: "0", max_elements: 6, label: "静止" },
+        S1: { range: "1-30", max_elements: 4, label: "低速" },
+        S2: { range: "31-80", max_elements: 3, label: "中速" },
+        S3: { range: "81+", max_elements: 2, label: "高速" }
+      },
+      scenarios: {
+        hud_scenarios: [
+          {
+            id: "daily_commute",
+            name: "日常通勤",
+            duration_sec: 75,
+            events: [
+              { t: 0, action: "boot_sequence", desc: "开机自检" },
+              { t: 5, action: "bluetooth_connect", desc: "蓝牙连接" },
+              { t: 10, action: "nav_start", dest: "公司", desc: "导航启动" },
+              { t: 20, action: "speed_change", value: 45 },
+              { t: 30, action: "nav_turn", direction: "right", distance: "200m" },
+              { t: 40, action: "nav_turn", direction: "left", distance: "500m" },
+              { t: 55, action: "speed_change", value: 60 },
+              { t: 65, action: "speed_change", value: 0 },
+              { t: 70, action: "nav_arrive", desc: "到达目的地" }
+            ]
+          },
+          {
+            id: "emergency",
+            name: "紧急场景",
+            duration_sec: 60,
+            events: [
+              { t: 0, action: "speed_change", value: 55 },
+              { t: 5, action: "nav_turn", direction: "straight", distance: "1.2km" },
+              { t: 10, action: "incoming_call", caller: "老婆" },
+              { t: 15, action: "call_accept" },
+              { t: 25, action: "call_end" },
+              { t: 30, action: "warning_fcw", distance: "30m", direction: "front" },
+              { t: 33, action: "warning_clear" },
+              { t: 40, action: "warning_bsd", direction: "rear_right" },
+              { t: 43, action: "warning_clear" },
+              { t: 50, action: "nav_reroute", desc: "偏航重算" }
+            ]
+          },
+          {
+            id: "group_ride",
+            name: "组队骑行",
+            duration_sec: 70,
+            events: [
+              { t: 0, action: "group_create", name: "周末摩旅" },
+              { t: 5, action: "group_join", rider: "老张" },
+              { t: 8, action: "group_join", rider: "小王" },
+              { t: 12, action: "group_voice_on" },
+              { t: 15, action: "speed_change", value: 70 },
+              { t: 30, action: "nav_turn", direction: "right", distance: "300m" },
+              { t: 40, action: "group_straggler", rider: "小王", desc: "掉队提醒" },
+              { t: 50, action: "group_rejoin", rider: "小王" },
+              { t: 60, action: "speed_change", value: 0 },
+              { t: 65, action: "group_end" }
+            ]
+          }
+        ]
+      }
+    };
 
-    let abMode = 'A';
-    abToggle.addEventListener('click', () => {
-      abMode = abMode === 'A' ? 'B' : 'A';
-      abToggle.textContent = `当前模式: ${abMode}`;
+    const state = {
+      mode: "auto",
+      abMode: "a",
+      scenarioId: "daily_commute",
+      playing: false,
+      currentTime: 0,
+      processedEventIndexes: new Set(),
+      speed: 0,
+      bluetooth: false,
+      signal: 4,
+      battery: 82,
+      nav: null,
+      call: null,
+      music: null,
+      group: null,
+      warning: null,
+      recording: null,
+      booting: false,
+      lastEventDesc: "等待播放"
+    };
+
+    const els = {
+      LT: document.getElementById("regionLT"),
+      RT: document.getElementById("regionRT"),
+      LB: document.getElementById("regionLB"),
+      RB: document.getElementById("regionRB"),
+      modeChip: document.getElementById("modeChip"),
+      scenarioChip: document.getElementById("scenarioChip"),
+      speedTierChip: document.getElementById("speedTierChip"),
+      drawer: document.getElementById("sandbox"),
+      drawerToggle: document.getElementById("drawerToggle"),
+      autoModeBtn: document.getElementById("autoModeBtn"),
+      manualModeBtn: document.getElementById("manualModeBtn"),
+      scenarioSelect: document.getElementById("scenarioSelect"),
+      playBtn: document.getElementById("playBtn"),
+      pauseBtn: document.getElementById("pauseBtn"),
+      resetBtn: document.getElementById("resetBtn"),
+      stepBtn: document.getElementById("stepBtn"),
+      timelineProgress: document.getElementById("timelineProgress"),
+      timelineEvents: document.getElementById("timelineEvents"),
+      timelineTime: document.getElementById("timelineTime"),
+      timelineDesc: document.getElementById("timelineDesc"),
+      speedRange: document.getElementById("speedRange")
+    };
+
+    const scenarioById = id => CONFIG.scenarios.hud_scenarios.find(s => s.id === id);
+    const currentScenario = () => scenarioById(state.scenarioId);
+
+    function getSpeedTier(speed) {
+      if (speed === 0) return { key: "S0", ...CONFIG.speed_tiers.S0 };
+      if (speed >= 1 && speed <= 30) return { key: "S1", ...CONFIG.speed_tiers.S1 };
+      if (speed >= 31 && speed <= 80) return { key: "S2", ...CONFIG.speed_tiers.S2 };
+      return { key: "S3", ...CONFIG.speed_tiers.S3 };
+    }
+
+    function setMode(mode) {
+      state.mode = mode;
+      els.modeChip.textContent = mode === "auto" ? "AUTO" : "MANUAL";
+      els.autoModeBtn.classList.toggle("active", mode === "auto");
+      els.manualModeBtn.classList.toggle("active", mode === "manual");
+    }
+
+    function resetStateForScenario() {
+      state.currentTime = 0;
+      state.processedEventIndexes = new Set();
+      state.speed = 0;
+      state.bluetooth = false;
+      state.signal = 4;
+      state.battery = 82;
+      state.nav = null;
+      state.call = null;
+      state.music = null;
+      state.group = null;
+      state.warning = null;
+      state.recording = null;
+      state.booting = false;
+      state.lastEventDesc = "等待播放";
+      els.speedRange.value = state.speed;
+      renderTimeline();
+      renderHUD();
+    }
+
+    function applyEvent(event) {
+      state.lastEventDesc = event.desc || event.action;
+      switch (event.action) {
+        case "boot_sequence":
+          state.booting = true;
+          break;
+        case "bluetooth_connect":
+          state.bluetooth = true;
+          break;
+        case "nav_start":
+          state.nav = {
+            active: true,
+            direction: "straight",
+            distance: "2.4km",
+            eta: "ETA 12min",
+            roadName: "前往" + (event.dest || "目的地"),
+            dest: event.dest || "目的地"
+          };
+          break;
+        case "nav_turn":
+          state.nav = {
+            ...(state.nav || { active: true, eta: "ETA 8min", roadName: "城市快速路" }),
+            active: true,
+            direction: event.direction || "straight",
+            distance: event.distance || "300m",
+            eta: state.nav?.eta || "ETA 8min",
+            roadName: event.direction === "left" ? "中山路" : event.direction === "right" ? "人民大道" : "继续直行"
+          };
+          break;
+        case "nav_arrive":
+          state.nav = {
+            active: true,
+            direction: "arrive",
+            distance: "已到达",
+            eta: "ETA 0min",
+            roadName: "目的地已到达",
+            dest: state.nav?.dest || "目的地"
+          };
+          break;
+        case "nav_reroute":
+          state.nav = {
+            ...(state.nav || { active: true }),
+            active: true,
+            direction: "straight",
+            distance: "重新规划",
+            eta: "ETA 14min",
+            roadName: "偏航重算中"
+          };
+          break;
+        case "speed_change":
+          state.speed = Math.max(0, Math.min(120, event.value || 0));
+          els.speedRange.value = state.speed;
+          break;
+        case "incoming_call":
+          state.call = { incoming: true, active: false, caller: event.caller || "未知来电" };
+          break;
+        case "call_accept":
+          if (state.call) {
+            state.call.incoming = false;
+            state.call.active = true;
+          }
+          break;
+        case "call_end":
+          state.call = null;
+          break;
+        case "warning_fcw":
+          state.warning = { type: "FCW", distance: event.distance || "30m", direction: event.direction || "front", instruction: "立即减速" };
+          break;
+        case "warning_bsd":
+          state.warning = { type: "BSD", distance: event.distance || "侧后方", direction: event.direction || "rear_right", instruction: "注意盲区车辆" };
+          break;
+        case "warning_clear":
+          state.warning = null;
+          break;
+        case "group_create":
+          state.group = { active: true, name: event.name || "骑行队伍", riders: ["我"], voice: false, message: "队伍已创建", straggler: null };
+          break;
+        case "group_join":
+          if (!state.group) state.group = { active: true, name: "骑行队伍", riders: ["我"], voice: false, message: "", straggler: null };
+          state.group.riders.push(event.rider || "队友");
+          state.group.message = `${event.rider || "队友"} 已加入`;
+          break;
+        case "group_voice_on":
+          if (state.group) state.group.voice = true;
+          break;
+        case "group_straggler":
+          if (state.group) {
+            state.group.straggler = event.rider || "队友";
+            state.group.message = event.desc || `${event.rider || "队友"} 掉队`;
+          }
+          break;
+        case "group_rejoin":
+          if (state.group) {
+            state.group.straggler = null;
+            state.group.message = `${event.rider || "队友"} 已归队`;
+          }
+          break;
+        case "group_end":
+          state.group = null;
+          break;
+      }
+      renderHUD();
+    }
+
+    function replayToTime(t) {
+      resetStateForScenario();
+      state.currentTime = t;
+      const scenario = currentScenario();
+      scenario.events.forEach((event, idx) => {
+        if (event.t <= t) {
+          applyEvent(event);
+          state.processedEventIndexes.add(idx);
+        }
+      });
+      renderTimeline();
+      renderHUD();
+    }
+
+    function tick() {
+      if (!state.playing || state.mode !== "auto") return;
+      const scenario = currentScenario();
+      state.currentTime = Math.min(scenario.duration_sec, +(state.currentTime + 0.1).toFixed(1));
+      scenario.events.forEach((event, idx) => {
+        if (event.t <= state.currentTime && !state.processedEventIndexes.has(idx)) {
+          applyEvent(event);
+          state.processedEventIndexes.add(idx);
+        }
+      });
+      if (state.currentTime >= scenario.duration_sec) state.playing = false;
+      renderTimeline();
+      renderHUD();
+    }
+
+    function renderTimeline() {
+      const scenario = currentScenario();
+      const progress = (state.currentTime / scenario.duration_sec) * 100;
+      els.timelineProgress.style.width = progress + "%";
+      els.timelineTime.textContent = `${String(Math.floor(state.currentTime)).padStart(2, "0")}s / ${scenario.duration_sec}s`;
+      els.timelineDesc.textContent = state.lastEventDesc;
+      els.scenarioChip.textContent = scenario.name;
+
+      els.timelineEvents.innerHTML = "";
+      scenario.events.forEach(ev => {
+        const marker = document.createElement("div");
+        marker.className = "timeline-marker";
+        marker.style.left = `calc(${(ev.t / scenario.duration_sec) * 100}% - 1px)`;
+        marker.title = `${ev.t}s ${ev.action}`;
+        els.timelineEvents.appendChild(marker);
+      });
+    }
+
+    function arrowForDirection(direction) {
+      if (direction === "left") return "←";
+      if (direction === "right") return "→";
+      if (direction === "uturn") return "↺";
+      if (direction === "arrive") return "◎";
+      return "↑";
+    }
+
+    function getActiveStateName() {
+      if (state.warning) return "warning";
+      if (state.call) return "incoming_call";
+      if (state.nav?.active) return "navigation";
+      if (state.group?.active) return "group_ride";
+      if (state.music) return "music";
+      if (state.recording) return "recording";
+      return "riding_main";
+    }
+
+    function densityLimit(items) {
+      const tier = getSpeedTier(state.speed);
+      return items.slice(0, tier.max_elements);
+    }
+
+    function renderLT() {
+      const tier = getSpeedTier(state.speed);
+      const warningFront = state.warning && ["front", "front_left"].includes(state.warning.direction);
+      return `
+        <div class="title">LT · 速度 / 骑行状态</div>
+        <div class="speed-wrap">
+          <div class="icon icon-speed"></div>
+          <div class="speed-value">${state.speed}</div>
+          <div class="speed-unit">km/h</div>
+        </div>
+        <div class="subline ${warningFront ? 'warning-text' : ''}">
+          ${state.warning && ["front", "front_left", "front_right"].includes(state.warning.direction) ? "⚠ 前向风险" : `状态：${tier.label}`}
+          <span class="density-badge">${tier.key}</span>
+        </div>
+        ${tier.key !== "S3" ? `<div class="small-line">${state.booting ? "系统自检完成" : "骑行稳定"}</div>` : ``}
+      `;
+    }
+
+    function renderRT() {
+      const tier = getSpeedTier(state.speed);
+      if (state.group?.active) {
+        const items = densityLimit([
+          `<div class="icon icon-group"></div>`,
+          `<div class="icon">${state.group.riders.length}人</div>`,
+          `<div class="icon ${state.group.voice ? 'pulse' : ''}">${state.group.voice ? 'VOICE' : 'MUTE'}</div>`
+        ]);
+        return `
+          <div class="title">RT · 队伍状态</div>
+          <div class="status-icons">${items.join("")}</div>
+          ${tier.key !== "S3" ? `<div class="small-line">队伍：${state.group.name}</div>` : ``}
+        `;
+      }
+      if (state.recording) {
+        const items = densityLimit([
+          `<div class="icon icon-recording pulse"></div>`,
+          `<div class="icon">${state.recording.duration}</div>`,
+          `<div class="icon">${state.recording.storage}</div>`
+        ]);
+        return `
+          <div class="title">RT · 录制状态</div>
+          <div class="recording-meta">${items.join("")}</div>
+        `;
+      }
+      const icons = densityLimit([
+        `<div class="icon icon-battery"></div>`,
+        `<div class="icon">${state.battery}%</div>`,
+        `<div class="icon ${state.bluetooth ? 'pulse' : ''}">${state.bluetooth ? 'BT' : 'BT×'}</div>`,
+        `<div class="icon">SIG${state.signal}</div>`
+      ]);
+      return `
+        <div class="title">RT · 设备状态</div>
+        <div class="status-icons">${icons.join("")}</div>
+        ${tier.key === "S0" ? `<div class="small-line">电量正常 / 连接${state.bluetooth ? "已建立" : "未连接"}</div>` : ``}
+      `;
+    }
+
+    function renderLB() {
+      if (state.warning) {
+        return `
+          <div class="title">LB · 预警指令</div>
+          <div class="warning-text">${state.warning.instruction}</div>
+          <div class="small-line">方向：${state.warning.direction}</div>
+        `;
+      }
+      if (state.call) {
+        return `
+          <div class="title">LB · 来电</div>
+          <div class="subline"><span class="icon icon-call pulse"></span> ${state.call.caller}</div>
+          <div class="small-line">${state.call.active ? "通话中..." : "来电中..."}</div>
+          ${!state.call.active ? `
+            <div class="call-actions">
+              <button class="action-btn accept" onclick="manualAcceptCall()">接听 Enter</button>
+              <button class="action-btn reject" onclick="manualRejectCall()">拒接 Esc</button>
+            </div>
+          ` : `
+            <div class="call-actions">
+              <button class="action-btn reject" onclick="manualRejectCall()">挂断 Esc</button>
+            </div>
+          `}
+        `;
+      }
+      if (state.group?.active) {
+        return `
+          <div class="title">LB · 队伍消息</div>
+          <div class="subline">${state.group.message || "队伍巡航中"}</div>
+          <div class="small-line">${state.group.straggler ? `⚠ ${state.group.straggler} 掉队` : "队形正常"}</div>
+        `;
+      }
+      if (state.music) {
+        return `
+          <div class="title">LB · 音乐</div>
+          <div class="subline">${state.music.title}</div>
+          <div class="small-line">${state.music.playing ? "播放中" : "已暂停"} · Space 播放/暂停</div>
+        `;
+      }
+      if (state.recording) {
+        return `
+          <div class="title">LB · 录制</div>
+          <div class="subline warning-text">REC ●</div>
+          <div class="small-line">正在录制骑行画面</div>
+        `;
+      }
+      if (state.nav?.active) {
+        return `
+          <div class="title">LB · 路名</div>
+          <div class="subline">${state.nav.roadName || "道路信息"}</div>
+          <div class="small-line">${state.nav.dest ? `目的地：${state.nav.dest}` : "导航进行中"}</div>
+        `;
+      }
+      return `
+        <div class="title">LB · 通知</div>
+        <div class="subline">无新通知</div>
+        <div class="small-line">系统待命</div>
+      `;
+    }
+
+    function renderRB() {
+      if (state.warning) {
+        return `
+          <div class="title">RB · 预警主区</div>
+          <div class="nav-main">
+            <div class="nav-arrow warning-text">${state.warning.type === "FCW" ? "⚠" : "◢"}</div>
+            <div class="nav-info">
+              <div class="nav-distance warning-text">${state.warning.type}</div>
+              <div class="nav-eta">${state.warning.distance || state.warning.direction}</div>
+            </div>
+          </div>
+        `;
+      }
+      if (state.group?.active) {
+        const riders = state.group.riders.map((r, i) => `<div class="icon">${i === 0 ? "我" : r}</div>`).join("");
+        return `
+          <div class="title">RB · 队友位置标记</div>
+          <div class="group-icons">${riders}</div>
+          <div class="small-line">${state.group.straggler ? `${state.group.straggler} 落后 120m` : "队形紧凑"}</div>
+        `;
+      }
+      if (state.nav?.active) {
+        return `
+          <div class="title">RB · 导航主区</div>
+          <div class="nav-main">
+            <div class="nav-arrow">${arrowForDirection(state.nav.direction)}</div>
+            <div class="nav-info">
+              <div class="nav-distance">${state.nav.distance}</div>
+              <div class="nav-eta">${state.nav.eta || "ETA --"}</div>
+            </div>
+          </div>
+        `;
+      }
+      return `
+        <div class="title">RB · 导航主区</div>
+        <div class="subline">空闲</div>
+        <div class="small-line">等待导航或事件</div>
+      `;
+    }
+
+    function applyWarningFlash() {
+      ["LT", "RT", "LB", "RB"].forEach(k => els[k].classList.remove("flash"));
+      if (!state.warning) return;
+      const map = CONFIG.warning_direction_map[state.warning.direction] || [];
+      map.forEach(region => els[region].classList.add("flash"));
+    }
+
+    function renderHUD() {
+      const tier = getSpeedTier(state.speed);
+      els.speedTierChip.textContent = `${tier.key} ${tier.label}`;
+      els.LT.innerHTML = renderLT();
+      els.RT.innerHTML = renderRT();
+      els.LB.innerHTML = renderLB();
+      els.RB.innerHTML = renderRB();
+
+      const active = getActiveStateName();
+      els.LB.classList.toggle("hidden", active === "riding_main");
+      els.RB.classList.toggle("hidden", active === "riding_main");
+      applyWarningFlash();
+    }
+
+    function setABMode(mode) {
+      state.abMode = mode;
+      document.querySelectorAll(".ab-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.ab === mode));
+      if (mode === "a") {
+        document.documentElement.style.setProperty("--hud-color", "var(--color-monochrome-green)");
+        document.documentElement.style.setProperty("--panel-bg", "rgba(0,255,65,0.06)");
+      } else {
+        document.documentElement.style.setProperty("--hud-color", "var(--color-monochrome-green)");
+        document.documentElement.style.setProperty("--panel-bg", "rgba(0,255,65,0.09)");
+      }
+    }
+
+    function toggleDrawer() {
+      els.drawer.classList.toggle("open");
+    }
+
+    function manualNav(direction) {
+      state.nav = {
+        active: true,
+        direction,
+        distance: direction === "uturn" ? "80m" : "300m",
+        eta: "ETA 6min",
+        roadName: direction === "left" ? "解放路" : direction === "right" ? "滨江路" : direction === "uturn" ? "前方掉头" : "继续直行",
+        dest: "手动目的地"
+      };
+      renderHUD();
+    }
+
+    function manualWarning(type) {
+      if (type === "BSD") {
+        state.warning = { type: "BSD", distance: "右后侧", direction: "rear_right", instruction: "右后方有车" };
+      } else {
+        state.warning = { type: "FCW", distance: "20m", direction: "front", instruction: "前方碰撞风险" };
+      }
+      renderHUD();
+    }
+
+    function manualAcceptCall() {
+      if (state.call) {
+        state.call.incoming = false;
+        state.call.active = true;
+        renderHUD();
+      }
+    }
+
+    function manualRejectCall() {
+      state.call = null;
+      renderHUD();
+    }
+
+    window.manualAcceptCall = manualAcceptCall;
+    window.manualRejectCall = manualRejectCall;
+
+    function handleManualAction(action) {
+      setMode("manual");
+      state.playing = false;
+      switch (action) {
+        case "nav-left": manualNav("left"); break;
+        case "nav-right": manualNav("right"); break;
+        case "nav-uturn": manualNav("uturn"); break;
+        case "nav-clear": state.nav = null; renderHUD(); break;
+        case "warn-bsd": manualWarning("BSD"); break;
+        case "warn-fcw": manualWarning("FCW"); break;
+        case "warn-clear": state.warning = null; renderHUD(); break;
+        case "call":
+          state.call = { incoming: true, active: false, caller: "张三" };
+          renderHUD();
+          break;
+        case "music":
+          state.music = state.music ? null : { title: "Night Ride - Synthwave", playing: true };
+          renderHUD();
+          break;
+        case "record":
+          state.recording = state.recording ? null : { duration: "03:24", storage: "64GB" };
+          renderHUD();
+          break;
+        case "group-start":
+          state.group = { active: true, name: "周末摩旅", riders: ["我", "老张", "小王"], voice: true, message: "队伍已集结", straggler: null };
+          renderHUD();
+          break;
+        case "group-msg":
+          if (!state.group) state.group = { active: true, name: "周末摩旅", riders: ["我", "老张"], voice: true, message: "", straggler: null };
+          state.group.message = "前方服务区集合";
+          renderHUD();
+          break;
+        case "group-end":
+          state.group = null;
+          renderHUD();
+          break;
+        case "speed-minus":
+          state.speed = Math.max(0, state.speed - 10);
+          els.speedRange.value = state.speed;
+          renderHUD();
+          break;
+        case "speed-plus":
+          state.speed = Math.min(120, state.speed + 10);
+          els.speedRange.value = state.speed;
+          renderHUD();
+          break;
+      }
+    }
+
+    document.querySelectorAll(".ab-btn").forEach(btn => {
+      btn.addEventListener("click", () => setABMode(btn.dataset.ab));
     });
 
-    let timelineWidth = 0;
-    setInterval(() => {
-      timelineWidth = (timelineWidth + 1) % 100;
-      timelineProgress.style.width = `${timelineWidth}%`;
-    }, 100);
+    els.drawerToggle.addEventListener("click", toggleDrawer);
+    els.autoModeBtn.addEventListener("click", () => setMode("auto"));
+    els.manualModeBtn.addEventListener("click", () => setMode("manual"));
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'E') {
-        eventDrawer.classList.toggle('open');
+    document.querySelectorAll("[data-manual]").forEach(btn => {
+      btn.addEventListener("click", () => handleManualAction(btn.dataset.manual));
+    });
+
+    els.speedRange.addEventListener("input", e => {
+      setMode("manual");
+      state.playing = false;
+      state.speed = +e.target.value;
+      renderHUD();
+    });
+
+    els.scenarioSelect.addEventListener("change", e => {
+      state.scenarioId = e.target.value;
+      resetStateForScenario();
+    });
+
+    els.playBtn.addEventListener("click", () => {
+      setMode("auto");
+      state.playing = true;
+    });
+
+    els.pauseBtn.addEventListener("click", () => {
+      state.playing = false;
+    });
+
+    els.resetBtn.addEventListener("click", () => {
+      state.playing = false;
+      resetStateForScenario();
+    });
+
+    els.stepBtn.addEventListener("click", () => {
+      setMode("auto");
+      state.playing = false;
+      replayToTime(Math.min(currentScenario().duration_sec, Math.floor(state.currentTime) + 1));
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.target.matches("input, select, textarea")) return;
+
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        handleManualAction("nav-left");
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        handleManualAction("nav-right");
+      } else if (e.key.toLowerCase() === "u") {
+        handleManualAction("nav-uturn");
+      } else if (e.key.toLowerCase() === "b") {
+        handleManualAction("warn-bsd");
+      } else if (e.key.toLowerCase() === "f") {
+        handleManualAction("warn-fcw");
+      } else if (e.key.toLowerCase() === "c") {
+        handleManualAction("call");
+      } else if (e.key.toLowerCase() === "r") {
+        handleManualAction("record");
+      } else if (e.key.toLowerCase() === "g") {
+        handleManualAction("group-start");
+      } else if (e.key === "+" || e.key === "=") {
+        handleManualAction("speed-plus");
+      } else if (e.key === "-" || e.key === "_") {
+        handleManualAction("speed-minus");
+      } else if (e.key === "Enter") {
+        if (state.call && state.call.incoming) manualAcceptCall();
+      } else if (e.key === "Escape") {
+        if (state.call) manualRejectCall();
+        else if (state.warning) { state.warning = null; renderHUD(); }
+        else els.drawer.classList.remove("open");
+      } else if (e.code === "Space") {
+        if (state.music) {
+          e.preventDefault();
+          state.music.playing = !state.music.playing;
+          renderHUD();
+        }
       }
     });
+
+    setInterval(tick, 100);
+
+    setABMode("a");
+    resetStateForScenario();
   </script>
 </body>
 </html>

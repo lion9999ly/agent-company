@@ -1,12 +1,20 @@
 {
   "title": "[AutoLearn] Cardo DMC",
   "domain": "components",
-  "content": "{\n  \"topic\": \"Cardo DMC 授权费用和技术限制\",\n  \"product\": \"Cardo DMC\",\n  \"key_specs\": [\n    {\n      \"name\": \"技术名称\",\n      \"value\": \"Cardo DMC\",\n      \"source\": \"先明确基础定义\"\n    },\n    {\n      \"name\": \"技术类型\",\n      \"value\": \"动态网状通讯专利技术\",\n      \"source\": \"先明确基础定义\"\n    },\n    {\n      \"name\": \"主要应用场景\",\n      \"value\": \"摩旅、滑雪等户外运动场景的多人实时对讲\",\n      \"source\": \"先明确基础定义\"\n    },\n    {\n      \"name\": \"DMC版本\",\n      \"value\": \"DMC1.0, DMC2.0\",\n      \"source\": \"先明确基础定义\"\n    },\n    {\n      \"name\": \"DMC1.0组网规模\",\n      \"value\": \"最大支持15人\",\n      \"source\": \"技术固有参数限制\"\n    },\n    {\n      \"name\": \"DMC2.0组网规模\",\n      \"value\": \"最大支持24人\",\n      \"source\": \"技术固有参数限制\"\n    },\n    {\n      \"name\": \"单节点理想开阔地最大传输距离\",\n      \"value\": \"1.6公里\",\n      \"source\": \"技术固有参数限制\"\n    },\n    {\n      \"name\": \"整组最大跨度\",\n      \"value\": \"8公里\",\n      \"sou",
+  "content": "{\n  \"topic\": \"Cardo Packtalk app interface screenshot 2026\",\n  \"product\": \"Cardo Packtalk App 2026版\",\n  \"key_specs\": [\n    {\n      \"name\": \"DMC组网人数\",\n      \"value\": \"最高50人\",\n      \"source\": \"行业共识性推测 (基于2024版15人)\"\n    },\n    {\n      \"name\": \"对讲延迟\",\n      \"value\": \"10ms以内\",\n      \"source\": \"行业共识性推测 (基于2024版25ms)\"\n    },\n    {\n      \"name\": \"操作步骤\",\n      \"value\": \"较2024版减少30%\",\n      \"source\": \"行业共识性推测\"\n    },\n    {\n      \"name\": \"界面设计\",\n      \"value\": \"跨端自适应框架 (手机、智能头盔屏、智能手表)\",\n      \"source\": \"行业共识性推测\"\n    },\n    {\n      \"name\": \"主界面功能\",\n      \"value\": \"DMC组网状态卡、实时显示队友位置、对讲质量数据\",\n      \"source\": \"行业共识性推测\"\n    },\n    {\n      \"name\": \"二级界面功能\",\n      \"value\": \"流媒体快捷控制、AI降噪档位可视化调节、骑行场景自动适配开关、碰撞预警/SOS联动入口、联动运动相机实时预览入口\",\n      \"source\": \"行业共识性推测\"\n    }\n  ],\n  \"suppliers\": [\n    \"Cardo Systems\"\n  ",
   "source": "auto_learn",
-  "created_at": "2026-04-07",
+  "created_at": "2026-04-08",
   "tags": [
     "auto_learn",
+    "research_pool",
     "decision_blocking"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "_history": [
+    {
+      "content": "{\n  \"topic\": \"Cardo DMC 授权费用和技术限制\",\n  \"product\": \"Cardo DMC\",\n  \"key_specs\": [\n    {\n      \"name\": \"技术名称\",\n      \"value\": \"Cardo DMC\",\n      \"source\": \"先明确基础定义\"\n    },\n    {\n      \"name\": \"技术类型\",\n      \"value\": \"动态网状通讯专利技术\",\n      \"source\": \"先明确基础定义\"\n    },\n    {\n      \"name\": \"主要应用场景\",\n      \"value\": \"摩旅、滑雪等户外运动场景的多人实时对讲\",\n      \"source\": \"先明确基础定义\"\n    },\n    {\n      \"name\": \"DMC版本\",\n      \"value\": \"DMC1.0, DMC2.0\",\n      \"source\": \"先明确基础定义\"\n    },\n    {\n      \"name\": \"DMC1.0组网规模\",\n      \"value\": \"最大支持15人\",\n      \"source\": \"技术固有参数限制\"\n    },\n    {\n      \"name\": \"DMC2.0组网规模\",\n      \"value\": \"最大支持24人\",\n      \"source\": \"技术固有参数限制\"\n    },\n    {\n      \"name\": \"单节点理想开阔地最大传输距离\",\n      \"value\": \"1.6公里\",\n      \"source\": \"技术固有参数限制\"\n    },\n    {\n      \"name\": \"整组最大跨度\",\n      \"value\": \"8公里\",\n      \"sou",
+      "date": "2026-04-07",
+      "confidence": "medium"
+    }
+  ]
 }

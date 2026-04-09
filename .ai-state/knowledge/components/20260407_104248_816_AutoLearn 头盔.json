@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 头盔",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案在头盔内的散热表现\",\n  \"product\": \"头盔\",\n  \"key_specs\": [\n    {\n      \"name\": \"测试基准 - 环境温度\",\n      \"value\": \"35℃\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"测试基准 - 相对湿度\",\n      \"value\": \"60%\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"测试基准 - 模拟成年人头部静止产热\",\n      \"value\": \"12W\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"测试基准 - 电动自行车骑行时速\",\n      \"value\": \"25km/h\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"测试基准 - 测试时长\",\n      \"value\": \"30min\",\n      \"source\": \"统一测试基准\"\n    },\n    {\n      \"name\": \"方案1 - 名称\",\n      \"value\": \"被动式通风散热\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"方案1 - 结构特征\",\n      \"value\": \"壳体开8%~15%占比的前后通风口，内部配套导流槽，无额外电子元件\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"方案1 - 骑行状态 (25km/h) - 头顶皮肤温度比环境高\",\n      \"value",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

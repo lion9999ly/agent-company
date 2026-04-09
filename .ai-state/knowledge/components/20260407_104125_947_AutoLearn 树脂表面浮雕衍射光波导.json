@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 树脂表面浮雕衍射光波导",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"树脂衍射光波导良率和供应商产能\",\n  \"product\": \"树脂表面浮雕衍射光波导\",\n  \"key_specs\": [\n    {\n      \"name\": \"统计口径\",\n      \"value\": \"消费级通用规格（FOV 40-45°、厚度0.5-0.7mm）\",\n      \"source\": \"行业整体\"\n    },\n    {\n      \"name\": \"单片纳米压印波导片良率 (头部厂商)\",\n      \"value\": \"55%-65%\",\n      \"source\": \"行业整体\"\n    },\n    {\n      \"name\": \"单片纳米压印波导片良率 (行业平均)\",\n      \"value\": \"45%\",\n      \"source\": \"行业整体\"\n    },\n    {\n      \"name\": \"成品模组良率 (头部厂商)\",\n      \"value\": \"40%-55%\",\n      \"source\": \"行业整体\"\n    },\n    {\n      \"name\": \"成品模组良率 (行业平均)\",\n      \"value\": \"30%\",\n      \"source\": \"行业整体\"\n    },\n    {\n      \"name\": \"良率瓶颈\",\n      \"value\": \"光栅压印均匀性、基片平整度控制\",\n      \"source\": \"行业整体\"\n    },\n    {\n      \"name\": \"良率影响 (50°FOV规格比40°FOV)\",\n      \"value\": \"低10-12个百分点\",\n      \"source\": \"备注\"\n    },\n    {\n      \"name\": \"良率影响 (0.4mm超薄规格比0.7mm常规规格",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

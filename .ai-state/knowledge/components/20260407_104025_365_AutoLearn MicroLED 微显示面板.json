@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] MicroLED 微显示面板",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"MicroLED 微显示面板供应商交期和 MOQ（JBD）\",\n  \"product\": \"MicroLED 微显示面板\",\n  \"key_specs\": [\n    {\n      \"name\": \"样品订单MOQ (通用主流规格)\",\n      \"value\": \"5~50片\",\n      \"source\": \"MOQ - 样品订单\"\n    },\n    {\n      \"name\": \"样品单价\",\n      \"value\": \"量产价的3~5倍\",\n      \"source\": \"MOQ - 样品订单\"\n    },\n    {\n      \"name\": \"量产标准品MOQ (消费级通用规格, 普通客户)\",\n      \"value\": \"1000~5000片\",\n      \"source\": \"MOQ - 量产标准品\"\n    },\n    {\n      \"name\": \"量产标准品MOQ (消费级通用规格, 工业/安防客户)\",\n      \"value\": \"500片\",\n      \"source\": \"MOQ - 量产标准品\"\n    },\n    {\n      \"name\": \"量产标准品MOQ (特殊规格标准品, 普通客户)\",\n      \"value\": \"5000~10000片\",\n      \"source\": \"MOQ - 量产标准品\"\n    },\n    {\n      \"name\": \"定制化产品MOQ (普通客户)\",\n      \"value\": \"10000~20000片\",\n      \"source\": \"MOQ - 定制化产品\"\n    },\n    {\n      \"name\": \"定制化产品MOQ (头部品牌战略客户)\",\n      \"value\": \"可协商降低至500",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

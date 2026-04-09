@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ['BES系列芯片 (BES2500YP, BES2300)', 'QCC系列芯片 (QCC5141, QCC5181 S5 Gen2, QCC3040)']",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"ANC 方案选型（BES vs QCC）\",\n  \"product\": [\n    \"BES系列芯片 (BES2500YP, BES2300)\",\n    \"QCC系列芯片 (QCC5141, QCC5181 S5 Gen2, QCC3040)\"\n  ],\n  \"key_specs\": [\n    {\n      \"name\": \"BES主流方案最大ANC降噪深度\",\n      \"value\": \"50dB（自适应双馈降噪）\",\n      \"source\": \"Counterpoint 2024年Q1行业报告、芯片厂商公开参数及供应链批量采购数据\"\n    },\n    {\n      \"name\": \"QCC主流方案最大ANC降噪深度\",\n      \"value\": \"55dB（自适应多麦降噪+漏音抑制）\",\n      \"source\": \"Counterpoint 2024年Q1行业报告、芯片厂商公开参数及供应链批量采购数据\"\n    },\n    {\n      \"name\": \"BES主流方案通话降噪能力\",\n      \"value\": \"双麦+骨传导VPU算法，嘈杂环境识别率92%\",\n      \"source\": \"Counterpoint 2024年Q1行业报告、芯片厂商公开参数及供应链批量采购数据\"\n    },\n    {\n      \"name\": \"QCC主流方案通话降噪能力\",\n      \"value\": \"cVc 8.0/9.0算法，嘈杂环境识别率94%\",\n      \"source\": \"Counterpoint 2024年Q1行业报告、芯片厂商公开参数及供应链批量采购数据\"\n    },\n    {\n      \"name\": \"BES主流方案全链路游戏延迟\",\n      \"value\": \"最低8",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 车载10.1寸中控显示, 消费级AR眼镜",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案的完整 BOM 成本对比（含光学模组+驱动+结构件）\",\n  \"product\": \"车载10.1寸中控显示, 消费级AR眼镜\",\n  \"key_specs\": [\n    {\n      \"name\": \"车载10.1寸中控显示规格\",\n      \"value\": \"1920*1200分辨率, 1000nit亮度, DCI-P3 90%色域, 车规级可靠性\",\n      \"source\": \"Omdia 2024Q3车载显示BOM成本报告\"\n    },\n    {\n      \"name\": \"消费级AR眼镜规格\",\n      \"value\": \"FOV 45°, 入眼亮度400nit, 1080P双目显示\",\n      \"source\": \"IDC 2024消费级AR硬件成本白皮书\"\n    }\n  ],\n  \"suppliers\": [],\n  \"prices\": [\n    \"数据为2024年Q3 10K级以上大规模采购含税离岸价，小批量定制成本溢价30%-100%不等。\",\n    \"场景1：车载10.1寸中控显示\",\n    \"  MiniLED背光LCD方案总成本: 52.2美元 (区间46.3-57.9美元)\",\n    \"    光学模组: 37美元 (LCD面板20美元+MiniLED背光13.5美元+光学膜片3.5美元)\",\n    \"    驱动系统: 7美元 (TCON IC2美元+LED驱动IC2.7美元+电源IC1.3美元+FPC1美元)\",\n    \"    结构件: 8.2美元 (中框背板5美元+散热2.2美元+密封缓冲1美元)\",\n    \"  柔性AMOLED方案总成本: 60.5美元 (区间55.7-65.4美元)\",\n    \"    光学模组: 47.5美元 (AMOLED面板45美元",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

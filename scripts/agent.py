@@ -88,14 +88,28 @@ def handle_status(chat_id: str):
 
 def handle_monitor_scope(chat_id: str):
     """监控范围快速通道"""
-    scope_path = PROJECT_ROOT / ".ai-state" / "monitor_scope.json"
+    # 修复：读取正确的文件名
+    scope_path = PROJECT_ROOT / ".ai-state" / "competitor_monitor_config.json"
     if scope_path.exists():
         try:
             scope = json.loads(scope_path.read_text(encoding="utf-8"))
-            layers = scope.get("layers", [])
-            msg = f"📡 监控范围\n共 {len(layers)} 层：\n"
-            for i, layer in enumerate(layers[:6], 1):
-                msg += f"{i}. {layer.get('name', '未知')} ({len(layer.get('keywords', []))} 关键词)\n"
+            layers = scope.get("monitor_layers", {})
+            msg = f"📡 监控范围（6 层）\n\n"
+            for layer_key, layer_info in layers.items():
+                desc = layer_info.get("description", layer_key)
+                msg += f"【{desc}】\n"
+                # 品牌或主题
+                if "brands" in layer_info:
+                    brands = layer_info["brands"]
+                    msg += f"  品牌: {', '.join(brands[:5])}" + ("..." if len(brands) > 5 else "") + "\n"
+                if "topics" in layer_info:
+                    topics = layer_info["topics"]
+                    msg += f"  主题: {', '.join(topics[:5])}" + ("..." if len(topics) > 5 else "") + "\n"
+                # 搜索关键词（取前2个）
+                keywords = layer_info.get("search_keywords", [])[:2]
+                if keywords:
+                    msg += f"  关键词: {'; '.join(keywords)}\n"
+                msg += "\n"
             cli_send_message(msg, chat_id)
         except Exception as e:
             cli_send_message(f"⚠️ 监控范围解析失败: {e}", chat_id)

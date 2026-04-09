@@ -1261,6 +1261,85 @@
       "installed_by": "meta_capability",
       "usage_count": 0,
       "last_used": null
+    },
+    {
+      "name": "hud_vibration_optical_efficiency_simulator",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：模拟振动环境下不同 HUD 技术方案（重点支持 LCoS 与 Micro-LED）的光学效率衰减曲线，并输出稳定性对比结果。工具基于工程近似模型，将振动频率、加速度、位移、Q 值、安装刚度、阻尼、光学敏感度、共振偏置等参数映射为动态失准量，再计算光学效率随振动工况变化的衰减。支持单组参数、内置 LCoS/Micro-LED 典型方案、以及 CSV/Excel 批量输入；输出 CSV/Excel/JSON 结果，可用于验证两类方案在振动环境下的稳定性与敏感性边界。",
+      "invoke": "python .ai-state/tools/hud_vibration_optical_efficiency_simulator.py --compare-defaults --accel-g 3 --freq-start-hz 20 --freq-end-hz 500 --freq-step-hz 10 --output {output}",
+      "verify_cmd": "python .ai-state/tools/hud_vibration_optical_efficiency_simulator.py --test",
+      "dependencies": [
+        "numpy"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 18:18",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "micro_led_panel_spec_research",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：面向 Micro-LED 面板具体 PPI 与功耗数据补齐。支持通过供应商官网、行业报告页面、新闻稿、展会资料、搜索结果页进行公开网页采集；按关键词批量抓取页面并抽取面板尺寸、分辨率、PPI、亮度、功耗、功率密度、应用场景、供应商、来源链接与证据片段；支持从已知 URL 列表或关键词列表输入，输出 CSV/Excel/JSON，保留原始证据，辅助人工确认 Micro-LED 面板详细参数。",
+      "invoke": "python .ai-state/tools/micro_led_panel_spec_research.py --keywords-file {keywords_file} --urls-file {urls_file} --max-results 10 --out-prefix .ai-state/tools/output/micro_led_panel_spec_research",
+      "verify_cmd": "python .ai-state/tools/micro_led_panel_spec_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-06 18:18",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "microphone_wind_noise_performance_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理骨传导麦克风与波束成形麦克风阵列在高速风噪环境下的公开性能参数与对比证据。工具支持关键词搜索、网页抓取、Crossref 文献检索、页面文本抽取与规则化字段提取，重点抽取麦克风型号/方案类型、SNR、频率响应范围、风速、噪声环境、阵列数量、波束成形描述、语音清晰度/识别率指标、来源链接与证据片段，并导出 CSV/Excel/JSON，辅助补齐不同麦克风型号在高速风噪环境下的性能对比数据缺口。",
+      "invoke": "python .ai-state/tools/microphone_wind_noise_performance_research.py --query-file {input} --out-prefix outputs/microphone_wind_noise_performance_research",
+      "verify_cmd": "python .ai-state/tools/microphone_wind_noise_performance_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml openpyxl"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-08 01:21",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "dsp_voice_nr_power_perf_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理不同 DSP 芯片（如 Qualcomm QCC 系列、Actions ATS 系列）在语音降噪/语音处理场景下的公开功耗与处理能力对比数据。工具支持关键词搜索、网页抓取、页面文本抽取、规则化提取芯片型号、系列、语音降噪相关能力（ENC/ANC/AEC/NR/beamforming/KWS）、功耗数值与单位、主频/MIPS/DMIPS/MHz/核数等性能线索、场景标签与来源链接，输出 CSV/Excel 供后续人工研判与对比分析。",
+      "invoke": "python .ai-state/tools/dsp_voice_nr_power_perf_research.py --keywords \"Qualcomm QCC ENC power consumption\" \"Actions ATS voice DSP power\" --max-results 10 --out-dir output/dsp_voice_nr_power_perf_research",
+      "verify_cmd": "python .ai-state/tools/dsp_voice_nr_power_perf_research.py --test",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-08 01:22",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_price_acceptance_research",
+      "type": "write_script",
+      "path": ".ai-state/tools/helmet_price_acceptance_research.py",
+      "description": "命令行工具：补齐“市场对不同价位头盔产品的接受度调查”能力，重点支持 $200-$400 价位头盔的购买意愿数据采集与分析。工具支持三类能力：1) 生成可直接投放的价格接受度问卷模板（含 Gabor-Granger / Van Westendorp 风格题目与购买意愿题）；2) 汇总本地问卷结果 CSV/Excel，清洗并分析不同价格点（尤其 $200/$250/$300/$350/$400）的购买意愿、接受度分布、分人群交叉分析；3) 输出结构化 CSV/Excel 报告，辅助深度研究任务快速补齐 data_fetch 缺口。",
+      "invoke": "python .ai-state/tools/helmet_price_acceptance_research.py generate-template --output-dir .ai-state/tools/helmet_price_acceptance_template && python .ai-state/tools/helmet_price_acceptance_research.py analyze --input {input} --output {output}",
+      "verify_cmd": "python .ai-state/tools/helmet_price_acceptance_research.py --test --output-dir .ai-state/tools/test_output",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-08 01:23",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
     }
   ],
   "evolution_log": [
@@ -1754,6 +1833,36 @@
       "timestamp": "2026-04-06 10:01",
       "gap": "Mesh网络在复杂地形中的性能测试数据",
       "action": "registered mesh_terrain_performance_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 18:18",
+      "gap": "需要计算不同HUD技术方案在振动环境下的光学效率衰减曲线",
+      "action": "registered hud_vibration_optical_efficiency_simulator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-06 18:18",
+      "gap": "需要获取Micro-LED面板的具体PPI和功耗数据",
+      "action": "registered micro_led_panel_spec_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-08 01:21",
+      "gap": "骨传导麦克风和波束成形麦克风阵列的具体性能参数（如信噪比、频率响应范围）",
+      "action": "registered microphone_wind_noise_performance_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-08 01:22",
+      "gap": "不同DSP芯片（如QCC系列、ATS系列）的功耗和性能数据",
+      "action": "registered dsp_voice_nr_power_perf_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-08 01:23",
+      "gap": "市场对不同价位头盔产品的接受度调查",
+      "action": "registered helmet_price_acceptance_research (write_script)",
       "result": "success"
     }
   ]

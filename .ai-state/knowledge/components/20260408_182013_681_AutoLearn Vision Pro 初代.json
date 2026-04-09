@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ['Vision Pro (初代)', 'Vision Pro (低价版)', 'Vision Pro (第二代)', 'Meta Quest 3', '索尼PS VR2', '字节Pico新一代MR', '小米首款消费级MR', '入门款Pico', '千元级AR眼镜']",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"立讯精密的 AR/XR 代工经验和报价\",\n  \"product\": [\n    \"Vision Pro (初代)\",\n    \"Vision Pro (低价版)\",\n    \"Vision Pro (第二代)\",\n    \"Meta Quest 3\",\n    \"索尼PS VR2\",\n    \"字节Pico新一代MR\",\n    \"小米首款消费级MR\",\n    \"入门款Pico\",\n    \"千元级AR眼镜\"\n  ],\n  \"key_specs\": [\n    {\n      \"name\": \"XR整机组装业务布局时间\",\n      \"value\": \"2020年\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"苹果Vision Pro初代独家代工厂\",\n      \"value\": \"是\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"苹果Vision Pro后续版本组装份额\",\n      \"value\": \"超70%\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"Meta Quest 3代工厂份额\",\n      \"value\": \"约30% (第二大代工厂)\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"索尼PS VR2代工厂份额\",\n      \"value\": \"约20% (核心代工厂)\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"技术能力\",\n      \"value\": \"XR设备高复杂度校准、精密结构件配套、散热模组集成、光学模块",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

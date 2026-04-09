@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ['韶音OpenRun Pro', '南卡Runner Pro4']",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"骑行风噪环境下两种方案的 SNR 对比\",\n  \"product\": [\n    \"韶音OpenRun Pro\",\n    \"南卡Runner Pro4\"\n  ],\n  \"key_specs\": [\n    {\n      \"name\": \"方案A类型\",\n      \"value\": \"普通消费级半入耳蓝牙耳机\",\n      \"description\": \"搭载双麦ENC+传统频域风噪抑制算法\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"方案B类型\",\n      \"value\": \"专业骑行骨传导耳机\",\n      \"description\": \"搭载双防风硅麦阵列+AI时域风噪抑制模型+振子防漏音算法\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"测试基准背景底噪\",\n      \"value\": \"55\",\n      \"unit\": \"dB\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"SNR可用性阈值\",\n      \"value\": \"<10\",\n      \"unit\": \"dB\",\n      \"description\": \"人声可辨识度低于60%，基本不可用\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"通话上行SNR\",\n      \"value\": \"12~15\",\n      \"unit\": \"dB\",\n      \"scheme\": \"方案A\",\n      \"wind_speed\": \"3级风 (5m/s, ≈19km/h)\",\n      \"scenario\": \"休闲骑\"",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

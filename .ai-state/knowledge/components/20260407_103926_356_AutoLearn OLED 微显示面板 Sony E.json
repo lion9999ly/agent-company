@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] OLED 微显示面板 (Sony ECX系列, 京东方0.39英寸/0.5英寸全系列)",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"OLED 微显示面板供应商交期和 MOQ（Sony ECX 系列 vs 京东方）\",\n  \"product\": \"OLED 微显示面板 (Sony ECX系列, 京东方0.39英寸/0.5英寸全系列)\",\n  \"key_specs\": [\n    {\n      \"name\": \"Sony ECX系列 - MOQ - 原厂直供 (消费级年框项目)\",\n      \"value\": \"10k-20k片/年, 单批次不低于1k片\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - MOQ - 原厂直供 (车规级年框项目)\",\n      \"value\": \"30k-50k片/年, 单批次不低于1k片\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - MOQ - 授权代理批量采购 (标准品)\",\n      \"value\": \"100-500片/批次\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - MOQ - 授权代理散单拿样\",\n      \"value\": \"1-5片/批次\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - MOQ - 定制化参数\",\n      \"value\": \"不低于50k片/年\",\n      \"source\": \"Sony ECX系列\"\n    },\n    {\n      \"name\": \"Sony ECX系列 - 交期 - 常规消费级标准品新订单\",",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

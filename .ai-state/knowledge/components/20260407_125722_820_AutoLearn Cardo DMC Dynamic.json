@@ -1,12 +1,20 @@
 {
   "title": "[AutoLearn] Cardo DMC (Dynamic Mesh Communication)",
   "domain": "components",
-  "content": "{\n  \"topic\": \"Cardo DMC 授权费用和技术限制\",\n  \"product\": \"Cardo DMC (Dynamic Mesh Communication)\",\n  \"key_specs\": [\n    {\n      \"name\": \"授权模式\",\n      \"value\": \"一次性基础授权费+按出货量计提的特许权使用费（Royalty）\",\n      \"source\": \"一、公开可查的授权费用参考\"\n    },\n    {\n      \"name\": \"应用场景限定\",\n      \"value\": \"授权范围严格绑定申请时的使用场景，跨场景需额外付费授权\",\n      \"source\": \"二、（一）1\"\n    },\n    {\n      \"name\": \"禁止反向开发\",\n      \"value\": \"不得拆解、逆向工程DMC核心算法，不得基于DMC技术开发自有网状通讯产品与Cardo竞争\",\n      \"source\": \"二、（一）2\"\n    },\n    {\n      \"name\": \"兼容性强制要求\",\n      \"value\": \"授权产品必须无条件兼容Cardo全系列自有DMC设备\",\n      \"source\": \"二、（一）3\"\n    },\n    {\n      \"name\": \"民用版组网规模上限\",\n      \"value\": \"15个用户\",\n      \"source\": \"二、（二）1\"\n    },\n    {\n      \"name\": \"企业级组网规模上限\",\n      \"value\": \"40个用户\",\n      \"source\": \"二、（二）1\"\n    },\n    {\n      \"name\": \"对讲延迟 (≤15人)\",\n      \"value\": \"<10ms",
+  "content": "{\n  \"topic\": \"Cardo Packtalk app interface screenshot 2026\",\n  \"product\": \"Cardo Packtalk app (2026 iteration)\",\n  \"key_specs\": [\n    {\n      \"name\": \"Ride Group Dashboard member limit\",\n      \"value\": \"Up to 25 intercom group members (increased from 15 in 2024 version)\",\n      \"source\": \"Official Cardo product roadmaps disclosed at CES 2024 and its 2023 investor briefing\"\n    },\n    {\n      \"name\": \"Infotainment system sync\",\n      \"value\": \"Native sync with motorcycle infotainment systems via Android Auto/Apple CarPlay integration\",\n      \"source\": \"Official Cardo product roadmaps disclosed at CES 2024 and its 2023 investor briefing\"\n    },\n    {\n      \"name\": \"AI ride assistant\",\n      \"value\": \"Dedicated tab with one-click access to automatic audio adjustment, weather hazard alerts, an",
   "source": "auto_learn",
-  "created_at": "2026-04-07",
+  "created_at": "2026-04-08",
   "tags": [
     "auto_learn",
+    "research_pool",
     "decision_blocking"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "_history": [
+    {
+      "content": "{\n  \"topic\": \"Cardo DMC 授权费用和技术限制\",\n  \"product\": \"Cardo DMC (Dynamic Mesh Communication)\",\n  \"key_specs\": [\n    {\n      \"name\": \"授权模式\",\n      \"value\": \"一次性基础授权费+按出货量计提的特许权使用费（Royalty）\",\n      \"source\": \"一、公开可查的授权费用参考\"\n    },\n    {\n      \"name\": \"应用场景限定\",\n      \"value\": \"授权范围严格绑定申请时的使用场景，跨场景需额外付费授权\",\n      \"source\": \"二、（一）1\"\n    },\n    {\n      \"name\": \"禁止反向开发\",\n      \"value\": \"不得拆解、逆向工程DMC核心算法，不得基于DMC技术开发自有网状通讯产品与Cardo竞争\",\n      \"source\": \"二、（一）2\"\n    },\n    {\n      \"name\": \"兼容性强制要求\",\n      \"value\": \"授权产品必须无条件兼容Cardo全系列自有DMC设备\",\n      \"source\": \"二、（一）3\"\n    },\n    {\n      \"name\": \"民用版组网规模上限\",\n      \"value\": \"15个用户\",\n      \"source\": \"二、（二）1\"\n    },\n    {\n      \"name\": \"企业级组网规模上限\",\n      \"value\": \"40个用户\",\n      \"source\": \"二、（二）1\"\n    },\n    {\n      \"name\": \"对讲延迟 (≤15人)\",\n      \"value\": \"<10ms",
+      "date": "2026-04-07",
+      "confidence": "medium"
+    }
+  ]
 }

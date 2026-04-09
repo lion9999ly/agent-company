@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ['VR整机', 'AR整机', 'VR头盔', 'AR眼镜', 'MR头盔']",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"歌尔头盔/AR 产品线的实际产能和报价\",\n  \"product\": [\n    \"VR整机\",\n    \"AR整机\",\n    \"VR头盔\",\n    \"AR眼镜\",\n    \"MR头盔\"\n  ],\n  \"key_specs\": [\n    {\n      \"name\": \"VR整机标称年产能\",\n      \"value\": \"约1800万台\",\n      \"source\": \"公开财报、投资者交流记录、第三方行业调研机构报告\"\n    },\n    {\n      \"name\": \"VR整机2023年实际出货\",\n      \"value\": \"约1100万台\",\n      \"source\": \"公开财报、投资者交流记录、第三方行业调研机构报告\"\n    },\n    {\n      \"name\": \"VR整机2023年产能利用率\",\n      \"value\": \"约61%\",\n      \"source\": \"公开财报、投资者交流记录、第三方行业调研机构报告\"\n    },\n    {\n      \"name\": \"VR整机2024年预计出货\",\n      \"value\": \"1500~1600万台\",\n      \"source\": \"公开财报、投资者交流记录、第三方行业调研机构报告\"\n    },\n    {\n      \"name\": \"VR整机2024年预计产能利用率\",\n      \"value\": \"80%以上\",\n      \"source\": \"公开财报、投资者交流记录、第三方行业调研机构报告\"\n    },\n    {\n      \"name\": \"VR整机产能分布\",\n      \"value\": \"山东潍坊、越南南北部工业园区\",\n      \"source\": \"公开财报、投资者交流记录、第三方行业调研机构",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

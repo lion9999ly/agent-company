@@ -53,6 +53,16 @@ def handle_command(text: str, reply_target: str, reply_type: str, open_id: str, 
         _handle_evolution_log(reply_target, send_reply)
         return True
 
+    # === Token 统计 ===
+    if text_lower in ("token", "tokens", "用量", "token统计", "api用量", "api统计"):
+        _handle_token_stats(reply_target, send_reply)
+        return True
+
+    # === 日志查看 ===
+    if text_lower in ("日志", "最近日志", "log", "logs", "运行日志"):
+        _handle_view_logs(reply_target, send_reply)
+        return True
+
     # === 知识库统计 ===
     if text_stripped in ("知识库统计", "kb stats", "统计"):
         _handle_kb_stats(reply_target, send_reply)
@@ -236,6 +246,82 @@ def _handle_kb_stats(reply_target: str, send_reply):
         send_reply(reply_target, msg)
     except Exception as e:
         send_reply(reply_target, f"❌ 获取统计失败: {e}")
+
+
+def _handle_view_logs(reply_target: str, send_reply):
+    """处理日志查看"""
+    log_file = PROJECT_ROOT / ".ai-state" / "feishu_debug.log"
+
+    if not log_file.exists():
+        send_reply(reply_target, "📝 暂无日志文件")
+        return
+
+    try:
+        content = log_file.read_text(encoding='utf-8')
+        lines = content.strip().split('\n')
+
+        if not lines:
+            send_reply(reply_target, "📝 日志文件为空")
+            return
+
+        # 取最后 50 行
+        recent_lines = lines[-50:] if len(lines) > 50 else lines
+        log_text = '\n'.join(recent_lines)
+
+        # 飞书单条消息限制约 4000 字符，截取最后 2000
+        if len(log_text) > 2000:
+            log_text = log_text[-2000:]
+            log_text = "...(已截取最后2000字符)\n" + log_text
+
+        # 添加标题
+        msg = f"📋 最近运行日志\n（共 {len(lines)} 行，显示最后 {len(recent_lines)} 行）\n\n{log_text}"
+        send_reply(reply_target, msg)
+
+    except Exception as e:
+        send_reply(reply_target, f"❌ 读取日志失败: {e}")
+
+
+def _handle_token_stats(reply_target: str, send_reply):
+    """处理 Token 统计"""
+    try:
+        from src.utils.token_usage_tracker import get_tracker
+        tracker = get_tracker()
+
+        # 获取最近 7 天统计
+        stats = tracker.get_stats(days=7)
+
+        # 构建报告
+        lines = ["💰 API Token 使用统计\n"]
+
+        # 总体统计
+        lines.append(f"**统计周期**: {stats['period']} ({stats['start_date']} ~ {stats['end_date']})")
+        lines.append(f"**总调用**: {stats['total_calls']} 次 (成功 {stats['success_calls']}, 失败 {stats['failed_calls']})")
+        lines.append(f"**总Token**: {stats['total_tokens']:,}")
+        lines.append(f"**估算成本**: ${stats['total_cost']:.4f}")
+        lines.append("")
+
+        # 模型排名（前 10）
+        model_ranking = tracker.get_model_ranking(days=7)
+        if model_ranking:
+            lines.append("**模型使用排名**:")
+            for i, m in enumerate(model_ranking[:10], 1):
+                lines.append(f"  {i}. {m['model']}: {m['calls']} 次, {m['tokens']:,} tokens, ${m['cost']:.4f}")
+            lines.append("")
+
+        # 今日统计
+        today_stats = tracker.get_today_stats()
+        if today_stats['total_calls'] > 0:
+            lines.append("**今日统计**:")
+            lines.append(f"  调用: {today_stats['total_calls']} 次")
+            lines.append(f"  Token: {today_stats['total_tokens']:,}")
+            lines.append(f"  成本: ${today_stats['total_cost']:.4f}")
+
+        send_reply(reply_target, "\n".join(lines))
+
+    except Exception as e:
+        import traceback
+        print(f"[TokenStats] Error: {traceback.format_exc()}")
+        send_reply(reply_target, f"❌ Token统计失败: {e}")
 
 
 def _handle_system_status(reply_target: str, send_reply):

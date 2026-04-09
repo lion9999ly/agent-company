@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 智能骑行头盔",
+  "domain": "standards",
+  "content": "{\n  \"topic\": \"智能骑行头盔 standards 最新技术 供应商 2026\",\n  \"product\": \"智能骑行头盔\",\n  \"key_specs\": [\n    {\n      \"name\": \"摔倒报警响应时间\",\n      \"value\": \"≤3s\",\n      \"source\": \"GB/T 43160-2023\"\n    },\n    {\n      \"name\": \"电子部件防水等级\",\n      \"value\": \"≥IPX4\",\n      \"source\": \"GB/T 43160-2023\"\n    },\n    {\n      \"name\": \"蓝牙辐射SAR值\",\n      \"value\": \"≤2W/kg\",\n      \"source\": \"GB/T 43160-2023\"\n    },\n    {\n      \"name\": \"-10℃低温环境下电子功能衰减\",\n      \"value\": \"≤20%\",\n      \"source\": \"GB/T 43160-2023\"\n    },\n    {\n      \"name\": \"CPSC标准摔倒检测准确率 (2026)\",\n      \"value\": \"≥95%\",\n      \"source\": \"CPSC专项规范\"\n    },\n    {\n      \"name\": \"CPSC标准误报率 (2026)\",\n      \"value\": \"≤1%\",\n      \"source\": \"CPSC专项规范\"\n    },\n    {\n      \"name\": \"MIPS Integra抗扭转防护效率提升\",\n      \"value\": \"32%\",\n      \"source\": \"MIPS Integra技术\"\n    },\n    {\n      \"nam",
+  "source": "auto_learn",
+  "created_at": "2026-04-07",
+  "tags": [
+    "auto_learn",
+    "domain_gap"
+  ],
+  "confidence": "medium"
+}

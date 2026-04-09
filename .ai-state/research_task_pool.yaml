@@ -110,3 +110,34 @@
   - group ride app feature requirements
   source: demo_prep
   title: App 信息架构 v0.1
+# === Day 17 新增任务 ===
+- goal: 研究 HUD 光学模组的散热设计，包括 OLED/MicroLED 的热管理方案、光波导的热影响、头盔内通风设计对模组的影响。
+  id: hud_thermal_design
+  priority: 1
+  searches:
+  - HUD optical module thermal design helmet
+  - OLED micro display thermal management
+  - waveguide heat dissipation AR
+  - motorcycle helmet ventilation HUD integration
+  source: product_rnd
+  title: HUD 光学模组散热设计研究
+- goal: 调研摩托车头盔电池安全标准，包括锂电池在头盔中的应用规范、安全认证要求、防护设计标准。
+  id: helmet_battery_safety
+  priority: 1
+  searches:
+  - motorcycle helmet battery safety standard
+  - lithium battery helmet safety certification
+  - wearable battery safety regulation
+  - helmet battery protection design
+  source: product_rnd
+  title: 头盔电池安全标准研究
+- goal: 研究 HUD 显示的视野角度（FOV）最佳参数，包括人眼视角极限、骑行姿态下的最佳显示区域、信息可读性 vs 安全性平衡。
+  id: hud_fov_optimization
+  priority: 2
+  searches:
+  - HUD field of view optimal degrees motorcycle
+  - human eye viewing angle limit HUD
+  - helmet display position safety study
+  - AR display FOV rider experience
+  source: product_rnd
+  title: HUD 视野角度优化研究

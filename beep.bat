@@ -1,3 +1,2 @@
 @echo off
-:: 使用 Windows 内置扬声器蜂鸣
-powershell -c "[console]::Beep(800, 200); [console]::Beep(1000, 300)"
+powershell -c "[System.Media.SystemSounds]::Exclamation.Play(); Start-Sleep -Milliseconds 500; [System.Media.SystemSounds]::Exclamation.Play()"

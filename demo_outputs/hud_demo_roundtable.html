@@ -1,2039 +1,1431 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>HUD Demo</title>
-<style>
-  :root{
-    --bg:#000000;
-    --fg:#f5f7fa;
-    --muted:rgba(255,255,255,.58);
-    --line:rgba(255,255,255,.12);
-    --panel:rgba(255,255,255,.06);
-
-    --nav:#4A90E2;
-    --warn:#FF3B30;
-    --team:#5AC8FA;
-    --music:#AF52DE;
-    --ok:#34C759;
-    --amber:#FFCC00;
-
-    --zone-pad:24px;
-    --zone-gap:18px;
-    --corner-radius:18px;
-
-    --safe-center-w:38vw;
-    --safe-center-h:42vh;
-
-    --font-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    --glow-nav:0 0 10px rgba(74,144,226,.45),0 0 24px rgba(74,144,226,.18);
-    --glow-warn:0 0 10px rgba(255,59,48,.65),0 0 28px rgba(255,59,48,.28);
-    --glow-team:0 0 10px rgba(90,200,250,.45),0 0 24px rgba(90,200,250,.18);
-    --glow-music:0 0 10px rgba(175,82,222,.45),0 0 24px rgba(175,82,222,.18);
-
-    --mode-blur:0px;
-    --mode-sat:1;
-    --mode-bright:1;
-  }
-
-  *{box-sizing:border-box}
-  html,body{
-    width:100%;
-    height:100%;
-    margin:0;
-    background:#000;
-    color:var(--fg);
-    font-family:var(--font-ui);
-    overflow:hidden;
-  }
-
-  body{
-    display:block;
-  }
-
-  #hud-container{
-    position:relative;
-    width:100vw;
-    height:100vh;
-    background:
-      radial-gradient(1200px 700px at 50% 50%, rgba(255,255,255,.03), transparent 58%),
-      linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
-    isolation:isolate;
-    overflow:hidden;
-    filter:saturate(var(--mode-sat)) brightness(var(--mode-bright));
-  }
-
-  #hud-container::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    background:
-      linear-gradient(90deg, rgba(255,255,255,.03), transparent 12%, transparent 88%, rgba(255,255,255,.03)),
-      linear-gradient(180deg, rgba(255,255,255,.02), transparent 10%, transparent 90%, rgba(255,255,255,.02));
-    opacity:.35;
-  }
-
-  #hud-container::after{
-    content:"";
-    position:absolute;
-    left:50%;
-    top:50%;
-    width:var(--safe-center-w);
-    height:var(--safe-center-h);
-    transform:translate(-50%,-50%);
-    border-radius:28px;
-    pointer-events:none;
-    background:transparent;
-    box-shadow:0 0 0 1px rgba(255,255,255,.03) inset;
-    opacity:.18;
-  }
-
-  .hud-top-hint{
-    position:absolute;
-    top:14px;
-    left:50%;
-    transform:translateX(-50%);
-    min-width:220px;
-    max-width:42vw;
-    padding:8px 14px;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,.05);
-    backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);
-    text-align:center;
-    font-size:14px;
-    line-height:1.2;
-    color:var(--muted);
-    letter-spacing:.04em;
-    pointer-events:none;
-    z-index:20;
-  }
-
-  .zone{
-    position:absolute;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    padding:14px 16px;
-    border-radius:var(--corner-radius);
-    border:1px solid var(--line);
-    background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-    backdrop-filter:blur(calc(10px + var(--mode-blur)));
-    -webkit-backdrop-filter:blur(calc(10px + var(--mode-blur)));
-    box-shadow:
-      0 8px 30px rgba(0,0,0,.28),
-      0 0 0 1px rgba(255,255,255,.02) inset;
-    z-index:10;
-    overflow:hidden;
-  }
-
-  .zone::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    background:linear-gradient(180deg, rgba(255,255,255,.06), transparent 40%);
-    opacity:.45;
-  }
-
-  #lt-zone{
-    top:var(--zone-pad);
-    left:var(--zone-pad);
-    width:min(22vw, 280px);
-    min-height:120px;
-    align-items:flex-start;
-  }
-
-  #rt-zone{
-    top:var(--zone-pad);
-    right:var(--zone-pad);
-    width:min(22vw, 280px);
-    min-height:120px;
-    align-items:flex-end;
-    text-align:right;
-  }
-
-  #lb-zone{
-    left:var(--zone-pad);
-    bottom:calc(var(--zone-pad) + 72px);
-    width:min(24vw, 320px);
-    min-height:110px;
-    align-items:flex-start;
-  }
-
-  #rb-zone{
-    right:var(--zone-pad);
-    bottom:calc(var(--zone-pad) + 72px);
-    width:min(30vw, 420px);
-    min-height:150px;
-    align-items:flex-end;
-    text-align:right;
-    border-color:rgba(74,144,226,.28);
-    box-shadow:
-      0 8px 30px rgba(0,0,0,.28),
-      0 0 0 1px rgba(74,144,226,.12) inset,
-      var(--glow-nav);
-  }
-
-  .zone-title{
-    position:relative;
-    z-index:1;
-    font-size:12px;
-    line-height:1;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--muted);
-  }
-
-  .zone-main{
-    position:relative;
-    z-index:1;
-    font-size:28px;
-    line-height:1.05;
-    font-weight:700;
-    letter-spacing:.01em;
-  }
-
-  .zone-sub{
-    position:relative;
-    z-index:1;
-    font-size:14px;
-    line-height:1.35;
-    color:var(--muted);
-  }
-
-  .speed-row{
-    display:flex;
-    align-items:flex-end;
-    gap:10px;
-  }
-
-  .speed-value{
-    font-size:54px;
-    line-height:.9;
-    font-weight:800;
-    letter-spacing:-.03em;
-  }
-
-  .speed-unit{
-    font-size:16px;
-    color:var(--muted);
-    padding-bottom:6px;
-  }
-
-  .state-chip-row{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-  }
-
-  .chip{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-width:42px;
-    height:26px;
-    padding:0 10px;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,.05);
-    font-size:12px;
-    color:var(--muted);
-  }
-
-  .chip.active{
-    color:#fff;
-    border-color:rgba(255,255,255,.22);
-    background:rgba(255,255,255,.12);
-  }
-
-  .chip.nav{ border-color:rgba(74,144,226,.35); color:#cfe4ff; }
-  .chip.team{ border-color:rgba(90,200,250,.35); color:#d8f5ff; }
-  .chip.music{ border-color:rgba(175,82,222,.35); color:#f0d8ff; }
-  .chip.warn{ border-color:rgba(255,59,48,.45); color:#ffd8d4; }
-
-  .device-stack,
-  .info-stack{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    width:100%;
-  }
-
-  .device-item,
-  .info-item{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    width:100%;
-    font-size:14px;
-    color:var(--muted);
-  }
-
-  #rt-zone .device-item{
-    justify-content:flex-end;
-  }
-
-  .label{
-    opacity:.8;
-  }
-
-  .value{
-    color:var(--fg);
-    font-weight:600;
-  }
-
-  .nav-primary{
-    font-size:42px;
-    line-height:1;
-    font-weight:800;
-    color:#dcebff;
-    text-shadow:var(--glow-nav);
-  }
-
-  .nav-secondary{
-    font-size:16px;
-    color:rgba(255,255,255,.72);
-  }
-
-  .nav-distance{
-    font-size:22px;
-    color:var(--nav);
-    font-weight:700;
-  }
-
-  .music-main{
-    color:#f2ddff;
-    text-shadow:var(--glow-music);
-  }
-
-  .team-main{
-    color:#dff6ff;
-    text-shadow:var(--glow-team);
-  }
-
-  .warning-main{
-    color:#ffe1de;
-    text-shadow:var(--glow-warn);
-  }
-
-  .hidden{
-    display:none !important;
-  }
-
-  .warning-flash{
-    animation:zoneFlash .42s steps(2,end) 4;
-  }
-
-  @keyframes zoneFlash{
-    0%{
-      border-color:rgba(255,59,48,.25);
-      box-shadow:
-        0 8px 30px rgba(0,0,0,.28),
-        0 0 0 1px rgba(255,59,48,.08) inset,
-        0 0 0 rgba(255,59,48,0);
-      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-    }
-    50%{
-      border-color:rgba(255,59,48,.95);
-      box-shadow:
-        0 8px 30px rgba(0,0,0,.28),
-        0 0 0 1px rgba(255,59,48,.35) inset,
-        0 0 18px rgba(255,59,48,.55),
-        0 0 42px rgba(255,59,48,.22);
-      background:linear-gradient(180deg, rgba(255,59,48,.22), rgba(255,59,48,.08));
-    }
-    100%{
-      border-color:rgba(255,59,48,.25);
-      box-shadow:
-        0 8px 30px rgba(0,0,0,.28),
-        0 0 0 1px rgba(255,59,48,.08) inset,
-        0 0 0 rgba(255,59,48,0);
-      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-    }
-  }
-
-  #timeline-bar{
-    position:absolute;
-    left:50%;
-    bottom:18px;
-    transform:translateX(-50%);
-    width:min(62vw, 860px);
-    height:18px;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,.06);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    z-index:30;
-    overflow:hidden;
-  }
-
-  #timeline-bar::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:rgba(255,255,255,.08);
-    border-radius:999px;
-  }
-
-  .timeline-fill{
-    position:absolute;
-    left:0;
-    top:0;
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg, rgba(74,144,226,.75), rgba(90,200,250,.55));
-    border-radius:999px;
-    box-shadow:var(--glow-nav);
-    transition:width 0.15s ease-out;
-  }
-
-  #control-panel,
-  #sandbox-panel{
-    position:absolute;
-    right:18px;
-    width:min(360px, 32vw);
-    border-radius:18px;
-    border:1px solid var(--line);
-    background:rgba(10,10,12,.72);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    box-shadow:0 12px 40px rgba(0,0,0,.35);
-    color:var(--fg);
-    z-index:40;
-    padding:14px;
-    display:none;
-  }
-
-  #control-panel{
-    top:72px;
-    min-height:180px;
-  }
-
-  #sandbox-panel{
-    top:270px;
-    min-height:120px;
-  }
-
-  #control-panel.visible,
-  #sandbox-panel.visible{
-    display:block;
-  }
-
-  .panel-title{
-    font-size:13px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin-bottom:10px;
-  }
-
-  .panel-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    margin:8px 0;
-    font-size:14px;
-  }
-
-  .panel-pill{
-    padding:6px 10px;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,.05);
-    color:var(--fg);
-  }
-
-  .mode-a{
-    --mode-blur:0px;
-    --mode-sat:1;
-    --mode-bright:1;
-  }
-
-  .mode-b{
-    --mode-blur:2px;
-    --mode-sat:0.85;
-    --mode-bright:1.08;
-    --accent:#00ff88;
-    --line:rgba(0,255,136,.15);
-    --bg:rgba(0,20,8,.75);
-  }
-
-  /* B方案：全绿波导视觉效果 */
-  .mode-b #hud-container,
-  .mode-b .zone,
-  .mode-b #timeline-bar,
-  .mode-b .hud-top-hint,
-  .mode-b #control-panel,
-  .mode-b #sandbox-panel{
-    box-shadow:
-      0 8px 30px rgba(0,0,0,.28),
-      0 0 0 1px rgba(0,255,136,.08) inset,
-      0 0 18px rgba(0,255,136,.12);
-  }
-
-  /* B方案：滤除非绿色 */
-  .mode-b .zone-content,
-  .mode-b .zone-title,
-  .mode-b .zone-sub,
-  .mode-b .panel-title,
-  .mode-b .panel-row,
-  .mode-b .sandbox-btn{
-    filter:hue-rotate(0deg) saturate(1.2);
-    color:#00ff88 !important;
-  }
-
-  /* B方案：图标全绿 */
-  .mode-b .zone-icon,
-  .mode-b .zone-title svg,
-  .mode-b .icon-svg{
-    filter:drop-shadow(0 0 4px rgba(0,255,136,.6));
-    color:#00ff88;
-  }
-
-  /* B方案：背景泛绿 */
-  .mode-b .road-perspective{
-    opacity:0.12;
-    filter:sepia(0.3) hue-rotate(80deg);
-  }
-
-  /* B方案：预警仍为红 */
-  .mode-b .fcw-alert,
-  .mode-b [data-mode="ADAS"] .zone-icon{
-    color:#ff3b30 !important;
-    filter:drop-shadow(0 0 8px rgba(255,59,48,.8));
-  }
-
-  [data-speed="S2"] #lb-zone .music-optional,
-  [data-speed="S3"] #lb-zone .music-optional{
-    display:none !important;
-  }
-
-  [data-speed="S3"] #lb-zone{
-    opacity:.72;
-  }
-
-  [data-speed="S3"] #rt-zone .device-item.optional,
-  [data-speed="S3"] #lt-zone .zone-sub.optional{
-    opacity:.45;
-  }
-
-  .center-safe-mask{
-    position:absolute;
-    left:50%;
-    top:50%;
-    width:var(--safe-center-w);
-    height:var(--safe-center-h);
-    transform:translate(-50%,-50%);
-    pointer-events:none;
-    z-index:5;
-    background:
-      radial-gradient(circle at center, rgba(0,0,0,0) 0 62%, rgba(0,0,0,.02) 100%);
-  }
-
-  /* === 1. 中央路景底图 === */
-  .road-perspective{
-    position:absolute;
-    left:50%;
-    top:40%;
-    width:60%;
-    height:50%;
-    transform:translate(-50%, 0);
-    pointer-events:none;
-    z-index:1;
-    opacity:0.18;
-    background:
-      /* 路面渐变 */
-      linear-gradient(180deg, transparent 0%, #1a1a1a 30%, #0a0a0a 100%);
-    overflow:hidden;
-  }
-  .road-perspective::before{
-    content:"";
-    position:absolute;
-    left:50%;
-    bottom:0;
-    width:2px;
-    height:100%;
-    transform:translateX(-50%);
-    background:linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.3) 100%);
-  }
-  .road-perspective::after{
-    content:"";
-    position:absolute;
-    left:50%;
-    bottom:0;
-    width:0;
-    height:0;
-    transform:translateX(-50%);
-    border-left:80px solid transparent;
-    border-right:80px solid transparent;
-    border-bottom:100% solid transparent;
-    border-bottom-color:rgba(255,255,255,0.03);
-    clip-path:polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%);
-  }
-  .lane-line{
-    position:absolute;
-    bottom:0;
-    width:2px;
-    height:100%;
-    background:repeating-linear-gradient(180deg, rgba(255,255,255,0.4) 0 20px, transparent 20px 40px);
-    transform-origin:bottom center;
-  }
-  .lane-line.left{
-    left:calc(50% - 80px);
-    transform:rotate(-12deg);
-  }
-  .lane-line.right{
-    right:calc(50% - 80px);
-    transform:rotate(12deg);
-  }
-  /* 中央虚线 */
-  .lane-line.center{
-    left:50%;
-    right:auto;
-    transform:translateX(-50%) rotate(0deg);
-    width:1px;
-    background:repeating-linear-gradient(180deg, rgba(255,255,255,0.25) 0 15px, transparent 15px 30px);
-  }
-
-  /* === 2. 头盔护目镜边框 === */
-  .visor-frame{
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    z-index:100;
-    background:
-      /* 顶部更暗 */
-      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(0,0,0,0.4) 0%, transparent 50%),
-      /* 底部更暗 */
-      radial-gradient(ellipse 120% 50% at 50% 100%, rgba(0,0,0,0.35) 0%, transparent 50%),
-      /* 左右边缘 */
-      radial-gradient(ellipse 50% 100% at 0% 50%, rgba(0,0,0,0.25) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 100% at 100% 50%, rgba(0,0,0,0.25) 0%, transparent 60%);
-  }
-  .visor-frame::before{
-    content:"";
-    position:absolute;
-    inset:8px;
-    border-radius:50% 50% 45% 45% / 60% 60% 40% 40%;
-    border:1px solid rgba(255,255,255,0.05);
-    pointer-events:none;
-  }
-
-  /* === 3. 中央前向碰撞预警 === */
-  .fcw-alert{
-    position:absolute;
-    top:25%;
-    left:50%;
-    transform:translateX(-50%);
-    z-index:50;
-    text-align:center;
-    animation:fcw-pulse 0.5s ease-in-out infinite alternate;
-  }
-  .fcw-alert .fcw-title{
-    font-size:32px;
-    font-weight:800;
-    color:#FF3B30;
-    text-shadow:0 0 30px rgba(255,59,48,0.8), 0 0 60px rgba(255,59,48,0.5);
-    letter-spacing:0.1em;
-  }
-  .fcw-alert .fcw-sub{
-    font-size:18px;
-    color:#FF6B5B;
-    margin-top:8px;
-    text-shadow:0 0 20px rgba(255,59,48,0.6);
-  }
-  @keyframes fcw-pulse{
-    0%{ opacity:1; transform:translateX(-50%) scale(1); }
-    100%{ opacity:0.7; transform:translateX(-50%) scale(1.02); }
-  }
-</style>
-</head>
-<body>
-  <div id="hud-container" class="mode-a" data-speed="S0" data-mode="BOOT">
-    <!-- 中央路景底图 -->
-    <div class="road-perspective" aria-hidden="true">
-      <div class="lane-line left"></div>
-      <div class="lane-line center"></div>
-      <div class="lane-line right"></div>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>HUD Demo</title><style>
+:root{
+  --bg:#050608;
+  --panel:rgba(255,255,255,.06);
+  --panel-strong:rgba(255,255,255,.1);
+  --line:rgba(255,255,255,.14);
+  --text:#FFFFFF;
+  --muted:rgba(255,255,255,.68);
+  --dim:rgba(255,255,255,.42);
+
+  --speed:#FFFFFF;
+  --nav:#4A90E2;
+  --adas:#FF3B30;
+  --mesh:#5AC8FA;
+  --music:#AF52DE;
+  --system:#FF9500;
+  --success:#34C759;
+
+  --hud-w:min(92vw,1100px);
+  --hud-h:min(58vw,620px);
+  --radius:28px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --shadow:0 20px 60px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--font);
+  background:
+    radial-gradient(circle at 50% 20%, rgba(74,144,226,.08), transparent 28%),
+    radial-gradient(circle at 80% 80%, rgba(175,82,222,.06), transparent 24%),
+    linear-gradient(180deg, #0a0c10 0%, #050608 100%);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:18px;
+  padding:20px;
+}
+
+#hud-container{
+  position:relative;
+  width:var(--hud-w);
+  height:var(--hud-h);
+  min-height:520px;
+  border-radius:var(--radius);
+  overflow:hidden;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
+    linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.28));
+  box-shadow:var(--shadow);
+  isolation:isolate;
+}
+
+#hud-container::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.03), transparent 18%, transparent 82%, rgba(255,255,255,.02)),
+    radial-gradient(circle at 50% 110%, rgba(255,255,255,.06), transparent 30%);
+  pointer-events:none;
+}
+
+#hud-container::after{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.06);
+  pointer-events:none;
+}
+
+.hud-top-strip{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:10%;
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 18px;
+  color:var(--muted);
+  font-size:13px;
+  letter-spacing:.04em;
+  z-index:3;
+}
+
+.hud-top-strip .status-left,
+.hud-top-strip .status-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.hud-center-empty{
+  position:absolute;
+  left:18%;
+  right:18%;
+  top:16%;
+  bottom:22%;
+  border-radius:24px;
+  pointer-events:none;
+}
+
+.hud-center-empty::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:24px;
+  border:1px dashed rgba(255,255,255,.04);
+  opacity:.35;
+}
+
+.hud-overlay-anchor{
+  position:absolute;
+  left:50%;
+  bottom:19%;
+  transform:translateX(-50%);
+  min-width:220px;
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:var(--text);
+  z-index:4;
+  pointer-events:none;
+}
+
+.zone{
+  position:absolute;
+  padding:10px 12px;
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
+  z-index:3;
+}
+
+.zone .zone-label{
+  display:block;
+  font-size:10px;
+  line-height:1;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--dim);
+  margin-bottom:6px;
+}
+
+.zone .zone-content{
+  font-size:14px;
+  line-height:1.25;
+  color:var(--text);
+  white-space:pre-line;
+}
+
+#lt-zone{
+  top:56px;
+  left:18px;
+  width:170px;
+  min-height:72px;
+}
+
+#rt-zone{
+  top:56px;
+  right:18px;
+  width:170px;
+  min-height:72px;
+  text-align:right;
+}
+
+#lb-zone{
+  left:18px;
+  bottom:18px;
+  width:220px;
+  min-height:92px;
+}
+
+#rb-zone{
+  right:18px;
+  bottom:18px;
+  width:220px;
+  min-height:92px;
+  text-align:right;
+}
+
+.hud-bottom-band{
+  position:absolute;
+  left:50%;
+  bottom:18px;
+  transform:translateX(-50%);
+  width:min(58%, 560px);
+  min-height:92px;
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 18px;
+  z-index:3;
+}
+
+.band-left,.band-right{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.band-title{
+  font-size:13px;
+  color:var(--muted);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.band-main{
+  font-size:28px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:.01em;
+}
+
+.band-sub{
+  font-size:14px;
+  color:var(--muted);
+}
+
+.band-speed{
+  font-size:42px;
+  font-weight:800;
+  line-height:1;
+  color:var(--speed);
+}
+
+.band-unit{
+  font-size:13px;
+  color:var(--dim);
+  margin-top:4px;
+}
+
+.mode-idle .band-main{color:var(--speed)}
+.mode-nav .band-main{color:var(--nav)}
+.mode-music .band-main{color:var(--music)}
+.mode-group .band-main{color:var(--mesh)}
+.mode-recording .band-main{color:var(--system)}
+
+.corner-dot{
+  display:inline-block;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  margin-right:6px;
+  vertical-align:middle;
+  background:currentColor;
+  box-shadow:0 0 10px currentColor;
+}
+
+.rec-badge{
+  color:var(--adas);
+  font-weight:700;
+  letter-spacing:.08em;
+}
+
+.mesh-badge{color:var(--mesh)}
+.nav-badge{color:var(--nav)}
+.music-badge{color:var(--music)}
+.sys-badge{color:var(--system)}
+
+.warning-flash{
+  animation:warningFlash .35s linear 4;
+}
+
+@keyframes warningFlash{
+  0%,100%{box-shadow:inset 0 0 0 1px rgba(255,255,255,.02), 0 0 0 rgba(255,59,48,0)}
+  50%{box-shadow:inset 0 0 0 1px rgba(255,255,255,.02), 0 0 0 2px rgba(255,59,48,.35), 0 0 24px rgba(255,59,48,.75)}
+}
+
+#timeline-bar{
+  width:var(--hud-w);
+  height:14px;
+  border-radius:999px;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.08);
+  overflow:hidden;
+  position:relative;
+}
+
+#timeline-bar::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  width:0%;
+  background:linear-gradient(90deg, var(--nav), var(--mesh), var(--music));
+}
+
+#control-panel,
+#sandbox-panel{
+  width:calc(var(--hud-w) / 2 - 9px);
+  min-height:120px;
+  border-radius:20px;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.08);
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+
+.panels{
+  width:var(--hud-w);
+  display:flex;
+  gap:18px;
+}
+
+.panel-title{
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:12px;
+}
+
+.button-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+button{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  color:var(--text);
+  border-radius:12px;
+  padding:10px 14px;
+  font:600 14px var(--font);
+  cursor:pointer;
+}
+
+button:hover{background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06))}
+button:active{transform:translateY(1px)}
+
+@media (max-width: 980px){
+  :root{--hud-h:min(72vw,620px)}
+  .panels{flex-direction:column}
+  #control-panel,#sandbox-panel{width:100%}
+  .hud-bottom-band{width:min(72%,560px)}
+}
+
+@media (max-width: 720px){
+  body{padding:12px}
+  #lt-zone,#rt-zone{width:140px}
+  #lb-zone,#rb-zone{width:180px}
+  .hud-bottom-band{width:calc(100% - 36px)}
+  .band-main{font-size:22px}
+  .band-speed{font-size:34px}
+}
+</style></head><body>
+<div id="hud-container" class="mode-idle">
+  <div class="hud-top-strip">
+    <div class="status-left">
+      <span><span class="corner-dot nav-badge"></span>GPS Ready</span>
+      <span><span class="corner-dot mesh-badge"></span>BT Connected</span>
     </div>
-
-    <!-- 头盔护目镜边框 -->
-    <div class="visor-frame" aria-hidden="true"></div>
-
-    <!-- 中央前向碰撞预警（默认隐藏） -->
-    <div class="fcw-alert" id="fcw-alert" style="display:none;">
-      <div class="fcw-title">前向碰撞预警</div>
-      <div class="fcw-sub">立即减速</div>
-    </div>
-
-    <div class="hud-top-hint" id="top-hint">语音、组队等轻提示</div>
-
-    <div id="lt-zone" class="zone">
-      <div class="zone-title">Speed / Ride State</div>
-      <div class="speed-row">
-        <div class="speed-value">0</div>
-        <div class="speed-unit">km/h</div>
-      </div>
-      <div class="state-chip-row">
-        <span class="chip active">S0</span>
-        <span class="chip">S1</span>
-        <span class="chip">S2</span>
-        <span class="chip">S3</span>
-      </div>
-      <div class="zone-sub optional">待机中，中央视野保持留空</div>
-    </div>
-
-    <div id="rt-zone" class="zone">
-      <div class="zone-title">Device</div>
-      <div class="device-stack">
-        <div class="device-item">
-          <span class="label">头盔</span>
-          <span class="value">已连接</span>
-        </div>
-        <div class="device-item">
-          <span class="label">手机</span>
-          <span class="value">在线</span>
-        </div>
-        <div class="device-item optional">
-          <span class="label">电量</span>
-          <span class="value">86%</span>
-        </div>
-      </div>
-    </div>
-
-    <div id="lb-zone" class="zone">
-      <div class="zone-title">Notify / Music</div>
-      <div class="zone-main music-main music-optional">正在播放：City Ride</div>
-      <div class="zone-sub music-optional">轻提示与通知在此收纳</div>
-      <div class="state-chip-row">
-        <span class="chip music">MUSIC</span>
-        <span class="chip team">TEAM</span>
-      </div>
-    </div>
-
-    <div id="rb-zone" class="zone">
-      <div class="zone-title">Navigation</div>
-      <div class="nav-primary">右转</div>
-      <div class="nav-distance">120 m</div>
-      <div class="nav-secondary">前往：科技园南门</div>
-    </div>
-
-    <div class="center-safe-mask" aria-hidden="true"></div>
-
-    <div id="timeline-bar" aria-label="timeline"></div>
-
-    <div id="control-panel">
-      <div class="panel-title">Control Panel</div>
-      <div class="panel-row"><span>Mode</span><span class="panel-pill">BOOT</span></div>
-      <div class="panel-row"><span>Speed</span><span class="panel-pill">S0</span></div>
-      <div class="panel-row"><span>Script</span><span class="panel-pill">Paused</span></div>
-    </div>
-
-    <div id="sandbox-panel">
-      <div class="panel-title">Sandbox</div>
-      <div class="panel-row"><span>ADAS</span><span class="panel-pill">Ready</span></div>
-      <div class="panel-row"><span>Optics</span><span class="panel-pill">A</span></div>
+    <div class="status-right">
+      <span>14:28</span>
+      <span>85%</span>
     </div>
   </div>
+
+  <div id="lt-zone" class="zone">
+    <span class="zone-label">Left Top</span>
+    <div class="zone-content">蓝牙已连接
+系统就绪</div>
+  </div>
+
+  <div id="rt-zone" class="zone">
+    <span class="zone-label">Right Top</span>
+    <div class="zone-content"><span class="rec-badge">REC</span> 待机
+电量 85%</div>
+  </div>
+
+  <div id="lb-zone" class="zone">
+    <span class="zone-label">Left Bottom</span>
+    <div class="zone-content">BSD
+左后安全</div>
+  </div>
+
+  <div id="rb-zone" class="zone">
+    <span class="zone-label">Right Bottom</span>
+    <div class="zone-content">组队 3 人
+信号稳定</div>
+  </div>
+
+  <div class="hud-center-empty"></div>
+  <div class="hud-overlay-anchor" id="overlay-anchor"></div>
+
+  <div class="hud-bottom-band">
+    <div class="band-left">
+      <div class="band-title">Main Info</div>
+      <div class="band-main">待机巡航</div>
+      <div class="band-sub">前方道路畅通</div>
+    </div>
+    <div class="band-right" style="align-items:flex-end;">
+      <div class="band-speed">0</div>
+      <div class="band-unit">km/h</div>
+    </div>
+  </div>
+</div>
+
+<div id="timeline-bar" aria-label="timeline"></div>
+
+<div class="panels">
+  <div id="control-panel">
+    <div class="panel-title">Controls</div>
+    <div class="button-row">
+      <button type="button">播放 / 暂停</button>
+      <button type="button">上一场景</button>
+      <button type="button">下一场景</button>
+      <button type="button">停止</button>
+    </div>
+  </div>
+
+  <div id="sandbox-panel">
+    <div class="panel-title">Sandbox</div>
+    <div class="button-row">
+      <button type="button">IDLE</button>
+      <button type="button">NAV</button>
+      <button type="button">MUSIC</button>
+      <button type="button">GROUP</button>
+      <button type="button">REC</button>
+      <button type="button">ADAS</button>
+      <button type="button">CALL</button>
+      <button type="button">CLEAR</button>
+    </div>
+  </div>
+</div>
 <script>
 
 (() => {
-  const MODE_BOOT = 'BOOT';
-  const MODE_IDLE = 'IDLE';
-  const MODE_NAV = 'NAV';
-  const MODE_TEAM = 'TEAM';
-  const MODE_CRUISE = 'CRUISE';
-  const MODE_PARKED = 'PARKED';
-  const MODE_SUMMARY = 'SUMMARY';
+  const MODE_IDLE = 'MODE_IDLE';
+  const MODE_NAVIGATING = 'MODE_NAVIGATING';
+  const MODE_MUSIC_PLAYING = 'MODE_MUSIC_PLAYING';
+  const MODE_GROUP_TALKING = 'MODE_GROUP_TALKING';
+  const MODE_RECORDING = 'MODE_RECORDING';
+  const MODE_ADAS_ALERT = 'MODE_ADAS_ALERT';
+  const MODE_INCOMING_CALL = 'MODE_INCOMING_CALL';
 
   const SPEED_S0 = 'S0';
   const SPEED_S1 = 'S1';
   const SPEED_S2 = 'S2';
   const SPEED_S3 = 'S3';
 
-  const MODES = [MODE_BOOT, MODE_IDLE, MODE_NAV, MODE_TEAM, MODE_CRUISE, MODE_PARKED, MODE_SUMMARY];
-  const SPEEDS = [SPEED_S0, SPEED_S1, SPEED_S2, SPEED_S3];
+  const BASE_MODES = [
+    MODE_IDLE,
+    MODE_NAVIGATING,
+    MODE_MUSIC_PLAYING,
+    MODE_GROUP_TALKING,
+    MODE_RECORDING
+  ];
 
-  const OVERLAY_PRIORITY = {
-    ADAS: 300,
-    CALL: 200,
-    VOICE: 100,
-    REC_EVENT: 80
+  const OVERLAY_MODES = [
+    MODE_ADAS_ALERT,
+    MODE_INCOMING_CALL
+  ];
+
+  const MODE_PRIORITY = {
+    [MODE_IDLE]: 10,
+    [MODE_NAVIGATING]: 20,
+    [MODE_MUSIC_PLAYING]: 20,
+    [MODE_GROUP_TALKING]: 20,
+    [MODE_RECORDING]: 20,
+    [MODE_ADAS_ALERT]: 100,
+    [MODE_INCOMING_CALL]: 110
   };
 
-  const OVERLAY_TIMEOUT = {
-    ADAS: 2200,
-    CALL: 8000,
-    VOICE: 2200,
-    REC_EVENT: 2600
+  const MODE_META = {
+    [MODE_IDLE]: { type: 'base', className: 'mode-idle' },
+    [MODE_NAVIGATING]: { type: 'base', className: 'mode-nav' },
+    [MODE_MUSIC_PLAYING]: { type: 'base', className: 'mode-music' },
+    [MODE_GROUP_TALKING]: { type: 'base', className: 'mode-group' },
+    [MODE_RECORDING]: { type: 'base', className: 'mode-recording' },
+    [MODE_ADAS_ALERT]: { type: 'overlay', className: 'mode-adas' },
+    [MODE_INCOMING_CALL]: { type: 'overlay', className: 'mode-call' }
   };
 
   const state = {
-    baseMode: MODE_BOOT,
-    speed: SPEED_S0,
-    overlays: [],
-    overlayTimers: new Map(),
-    frozenBy: null,
+    baseMode: MODE_IDLE,
+    overlayStack: [],
+    speedValue: 0,
+    speedLevel: SPEED_S0,
     lastEvent: null
   };
 
-  const hud = document.getElementById('hud-container');
-  const topHint = document.getElementById('top-hint');
-  const controlPanel = document.getElementById('control-panel');
-  const sandboxPanel = document.getElementById('sandbox-panel');
-
-  window.MODE_BOOT = MODE_BOOT;
   window.MODE_IDLE = MODE_IDLE;
-  window.MODE_NAV = MODE_NAV;
-  window.MODE_TEAM = MODE_TEAM;
-  window.MODE_CRUISE = MODE_CRUISE;
-  window.MODE_PARKED = MODE_PARKED;
-  window.MODE_SUMMARY = MODE_SUMMARY;
+  window.MODE_NAVIGATING = MODE_NAVIGATING;
+  window.MODE_MUSIC_PLAYING = MODE_MUSIC_PLAYING;
+  window.MODE_GROUP_TALKING = MODE_GROUP_TALKING;
+  window.MODE_RECORDING = MODE_RECORDING;
+  window.MODE_ADAS_ALERT = MODE_ADAS_ALERT;
+  window.MODE_INCOMING_CALL = MODE_INCOMING_CALL;
 
-  window.currentMode = state.baseMode;
-  window.currentSpeed = state.speed;
-  window.scriptPlaying = window.scriptPlaying ?? false;
+  window.currentMode = MODE_IDLE;
+  window.currentSpeed = SPEED_S0;
+  window.scriptPlaying = window.scriptPlaying || false;
+
+  window.HUD_STATE = state;
+  window.HUD_MODE_PRIORITY = MODE_PRIORITY;
+
+  function getHud() {
+    return document.getElementById('hud-container');
+  }
+
+  function getOverlayAnchor() {
+    return document.getElementById('overlay-anchor');
+  }
 
   function getTopOverlay() {
-    if (!state.overlays.length) return null;
-    return [...state.overlays].sort((a, b) => {
-      const pa = OVERLAY_PRIORITY[a.type] || 0;
-      const pb = OVERLAY_PRIORITY[b.type] || 0;
-      if (pb !== pa) return pb - pa;
-      return b.ts - a.ts;
-    })[0];
+    if (!state.overlayStack.length) return null;
+    return state.overlayStack
+      .slice()
+      .sort((a, b) => MODE_PRIORITY[b] - MODE_PRIORITY[a])[0];
   }
 
-  function syncGlobals() {
-    const top = getTopOverlay();
-    window.currentMode = state.baseMode;
-    window.currentSpeed = state.speed;
-    if (hud) {
-      hud.dataset.mode = state.baseMode;
-      hud.dataset.speed = state.speed;
-      hud.dataset.overlay = top ? top.type : '';
-    }
-  }
-
-  function updatePanelPills() {
-    if (!controlPanel) return;
-    const pills = controlPanel.querySelectorAll('.panel-pill');
-    if (pills[0]) pills[0].textContent = state.baseMode;
-    if (pills[1]) pills[1].textContent = state.speed;
-    if (pills[2]) pills[2].textContent = window.scriptPlaying ? 'Playing' : 'Paused';
-
-    if (sandboxPanel) {
-      const sp = sandboxPanel.querySelectorAll('.panel-pill');
-      const top = getTopOverlay();
-      if (sp[0]) sp[0].textContent = top ? top.type : 'Ready';
-      if (sp[1]) sp[1].textContent = hud && hud.classList.contains('mode-b') ? 'B' : 'A';
-    }
-  }
-
-  function setTopHint(text, ttl) {
-    if (!topHint) return;
-    topHint.textContent = text || '语音、组队等轻提示';
-    if (topHint._timer) clearTimeout(topHint._timer);
-    if (ttl) {
-      topHint._timer = setTimeout(() => {
-        const top = getTopOverlay();
-        if (top && top.type === 'VOICE' && top.payload && top.payload.hint) {
-          topHint.textContent = top.payload.hint;
-        } else {
-          topHint.textContent = '语音、组队等轻提示';
-        }
-      }, ttl);
-    }
-  }
-
-  function isFrozen() {
-    const top = getTopOverlay();
-    return !!(top && (top.type === 'ADAS' || top.type === 'CALL'));
+  function resolveCurrentMode() {
+    return getTopOverlay() || state.baseMode;
   }
 
   function normalizeMode(mode) {
-    return MODES.includes(mode) ? mode : MODE_IDLE;
+    return MODE_META[mode] ? mode : MODE_IDLE;
   }
 
-  function normalizeSpeed(speed) {
-    return SPEEDS.includes(speed) ? speed : SPEED_S0;
+  function isBaseMode(mode) {
+    return BASE_MODES.includes(mode);
+  }
+
+  function isOverlayMode(mode) {
+    return OVERLAY_MODES.includes(mode);
+  }
+
+  function speedToLevel(speed) {
+    const n = Math.max(0, Number(speed) || 0);
+    if (n === 0) return SPEED_S0;
+    if (n <= 20) return SPEED_S1;
+    if (n <= 45) return SPEED_S2;
+    return SPEED_S3;
   }
 
   function setSpeed(speed) {
-    state.speed = normalizeSpeed(speed);
-    syncGlobals();
-    updatePanelPills();
+    state.speedValue = Math.max(0, Number(speed) || 0);
+    state.speedLevel = speedToLevel(state.speedValue);
+    window.currentSpeed = state.speedLevel;
     document.dispatchEvent(new CustomEvent('hud:speedchange', {
-      detail: { speed: state.speed }
+      detail: {
+        speed: state.speedValue,
+        level: state.speedLevel
+      }
     }));
   }
 
-  function clearOverlay(type) {
-    state.overlays = state.overlays.filter(item => item.type !== type);
-    const timer = state.overlayTimers.get(type);
-    if (timer) {
-      clearTimeout(timer);
-      state.overlayTimers.delete(type);
+  function syncHudClass() {
+    const hud = getHud();
+    if (!hud) return;
+    Object.values(MODE_META).forEach(meta => {
+      hud.classList.remove(meta.className);
+    });
+    const current = resolveCurrentMode();
+    const currentMeta = MODE_META[current];
+    const baseMeta = MODE_META[state.baseMode];
+    if (baseMeta) hud.classList.add(baseMeta.className);
+    if (currentMeta && currentMeta.className !== baseMeta.className) {
+      hud.classList.add(currentMeta.className);
     }
-    syncGlobals();
-    updatePanelPills();
-    document.dispatchEvent(new CustomEvent('hud:overlaychange', {
-      detail: { active: getTopOverlay(), overlays: [...state.overlays] }
-    }));
+    hud.dataset.baseMode = state.baseMode;
+    hud.dataset.currentMode = window.currentMode;
+    hud.dataset.speedLevel = window.currentSpeed;
   }
 
-  function pushOverlay(type, payload = {}) {
-    clearOverlay(type);
-    const item = { type, payload, ts: Date.now() };
-    state.overlays.push(item);
-
-    const timeout = payload.timeout ?? OVERLAY_TIMEOUT[type];
-    if (timeout && timeout > 0) {
-      const timer = setTimeout(() => clearOverlay(type), timeout);
-      state.overlayTimers.set(type, timer);
+  function syncOverlayVisual() {
+    const anchor = getOverlayAnchor();
+    if (!anchor) return;
+    const current = getTopOverlay();
+    if (!current) {
+      anchor.innerHTML = '';
+      anchor.style.opacity = '0';
+      return;
     }
+    anchor.style.opacity = '1';
+    if (current === MODE_ADAS_ALERT) {
+      anchor.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:18px;border:1px solid rgba(255,59,48,.45);background:linear-gradient(180deg, rgba(255,59,48,.18), rgba(255,59,48,.08));color:#FF3B30;font-weight:800;letter-spacing:.04em;"><span style="font-size:28px;">⚠</span><span>注意！</span></div>';
+    } else if (current === MODE_INCOMING_CALL) {
+      anchor.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:18px;border:1px solid rgba(90,200,250,.45);background:linear-gradient(180deg, rgba(90,200,250,.18), rgba(90,200,250,.08));color:#FFFFFF;font-weight:800;letter-spacing:.04em;"><span style="font-size:24px;color:#5AC8FA;">✆</span><span>来电提醒</span></div>';
+    }
+  }
 
-    syncGlobals();
-    updatePanelPills();
-    document.dispatchEvent(new CustomEvent('hud:overlaychange', {
-      detail: { active: getTopOverlay(), overlays: [...state.overlays] }
+  function syncMode() {
+    window.currentMode = resolveCurrentMode();
+    window.currentSpeed = state.speedLevel;
+    syncHudClass();
+    syncOverlayVisual();
+    document.dispatchEvent(new CustomEvent('hud:modechange', {
+      detail: {
+        currentMode: window.currentMode,
+        baseMode: state.baseMode,
+        overlayStack: state.overlayStack.slice(),
+        speedLevel: state.speedLevel,
+        speedValue: state.speedValue
+      }
     }));
-    return item;
   }
 
   window.setMode = function setMode(mode) {
-    const nextMode = normalizeMode(mode);
-    if (isFrozen()) {
-      state.lastEvent = { type: 'SET_MODE_BLOCKED', mode: nextMode, ts: Date.now() };
-      return false;
+    const next = normalizeMode(mode);
+    if (isBaseMode(next)) {
+      state.baseMode = next;
+    } else if (isOverlayMode(next)) {
+      state.overlayStack = state.overlayStack.filter(item => item !== next);
+      state.overlayStack.push(next);
     }
-    state.baseMode = nextMode;
-    syncGlobals();
-    updatePanelPills();
-    document.dispatchEvent(new CustomEvent('hud:modechange', {
-      detail: { mode: state.baseMode, speed: state.speed }
-    }));
-    return true;
+    syncMode();
+    return window.currentMode;
   };
 
   window.emitEvent = function emitEvent(event) {
     const e = typeof event === 'string' ? { type: event } : (event || {});
-    const type = e.type || 'UNKNOWN';
-    state.lastEvent = { ...e, ts: Date.now() };
+    const type = e.type || '';
+    state.lastEvent = e;
 
     switch (type) {
+      case 'BASE_IDLE':
+        window.setMode(MODE_IDLE);
+        break;
+      case 'BASE_NAV':
+        window.setMode(MODE_NAVIGATING);
+        break;
+      case 'BASE_MUSIC':
+        window.setMode(MODE_MUSIC_PLAYING);
+        break;
+      case 'BASE_GROUP':
+        window.setMode(MODE_GROUP_TALKING);
+        break;
+      case 'BASE_RECORD':
+        window.setMode(MODE_RECORDING);
+        break;
+      case 'OVERLAY_ADAS':
+        window.setMode(MODE_ADAS_ALERT);
+        if (e.zoneId) window.flashWarning(e.zoneId, e.color || '#FF3B30');
+        break;
+      case 'OVERLAY_CALL':
+        window.setMode(MODE_INCOMING_CALL);
+        break;
+      case 'CLEAR_OVERLAY':
+        if (e.mode && isOverlayMode(e.mode)) {
+          state.overlayStack = state.overlayStack.filter(item => item !== e.mode);
+        } else {
+          state.overlayStack = [];
+        }
+        syncMode();
+        break;
       case 'SET_SPEED':
-        setSpeed(e.speed);
+        setSpeed(e.value);
+        syncMode();
         break;
-
-      case 'VOICE':
-        pushOverlay('VOICE', {
-          hint: e.text || e.hint || '已收到语音指令',
-          timeout: e.timeout
-        });
-        setTopHint(e.text || e.hint || '已收到语音指令', e.timeout || OVERLAY_TIMEOUT.VOICE);
+      case 'SPEED_S0':
+        setSpeed(0);
+        syncMode();
         break;
-
-      case 'CALL_IN':
-      case 'CALL':
-        pushOverlay('CALL', {
-          caller: e.caller || '来电',
-          timeout: e.timeout
-        });
-        setTopHint(`来电：${e.caller || '未知联系人'}`);
+      case 'SPEED_S1':
+        setSpeed(10);
+        syncMode();
         break;
-
-      case 'CALL_END':
-        clearOverlay('CALL');
-        setTopHint('通话结束', 1200);
+      case 'SPEED_S2':
+        setSpeed(30);
+        syncMode();
         break;
-
-      case 'REC_EVENT':
-      case 'REC':
-        pushOverlay('REC_EVENT', {
-          text: e.text || '已录制紧急事件',
-          timeout: e.timeout
-        });
-        setTopHint(e.text || '已录制紧急事件', e.timeout || OVERLAY_TIMEOUT.REC_EVENT);
+      case 'SPEED_S3':
+        setSpeed(60);
+        syncMode();
         break;
-
-      case 'ADAS_FC':
-        // 前向碰撞预警：显示在中央偏上位置，不在 rb-zone
-        pushOverlay('ADAS', {
-          adasType: 'FC',
-          zones: [],  // 不在角落显示
-          color: '#FF3B30',
-          timeout: e.timeout
-        });
-        // 显示中央 FCW 警告
-        showFCWAlert(e.timeout || 2200);
-        break;
-
-      case 'ADAS_BS_L':
-        pushOverlay('ADAS', {
-          adasType: 'BS_L',
-          zones: ['lb-zone'],
-          color: '#FF3B30',
-          timeout: e.timeout
-        });
-        if (typeof window.flashWarning === 'function') {
-          window.flashWarning('lb-zone', '#FF3B30');
-        }
-        break;
-
-      case 'ADAS_BS_R':
-        pushOverlay('ADAS', {
-          adasType: 'BS_R',
-          zones: ['rb-zone'],
-          color: '#FF3B30',
-          timeout: e.timeout
-        });
-        if (typeof window.flashWarning === 'function') {
-          window.flashWarning('rb-zone', '#FF3B30');
-        }
-        break;
-
-      case 'ADAS_REAR':
-        pushOverlay('ADAS', {
-          adasType: 'REAR',
-          zones: ['lb-zone', 'rb-zone'],
-          color: '#FF3B30',
-          timeout: e.timeout
-        });
-        if (typeof window.flashWarning === 'function') {
-          window.flashWarning('lb-zone', '#FF3B30');
-          window.flashWarning('rb-zone', '#FF3B30');
-        }
-        break;
-
-      case 'ADAS_CLEAR':
-        clearOverlay('ADAS');
-        break;
-
-      case 'OPTICS_A':
-        if (hud) {
-          hud.classList.remove('mode-b');
-          hud.classList.add('mode-a');
-        }
-        updatePanelPills();
-        break;
-
-      case 'OPTICS_B':
-        if (hud) {
-          hud.classList.remove('mode-a');
-          hud.classList.add('mode-b');
-        }
-        updatePanelPills();
-        break;
-
-      case 'SCRIPT_PLAY':
+      case 'PLAY_SCRIPT':
         window.scriptPlaying = true;
-        updatePanelPills();
+        document.dispatchEvent(new CustomEvent('hud:script', { detail: { playing: true } }));
         break;
-
-      case 'SCRIPT_PAUSE':
+      case 'PAUSE_SCRIPT':
         window.scriptPlaying = false;
-        updatePanelPills();
+        document.dispatchEvent(new CustomEvent('hud:script', { detail: { playing: false } }));
         break;
-
+      case 'TOGGLE_SCRIPT':
+        window.scriptPlaying = !window.scriptPlaying;
+        document.dispatchEvent(new CustomEvent('hud:script', { detail: { playing: window.scriptPlaying } }));
+        break;
       default:
         document.dispatchEvent(new CustomEvent('hud:event', { detail: e }));
         break;
     }
 
-    document.dispatchEvent(new CustomEvent('hud:event', {
-      detail: {
-        event: e,
-        mode: state.baseMode,
-        speed: state.speed,
-        overlay: getTopOverlay(),
-        overlays: [...state.overlays]
-      }
-    }));
-
-    return true;
+    return {
+      currentMode: window.currentMode,
+      currentSpeed: window.currentSpeed,
+      scriptPlaying: window.scriptPlaying
+    };
   };
 
-  window.__hudState = state;
-  window.__hudGetTopOverlay = getTopOverlay;
-  window.__hudSetSpeed = setSpeed;
-  window.__hudClearOverlay = clearOverlay;
-  window.__hudPushOverlay = pushOverlay;
+  window.renderZone = window.renderZone || function renderZone(zoneId, content) {
+    const zone = document.getElementById(zoneId);
+    if (!zone) return;
+    const target = zone.querySelector('.zone-content') || zone;
+    target.innerHTML = content;
+  };
 
-  syncGlobals();
-  updatePanelPills();
-})();
+  window.flashWarning = window.flashWarning || function flashWarning(zoneId, color) {
+    const zone = document.getElementById(zoneId);
+    if (!zone) return;
+    const prev = zone.style.color;
+    if (color) zone.style.color = color;
+    zone.classList.remove('warning-flash');
+    void zone.offsetWidth;
+    zone.classList.add('warning-flash');
+    setTimeout(() => {
+      zone.classList.remove('warning-flash');
+      zone.style.color = prev;
+    }, 1600);
+  };
+
+  window.getSpeedLevel = speedToLevel;
+  window.getCurrentOverlay = getTopOverlay;
+
+  syncMode();
+})(); 
 
 
 (() => {
   const COLORS = {
+    speed: '#FFFFFF',
     nav: '#4A90E2',
-    warn: '#FF3B30',
-    team: '#5AC8FA',
+    adas: '#FF3B30',
+    mesh: '#5AC8FA',
     music: '#AF52DE',
-    ok: '#34C759',
-    amber: '#FFCC00',
-    fg: '#F5F7FA',
-    muted: 'rgba(255,255,255,.58)'
+    system: '#FF9500',
+    muted: 'rgba(255,255,255,.68)',
+    dim: 'rgba(255,255,255,.42)'
   };
 
-  const SPEED_NUM = { S0: 0, S1: 24, S2: 52, S3: 88 };
-
-  const MODE_COPY = {
-    BOOT: {
-      lt: { speed: 0, sub: '系统启动中，中央视野保持留空' },
-      rt: { helmet: '连接中', phone: '握手中', battery: '--' },
-      lb: { title: '系统自检', sub: '传感器、录制与连接状态检查中', chips: ['READY'] },
-      rb: { action: '待命', distance: '--', dest: 'HUD 启动完成后可语音发起导航' }
+  const MODE_VIEW = {
+    MODE_IDLE: {
+      hudClass: 'mode-idle',
+      color: COLORS.speed,
+      bandTitle: 'Main Info',
+      bandMain: '待机巡航',
+      bandSub: '前方道路畅通',
+      lt: '蓝牙已连接<br>系统就绪',
+      rt: '<span class="sys-badge">系统</span><br>电量 85%',
+      lb: 'BSD<br>左后安全',
+      rb: '组队 3 人<br>信号稳定'
     },
-    IDLE: {
-      lt: { speed: 0, sub: '待机中，中央视野保持留空' },
-      rt: { helmet: '已连接', phone: '在线', battery: '86%' },
-      lb: { title: '轻提示', sub: '通知与音乐在此收纳', chips: ['MUSIC', 'TEAM'] },
-      rb: { action: '待命', distance: '--', dest: '说“导航去科技园南门”' }
+    MODE_NAVIGATING: {
+      hudClass: 'mode-nav',
+      color: COLORS.nav,
+      bandTitle: 'Navigation',
+      bandMain: '前方右转',
+      bandSub: '280 米 · 西山森林公园',
+      lt: '<span class="nav-badge">GPS</span> 导航中<br>路线已锁定',
+      rt: '预计 14:46<br>剩余 4.2 km',
+      lb: 'BSD<br>左后安全',
+      rb: '<span class="nav-badge">路名</span><br>枫林大道'
     },
-    NAV: {
-      lt: { speed: 26, sub: '城市骑行，信息保持四角分布' },
-      rt: { helmet: '已连接', phone: '在线', battery: '84%' },
-      lb: { title: '正在播放：City Ride', sub: '下一条通知将显示在此', chips: ['MUSIC', 'NAV'] },
-      rb: { action: '右转', distance: '120 m', dest: '前往：科技园南门' }
+    MODE_MUSIC_PLAYING: {
+      hudClass: 'mode-music',
+      color: COLORS.music,
+      bandTitle: 'Now Playing',
+      bandMain: '夜航星',
+      bandSub: '歌手 · 播放中 01:24 / 03:58',
+      lt: '<span class="music-badge">音乐</span> 已连接<br>语音可控',
+      rt: '音量 68%<br>降噪开启',
+      lb: 'BSD<br>左后安全',
+      rb: '<span class="music-badge">媒体</span><br>下一首可切换'
     },
-    TEAM: {
-      lt: { speed: 32, sub: '组队骑行中，中央视野不叠加信息' },
-      rt: { helmet: '已连接', phone: '在线', battery: '82%' },
-      lb: { title: '队友 3 人在线', sub: '阿杰距你 18 m · 队形稳定', chips: ['TEAM', 'MUSIC'] },
-      rb: { action: '直行', distance: '480 m', dest: '队伍路线：滨江大道' }
+    MODE_GROUP_TALKING: {
+      hudClass: 'mode-group',
+      color: COLORS.mesh,
+      bandTitle: 'Mesh Group',
+      bandMain: '与山线小队通话中',
+      bandSub: '3 人在线 · 延迟稳定',
+      lt: '<span class="mesh-badge">Mesh</span> 已组队<br>频道 A-03',
+      rt: '麦克风开启<br>风噪抑制',
+      lb: 'BSD<br>左后安全',
+      rb: '<span class="mesh-badge">队友</span><br>阿杰 / 小北 / 你'
     },
-    CRUISE: {
-      lt: { speed: 78, sub: '高速巡航，信息已收敛为核心安全与导航' },
-      rt: { helmet: '已连接', phone: '在线', battery: '79%' },
-      lb: { title: '通知已收敛', sub: '高速态隐藏非核心娱乐信息', chips: ['SAFE'] },
-      rb: { action: '保持直行', distance: '2.4 km', dest: '出口后靠右驶离' }
-    },
-    PARKED: {
-      lt: { speed: 0, sub: '已停车，可展开更多辅助信息' },
-      rt: { helmet: '已连接', phone: '在线', battery: '78%' },
-      lb: { title: '停车摘要', sub: '可查看通知、音乐与录制事件', chips: ['PARKED', 'MUSIC'] },
-      rb: { action: '已到达', distance: '0 m', dest: '目的地：科技园南门' }
-    },
-    SUMMARY: {
-      lt: { speed: 0, sub: '本次演示结束' },
-      rt: { helmet: '已连接', phone: '在线', battery: '77%' },
-      lb: { title: '本次骑行', sub: '零掏手机 · 语音发起 · 四角安全提示', chips: ['SUMMARY'] },
-      rb: { action: '完成', distance: '--', dest: '你始终被保护着' }
+    MODE_RECORDING: {
+      hudClass: 'mode-recording',
+      color: COLORS.system,
+      bandTitle: 'Recorder',
+      bandMain: '行车记录中',
+      bandSub: '1080P · 循环录制',
+      lt: '存储剩余 5h<br>碰撞锁定开启',
+      rt: '<span class="rec-badge">REC</span><br>录制中',
+      lb: 'BSD<br>左后安全',
+      rb: '<span class="sys-badge">系统</span><br>麦克风同步'
     }
   };
 
-  function getState() {
-    return window.__hudState || { baseMode: window.currentMode || 'BOOT', speed: window.currentSpeed || 'S0', overlays: [] };
-  }
-
-  function getTopOverlay() {
-    return typeof window.__hudGetTopOverlay === 'function' ? window.__hudGetTopOverlay() : null;
-  }
-
-  function escapeHtml(v) {
-    return String(v == null ? '' : v)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
-  function chip(label, cls = '') {
-    return `<span class="chip ${cls}">${escapeHtml(label)}</span>`;
-  }
-
-  function speedChipRow(speed) {
-    return `
-      <div class="state-chip-row">
-        <span class="chip ${speed === 'S0' ? 'active' : ''}">S0</span>
-        <span class="chip ${speed === 'S1' ? 'active' : ''}">S1</span>
-        <span class="chip ${speed === 'S2' ? 'active' : ''}">S2</span>
-        <span class="chip ${speed === 'S3' ? 'active' : ''}">S3</span>
-      </div>
-    `;
-  }
-
-  function renderLT(mode, speed) {
-    const conf = MODE_COPY[mode] || MODE_COPY.IDLE;
-    const speedValue = speed in SPEED_NUM ? SPEED_NUM[speed] : conf.lt.speed;
-    return `
-      <div class="zone-title">Speed / Ride State</div>
-      <div class="speed-row">
-        <div class="speed-value">${escapeHtml(speedValue)}</div>
-        <div class="speed-unit">km/h</div>
-      </div>
-      ${speedChipRow(speed)}
-      <div class="zone-sub optional">${escapeHtml(conf.lt.sub)}</div>
-    `;
-  }
-
-  function renderRT(mode, speed) {
-    const conf = MODE_COPY[mode] || MODE_COPY.IDLE;
-    const batteryMap = { S0: conf.rt.battery, S1: conf.rt.battery, S2: conf.rt.battery, S3: conf.rt.battery };
-    return `
-      <div class="zone-title">Device</div>
-      <div class="device-stack">
-        <div class="device-item">
-          <span class="label">头盔</span>
-          <span class="value">${escapeHtml(conf.rt.helmet)}</span>
-        </div>
-        <div class="device-item">
-          <span class="label">手机</span>
-          <span class="value">${escapeHtml(conf.rt.phone)}</span>
-        </div>
-        <div class="device-item optional">
-          <span class="label">电量</span>
-          <span class="value">${escapeHtml(batteryMap[speed] || conf.rt.battery)}</span>
-        </div>
-      </div>
-    `;
-  }
-
-  function renderLB(mode, speed, overlay) {
-    const conf = MODE_COPY[mode] || MODE_COPY.IDLE;
-
-    if (overlay && overlay.type === 'CALL') {
-      return `
-        <div class="zone-title">Call</div>
-        <div class="zone-main team-main">来电：${escapeHtml((overlay.payload && overlay.payload.caller) || '未知联系人')}</div>
-        <div class="zone-sub">按语音接听或稍后回拨</div>
-        <div class="state-chip-row">
-          ${chip('CALL', 'team')}
-        </div>
-      `;
-    }
-
-    if (overlay && overlay.type === 'REC_EVENT') {
-      return `
-        <div class="zone-title">Record</div>
-        <div class="zone-main warning-main">已录制紧急事件</div>
-        <div class="zone-sub">${escapeHtml((overlay.payload && overlay.payload.text) || '碰撞片段已保存')}</div>
-        <div class="state-chip-row">
-          ${chip('REC', 'warn')}
-        </div>
-      `;
-    }
-
-    const chips = (conf.lb.chips || []).map(name => {
-      const cls = name === 'MUSIC' ? 'music' : name === 'TEAM' ? 'team' : name === 'NAV' ? 'nav' : '';
-      return chip(name, cls);
-    }).join('');
-
-    const isMusic = /播放|Music/i.test(conf.lb.title);
-    const mainClass = isMusic ? 'zone-main music-main music-optional' : 'zone-main';
-    const subClass = isMusic ? 'zone-sub music-optional' : 'zone-sub';
-
-    if (speed === 'S3') {
-      return `
-        <div class="zone-title">Notify / Music</div>
-        <div class="zone-main">仅保留核心通知</div>
-        <div class="zone-sub">高速态已隐藏音乐详情</div>
-        <div class="state-chip-row">
-          ${chip('SAFE')}
-        </div>
-      `;
-    }
-
-    if (speed === 'S2' && isMusic) {
-      return `
-        <div class="zone-title">Notify / Music</div>
-        <div class="zone-main">音乐已收敛</div>
-        <div class="zone-sub">城市快速路中仅保留必要通知</div>
-        <div class="state-chip-row">
-          ${chip('MUSIC', 'music')}
-        </div>
-      `;
-    }
-
-    return `
-      <div class="zone-title">Notify / Music</div>
-      <div class="${mainClass}">${escapeHtml(conf.lb.title)}</div>
-      <div class="${subClass}">${escapeHtml(conf.lb.sub)}</div>
-      <div class="state-chip-row">${chips}</div>
-    `;
-  }
-
-  function renderRB(mode, speed, overlay) {
-    const conf = MODE_COPY[mode] || MODE_COPY.IDLE;
-
-    if (overlay && overlay.type === 'ADAS') {
-      const adasType = overlay.payload && overlay.payload.adasType;
-      // FC (前向碰撞) 不在 rb-zone 显示，改为中央预警
-      if (adasType === 'BS_R') {
-        return `
-          <div class="zone-title">Navigation</div>
-          <div class="nav-primary warning-main">右侧盲区</div>
-          <div class="nav-distance" style="color:${COLORS.warn}">请勿并线</div>
-          <div class="nav-secondary">右后侧有快速接近目标</div>
-        `;
-      }
-      if (adasType === 'REAR') {
-        return `
-          <div class="zone-title">Navigation</div>
-          <div class="nav-primary warning-main">后方快速接近</div>
-          <div class="nav-distance" style="color:${COLORS.warn}">保持车道</div>
-          <div class="nav-secondary">后向风险已在下方角区提示</div>
-        `;
-      }
-    }
-
-    if (overlay && overlay.type === 'CALL') {
-      return `
-        <div class="zone-title">Navigation</div>
-        <div class="nav-primary">导航保持</div>
-        <div class="nav-distance">${escapeHtml(conf.rb.distance)}</div>
-        <div class="nav-secondary">来电覆盖中，路线信息不丢失</div>
-      `;
-    }
-
-    return `
-      <div class="zone-title">Navigation</div>
-      <div class="nav-primary">${escapeHtml(conf.rb.action)}</div>
-      <div class="nav-distance">${escapeHtml(conf.rb.distance)}</div>
-      <div class="nav-secondary">${escapeHtml(conf.rb.dest)}</div>
-    `;
-  }
-
-  window.renderZone = function renderZone(zoneId, content) {
-    const el = document.getElementById(zoneId);
-    if (!el) return false;
-    el.innerHTML = content;
-    return true;
+  const SPEED_VALUE_MAP = {
+    S0: 0,
+    S1: 18,
+    S2: 32,
+    S3: 58
   };
 
-  // === 中央前向碰撞预警 ===
-  function showFCWAlert(timeout) {
-    const fcwEl = document.getElementById('fcw-alert');
-    if (!fcwEl) return;
-    fcwEl.style.display = 'block';
-    // 播放警报音效（可选）
-    // new Audio('alert.mp3').play().catch(()=>{});
-    if (showFCWAlert._timer) clearTimeout(showFCWAlert._timer);
-    showFCWAlert._timer = setTimeout(() => {
-      fcwEl.style.display = 'none';
-    }, timeout || 2200);
-  }
-  window.showFCWAlert = showFCWAlert;
+  const ADAS_PRESETS = {
+    rightBlind: {
+      zoneId: 'rb-zone',
+      title: 'BSD',
+      text: '右后盲区有车',
+      arrow: '↗',
+      label: '注意！',
+      color: COLORS.adas
+    },
+    leftBlind: {
+      zoneId: 'lb-zone',
+      title: 'BSD',
+      text: '左后盲区有车',
+      arrow: '↖',
+      label: '注意！',
+      color: COLORS.adas
+    },
+    leftDoor: {
+      zoneId: 'lb-zone',
+      title: 'DOW',
+      text: '左侧开门风险',
+      arrow: '←',
+      label: '注意开门杀',
+      color: COLORS.adas
+    },
+    frontCollision: {
+      zoneId: 'rt-zone',
+      title: 'FCW',
+      text: '前方碰撞风险',
+      arrow: '↑',
+      label: '立即减速',
+      color: COLORS.adas
+    }
+  };
 
-  window.__hudRenderAll = function __hudRenderAll() {
-    const state = getState();
-    const mode = state.baseMode || window.currentMode || 'BOOT';
-    const speed = state.speed || window.currentSpeed || 'S0';
-    const overlay = getTopOverlay();
+  const CALL_PRESET = {
+    title: 'Incoming Call',
+    name: '李晨',
+    sub: '头盔语音接听',
+    color: COLORS.mesh
+  };
 
-    window.renderZone('lt-zone', renderLT(mode, speed, overlay));
-    window.renderZone('rt-zone', renderRT(mode, speed, overlay));
-    window.renderZone('lb-zone', renderLB(mode, speed, overlay));
-    window.renderZone('rb-zone', renderRB(mode, speed, overlay));
+  const runtime = {
+    adasTimer: null,
+    callVisible: false,
+    lastBaseMode: 'MODE_IDLE',
+    adasData: null,
+    callData: null
+  };
 
+  function ensureBand() {
     const hud = document.getElementById('hud-container');
-    if (hud) {
-      hud.dataset.mode = mode;
-      hud.dataset.speed = speed;
-      hud.dataset.overlay = overlay ? overlay.type : '';
+    if (!hud) return null;
+    let band = hud.querySelector('.hud-bottom-band');
+    if (band) return band;
+    band = document.createElement('div');
+    band.className = 'hud-bottom-band';
+    band.innerHTML = `
+      <div class="band-left">
+        <div class="band-title">Main Info</div>
+        <div class="band-main">待机巡航</div>
+        <div class="band-sub">前方道路畅通</div>
+      </div>
+      <div class="band-right" style="align-items:flex-end;">
+        <div class="band-speed">0</div>
+        <div class="band-unit">km/h</div>
+      </div>
+    `;
+    hud.appendChild(band);
+    return band;
+  }
+
+  function ensureOverlayAnchor() {
+    const hud = document.getElementById('hud-container');
+    if (!hud) return null;
+    let anchor = document.getElementById('overlay-anchor');
+    if (anchor) return anchor;
+    anchor = document.createElement('div');
+    anchor.id = 'overlay-anchor';
+    anchor.className = 'hud-overlay-anchor';
+    hud.appendChild(anchor);
+    return anchor;
+  }
+
+  function getSpeedNumber() {
+    const level = window.currentSpeed || 'S0';
+    return SPEED_VALUE_MAP[level] ?? 0;
+  }
+
+  function setBand(view) {
+    const band = ensureBand();
+    if (!band || !view) return;
+    const title = band.querySelector('.band-title');
+    const main = band.querySelector('.band-main');
+    const sub = band.querySelector('.band-sub');
+    const speed = band.querySelector('.band-speed');
+    if (title) title.textContent = view.bandTitle;
+    if (main) {
+      main.textContent = view.bandMain;
+      main.style.color = view.color;
+    }
+    if (sub) sub.textContent = view.bandSub;
+    if (speed) speed.textContent = String(getSpeedNumber());
+  }
+
+  function setZoneTone(zoneId, color) {
+    const zone = document.getElementById(zoneId);
+    if (!zone) return;
+    zone.style.borderColor = 'rgba(255,255,255,.08)';
+    zone.style.color = '';
+    const content = zone.querySelector('.zone-content');
+    if (content) content.style.color = color || COLORS.text;
+  }
+
+  function renderBase(mode) {
+    const view = MODE_VIEW[mode] || MODE_VIEW.MODE_IDLE;
+    runtime.lastBaseMode = mode in MODE_VIEW ? mode : runtime.lastBaseMode;
+
+    window.renderZone('lt-zone', view.lt);
+    window.renderZone('rt-zone', view.rt);
+    window.renderZone('lb-zone', view.lb);
+    window.renderZone('rb-zone', view.rb);
+
+    setZoneTone('lt-zone', COLORS.muted);
+    setZoneTone('rt-zone', COLORS.text);
+    setZoneTone('lb-zone', COLORS.text);
+    setZoneTone('rb-zone', COLORS.text);
+
+    setBand(view);
+  }
+
+  function renderAdasOverlay(data) {
+    const anchor = ensureOverlayAnchor();
+    if (!anchor) return;
+    const d = data || ADAS_PRESETS.rightBlind;
+    anchor.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:18px;border:1px solid rgba(255,59,48,.45);background:linear-gradient(180deg, rgba(255,59,48,.18), rgba(255,59,48,.08));color:${d.color};font-weight:800;letter-spacing:.04em;box-shadow:0 0 24px rgba(255,59,48,.22);">
+        <span style="font-size:30px;line-height:1;">${d.arrow}</span>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;">
+          <span style="font-size:18px;line-height:1;">${d.label}</span>
+          <span style="font-size:12px;color:#FFD7D3;font-weight:700;">${d.text}</span>
+        </div>
+      </div>
+    `;
+    anchor.style.opacity = '1';
+
+    window.renderZone(d.zoneId, `<span style="color:${d.color};font-weight:800;">${d.title}</span><br>${d.text}`);
+    window.flashWarning(d.zoneId, d.color);
+  }
+
+  function renderCallOverlay(data) {
+    const anchor = ensureOverlayAnchor();
+    if (!anchor) return;
+    const d = data || CALL_PRESET;
+    anchor.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:18px;border:1px solid rgba(90,200,250,.45);background:linear-gradient(180deg, rgba(90,200,250,.18), rgba(90,200,250,.08));color:#FFFFFF;font-weight:800;letter-spacing:.04em;box-shadow:0 0 24px rgba(90,200,250,.18);">
+        <span style="font-size:24px;line-height:1;color:${d.color};">✆</span>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;">
+          <span style="font-size:12px;color:rgba(255,255,255,.72);font-weight:700;">${d.title}</span>
+          <span style="font-size:18px;line-height:1;">${d.name}</span>
+          <span style="font-size:12px;color:${d.color};font-weight:700;">${d.sub}</span>
+        </div>
+      </div>
+    `;
+    anchor.style.opacity = '1';
+    window.renderZone('rt-zone', `<span style="color:${d.color};font-weight:800;">来电</span><br>${d.name}`);
+  }
+
+  function clearOverlayVisual() {
+    const anchor = ensureOverlayAnchor();
+    if (anchor) {
+      anchor.innerHTML = '';
+      anchor.style.opacity = '0';
+    }
+  }
+
+  function render(mode) {
+    const current = mode || window.currentMode || 'MODE_IDLE';
+    const baseMode = (window.HUD_STATE && window.HUD_STATE.baseMode) || runtime.lastBaseMode || 'MODE_IDLE';
+    renderBase(baseMode);
+
+    if (current === 'MODE_ADAS_ALERT' && runtime.adasData) {
+      renderAdasOverlay(runtime.adasData);
+      return;
+    }
+
+    if (current === 'MODE_INCOMING_CALL' && runtime.callVisible) {
+      renderCallOverlay(runtime.callData || CALL_PRESET);
+      return;
+    }
+
+    clearOverlayVisual();
+  }
+
+  const originalSetMode = window.setMode;
+  window.setMode = function setMode(mode) {
+    const result = originalSetMode ? originalSetMode(mode) : mode;
+    if (
+      mode === 'MODE_IDLE' ||
+      mode === 'MODE_NAVIGATING' ||
+      mode === 'MODE_MUSIC_PLAYING' ||
+      mode === 'MODE_GROUP_TALKING' ||
+      mode === 'MODE_RECORDING'
+    ) {
+      runtime.lastBaseMode = mode;
+    }
+    render(window.currentMode);
+    return result;
+  };
+
+  const originalEmitEvent = window.emitEvent;
+  window.emitEvent = function emitEvent(event) {
+    const e = typeof event === 'string' ? { type: event } : (event || {});
+    const type = e.type || '';
+
+    if (type === 'OVERLAY_ADAS') {
+      const preset = ADAS_PRESETS[e.preset] || {
+        zoneId: e.zoneId || 'rb-zone',
+        title: e.title || 'ADAS',
+        text: e.text || '周边风险',
+        arrow: e.arrow || '⚠',
+        label: e.label || '注意！',
+        color: e.color || COLORS.adas
+      };
+      runtime.adasData = preset;
+      clearTimeout(runtime.adasTimer);
+      runtime.adasTimer = setTimeout(() => {
+        runtime.adasData = null;
+        if (window.currentMode === 'MODE_ADAS_ALERT') {
+          if (originalEmitEvent) originalEmitEvent({ type: 'CLEAR_OVERLAY', mode: 'MODE_ADAS_ALERT' });
+          render(window.currentMode);
+        }
+      }, e.duration || 2200);
+    }
+
+    if (type === 'OVERLAY_CALL') {
+      runtime.callVisible = true;
+      runtime.callData = {
+        title: e.title || CALL_PRESET.title,
+        name: e.name || CALL_PRESET.name,
+        sub: e.sub || CALL_PRESET.sub,
+        color: e.color || CALL_PRESET.color
+      };
+    }
+
+    if (type === 'CLEAR_OVERLAY') {
+      runtime.adasData = null;
+      runtime.callVisible = false;
+      runtime.callData = null;
+      clearTimeout(runtime.adasTimer);
+    }
+
+    const result = originalEmitEvent ? originalEmitEvent(e) : null;
+    render(window.currentMode);
+    return result;
+  };
+
+  const originalRenderZone = window.renderZone;
+  window.renderZone = function renderZone(zoneId, content) {
+    if (originalRenderZone) {
+      originalRenderZone(zoneId, content);
+    } else {
+      const zone = document.getElementById(zoneId);
+      if (!zone) return;
+      const target = zone.querySelector('.zone-content') || zone;
+      target.innerHTML = content;
     }
   };
 
-  document.addEventListener('hud:modechange', () => window.__hudRenderAll());
-  document.addEventListener('hud:speedchange', () => window.__hudRenderAll());
-  document.addEventListener('hud:overlaychange', () => window.__hudRenderAll());
-  document.addEventListener('hud:event', () => window.__hudRenderAll());
+  const originalFlashWarning = window.flashWarning;
+  window.flashWarning = function flashWarning(zoneId, color) {
+    const zone = document.getElementById(zoneId);
+    if (!zone) return;
+    zone.style.borderColor = color || COLORS.adas;
+    zone.style.color = color || COLORS.adas;
+    if (originalFlashWarning) {
+      originalFlashWarning(zoneId, color || COLORS.adas);
+    } else {
+      zone.classList.remove('warning-flash');
+      void zone.offsetWidth;
+      zone.classList.add('warning-flash');
+      setTimeout(() => {
+        zone.classList.remove('warning-flash');
+        zone.style.color = '';
+        zone.style.borderColor = 'rgba(255,255,255,.08)';
+      }, 1600);
+    }
+  };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => window.__hudRenderAll(), { once: true });
-  } else {
-    window.__hudRenderAll();
-  }
+  window.HUD_COLORS = COLORS;
+  window.HUD_ADAS_PRESETS = ADAS_PRESETS;
+  window.render = render;
+
+  document.addEventListener('hud:modechange', () => render(window.currentMode));
+  document.addEventListener('hud:speedchange', () => render(window.currentMode));
+
+  render(window.currentMode || 'MODE_IDLE');
 })();
 
 
 (() => {
-  const timelineBar = document.getElementById('timeline-bar');
-  const controlPanel = document.getElementById('control-panel');
-  const sandboxPanel = document.getElementById('sandbox-panel');
-
-  const SCRIPT_LIBRARY = {
-    story1: {
-      id: 'story1',
-      name: '剧本 1 · 零掏手机',
-      duration: 42000,
-      events: [
-        { at: 0, type: 'SET_MODE', mode: 'BOOT' },
-        { at: 800, type: 'SET_SPEED', speed: 'S0' },
-        { at: 2600, type: 'SET_MODE', mode: 'IDLE' },
-        { at: 3600, type: 'VOICE', text: '导航去科技园南门', timeout: 1800 },
-        { at: 5200, type: 'SET_MODE', mode: 'NAV' },
-        { at: 5600, type: 'SET_SPEED', speed: 'S1' },
-        { at: 9800, type: 'VOICE', text: '已开始导航', timeout: 1600 },
-        { at: 15000, type: 'SET_SPEED', speed: 'S2' },
-        { at: 18800, type: 'ADAS_BS_L', timeout: 2200 },
-        { at: 23800, type: 'ADAS_FC', timeout: 2200 },
-        { at: 29200, type: 'REC_EVENT', text: '已录制紧急事件', timeout: 2200 },
-        { at: 33200, type: 'SET_MODE', mode: 'PARKED' },
-        { at: 33600, type: 'SET_SPEED', speed: 'S0' },
-        { at: 38800, type: 'SET_MODE', mode: 'SUMMARY' }
-      ]
-    },
-    story2: {
-      id: 'story2',
-      name: '剧本 2 · 城市组队',
-      duration: 36000,
-      events: [
-        { at: 0, type: 'SET_MODE', mode: 'IDLE' },
-        { at: 600, type: 'SET_SPEED', speed: 'S0' },
-        { at: 1800, type: 'VOICE', text: '加入组队路线', timeout: 1600 },
-        { at: 3400, type: 'SET_MODE', mode: 'TEAM' },
-        { at: 4200, type: 'SET_SPEED', speed: 'S1' },
-        { at: 9000, type: 'VOICE', text: '队形稳定，继续直行', timeout: 1800 },
-        { at: 13200, type: 'SET_SPEED', speed: 'S2' },
-        { at: 16800, type: 'ADAS_BS_L', timeout: 2200 },
-        { at: 21400, type: 'ADAS_REAR', timeout: 2200 },
-        { at: 25800, type: 'REC_EVENT', text: '后向风险片段已保存', timeout: 2200 },
-        { at: 30400, type: 'SET_MODE', mode: 'PARKED' },
-        { at: 30800, type: 'SET_SPEED', speed: 'S0' },
-        { at: 33600, type: 'SET_MODE', mode: 'SUMMARY' }
-      ]
-    },
-    story3: {
-      id: 'story3',
-      name: '剧本 3 · 高速巡航',
-      duration: 38000,
-      events: [
-        { at: 0, type: 'SET_MODE', mode: 'NAV' },
-        { at: 400, type: 'SET_SPEED', speed: 'S1' },
-        { at: 2600, type: 'VOICE', text: '进入高速巡航演示', timeout: 1600 },
-        { at: 5200, type: 'SET_SPEED', speed: 'S2' },
-        { at: 7600, type: 'SET_MODE', mode: 'CRUISE' },
-        { at: 8200, type: 'SET_SPEED', speed: 'S3' },
-        { at: 13800, type: 'ADAS_FC', timeout: 2200 },
-        { at: 19200, type: 'ADAS_BS_R', timeout: 2200 },
-        { at: 24400, type: 'VOICE', text: '高速态仅保留核心安全与导航信息', timeout: 2200 },
-        { at: 28600, type: 'REC_EVENT', text: '已保存高速风险片段', timeout: 2200 },
-        { at: 32200, type: 'SET_MODE', mode: 'PARKED' },
-        { at: 32600, type: 'SET_SPEED', speed: 'S0' },
-        { at: 35200, type: 'SET_MODE', mode: 'SUMMARY' }
-      ]
-    }
-  };
-
-  const runtime = {
-    activeScriptId: 'story1',
-    currentTime: 0,
-    rafId: 0,
-    lastTick: 0,
-    firedMap: new Map(),
-    dragging: false
-  };
-
-  function getActiveScript() {
-    return SCRIPT_LIBRARY[runtime.activeScriptId] || SCRIPT_LIBRARY.story1;
-  }
-
-  function clamp(v, min, max) {
-    return Math.max(min, Math.min(max, v));
-  }
-
-  function ensureTimelineUI() {
-    if (!timelineBar) return null;
-
-    timelineBar.style.position = timelineBar.style.position || 'relative';
-    timelineBar.style.cursor = 'pointer';
-    timelineBar.setAttribute('tabindex', '0');
-
-    let fill = timelineBar.querySelector('.timeline-fill');
-    if (!fill) {
-      fill = document.createElement('div');
-      fill.className = 'timeline-fill';
-      timelineBar.appendChild(fill);
-    }
-
-    let handle = timelineBar.querySelector('.timeline-handle');
-    if (!handle) {
-      handle = document.createElement('div');
-      handle.className = 'timeline-handle';
-      handle.style.position = 'absolute';
-      handle.style.top = '50%';
-      handle.style.transform = 'translate(-50%,-50%)';
-      handle.style.width = '12px';
-      handle.style.height = '12px';
-      handle.style.borderRadius = '50%';
-      handle.style.background = '#F5F7FA';
-      handle.style.boxShadow = '0 0 0 2px rgba(74,144,226,.35), 0 0 12px rgba(74,144,226,.55)';
-      handle.style.pointerEvents = 'none';
-      timelineBar.appendChild(handle);
-    }
-
-    let ticks = timelineBar.querySelector('.timeline-ticks');
-    if (!ticks) {
-      ticks = document.createElement('div');
-      ticks.className = 'timeline-ticks';
-      ticks.style.position = 'absolute';
-      ticks.style.inset = '0';
-      ticks.style.pointerEvents = 'none';
-      timelineBar.appendChild(ticks);
-    }
-
-    return { fill, handle, ticks };
-  }
-
-  const timelineUI = ensureTimelineUI();
-
-  function renderTicks() {
-    if (!timelineUI || !timelineUI.ticks) return;
-    const script = getActiveScript();
-    const marks = [0, 0.25, 0.5, 0.75, 1];
-    timelineUI.ticks.innerHTML = marks.map(p => {
-      const left = `${p * 100}%`;
-      return `<span style="position:absolute;left:${left};top:50%;width:1px;height:10px;transform:translate(-50%,-50%);background:rgba(255,255,255,.28);"></span>`;
-    }).join('') + script.events.map(evt => {
-      const left = `${(evt.at / script.duration) * 100}%`;
-      return `<span style="position:absolute;left:${left};top:50%;width:4px;height:4px;border-radius:50%;transform:translate(-50%,-50%);background:rgba(90,200,250,.9);box-shadow:0 0 8px rgba(90,200,250,.45);"></span>`;
-    }).join('');
-  }
-
-  function updateTimelineVisual() {
-    if (!timelineUI) return;
-    const script = getActiveScript();
-    const progress = script.duration ? clamp(runtime.currentTime / script.duration, 0, 1) : 0;
-    timelineUI.fill.style.width = `${progress * 100}%`;
-    timelineUI.handle.style.left = `${progress * 100}%`;
-    timelineBar.dataset.script = script.id;
-    timelineBar.dataset.progress = String(progress);
-    timelineBar.title = `${script.name} ${Math.round(progress * 100)}%`;
-  }
-
-  function updatePanelInfo() {
-    const script = getActiveScript();
-    const progress = script.duration ? Math.round((runtime.currentTime / script.duration) * 100) : 0;
-
-    if (controlPanel) {
-      let host = controlPanel.querySelector('.script-meta');
-      if (!host) {
-        host = document.createElement('div');
-        host.className = 'script-meta';
-        host.style.marginTop = '8px';
-        host.style.display = 'flex';
-        host.style.gap = '6px';
-        host.style.flexWrap = 'wrap';
-        controlPanel.appendChild(host);
+  const STYLE_ID = 'hud-script-controls-style';
+  if (!document.getElementById(STYLE_ID)) {
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = `
+      #control-panel{
+        margin:16px auto 0;
+        width:min(980px,92vw);
+        color:#fff;
+        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
       }
-      host.innerHTML = `
-        <span class="panel-pill">${script.name}</span>
-        <span class="panel-pill">${String(progress).padStart(2, '0')}%</span>
-        <span class="panel-pill">${Math.floor(runtime.currentTime / 1000)}s / ${Math.floor(script.duration / 1000)}s</span>
-      `;
-    }
-
-    if (sandboxPanel) {
-      let host = sandboxPanel.querySelector('.script-switcher');
-      if (!host) {
-        host = document.createElement('div');
-        host.className = 'script-switcher';
-        host.style.marginTop = '8px';
-        host.style.display = 'flex';
-        host.style.gap = '6px';
-        host.style.flexWrap = 'wrap';
-        sandboxPanel.appendChild(host);
+      #control-panel .cp-wrap{
+        display:grid;
+        grid-template-columns:1fr 280px;
+        gap:14px;
+        align-items:start;
       }
-      host.innerHTML = Object.values(SCRIPT_LIBRARY).map(item => {
-        const active = item.id === runtime.activeScriptId;
-        return `<button type="button" data-script-id="${item.id}" class="panel-pill" style="cursor:pointer;opacity:${active ? '1' : '.72'};border:${active ? '1px solid rgba(90,200,250,.65)' : '1px solid transparent'};">${item.name}</button>`;
-      }).join('');
-    }
-  }
-
-  function dispatchScriptState() {
-    document.dispatchEvent(new CustomEvent('hud:scriptchange', {
-      detail: {
-        scriptId: runtime.activeScriptId,
-        currentTime: runtime.currentTime,
-        duration: getActiveScript().duration,
-        playing: !!window.scriptPlaying
+      #control-panel .cp-main,
+      #control-panel .cp-side{
+        border:1px solid rgba(255,255,255,.08);
+        background:rgba(255,255,255,.04);
+        border-radius:16px;
+        padding:14px;
+        backdrop-filter:blur(8px);
       }
-    }));
-  }
-
-  function applyScriptEvent(evt) {
-    if (!evt) return;
-    if (evt.type === 'SET_MODE') {
-      window.setMode && window.setMode(evt.mode);
-      return;
-    }
-    if (evt.type === 'SET_SPEED') {
-      window.emitEvent && window.emitEvent({ type: 'SET_SPEED', speed: evt.speed });
-      return;
-    }
-    window.emitEvent && window.emitEvent(evt);
-  }
-
-  function resetFiredMap() {
-    runtime.firedMap.set(runtime.activeScriptId, new Set());
-  }
-
-  function getFiredSet() {
-    if (!runtime.firedMap.has(runtime.activeScriptId)) {
-      runtime.firedMap.set(runtime.activeScriptId, new Set());
-    }
-    return runtime.firedMap.get(runtime.activeScriptId);
-  }
-
-  function replayTo(timeMs) {
-    const script = getActiveScript();
-    const fired = getFiredSet();
-    fired.clear();
-    runtime.currentTime = clamp(timeMs, 0, script.duration);
-
-    script.events.forEach((evt, index) => {
-      if (evt.at <= runtime.currentTime) {
-        applyScriptEvent(evt);
-        fired.add(index);
+      #control-panel .cp-row{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        flex-wrap:wrap;
       }
-    });
-
-    updateTimelineVisual();
-    updatePanelInfo();
-    dispatchScriptState();
-  }
-
-  function step(now) {
-    if (!window.scriptPlaying) {
-      runtime.lastTick = now;
-      runtime.rafId = requestAnimationFrame(step);
-      return;
-    }
-
-    if (!runtime.lastTick) runtime.lastTick = now;
-    const delta = now - runtime.lastTick;
-    runtime.lastTick = now;
-
-    const script = getActiveScript();
-    runtime.currentTime = clamp(runtime.currentTime + delta, 0, script.duration);
-
-    const fired = getFiredSet();
-    script.events.forEach((evt, index) => {
-      if (!fired.has(index) && evt.at <= runtime.currentTime) {
-        applyScriptEvent(evt);
-        fired.add(index);
+      #control-panel .cp-row + .cp-row{
+        margin-top:12px;
       }
-    });
+      #control-panel .cp-btn,
+      #sandbox-panel .sb-btn{
+        appearance:none;
+        border:1px solid rgba(255,255,255,.12);
+        background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+        color:#fff;
+        border-radius:12px;
+        padding:10px 14px;
+        font-size:13px;
+        font-weight:700;
+        letter-spacing:.02em;
+        cursor:pointer;
+        transition:.18s ease;
+      }
+      #control-panel .cp-btn:hover,
+      #sandbox-panel .sb-btn:hover{
+        transform:translateY(-1px);
+        border-color:rgba(255,255,255,.22);
+        background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.06));
+      }
+      #control-panel .cp-btn.primary{
+        border-color:rgba(74,144,226,.45);
+        box-shadow:0 0 0 1px rgba(74,144,226,.12) inset;
+      }
+      #control-panel .cp-btn.warn,
+      #sandbox-panel .sb-btn.warn{
+        border-color:rgba(255,59,48,.35);
+      }
+      #control-panel .cp-meta{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:12px;
+        color:rgba(255,255,255,.72);
+        font-size:12px;
+      }
+      #control-panel .cp-title{
+        font-size:13px;
+        font-weight:800;
+        color:#fff;
+        letter-spacing:.04em;
+        text-transform:uppercase;
+      }
+      #timeline-bar{
+        position:relative;
+        height:16px;
+        border-radius:999px;
+        background:rgba(255,255,255,.08);
+        overflow:hidden;
+        cursor:pointer;
+        border:1px solid rgba(255,255,255,.08);
+      }
+      #timeline-bar .timeline-fill{
+        position:absolute;
+        inset:0 auto 0 0;
+        width:0%;
+        background:linear-gradient(90deg, #4A90E2, #5AC8FA);
+        border-radius:999px;
+      }
+      #timeline-bar .timeline-marker{
+        position:absolute;
+        top:50%;
+        width:2px;
+        height:18px;
+        background:rgba(255,255,255,.28);
+        transform:translate(-1px,-50%);
+      }
+      #timeline-bar .timeline-thumb{
+        position:absolute;
+        top:50%;
+        left:0%;
+        width:14px;
+        height:14px;
+        border-radius:50%;
+        background:#fff;
+        box-shadow:0 0 0 4px rgba(255,255,255,.12);
+        transform:translate(-50%,-50%);
+      }
+      #timeline-bar .timeline-label{
+        position:absolute;
+        top:-22px;
+        transform:translateX(-50%);
+        color:rgba(255,255,255,.56);
+        font-size:10px;
+        white-space:nowrap;
+      }
+      #sandbox-panel{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+      }
+      #sandbox-panel .sb-title{
+        grid-column:1 / -1;
+        font-size:13px;
+        font-weight:800;
+        letter-spacing:.04em;
+        text-transform:uppercase;
+        color:#fff;
+        margin-bottom:2px;
+      }
+      #sandbox-panel .sb-btn.full{
+        grid-column:1 / -1;
+      }
+      #control-panel .cp-scene{
+        color:#5AC8FA;
+        font-weight:700;
+      }
+      @media (max-width: 860px){
+        #control-panel .cp-wrap{
+          grid-template-columns:1fr;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
 
-    updateTimelineVisual();
-    updatePanelInfo();
-    dispatchScriptState();
-
-    if (runtime.currentTime >= script.duration) {
-      window.scriptPlaying = false;
-      window.emitEvent && window.emitEvent('SCRIPT_PAUSE');
+  function ensureControlPanel() {
+    let panel = document.getElementById('control-panel');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = 'control-panel';
+      const hud = document.getElementById('hud-container');
+      if (hud && hud.parentNode) {
+        hud.parentNode.insertBefore(panel, hud.nextSibling);
+      } else {
+        document.body.appendChild(panel);
+      }
     }
 
-    runtime.rafId = requestAnimationFrame(step);
+    panel.innerHTML = `
+      <div class="cp-wrap">
+        <div class="cp-main">
+          <div class="cp-meta">
+            <div class="cp-title">Demo Timeline</div>
+            <div>
+              <span id="cp-scene-name" class="cp-scene">启动自检</span>
+              <span style="margin:0 6px;color:rgba(255,255,255,.28);">·</span>
+              <span id="cp-time-text">00:00 / 03:00</span>
+            </div>
+          </div>
+          <div class="cp-row" style="margin-top:14px;">
+            <div id="timeline-bar" aria-label="timeline"></div>
+          </div>
+          <div class="cp-row">
+            <button class="cp-btn" id="cp-prev">上一场景</button>
+            <button class="cp-btn primary" id="cp-play">播放</button>
+            <button class="cp-btn" id="cp-next">下一场景</button>
+            <button class="cp-btn warn" id="cp-stop">停止</button>
+          </div>
+        </div>
+        <div class="cp-side">
+          <div id="sandbox-panel"></div>
+        </div>
+      </div>
+    `;
+    return panel;
   }
 
-  function playScript() {
-    window.scriptPlaying = true;
-    window.emitEvent && window.emitEvent('SCRIPT_PLAY');
-    dispatchScriptState();
+  function ensureSandbox() {
+    const sandbox = document.getElementById('sandbox-panel');
+    if (!sandbox) return;
+    sandbox.innerHTML = `
+      <div class="sb-title">Sandbox</div>
+      <button class="sb-btn" data-action="mode" data-mode="MODE_IDLE">待机</button>
+      <button class="sb-btn" data-action="mode" data-mode="MODE_NAVIGATING">导航</button>
+      <button class="sb-btn" data-action="mode" data-mode="MODE_MUSIC_PLAYING">音乐</button>
+      <button class="sb-btn" data-action="mode" data-mode="MODE_GROUP_TALKING">组队</button>
+      <button class="sb-btn" data-action="mode" data-mode="MODE_RECORDING">录制</button>
+      <button class="sb-btn warn" data-action="adas" data-preset="rightBlind">盲区预警</button>
+      <button class="sb-btn warn" data-action="adas" data-preset="leftDoor">开门预警</button>
+      <button class="sb-btn warn" data-action="adas" data-preset="frontCollision">碰撞预警</button>
+      <button class="sb-btn" data-action="call">模拟来电</button>
+      <button class="sb-btn full" data-action="clear">清除覆盖态</button>
+    `;
   }
 
-  function pauseScript() {
-    window.scriptPlaying = false;
-    window.emitEvent && window.emitEvent('SCRIPT_PAUSE');
-    dispatchScriptState();
-  }
-
-  function togglePlay() {
-    if (window.scriptPlaying) pauseScript();
-    else playScript();
-  }
-
-  function seekTo(ms) {
-    replayTo(ms);
-  }
-
-  function seekByRatio(ratio) {
-    const script = getActiveScript();
-    seekTo(script.duration * clamp(ratio, 0, 1));
-  }
-
-  function switchScript(scriptId, autoplay) {
-    if (!SCRIPT_LIBRARY[scriptId]) return false;
-    runtime.activeScriptId = scriptId;
-    resetFiredMap();
-    replayTo(0);
-    renderTicks();
-    if (autoplay) playScript();
-    else pauseScript();
-    return true;
-  }
-
-  function ratioFromEvent(e) {
-    const rect = timelineBar.getBoundingClientRect();
-    const x = clamp(e.clientX - rect.left, 0, rect.width);
-    return rect.width ? x / rect.width : 0;
-  }
-
-  if (timelineBar) {
-    timelineBar.addEventListener('pointerdown', e => {
-      runtime.dragging = true;
-      seekByRatio(ratioFromEvent(e));
-    });
-
-    window.addEventListener('pointermove', e => {
-      if (!runtime.dragging) return;
-      seekByRatio(ratioFromEvent(e));
-    });
-
-    window.addEventListener('pointerup', () => {
-      runtime.dragging = false;
-    });
-
-    timelineBar.addEventListener('click', e => {
-      seekByRatio(ratioFromEvent(e));
-    });
-  }
-
-  if (sandboxPanel) {
-    sandboxPanel.addEventListener('click', e => {
-      const btn = e.target.closest('[data-script-id]');
-      if (!btn) return;
-      switchScript(btn.getAttribute('data-script-id'), false);
-    });
-  }
-
-  document.addEventListener('keydown', e => {
-    if (e.code === 'Space') {
-      e.preventDefault();
-      togglePlay();
-      return;
-    }
-    if (e.code === 'ArrowRight') {
-      e.preventDefault();
-      seekTo(runtime.currentTime + 3000);
-      return;
-    }
-    if (e.code === 'ArrowLeft') {
-      e.preventDefault();
-      seekTo(runtime.currentTime - 3000);
-      return;
-    }
-    if (e.key === '8') {
-      switchScript('story1', false);
-      return;
-    }
-    if (e.key === '9') {
-      switchScript('story2', false);
-      return;
-    }
-    if (e.key === '0') {
-      switchScript('story3', false);
-      return;
-    }
-  });
-
-  window.__hudScripts = SCRIPT_LIBRARY;
-  window.__hudScriptRuntime = runtime;
-  window.__hudPlayScript = playScript;
-  window.__hudPauseScript = pauseScript;
-  window.__hudSeekScript = seekTo;
-  window.__hudSwitchScript = switchScript;
-
-  renderTicks();
-  replayTo(0);
-  updateTimelineVisual();
-  updatePanelInfo();
-  runtime.rafId = requestAnimationFrame(step);
+  ensureControlPanel();
+  ensureSandbox();
 })();
 
-/* ============================================================
- * Segment 5: 沙盒面板交互 + 控制面板显隐 + A/B光学切换 + 开机自检 + 键盘快捷键
- * ============================================================ */
-(function() {
-  const sandboxPanel = document.getElementById('sandbox-panel');
-  const controlPanel = document.getElementById('control-panel');
-  const hudContainer = document.getElementById('hud-container');
-  const ltZone = document.getElementById('lt-zone');
-  const lbZone = document.getElementById('lb-zone');
-  const rtZone = document.getElementById('rt-zone');
-  const rbZone = document.getElementById('rb-zone');
 
-  // === 1. 沙盒面板按钮 ===
-  function buildSandboxButtons() {
-    if (!sandboxPanel) return;
+(() => {
+  window.currentMode = window.currentMode || 'MODE_IDLE';
+  window.currentSpeed = window.currentSpeed || 'S0';
+  window.scriptPlaying = !!window.scriptPlaying;
 
-    // 清空原有内容，保留标题
-    sandboxPanel.innerHTML = '<div class="panel-title">Sandbox</div>';
+  const SPEED_LEVELS = { 0:'S0', 1:'S1', 2:'S2', 3:'S3' };
+  const SPEED_NUMBERS = { S0:0, S1:18, S2:32, S3:58 };
 
-    // ADAS 类按钮（修正事件类型）
-    const adasGroup = createButtonGroup('ADAS', [
-      { label: 'FCW前向', event: { type: 'ADAS_FC' } },
-      { label: '左后BSD', event: { type: 'ADAS_BS_L' } },
-      { label: '右后BSD', event: { type: 'ADAS_BS_R' } },
-      { label: '后方接近', event: { type: 'ADAS_REAR' } },
-      { label: '清除预警', event: { type: 'ADAS_CLEAR' } }
-    ]);
-
-    // 通讯类按钮（修正事件类型）
-    const commGroup = createButtonGroup('通讯', [
-      { label: '来电', event: { type: 'CALL_IN', caller: '阿杰' } },
-      { label: '挂断', event: { type: 'CALL_END' } },
-      { label: '语音指令', event: { type: 'VOICE', text: '导航去科技园南门' } }
-    ]);
-
-    // 录制类按钮
-    const recGroup = createButtonGroup('录制', [
-      { label: '紧急事件', event: { type: 'REC_EVENT' } }
-    ]);
-
-    // 模式类按钮
-    const modeGroup = createButtonGroup('模式', [
-      { label: '1.IDLE', mode: 'IDLE' },
-      { label: '2.NAV', mode: 'NAV' },
-      { label: '3.TEAM', mode: 'TEAM' },
-      { label: '4.CRUISE', mode: 'CRUISE' },
-      { label: '5.PARKED', mode: 'PARKED' },
-      { label: '6.SUMMARY', mode: 'SUMMARY' },
-      { label: '7.BOOT', mode: 'BOOT' }
-    ]);
-
-    // 速度类按钮
-    const speedGroup = createButtonGroup('速度', [
-      { label: 'S0', speed: 'S0' },
-      { label: 'S1', speed: 'S1' },
-      { label: 'S2', speed: 'S2' },
-      { label: 'S3', speed: 'S3' }
-    ]);
-
-    // A/B光学切换
-    const opticsGroup = createButtonGroup('光学', [
-      { label: 'A方案(全彩)', action: 'setOpticsA' },
-      { label: 'B方案(单绿)', action: 'setOpticsB' }
-    ]);
-
-    // 面板切换
-    const panelGroup = createButtonGroup('面板', [
-      { label: 'Tab切换', action: 'togglePanels' }
-    ]);
-
-    sandboxPanel.appendChild(adasGroup);
-    sandboxPanel.appendChild(commGroup);
-    sandboxPanel.appendChild(recGroup);
-    sandboxPanel.appendChild(modeGroup);
-    sandboxPanel.appendChild(speedGroup);
-    sandboxPanel.appendChild(opticsGroup);
-    sandboxPanel.appendChild(panelGroup);
+  function normalizeSpeedLevel(value){
+    if (typeof value === 'string' && /^S[0-3]$/.test(value)) return value;
+    const n = Number(value) || 0;
+    if (n <= 0) return 'S0';
+    if (n < 24) return 'S1';
+    if (n < 42) return 'S2';
+    return 'S3';
   }
 
-  function createButtonGroup(title, buttons) {
-    const group = document.createElement('div');
-    group.className = 'sandbox-group';
-    group.innerHTML = '<div class="group-title">' + title + '</div>';
+  window.renderZone = window.renderZone || function renderZone(zoneId, content){
+    const zone = document.getElementById(zoneId);
+    if (!zone) return;
+    const target = zone.querySelector('.zone-content') || zone;
+    target.innerHTML = content;
+  };
 
-    const btnContainer = document.createElement('div');
-    btnContainer.className = 'btn-container';
+  window.flashWarning = window.flashWarning || function flashWarning(zoneId, color){
+    const zone = document.getElementById(zoneId);
+    if (!zone) return;
+    zone.style.borderColor = color || '#FF3B30';
+    zone.classList.remove('warning-flash');
+    void zone.offsetWidth;
+    zone.classList.add('warning-flash');
+    setTimeout(() => {
+      zone.classList.remove('warning-flash');
+      zone.style.borderColor = 'rgba(255,255,255,.08)';
+    }, 1600);
+  };
 
-    buttons.forEach(btn => {
-      const el = document.createElement('button');
-      el.className = 'sandbox-btn';
-      el.textContent = btn.label;
-      el.addEventListener('click', function() { handleButtonClick(btn); });
-      btnContainer.appendChild(el);
-    });
+  window.setMode = window.setMode || function setMode(mode){
+    window.currentMode = mode || 'MODE_IDLE';
+    document.dispatchEvent(new CustomEvent('hud:modechange', { detail:{ mode: window.currentMode } }));
+    return window.currentMode;
+  };
 
-    group.appendChild(btnContainer);
-    return group;
-  }
-
-  function handleButtonClick(btn) {
-    if (btn.event) {
-      if (window.emitEvent) {
-        window.emitEvent(btn.event);
-      }
-    } else if (btn.mode && window.setMode) {
-      window.setMode(btn.mode);
-    } else if (btn.speed && window.emitEvent) {
-      window.emitEvent({ type: 'SET_SPEED', speed: btn.speed });
-    } else if (btn.action) {
-      switch (btn.action) {
-        case 'clearADAS':
-          if (window.emitEvent) window.emitEvent({ type: 'ADAS_CLEAR' });
-          break;
-        case 'setOpticsA':
-          if (hudContainer) hudContainer.classList.remove('mode-b');
-          if (hudContainer) hudContainer.classList.add('mode-a');
-          break;
-        case 'setOpticsB':
-          if (hudContainer) hudContainer.classList.remove('mode-a');
-          if (hudContainer) hudContainer.classList.add('mode-b');
-          break;
-        case 'togglePanels':
-          togglePanelVisibility();
-          break;
-      }
+  window.emitEvent = window.emitEvent || function emitEvent(event){
+    const e = typeof event === 'string' ? { type:event } : (event || {});
+    if (e.type === 'SET_SPEED') {
+      window.currentSpeed = normalizeSpeedLevel(e.level || e.value);
+      const speedEl = document.querySelector('.band-speed');
+      if (speedEl) speedEl.textContent = String(SPEED_NUMBERS[window.currentSpeed] || 0);
+      document.dispatchEvent(new CustomEvent('hud:speedchange', { detail:{ speed: window.currentSpeed } }));
     }
-  }
+    return e;
+  };
 
-  // === 2. 控制面板显隐 ===
-  var panelsVisible = true;
-
-  function togglePanelVisibility() {
-    panelsVisible = !panelsVisible;
-    if (controlPanel) controlPanel.classList.toggle('visible', panelsVisible);
-    if (sandboxPanel) sandboxPanel.classList.toggle('visible', panelsVisible);
-  }
-
-  // === 3. A/B 光学切换 ===
-  function toggleOpticsMode() {
-    if (!hudContainer) return;
-    var isModeB = hudContainer.classList.contains('mode-b');
-    hudContainer.classList.toggle('mode-b', !isModeB);
-    hudContainer.classList.toggle('mode-a', isModeB);
-  }
-
-  // === 4. 开机自检动画 ===
-  function runBootSequence() {
-    var zones = [ltZone, rtZone, rbZone, lbZone];
-    var delay = 0;
-
-    // 自检清单
-    var checklist = [
-      { item: '光学系统', status: 'pending' },
-      { item: '通信模块', status: 'pending' },
-      { item: '定位服务', status: 'pending' },
-      { item: 'ADAS感知', status: 'pending' }
-    ];
-
-    // 显示自检清单到 lt-zone
-    function updateChecklist(index, status) {
-      if (!ltZone) return;
-      checklist[index].status = status;
-      var html = '<div class="boot-checklist" style="font-size:12px;color:#00ffcc;">';
-      html += '<div style="font-size:14px;margin-bottom:8px;">⏳ 系统自检</div>';
-      checklist.forEach(function(c) {
-        var icon = c.status === 'ok' ? '✅' : c.status === 'pending' ? '⏳' : '❌';
-        var color = c.status === 'ok' ? '#00ff88' : c.status === 'pending' ? '#ffaa00' : '#ff3b30';
-        html += '<div style="margin:4px 0;color:' + color + '">' + icon + ' ' + c.item + '</div>';
+  window.HUD_BOOT = {
+    playing:false,
+    timer:0,
+    start(duration = 2600){
+      const overlay = document.getElementById('boot-overlay');
+      if (!overlay) return;
+      clearTimeout(this.timer);
+      this.playing = true;
+      overlay.classList.remove('hidden');
+      const steps = [...overlay.querySelectorAll('.boot-step')];
+      const bar = overlay.querySelector('.boot-progress > span');
+      const sub = overlay.querySelector('.boot-sub');
+      steps.forEach((el) => {
+        el.classList.remove('active','done');
+        const tail = el.querySelector('span:last-child');
+        if (tail) tail.textContent = '待检';
       });
-      html += '</div>';
-      ltZone.innerHTML = html;
-    }
-
-    // 初始显示
-    updateChecklist(-1, 'pending');
-
-    // 依次点亮四角 + 更新清单
-    zones.forEach(function(zone, index) {
-      setTimeout(function() {
-        if (zone) {
-          zone.style.transition = 'box-shadow 0.3s';
-          zone.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.8)';
+      let idx = 0;
+      const tick = () => {
+        steps.forEach((el, i) => {
+          el.classList.toggle('active', i === idx);
+          if (i < idx) el.classList.add('done');
+          const tail = el.querySelector('span:last-child');
+          if (tail) tail.textContent = i < idx ? '通过' : (i === idx ? '检测中' : '待检');
+        });
+        if (bar) bar.style.width = `${((idx + 1) / steps.length) * 100}%`;
+        if (sub) sub.textContent = idx >= steps.length - 1 ? '系统就绪' : '启动自检中';
+        idx += 1;
+        if (idx < steps.length) {
+          this.timer = setTimeout(tick, duration / steps.length);
+        } else {
+          this.timer = setTimeout(() => {
+            overlay.classList.add('hidden');
+            this.playing = false;
+          }, 420);
         }
-        // 更新对应清单项
-        if (index < checklist.length) {
-          updateChecklist(index, 'ok');
-        }
-      }, delay);
-      delay += 400;
-
-      // 恢复
-      setTimeout(function() {
-        if (zone) {
-          zone.style.boxShadow = '';
-        }
-      }, delay + 150);
-    });
-
-    // 自检完成，进入 IDLE
-    setTimeout(function() {
-      if (ltZone) {
-        var html = '<div class="boot-complete" style="font-size:12px;color:#00ff88;">';
-        html += '<div style="font-size:14px;margin-bottom:4px;">✅ 系统就绪</div>';
-        html += '<div style="color:#aaa;font-size:10px;">所有模块正常</div>';
-        html += '</div>';
-        ltZone.innerHTML = html;
-      }
-      setTimeout(function() {
-        if (window.setMode) {
-          window.setMode('IDLE');
-        }
-      }, 800);
-    }, delay + 500);
-  }
-
-  // === 5. 键盘快捷键 ===
-  document.addEventListener('keydown', function(e) {
-    // 1-7 切换模式
-    if (e.key >= '1' && e.key <= '7') {
-      var modes = ['IDLE', 'NAV', 'TEAM', 'CRUISE', 'PARKED', 'SUMMARY', 'BOOT'];
-      var modeIndex = parseInt(e.key) - 1;
-      if (window.setMode && modes[modeIndex]) {
-        window.setMode(modes[modeIndex]);
-      }
-      return;
+      };
+      tick();
     }
-
-    // D 切换光学
-    if (e.key === 'd' || e.key === 'D') {
-      toggleOpticsMode();
-      return;
-    }
-
-    // Tab 切换面板
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      togglePanelVisibility();
-      return;
-    }
-  });
-
-  // === 初始化 ===
-  // 添加样式
-  var style = document.createElement('style');
-  style.textContent = '\
-    .sandbox-group { margin: 8px 0; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; }\
-    .sandbox-group .group-title { font-size: 10px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }\
-    .sandbox-group .btn-container { display: flex; flex-wrap: wrap; gap: 4px; }\
-    .sandbox-btn {\
-      padding: 4px 8px;\
-      font-size: 11px;\
-      background: rgba(255,255,255,0.1);\
-      border: 1px solid rgba(255,255,255,0.2);\
-      border-radius: 4px;\
-      color: #fff;\
-      cursor: pointer;\
-      transition: all 0.2s;\
-    }\
-    .sandbox-btn:hover {\
-      background: rgba(0, 200, 255, 0.3);\
-      border-color: rgba(0, 200, 255, 0.5);\
-    }\
-    .sandbox-btn:active {\
-      transform: scale(0.95);\
-    }\
-  ';
-  document.head.appendChild(style);
-
-  // 构建按钮
-  buildSandboxButtons();
-
-  // 初始显示面板
-  if (controlPanel) controlPanel.classList.add('visible');
-  if (sandboxPanel) sandboxPanel.classList.add('visible');
-
-  // 运行开机自检
-  runBootSequence();
-
-  console.log('[Segment 5] Sandbox panel, optics toggle, and boot sequence initialized');
+  };
 })();
+
 </script>
 </body>
 </html>
