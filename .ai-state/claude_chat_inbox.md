@@ -3,6 +3,21 @@
 
 ---
 
+## [修复] 第六轮 - GBK编码修复 - 2026-04-10 00:15
+
+- **结果**：通过
+- **关键数据**：
+  - 移除 _notify 中的 emoji（云文档、Issue）
+  - subprocess 调用加 encoding='utf-8', errors='ignore'
+  - 添加缺失的 PROJECT_ROOT 定义和 load_dotenv
+  - GITHUB_TOKEN: 直接 os.environ NOT SET，load_dotenv 后 SET
+- **产出文件**：
+  - GitHub Issue #41: https://github.com/lion9999ly/agent-company/issues/41
+  - Git commit: 8c9755a
+- **待决问题**：无
+
+---
+
 ## [修复] 第五轮 - 云文档路径修复 + TaskSpec诊断 + Issue改requests - 2026-04-09 23:15
 
 - **结果**：通过
@@ -116,3 +131,11 @@
 - **结果**: 通过
 - **关键数据**: 迭代 2 轮
 - **产出文件**: `demo_outputs\hud_demo_roundtable_20260409_223626.html`
+
+---
+
+## [圆桌] HUD Demo 生成 - 2026-04-09 23:59
+
+- **结果**: 通过
+- **关键数据**: 迭代 3 轮
+- **产出文件**: `demo_outputs\hud_demo_roundtable_20260409_235918.html`
