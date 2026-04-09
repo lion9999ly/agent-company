@@ -85,6 +85,7 @@ def handle_message(event):
 
         # #2 额外过滤：检查 sender 的 app_id 是否与当前 bot 相同
         sender_id = getattr(sender, 'sender_id', None)
+        print(f"  sender_type={sender_type}, sender_id={sender_id}")  # 完整打印诊断
         if sender_id:
             sender_app_id = getattr(sender_id, 'app_id', '')
             if sender_app_id and sender_app_id == APP_ID:

@@ -5,6 +5,9 @@
 """
 
 import asyncio
+import time
+import hashlib
+import json
 from pathlib import Path
 from typing import Optional
 
@@ -61,6 +64,34 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
     rt = Roundtable(gw, feishu)
     task = await rt.pre_check_task_spec(task, context)
 
+    # #2 TaskSpec 有问题时等待用户确认
+    if hasattr(task, '_review_issues') and task._review_issues:
+        # 写等待文件
+        topic_hash = hashlib.md5(task.topic.encode()).hexdigest()[:8]
+        waiting_file = Path(".ai-state") / f"taskspec_waiting_{topic_hash}.txt"
+        waiting_file.write_text(json.dumps(task._review_issues, ensure_ascii=False), encoding="utf-8")
+
+        await _notify(f"⚠️ TaskSpec 审查发现问题，请在飞书回复「确认」继续或「跳过」跳过审查")
+
+        # 轮询等待确认文件（超时 5 分钟）
+        confirm_file = Path(".ai-state") / f"taskspec_confirm_{topic_hash}.txt"
+        timeout = 300  # 5 分钟
+        start = time.time()
+        while time.time() - start < timeout:
+            if confirm_file.exists():
+                action = confirm_file.read_text(encoding="utf-8").strip()
+                confirm_file.unlink()
+                print(f"[Roundtable] TaskSpec 用户确认: {action}")
+                await _notify(f"✅ 收到「{action}」，继续执行")
+                break
+            await asyncio.sleep(2)
+        else:
+            # 超时自动跳过
+            if waiting_file.exists():
+                waiting_file.unlink()
+            print(f"[Roundtable] TaskSpec 确认超时，自动跳过")
+            await _notify(f"⏰ TaskSpec 确认超时（5分钟），自动继续")
+
     # 2. 圆桌讨论
     result = await rt.discuss(task, context)
     await _notify(f"🔵 圆桌收敛，共 {result.rounds} 轮")
@@ -74,21 +105,26 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
     iteration = 0
     verify_summary = ""
 
-    while iteration < task.max_iterations:
-        vr = await ver.verify(task, output)
-        if vr.passed:
-            await _notify(f"✅ 审查通过")
-            verify_summary = _format_verify_summary(vr)
-            break
+    try:
+        while iteration < task.max_iterations:
+            vr = await ver.verify(task, output)
+            if vr.passed:
+                await _notify(f"✅ 审查通过")
+                verify_summary = _format_verify_summary(vr)
+                break
 
-        if vr.stuck:
-            await _notify(f"⚠️ 能力瓶颈：{vr.stuck_issues}，尝试升级...")
-            output = await gen.escalate(output, vr.stuck_issues, result)
-            continue
+            if vr.stuck:
+                await _notify(f"⚠️ 能力瓶颈：{vr.stuck_issues}，尝试升级...")
+                output = await gen.escalate(output, vr.stuck_issues, result)
+                continue
 
-        iteration += 1
-        await _notify(f"🔄 审查第{iteration}轮，{len(vr.issues)}个缺陷，修复中...")
-        output = await gen.fix(output, [i.description for i in vr.issues], result)
+            iteration += 1
+            await _notify(f"🔄 审查第{iteration}轮，{len(vr.issues)}个缺陷，修复中...")
+            output = await gen.fix(output, [i.description for i in vr.issues], result)
+    except Exception as e:
+        print(f"[Roundtable] 审查闭环异常: {type(e).__name__}: {e}")
+        verify_summary = f"审查异常中断: {e}"
+        await _notify(f"⚠️ 审查闭环异常: {type(e).__name__}，跳过审查继续输出")
 
     # 5. 输出（P1 #3: 添加时间戳）
     from datetime import datetime
