@@ -1,0 +1,55 @@
+{
+  "topic": "HUD Demo 生成",
+  "goal": "生成一个可双击打开的 HUD 演示 HTML 文件，用于给供应商和投资人展示智能骑行座舱的 HUD 体验",
+  "acceptance_criteria": [
+    "单 HTML 文件，零外部依赖（字体CDN除外），双击可在浏览器打开",
+    "全屏黑色背景模拟护目镜视角",
+    "四角布局：LT=速度+骑行状态，RT=设备状态，RB=导航，LB=通知",
+    "中央视野完全留空",
+    "7个页面态全部可触发：骑行主界面/导航/来电/音乐/组队/预警/录制",
+    "页面态按优先级自动切换：预警>来电>导航>组队>音乐>录制>主界面",
+    "预警时对应方向角落闪烁：前方=LT+RT，左后=LB，右后=RB",
+    "3条自动剧本（日常通勤/紧急场景/组队骑行），底部时间轴可播放/暂停/拖拽",
+    "手动沙盒模式：右侧面板按类别分组列出所有可触发事件",
+    "A/B光学方案切换：OLED全彩（默认）vs 光波导单绿色，有明显视觉差异",
+    "速度分级S0-S3自动适应信息密度",
+    "键盘快捷键覆盖所有核心操作",
+    "全彩OLED为默认配色方案，各功能色彩语义清晰区分",
+    "开机自检动画"
+  ],
+  "proposer": "CDO",
+  "reviewers": [
+    "CTO",
+    "CMO"
+  ],
+  "critic": "Critic",
+  "authority_map": {
+    "design": "CDO",
+    "feasibility": "CTO",
+    "user_fit": "CMO",
+    "final": "Leo"
+  },
+  "input_docs": [
+    ".ai-state/product_anchor.md",
+    ".ai-state/founder_mindset.md"
+  ],
+  "kb_search_queries": [
+    "HUD display layout",
+    "helmet HUD user interface",
+    "motorcycle HUD competitor",
+    "ADAS warning display",
+    "heads up display design principles"
+  ],
+  "role_prompts": {
+    "CDO": "本议题是 HUD Demo 的视觉和交互设计。关注：四角布局信息密度、预警视觉冲击力、全彩配色的功能色语义（速度白/导航蓝/预警红/组队青/音乐紫）、A/B光学方案的视觉差异表达、自动剧本的叙事节奏。已知陷阱：HUD不是手机App，骑手用余光扫视，信息必须一瞥可读。产品核心使命：消灭停车掏手机。",
+    "CTO": "本议题是 HUD Demo 的技术实现。关注：单HTML文件零依赖约束、状态机完整性（7个页面态+优先级切换）、键盘事件全覆盖、自动剧本时序驱动机制、代码结构可维护性。已知陷阱：单次LLM生成超500行HTML时质量下降——考虑是否需要分段生成策略。但最终产物必须是单文件。",
+    "CMO": "本议题是 HUD Demo 的演示说服力。关注：竞品 Shoei GT-Air 3 Smart（$1199，EyeLights OLED HUD）的体验对标——我们要比它好在哪里看得出来？ADAS预警是核心差异化（Shoei做不到）——Demo里ADAS场景是否足够震撼？3分钟内投资人/供应商能否get到产品价值？目标用户是玩乐骑+摩旅骑手，不是通勤。",
+    "Critic": "审查标准：14条验收标准逐条验证。额外关注：Demo是否传达了产品的核心差异化（ADAS安全感知），还是沦为了一个花哨的信息展示板？审查各角色置信度标注是否诚实。"
+  },
+  "output_type": "html",
+  "output_path": "demo_outputs/hud_demo_roundtable.html",
+  "generator_input_mode": "raw_proposal",
+  "auto_verify_rules": [],
+  "max_iterations": 10,
+  "timeout_minutes": 60
+}

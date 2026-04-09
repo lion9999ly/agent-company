@@ -1,6 +1,6 @@
 # CLAUDE.md 版本号（每次修改必须更新此版本号）
 
-**VERSION: 20260408.2**
+**VERSION: 20260409.1**
 
 ## 版本号检查规则（最高优先级）
 
@@ -138,6 +138,33 @@ lark-cli bitable +records-create --app-token {token} --table-id {id} --fields '{
 - **长内容（报告/代码/分析）**：创建飞书云文档，消息里放链接
 - **结构化数据**：写多维表格
 - **操作完成后**：告知用户结果
+
+### 报告输出规则（必须创建 GitHub Issue）
+
+以下报告完成后**必须**自动创建 GitHub Issue 并附完整内容：
+
+| 报告类型 | 触发时机 | Issue 标题格式 |
+|----------|----------|----------------|
+| 圆桌结果 | Phase 4 完成 | `[圆桌] {topic} - {date}` |
+| 诊断报告 | 系统诊断完成 | `[诊断] {诊断名称} - {date}` |
+| 修复报告 | 修复任务完成 | `[修复] {修复名称} - {date}` |
+
+**原因**：
+- Claude Chat 需要从 GitHub fetch 审查
+- 飞书通道单向不可达（Claude Chat → CC 可，CC → Claude Chat 不可）
+- GitHub Issue 是 Claude Chat 唯一可访问的报告存储
+
+**实现方式**：
+```python
+import requests
+token = os.getenv("GITHUB_TOKEN")
+resp = requests.post(
+    "https://api.github.com/repos/lion9999ly/agent-company/issues",
+    headers={"Authorization": f"token {token}"},
+    json={"title": "[圆桌] XXX", "body": report_content, "labels": ["roundtable"]}
+)
+print(f"Issue created: {resp.json()['html_url']}")
+```
 
 ### 飞书指令对应的执行脚本
 
@@ -390,6 +417,8 @@ python scripts/doc_sync_validator.py
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-04-09 | **报告输出规则**: 圆桌结果/诊断报告/修复报告必须创建 GitHub Issue，CLAUDE.md v20260409.1 |
+| 2026-04-09 | **Day 17 诊断修复**: 21 个断点修复，agent.py stdin 模式，import_handlers 内联 |
 | 2026-04-08 | **Thinking Layer**: 新增咨询规则、GitHub Issue 指令通道文档、CLAUDE.md v20260408.2 |
 | 2026-04-08 | **Agent模式**: 移除 --no-input 标志修复、SDK重启机制完善 |
 | 2026-04-07 | **Bug修复**: Phase1Output默认值、load_task_spec模糊匹配、meta_cognition禁用开关 |
