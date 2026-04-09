@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Helmet HUD Demo</title>
+<style>
+  :root{
+    --bg-0:#020611;
+    --bg-1:#071427;
+    --bg-2:#0b1f3d;
+    --glass:rgba(255,255,255,.06);
+    --glass-strong:rgba(255,255,255,.1);
+    --line:rgba(255,255,255,.12);
+    --text:#ffffff;
+    --muted:rgba(255,255,255,.72);
+    --dim:rgba(255,255,255,.42);
+
+    --speed:#ffffff;
+    --nav:#4A90E2;
+    --warn:#FF4757;
+    --team:#1DD1A1;
+    --music:#9B59B6;
+    --ok:#7bed9f;
+
+    --zone-pad:22px;
+    --zone-radius:18px;
+    --zone-gap:18px;
+
+    --lt-w:26vw;
+    --rt-w:24vw;
+    --lb-w:30vw;
+    --rb-w:26vw;
+
+    --lt-h:18vh;
+    --rt-h:14vh;
+    --lb-h:24vh;
+    --rb-h:22vh;
+
+    --timeline-h:64px;
+    --panel-w:320px;
+
+    --font-ui: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+
+    --scheme-filter:none;
+    --scheme-glow:0 0 18px rgba(255,255,255,.12);
+  }
+
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    color:var(--text);
+    font-family:var(--font-ui);
+  }
+
+  body{
+    position:relative;
+    background:
+      radial-gradient(1200px 700px at 50% 120%, rgba(74,144,226,.12), transparent 60%),
+      linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 38%, var(--bg-0) 100%);
+  }
+
+  body::before,
+  body::after{
+    content:"";
+    position:fixed;
+    inset:-10%;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  body::before{
+    background:
+      linear-gradient(90deg,
+        transparent 0%,
+        rgba(255,255,255,.02) 18%,
+        rgba(74,144,226,.08) 32%,
+        rgba(255,255,255,.03) 48%,
+        transparent 64%);
+    transform:translateX(-30%);
+    animation:roadSweep 14s linear infinite;
+    filter:blur(10px);
+    opacity:.7;
+  }
+
+  body::after{
+    background:
+      repeating-linear-gradient(
+        180deg,
+        rgba(255,255,255,.02) 0 1px,
+        transparent 1px 48px
+      );
+    opacity:.08;
+  }
+
+  @keyframes roadSweep{
+    0%{transform:translateX(-35%)}
+    100%{transform:translateX(35%)}
+  }
+
+  #hud-container{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    isolation:isolate;
+    filter:var(--scheme-filter);
+    overflow:hidden;
+  }
+
+  #hud-container::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 50% 50%, transparent 0 18%, rgba(255,255,255,.015) 42%, transparent 70%);
+    pointer-events:none;
+    z-index:1;
+  }
+
+  .hud-zone{
+    position:absolute;
+    z-index:3;
+    padding:var(--zone-pad);
+    border-radius:var(--zone-radius);
+    background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+    border:1px solid var(--line);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 10px 30px rgba(0,0,0,.22),
+      var(--scheme-glow);
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    gap:10px;
+    overflow:hidden;
+  }
+
+  .hud-zone::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:linear-gradient(135deg, rgba(255,255,255,.06), transparent 35%, transparent 65%, rgba(255,255,255,.03));
+    pointer-events:none;
+  }
+
+  #lt-zone{
+    top:var(--zone-gap);
+    left:var(--zone-gap);
+    width:var(--lt-w);
+    min-height:var(--lt-h);
+    align-items:flex-start;
+  }
+
+  #rt-zone{
+    top:var(--zone-gap);
+    right:calc(var(--panel-w) + var(--zone-gap));
+    width:var(--rt-w);
+    min-height:var(--rt-h);
+    align-items:flex-end;
+    text-align:right;
+  }
+
+  #lb-zone{
+    left:var(--zone-gap);
+    bottom:calc(var(--timeline-h) + var(--zone-gap));
+    width:var(--lb-w);
+    min-height:var(--lb-h);
+    justify-content:flex-end;
+    align-items:flex-start;
+  }
+
+  #rb-zone{
+    right:calc(var(--panel-w) + var(--zone-gap));
+    bottom:calc(var(--timeline-h) + var(--zone-gap));
+    width:var(--rb-w);
+    min-height:var(--rb-h);
+    justify-content:flex-end;
+    align-items:flex-end;
+    text-align:right;
+  }
+
+  .zone-title{
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--dim);
+    line-height:1;
+  }
+
+  .zone-main{
+    font-size:28px;
+    font-weight:700;
+    line-height:1.1;
+    color:var(--text);
+    text-shadow:0 0 18px rgba(255,255,255,.12);
+  }
+
+  .zone-sub{
+    font-size:14px;
+    color:var(--muted);
+    line-height:1.4;
+  }
+
+  .speed-value{
+    font-size:72px;
+    font-weight:800;
+    line-height:.95;
+    letter-spacing:-.04em;
+    color:var(--speed);
+  }
+
+  .speed-unit{
+    font-size:18px;
+    color:var(--muted);
+    margin-left:8px;
+    letter-spacing:.08em;
+  }
+
+  .pill-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    min-height:28px;
+    padding:0 10px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.05);
+    color:var(--muted);
+    font-size:12px;
+    white-space:nowrap;
+  }
+
+  .accent-speed{color:var(--speed)}
+  .accent-nav{color:var(--nav)}
+  .accent-warn{color:var(--warn)}
+  .accent-team{color:var(--team)}
+  .accent-music{color:var(--music)}
+
+  .warning{
+    border-color:rgba(255,71,87,.45)!important;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,71,87,.18),
+      0 0 24px rgba(255,71,87,.18);
+  }
+
+  .warning .zone-main,
+  .warning .zone-sub,
+  .warning .zone-title{
+    color:var(--warn)!important;
+  }
+
+  .flash{
+    animation:warnFlash .8s steps(2,end) infinite;
+  }
+
+  @keyframes warnFlash{
+    0%,100%{opacity:1; filter:brightness(1)}
+    50%{opacity:.35; filter:brightness(1.45)}
+  }
+
+  .center-safe-area{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:34vw;
+    height:34vh;
+    transform:translate(-50%,-50%);
+    border-radius:28px;
+    border:1px dashed rgba(255,255,255,.06);
+    background:radial-gradient(circle at center, rgba(255,255,255,.015), transparent 68%);
+    pointer-events:none;
+    z-index:2;
+  }
+
+  .center-safe-area::before{
+    content:"CENTER CLEAR";
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    font-size:12px;
+    letter-spacing:.28em;
+    color:rgba(255,255,255,.12);
+    white-space:nowrap;
+  }
+
+  #timeline-bar{
+    position:absolute;
+    left:var(--zone-gap);
+    right:calc(var(--panel-w) + var(--zone-gap));
+    bottom:var(--zone-gap);
+    height:var(--timeline-h);
+    z-index:4;
+    border-radius:18px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    box-shadow:0 10px 30px rgba(0,0,0,.22);
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:12px 16px;
+  }
+
+  .timeline-btn{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.06);
+    color:var(--text);
+    display:grid;
+    place-items:center;
+    font-size:14px;
+    flex:0 0 auto;
+  }
+
+  .timeline-track{
+    position:relative;
+    flex:1;
+    height:8px;
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    overflow:hidden;
+  }
+
+  .timeline-progress{
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:22%;
+    border-radius:inherit;
+    background:linear-gradient(90deg, var(--nav), #7fb7ff);
+    box-shadow:0 0 16px rgba(74,144,226,.35);
+  }
+
+  .timeline-time{
+    font-size:12px;
+    color:var(--muted);
+    min-width:84px;
+    text-align:right;
+  }
+
+  #control-panel,
+  #sandbox-panel{
+    position:absolute;
+    right:var(--zone-gap);
+    width:var(--panel-w);
+    z-index:5;
+    border-radius:18px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.035));
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    box-shadow:0 10px 30px rgba(0,0,0,.24);
+    overflow:hidden;
+  }
+
+  #control-panel{
+    top:var(--zone-gap);
+    height:calc(34vh - var(--zone-gap));
+    min-height:180px;
+  }
+
+  #sandbox-panel{
+    top:calc(34vh + 8px);
+    bottom:var(--zone-gap);
+    min-height:280px;
+  }
+
+  .panel-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.03);
+  }
+
+  .panel-title{
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  .panel-body{
+    padding:14px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .panel-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    min-height:34px;
+    padding:0 12px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.05);
+    color:var(--text);
+    font-size:12px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .btn.primary{border-color:rgba(74,144,226,.35); color:#d9ebff}
+  .btn.warn{border-color:rgba(255,71,87,.35); color:#ffd7dc}
+  .btn.team{border-color:rgba(29,209,161,.35); color:#d8fff3}
+  .btn.music{border-color:rgba(155,89,182,.35); color:#f0ddff}
+
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .stat-card{
+    padding:12px;
+    border-radius:12px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+  }
+
+  .stat-label{
+    font-size:11px;
+    color:var(--dim);
+    margin-bottom:6px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+
+  .stat-value{
+    font-size:18px;
+    font-weight:700;
+    color:var(--text);
+  }
+
+  .scheme-b{
+    --scheme-filter: grayscale(1) sepia(1) hue-rotate(55deg) saturate(5) brightness(1.05);
+    --scheme-glow:0 0 18px rgba(120,255,120,.12);
+  }
+
+  .speed-s2 #rb-zone .zone-sub,
+  .speed-s3 #rb-zone .zone-sub{
+    opacity:.55;
+  }
+
+  .speed-s3 #rb-zone .zone-main{
+    font-size:18px;
+  }
+
+  .speed-s3 #rb-zone .detail-hide-high{
+    display:none!important;
+  }
+
+  .speed-s0 #rb-zone,
+  .speed-s1 #rb-zone,
+  .speed-s2 #rb-zone,
+  .speed-s3 #rb-zone,
+  .speed-s0 #rt-zone,
+  .speed-s1 #rt-zone,
+  .speed-s2 #rt-zone,
+  .speed-s3 #rt-zone{
+    transition:opacity .25s ease, transform .25s ease;
+  }
+
+  @media (max-width: 1280px){
+    :root{
+      --panel-w:280px;
+      --lt-w:28vw;
+      --rt-w:24vw;
+      --lb-w:34vw;
+      --rb-w:28vw;
+    }
+    .speed-value{font-size:60px}
+  }
+
+  @media (max-width: 980px){
+    :root{
+      --panel-w:240px;
+      --zone-pad:16px;
+      --timeline-h:58px;
+    }
+    .zone-main{font-size:22px}
+    .speed-value{font-size:52px}
+  }
+</style>
+</head>
+<body>
+  <div id="hud-container" class="speed-s1">
+    <div class="center-safe-area" aria-hidden="true"></div>
+
+    <section id="lt-zone" class="hud-zone" aria-label="左上预警区">
+      <div class="zone-title">LT / Alert</div>
+      <div class="zone-main accent-warn">系统正常</div>
+      <div class="zone-sub">ADAS 预警将在此处闪烁显示</div>
+      <div class="pill-row">
+        <span class="pill">BSD</span>
+        <span class="pill">Door</span>
+        <span class="pill">FCW</span>
+      </div>
+    </section>
+
+    <section id="rt-zone" class="hud-zone" aria-label="右上轻提示区">
+      <div class="zone-title">RT / Hint</div>
+      <div class="zone-main">前方学校路段</div>
+      <div class="zone-sub">组队已连接 · 蓝牙/Wi‑Fi 正常</div>
+    </section>
+
+    <section id="lb-zone" class="hud-zone" aria-label="左下主信息区">
+      <div class="zone-title">LB / Primary</div>
+      <div class="zone-main">
+        <span class="speed-value">26</span><span class="speed-unit">km/h</span>
+      </div>
+      <div class="zone-sub">14:28 · 主界面待机</div>
+      <div class="pill-row">
+        <span class="pill accent-speed">S1</span>
+        <span class="pill">BT</span>
+        <span class="pill">Wi‑Fi</span>
+      </div>
+    </section>
+
+    <section id="rb-zone" class="hud-zone" aria-label="右下次级信息区">
+      <div class="zone-title">RB / Secondary</div>
+      <div class="zone-main accent-music">夜航星</div>
+      <div class="zone-sub detail-hide-high">歌手：不才 · 录制中 · 电量 82%</div>
+      <div class="pill-row detail-hide-high">
+        <span class="pill accent-music">Music</span>
+        <span class="pill">REC</span>
+        <span class="pill">82%</span>
+      </div>
+    </section>
+
+    <div id="timeline-bar" aria-label="剧本时间轴">
+      <div class="timeline-btn">▶</div>
+      <div class="timeline-track">
+        <div class="timeline-progress"></div>
+      </div>
+      <div class="timeline-time">00:18 / 01:30</div>
+    </div>
+
+    <aside id="control-panel" aria-label="控制面板">
+      <div class="panel-header">
+        <div class="panel-title">Control Panel</div>
+        <div class="pill">A / OLED</div>
+      </div>
+      <div class="panel-body">
+        <div class="panel-row">
+          <button class="btn primary" type="button">方案 A</button>
+          <button class="btn" type="button">方案 B</button>
+          <button class="btn" type="button">播放</button>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">Mode</div>
+            <div class="stat-value">home</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Speed</div>
+            <div class="stat-value">S1</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <aside id="sandbox-panel" aria-label="沙盒面板">
+      <div class="panel-header">
+        <div class="panel-title">Sandbox Panel</div>
+        <div class="pill">Manual Override</div>
+      </div>
+      <div class="panel-body">
+        <div class="panel-row">
+          <button class="btn" type="button">主界面</button>
+          <button class="btn primary" type="button">导航</button>
+          <button class="btn team" type="button">组队</button>
+          <button class="btn music" type="button">音乐</button>
+        </div>
+        <div class="panel-row">
+          <button class="btn warn" type="button">左侧盲区</button>
+          <button class="btn warn" type="button">开门预警</button>
+          <button class="btn warn" type="button">前碰预警</button>
+        </div>
+        <div class="panel-row">
+          <button class="btn" type="button">S0</button>
+          <button class="btn" type="button">S1</button>
+          <button class="btn" type="button">S2</button>
+          <button class="btn" type="button">S3</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+<script>
+
+(() => {
+  const SPEED_LEVELS = ["S0", "S1", "S2", "S3"];
+  const SPEED_VALUE_MAP = { S0: 0, S1: 26, S2: 58, S3: 92 };
+
+  const MODE = {
+    HOME: "MODE_HOME",
+    NAV: "MODE_NAV",
+    TEAM: "MODE_TEAM",
+    MUSIC: "MODE_MUSIC",
+    CALL: "MODE_CALL",
+    ADAS_BSD_LEFT: "MODE_ADAS_BSD_LEFT",
+    ADAS_FCW: "MODE_ADAS_FCW"
+  };
+
+  const MODE_TABLE = {
+    [MODE.HOME]: {
+      stateId: MODE.HOME,
+      layer: "base",
+      priority: 0,
+      interruptibleBy: [MODE.NAV, MODE.TEAM, MODE.MUSIC, MODE.CALL, MODE.ADAS_BSD_LEFT, MODE.ADAS_FCW],
+      restoreTo: null,
+      key: "1",
+      scriptEvent: "home",
+      defaultZone: "lb-zone"
+    },
+    [MODE.NAV]: {
+      stateId: MODE.NAV,
+      layer: "overlay",
+      priority: 10,
+      interruptibleBy: [MODE.TEAM, MODE.MUSIC, MODE.CALL, MODE.ADAS_BSD_LEFT, MODE.ADAS_FCW],
+      restoreTo: MODE.HOME,
+      key: "2",
+      scriptEvent: "nav",
+      defaultZone: "lb-zone"
+    },
+    [MODE.TEAM]: {
+      stateId: MODE.TEAM,
+      layer: "overlay",
+      priority: 11,
+      interruptibleBy: [MODE.NAV, MODE.MUSIC, MODE.CALL, MODE.ADAS_BSD_LEFT, MODE.ADAS_FCW],
+      restoreTo: MODE.HOME,
+      key: "3",
+      scriptEvent: "team",
+      defaultZone: "rb-zone"
+    },
+    [MODE.MUSIC]: {
+      stateId: MODE.MUSIC,
+      layer: "overlay",
+      priority: 12,
+      interruptibleBy: [MODE.NAV, MODE.TEAM, MODE.CALL, MODE.ADAS_BSD_LEFT, MODE.ADAS_FCW],
+      restoreTo: MODE.HOME,
+      key: "4",
+      scriptEvent: "music",
+      defaultZone: "rb-zone"
+    },
+    [MODE.CALL]: {
+      stateId: MODE.CALL,
+      layer: "transient",
+      priority: 90,
+      interruptibleBy: [MODE.ADAS_BSD_LEFT, MODE.ADAS_FCW],
+      restoreTo: "__PREV_OVERLAY__",
+      key: "5",
+      scriptEvent: "call",
+      defaultZone: "rt-zone"
+    },
+    [MODE.ADAS_BSD_LEFT]: {
+      stateId: MODE.ADAS_BSD_LEFT,
+      layer: "transient",
+      priority: 100,
+      interruptibleBy: [],
+      restoreTo: "__PREV_OVERLAY__",
+      key: " ",
+      scriptEvent: "adas_bsd_left",
+      defaultZone: "lt-zone"
+    },
+    [MODE.ADAS_FCW]: {
+      stateId: MODE.ADAS_FCW,
+      layer: "transient",
+      priority: 101,
+      interruptibleBy: [],
+      restoreTo: "__PREV_OVERLAY__",
+      key: "6",
+      scriptEvent: "adas_fcw",
+      defaultZone: "lt-zone"
+    }
+  };
+
+  const EVENT_MAP = {
+    HOME: { type: "mode", mode: MODE.HOME },
+    NAV_START: { type: "mode", mode: MODE.NAV },
+    TEAM_START: { type: "mode", mode: MODE.TEAM },
+    MUSIC_START: { type: "mode", mode: MODE.MUSIC },
+    CALL_INCOMING: { type: "mode", mode: MODE.CALL },
+    ADAS_BSD_LEFT: { type: "mode", mode: MODE.ADAS_BSD_LEFT },
+    ADAS_FCW: { type: "mode", mode: MODE.ADAS_FCW },
+    TRANSIENT_CLEAR: { type: "clearTransient" },
+    OVERLAY_CLEAR: { type: "clearOverlay" },
+    SPEED_S0: { type: "speed", speed: "S0" },
+    SPEED_S1: { type: "speed", speed: "S1" },
+    SPEED_S2: { type: "speed", speed: "S2" },
+    SPEED_S3: { type: "speed", speed: "S3" }
+  };
+
+  const state = {
+    baseMode: MODE.HOME,
+    overlayMode: null,
+    transientStack: [],
+    previousOverlayBeforeTransient: null,
+    previousBaseBeforeOverlay: MODE.HOME
+  };
+
+  window.MODE = MODE;
+  window.MODE_TABLE = MODE_TABLE;
+  window.currentMode = MODE.HOME;
+  window.currentSpeed = "S1";
+  window.scriptPlaying = window.scriptPlaying ?? false;
+
+  function getEl(id) {
+    return document.getElementById(id);
+  }
+
+  function getTopTransient() {
+    return state.transientStack.length ? state.transientStack[state.transientStack.length - 1] : null;
+  }
+
+  function getEffectiveMode() {
+    return getTopTransient() || state.overlayMode || state.baseMode;
+  }
+
+  function getSpeedValue(level) {
+    return SPEED_VALUE_MAP[level] ?? 0;
+  }
+
+  function setSpeedLevel(level) {
+    if (!SPEED_LEVELS.includes(level)) return;
+    window.currentSpeed = level;
+    const hud = getEl("hud-container");
+    if (hud) {
+      hud.classList.remove("speed-s0", "speed-s1", "speed-s2", "speed-s3");
+      hud.classList.add(`speed-${level.toLowerCase()}`);
+    }
+    if (typeof window.__hudRenderAll === "function") window.__hudRenderAll();
+  }
+
+  function pushTransient(mode) {
+    const currentTop = getTopTransient();
+    if (currentTop === mode) return;
+    if (!currentTop) state.previousOverlayBeforeTransient = state.overlayMode || state.baseMode;
+    state.transientStack.push(mode);
+  }
+
+  function clearTransient() {
+    state.transientStack = [];
+    state.previousOverlayBeforeTransient = null;
+  }
+
+  function clearOverlay() {
+    state.overlayMode = null;
+  }
+
+  window.setMode = function setMode(mode) {
+    if (!MODE_TABLE[mode]) return;
+    const meta = MODE_TABLE[mode];
+
+    if (meta.layer === "base") {
+      state.baseMode = mode;
+      clearOverlay();
+      clearTransient();
+    } else if (meta.layer === "overlay") {
+      state.overlayMode = mode;
+      clearTransient();
+    } else if (meta.layer === "transient") {
+      pushTransient(mode);
+    }
+
+    window.currentMode = getEffectiveMode();
+    if (typeof window.__hudRenderAll === "function") window.__hudRenderAll();
+    document.dispatchEvent(new CustomEvent("hud:modechange", { detail: { mode: window.currentMode, state: { ...state } } }));
+  };
+
+  window.emitEvent = function emitEvent(event) {
+    const evt = typeof event === "string" ? (EVENT_MAP[event] || { type: "mode", mode: event }) : event;
+    if (!evt) return;
+
+    if (evt.manual === true) window.scriptPlaying = false;
+
+    if (evt.type === "mode" && evt.mode) {
+      window.setMode(evt.mode);
+      return;
+    }
+
+    if (evt.type === "speed" && evt.speed) {
+      setSpeedLevel(evt.speed);
+      return;
+    }
+
+    if (evt.type === "clearTransient") {
+      clearTransient();
+      window.currentMode = getEffectiveMode();
+      if (typeof window.__hudRenderAll === "function") window.__hudRenderAll();
+      return;
+    }
+
+    if (evt.type === "clearOverlay") {
+      clearOverlay();
+      window.currentMode = getEffectiveMode();
+      if (typeof window.__hudRenderAll === "function") window.__hudRenderAll();
+    }
+  };
+
+  window.__hudState = state;
+  window.__hudGetEffectiveMode = getEffectiveMode;
+  window.__hudGetTopTransient = getTopTransient;
+  window.__hudSetSpeedLevel = setSpeedLevel;
+  window.__hudGetSpeedValue = getSpeedValue;
+})();
+
+
+(() => {
+  const COLOR_MAP = {
+    speed: "#FFFFFF",
+    nav: "#4A90E2",
+    warn: "#FF4757",
+    team: "#1DD1A1",
+    music: "#9B59B6",
+    ok: "#7bed9f",
+    muted: "rgba(255,255,255,.72)",
+    dim: "rgba(255,255,255,.42)"
+  };
+
+  const MODE_RENDER = {
+    MODE_HOME: { layer: "base", theme: "speed" },
+    MODE_NAV: { layer: "overlay", theme: "nav" },
+    MODE_TEAM: { layer: "overlay", theme: "team" },
+    MODE_MUSIC: { layer: "overlay", theme: "music" },
+    MODE_CALL: { layer: "transient", theme: "team" },
+    MODE_ADAS_BSD_LEFT: { layer: "transient", theme: "warn" },
+    MODE_ADAS_FCW: { layer: "transient", theme: "warn" }
+  };
+
+  const WARNING_CONFIG = {
+    MODE_ADAS_BSD_LEFT: {
+      zoneId: "lt-zone",
+      color: COLOR_MAP.warn,
+      title: "LT / Warning",
+      main: "左侧盲区",
+      sub: "请勿向左并线",
+      pills: ['<span class="pill accent-warn">BSD LEFT</span>']
+    },
+    MODE_ADAS_FCW: {
+      zoneId: "lt-zone",
+      color: COLOR_MAP.warn,
+      title: "LT / Warning",
+      main: "前向碰撞风险",
+      sub: "请立即减速",
+      pills: ['<span class="pill accent-warn">FCW</span>']
+    }
+  };
+
+  function getEl(id) {
+    return document.getElementById(id);
+  }
+
+  function nowTime() {
+    const d = new Date();
+    const hh = String(d.getHours()).padStart(2, "0");
+    const mm = String(d.getMinutes()).padStart(2, "0");
+    return `${hh}:${mm}`;
+  }
+
+  function speedValue() {
+    return typeof window.__hudGetSpeedValue === "function"
+      ? window.__hudGetSpeedValue(window.currentSpeed)
+      : ({ S0: 0, S1: 26, S2: 58, S3: 92 }[window.currentSpeed] ?? 0);
+  }
+
+  function density(level) {
+    return {
+      S0: { rb: "full", rt: "full" },
+      S1: { rb: "full", rt: "full" },
+      S2: { rb: "compact", rt: "full" },
+      S3: { rb: "icon", rt: "compact" }
+    }[level] || { rb: "full", rt: "full" };
+  }
+
+  function pills(items) {
+    if (!items || !items.length) return "";
+    return `<div class="pill-row">${items.join("")}</div>`;
+  }
+
+  function zoneBlock({ title, main, sub = "", mainClass = "", subClass = "", extra = "" }) {
+    return `
+      <div class="zone-title">${title}</div>
+      <div class="zone-main ${mainClass}">${main}</div>
+      ${sub ? `<div class="zone-sub ${subClass}">${sub}</div>` : ""}
+      ${extra || ""}
+    `;
+  }
+
+  window.renderZone = function renderZone(zoneId, content) {
+    const el = getEl(zoneId);
+    if (!el) return;
+    el.innerHTML = content;
+  };
+
+  window.flashWarning = function flashWarning(zoneId, color) {
+    const el = getEl(zoneId);
+    if (!el) return;
+    el.classList.add("warning", "flash");
+    if (color) el.style.setProperty("--warn", color);
+    clearTimeout(el.__flashTimer);
+    el.__flashTimer = setTimeout(() => {
+      el.classList.remove("flash");
+    }, 2400);
+  };
+
+  function clearZoneWarnings() {
+    ["lt-zone", "rt-zone", "lb-zone", "rb-zone"].forEach(id => {
+      const el = getEl(id);
+      if (!el) return;
+      el.classList.remove("warning", "flash");
+    });
+  }
+
+  function renderBaseLT() {
+    return zoneBlock({
+      title: "LT / Alert",
+      main: "系统正常",
+      sub: "ADAS 预警将在此处闪烁显示",
+      mainClass: "accent-warn",
+      extra: pills([
+        '<span class="pill">BSD</span>',
+        '<span class="pill">Door</span>',
+        '<span class="pill">FCW</span>'
+      ])
+    });
+  }
+
+  function renderBaseRT(activeOverlay) {
+    if (activeOverlay === window.MODE?.TEAM) {
+      return zoneBlock({
+        title: "RT / Hint",
+        main: "组队已连接",
+        sub: "4 人在线 · 语音通话可用"
+      });
+    }
+    if (activeOverlay === window.MODE?.NAV) {
+      return zoneBlock({
+        title: "RT / Hint",
+        main: "导航进行中",
+        sub: "语音唤起成功"
+      });
+    }
+    return zoneBlock({
+      title: "RT / Hint",
+      main: density(window.currentSpeed).rt === "compact" ? "学校路段" : "前方学校路段",
+      sub: density(window.currentSpeed).rt === "compact" ? "连接正常" : "蓝牙/Wi‑Fi 正常"
+    });
+  }
+
+  function renderBaseLB() {
+    return zoneBlock({
+      title: "LB / Primary",
+      main: `<span class="speed-value">${speedValue()}</span><span class="speed-unit">km/h</span>`,
+      sub: `${nowTime()} · 主界面待机`,
+      extra: pills([
+        `<span class="pill accent-speed">${window.currentSpeed}</span>`,
+        '<span class="pill">BT</span>',
+        '<span class="pill">Wi‑Fi</span>'
+      ])
+    });
+  }
+
+  function renderBaseRB() {
+    const d = density(window.currentSpeed).rb;
+    if (d === "icon") {
+      return zoneBlock({
+        title: "RB / Secondary",
+        main: "♫",
+        sub: "82% · REC",
+        mainClass: "accent-music"
+      });
+    }
+    if (d === "compact") {
+      return zoneBlock({
+        title: "RB / Secondary",
+        main: "夜航星",
+        sub: "录制中 · 电量 82%",
+        mainClass: "accent-music"
+      });
+    }
+    return zoneBlock({
+      title: "RB / Secondary",
+      main: "夜航星",
+      sub: "歌手：不才 · 录制中 · 电量 82%",
+      mainClass: "accent-music",
+      subClass: "detail-hide-high",
+      extra: pills([
+        '<span class="pill accent-music detail-hide-high">Music</span>',
+        '<span class="pill detail-hide-high">REC</span>',
+        '<span class="pill detail-hide-high">82%</span>'
+      ])
+    });
+  }
+
+  function renderOverlayNav() {
+    return {
+      lb: zoneBlock({
+        title: "LB / Navigation",
+        main: "↖ 350m 左转",
+        sub: "中山北路 → 延安高架辅路",
+        mainClass: "accent-nav",
+        extra: pills([
+          '<span class="pill accent-nav">ETA 12 min</span>',
+          `<span class="pill">${speedValue()} km/h</span>`,
+          `<span class="pill">${window.currentSpeed}</span>`
+        ])
+      }),
+      rb: zoneBlock({
+        title: "RB / Route",
+        main: "剩余 2.4 km",
+        sub: "已避开拥堵路段",
+        mainClass: "accent-nav"
+      }),
+      rt: zoneBlock({
+        title: "RT / Hint",
+        main: density(window.currentSpeed).rt === "compact" ? "导航中" : "导航进行中",
+        sub: density(window.currentSpeed).rt === "compact" ? "语音成功" : "语音唤起成功"
+      })
+    };
+  }
+
+  function renderOverlayTeam() {
+    return {
+      rb: zoneBlock({
+        title: "RB / Team",
+        main: "队伍已连接",
+        sub: density(window.currentSpeed).rb === "icon" ? "4 Riders" : "阿杰 / 小林 / Vera 在线",
+        mainClass: "accent-team",
+        extra: density(window.currentSpeed).rb === "icon"
+          ? ""
+          : pills([
+              '<span class="pill accent-team">4 Riders</span>',
+              '<span class="pill">VOIP</span>',
+              '<span class="pill">Low Latency</span>'
+            ])
+      }),
+      rt: zoneBlock({
+        title: "RT / Hint",
+        main: "组队通话中",
+        sub: density(window.currentSpeed).rt === "compact" ? "麦克风正常" : "麦克风正常"
+      })
+    };
+  }
+
+  function renderOverlayMusic() {
+    const d = density(window.currentSpeed).rb;
+    if (d === "icon") {
+      return {
+        rb: zoneBlock({
+          title: "RB / Music",
+          main: "♫",
+          sub: "播放中",
+          mainClass: "accent-music"
+        }),
+        rt: zoneBlock({
+          title: "RT / Hint",
+          main: "音乐播放",
+          sub: "音量 62%"
+        })
+      };
+    }
+    if (d === "compact") {
+      return {
+        rb: zoneBlock({
+          title: "RB / Music",
+          main: "夜航星",
+          sub: "不才 · 音量 62%",
+          mainClass: "accent-music"
+        }),
+        rt: zoneBlock({
+          title: "RT / Hint",
+          main: "音乐播放",
+          sub: "已简化显示"
+        })
+      };
+    }
+    return {
+      rb: zoneBlock({
+        title: "RB / Music",
+        main: "夜航星",
+        sub: "歌手：不才 · 专辑：平行时空",
+        mainClass: "accent-music",
+        extra: pills([
+          '<span class="pill accent-music">Playing</span>',
+          '<span class="pill">62%</span>',
+          '<span class="pill">Hi‑Fi</span>'
+        ])
+      }),
+      rt: zoneBlock({
+        title: "RT / Hint",
+        main: "音乐播放",
+        sub: "下一首可语音切换"
+      })
+    };
+  }
+
+  function renderTransientCall() {
+    return {
+      rt: zoneBlock({
+        title: "RT / Call",
+        main: "来电：Vera",
+        sub: "按 5 接听 / 再按清除",
+        mainClass: "accent-team"
+      })
+    };
+  }
+
+  function renderTransientWarning(mode) {
+    const cfg = WARNING_CONFIG[mode];
+    if (!cfg) return null;
+    return {
+      zoneId: cfg.zoneId,
+      html: zoneBlock({
+        title: cfg.title,
+        main: cfg.main,
+        sub: cfg.sub,
+        mainClass: "accent-warn",
+        extra: pills(cfg.pills)
+      }),
+      color: cfg.color
+    };
+  }
+
+  function updateStatCards(effectiveMode) {
+    const values = document.querySelectorAll(".stat-value");
+    if (values[0]) values[0].textContent = String(effectiveMode || "").replace("MODE_", "").toLowerCase();
+    if (values[1]) values[1].textContent = window.currentSpeed || "S1";
+  }
+
+  window.__hudRenderAll = function __hudRenderAll() {
+    const overlay = window.__hudState?.overlayMode || null;
+    const transient = typeof window.__hudGetTopTransient === "function" ? window.__hudGetTopTransient() : null;
+    const effective = typeof window.__hudGetEffectiveMode === "function"
+      ? window.__hudGetEffectiveMode()
+      : (transient || overlay || window.currentMode);
+
+    renderZone("lt-zone", renderBaseLT());
+    renderZone("rt-zone", renderBaseRT(overlay));
+    renderZone("lb-zone", renderBaseLB());
+    renderZone("rb-zone", renderBaseRB());
+
+    if (overlay === window.MODE?.NAV) {
+      const v = renderOverlayNav();
+      renderZone("lb-zone", v.lb);
+      renderZone("rb-zone", v.rb);
+      renderZone("rt-zone", v.rt);
+    }
+
+    if (overlay === window.MODE?.TEAM) {
+      const v = renderOverlayTeam();
+      renderZone("rb-zone", v.rb);
+      renderZone("rt-zone", v.rt);
+    }
+
+    if (overlay === window.MODE?.MUSIC) {
+      const v = renderOverlayMusic();
+      renderZone("rb-zone", v.rb);
+      renderZone("rt-zone", v.rt);
+    }
+
+    clearZoneWarnings();
+
+    if (transient === window.MODE?.CALL) {
+      const v = renderTransientCall();
+      renderZone("rt-zone", v.rt);
+    }
+
+    if (transient === window.MODE?.ADAS_BSD_LEFT || transient === window.MODE?.ADAS_FCW) {
+      const warning = renderTransientWarning(transient);
+      if (warning) {
+        renderZone(warning.zoneId, warning.html);
+        flashWarning(warning.zoneId, warning.color);
+      }
+    }
+
+    updateStatCards(effective);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof window.__hudRenderAll === "function") window.__hudRenderAll();
+    });
+  } else {
+    if (typeof window.__hudRenderAll === "function") window.__hudRenderAll();
+  }
+})();
+
+
+(() => {
+  const SCRIPT_DURATION = 90;
+
+  const SCRIPT_SEQUENCES = [
+    {
+      id: "SCRIPT_A",
+      name: "平静→导航→音乐→盲区预警→恢复导航",
+      events: [
+        { t: 0, type: "mode", mode: window.MODE.HOME },
+        { t: 0, type: "speed", speed: "S0" },
+        { t: 6, type: "speed", speed: "S1" },
+        { t: 10, type: "mode", mode: window.MODE.NAV },
+        { t: 22, type: "mode", mode: window.MODE.MUSIC },
+        { t: 34, type: "speed", speed: "S2" },
+        { t: 48, type: "mode", mode: window.MODE.NAV },
+        { t: 60, type: "mode", mode: window.MODE.ADAS_BSD_LEFT },
+        { t: 65, type: "clearTransient" },
+        { t: 72, type: "speed", speed: "S3" },
+        { t: 82, type: "speed", speed: "S1" },
+        { t: 90, type: "mode", mode: window.MODE.HOME }
+      ]
+    },
+    {
+      id: "SCRIPT_B",
+      name: "主界面→组队→来电→前碰预警→回组队",
+      events: [
+        { t: 0, type: "mode", mode: window.MODE.HOME },
+        { t: 0, type: "speed", speed: "S1" },
+        { t: 8, type: "mode", mode: window.MODE.TEAM },
+        { t: 18, type: "speed", speed: "S2" },
+        { t: 28, type: "mode", mode: window.MODE.CALL },
+        { t: 36, type: "clearTransient" },
+        { t: 50, type: "mode", mode: window.MODE.ADAS_FCW },
+        { t: 55, type: "clearTransient" },
+        { t: 66, type: "speed", speed: "S3" },
+        { t: 78, type: "speed", speed: "S1" },
+        { t: 90, type: "mode", mode: window.MODE.HOME }
+      ]
+    },
+    {
+      id: "SCRIPT_C",
+      name: "主界面→导航→组队→音乐→恢复主界面",
+      events: [
+        { t: 0, type: "mode", mode: window.MODE.HOME },
+        { t: 0, type: "speed", speed: "S0" },
+        { t: 7, type: "speed", speed: "S1" },
+        { t: 12, type: "mode", mode: window.MODE.NAV },
+        { t: 26, type: "mode", mode: window.MODE.TEAM },
+        { t: 42, type: "mode", mode: window.MODE.MUSIC },
+        { t: 58, type: "speed", speed: "S2" },
+        { t: 72, type: "mode", mode: window.MODE.NAV },
+        { t: 84, type: "clearOverlay" },
+        { t: 90, type: "mode", mode: window.MODE.HOME }
+      ]
+    }
+  ];
+
+  const scriptState = {
+    time: 0,
+    raf: 0,
+    lastTs: 0,
+    fired: new Set(),
+    activeIndex: 0,
+    dragging: false
+  };
+
+  function getActiveScript() {
+    return SCRIPT_SEQUENCES[scriptState.activeIndex] || SCRIPT_SEQUENCES[0];
+  }
+
+  function getEvents() {
+    return getActiveScript().events;
+  }
+
+  function fmt(sec) {
+    const s = Math.max(0, Math.floor(sec));
+    const mm = String(Math.floor(s / 60)).padStart(2, "0");
+    const ss = String(s % 60).padStart(2, "0");
+    return `${mm}:${ss}`;
+  }
+
+  function updateTimelineUI() {
+    const bar = document.getElementById("timeline-bar");
+    if (!bar) return;
+    const progress = bar.querySelector(".timeline-progress");
+    const thumb = bar.querySelector(".timeline-thumb");
+    const time = bar.querySelector(".timeline-time");
+    const btn = bar.querySelector(".timeline-btn");
+    const label = bar.querySelector(".timeline-label");
+    const ratio = Math.min(1, Math.max(0, scriptState.time / SCRIPT_DURATION));
+    if (progress) progress.style.width = `${ratio * 100}%`;
+    if (thumb) thumb.style.left = `${ratio * 100}%`;
+    if (time) time.textContent = `${fmt(scriptState.time)} / ${fmt(SCRIPT_DURATION)}`;
+    if (btn) btn.textContent = window.scriptPlaying ? "❚❚" : "▶";
+    if (label) label.textContent = getActiveScript().name;
+  }
+
+  function applyEventsUntil(time) {
+    getEvents().forEach((evt, idx) => {
+      if (evt.t <= time && !scriptState.fired.has(idx)) {
+        scriptState.fired.add(idx);
+        window.emitEvent(evt);
+      }
+    });
+  }
+
+  function rebuildFiredSet(time) {
+    scriptState.fired.clear();
+    getEvents().forEach((evt, idx) => {
+      if (evt.t <= time) scriptState.fired.add(idx);
+    });
+  }
+
+  function resetToInitial() {
+    window.emitEvent({ type: "clearTransient" });
+    window.emitEvent({ type: "clearOverlay" });
+    const firstMode = getEvents().find(e => e.type === "mode");
+    const firstSpeed = getEvents().find(e => e.type === "speed");
+    if (firstSpeed) window.emitEvent(firstSpeed);
+    if (firstMode) window.emitEvent(firstMode);
+  }
+
+  function seek(time) {
+    scriptState.time = Math.max(0, Math.min(SCRIPT_DURATION, time));
+    rebuildFiredSet(scriptState.time);
+
+    window.emitEvent({ type: "clearTransient" });
+    window.emitEvent({ type: "clearOverlay" });
+
+    const events = getEvents().filter(e => e.t <= scriptState.time);
+    events.forEach(evt => window.emitEvent(evt));
+
+    updateTimelineUI();
+  }
+
+  function tick(ts) {
+    if (!window.scriptPlaying) return;
+    if (!scriptState.lastTs) scriptState.lastTs = ts;
+    const dt = (ts - scriptState.lastTs) / 1000;
+    scriptState.lastTs = ts;
+    scriptState.time += dt;
+    applyEventsUntil(scriptState.time);
+    if (scriptState.time >= SCRIPT_DURATION) {
+      scriptState.time = SCRIPT_DURATION;
+      window.scriptPlaying = false;
+    }
+    updateTimelineUI();
+    if (window.scriptPlaying) scriptState.raf = requestAnimationFrame(tick);
+  }
+
+  function playScript() {
+    if (window.scriptPlaying) return;
+    if (scriptState.time >= SCRIPT_DURATION) seek(0);
+    window.scriptPlaying = true;
+    scriptState.lastTs = 0;
+    updateTimelineUI();
+    scriptState.raf = requestAnimationFrame(tick);
+  }
+
+  function pauseScript() {
+    window.scriptPlaying = false;
+    cancelAnimationFrame(scriptState.raf);
+    updateTimelineUI();
+  }
+
+  function selectScript(index, autoSeek = true) {
+    scriptState.activeIndex = Math.max(0, Math.min(SCRIPT_SEQUENCES.length - 1, index));
+    pauseScript();
+    scriptState.time = 0;
+    scriptState.lastTs = 0;
+    scriptState.fired.clear();
+    if (autoSeek) seek(0);
+    updateTimelineUI();
+  }
+
+  function bindTimeline() {
+    const bar = document.getElementById("timeline-bar");
+    if (!bar) return;
+    const btn = bar.querySelector(".timeline-btn");
+    const track = bar.querySelector(".timeline-track");
+
+    if (btn) {
+      btn.addEventListener("click", () => {
+        if (window.scriptPlaying) pauseScript();
+        else playScript();
+      });
+    }
+
+    if (track) {
+      const onSeek = (clientX) => {
+        const rect = track.getBoundingClientRect();
+        const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+        pauseScript();
+        seek(ratio * SCRIPT_DURATION);
+      };
+
+      track.addEventListener("click", e => onSeek(e.clientX));
+      track.addEventListener("mousedown", e => {
+        scriptState.dragging = true;
+        onSeek(e.clientX);
+      });
+      window.addEventListener("mousemove", e => {
+        if (!scriptState.dragging) return;
+        onSeek(e.clientX);
+      });
+      window.addEventListener("mouseup", () => {
+        scriptState.dragging = false;
+      });
+    }
+  }
+
+  window.__hudScript = {
+    play: playScript,
+    pause: pauseScript,
+    seek,
+    selectScript,
+    reset: () => {
+      pauseScript();
+      scriptState.time = 0;
+      scriptState.fired.clear();
+      resetToInitial();
+      updateTimelineUI();
+    },
+    duration: SCRIPT_DURATION,
+    sequences: SCRIPT_SEQUENCES,
+    get activeIndex() {
+      return scriptState.activeIndex;
+    }
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      bindTimeline();
+      selectScript(0, true);
+    });
+  } else {
+    bindTimeline();
+    selectScript(0, true);
+  }
+})();
+
+
+(() => {
+  const SCRIPT_DURATION = 90;
+
+  const SCRIPT_SEQUENCES = [
+    {
+      id: "SCRIPT_A",
+      name: "平静→导航→音乐→盲区预警→恢复导航",
+      events: [
+        { t: 0, type: "mode", mode: window.MODE?.HOME || "MODE_HOME" },
+        { t: 0, type: "speed", speed: "S0" },
+        { t: 6, type: "speed", speed: "S1" },
+        { t: 10, type: "mode", mode: window.MODE?.NAV || "MODE_NAV" },
+        { t: 22, type: "mode", mode: window.MODE?.MUSIC || "MODE_MUSIC" },
+        { t: 34, type: "speed", speed: "S2" },
+        { t: 48, type: "mode", mode: window.MODE?.NAV || "MODE_NAV" },
+        { t: 60, type: "mode", mode: window.MODE?.ADAS_BSD_LEFT || "MODE_ADAS_BSD_LEFT" },
+        { t: 65, type: "clearTransient" },
+        { t: 72, type: "speed", speed: "S3" },
+        { t: 82, type: "speed", speed: "S1" },
+        { t: 90, type: "mode", mode: window.MODE?.HOME || "MODE_HOME" }
+      ]
+    },
+    {
+      id: "SCRIPT_B",
+      name: "主界面→组队→来电→前碰预警→回组队",
+      events: [
+        { t: 0, type: "mode", mode: window.MODE?.HOME || "MODE_HOME" },
+        { t: 0, type: "speed", speed: "S1" },
+        { t: 8, type: "mode", mode: window.MODE?.TEAM || "MODE_TEAM" },
+        { t: 18, type: "speed", speed: "S2" },
+        { t: 28, type: "mode", mode: window.MODE?.CALL || "MODE_CALL" },
+        { t: 36, type: "clearTransient" },
+        { t: 50, type: "mode", mode: window.MODE?.ADAS_FCW || "MODE_ADAS_FCW" },
+        { t: 55, type: "clearTransient" },
+        { t: 66, type: "speed", speed: "S3" },
+        { t: 78, type: "speed", speed: "S1" },
+        { t: 90, type: "mode", mode: window.MODE?.HOME || "MODE_HOME" }
+      ]
+    },
+    {
+      id: "SCRIPT_C",
+      name: "主界面→导航→组队→音乐→恢复主界面",
+      events: [
+        { t: 0, type: "mode", mode: window.MODE?.HOME || "MODE_HOME" },
+        { t: 0, type: "speed", speed: "S0" },
+        { t: 7, type: "speed", speed: "S1" },
+        { t: 12, type: "mode", mode: window.MODE?.NAV || "MODE_NAV" },
+        { t: 26, type: "mode", mode: window.MODE?.TEAM || "MODE_TEAM" },
+        { t: 42, type: "mode", mode: window.MODE?.MUSIC || "MODE_MUSIC" },
+        { t: 58, type: "speed", speed: "S2" },
+        { t: 72, type: "mode", mode: window.MODE?.NAV || "MODE_NAV" },
+        { t: 84, type: "clearOverlay" },
+        { t: 90, type: "mode", mode: window.MODE?.HOME || "MODE_HOME" }
+      ]
+    }
+  ];
+
+  const scriptState = {
+    time: 0,
+    raf: 0,
+    lastTs: 0,
+    fired: new Set(),
+    activeIndex: 0,
+    dragging: false
+  };
+
+  function getActiveScript() {
+    return SCRIPT_SEQUENCES[scriptState.activeIndex] || SCRIPT_SEQUENCES[0];
+  }
+
+  function getEvents() {
+    return getActiveScript().events;
+  }
+
+  function fmt(sec) {
+    const s = Math.max(0, Math.floor(sec));
+    const mm = String(Math.floor(s / 60)).padStart(2, "0");
+    const ss = String(s % 60).padStart(2, "0");
+    return `${mm}:${ss}`;
+  }
+
+  function updateTimelineUI() {
+    const bar = document.getElementById("timeline-bar");
+    if (!bar) return;
+    const progress = bar.querySelector(".timeline-progress");
+    const thumb = bar.querySelector(".timeline-thumb");
+    const time = bar.querySelector(".timeline-time");
+    const btn = bar.querySelector(".timeline-btn");
+    const label = bar.querySelector(".timeline-label");
+    const ratio = Math.min(1, Math.max(0, scriptState.time / SCRIPT_DURATION));
+    if (progress) progress.style.width = `${ratio * 100}%`;
+    if (thumb) thumb.style.left = `${ratio * 100}%`;
+    if (time) time.textContent = `${fmt(scriptState.time)} / ${fmt(SCRIPT_DURATION)}`;
+    if (btn) btn.textContent = window.scriptPlaying ? "❚❚" : "▶";
+    if (label) label.textContent = getActiveScript().name;
+  }
+
+  function applyEventsUntil(time) {
+    getEvents().forEach((evt, idx) => {
+      if (evt.t <= time && !scriptState.fired.has(idx)) {
+        scriptState.fired.add(idx);
+        if (typeof window.emitEvent === "function") window.emitEvent(evt);
+      }
+    });
+  }
+
+  function rebuildFiredSet(time) {
+    scriptState.fired.clear();
+    getEvents().forEach((evt, idx) => {
+      if (evt.t <= time) scriptState.fired.add(idx);
+    });
+  }
+
+  function seek(time) {
+    scriptState.time = Math.max(0, Math.min(SCRIPT_DURATION, time));
+    rebuildFiredSet(scriptState.time);
+
+    if (typeof window.emitEvent === "function") {
+      window.emitEvent({ type: "clearTransient" });
+      window.emitEvent({ type: "clearOverlay" });
+      getEvents().filter(e => e.t <= scriptState.time).forEach(evt => window.emitEvent(evt));
+    }
+
+    updateTimelineUI();
+  }
+
+  function tick(ts) {
+    if (!window.scriptPlaying) return;
+    if (!scriptState.lastTs) scriptState.lastTs = ts;
+    const dt = (ts - scriptState.lastTs) / 1000;
+    scriptState.lastTs = ts;
+    scriptState.time += dt;
+    applyEventsUntil(scriptState.time);
+    if (scriptState.time >= SCRIPT_DURATION) {
+      scriptState.time = SCRIPT_DURATION;
+      window.scriptPlaying = false;
+    }
+    updateTimelineUI();
+    if (window.scriptPlaying) scriptState.raf = requestAnimationFrame(tick);
+  }
+
+  function playScript() {
+    if (window.scriptPlaying) return;
+    if (scriptState.time >= SCRIPT_DURATION) seek(0);
+    window.scriptPlaying = true;
+    scriptState.lastTs = 0;
+    updateTimelineUI();
+    scriptState.raf = requestAnimationFrame(tick);
+  }
+
+  function pauseScript() {
+    window.scriptPlaying = false;
+    cancelAnimationFrame(scriptState.raf);
+    updateTimelineUI();
+  }
+
+  function selectScript(index, autoSeek = true) {
+    scriptState.activeIndex = Math.max(0, Math.min(SCRIPT_SEQUENCES.length - 1, index));
+    pauseScript();
+    scriptState.time = 0;
+    scriptState.lastTs = 0;
+    scriptState.fired.clear();
+    if (autoSeek) seek(0);
+    updateTimelineUI();
+  }
+
+  function bindTimeline() {
+    const bar = document.getElementById("timeline-bar");
+    if (!bar) return;
+    const btn = bar.querySelector(".timeline-btn");
+    const track = bar.querySelector(".timeline-track");
+
+    if (btn) {
+      btn.addEventListener("click", () => {
+        if (window.scriptPlaying) pauseScript();
+        else playScript();
+      });
+    }
+
+    if (track) {
+      const onSeek = (clientX) => {
+        const rect = track.getBoundingClientRect();
+        const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+        pauseScript();
+        seek(ratio * SCRIPT_DURATION);
+      };
+
+      track.addEventListener("click", e => onSeek(e.clientX));
+      track.addEventListener("mousedown", e => {
+        scriptState.dragging = true;
+        onSeek(e.clientX);
+      });
+      window.addEventListener("mousemove", e => {
+        if (!scriptState.dragging) return;
+        onSeek(e.clientX);
+      });
+      window.addEventListener("mouseup", () => {
+        scriptState.dragging = false;
+      });
+    }
+  }
+
+  window.__hudScript = {
+    play: playScript,
+    pause: pauseScript,
+    seek,
+    selectScript,
+    reset: () => {
+      pauseScript();
+      scriptState.time = 0;
+      scriptState.fired.clear();
+      seek(0);
+      updateTimelineUI();
+    },
+    duration: SCRIPT_DURATION,
+    sequences: SCRIPT_SEQUENCES,
+    get activeIndex() {
+      return scriptState.activeIndex;
+    },
+    get currentTime() {
+      return scriptState.time;
+    }
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      bindTimeline();
+      selectScript(0, true);
+    });
+  } else {
+    bindTimeline();
+    selectScript(0, true);
+  }
+})();
+
+</script>
+</body>
+</html>
