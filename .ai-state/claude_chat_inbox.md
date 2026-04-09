@@ -3,6 +3,21 @@
 
 ---
 
+## [修复] 第五轮 - 云文档路径修复 + TaskSpec诊断 + Issue改requests - 2026-04-09 23:15
+
+- **结果**：通过
+- **关键数据**：
+  - #1 云文档：lark-cli 要求相对路径，临时文件改工作目录
+  - #2 TaskSpec：添加 feishu 参数诊断日志
+  - #3 Issue：gh CLI 改 requests
+- **产出文件**：
+  - GitHub Issue #40: https://github.com/lion9999ly/agent-company/issues/40
+  - Git commit: 9c85cf8
+  - 验证云文档: https://www.feishu.cn/docx/AFTrdDiVpog6rhxapGHccS0Ongh
+- **待决问题**：下次圆桌运行观察 TaskSpec feishu 参数是否为 None
+
+---
+
 ## [修复] 第四轮 - bot自回复过滤（核心问题） - 2026-04-09 17:25
 
 - **结果**：通过
@@ -94,3 +109,10 @@
 - **产出文件**：
   - GitHub Issue #33: https://github.com/lion9999ly/agent-company/issues/33
 - **待决问题**：无
+---
+
+## [圆桌] HUD Demo 生成 - 2026-04-09 22:36
+
+- **结果**: 通过
+- **关键数据**: 迭代 2 轮
+- **产出文件**: `demo_outputs\hud_demo_roundtable_20260409_223626.html`
