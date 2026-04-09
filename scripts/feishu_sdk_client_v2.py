@@ -247,7 +247,7 @@ def _start_scheduled_tasks():
             run_deep_learning(max_hours=7, progress_callback=lambda msg: send_reply(LEO_OPEN_ID, msg, "open_id"))
             # 深度学习完成后发送日报
             from scripts.feishu_handlers.text_router import _handle_morning_brief
-            _handle_morning_brief(LEO_OPEN_ID, "open_id", send_reply)
+            _handle_morning_brief(LEO_OPEN_ID, lambda msg: send_reply(LEO_OPEN_ID, msg, "open_id"))
         except Exception as e:
             print(f"[Scheduler] 深度学习失败: {e}")
         finally:

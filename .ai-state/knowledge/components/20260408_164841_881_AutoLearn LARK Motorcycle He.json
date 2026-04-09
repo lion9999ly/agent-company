@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] LARK Motorcycle Helmets",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"lark-cli motorcycle helmet specs supplier price 2026\",\n  \"product\": \"LARK Motorcycle Helmets\",\n  \"key_specs\": [\n    {\n      \"name\": \"Product Segment\",\n      \"value\": \"Entry-level Commuter (C-Series 2026)\",\n      \"source\": \"2026 Projected Core LARK Helmet Specs\"\n    },\n    {\n      \"name\": \"Certifications (C-Series)\",\n      \"value\": \"ECE 22.06, DOT FMVSS 218, China 3C\",\n      \"source\": \"Entry-level Commuter (C-Series 2026)\"\n    },\n    {\n      \"name\": \"Shell (C-Series)\",\n      \"value\": \"ABS + 10% recycled carbon fiber blend\",\n      \"source\": \"Entry-level Commuter (C-Series 2026)\"\n    },\n    {\n      \"name\": \"Weight (C-Series)\",\n      \"value\": \"1450±50g\",\n      \"source\": \"Entry-level Commuter (C-Series 2026)\"\n    },\n    {\n      \"name\": \"Ventilation (C-Series)\",\n      \"value\": \"6 i",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "anchor_gap"
+  ],
+  "confidence": "medium"
+}

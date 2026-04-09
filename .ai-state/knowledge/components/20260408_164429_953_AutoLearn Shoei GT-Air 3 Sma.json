@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] Shoei GT-Air 3 Smart HUD display",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"Shoei GT-Air 3 Smart HUD display interface screenshot\",\n  \"product\": \"Shoei GT-Air 3 Smart HUD display\",\n  \"key_specs\": [\n    {\n      \"name\": \"Shoei官方原型机 - 显示方案\",\n      \"value\": \"DLP微型投影\",\n      \"source\": \"2024 CES官方技术手册+现场实测数据\"\n    },\n    {\n      \"name\": \"Shoei官方原型机 - 虚拟成像距离\",\n      \"value\": \"右眼前方1.5m\",\n      \"source\": \"2024 CES官方技术手册+现场实测数据\"\n    },\n    {\n      \"name\": \"Shoei官方原型机 - 分辨率\",\n      \"value\": \"854×480（FWVGA）\",\n      \"source\": \"2024 CES官方技术手册+现场实测数据\"\n    },\n    {\n      \"name\": \"Shoei官方原型机 - 峰值亮度\",\n      \"value\": \"1000nits（支持自适应环境光调节，阳光下清晰可视）\",\n      \"source\": \"2024 CES官方技术手册+现场实测数据\"\n    },\n    {\n      \"name\": \"Shoei官方原型机 - 透光率\",\n      \"value\": \"92%（无显示区域完全透明不遮挡骑行视野）\",\n      \"source\": \"2024 CES官方技术手册+现场实测数据\"\n    },\n    {\n      \"name\": \"Shoei官方原型机 - 可视角度\",\n      \"val",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "research_pool"
+  ],
+  "confidence": "medium"
+}

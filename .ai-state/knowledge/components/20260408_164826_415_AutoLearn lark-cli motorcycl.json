@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] lark-cli motorcycle helmet",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"lark-cli motorcycle helmet specs supplier price 2026\",\n  \"product\": \"lark-cli motorcycle helmet\",\n  \"key_specs\": [\n    {\n      \"name\": \"Outer Shell Material\",\n      \"value\": \"Advanced polycarbonate composite or carbon fiber for durability and lightness.\",\n      \"source\": \"Example Response for 'Lark CLI Motorcycle Helmet'\"\n    },\n    {\n      \"name\": \"Weight\",\n      \"value\": \"Approximately 1500 grams.\",\n      \"source\": \"Example Response for 'Lark CLI Motorcycle Helmet'\"\n    },\n    {\n      \"name\": \"Certification\",\n      \"value\": \"Meets current safety standards, such as DOT and ECE 22.06 (if continuing forward in the timeline).\",\n      \"source\": \"Example Response for 'Lark CLI Motorcycle Helmet'\"\n    },\n    {\n      \"name\": \"Visor Type\",\n      \"value\": \"Dual visor system with anti",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "anchor_gap"
+  ],
+  "confidence": "medium"
+}

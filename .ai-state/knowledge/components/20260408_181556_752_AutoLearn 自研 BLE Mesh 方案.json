@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 自研 BLE Mesh 方案",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"自研 BLE Mesh 的开发周期和成本估算\",\n  \"product\": \"自研 BLE Mesh 方案\",\n  \"key_specs\": [\n    {\n      \"name\": \"主流开发模式\",\n      \"value\": \"基于BLE芯片原厂协议栈的上层自研\",\n      \"source\": \"主流场景\"\n    },\n    {\n      \"name\": \"主流模式-开发周期-消费级基础款\",\n      \"value\": \"3-4个月\",\n      \"source\": \"主流场景\"\n    },\n    {\n      \"name\": \"主流模式-开发周期-复杂功能/工业级\",\n      \"value\": \"6-12个月\",\n      \"source\": \"主流场景\"\n    },\n    {\n      \"name\": \"小众开发模式\",\n      \"value\": \"BLE Mesh全栈自研\",\n      \"source\": \"小众场景\"\n    },\n    {\n      \"name\": \"全栈自研-开发周期\",\n      \"value\": \"18-36个月\",\n      \"source\": \"小众场景\"\n    },\n    {\n      \"name\": \"影响因素-团队经验\",\n      \"value\": \"无BLE开发经验团队，周期和成本上浮50%-100%\",\n      \"source\": \"核心影响变量\"\n    },\n    {\n      \"name\": \"影响因素-私有协议需求\",\n      \"value\": \"不兼容SIG标准可缩短周期20%\",\n      \"source\": \"核心影响变量\"\n    },\n    {\n      \"name\": \"影响因素-网络规模\",\n ",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

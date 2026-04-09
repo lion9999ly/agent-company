@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] Shoei GT-Air 3",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"Shoei GT-Air 3 Smart HUD display interface screenshot\",\n  \"product\": \"Shoei GT-Air 3\",\n  \"key_specs\": [\n    {\n      \"name\": \"Helmet Model\",\n      \"value\": \"Shoei GT-Air 3\",\n      \"source\": \"text\"\n    },\n    {\n      \"name\": \"Predecessor Models\",\n      \"value\": \"Shoei GT-Air, Shoei GT-Air II\",\n      \"source\": \"text\"\n    },\n    {\n      \"name\": \"Helmet Type\",\n      \"value\": \"Premium sport-touring helmet\",\n      \"source\": \"text\"\n    },\n    {\n      \"name\": \"Key Helmet Features\",\n      \"value\": \"Comfort, safety features, integrated technology compatibility\",\n      \"source\": \"text\"\n    },\n    {\n      \"name\": \"HUD Technology\",\n      \"value\": \"Smart HUD (Heads-Up Display), Augmented Reality (AR) HUD system\",\n      \"source\": \"text\"\n    },\n    {\n      \"name\": \"HUD Functionality\",\n      \"",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "research_pool"
+  ],
+  "confidence": "medium"
+}

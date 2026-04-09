@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] Shoei GT-Air 3 Smart HUD",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"Shoei GT-Air 3 Smart HUD display interface screenshot\",\n  \"product\": \"Shoei GT-Air 3 Smart HUD\",\n  \"key_specs\": [\n    {\n      \"name\": \"Technology Type\",\n      \"value\": \"Heads-Up Display (HUD)\",\n      \"source\": \"text\"\n    },\n    {\n      \"name\": \"Display Location\",\n      \"value\": \"Projected onto helmet’s visor or a small transparent screen inside the helmet\",\n      \"source\": \"text\"\n    },\n    {\n      \"name\": \"Purpose\",\n      \"value\": \"Provide critical information at a glance, improve safety by reducing need to look down\",\n      \"source\": \"text\"\n    },\n    {\n      \"name\": \"Interface Description\",\n      \"value\": \"Visual layout and icons/text that appear on the helmet’s heads-up display\",\n      \"source\": \"text\"\n    },\n    {\n      \"name\": \"Related Concept\",\n      \"value\": \"Shoei Sm",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "research_pool"
+  ],
+  "confidence": "medium"
+}

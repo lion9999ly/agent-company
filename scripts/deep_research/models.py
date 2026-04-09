@@ -58,25 +58,27 @@ def _get_sem_key(model_name: str) -> str:
 # 降级映射表
 # ============================================================
 FALLBACK_MAP = {
-    "gpt_5_4":               "gpt_4o_norway",
-    "gpt_4o_norway":         "doubao_seed_pro",
+    # Azure 模型失败 → 优先降到非 Azure 模型
+    "gpt_5_4":               "doubao_seed_pro",      # Azure → 火山引擎
+    "gpt_4o_norway":         "doubao_seed_pro",      # Azure → 火山引擎
+    "gpt_5_3":               "deepseek_v3_volcengine",  # Azure → 火山引擎
     "o3_deep_research":      "gpt_5_4",
-    "doubao_seed_pro":       "doubao_seed_lite",
-    "doubao_seed_lite":      "gpt_4o_norway",
-    "deepseek_v3_volcengine":"deepseek_r1_volcengine",
-    "deepseek_r1_volcengine":"gpt_5_4",
-    "glm_4_7":               "doubao_seed_pro",
-    "doubao_vision_pro":     "gpt_5_4",
-    "gpt_5_3":               "gpt_4o_norway",
     "o3":                    "deepseek_r1_volcengine",
     "o3_mini":               "doubao_seed_lite",
-    "grok_4":                "gpt_4o_norway",
+    # 非Azure模型保持原有降级链
+    "doubao_seed_pro":       "doubao_seed_lite",
+    "doubao_seed_lite":      "glm_4_7",
+    "deepseek_v3_volcengine":"deepseek_r1_volcengine",
+    "deepseek_r1_volcengine":"glm_4_7",
+    "glm_4_7":               "doubao_seed_pro",
+    "doubao_vision_pro":     "gpt_4o_norway",
+    "grok_4":                "doubao_seed_pro",
     "gemini_3_1_pro":        "gemini_2_5_pro",
-    "gemini_2_5_pro":        "gpt_5_4",
-    "gemini_2_5_flash":      "gpt_4o_norway",
+    "gemini_2_5_pro":        "doubao_seed_pro",
+    "gemini_2_5_flash":      "doubao_seed_lite",
     "gemini_deep_research":  "o3_deep_research",
     "qwen_3_32b":            "doubao_seed_pro",
-    "llama_4_maverick":      "gpt_4o_norway",
+    "llama_4_maverick":      "doubao_seed_lite",
     "deepseek_v3_2":         "deepseek_v3_volcengine",
     "deepseek_r1":           "deepseek_r1_volcengine",
 }

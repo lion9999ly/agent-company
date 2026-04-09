@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ResoMesh",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"Reso 国产 Mesh 方案的性能和成本\",\n  \"product\": \"ResoMesh\",\n  \"key_specs\": [\n    {\n      \"name\": \"协议兼容性\",\n      \"value\": \"兼容蓝牙Mesh、Matter标准\",\n      \"source\": \"2023-2024年官方公开产品手册、商用项目披露及供应链报价\"\n    },\n    {\n      \"name\": \"物理层参数 (2.4G BLE Mesh版)\",\n      \"value\": \"兼容BLE5.3，最高速率2Mbps\",\n      \"source\": \"2023-2024年官方公开产品手册、商用项目披露及供应链报价\"\n    },\n    {\n      \"name\": \"物理层参数 (Sub-G版)\",\n      \"value\": \"速率125Kbps~1Mbps\",\n      \"source\": \"2023-2024年官方公开产品手册、商用项目披露及供应链报价\"\n    },\n    {\n      \"name\": \"单跳传输距离 (2.4G BLE Mesh版)\",\n      \"value\": \"空旷80~120m，穿1~2堵混凝土墙\",\n      \"source\": \"2023-2024年官方公开产品手册、商用项目披露及供应链报价\"\n    },\n    {\n      \"name\": \"单跳传输距离 (Sub-G版)\",\n      \"value\": \"空旷500~1000m，穿3~5堵混凝土墙\",\n      \"source\": \"2023-2024年官方公开产品手册、商用项目披露及供应链报价\"\n    },\n    {\n      \"name\": \"网络容量 (2.4G BLE Mesh版)\",\n      ",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

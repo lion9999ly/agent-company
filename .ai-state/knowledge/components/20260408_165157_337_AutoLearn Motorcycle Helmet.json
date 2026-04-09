@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] Motorcycle Helmet",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"Motorcycle Helmet Specifications, Suppliers, and 2026 Price Outlook\",\n  \"product\": \"Motorcycle Helmet\",\n  \"key_specs\": [\n    {\n      \"name\": \"Shell Material\",\n      \"value\": \"Polycarbonate plastic, Fiberglass composite, Carbon fiber/Kevlar composites, Advanced polymers\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"Impact Protection Technology\",\n      \"value\": \"EPS foam liners, Rotational impact protection technologies (e.g., MIPS)\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"Comfort Features\",\n      \"value\": \"Ventilation systems, Moisture-wicking removable liners, Anti-scratch/anti-fog visors, Internal drop-down sun visors, Photochromic (auto-tinting) visors\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"Safety Certifications\",\n      \"value\": \"Mentioned a",
+  "source": "auto_learn",
+  "created_at": "2026-04-08",
+  "tags": [
+    "auto_learn",
+    "anchor_gap"
+  ],
+  "confidence": "medium"
+}

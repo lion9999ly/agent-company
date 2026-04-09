@@ -315,20 +315,24 @@ def _pre_flight_api_check(progress_callback=None) -> bool:
     status_msg = "API 健康检查:\n" + "\n".join([f"  {m}: {s}" for m, s in results.items()])
 
     if unavailable_critical:
-        status_msg += f"\n\n核心模型不可用: {unavailable_critical}，深度学习暂停"
+        status_msg += f"\n\n⚠️ 核心模型不可用: {unavailable_critical}"
+        status_msg += "\n将尝试使用可用模型继续运行（质量降级）"
+        print(status_msg)
+        # 只推送一次（失败情况）
         if progress_callback:
             progress_callback(status_msg)
-        print(status_msg)
-        return False
-
-    if disabled_count > 0:
+        # 不再返回 False，而是继续运行
+        # return False
+    elif disabled_count > 0:
         status_msg += f"\n\n{disabled_count} 个非核心模型不可用，已禁用（本轮自动跳过，走降级链）"
+        print(status_msg)
+        if progress_callback:
+            progress_callback(status_msg)
     else:
+        # 所有模型可用，只打印不推送
         status_msg += "\n\n所有模型可用 ✅"
+        print(status_msg)
 
-    if progress_callback:
-        progress_callback(status_msg)
-    print(status_msg)
     return True
 
 
