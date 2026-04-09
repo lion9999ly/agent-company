@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ['普通高亮LCD方案（千元级手机、普通便携屏通用）', '高分区MiniLED方案（旗舰手机、户外工控屏通用）', '旗舰OLED', '工业级户外专用屏', '10000ANSI流明激光投影+抗光幕', '普通3000ANSI流明LED投影+普通幕布']",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案户外直射阳光下亮度实测对比（到眼 nits）\",\n  \"product\": [\n    \"普通高亮LCD方案（千元级手机、普通便携屏通用）\",\n    \"高分区MiniLED方案（旗舰手机、户外工控屏通用）\",\n    \"旗舰OLED\",\n    \"工业级户外专用屏\",\n    \"10000ANSI流明激光投影+抗光幕\",\n    \"普通3000ANSI流明LED投影+普通幕布\"\n  ],\n  \"key_specs\": [\n    {\n      \"name\": \"统一测试条件 - 环境照度\",\n      \"value\": \"98000~103000lux\",\n      \"source\": \"统一测试条件\"\n    },\n    {\n      \"name\": \"统一测试条件 - 测试距离\",\n      \"value\": \"30cm\",\n      \"source\": \"统一测试条件\"\n    },\n    {\n      \"name\": \"统一测试条件 - 测试设备\",\n      \"value\": \"CS-2000专业亮度计\",\n      \"source\": \"统一测试条件\"\n    },\n    {\n      \"name\": \"方案A - 定义\",\n      \"value\": \"普通高亮LCD方案\",\n      \"source\": \"对比方案定义\"\n    },\n    {\n      \"name\": \"方案A - 标称屏体峰值\",\n      \"value\": \"1000nits\",\n      \"source\": \"对比方案定义\"\n    },\n    {\n      \"name\": \"方案A - 防眩处理\",\n      \"value\": \"AG防眩处理\",\n      \"source\": \"对比方案定义\"\n  ",
+  "source": "auto_learn",
+  "created_at": "2026-04-09",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

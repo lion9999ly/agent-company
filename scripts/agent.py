@@ -225,6 +225,37 @@ def handle_kb_govern(chat_id: str):
     try_handle("KB治理", chat_id, "chat", LEO_OPEN_ID, chat_id, fake_send_reply)
 
 
+def handle_logs(text: str, chat_id: str):
+    """日志快速通道 - 返回最近日志"""
+    import re
+
+    # 解析行数参数
+    match = re.search(r'日志\s*(\d+)?', text)
+    lines = int(match.group(1)) if match and match.group(1) else 50
+    lines = min(lines, 200)  # 最多 200 行
+
+    log_path = PROJECT_ROOT / ".ai-state" / "feishu_sdk.log"
+
+    if not log_path.exists():
+        cli_send_message("⚠️ 日志文件不存在", chat_id)
+        return
+
+    try:
+        # 读取最后 N 行
+        with open(log_path, 'r', encoding='utf-8', errors='ignore') as f:
+            all_lines = f.readlines()
+            last_lines = all_lines[-lines:]
+
+        # 组装消息
+        content = ''.join(last_lines)
+        if len(content) > 4000:
+            content = content[-4000:]  # 飞书消息限制
+
+        cli_send_message(f"📋 最近 {len(last_lines)} 行日志：\n\n```\n{content}\n```", chat_id)
+    except Exception as e:
+        cli_send_message(f"⚠️ 读取日志失败: {e}", chat_id)
+
+
 # ============================================================
 # 快速通道路由表
 # ============================================================
@@ -242,6 +273,7 @@ FAST_COMMANDS = {
     "深度学习": handle_night_learning,
     "自学习": handle_auto_learn,
     "KB治理": handle_kb_govern,
+    "日志": lambda chat_id: handle_logs("日志", chat_id),
 }
 
 FAST_PREFIXES = {
@@ -250,6 +282,7 @@ FAST_PREFIXES = {
     "拉取指令": handle_fetch_instruction,
     "执行 issue": handle_fetch_instruction,
     "执行issue": handle_fetch_instruction,
+    "日志": handle_logs,
 }
 
 

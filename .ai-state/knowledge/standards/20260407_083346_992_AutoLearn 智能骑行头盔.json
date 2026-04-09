@@ -1,12 +1,19 @@
 {
   "title": "[AutoLearn] 智能骑行头盔",
   "domain": "standards",
-  "content": "{\n  \"topic\": \"智能骑行头盔 standards 最新技术 供应商 2026\",\n  \"product\": \"智能骑行头盔\",\n  \"key_specs\": [\n    {\n      \"name\": \"欧盟CE EN 1078修订版 - 碰撞触发SOS延迟\",\n      \"value\": \"≤2s\",\n      \"source\": \"欧盟CE EN 1078修订版\"\n    },\n    {\n      \"name\": \"欧盟CE EN 1078修订版 - 误报率\",\n      \"value\": \"≤1%\",\n      \"source\": \"欧盟CE EN 1078修订版\"\n    },\n    {\n      \"name\": \"欧盟CE EN 1078修订版 - 电子部件防水等级\",\n      \"value\": \"≥IPX5\",\n      \"source\": \"欧盟CE EN 1078修订版\"\n    },\n    {\n      \"name\": \"欧盟CE EN 1078修订版 - 工作环境温度\",\n      \"value\": \"-20℃~60℃\",\n      \"source\": \"欧盟CE EN 1078修订版\"\n    },\n    {\n      \"name\": \"美国CPSC 16 CFR Part 1203 - 碰撞后电池漏液/起火风险\",\n      \"value\": \"0\",\n      \"source\": \"美国CPSC 16 CFR Part 1203\"\n    },\n    {\n      \"name\": \"美国CPSC 16 CFR Part 1203 - 蓝牙辐射值\",\n      \"value\": \"≤1.6W/kg\",\n      \"source\": \"美国CPSC 16 CFR Part 1203\"\n    }",
+  "content": "{\n  \"topic\": \"智能骑行头盔 standards 最新技术 供应商 2026\",\n  \"product\": \"智能骑行头盔\",\n  \"key_specs\": [\n    {\n      \"name\": \"国家市监总局标准 - 碰撞求救响应时间\",\n      \"value\": \"≤1s\",\n      \"source\": \"国家市监总局\"\n    },\n    {\n      \"name\": \"国家市监总局标准 - 定位精度\",\n      \"value\": \"≤5m\",\n      \"source\": \"国家市监总局\"\n    },\n    {\n      \"name\": \"国家市监总局标准 - 电池穿刺\",\n      \"value\": \"不起火\",\n      \"source\": \"国家市监总局\"\n    },\n    {\n      \"name\": \"国家市监总局标准 - 儿童智能头盔功能\",\n      \"value\": \"防走失、语音呼救\",\n      \"source\": \"国家市监总局\"\n    },\n    {\n      \"name\": \"欧盟EN 1078修订版 - 跌落冲击后电子模块工作\",\n      \"value\": \"1.5m跌落后仍可正常工作\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"欧盟EN 1078修订版 - 防水等级\",\n      \"value\": \"IPX5\",\n      \"source\": \"欧盟标准化委员会\"\n    },\n    {\n      \"name\": \"UCI赛事标准 - 强制功能\",\n      \"value\": \"碰撞自动求救、MIPS+级缓震\",\n      \"source\": \"国际自行车联盟（UCI）\"\n    },\n  ",
   "source": "auto_learn",
-  "created_at": "2026-04-07",
+  "created_at": "2026-04-09",
   "tags": [
     "auto_learn",
     "domain_gap"
   ],
-  "confidence": "medium"
+  "confidence": "medium",
+  "_history": [
+    {
+      "content": "{\n  \"topic\": \"智能骑行头盔 standards 最新技术 供应商 2026\",\n  \"product\": \"智能骑行头盔\",\n  \"key_specs\": [\n    {\n      \"name\": \"欧盟CE EN 1078修订版 - 碰撞触发SOS延迟\",\n      \"value\": \"≤2s\",\n      \"source\": \"欧盟CE EN 1078修订版\"\n    },\n    {\n      \"name\": \"欧盟CE EN 1078修订版 - 误报率\",\n      \"value\": \"≤1%\",\n      \"source\": \"欧盟CE EN 1078修订版\"\n    },\n    {\n      \"name\": \"欧盟CE EN 1078修订版 - 电子部件防水等级\",\n      \"value\": \"≥IPX5\",\n      \"source\": \"欧盟CE EN 1078修订版\"\n    },\n    {\n      \"name\": \"欧盟CE EN 1078修订版 - 工作环境温度\",\n      \"value\": \"-20℃~60℃\",\n      \"source\": \"欧盟CE EN 1078修订版\"\n    },\n    {\n      \"name\": \"美国CPSC 16 CFR Part 1203 - 碰撞后电池漏液/起火风险\",\n      \"value\": \"0\",\n      \"source\": \"美国CPSC 16 CFR Part 1203\"\n    },\n    {\n      \"name\": \"美国CPSC 16 CFR Part 1203 - 蓝牙辐射值\",\n      \"value\": \"≤1.6W/kg\",\n      \"source\": \"美国CPSC 16 CFR Part 1203\"\n    }",
+      "date": "2026-04-07",
+      "confidence": "medium"
+    }
+  ]
 }

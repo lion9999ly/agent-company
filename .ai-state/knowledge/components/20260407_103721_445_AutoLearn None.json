@@ -1,18 +1,24 @@
 {
   "title": "[AutoLearn] None",
   "domain": "components",
-  "content": "{\n  \"topic\": \"其他潜在 JDM 供应商评估\",\n  \"product\": null,\n  \"key_specs\": [\n    {\n      \"name\": \"研发投入占比\",\n      \"value\": \"≥5%\",\n      \"source\": \"2023年企业年报、行业公开研报\"\n    },\n    {\n      \"name\": \"联合设计项目营收占比\",\n      \"value\": \"≥20%\",\n      \"source\": \"2023年企业年报、行业公开研报\"\n    },\n    {\n      \"name\": \"量产良率\",\n      \"value\": \"≥98.5%\",\n      \"source\": \"2023年企业年报、行业公开研报\"\n    },\n    {\n      \"name\": \"产能爬坡周期\",\n      \"value\": \"≤9个月\",\n      \"source\": \"2023年企业年报、行业公开研报\"\n    },\n    {\n      \"name\": \"ESG评级\",\n      \"value\": \"≥BBB\",\n      \"source\": \"2023年企业年报、行业公开研报\"\n    }\n  ],\n  \"suppliers\": [\n    \"华阳集团\",\n    \"上声电子\",\n    \"电连技术\",\n    \"丘钛科技\",\n    \"科士达\"\n  ],\n  \"prices\": [\n    \"华阳集团物料采购溢价率比行业低3-5pct\",\n    \"上声电子报价比同类型供应商低8-10%\",\n    \"电连技术物料成本占比比行业低4pct\",\n    \"丘钛科技报价比同类型供应商低6%左右\",\n    \"科士达物料采购溢价率比行业低4pct，整体报价比同业低7%左右\",\n    \"第一优先级供",
+  "content": "{\n  \"topic\": \"HUD optical module thermal design helmet\",\n  \"product\": null,\n  \"key_specs\": [\n    {\n      \"name\": \"Key Challenge\",\n      \"value\": \"Thermal management\",\n      \"source\": \"Introduction\"\n    },\n    {\n      \"name\": \"Thermal Design Goal\",\n      \"value\": \"Ensure HUD performance, user comfort, system reliability\",\n      \"source\": \"Introduction\"\n    },\n    {\n      \"name\": \"Module Applications\",\n      \"value\": \"Military flight helmets, augmented reality (AR) headsets, motorcycle helmets with built-in displays, wearable computing devices\",\n      \"source\": \"Introduction\"\n    },\n    {\n      \"name\": \"Display Source Types\",\n      \"value\": \"OLED microdisplay, LCD, LCoS, miniature projector\",\n      \"source\": \"1. Components of a Helmet HUD Optical Module\"\n    },\n    {\n      \"name\": \"Illuminat",
   "source": "auto_learn",
-  "created_at": "2026-04-08",
+  "created_at": "2026-04-09",
   "tags": [
     "decision_blocking",
-    "auto_learn"
+    "auto_learn",
+    "research_pool"
   ],
   "confidence": "medium",
   "_history": [
     {
       "content": "{\n  \"topic\": \"两种方案户外直射阳光下亮度实测对比（到眼 nits）\",\n  \"product\": null,\n  \"key_specs\": [\n    {\n      \"name\": \"测试环境\",\n      \"value\": \"北半球夏季正午无云直射环境\",\n      \"source\": \"测试前提\"\n    },\n    {\n      \"name\": \"地面环境照度\",\n      \"value\": \"102000lux\",\n      \"source\": \"测试前提\"\n    },\n    {\n      \"name\": \"环境漫反射背景亮度\",\n      \"value\": \"≈1200nits\",\n      \"source\": \"测试前提\"\n    },\n    {\n      \"name\": \"测试距离\",\n      \"value\": \"30cm\",\n      \"source\": \"测试前提\"\n    },\n    {\n      \"name\": \"数据误差\",\n      \"value\": \"±5%\",\n      \"source\": \"测试前提\"\n    },\n    {\n      \"name\": \"消费级-普通E6基材OLED方案-标称实验室峰值亮度\",\n      \"value\": \"全屏800nits/局部激发1600nits\",\n      \"source\": \"对比组1：消费级数码产品\"\n    },\n    {\n      \"name\": \"消费级-普通E6基材OLED方案-实测户外到眼有效亮度（纯白画面，亮度拉满）\",\n      \"value\": \"682nits（高温触发亮度降额，暗室测为770nits）\",\n      \"source\": \"对比组1：消费级数码产品\"\n    },\n    {\n      \"n",
       "date": "2026-04-07",
+      "confidence": "medium"
+    },
+    {
+      "content": "{\n  \"topic\": \"其他潜在 JDM 供应商评估\",\n  \"product\": null,\n  \"key_specs\": [\n    {\n      \"name\": \"研发投入占比\",\n      \"value\": \"≥5%\",\n      \"source\": \"2023年企业年报、行业公开研报\"\n    },\n    {\n      \"name\": \"联合设计项目营收占比\",\n      \"value\": \"≥20%\",\n      \"source\": \"2023年企业年报、行业公开研报\"\n    },\n    {\n      \"name\": \"量产良率\",\n      \"value\": \"≥98.5%\",\n      \"source\": \"2023年企业年报、行业公开研报\"\n    },\n    {\n      \"name\": \"产能爬坡周期\",\n      \"value\": \"≤9个月\",\n      \"source\": \"2023年企业年报、行业公开研报\"\n    },\n    {\n      \"name\": \"ESG评级\",\n      \"value\": \"≥BBB\",\n      \"source\": \"2023年企业年报、行业公开研报\"\n    }\n  ],\n  \"suppliers\": [\n    \"华阳集团\",\n    \"上声电子\",\n    \"电连技术\",\n    \"丘钛科技\",\n    \"科士达\"\n  ],\n  \"prices\": [\n    \"华阳集团物料采购溢价率比行业低3-5pct\",\n    \"上声电子报价比同类型供应商低8-10%\",\n    \"电连技术物料成本占比比行业低4pct\",\n    \"丘钛科技报价比同类型供应商低6%左右\",\n    \"科士达物料采购溢价率比行业低4pct，整体报价比同业低7%左右\",\n    \"第一优先级供",
+      "date": "2026-04-08",
       "confidence": "medium"
     }
   ]

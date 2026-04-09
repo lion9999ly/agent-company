@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 树脂基底纳米压印衍射光波导片",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"树脂衍射光波导良率和供应商产能\",\n  \"product\": \"树脂基底纳米压印衍射光波导片\",\n  \"key_specs\": [\n    {\n      \"name\": \"珑璟光电 - 名义年产能 (2024年Q1后)\",\n      \"value\": \"300万片\",\n      \"source\": \"珑璟光电\"\n    },\n    {\n      \"name\": \"珑璟光电 - 2023年实际产能利用率\",\n      \"value\": \"约55%\",\n      \"source\": \"珑璟光电\"\n    },\n    {\n      \"name\": \"珑璟光电 - 2023年实际年出货\",\n      \"value\": \"约90万片\",\n      \"source\": \"珑璟光电\"\n    },\n    {\n      \"name\": \"珑璟光电 - 光栅压印环节良率 (40°-50°FOV消费级)\",\n      \"value\": \"80%-82%\",\n      \"source\": \"珑璟光电\"\n    },\n    {\n      \"name\": \"珑璟光电 - 光栅压印环节良率 (60°FOV产品)\",\n      \"value\": \"约73%-75%\",\n      \"source\": \"珑璟光电\"\n    },\n    {\n      \"name\": \"珑璟光电 - 全流程良率 (普通消费级产品)\",\n      \"value\": \"42%-48%\",\n      \"source\": \"珑璟光电\"\n    },\n    {\n      \"name\": \"珑璟光电 - 全流程良率 (车规/工业级耐候产品)\",\n      \"value\": \"约33%-37%\",\n      \"source\": \"珑璟光电\"\n    },\n  ",
+  "source": "auto_learn",
+  "created_at": "2026-04-09",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

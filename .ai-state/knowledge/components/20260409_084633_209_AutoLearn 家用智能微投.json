@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 家用智能微投",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案的完整 BOM 成本对比（含光学模组+驱动+结构件）\",\n  \"product\": \"家用智能微投\",\n  \"key_specs\": [\n    {\n      \"name\": \"分辨率\",\n      \"value\": \"物理1080P\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"系统\",\n      \"value\": \"内置安卓系统\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"亮度范围\",\n      \"value\": \"500-1200ANSI流明\",\n      \"source\": \"搜索结果\"\n    },\n    {\n      \"name\": \"功能\",\n      \"value\": \"自动对焦/梯形校正, 全画面校正/MEMC\",\n      \"source\": \"搜索结果\"\n    }\n  ],\n  \"suppliers\": [\n    \"洛图科技\",\n    \"上游投影代工厂\",\n    \"TI (Texas Instruments)\",\n    \"京东方 (BOE)\",\n    \"联发科 (MediaTek)\",\n    \"全志 (Allwinner)\"\n  ],\n  \"prices\": [\n    \"2024年Q2供应链10K起订不含税批量采购价\",\n    \"入门家用智能微投总BOM成本：单片DLP方案121美元，单片LCD方案66美元\",\n    \"中高端家用智能微投总BOM成本：LED光源DLP方案180美元，三色激光DLP方案235美元\",\n    \"100K以上大订单量总BOM成本可下探8%-12%\",\n    \"无智能系统商教投影驱动成本可降低15%-20%\"\n  ],\n  \"su",
+  "source": "auto_learn",
+  "created_at": "2026-04-09",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

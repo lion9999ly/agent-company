@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 6.7英寸2K+120Hz旗舰手机显示方案",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案的完整 BOM 成本对比（含光学模组+驱动+结构件）\",\n  \"product\": \"6.7英寸2K+120Hz旗舰手机显示方案\",\n  \"key_specs\": [\n    {\n      \"name\": \"对比基准产品\",\n      \"value\": \"6.7英寸2K+120Hz旗舰手机显示方案\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"方案A类型\",\n      \"value\": \"2000分区MiniLED背光LCD方案\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"方案B类型\",\n      \"value\": \"柔性AMOLED方案\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"数据来源时间\",\n      \"value\": \"2024年Q2\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"采购批量\",\n      \"value\": \"100k起批量\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"报价类型\",\n      \"value\": \"含税报价\",\n      \"source\": \"文本\"\n    },\n    {\n      \"name\": \"货币单位\",\n      \"value\": \"美元\",\n      \"source\": \"文本\"\n    }\n  ],\n  \"suppliers\": [\n    \"国内消费电子供应链\"\n  ],\n  \"prices\": [\n    \"6.7英寸2K+120Hz旗舰手机显示方案 - MiniLED背光LC",
+  "source": "auto_learn",
+  "created_at": "2026-04-09",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

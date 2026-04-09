@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ['32寸2K 144Hz桌面显示器', '消费级AR眼镜']",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"两种方案的完整 BOM 成本对比（含光学模组+驱动+结构件）\",\n  \"product\": [\n    \"32寸2K 144Hz桌面显示器\",\n    \"消费级AR眼镜\"\n  ],\n  \"key_specs\": [\n    {\n      \"name\": \"采购时间\",\n      \"value\": \"2024年Q2\",\n      \"source\": \"General\"\n    },\n    {\n      \"name\": \"采购地点\",\n      \"value\": \"国内\",\n      \"source\": \"General\"\n    },\n    {\n      \"name\": \"采购类型\",\n      \"value\": \"消费电子供应链\",\n      \"source\": \"General\"\n    },\n    {\n      \"name\": \"起批量\",\n      \"value\": \"10K\",\n      \"source\": \"General\"\n    },\n    {\n      \"name\": \"场景1产品\",\n      \"value\": \"32寸2K 144Hz桌面显示器\",\n      \"source\": \"场景1\"\n    },\n    {\n      \"name\": \"场景1方案1\",\n      \"value\": \"传统侧入式LCD背光方案\",\n      \"source\": \"场景1\"\n    },\n    {\n      \"name\": \"场景1方案2\",\n      \"value\": \"384分区直下式MiniLED背光方案\",\n      \"source\": \"场景1\"\n    },\n    {\n      \"name\": \"场景2产品\",\n      \"value\": \"消费级AR眼镜\",\n     ",
+  "source": "auto_learn",
+  "created_at": "2026-04-09",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

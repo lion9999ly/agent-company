@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] ['硅基OLED微显示面板', '索尼ECX系列', '京东方硅基OLED微显']",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"OLED 微显示面板供应商交期和 MOQ（Sony ECX 系列 vs 京东方）\",\n  \"product\": [\n    \"硅基OLED微显示面板\",\n    \"索尼ECX系列\",\n    \"京东方硅基OLED微显\"\n  ],\n  \"key_specs\": [\n    {\n      \"name\": \"索尼ECX系列_样片/散单_第三方贸易商/授权代理MOQ\",\n      \"value\": \"10-50片\",\n      \"source\": \"索尼\"\n    },\n    {\n      \"name\": \"索尼ECX系列_核心合作客户_样片MOQ\",\n      \"value\": \"1-5片 (无MOQ要求)\",\n      \"source\": \"索尼\"\n    },\n    {\n      \"name\": \"索尼ECX系列_小批量量产订单(<1万片/年)_普通客户MOQ\",\n      \"value\": \"100-500片/批次\",\n      \"source\": \"索尼\"\n    },\n    {\n      \"name\": \"索尼ECX系列_小批量量产订单(<1万片/年)_车规级型号MOQ\",\n      \"value\": \"1000片/批次\",\n      \"source\": \"索尼\"\n    },\n    {\n      \"name\": \"索尼ECX系列_大批量核心客户(≥10万片/年)_MOQ\",\n      \"value\": \"可协商至500片/批次\",\n      \"source\": \"索尼\"\n    },\n    {\n      \"name\": \"索尼ECX系列_现货库存_代理/贸易商交期\",\n      \"value\": \"1-2周\",\n      \"source\": \"索尼\"\n    },\n    {\n      \"na",
+  "source": "auto_learn",
+  "created_at": "2026-04-09",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}
