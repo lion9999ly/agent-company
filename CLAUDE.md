@@ -1,6 +1,6 @@
 # CLAUDE.md 版本号（每次修改必须更新此版本号）
 
-**VERSION: 20260409.1**
+**VERSION: 20260409.2**
 
 ## 版本号检查规则（最高优先级）
 
@@ -164,6 +164,20 @@ resp = requests.post(
     json={"title": "[圆桌] XXX", "body": report_content, "labels": ["roundtable"]}
 )
 print(f"Issue created: {resp.json()['html_url']}")
+```
+
+**执行步骤**：
+1. 创建 GitHub Issue（上述代码）
+2. 将摘要追加写入 `.ai-state/claude_chat_inbox.md`
+3. `git add .ai-state/claude_chat_inbox.md && git commit -m "docs: 更新 claude_chat_inbox" && git push`
+
+**摘要格式**：
+```markdown
+## [类型] 标题 - YYYY-MM-DD HH:MM
+- 结果：通过/失败/部分通过
+- 关键数据：（核心数字和结论）
+- 产出文件：（文件路径列表）
+- 待决问题：（如有）
 ```
 
 ### 飞书指令对应的执行脚本
@@ -513,6 +527,7 @@ https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/scrip
 https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/scripts/roundtable/generator.py
 https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/scripts/roundtable/meta_cognition.py
 https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/scripts/roundtable/resilience.py
+https://raw.githubusercontent.com/lion9999ly/agent-company/refs/heads/main/.ai-state/claude_chat_inbox.md
 ```
 
 ---
