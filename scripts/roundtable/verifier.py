@@ -23,7 +23,10 @@ RULE_CHECKS = {
     "no_external_deps": lambda output: (
         "https://cdn.jsdelivr.net" not in output and
         "https://unpkg.com" not in output and
-        "https://cdnjs.cloudflare.com" not in output
+        "https://cdnjs.cloudflare.com" not in output and
+        # 豁免字体 CDN
+        "fonts.googleapis.com" not in output and
+        "fonts.gstatic.com" not in output
     ),
     "keyword_exists": lambda output, keyword: keyword in output,
     "keyword_count": lambda output, keyword, min_count: output.count(keyword) >= min_count,
@@ -117,7 +120,7 @@ class Verifier:
     def _get_all_rules(self, task: TaskSpec) -> List[Dict]:
         """v2: 获取三层规则（合并）
 
-        优先级：global → type → task
+        优先级：global → type → task_spec_file → task.auto_verify_rules
         """
         all_rules = []
 
@@ -129,7 +132,13 @@ class Verifier:
         type_rules = self._load_rules(f"type_{task.output_type}.json")
         all_rules.extend(type_rules)
 
-        # 3. 任务专用规则
+        # 3. 任务专用规则文件（task_{safe_topic}.json）
+        safe_topic = "".join(c for c in task.topic[:20] if c.isalnum() or c in "_-").strip()
+        if safe_topic:
+            task_rules = self._load_rules(f"task_{safe_topic}.json")
+            all_rules.extend(task_rules)
+
+        # 4. TaskSpec 内嵌规则
         if task.auto_verify_rules:
             all_rules.extend(task.auto_verify_rules)
 

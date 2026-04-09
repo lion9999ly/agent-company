@@ -131,23 +131,33 @@ def get_or_create_doc(title: str, initial_content: str = "") -> tuple:
     Returns:
         (doc_id, doc_url) 元组
     """
+    import tempfile
+
     registry = _load_registry()
 
     if title in registry:
         entry = registry[title]
         return entry.get("doc_id"), entry.get("doc_url")
 
-    # 创建新文档（使用 stdin 传递内容，避免 Windows 命令行截断）
+    # 创建新文档（使用临时文件传递内容，避免 Windows stdin 问题）
     content = initial_content or f"# {title}\n\n初始化中..."
-    result = subprocess.run(
-        [LARK_CLI, "docs", "+create",
-         "--title", title,
-         "--markdown", "-",  # 使用 stdin
-         "--as", "bot"],
-        input=content,
-        capture_output=True, text=True, timeout=30,
-        encoding='utf-8'
-    )
+    temp_file = None
+    try:
+        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False, encoding='utf-8')
+        temp_file.write(content)
+        temp_file.close()
+
+        result = subprocess.run(
+            [LARK_CLI, "docs", "+create",
+             "--title", title,
+             "--markdown", f"@{temp_file.name}",  # 使用 @file 方式
+             "--as", "bot"],
+            capture_output=True, text=True, timeout=30,
+            encoding='utf-8'
+        )
+    finally:
+        if temp_file and os.path.exists(temp_file.name):
+            os.unlink(temp_file.name)
 
     doc_id = _extract_doc_id(result.stdout)
     doc_url = _extract_doc_url(result.stdout)
@@ -168,6 +178,8 @@ def update_doc(title: str, content: str) -> Optional[str]:
     Returns:
         doc_url 或 None
     """
+    import tempfile
+
     doc_id, doc_url = get_or_create_doc(title)
 
     if not doc_id:
@@ -175,16 +187,24 @@ def update_doc(title: str, content: str) -> Optional[str]:
         doc_id, doc_url = get_or_create_doc(title, content)
         return doc_url
 
-    # 更新已有文档（使用 stdin 传递内容）
-    result = subprocess.run(
-        [LARK_CLI, "docs", "+update",
-         "--doc", doc_id,
-         "--markdown", "-",  # 使用 stdin
-         "--as", "bot"],
-        input=content,
-        capture_output=True, text=True, timeout=30,
-        encoding='utf-8'
-    )
+    # 更新已有文档（使用临时文件传递内容）
+    temp_file = None
+    try:
+        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False, encoding='utf-8')
+        temp_file.write(content)
+        temp_file.close()
+
+        result = subprocess.run(
+            [LARK_CLI, "docs", "+update",
+             "--doc", doc_id,
+             "--markdown", f"@{temp_file.name}",  # 使用 @file 方式
+             "--as", "bot"],
+            capture_output=True, text=True, timeout=30,
+            encoding='utf-8'
+        )
+    finally:
+        if temp_file and os.path.exists(temp_file.name):
+            os.unlink(temp_file.name)
 
     return doc_url
 
@@ -195,15 +215,25 @@ def create_doc(title: str, content: str) -> Optional[str]:
     Returns:
         doc_url 或 None
     """
-    result = subprocess.run(
-        [LARK_CLI, "docs", "+create",
-         "--title", title,
-         "--markdown", "-",  # 使用 stdin
-         "--as", "bot"],
-        input=content,
-        capture_output=True, text=True, timeout=30,
-        encoding='utf-8'
-    )
+    import tempfile
+
+    temp_file = None
+    try:
+        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False, encoding='utf-8')
+        temp_file.write(content)
+        temp_file.close()
+
+        result = subprocess.run(
+            [LARK_CLI, "docs", "+create",
+             "--title", title,
+             "--markdown", f"@{temp_file.name}",  # 使用 @file 方式
+             "--as", "bot"],
+            capture_output=True, text=True, timeout=30,
+            encoding='utf-8'
+        )
+    finally:
+        if temp_file and os.path.exists(temp_file.name):
+            os.unlink(temp_file.name)
 
     doc_id = _extract_doc_id(result.stdout)
     doc_url = _extract_doc_url(result.stdout)

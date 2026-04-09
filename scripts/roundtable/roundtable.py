@@ -262,11 +262,11 @@ class Roundtable:
                     # 强制进入代码层，由 Generator + Verifier 处理
                     break
 
-            # v2: 新增 - P0 反弹检测（比上一轮增加）
+            # v2: 新增 - P0 反弹检测（比第一轮增加才锁定）
             if len(convergence_trace) >= 2:
-                if convergence_trace[-1] > convergence_trace[-2]:
+                if convergence_trace[-1] > convergence_trace[0]:
                     if self.feishu:
-                        self.feishu.notify(f"⚠️ P0 反弹 ({convergence_trace[-2]} → {convergence_trace[-1]})，锁定基线")
+                        self.feishu.notify(f"⚠️ P0 反弹 ({convergence_trace[0]} → {convergence_trace[-1]})，锁定基线")
                     baseline_proposal = proposal
                     break
 
@@ -783,11 +783,10 @@ class Roundtable:
 （列出矛盾的约束，如有）
 
 ## P0 问题（方案层必须解决）
-对每个 P0 问题标注：
-- [新增] 本轮新出现
-- [遗留] 上轮未修复
-- [回归] 上轮已修但又出现（说明上轮哪个修改导致回归）
-1. ...
+对每个 P0 问题标注唯一 ID（P0-1, P0-2, ...）：
+- P0-1: [新增] 问题描述
+- P0-2: [遗留] 问题描述
+- P0-3: [回归] 问题描述（说明上轮哪个修改导致回归）
 
 ## P1 问题（建议优化）
 1. ...
@@ -963,42 +962,28 @@ class Roundtable:
 
         v2 新增：
         - 对每个 P0 问题标注：[新增]/[遗留]/[回归]
+        - 保留 Critic 标注的 ID（P0-1, P0-2 等）
         - prev_critic_result 用于对比上一轮 P0 问题
-        - 使用关键词匹配而非精确匹配，提高标注准确性
+        - 使用 ID 前缀匹配，而非关键词匹配
         """
         lines = ["## P0 问题清单"]
 
-        def _extract_keywords(issue: str) -> set:
-            """提取问题的关键词（用于模糊匹配）"""
-            # 移除常见词，提取关键词
-            keywords = set()
-            for word in issue.split():
-                if len(word) > 2 and word not in ["没有", "缺少", "需要", "应该", "必须", "问题"]:
-                    keywords.add(word.lower())
-            return keywords
-
-        def _issues_similar(issue1: str, issue2: str) -> bool:
-            """判断两个问题是否相似"""
-            kw1 = _extract_keywords(issue1)
-            kw2 = _extract_keywords(issue2)
-            if not kw1 or not kw2:
-                return False
-            # 如果超过50%关键词重叠，认为是相似问题
-            overlap = len(kw1 & kw2)
-            return overlap > 0.5 * min(len(kw1), len(kw2))
-
-        # v2: 因果链标注
+        # v2: ID 前缀匹配
         if prev_critic_result:
-            prev_p0_list = prev_critic_result.p0_issues
-            for issue in critic_result.p0_issues:
-                # 检查是否与上一轮某个问题相似
-                is_leftover = False
-                for prev_issue in prev_p0_list:
-                    if _issues_similar(issue, prev_issue):
-                        is_leftover = True
-                        break
+            prev_p0_ids = set()
+            for issue in prev_critic_result.p0_issues:
+                # 提取 ID（如 P0-1, P0-2）
+                import re
+                match = re.search(r'P0-\d+', issue)
+                if match:
+                    prev_p0_ids.add(match.group())
 
-                if is_leftover:
+            for issue in critic_result.p0_issues:
+                import re
+                match = re.search(r'P0-\d+', issue)
+                issue_id = match.group() if match else None
+
+                if issue_id and issue_id in prev_p0_ids:
                     lines.append(f"- [遗留] {issue}")
                 else:
                     lines.append(f"- [新增] {issue}")

@@ -111,8 +111,52 @@ def search_keyword(keyword: str, config: dict = None) -> list:
     return []
 
 
+def _analyze_impact(keyword: str, summary: str, config: dict) -> str:
+    """研判竞品动态影响级别（high/medium/low）
+
+    Args:
+        keyword: 搜索关键词
+        summary: 动态摘要
+        config: 监控配置
+
+    Returns:
+        str: "high", "medium", "low" 或 "none"
+    """
+    impact_config = config.get("impact_analysis", {})
+    if not impact_config.get("enabled", False):
+        return "none"  # 未启用研判层
+
+    try:
+        from src.utils.model_gateway import get_model_gateway
+        gw = get_model_gateway()
+
+        prompt = f"""分析以下竞品动态的影响级别：
+
+关键词：{keyword}
+动态摘要：{summary[:500]}
+
+判断标准：
+- high: 产品发布、重大功能更新、融资并购、核心专利公开
+- medium: 功能迭代、市场活动、渠道扩展
+- low: 日常运营、媒体报道、社交媒体内容
+
+只输出一个词：high / medium / low"""
+
+        result = gw.call("doubao_seed_pro", prompt, task_type="impact_analysis")
+        if result.get("success"):
+            response = result["response"].strip().lower()
+            if response in ("high", "medium", "low"):
+                return response
+    except Exception as e:
+        print(f"[Monitor] 影响研判失败: {e}")
+
+    return "medium"  # 默认中等
+
+
 def run_competitor_monitor():
     """运行竞品监控"""
+    from scripts.feishu_handlers.notify_rules import should_notify
+
     print(f"[Monitor] 开始竞品监控...")
 
     # 加载配置
@@ -123,6 +167,11 @@ def run_competitor_monitor():
     state = load_monitor_state()
     new_findings = []
 
+    # 检查是否启用影响研判
+    impact_enabled = config.get("impact_analysis", {}).get("enabled", False)
+    if impact_enabled:
+        print(f"[Monitor] 影响研判层已启用")
+
     for keyword in keywords:
         print(f"[Monitor] 检查: {keyword}")
         results = search_keyword(keyword, config)
@@ -132,6 +181,11 @@ def run_competitor_monitor():
 
             # 检查是否是新的
             if item_key not in state.get("seen_items", []):
+                # P2 #16: 影响研判
+                if impact_enabled:
+                    impact = _analyze_impact(keyword, item.get("summary", ""), config)
+                    item["impact"] = impact
+                    print(f"[Monitor] {keyword} 影响级别: {impact}")
                 new_findings.append(item)
                 state["seen_items"].append(item_key)
 
@@ -140,12 +194,22 @@ def run_competitor_monitor():
     state["last_check"] = datetime.now().isoformat()
     save_monitor_state(state)
 
-    # 如果有新发现，推送飞书
+    # 按影响级别分流处理
     if new_findings:
-        print(f"[Monitor] 发现 {len(new_findings)} 条新动态，推送飞书...")
-        _send_feishu_notification(new_findings)
+        high_impact = [f for f in new_findings if f.get("impact") == "high"]
+        if high_impact and impact_enabled:
+            print(f"[Monitor] 🔴 高影响动态 {len(high_impact)} 条，优先推送")
+
+        if should_notify("competitor_monitor", "has_update"):
+            print(f"[Monitor] 发现 {len(new_findings)} 条新动态，推送飞书...")
+            _send_feishu_notification(new_findings)
+        else:
+            print(f"[Monitor] 发现 {len(new_findings)} 条新动态，但通知已静默")
     else:
-        print(f"[Monitor] 无新发现")
+        if should_notify("competitor_monitor", "no_update"):
+            print(f"[Monitor] 无新发现")
+        else:
+            print(f"[Monitor] 无新发现（静默）")
 
     return new_findings
 
@@ -154,7 +218,7 @@ def _send_feishu_notification(findings: list):
     """发送飞书通知 + 写入多维表格"""
     try:
         from scripts.feishu_output import get_or_create_bitable, add_bitable_record
-        from scripts.feishu_sdk_client import send_reply
+        from scripts.feishu_handlers.chat_helpers import send_reply
 
         # 获取或创建多维表格
         app_token = get_or_create_bitable(BITABLE_CONFIG["name"])

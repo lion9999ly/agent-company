@@ -78,10 +78,10 @@ def _handle_deep_learning(reply_target: str, send_reply: Callable):
 def _handle_auto_learning(reply_target: str, send_reply: Callable):
     """启动自学习"""
     try:
-        from scripts.auto_learn import run_auto_learn
+        from scripts.auto_learn import auto_learn_cycle
         send_reply(reply_target, "[OK] 自学习已启动（30分钟周期）。")
         import threading
-        threading.Thread(target=run_auto_learn, daemon=True).start()
+        threading.Thread(target=auto_learn_cycle, daemon=True).start()
     except Exception as e:
         send_reply(reply_target, f"[ERROR] 启动失败: {e}")
 

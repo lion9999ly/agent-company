@@ -291,10 +291,12 @@ def auto_learn_cycle(progress_callback=None):
     只跑 Layer 1（搜索）+ Layer 2（提炼）+ 直接入库
     不走 Agent 分析，不生成报告
     """
+    from scripts.feishu_handlers.notify_rules import should_notify
+
     print(f"\n{'='*40}")
     print(f"[AutoLearn] {time.strftime('%H:%M')} 开始")
 
-    if progress_callback:
+    if progress_callback and should_notify("auto_learn", "start"):
         progress_callback("📚 自学习开始...")
 
     gaps = _find_kb_gaps()
@@ -331,8 +333,7 @@ def auto_learn_cycle(progress_callback=None):
             source_text += "\n" + doubao_result["response"][:2000]
 
         if not source_text:
-            # 搜索无结果也标记为已处理
-            _save_covered_topic(query)
+            # 搜索无结果，跳过但不标记（下次重试）
             continue
 
         # Layer 2: 提炼
@@ -356,22 +357,18 @@ def auto_learn_cycle(progress_callback=None):
                     confidence="medium"  # 自学习产出标记为 medium
                 )
                 added_total += 1
-                # 标记该搜索词为已覆盖
+                # 只在入库成功后标记覆盖
                 _save_covered_topic(query)
                 print(f"[AutoLearn] 已覆盖: {query[:40]}")
-            else:
-                # 内容质量不足也标记为已处理（避免重复搜索低质量结果）
-                _save_covered_topic(query)
-        else:
-            # 提取失败也标记为已处理
-            _save_covered_topic(query)
+            # 质量不足不标记，下次重试
+        # 提取失败不标记，下次重试
 
         time.sleep(3)
 
     print(f"[AutoLearn] 完成: +{added_total} 条知识")
     print(f"{'='*40}")
 
-    if progress_callback:
+    if progress_callback and should_notify("auto_learn", "complete"):
         progress_callback(f"✅ 自学习完成: +{added_total} 条知识")
 
     return f"完成: +{added_total} 条知识"

@@ -18,6 +18,7 @@ def try_handle(text_stripped: str, reply_target: str, reply_type: str,
         bool: 是否处理了该消息
     """
     from scripts.feishu_handlers.chat_helpers import log
+    from scripts.feishu_handlers.notify_rules import should_notify
 
     # 圆桌启动
     if text_stripped.startswith("圆桌:") or text_stripped.startswith("圆桌："):
@@ -29,7 +30,8 @@ def try_handle(text_stripped: str, reply_target: str, reply_type: str,
         log(f"[圆桌] TaskSpec 加载结果: {spec is not None}")
 
         if spec:
-            send_reply(reply_target, f"🔵 圆桌启动：{topic}")
+            if should_notify("roundtable", "start"):
+                send_reply(reply_target, f"🔵 圆桌启动：{topic}")
             _run_roundtable_background(spec, reply_target, send_reply)
             return True
         else:
