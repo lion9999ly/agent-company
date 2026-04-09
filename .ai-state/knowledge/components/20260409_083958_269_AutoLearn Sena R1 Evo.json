@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] Sena R1 Evo",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"motorcycle helmet battery safety standard\",\n  \"product\": \"Sena R1 Evo\",\n  \"key_specs\": [\n    {\n      \"name\": \"DOT (FMVSS 218)\",\n      \"value\": \"美国头盔安全标准，关注冲击、穿透和结构完整性\",\n      \"source\": \"Helmet Safety Standards\"\n    },\n    {\n      \"name\": \"ECE 22.05/22.06\",\n      \"value\": \"欧洲头盔安全标准，关注冲击、穿透和结构完整性\",\n      \"source\": \"Helmet Safety Standards\"\n    },\n    {\n      \"name\": \"Snell standards\",\n      \"value\": \"头盔安全标准，关注冲击、穿透和结构完整性\",\n      \"source\": \"Helmet Safety Standards\"\n    },\n    {\n      \"name\": \"UL 1642\",\n      \"value\": \"锂电池电芯安全标准\",\n      \"source\": \"Battery Safety Standards\"\n    },\n    {\n      \"name\": \"UL 2054\",\n      \"value\": \"可充电电池组安全标准\",\n      \"source\": \"Battery Safety Standards\"\n    },\n    {\n      \"name\": \"IEC 62133\",\n      \"value\": \"可充电电池国际安全标准\",\n      \"source\": \"Battery Safet",
+  "source": "auto_learn",
+  "created_at": "2026-04-09",
+  "tags": [
+    "auto_learn",
+    "research_pool"
+  ],
+  "confidence": "medium"
+}
