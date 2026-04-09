@@ -1,0 +1,181 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>HUD Demo Skeleton</title>
+<style>
+  :root{
+    --bg:#05070b;
+    --bg-panel:rgba(10,14,22,.82);
+    --bg-panel-2:rgba(18,24,36,.72);
+    --line:rgba(255,255,255,.08);
+    --line-strong:rgba(255,255,255,.18);
+    --text:#f5f7fb;
+    --text-dim:rgba(245,247,251,.62);
+    --white:#ffffff;
+    --blue:#4db3ff;
+    --red:#ff3b4d;
+    --cyan:#4ff6e1;
+    --purple:#b57cff;
+    --green:#7dff9b;
+    --amber:#ffc857;
+    --shadow:0 0 24px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.03);
+
+    --zone-pad:22px;
+    --zone-radius:18px;
+    --zone-gap:18px;
+    --zone-w:min(24vw, 320px);
+    --zone-h:min(24vh, 220px);
+
+    --speed-size:clamp(48px, 8vw, 110px);
+    --major-size:clamp(24px, 3vw, 42px);
+    --minor-size:clamp(12px, 1.1vw, 16px);
+    --tiny-size:clamp(10px, .9vw, 13px);
+
+    --panel-w:min(26vw, 360px);
+    --timeline-h:84px;
+
+    --safe-center-w:38vw;
+    --safe-center-h:42vh;
+  }
+
+  body.theme-b{
+    --bg:#000000;
+    --bg-panel:rgba(0,0,0,.82);
+    --bg-panel-2:rgba(0,0,0,.72);
+    --line:rgba(0,255,0,.08);
+    --line-strong:rgba(0,255,0,.16);
+    --text:#00ff00;
+    --text-dim:rgba(0,255,0,.58);
+    --shadow:0 8px 30px rgba(0,255,0,.08), inset 0 0 0 1px rgba(0,255,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  html,body{width:100%;height:100%;margin:0}
+  body{
+    font-family: Inter, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,.03), transparent 28%),
+      linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)),
+      var(--bg);
+    color:var(--text);
+    overflow:hidden;
+    user-select:none;
+  }
+
+  #hud-container{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    isolation:isolate;
+  }
+
+  #hud-container::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(to right, transparent calc(50% - .5px), rgba(255,255,255,.03) 50%, transparent calc(50% + .5px)),
+      linear-gradient(to bottom, transparent calc(50% - .5px), rgba(255,255,255,.03) 50%, transparent calc(50% + .5px));
+    opacity:.18;
+    pointer-events:none;
+  }
+
+  #hud-container::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:var(--safe-center-w);
+    height:var(--safe-center-h);
+    transform:translate(-50%,-50%);
+    border:1px dashed rgba(255,255,255,.06);
+    border-radius:28px;
+    pointer-events:none;
+    opacity:.45;
+  }
+
+  .hud-zone{
+    position:absolute;
+    width:var(--zone-w);
+    min-height:var(--zone-h);
+    padding:var(--zone-pad);
+    border-radius:var(--zone-radius);
+    background:linear-gradient(180deg, var(--bg-panel), var(--bg-panel-2));
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(10px) saturate(120%);
+    -webkit-backdrop-filter:blur(10px);
+  }
+
+  #lt-zone { top: var(--zone-gap); left: var(--zone-gap); }
+  #rt-zone { top: var(--zone-gap); right: var(--zone-gap); }
+  #lb-zone { bottom: var(--zone-gap); left: var(--zone-gap); }
+  #rb-zone { bottom: var(--zone-gap); right: var(--zone-gap); }
+
+  @keyframes warning-flash {
+    0%, 100% { background-color: var(--red); opacity: 0.8; }
+    50% { background-color: transparent; opacity: 0.3; }
+  }
+
+  .warning-active {
+    animation: warning-flash 1s infinite;
+  }
+</style>
+</head>
+<body>
+<div id="hud-container">
+  <div id="lt-zone" class="hud-zone">
+    <div id="speed-display">速度: 0 km/h</div>
+    <div id="time-display">时间: 00:00</div>
+  </div>
+  <div id="rt-zone" class="hud-zone">
+    <div id="notification-display">通知: 无</div>
+  </div>
+  <div id="lb-zone" class="hud-zone">
+    <div id="mesh-status">组队状态: 未连接</div>
+  </div>
+  <div id="rb-zone" class="hud-zone">
+    <div id="navigation-display">导航: 未启动</div>
+  </div>
+</div>
+<script>
+  const statePriority = ['warning', 'call', 'navigation', 'music', 'group', 'record', 'cruise'];
+  let currentState = 'cruise';
+
+  function switchState(newState) {
+    if (statePriority.indexOf(newState) < statePriority.indexOf(currentState)) {
+      currentState = newState;
+      renderState();
+    }
+  }
+
+  function renderState() {
+    document.querySelectorAll('.hud-zone').forEach(zone => zone.classList.remove('warning-active'));
+    if (currentState === 'warning') {
+      document.getElementById('rt-zone').classList.add('warning-active');
+    }
+    // Add rendering logic for other states as needed
+  }
+
+  document.addEventListener('keydown', (e) => {
+    const keyMap = {
+      '1': 'cruise',
+      '2': 'navigation',
+      '3': 'music',
+      '4': 'group',
+      '5': 'record',
+      '6': 'call',
+      '7': 'warning'
+    };
+    if (keyMap[e.key]) {
+      switchState(keyMap[e.key]);
+    }
+  });
+</script>
+</body>
+</html>
+```

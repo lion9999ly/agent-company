@@ -3,6 +3,20 @@
 
 ---
 
+## [修复] 第二轮圆桌Bug修复 - 2026-04-09 15:30
+
+- **结果**：通过
+- **关键数据**：
+  - #1 云文档：添加详细日志定位根因
+  - #2 TaskSpec确认：新增 handler + sender 过滤
+  - #9 Issue创建：手动用 requests（gh CLI 不可用）
+- **产出文件**：
+  - GitHub Issue #36: https://github.com/lion9999ly/agent-company/issues/36
+  - Git commit: c664ccd
+- **待决问题**：下次圆桌运行验证 #1/#2
+
+---
+
 ## [修复] 圆桌8项Bug批量修复 - 2026-04-09 14:20
 
 - **结果**：通过
