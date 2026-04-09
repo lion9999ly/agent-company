@@ -125,7 +125,12 @@ class Generator:
         """
         # v2: 选择输入源
         input_source = self._get_input_source(task, rt_result)
-        print(f"  [Generator] 输入模式: {task.generator_input_mode}, 源长度: {len(input_source)} 字")
+
+        # P1 #5: 输入模式日志
+        input_mode = task.generator_input_mode
+        if input_mode == "auto":
+            input_mode = self.OUTPUT_TYPE_INPUT_MODE.get(task.output_type, "default")
+        print(f"[Generator] 输入模式: {input_mode}")
 
         if task.output_type != "html":
             # 非 HTML 直接单次生成

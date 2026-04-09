@@ -313,6 +313,28 @@ def _start_heartbeat():
 # === 启动服务 ===
 def main():
     """启动飞书长连接客户端"""
+    # P2 #8: SDK 进程锁 - 检查是否已有实例运行
+    PID_FILE = PROJECT_ROOT / ".ai-state" / "sdk.pid"
+    PID_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    if PID_FILE.exists():
+        try:
+            existing_pid = int(PID_FILE.read_text().strip())
+            # 检查进程是否存在
+            import psutil
+            if psutil.pid_exists(existing_pid):
+                proc = psutil.Process(existing_pid)
+                if "feishu_sdk_client" in " ".join(proc.cmdline()):
+                    print(f"[Error] SDK 已在运行 (PID: {existing_pid})")
+                    print(f"[Error] 如需重启，请先停止：python scripts/feishu_sdk_client_v2.py --stop")
+                    sys.exit(1)
+        except Exception as e:
+            print(f"[Warn] PID 检查失败: {e}，继续启动")
+
+    # 写入当前 PID
+    PID_FILE.write_text(str(os.getpid()))
+    print(f"[SDK] PID 文件已写入: {os.getpid()}")
+
     print(f"{'#'*60}")
     print(f"# 飞书长连接客户端 v2 启动")
     print(f"# APP_ID: {APP_ID[:10]}...")

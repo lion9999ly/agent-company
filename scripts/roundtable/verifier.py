@@ -123,24 +123,36 @@ class Verifier:
         优先级：global → type → task_spec_file → task.auto_verify_rules
         """
         all_rules = []
+        rule_sources = []  # P1 #6: 规则来源追踪
 
         # 1. 全局规则
         global_rules = self._load_rules("global.json")
-        all_rules.extend(global_rules)
+        if global_rules:
+            all_rules.extend(global_rules)
+            rule_sources.append(f"global({len(global_rules)})")
 
         # 2. 输出类型规则
         type_rules = self._load_rules(f"type_{task.output_type}.json")
-        all_rules.extend(type_rules)
+        if type_rules:
+            all_rules.extend(type_rules)
+            rule_sources.append(f"type_{task.output_type}({len(type_rules)})")
 
         # 3. 任务专用规则文件（task_{safe_topic}.json）
         safe_topic = "".join(c for c in task.topic[:20] if c.isalnum() or c in "_-").strip()
         if safe_topic:
             task_rules = self._load_rules(f"task_{safe_topic}.json")
-            all_rules.extend(task_rules)
+            if task_rules:
+                all_rules.extend(task_rules)
+                rule_sources.append(f"task_{safe_topic}({len(task_rules)})")
 
         # 4. TaskSpec 内嵌规则
         if task.auto_verify_rules:
             all_rules.extend(task.auto_verify_rules)
+            rule_sources.append(f"embedded({len(task.auto_verify_rules)})")
+
+        # P1 #6: 规则来源日志
+        source_str = ", ".join(rule_sources) if rule_sources else "none"
+        print(f"[Verifier] 规则来源: {source_str}, 规则数: {len(all_rules)}")
 
         return all_rules
 

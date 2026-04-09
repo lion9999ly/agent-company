@@ -90,19 +90,71 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
         await _notify(f"🔄 审查第{iteration}轮，{len(vr.issues)}个缺陷，修复中...")
         output = await gen.fix(output, [i.description for i in vr.issues], result)
 
-    # 5. 输出
-    Path(task.output_path).parent.mkdir(parents=True, exist_ok=True)
-    Path(task.output_path).write_text(output, encoding="utf-8")
+    # 5. 输出（P1 #3: 添加时间戳）
+    from datetime import datetime
+    import shutil
+
+    output_dir = Path(task.output_path).parent
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # 生成带时间戳的文件名
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    base_name = Path(task.output_path).stem
+    ext = Path(task.output_path).suffix
+    timestamped_path = output_dir / f"{base_name}_{timestamp}{ext}"
+
+    # 写入带时间戳的文件
+    timestamped_path.write_text(output, encoding="utf-8")
+    print(f"[Roundtable] 输出文件: {timestamped_path}")
+
+    # 同时创建 latest 版本（复制）
+    latest_path = output_dir / f"{base_name}_latest{ext}"
+    shutil.copy2(timestamped_path, latest_path)
+    print(f"[Roundtable] Latest 版本: {latest_path}")
+
+    # 更新返回路径为带时间戳版本
+    actual_output_path = str(timestamped_path)
 
     # 6. 知识回写
     await crystallizer.crystallize_learnings(task, result)
 
-    await _notify(f"🎯 任务完成：{task.output_path}")
+    await _notify(f"🎯 任务完成：{actual_output_path}")
+
+    # 7. 生成飞书云文档（P0 #1 修复）
+    doc_url = None
+    try:
+        from scripts.feishu_output import update_doc
+        # 组装云文档内容
+        doc_content = f"""# {task.topic}
+
+## 执行摘要
+{result.executive_summary}
+
+## 迭代轮数
+{result.rounds} 轮
+
+## 验收结果
+{verify_summary or '已完成'}
+
+## 本地文件
+{actual_output_path}
+
+---
+*由圆桌系统自动生成*
+"""
+        doc_url = update_doc(f"圆桌: {task.topic}", doc_content)
+        if doc_url:
+            print(f"[Roundtable] 云文档生成成功: {doc_url}")
+            await _notify(f"📄 云文档: {doc_url}")
+        else:
+            print(f"[Roundtable] 云文档生成失败: update_doc 返回空")
+    except Exception as e:
+        print(f"[Roundtable] 云文档生成异常: {e}")
 
     # 返回完整结果（供飞书输出使用）
     return {
         "output": output,
-        "output_path": task.output_path,
+        "output_path": actual_output_path,
         "executive_summary": result.executive_summary,
         "rounds": result.rounds,
         "full_log_path": result.full_log_path,

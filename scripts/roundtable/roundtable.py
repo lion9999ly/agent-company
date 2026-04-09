@@ -141,7 +141,46 @@ class Roundtable:
             # 有问题，记录但不自动修改（人工介入）
             self._log_phase("pre_check", "Critic", response)
             if self.feishu:
-                self.feishu.notify(f"⚠️ TaskSpec 审查发现问题，请人工确认")
+                # P0 #2: TaskSpec 人工确认机制
+                import asyncio
+                from pathlib import Path
+                import time
+
+                # 创建确认文件路径
+                confirm_file = Path(".ai-state") / f"taskspec_confirm_{task.topic[:20]}.txt"
+
+                # 发送通知，告知用户确认方式
+                self.feishu.notify(
+                    f"⚠️ TaskSpec 审查发现问题:\n{response[:300]}...\n\n"
+                    f"请在飞书回复「确认」继续，或回复「跳过」忽略问题。\n"
+                    f"5分钟无响应将自动跳过。"
+                )
+
+                # 等待用户确认（轮询飞书消息或确认文件）
+                start_time = time.time()
+                timeout = 300  # 5分钟超时
+                confirmed = False
+
+                while time.time() - start_time < timeout:
+                    await asyncio.sleep(10)  # 每10秒检查一次
+
+                    # 方式1: 检查确认文件
+                    if confirm_file.exists():
+                        content = confirm_file.read_text(encoding="utf-8").strip()
+                        if content == "确认":
+                            confirmed = True
+                            confirm_file.unlink()
+                            print(f"[Roundtable] TaskSpec 已人工确认")
+                            break
+                        elif content == "跳过":
+                            confirm_file.unlink()
+                            print(f"[Roundtable] TaskSpec 问题已跳过")
+                            break
+
+                if not confirmed:
+                    # 超时自动跳过
+                    print(f"[Roundtable] TaskSpec 审查超时，自动跳过")
+                    self._log_phase("pre_check", "timeout", "TaskSpec 审查超时，自动跳过")
 
         return task
 
