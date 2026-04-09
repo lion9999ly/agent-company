@@ -109,81 +109,151 @@ def _handle_import_docs(reply_target: str, send_reply: Callable):
 def _handle_share_url(text: str, open_id: str, reply_target: str, reply_type: str, send_reply: Callable):
     """处理 URL 分享
 
-    P2 #21: 使用 feishu_sdk_client.handle_share_content（WebSocket 回调）
-    注意：handle_share_content 内部有自己的 send_reply，需要适配
+    P2 #21: 内联实现，不依赖 feishu_sdk_client.handle_share_content
+    三步流程：平台搜索 → 关键词深搜 → LLM提炼入库
     """
-    try:
-        # 尝试使用 feishu_sdk_client 的 handle_share_content
-        # 但需要适配其内部 send_reply 调用
-        from scripts.feishu_sdk_client import handle_share_content as _orig_share
+    import hashlib
+    from urllib.parse import urlparse
 
-        # 创建一个包装器让 handle_share_content 能用我们的 send_reply
-        # handle_share_content 期望 reply_target 是 open_id/chat_id
-        # 它内部直接调用 send_reply(reply_target, msg)
-        # 我们需要临时替换 send_reply 或直接处理
-        import importlib
-        import scripts.feishu_sdk_client as sdk_module
-
-        # 临时注入我们的 send_reply
-        original_send_reply = getattr(sdk_module, 'send_reply', None)
-        sdk_module.send_reply = lambda target, msg: send_reply(reply_target, msg)
-
-        try:
-            _orig_share(open_id, text=text, reply_target=reply_target)
-        finally:
-            # 恢复原始 send_reply
-            if original_send_reply:
-                sdk_module.send_reply = original_send_reply
-            else:
-                delattr(sdk_module, 'send_reply')
-
-    except ImportError:
-        # feishu_sdk_client 不可用时，使用简化版 URL 处理
-        _handle_url_share_simple(text, open_id, reply_target, send_reply)
-    except Exception as e:
-        send_reply(reply_target, f"🔗 检测到链接，但分享处理失败: {str(e)[:50]}")
-
-
-def _handle_url_share_simple(text: str, open_id: str, reply_target: str, send_reply: Callable):
-    """简化版 URL 分享处理（当 feishu_sdk_client 不可用时）"""
-    import re
-    from pathlib import Path
-
-    url_match = re.search(r'https?://[^\s]+', text)
+    # 提取 URL
+    url_match = re.search(r'https?://[^\s<>"{}|\\^`\[\]]+', text or "")
     if not url_match:
         send_reply(reply_target, "🔗 未检测到有效链接")
         return
 
     url = url_match.group(0)
-    send_reply(reply_target, f"🔗 检测到链接：{url[:50]}...\n正在处理...")
+
+    # 分享去重：同一 URL 5 分钟内不重复处理
+    url_hash = hashlib.md5(url.encode()).hexdigest()[:8]
+    dedup_file = PROJECT_ROOT / ".ai-state" / f"share_dedup_{url_hash}"
+    if dedup_file.exists():
+        age = time.time() - dedup_file.stat().st_mtime
+        if age < 300:
+            send_reply(reply_target, "🔗 该链接5分钟内已处理过")
+            return
+    dedup_file.write_text(str(time.time()))
+
+    send_reply(reply_target, "🔗 正在读取和学习...")
 
     try:
         from src.utils.model_gateway import get_model_gateway
-        gw = get_model_gateway()
+        from src.tools.knowledge_base import add_knowledge
+        from src.tools.tool_registry import get_tool_registry
 
-        # 尝试抓取 URL 内容
-        result = gw.call("doubao_seed_pro",
-            f"搜索并总结这个链接的内容：{url}",
-            task_type="url_share")
+        gateway = get_model_gateway()
+        registry = get_tool_registry()
+        domain = urlparse(url).netloc
 
-        if result.get("success"):
-            summary = result["response"][:500]
+        # 从消息文字提取标题线索
+        text_without_url = re.sub(r'https?://[^\s]+', '', text).strip()
+        for noise in ["复制后打开", "查看笔记", "点击链接", "打开看看", "分享给你",
+                       "复制后打开【小红书】查看笔记", "【小红书】", "【微信】", "【知乎】"]:
+            text_without_url = text_without_url.replace(noise, "").strip()
+        text_without_url = text_without_url.strip("！!。.…，,\n\r")
+        title_clue = text_without_url if len(text_without_url) > 3 else ""
 
-            # 入库
-            from src.tools.knowledge_base import add_knowledge
+        # STEP 1：平台分流搜索
+        if title_clue and len(title_clue) > 10:
+            search_input = f"[{domain}] {title_clue}"
+        else:
+            search_input = url
+
+        platform_content = ""
+        platform_result = registry.call("platform_search", search_input)
+        if platform_result.get("success"):
+            platform_content = platform_result["data"]
+
+        # STEP 2：关键词深搜
+        extra_content = ""
+        all_text = f"{title_clue}\n{platform_content[:500]}" if platform_content else title_clue
+
+        if all_text and len(all_text) > 10:
+            kw_result = gateway.call_azure_openai(
+                "cpo",
+                f"从以下内容提取核心主题的 3-5 个关键词（品牌/产品/技术/人名）。\n"
+                f"只输出关键词，空格分隔。\n禁止输出平台名。\n\n{all_text[:1500]}",
+                "只输出关键词。",
+                "share_extract_keywords"
+            )
+            if kw_result.get("success"):
+                keywords = kw_result["response"].strip()
+                if len(keywords) > 3:
+                    deep = registry.call("deep_research", keywords)
+                    if deep.get("success"):
+                        extra_content = deep["data"][:2000]
+
+        # STEP 3：合并内容
+        parts = []
+        if platform_content:
+            parts.append(platform_content[:3000])
+        if extra_content:
+            parts.append(extra_content)
+
+        if not parts:
+            send_reply(reply_target, "🔗 搜索未获得有效内容，请截图发给我")
+            return
+
+        content = "\n\n".join(parts)
+
+        # STEP 4：LLM 提炼入库
+        refine_result = gateway.call_azure_openai(
+            "cpo",
+            f"以下是用户分享的内容摘要：\n{content[:3000]}\n\n"
+            f"重要约束：title 必须准确反映内容的实际主题。\n"
+            f"相关性判断：用户主动分享的内容默认有价值。\n"
+            f"- high: 直接相关（头盔、骑行、灯光、传感器）\n"
+            f"- medium: 间接相关（AI、智能出行、穿戴设备）\n"
+            f"如果 relevant=true，按 JSON 回复：\n"
+            f'{{"title": "包含具体名称的标题", "domain": "competitors或components或lessons", '
+            f'"tags": ["标签"], "summary": "200字摘要", "relevant": true, "confidence": "high或medium"}}',
+            "只输出 JSON。",
+            "share_refine"
+        )
+
+        if refine_result.get("success"):
+            resp = refine_result["response"].strip()
+            resp = re.sub(r'^```json\s*', '', resp)
+            resp = re.sub(r'\s*```$', '', resp)
+            data = json.loads(resp)
+
+            if data.get("relevant", False):
+                add_knowledge(
+                    title=data.get("title", "User Share"),
+                    domain=data.get("domain", "lessons"),
+                    content=data.get("summary", content[:500]),
+                    tags=data.get("tags", []) + ["user_share"],
+                    source=f"user_share:{url}",
+                    confidence=data.get("confidence", "medium"),
+                    caller="import_handlers"
+                )
+                send_reply(reply_target, f"✅ 已入库: {data.get('title', '')}")
+            else:
+                # 即使无关也保存备查
+                add_knowledge(
+                    title="用户分享链接",
+                    domain="lessons",
+                    content=content[:500],
+                    tags=["user_share", "low_relevance"],
+                    source=f"user_share:{url}",
+                    confidence="low",
+                    caller="import_handlers"
+                )
+                send_reply(reply_target, "✅ 已入库 (相关性待确认)")
+        else:
+            # LLM 失败，直接保存原始内容
             add_knowledge(
                 title=f"分享链接: {url[:30]}",
                 domain="lessons",
-                content=summary,
-                tags=["url_share", "user_share"],
-                source=f"url_share:{url}",
-                confidence="low"
+                content=content[:500],
+                tags=["url_share"],
+                source=f"user_share:{url}",
+                confidence="low",
+                caller="import_handlers"
             )
-            send_reply(reply_target, f"✅ 链接内容已入库")
-        else:
-            send_reply(reply_target, "⚠️ 链接处理失败，请稍后重试")
+            send_reply(reply_target, "✅ 链接内容已入库")
+
     except Exception as e:
-        send_reply(reply_target, f"⚠️ 链接处理异常: {str(e)[:50]}")
+        send_reply(reply_target, f"⚠️ 链接处理异常: {str(e)[:100]}")
 
 
 def _handle_article_import(text: str, open_id: str, reply_target: str, send_reply: Callable):
