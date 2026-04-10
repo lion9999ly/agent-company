@@ -1,0 +1,1748 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>HUD Demo</title><style>
+:root{
+  --bg:#05070b;
+  --panel:rgba(10,16,24,.72);
+  --panel-strong:rgba(12,20,30,.88);
+  --line:rgba(120,180,255,.18);
+  --text:#eaf4ff;
+  --muted:#8ea6bf;
+  --white:#ffffff;
+  --nav:#39a8ff;
+  --warn:#ff3b30;
+  --group:#2de2e6;
+  --music:#b26cff;
+  --ok:#6dff9a;
+  --amber:#ffb84d;
+  --mono-green:#7dff7d;
+  --glow-white:0 0 8px rgba(255,255,255,.45),0 0 18px rgba(255,255,255,.18);
+  --glow-nav:0 0 8px rgba(57,168,255,.55),0 0 18px rgba(57,168,255,.25);
+  --glow-warn:0 0 10px rgba(255,59,48,.7),0 0 22px rgba(255,59,48,.35);
+  --glow-group:0 0 8px rgba(45,226,230,.55),0 0 18px rgba(45,226,230,.25);
+  --glow-music:0 0 8px rgba(178,108,255,.55),0 0 18px rgba(178,108,255,.25);
+  --radius:18px;
+  --zone-w:min(24vw,320px);
+  --zone-h:min(22vh,220px);
+  --safe-gap:min(18vw,260px);
+  --hud-pad:28px;
+  --font:Inter,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:radial-gradient(circle at 50% 50%,#0b1220 0%,#06090f 45%,#030406 100%);color:var(--text);font-family:var(--font);overflow:hidden}
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(80,140,255,.06) 0, rgba(80,140,255,0) 34%),
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+  pointer-events:none;
+}
+#hud-container{
+  position:relative;
+  width:100vw;height:100vh;
+  padding:var(--hud-pad);
+  isolation:isolate;
+}
+#hud-container::before{
+  content:"";
+  position:absolute;inset:18px 360px 18px 18px;
+  border:1px solid rgba(120,180,255,.08);
+  border-radius:24px;
+  box-shadow:inset 0 0 40px rgba(80,140,255,.04);
+  pointer-events:none;
+}
+#hud-container::after{
+  content:"";
+  position:absolute;
+  left:50%;top:50%;
+  width:min(34vw,520px);height:min(34vh,320px);
+  transform:translate(-50%,-50%);
+  border-radius:28px;
+  border:1px dashed rgba(255,255,255,.05);
+  background:radial-gradient(circle at center, rgba(255,255,255,.015), rgba(255,255,255,0) 70%);
+  pointer-events:none;
+}
+.zone{
+  position:absolute;
+  width:var(--zone-w);
+  min-height:120px;
+  max-height:var(--zone-h);
+  padding:16px 18px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:linear-gradient(180deg, rgba(12,18,28,.62), rgba(8,12,18,.42));
+  backdrop-filter:blur(6px);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.02), 0 0 24px rgba(0,0,0,.28);
+  overflow:hidden;
+}
+.zone::before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,0) 28%),
+    linear-gradient(180deg, rgba(57,168,255,.06), rgba(57,168,255,0));
+  pointer-events:none;
+}
+.zone::after{
+  content:"";
+  position:absolute;
+  width:56px;height:56px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:50%;
+  filter:blur(1px);
+  opacity:.35;
+}
+#lt-zone{left:var(--hud-pad);top:var(--hud-pad)}
+#lt-zone::after{left:-18px;top:-18px}
+#rt-zone{right:360px;top:var(--hud-pad)}
+#rt-zone::after{right:-18px;top:-18px}
+#lb-zone{left:var(--hud-pad);bottom:92px}
+#lb-zone::after{left:-18px;bottom:-18px}
+#rb-zone{right:360px;bottom:92px}
+#rb-zone::after{right:-18px;bottom:-18px}
+.zone-title{
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+.zone-content{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.metric-row{display:flex;align-items:flex-end;gap:10px}
+.speed-value{
+  font-size:64px;
+  line-height:.9;
+  font-weight:800;
+  color:var(--white);
+  text-shadow:var(--glow-white);
+}
+.speed-unit{
+  font-size:18px;
+  color:var(--muted);
+  padding-bottom:8px;
+}
+.primary-text{
+  font-size:28px;
+  line-height:1.15;
+  font-weight:700;
+  color:var(--white);
+  text-shadow:var(--glow-white);
+}
+.secondary-text{
+  font-size:15px;
+  line-height:1.4;
+  color:var(--muted);
+}
+.nav-text{color:var(--nav);text-shadow:var(--glow-nav)}
+.warn-text{color:var(--warn);text-shadow:var(--glow-warn)}
+.group-text{color:var(--group);text-shadow:var(--glow-group)}
+.music-text{color:var(--music);text-shadow:var(--glow-music)}
+.icon-row{display:flex;gap:10px;flex-wrap:wrap}
+.icon-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  min-height:32px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  color:var(--text);
+  font-size:13px;
+}
+.dot{
+  width:8px;height:8px;border-radius:50%;
+  background:currentColor;
+  box-shadow:0 0 10px currentColor;
+}
+.badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:28px;height:28px;padding:0 8px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  font-size:12px;font-weight:700;color:var(--text);
+}
+.arrow-left,.arrow-right,.triangle{
+  width:0;height:0;display:inline-block;
+  filter:drop-shadow(0 0 8px currentColor);
+}
+.arrow-left{
+  border-top:12px solid transparent;
+  border-bottom:12px solid transparent;
+  border-right:18px solid currentColor;
+}
+.arrow-right{
+  border-top:12px solid transparent;
+  border-bottom:12px solid transparent;
+  border-left:18px solid currentColor;
+}
+.triangle{
+  border-left:12px solid transparent;
+  border-right:12px solid transparent;
+  border-bottom:20px solid currentColor;
+}
+.car-icon,.phone-icon,.mic-icon,.group-icon{
+  position:relative;display:inline-block;flex:0 0 auto;
+}
+.car-icon{
+  width:28px;height:14px;border:2px solid currentColor;border-radius:6px 8px 4px 4px;
+}
+.car-icon::before,.car-icon::after{
+  content:"";position:absolute;bottom:-6px;width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;
+}
+.car-icon::before{left:3px}
+.car-icon::after{right:3px}
+.phone-icon{
+  width:18px;height:28px;border:2px solid currentColor;border-radius:5px;
+}
+.phone-icon::before{
+  content:"";position:absolute;left:50%;bottom:3px;transform:translateX(-50%);
+  width:5px;height:5px;border-radius:50%;background:currentColor;
+}
+.mic-icon{
+  width:14px;height:20px;border:2px solid currentColor;border-radius:8px;
+}
+.mic-icon::before{
+  content:"";position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);
+  width:2px;height:8px;background:currentColor;
+}
+.mic-icon::after{
+  content:"";position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);
+  width:14px;height:8px;border:2px solid currentColor;border-top:none;border-radius:0 0 10px 10px;
+}
+.group-icon{
+  width:26px;height:18px;
+}
+.group-icon::before,.group-icon::after{
+  content:"";position:absolute;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;
+}
+.group-icon::before{width:10px;height:10px;left:2px;top:0}
+.group-icon::after{width:10px;height:10px;right:2px;top:0}
+.group-icon span{
+  position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  width:18px;height:8px;border:2px solid currentColor;border-top:none;border-radius:0 0 12px 12px;
+}
+#timeline-bar{
+  position:absolute;
+  left:var(--hud-pad);right:360px;bottom:24px;
+  height:44px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(12,18,28,.72), rgba(8,12,18,.5));
+  display:flex;align-items:center;
+  padding:0 14px;
+  gap:12px;
+  overflow:hidden;
+}
+#timeline-bar::before{
+  content:"";
+  position:absolute;left:0;top:0;bottom:0;width:18%;
+  background:linear-gradient(90deg, rgba(57,168,255,.18), rgba(57,168,255,0));
+}
+.timeline-label{
+  position:relative;z-index:1;
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
+.timeline-track{
+  position:relative;z-index:1;flex:1;height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;
+}
+.timeline-progress{
+  width:22%;height:100%;border-radius:999px;background:linear-gradient(90deg, var(--nav), #7fd0ff);
+  box-shadow:0 0 12px rgba(57,168,255,.45);
+}
+#control-panel,#sandbox-panel{
+  position:absolute;right:24px;width:312px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(14,20,30,.92), rgba(8,12,18,.88));
+  box-shadow:0 12px 30px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.02);
+  backdrop-filter:blur(8px);
+}
+#control-panel{top:24px;padding:16px}
+#sandbox-panel{top:250px;bottom:24px;padding:16px;overflow:auto}
+.panel-title{
+  font-size:13px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--text);
+  margin:0 0 12px;
+}
+.panel-subtitle{
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:14px 0 8px;
+}
+.kbd-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.kbd-item{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:8px 10px;border-radius:12px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  font-size:12px;color:var(--muted);
+}
+kbd{
+  min-width:28px;height:24px;padding:0 8px;
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:8px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  color:var(--text);font:600 12px/1 var(--font);
+}
+.sandbox-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.info-card{
+  padding:12px;border-radius:14px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+}
+.info-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px}
+.info-row + .info-row{margin-top:8px}
+.value-strong{color:var(--text);font-weight:700}
+.timeline-log{
+  margin:0;padding:0;list-style:none;
+  display:flex;flex-direction:column;gap:8px;
+}
+.timeline-log li{
+  padding:8px 10px;border-left:2px solid rgba(57,168,255,.35);
+  background:rgba(255,255,255,.025);
+  border-radius:0 10px 10px 0;
+  color:var(--muted);font-size:12px;
+}
+.warning-flash{
+  animation:warningPulse .9s ease-in-out 3;
+}
+@keyframes warningPulse{
+  0%,100%{box-shadow:inset 0 0 0 1px rgba(255,255,255,.02),0 0 24px rgba(0,0,0,.28);border-color:var(--line)}
+  50%{box-shadow:0 0 0 1px rgba(255,59,48,.45),0 0 22px rgba(255,59,48,.45), inset 0 0 24px rgba(255,59,48,.12);border-color:rgba(255,59,48,.8)}
+}
+.hud-mono{
+  --text:var(--mono-green);
+  --muted:rgba(125,255,125,.72);
+  --white:var(--mono-green);
+  --nav:var(--mono-green);
+  --warn:var(--mono-green);
+  --group:var(--mono-green);
+  --music:var(--mono-green);
+  --ok:var(--mono-green);
+  --amber:var(--mono-green);
+  --line:rgba(125,255,125,.18);
+}
+.hud-mono .zone,
+.hud-mono #timeline-bar,
+.hud-mono #control-panel,
+.hud-mono #sandbox-panel{
+  filter:saturate(.2) hue-rotate(40deg);
+}
+@media (max-width:1280px){
+  :root{--zone-w:min(26vw,280px)}
+  #control-panel,#sandbox-panel{width:280px}
+  #rt-zone,#rb-zone,#timeline-bar{right:324px}
+}
+</style></head><body>
+<div id="hud-container">
+  <div id="lt-zone" class="zone">
+    <div class="zone-title">Speed / LT</div>
+    <div class="zone-content">
+      <div class="metric-row">
+        <div class="speed-value">48</div>
+        <div class="speed-unit">km/h</div>
+      </div>
+      <div class="secondary-text">当前速度等级 <span class="value-strong">S1</span></div>
+    </div>
+  </div>
+
+  <div id="rt-zone" class="zone">
+    <div class="zone-title">Status / RT</div>
+    <div class="zone-content">
+      <div class="icon-row">
+        <div class="icon-chip" style="color:var(--group)"><span class="dot"></span><span>组队已连接</span></div>
+        <div class="icon-chip" style="color:var(--music)"><span class="dot"></span><span>音乐播放</span></div>
+        <div class="icon-chip"><span class="dot" style="color:var(--ok)"></span><span>BT / Wi‑Fi</span></div>
+      </div>
+      <div class="secondary-text">高速 S3 时自动降级隐藏低优先级状态</div>
+    </div>
+  </div>
+
+  <div id="lb-zone" class="zone">
+    <div class="zone-title">Navigation / LB</div>
+    <div class="zone-content">
+      <div class="primary-text nav-text"><span class="arrow-left" style="color:var(--nav);margin-right:10px"></span>300m 后左转</div>
+      <div class="secondary-text">延安高架路 · 前往虹桥机场</div>
+    </div>
+  </div>
+
+  <div id="rb-zone" class="zone">
+    <div class="zone-title">Primary Info / RB</div>
+    <div class="zone-content">
+      <div class="primary-text">HUD 已就绪</div>
+      <div class="secondary-text">支持导航、来电、语音反馈与 ADAS 抢占显示</div>
+      <div class="icon-row">
+        <div class="badge">NORMAL</div>
+        <div class="badge">SAFE</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="timeline-bar">
+    <div class="timeline-label">Timeline</div>
+    <div class="timeline-track"><div class="timeline-progress"></div></div>
+    <div class="badge">00:18 / 03:00</div>
+  </div>
+
+  <div id="control-panel">
+    <h3 class="panel-title">Control Panel</h3>
+    <div class="panel-subtitle">快捷键</div>
+    <div class="kbd-grid">
+      <div class="kbd-item"><span>帮助</span><kbd>H</kbd></div>
+      <div class="kbd-item"><span>播放/暂停</span><kbd>Space</kbd></div>
+      <div class="kbd-item"><span>上一步</span><kbd>←</kbd></div>
+      <div class="kbd-item"><span>下一步</span><kbd>→</kbd></div>
+      <div class="kbd-item"><span>重置</span><kbd>R</kbd></div>
+      <div class="kbd-item"><span>光学方案</span><kbd>B</kbd></div>
+      <div class="kbd-item"><span>来电</span><kbd>C</kbd></div>
+      <div class="kbd-item"><span>ADAS</span><kbd>A</kbd></div>
+      <div class="kbd-item"><span>语音反馈</span><kbd>V</kbd></div>
+      <div class="kbd-item"><span>确认/接听</span><kbd>Enter</kbd></div>
+      <div class="kbd-item"><span>拒绝/取消</span><kbd>Esc</kbd></div>
+      <div class="kbd-item"><span>状态 1-7</span><kbd>1-7</kbd></div>
+    </div>
+  </div>
+
+  <div id="sandbox-panel">
+    <h3 class="panel-title">Sandbox Panel</h3>
+    <div class="sandbox-grid">
+      <div class="info-card">
+        <div class="info-row"><span>当前状态</span><span class="value-strong">window.currentMode</span></div>
+        <div class="info-row"><span>速度等级</span><span class="value-strong">window.currentSpeed</span></div>
+        <div class="info-row"><span>剧本播放</span><span class="value-strong">window.scriptPlaying</span></div>
+      </div>
+      <div class="info-card">
+        <div class="panel-subtitle" style="margin-top:0">状态优先级</div>
+        <ul class="timeline-log">
+          <li>ADAS_ALERT ＞ CALL ＞ VOICE_FEEDBACK ＞ 基础态</li>
+          <li>基础态：NORMAL / NAVIGATION / GROUP_COMM</li>
+          <li>覆盖态结束后自动恢复被抢占基础态</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="panel-subtitle" style="margin-top:0">只读时间轴</div>
+        <ul class="timeline-log">
+          <li>BOOT → NORMAL</li>
+          <li>NAVIGATION → CALL → NAVIGATION</li>
+          <li>GROUP_COMM → ADAS_ALERT → GROUP_COMM</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+(() => {
+  const MODE = {
+    BOOT: 'BOOT',
+    NORMAL: 'NORMAL',
+    NAVIGATION: 'NAVIGATION',
+    CALL: 'CALL',
+    ADAS_ALERT: 'ADAS_ALERT',
+    GROUP_COMM: 'GROUP_COMM',
+    VOICE_FEEDBACK: 'VOICE_FEEDBACK'
+  };
+
+  const SPEED = {
+    S0: 'S0',
+    S1: 'S1',
+    S2: 'S2',
+    S3: 'S3'
+  };
+
+  const MODE_ORDER = [
+    MODE.BOOT,
+    MODE.NORMAL,
+    MODE.NAVIGATION,
+    MODE.CALL,
+    MODE.ADAS_ALERT,
+    MODE.GROUP_COMM,
+    MODE.VOICE_FEEDBACK
+  ];
+
+  const BASE_MODES = new Set([
+    MODE.NORMAL,
+    MODE.NAVIGATION,
+    MODE.GROUP_COMM
+  ]);
+
+  const OVERLAY_MODES = new Set([
+    MODE.ADAS_ALERT,
+    MODE.CALL,
+    MODE.VOICE_FEEDBACK
+  ]);
+
+  const PRIORITY = {
+    [MODE.BOOT]: 0,
+    [MODE.NORMAL]: 1,
+    [MODE.NAVIGATION]: 1,
+    [MODE.GROUP_COMM]: 1,
+    [MODE.VOICE_FEEDBACK]: 2,
+    [MODE.CALL]: 3,
+    [MODE.ADAS_ALERT]: 4
+  };
+
+  const PREEMPT_MATRIX = {
+    [MODE.BOOT]: { canPreempt: [] },
+    [MODE.NORMAL]: { canPreempt: [] },
+    [MODE.NAVIGATION]: { canPreempt: [] },
+    [MODE.GROUP_COMM]: { canPreempt: [] },
+    [MODE.VOICE_FEEDBACK]: { canPreempt: [MODE.NORMAL, MODE.NAVIGATION, MODE.GROUP_COMM] },
+    [MODE.CALL]: { canPreempt: [MODE.NORMAL, MODE.NAVIGATION, MODE.GROUP_COMM, MODE.VOICE_FEEDBACK] },
+    [MODE.ADAS_ALERT]: { canPreempt: [MODE.NORMAL, MODE.NAVIGATION, MODE.GROUP_COMM, MODE.VOICE_FEEDBACK, MODE.CALL] }
+  };
+
+  const SPEED_RULES = {
+    [SPEED.S0]: { maxInfo: 'full', hideRtLowPriority: false },
+    [SPEED.S1]: { maxInfo: 'full', hideRtLowPriority: false },
+    [SPEED.S2]: { maxInfo: 'reduced', hideRtLowPriority: false },
+    [SPEED.S3]: { maxInfo: 'minimal', hideRtLowPriority: true }
+  };
+
+  const EVENT_TABLE = {
+    BOOT_COMPLETE: { type: 'system' },
+    SET_SPEED: { type: 'speed' },
+    MODE_CHANGE: { type: 'mode' },
+    ENTER_NAVIGATION: { type: 'mode', target: MODE.NAVIGATION },
+    ENTER_GROUP_COMM: { type: 'mode', target: MODE.GROUP_COMM },
+    ENTER_NORMAL: { type: 'mode', target: MODE.NORMAL },
+    INCOMING_CALL: { type: 'overlay', target: MODE.CALL },
+    CALL_ACCEPT: { type: 'overlay-end', target: MODE.CALL },
+    CALL_REJECT: { type: 'overlay-end', target: MODE.CALL },
+    CALL_END: { type: 'overlay-end', target: MODE.CALL },
+    VOICE_FEEDBACK_START: { type: 'overlay', target: MODE.VOICE_FEEDBACK },
+    VOICE_FEEDBACK_END: { type: 'overlay-end', target: MODE.VOICE_FEEDBACK },
+    TRIGGER_ALERT: { type: 'overlay', target: MODE.ADAS_ALERT },
+    CLEAR_ALERT: { type: 'overlay-end', target: MODE.ADAS_ALERT },
+    RESET: { type: 'system' }
+  };
+
+  const state = {
+    baseMode: MODE.BOOT,
+    overlayStack: [],
+    history: [],
+    lastEvent: null,
+    activeAlert: null,
+    speedValue: 48
+  };
+
+  window.MODE = MODE;
+  window.SPEED = SPEED;
+  window.MODE_ORDER = MODE_ORDER;
+  window.currentMode = MODE.BOOT;
+  window.currentSpeed = SPEED.S1;
+  window.scriptPlaying = window.scriptPlaying || false;
+
+  function topOverlay() {
+    return state.overlayStack.length ? state.overlayStack[state.overlayStack.length - 1] : null;
+  }
+
+  function getEffectiveMode() {
+    return topOverlay() || state.baseMode;
+  }
+
+  function canPreempt(nextMode, currentMode) {
+    if (!currentMode) return true;
+    if (nextMode === currentMode) return true;
+    const nextPriority = PRIORITY[nextMode] ?? -1;
+    const currentPriority = PRIORITY[currentMode] ?? -1;
+    if (nextPriority > currentPriority) return true;
+    const matrix = PREEMPT_MATRIX[nextMode];
+    return !!(matrix && matrix.canPreempt.includes(currentMode));
+  }
+
+  function pushHistory(type, payload) {
+    state.history.push({
+      ts: Date.now(),
+      mode: window.currentMode,
+      speed: window.currentSpeed,
+      type,
+      payload: payload || null
+    });
+    if (state.history.length > 120) state.history.shift();
+    document.dispatchEvent(new CustomEvent('hud:history', { detail: state.history.slice() }));
+  }
+
+  function syncGlobals() {
+    window.currentMode = getEffectiveMode();
+    window.currentSpeed = window.currentSpeed || SPEED.S1;
+    document.dispatchEvent(new CustomEvent('hud:modechange', {
+      detail: {
+        mode: window.currentMode,
+        baseMode: state.baseMode,
+        overlayStack: state.overlayStack.slice(),
+        speed: window.currentSpeed,
+        speedRule: SPEED_RULES[window.currentSpeed]
+      }
+    }));
+  }
+
+  function setBaseMode(mode) {
+    if (!BASE_MODES.has(mode) && mode !== MODE.BOOT) return false;
+    state.baseMode = mode;
+    return true;
+  }
+
+  function pushOverlay(mode, meta) {
+    const current = getEffectiveMode();
+    if (!canPreempt(mode, current)) return false;
+    if (topOverlay() === mode) return true;
+    state.overlayStack.push(mode);
+    if (mode === MODE.ADAS_ALERT) state.activeAlert = meta || null;
+    return true;
+  }
+
+  function removeOverlay(mode) {
+    const idx = state.overlayStack.lastIndexOf(mode);
+    if (idx === -1) return false;
+    state.overlayStack.splice(idx, 1);
+    if (mode === MODE.ADAS_ALERT) state.activeAlert = null;
+    return true;
+  }
+
+  function updateSpeed(speed) {
+    if (!SPEED_RULES[speed]) return false;
+    window.currentSpeed = speed;
+    document.dispatchEvent(new CustomEvent('hud:speedchange', {
+      detail: {
+        speed,
+        rule: SPEED_RULES[speed]
+      }
+    }));
+    pushHistory('speed', { speed });
+    return true;
+  }
+
+  window.setMode = function setMode(mode) {
+    if (!Object.values(MODE).includes(mode)) return false;
+
+    let changed = false;
+
+    if (BASE_MODES.has(mode) || mode === MODE.BOOT) {
+      changed = setBaseMode(mode);
+    } else if (OVERLAY_MODES.has(mode)) {
+      changed = pushOverlay(mode);
+    }
+
+    if (changed) {
+      syncGlobals();
+      pushHistory('setMode', { mode });
+    }
+    return changed;
+  };
+
+  window.emitEvent = function emitEvent(event) {
+    const e = typeof event === 'string' ? { type: event } : (event || {});
+    const type = e.type;
+    state.lastEvent = e;
+    let changed = false;
+
+    switch (type) {
+      case 'BOOT_COMPLETE':
+        changed = setBaseMode(MODE.NORMAL);
+        break;
+
+      case 'SET_SPEED':
+        changed = updateSpeed(e.speed || e.level || SPEED.S1);
+        break;
+
+      case 'MODE_CHANGE':
+        changed = window.setMode(e.mode);
+        break;
+
+      case 'ENTER_NORMAL':
+        changed = setBaseMode(MODE.NORMAL);
+        break;
+
+      case 'ENTER_NAVIGATION':
+        changed = setBaseMode(MODE.NAVIGATION);
+        break;
+
+      case 'ENTER_GROUP_COMM':
+        changed = setBaseMode(MODE.GROUP_COMM);
+        break;
+
+      case 'INCOMING_CALL':
+        changed = pushOverlay(MODE.CALL, e.detail || e);
+        break;
+
+      case 'CALL_ACCEPT':
+      case 'CALL_REJECT':
+      case 'CALL_END':
+        changed = removeOverlay(MODE.CALL);
+        break;
+
+      case 'VOICE_FEEDBACK_START':
+        changed = pushOverlay(MODE.VOICE_FEEDBACK, e.detail || e);
+        break;
+
+      case 'VOICE_FEEDBACK_END':
+        changed = removeOverlay(MODE.VOICE_FEEDBACK);
+        break;
+
+      case 'TRIGGER_ALERT':
+        changed = pushOverlay(MODE.ADAS_ALERT, e.detail || e);
+        break;
+
+      case 'CLEAR_ALERT':
+        changed = removeOverlay(MODE.ADAS_ALERT);
+        break;
+
+      case 'RESET':
+        state.baseMode = MODE.BOOT;
+        state.overlayStack = [];
+        state.activeAlert = null;
+        window.currentSpeed = SPEED.S1;
+        changed = true;
+        break;
+    }
+
+    if (changed) {
+      syncGlobals();
+      pushHistory('event', e);
+    }
+
+    document.dispatchEvent(new CustomEvent('hud:event', {
+      detail: {
+        event: e,
+        changed,
+        mode: window.currentMode,
+        baseMode: state.baseMode,
+        overlayStack: state.overlayStack.slice(),
+        speed: window.currentSpeed,
+        priority: PRIORITY[window.currentMode],
+        matrix: PREEMPT_MATRIX
+      }
+    }));
+
+    return changed;
+  };
+
+  window.__HUD_STATE__ = {
+    MODE,
+    SPEED,
+    PRIORITY,
+    PREEMPT_MATRIX,
+    SPEED_RULES,
+    EVENT_TABLE,
+    BASE_MODES,
+    OVERLAY_MODES,
+    getState() {
+      return {
+        currentMode: window.currentMode,
+        currentSpeed: window.currentSpeed,
+        scriptPlaying: window.scriptPlaying,
+        baseMode: state.baseMode,
+        overlayStack: state.overlayStack.slice(),
+        activeAlert: state.activeAlert,
+        history: state.history.slice()
+      };
+    }
+  };
+
+  syncGlobals();
+})();
+
+
+(() => {
+  const ZONES = {
+    LT: 'lt-zone',
+    LB: 'lb-zone',
+    RT: 'rt-zone',
+    RB: 'rb-zone'
+  };
+
+  const COLOR_MAP = {
+    speed: 'var(--white)',
+    nav: 'var(--nav)',
+    warn: 'var(--warn)',
+    group: 'var(--group)',
+    music: 'var(--music)',
+    ok: 'var(--ok)',
+    muted: 'var(--muted)',
+    text: 'var(--text)',
+    amber: 'var(--amber)'
+  };
+
+  const SPEED_VALUE_MAP = {
+    S0: 0,
+    S1: 48,
+    S2: 72,
+    S3: 108
+  };
+
+  const ALERT_ZONE_MAP = {
+    BSD_LEFT: ZONES.LB,
+    BSD_RIGHT: ZONES.RB,
+    DOOR_LEFT: ZONES.LB,
+    DOOR_RIGHT: ZONES.RB,
+    FCW: ZONES.RB,
+    REAR_APPROACH: ZONES.LB
+  };
+
+  const ALERT_COPY = {
+    BSD_LEFT: {
+      title: 'Blind Spot / LB',
+      primary: '左侧盲区来车',
+      secondary: '请勿并线，保持当前车道',
+      icon: 'left-car'
+    },
+    BSD_RIGHT: {
+      title: 'Blind Spot / RB',
+      primary: '右侧盲区来车',
+      secondary: '请勿并线，保持当前车道',
+      icon: 'right-car'
+    },
+    DOOR_LEFT: {
+      title: 'Door Alert / LB',
+      primary: '左侧开门风险',
+      secondary: '侧后方接近，请暂缓开门',
+      icon: 'triangle-left'
+    },
+    DOOR_RIGHT: {
+      title: 'Door Alert / RB',
+      primary: '右侧开门风险',
+      secondary: '侧后方接近，请暂缓开门',
+      icon: 'triangle-right'
+    },
+    FCW: {
+      title: 'Forward Collision / RB',
+      primary: '前向碰撞预警',
+      secondary: '请立即减速并保持车距',
+      icon: 'triangle'
+    },
+    REAR_APPROACH: {
+      title: 'Rear Approach / LB',
+      primary: '后方快速接近',
+      secondary: '请保持稳定，注意后方车辆',
+      icon: 'left-car'
+    }
+  };
+
+  const runtime = {
+    lastBaseMode: window.currentMode || 'BOOT',
+    activeAlertType: null,
+    activeCall: null,
+    activeVoice: null,
+    navStep: 0,
+    groupConnected: true,
+    musicPlaying: true,
+    btConnected: true,
+    wifiConnected: true
+  };
+
+  function esc(str) {
+    return String(str == null ? '' : str)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
+  function iconArrow(dir, color) {
+    const cls = dir === 'right' ? 'arrow-right' : 'arrow-left';
+    return `<span class="${cls}" style="color:${color};margin-right:10px"></span>`;
+  }
+
+  function iconTriangle(color) {
+    return `<span class="triangle" style="color:${color};margin-right:10px"></span>`;
+  }
+
+  function iconCar(color) {
+    return `<span class="car-icon" style="color:${color};margin-right:10px"></span>`;
+  }
+
+  function iconPhone(color) {
+    return `<span class="phone-icon" style="color:${color};margin-right:10px"></span>`;
+  }
+
+  function iconMic(color) {
+    return `<span class="mic-icon" style="color:${color};margin-right:10px"></span>`;
+  }
+
+  function iconGroup(color) {
+    return `<span class="group-icon" style="color:${color};margin-right:10px"><span></span></span>`;
+  }
+
+  function zoneTemplate(title, body) {
+    return `<div class="zone-title">${title}</div><div class="zone-content">${body}</div>`;
+  }
+
+  function speedZone() {
+    const speed = window.currentSpeed || 'S1';
+    const value = SPEED_VALUE_MAP[speed] ?? 48;
+    return zoneTemplate(
+      'Speed / LT',
+      `
+      <div class="metric-row">
+        <div class="speed-value">${value}</div>
+        <div class="speed-unit">km/h</div>
+      </div>
+      <div class="secondary-text">当前速度等级 <span class="value-strong">${esc(speed)}</span></div>
+      `
+    );
+  }
+
+  function rtStatusZone() {
+    const speed = window.currentSpeed || 'S1';
+    const hideLow = speed === 'S3';
+    const chips = [];
+
+    if (!hideLow && runtime.groupConnected) {
+      chips.push(`<div class="icon-chip" style="color:${COLOR_MAP.group}"><span class="dot"></span><span>组队已连接</span></div>`);
+    }
+    if (!hideLow && runtime.musicPlaying) {
+      chips.push(`<div class="icon-chip" style="color:${COLOR_MAP.music}"><span class="dot"></span><span>音乐播放</span></div>`);
+    }
+    if (runtime.btConnected || runtime.wifiConnected) {
+      chips.push(`<div class="icon-chip"><span class="dot" style="color:${COLOR_MAP.ok}"></span><span>${runtime.btConnected ? 'BT' : '--'} / ${runtime.wifiConnected ? 'Wi‑Fi' : '--'}</span></div>`);
+    }
+
+    return zoneTemplate(
+      'Status / RT',
+      `
+      <div class="icon-row">${chips.join('')}</div>
+      <div class="secondary-text">${hideLow ? '高速 S3：已隐藏音乐/社交类低优先级状态' : '显示连接、组队与娱乐状态'}</div>
+      `
+    );
+  }
+
+  function normalLbZone() {
+    return zoneTemplate(
+      'Navigation / LB',
+      `
+      <div class="primary-text nav-text">${iconArrow('left', COLOR_MAP.nav)}300m 后左转</div>
+      <div class="secondary-text">延安高架路 · 前往虹桥机场</div>
+      `
+    );
+  }
+
+  function normalRbZone() {
+    return zoneTemplate(
+      'Primary Info / RB',
+      `
+      <div class="primary-text">HUD 已就绪</div>
+      <div class="secondary-text">被保护着的骑行体验，中央视野保持留空</div>
+      <div class="icon-row">
+        <div class="badge">NORMAL</div>
+        <div class="badge">SAFE</div>
+      </div>
+      `
+    );
+  }
+
+  function bootLbZone() {
+    return zoneTemplate(
+      'System Check / LB',
+      `
+      <div class="primary-text nav-text">系统自检中</div>
+      <div class="secondary-text">GPS / ADAS / 通信模块初始化</div>
+      `
+    );
+  }
+
+  function bootRbZone() {
+    return zoneTemplate(
+      'Boot / RB',
+      `
+      <div class="primary-text">Ride HUD</div>
+      <div class="secondary-text">启动完成后自动进入常态骑行界面</div>
+      <div class="icon-row">
+        <div class="badge">GPS</div>
+        <div class="badge">ADAS</div>
+        <div class="badge">COMMS</div>
+      </div>
+      `
+    );
+  }
+
+  function navigationLbZone() {
+    const steps = [
+      { dir: 'left', text: '300m 后左转', road: '延安高架路 · 前往虹桥机场' },
+      { dir: 'right', text: '800m 后靠右', road: '外环高速入口' },
+      { dir: 'left', text: '2km 后驶出', road: '虹桥枢纽方向' }
+    ];
+    const step = steps[runtime.navStep % steps.length];
+    return zoneTemplate(
+      'Navigation / LB',
+      `
+      <div class="primary-text nav-text">${iconArrow(step.dir, COLOR_MAP.nav)}${esc(step.text)}</div>
+      <div class="secondary-text">${esc(step.road)}</div>
+      `
+    );
+  }
+
+  function navigationRbZone() {
+    return zoneTemplate(
+      'Route / RB',
+      `
+      <div class="primary-text nav-text">剩余 12.4 km</div>
+      <div class="secondary-text">预计 18 分钟到达 · 逐向提示，避免完整地图铺屏</div>
+      <div class="icon-row">
+        <div class="badge">NAV</div>
+        <div class="badge">ETA 18m</div>
+      </div>
+      `
+    );
+  }
+
+  function groupLbZone() {
+    return zoneTemplate(
+      'Group Comm / LB',
+      `
+      <div class="primary-text group-text">${iconGroup(COLOR_MAP.group)}组队已连接</div>
+      <div class="secondary-text">3 人在线 · 头盔对讲稳定</div>
+      `
+    );
+  }
+
+  function groupRbZone() {
+    return zoneTemplate(
+      'Talk / RB',
+      `
+      <div class="primary-text group-text">队友通话中</div>
+      <div class="secondary-text">“前方路口右转，注意车流。”</div>
+      <div class="icon-row">
+        <div class="badge">GROUP</div>
+        <div class="badge">LIVE</div>
+      </div>
+      `
+    );
+  }
+
+  function callRbZone() {
+    const name = runtime.activeCall?.name || '张先生';
+    const note = runtime.activeCall?.note || '蓝牙来电';
+    return zoneTemplate(
+      'Incoming Call / RB',
+      `
+      <div class="primary-text">${iconPhone(COLOR_MAP.white)}${esc(name)}</div>
+      <div class="secondary-text">${esc(note)} · Enter 接听 / Esc 拒接</div>
+      <div class="icon-row">
+        <div class="badge">CALL</div>
+        <div class="badge">HIGH</div>
+      </div>
+      `
+    );
+  }
+
+  function voiceRbZone() {
+    const text = runtime.activeVoice?.text || '正在规划路线';
+    return zoneTemplate(
+      'Voice Feedback / RB',
+      `
+      <div class="primary-text nav-text">${iconMic(COLOR_MAP.nav)}${esc(text)}</div>
+      <div class="secondary-text">语音完成后自动恢复基础态</div>
+      <div class="icon-row">
+        <div class="badge">VOICE</div>
+        <div class="badge">MID</div>
+      </div>
+      `
+    );
+  }
+
+  function adasZone(alertType, zoneId) {
+    const copy = ALERT_COPY[alertType] || ALERT_COPY.FCW;
+    let icon = iconTriangle(COLOR_MAP.warn);
+    if (copy.icon === 'left-car') icon = `${iconCar(COLOR_MAP.warn)}${iconArrow('left', COLOR_MAP.warn)}`;
+    if (copy.icon === 'right-car') icon = `${iconCar(COLOR_MAP.warn)}${iconArrow('right', COLOR_MAP.warn)}`;
+    if (copy.icon === 'triangle-left') icon = `${iconTriangle(COLOR_MAP.warn)}${iconArrow('left', COLOR_MAP.warn)}`;
+    if (copy.icon === 'triangle-right') icon = `${iconTriangle(COLOR_MAP.warn)}${iconArrow('right', COLOR_MAP.warn)}`;
+
+    return zoneTemplate(
+      copy.title,
+      `
+      <div class="primary-text warn-text">${icon}${esc(copy.primary)}</div>
+      <div class="secondary-text">${esc(copy.secondary)}</div>
+      <div class="icon-row">
+        <div class="badge">ADAS</div>
+        <div class="badge">${esc(zoneId.toUpperCase().replace('-ZONE', ''))}</div>
+      </div>
+      `
+    );
+  }
+
+  window.renderZone = function renderZone(zoneId, content) {
+    const el = document.getElementById(zoneId);
+    if (!el) return;
+    el.innerHTML = content;
+  };
+
+  window.flashWarning = function flashWarning(zoneId, color) {
+    const el = document.getElementById(zoneId);
+    if (!el) return;
+    el.style.setProperty('--flash-color', color || 'var(--warn)');
+    el.classList.remove('warning-flash');
+    void el.offsetWidth;
+    el.classList.add('warning-flash');
+  };
+
+  function renderBase(mode) {
+    window.renderZone(ZONES.LT, speedZone());
+    window.renderZone(ZONES.RT, rtStatusZone());
+
+    if (mode === 'BOOT') {
+      window.renderZone(ZONES.LB, bootLbZone());
+      window.renderZone(ZONES.RB, bootRbZone());
+      return;
+    }
+
+    if (mode === 'NAVIGATION') {
+      window.renderZone(ZONES.LB, navigationLbZone());
+      window.renderZone(ZONES.RB, navigationRbZone());
+      return;
+    }
+
+    if (mode === 'GROUP_COMM') {
+      window.renderZone(ZONES.LB, groupLbZone());
+      window.renderZone(ZONES.RB, groupRbZone());
+      return;
+    }
+
+    window.renderZone(ZONES.LB, normalLbZone());
+    window.renderZone(ZONES.RB, normalRbZone());
+  }
+
+  function renderOverlay(mode) {
+    if (mode === 'CALL') {
+      window.renderZone(ZONES.RB, callRbZone());
+      return;
+    }
+
+    if (mode === 'VOICE_FEEDBACK') {
+      window.renderZone(ZONES.RB, voiceRbZone());
+      return;
+    }
+
+    if (mode === 'ADAS_ALERT') {
+      const type = runtime.activeAlertType || 'FCW';
+      const zoneId = ALERT_ZONE_MAP[type] || ZONES.RB;
+      window.renderZone(zoneId, adasZone(type, zoneId));
+      window.flashWarning(zoneId, COLOR_MAP.warn);
+    }
+  }
+
+  function renderAll() {
+    const mode = window.currentMode || 'BOOT';
+    const baseMode = runtime.lastBaseMode || 'NORMAL';
+    const effectiveBase = mode === 'CALL' || mode === 'VOICE_FEEDBACK' || mode === 'ADAS_ALERT' ? baseMode : mode;
+    renderBase(effectiveBase);
+    renderOverlay(mode);
+  }
+
+  document.addEventListener('hud:modechange', (e) => {
+    const detail = e.detail || {};
+    if (detail.baseMode) runtime.lastBaseMode = detail.baseMode;
+    renderAll();
+  });
+
+  document.addEventListener('hud:event', (e) => {
+    const event = e.detail?.event || {};
+    if (event.type === 'TRIGGER_ALERT') {
+      runtime.activeAlertType = event.detail?.type || event.alertType || 'FCW';
+    }
+    if (event.type === 'CLEAR_ALERT') {
+      runtime.activeAlertType = null;
+    }
+    if (event.type === 'INCOMING_CALL') {
+      runtime.activeCall = event.detail || event;
+    }
+    if (event.type === 'CALL_ACCEPT' || event.type === 'CALL_REJECT' || event.type === 'CALL_END') {
+      runtime.activeCall = null;
+    }
+    if (event.type === 'VOICE_FEEDBACK_START') {
+      runtime.activeVoice = event.detail || event;
+    }
+    if (event.type === 'VOICE_FEEDBACK_END') {
+      runtime.activeVoice = null;
+    }
+    if (event.type === 'ENTER_NAVIGATION') {
+      runtime.navStep = (runtime.navStep + 1) % 3;
+    }
+    renderAll();
+  });
+
+  document.addEventListener('hud:speedchange', () => {
+    renderAll();
+  });
+
+  renderAll();
+})();
+
+
+(() => {
+  const SCRIPT_LIBRARY = {
+    safety_guard: {
+      id: 'safety_guard',
+      name: '安全守护剧本',
+      duration: 26000,
+      steps: [
+        { at: 0, label: '开机自检', run() { window.emitEvent({ type: 'RESET' }); window.emitEvent({ type: 'SET_SPEED', speed: 'S0' }); } },
+        { at: 2200, label: '启动完成', run() { window.emitEvent({ type: 'BOOT_COMPLETE' }); } },
+        { at: 4200, label: '进入常态骑行', run() { window.emitEvent({ type: 'ENTER_NORMAL' }); window.emitEvent({ type: 'SET_SPEED', speed: 'S1' }); } },
+        { at: 7600, label: '左侧盲区预警', run() { window.emitEvent({ type: 'TRIGGER_ALERT', detail: { type: 'BSD_LEFT' } }); } },
+        { at: 11200, label: '预警解除', run() { window.emitEvent({ type: 'CLEAR_ALERT' }); } },
+        { at: 14600, label: '中速巡航', run() { window.emitEvent({ type: 'SET_SPEED', speed: 'S2' }); } },
+        { at: 17600, label: '前向碰撞预警', run() { window.emitEvent({ type: 'TRIGGER_ALERT', detail: { type: 'FCW' } }); } },
+        { at: 21400, label: '预警解除', run() { window.emitEvent({ type: 'CLEAR_ALERT' }); } },
+        { at: 24200, label: '恢复常态', run() { window.emitEvent({ type: 'ENTER_NORMAL' }); window.emitEvent({ type: 'SET_SPEED', speed: 'S1' }); } }
+      ]
+    },
+    seamless_nav: {
+      id: 'seamless_nav',
+      name: '无缝导航剧本',
+      duration: 34000,
+      steps: [
+        { at: 0, label: '重置到常态', run() { window.emitEvent({ type: 'RESET' }); window.emitEvent({ type: 'BOOT_COMPLETE' }); window.emitEvent({ type: 'ENTER_NORMAL' }); window.emitEvent({ type: 'SET_SPEED', speed: 'S0' }); } },
+        { at: 2200, label: '语音指令：导航去虹桥机场', run() { window.emitEvent({ type: 'VOICE_FEEDBACK_START', detail: { text: '导航去虹桥机场' } }); } },
+        { at: 5200, label: '语音反馈：正在规划路线', run() { window.emitEvent({ type: 'VOICE_FEEDBACK_END' }); window.emitEvent({ type: 'VOICE_FEEDBACK_START', detail: { text: '正在规划路线' } }); } },
+        { at: 8200, label: '启动导航', run() { window.emitEvent({ type: 'VOICE_FEEDBACK_END' }); window.emitEvent({ type: 'ENTER_NAVIGATION' }); window.emitEvent({ type: 'SET_SPEED', speed: 'S1' }); } },
+        { at: 12200, label: '逐向提示 1', run() { window.emitEvent({ type: 'ENTER_NAVIGATION' }); } },
+        { at: 16200, label: '逐向提示 2', run() { window.emitEvent({ type: 'SET_SPEED', speed: 'S2' }); window.emitEvent({ type: 'ENTER_NAVIGATION' }); } },
+        { at: 20600, label: '高速降级显示', run() { window.emitEvent({ type: 'SET_SPEED', speed: 'S3' }); } },
+        { at: 23600, label: '来电打断', run() { window.emitEvent({ type: 'INCOMING_CALL', detail: { name: '王先生', note: '骑行中来电' } }); } },
+        { at: 27800, label: '拒接来电', run() { window.emitEvent({ type: 'CALL_REJECT' }); } },
+        { at: 30400, label: '恢复导航', run() { window.emitEvent({ type: 'SET_SPEED', speed: 'S2' }); window.emitEvent({ type: 'ENTER_NAVIGATION' }); } }
+      ]
+    },
+    group_ride: {
+      id: 'group_ride',
+      name: '组队摩旅剧本',
+      duration: 24000,
+      steps: [
+        { at: 0, label: '重置并进入常态', run() { window.emitEvent({ type: 'RESET' }); window.emitEvent({ type: 'BOOT_COMPLETE' }); window.emitEvent({ type: 'ENTER_NORMAL' }); window.emitEvent({ type: 'SET_SPEED', speed: 'S1' }); } },
+        { at: 2600, label: '组队连接', run() { window.emitEvent({ type: 'ENTER_GROUP_COMM' }); } },
+        { at: 6200, label: '组队通话中', run() { window.emitEvent({ type: 'ENTER_GROUP_COMM' }); window.emitEvent({ type: 'SET_SPEED', speed: 'S2' }); } },
+        { at: 10800, label: 'ADAS 抢占：右侧开门风险', run() { window.emitEvent({ type: 'TRIGGER_ALERT', detail: { type: 'DOOR_RIGHT' } }); } },
+        { at: 14600, label: '预警解除', run() { window.emitEvent({ type: 'CLEAR_ALERT' }); } },
+        { at: 17800, label: '恢复组队通话', run() { window.emitEvent({ type: 'ENTER_GROUP_COMM' }); } },
+        { at: 20800, label: '结束巡航', run() { window.emitEvent({ type: 'SET_SPEED', speed: 'S1' }); } }
+      ]
+    }
+  };
+
+  const runtime = {
+    activeScriptId: 'safety_guard',
+    elapsed: 0,
+    rafId: 0,
+    startedAt: 0,
+    executedStepIndexes: new Set(),
+    timelineReady: false
+  };
+
+  function $(id) {
+    return document.getElementById(id);
+  }
+
+  function formatMs(ms) {
+    const total = Math.max(0, Math.floor(ms / 1000));
+    const m = String(Math.floor(total / 60)).padStart(2, '0');
+    const s = String(total % 60).padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  function getScript(id) {
+    return SCRIPT_LIBRARY[id] || SCRIPT_LIBRARY.safety_guard;
+  }
+
+  function getActiveScript() {
+    return getScript(runtime.activeScriptId);
+  }
+
+  function dispatchScriptEvent(name, detail) {
+    document.dispatchEvent(new CustomEvent(name, { detail }));
+  }
+
+  function ensureControlPanel() {
+    const panel = $('control-panel');
+    if (!panel || panel.dataset.scriptEnhanced === '1') return;
+    panel.dataset.scriptEnhanced = '1';
+    panel.insertAdjacentHTML('beforeend', `
+      <div class="script-controls-block" id="script-controls-block">
+        <div class="script-controls-row">
+          <button type="button" class="script-btn" data-script-action="prev">← 上一步</button>
+          <button type="button" class="script-btn script-btn-primary" data-script-action="toggle">▶ 播放</button>
+          <button type="button" class="script-btn" data-script-action="next">下一步 →</button>
+          <button type="button" class="script-btn" data-script-action="reset">重置</button>
+        </div>
+        <div class="script-controls-row">
+          <button type="button" class="script-chip active" data-script-id="safety_guard">1 安全守护</button>
+          <button type="button" class="script-chip" data-script-id="seamless_nav">2 无缝导航</button>
+          <button type="button" class="script-chip" data-script-id="group_ride">3 组队摩旅</button>
+        </div>
+      </div>
+    `);
+
+    panel.addEventListener('click', (e) => {
+      const actionEl = e.target.closest('[data-script-action]');
+      const scriptEl = e.target.closest('[data-script-id]');
+      if (actionEl) {
+        const action = actionEl.getAttribute('data-script-action');
+        if (action === 'toggle') togglePlayback();
+        if (action === 'prev') stepPrev();
+        if (action === 'next') stepNext();
+        if (action === 'reset') resetScript(true);
+      }
+      if (scriptEl) {
+        selectScript(scriptEl.getAttribute('data-script-id'), true);
+      }
+    });
+  }
+
+  function ensureTimelineUI() {
+    const timeline = $('timeline-bar');
+    if (!timeline || runtime.timelineReady) return;
+    runtime.timelineReady = true;
+    timeline.innerHTML = `
+      <div class="timeline-head">
+        <div class="timeline-title-wrap">
+          <div class="timeline-title">Timeline</div>
+          <div class="timeline-subtitle" id="timeline-script-name">安全守护剧本</div>
+        </div>
+        <div class="timeline-readout" id="timeline-readout">00:00 / 00:26</div>
+      </div>
+      <div class="timeline-track-wrap">
+        <div class="timeline-track" id="timeline-track">
+          <div class="timeline-progress" id="timeline-progress"></div>
+          <div class="timeline-markers" id="timeline-markers"></div>
+          <div class="timeline-cursor" id="timeline-cursor"></div>
+        </div>
+      </div>
+      <div class="timeline-legend" id="timeline-legend"></div>
+    `;
+    injectStyles();
+    rebuildTimelineMarkers();
+  }
+
+  function injectStyles() {
+    if ($('script-timeline-style')) return;
+    const style = document.createElement('style');
+    style.id = 'script-timeline-style';
+    style.textContent = `
+      #timeline-bar{display:flex;flex-direction:column;gap:10px}
+      #timeline-bar .timeline-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+      #timeline-bar .timeline-title{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.72}
+      #timeline-bar .timeline-subtitle{font-size:14px;color:var(--text);text-shadow:0 0 10px rgba(255,255,255,.12)}
+      #timeline-bar .timeline-readout{font-size:12px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.04)}
+      #timeline-bar .timeline-track-wrap{position:relative}
+      #timeline-bar .timeline-track{position:relative;height:14px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));overflow:hidden}
+      #timeline-bar .timeline-progress{position:absolute;left:0;top:0;bottom:0;width:0%;background:linear-gradient(90deg, rgba(74,163,255,.28), rgba(74,163,255,.62));box-shadow:0 0 18px rgba(74,163,255,.28)}
+      #timeline-bar .timeline-markers{position:absolute;inset:0}
+      #timeline-bar .timeline-marker{position:absolute;top:50%;width:2px;height:18px;transform:translate(-50%,-50%);background:rgba(255,255,255,.45);box-shadow:0 0 8px rgba(255,255,255,.18)}
+      #timeline-bar .timeline-marker.done{background:var(--ok)}
+      #timeline-bar .timeline-marker.active{background:var(--amber);box-shadow:0 0 10px rgba(255,184,77,.45)}
+      #timeline-bar .timeline-cursor{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 12px rgba(255,255,255,.45)}
+      #timeline-bar .timeline-legend{display:flex;flex-wrap:wrap;gap:8px}
+      #timeline-bar .timeline-step-chip{font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);opacity:.78}
+      #timeline-bar .timeline-step-chip.active{border-color:rgba(255,184,77,.55);color:var(--amber);opacity:1}
+      #timeline-bar .timeline-step-chip.done{border-color:rgba(61,214,140,.45);color:var(--ok);opacity:1}
+      #control-panel .script-controls-block{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+      #control-panel .script-controls-row{display:flex;flex-wrap:wrap;gap:8px}
+      #control-panel .script-btn,#control-panel .script-chip{appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer}
+      #control-panel .script-btn-primary{border-color:rgba(74,163,255,.45);box-shadow:0 0 14px rgba(74,163,255,.14)}
+      #control-panel .script-chip.active{border-color:rgba(74,163,255,.55);background:rgba(74,163,255,.12)}
+    `;
+    document.head.appendChild(style);
+  }
+
+  function rebuildTimelineMarkers() {
+    ensureTimelineUI();
+    const script = getActiveScript();
+    const markers = $('timeline-markers');
+    const legend = $('timeline-legend');
+    const name = $('timeline-script-name');
+    if (name) name.textContent = script.name;
+    if (markers) {
+      markers.innerHTML = script.steps.map((step, index) => {
+        const left = (step.at / script.duration) * 100;
+        return `<span class="timeline-marker" data-step-index="${index}" style="left:${left}%"></span>`;
+      }).join('');
+    }
+    if (legend) {
+      legend.innerHTML = script.steps.map((step, index) => {
+        return `<span class="timeline-step-chip" data-legend-step="${index}">${index + 1}. ${step.label}</span>`;
+      }).join('');
+    }
+    syncScriptButtons();
+    updateTimelineUI();
+  }
+
+  function syncScriptButtons() {
+    document.querySelectorAll('#control-panel [data-script-id]').forEach((el) => {
+      el.classList.toggle('active', el.getAttribute('data-script-id') === runtime.activeScriptId);
+    });
+    const toggleBtn = document.querySelector('#control-panel [data-script-action="toggle"]');
+    if (toggleBtn) toggleBtn.textContent = window.scriptPlaying ? '❚❚ 暂停' : '▶ 播放';
+  }
+
+  function updateTimelineUI() {
+    ensureTimelineUI();
+    const script = getActiveScript();
+    const progressPct = Math.max(0, Math.min(100, (runtime.elapsed / script.duration) * 100));
+    const progress = $('timeline-progress');
+    const cursor = $('timeline-cursor');
+    const readout = $('timeline-readout');
+    if (progress) progress.style.width = `${progressPct}%`;
+    if (cursor) cursor.style.left = `${progressPct}%`;
+    if (readout) readout.textContent = `${formatMs(runtime.elapsed)} / ${formatMs(script.duration)}`;
+
+    const activeIndex = getCurrentStepIndexByElapsed(runtime.elapsed);
+    document.querySelectorAll('#timeline-bar .timeline-marker').forEach((el) => {
+      const idx = Number(el.getAttribute('data-step-index'));
+      el.classList.toggle('done', runtime.executedStepIndexes.has(idx));
+      el.classList.toggle('active', idx === activeIndex);
+    });
+    document.querySelectorAll('#timeline-bar .timeline-step-chip').forEach((el) => {
+      const idx = Number(el.getAttribute('data-legend-step'));
+      el.classList.toggle('done', runtime.executedStepIndexes.has(idx));
+      el.classList.toggle('active', idx === activeIndex);
+    });
+
+    dispatchScriptEvent('hud:scriptprogress', {
+      scriptId: script.id,
+      elapsed: runtime.elapsed,
+      duration: script.duration,
+      progress: progressPct,
+      activeStepIndex: activeIndex
+    });
+  }
+
+  function getCurrentStepIndexByElapsed(elapsed) {
+    const script = getActiveScript();
+    let idx = -1;
+    for (let i = 0; i < script.steps.length; i += 1) {
+      if (elapsed >= script.steps[i].at) idx = i;
+    }
+    return idx;
+  }
+
+  function executePendingSteps() {
+    const script = getActiveScript();
+    script.steps.forEach((step, index) => {
+      if (runtime.elapsed >= step.at && !runtime.executedStepIndexes.has(index)) {
+        runtime.executedStepIndexes.add(index);
+        step.run();
+        dispatchScriptEvent('hud:scriptstep', {
+          scriptId: script.id,
+          stepIndex: index,
+          label: step.label,
+          at: step.at
+        });
+      }
+    });
+  }
+
+  function seek(ms) {
+    const script = getActiveScript();
+    runtime.elapsed = Math.max(0, Math.min(script.duration, ms));
+    runtime.executedStepIndexes = new Set();
+    window.emitEvent({ type: 'RESET' });
+    executePendingSteps();
+    updateTimelineUI();
+  }
+
+  function tick() {
+    if (!window.scriptPlaying) return;
+    const script = getActiveScript();
+    runtime.elapsed = Math.min(script.duration, performance.now() - runtime.startedAt);
+    executePendingSteps();
+    updateTimelineUI();
+    if (runtime.elapsed >= script.duration) {
+      window.scriptPlaying = false;
+      syncScriptButtons();
+      dispatchScriptEvent('hud:scriptend', { scriptId: script.id });
+      return;
+    }
+    runtime.rafId = requestAnimationFrame(tick);
+  }
+
+  function play() {
+    cancelAnimationFrame(runtime.rafId);
+    window.scriptPlaying = true;
+    runtime.startedAt = performance.now() - runtime.elapsed;
+    syncScriptButtons();
+    dispatchScriptEvent('hud:scriptplay', { scriptId: runtime.activeScriptId });
+    runtime.rafId = requestAnimationFrame(tick);
+  }
+
+  function pause() {
+    cancelAnimationFrame(runtime.rafId);
+    window.scriptPlaying = false;
+    syncScriptButtons();
+    updateTimelineUI();
+    dispatchScriptEvent('hud:scriptpause', { scriptId: runtime.activeScriptId });
+  }
+
+  function togglePlayback() {
+    if (window.scriptPlaying) pause();
+    else play();
+  }
+
+  function resetScript(keepSelection) {
+    pause();
+    runtime.elapsed = 0;
+    runtime.executedStepIndexes = new Set();
+    if (!keepSelection) runtime.activeScriptId = 'safety_guard';
+    window.emitEvent({ type: 'RESET' });
+    updateTimelineUI();
+    rebuildTimelineMarkers();
+    dispatchScriptEvent('hud:scriptreset', { scriptId: runtime.activeScriptId });
+  }
+
+  function selectScript(id, resetAfterSelect) {
+    if (!SCRIPT_LIBRARY[id]) return;
+    runtime.activeScriptId = id;
+    rebuildTimelineMarkers();
+    if (resetAfterSelect) resetScript(true);
+  }
+
+  function stepNext() {
+    pause();
+    const script = getActiveScript();
+    const nextIndex = script.steps.findIndex((step, index) => !runtime.executedStepIndexes.has(index) && runtime.elapsed < step.at + 1);
+    if (nextIndex === -1) {
+      seek(script.duration);
+      return;
+    }
+    seek(script.steps[nextIndex].at);
+  }
+
+  function stepPrev() {
+    pause();
+    const script = getActiveScript();
+    const currentIndex = getCurrentStepIndexByElapsed(runtime.elapsed);
+    const prevIndex = Math.max(0, currentIndex - 1);
+    const target = currentIndex <= 0 ? 0 : script.steps[prevIndex].at;
+    seek(target);
+  }
+
+  function bindKeyboard() {
+    document.addEventListener('keydown', (e) => {
+      if (e.repeat) return;
+      if (e.key === ' ') {
+        e.preventDefault();
+        togglePlayback();
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        stepNext();
+      }
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        stepPrev();
+      }
+      if (e.key === 'r' || e.key === 'R') {
+        e.preventDefault();
+        resetScript(true);
+      }
+      if (e.key === '1') selectScript('safety_guard', true);
+      if (e.key === '2') selectScript('seamless_nav', true);
+      if (e.key === '3') selectScript('group_ride', true);
+    });
+  }
+
+  function enhanceSandbox() {
+    const sandbox = $('sandbox-panel');
+    if (!sandbox || sandbox.dataset.scriptTimelineEnhanced === '1') return;
+    sandbox.dataset.scriptTimelineEnhanced = '1';
+
+    let host = sandbox.querySelector('.timeline-log');
+    if (!host) {
+      host = document.createElement('ul');
+      host.className = 'timeline-log';
+      host.id = 'sandbox-timeline-log';
+      sandbox.appendChild(host);
+    } else if (!host.id) {
+      host.id = 'sandbox-timeline-log';
+    }
+
+    const card = document.createElement('div');
+    card.className = 'info-card';
+    card.innerHTML = `
+      <div class="info-row"><span>激活剧本</span><span class="value-strong" id="sandbox-active-script">安全守护剧本</span></div>
+      <div class="info-row"><span>时间轴</span><span class="value-strong" id="sandbox-script-time">00:00 / 00:26</span></div>
+      <div class="info-row"><span>当前步骤</span><span class="value-strong" id="sandbox-script-step">--</span></div>
+    `;
+    sandbox.appendChild(card);
+  }
+
+  function updateSandboxScriptInfo(stepLabel) {
+    enhanceSandbox();
+    const script = getActiveScript();
+    const activeScriptEl = $('sandbox-active-script');
+    const timeEl = $('sandbox-script-time');
+    const stepEl = $('sandbox-script-step');
+    if (activeScriptEl) activeScriptEl.textContent = script.name;
+    if (timeEl) timeEl.textContent = `${formatMs(runtime.elapsed)} / ${formatMs(script.duration)}`;
+    if (stepEl) stepEl.textContent = stepLabel || (script.steps[getCurrentStepIndexByElapsed(runtime.elapsed)]?.label || '--');
+  }
+
+  function appendSandboxLog(text) {
+    const list = $('sandbox-timeline-log');
+    if (!list) return;
+    const li = document.createElement('li');
+    li.textContent = text;
+    list.prepend(li);
+    while (list.children.length > 10) list.removeChild(list.lastChild);
+  }
+
+  document.addEventListener('hud:scriptstep', (e) => {
+    const d = e.detail || {};
+    updateSandboxScriptInfo(d.label);
+    appendSandboxLog(`SCRIPT · ${d.label}`);
+  });
+
+  document.addEventListener('hud:scriptprogress', () => {
+    updateSandboxScriptInfo();
+  });
+
+  document.addEventListener('hud:scriptplay', () => appendSandboxLog('SCRIPT · 播放'));
+  document.addEventListener('hud:scriptpause', () => appendSandboxLog('SCRIPT · 暂停'));
+  document.addEventListener('hud:scriptreset', () => appendSandboxLog('SCRIPT · 重置'));
+  document.addEventListener('hud:scriptend', () => appendSandboxLog('SCRIPT · 结束'));
+
+  ensureControlPanel();
+  ensureTimelineUI();
+  enhanceSandbox();
+  bindKeyboard();
+  resetScript(true);
+
+  window.__HUD_SCRIPT__ = {
+    list: SCRIPT_LIBRARY,
+    play,
+    pause,
+    togglePlayback,
+    resetScript,
+    selectScript,
+    stepNext,
+    stepPrev,
+    seek,
+    getState() {
+      return {
+        activeScriptId: runtime.activeScriptId,
+        elapsed: runtime.elapsed,
+        duration: getActiveScript().duration,
+        playing: !!window.scriptPlaying,
+        executedStepIndexes: Array.from(runtime.executedStepIndexes)
+      };
+    }
+  };
+})();
+
+
+(() => {
+  window.currentMode = window.currentMode || 'BOOT';
+  window.currentSpeed = window.currentSpeed || 'S0';
+  window.scriptPlaying = !!window.scriptPlaying;
+
+  const BASE_MODES = new Set(['BOOT','NORMAL','NAVIGATION','GROUP_COMM']);
+  const OVERLAY_MODES = new Set(['CALL','ADAS_ALERT','VOICE_FEEDBACK']);
+  const runtime = {
+    lastBaseMode: BASE_MODES.has(window.currentMode) ? window.currentMode : 'NORMAL'
+  };
+
+  window.setMode = function setMode(mode) {
+    const next = String(mode || 'NORMAL');
+    if (BASE_MODES.has(next)) runtime.lastBaseMode = next;
+    const prev = window.currentMode;
+    window.currentMode = next;
+    document.dispatchEvent(new CustomEvent('hud:modechange', {
+      detail: {
+        prevMode: prev,
+        mode: next,
+        baseMode: runtime.lastBaseMode
+      }
+    }));
+  };
+
+  window.emitEvent = function emitEvent(event) {
+    const ev = event || {};
+    const type = ev.type || '';
+    document.dispatchEvent(new CustomEvent('hud:event', { detail: { event: ev } }));
+
+    if (type === 'RESET') {
+      runtime.lastBaseMode = 'BOOT';
+      window.currentSpeed = 'S0';
+      document.dispatchEvent(new CustomEvent('hud:speedchange', { detail: { speed: window.currentSpeed } }));
+      window.setMode('BOOT');
+      return;
+    }
+
+    if (type === 'SET_SPEED') {
+      window.currentSpeed = ev.speed || ev.detail?.speed || 'S1';
+      document.dispatchEvent(new CustomEvent('hud:speedchange', { detail: { speed: window.currentSpeed } }));
+      return;
+    }
+
+    if (type === 'BOOT_COMPLETE') {
+      runtime.lastBaseMode = 'NORMAL';
+      window.setMode('NORMAL');
+      return;
+    }
+
+    if (type === 'ENTER_NORMAL') {
+      runtime.lastBaseMode = 'NORMAL';
+      window.setMode('NORMAL');
+      return;
+    }
+
+    if (type === 'ENTER_NAVIGATION') {
+      runtime.lastBaseMode = 'NAVIGATION';
+      window.setMode('NAVIGATION');
+      return;
+    }
+
+    if (type === 'ENTER_GROUP_COMM') {
+      runtime.lastBaseMode = 'GROUP_COMM';
+      window.setMode('GROUP_COMM');
+      return;
+    }
+
+    if (type === 'INCOMING_CALL') {
+      window.setMode('CALL');
+      return;
+    }
+
+    if (type === 'CALL_ACCEPT' || type === 'CALL_REJECT' || type === 'CALL_END') {
+      window.setMode(runtime.lastBaseMode || 'NORMAL');
+      return;
+    }
+
+    if (type === 'VOICE_FEEDBACK_START') {
+      window.setMode('VOICE_FEEDBACK');
+      return;
+    }
+
+    if (type === 'VOICE_FEEDBACK_END') {
+      window.setMode(runtime.lastBaseMode || 'NORMAL');
+      return;
+    }
+
+    if (type === 'TRIGGER_ALERT') {
+      window.setMode('ADAS_ALERT');
+      return;
+    }
+
+    if (type === 'CLEAR_ALERT') {
+      window.setMode(runtime.lastBaseMode || 'NORMAL');
+    }
+  };
+})();
+
+</script>
+</body>
+</html>

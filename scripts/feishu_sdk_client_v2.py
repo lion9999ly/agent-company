@@ -61,6 +61,9 @@ _MAX_MSG_CACHE = 500
 def handle_message(event):
     """处理收到的消息 - v2 模块化版本"""
     try:
+        # 诊断：打印原始事件对象
+        print(f"[RAW_EVENT] {json.dumps(event, default=str, ensure_ascii=False)}")
+
         print(f"\n{'='*50}")
         print(f"收到消息!")
 
