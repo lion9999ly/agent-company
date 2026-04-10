@@ -1,0 +1,67 @@
+<!-- M1: 骨架 HTML - body 内结构 -->
+
+<div id="boot-overlay">
+  <div class="logo">SMART HUD</div>
+  <div class="status">系统初始化中...</div>
+</div>
+
+<div id="hud-root">
+  <!-- 左上角：速度 + 骑行状态 -->
+  <div id="zone-lt" class="zone">
+    <div class="zone-label">速度</div>
+    <div class="zone-content" id="content-lt">
+      <div class="value" id="speed-value">0</div>
+      <div class="unit">km/h</div>
+      <div id="ride-status" style="margin-top:8px;font-size:12px;color:var(--c-muted);">骑行中</div>
+    </div>
+  </div>
+
+  <!-- 右上角：设备状态 -->
+  <div id="zone-rt" class="zone">
+    <div class="zone-label">设备</div>
+    <div class="zone-content" id="content-rt">
+      <div id="device-status">
+        <span style="color:var(--c-call)">●</span> 电量 87%
+        <span style="margin-left:8px;color:var(--c-nav)">●</span> 信号 良好
+      </div>
+    </div>
+  </div>
+
+  <!-- 中央留空（不放任何内容）-->
+  <div id="center-clear"></div>
+
+  <!-- 左下角：通知/导航 -->
+  <div id="zone-lb" class="zone">
+    <div class="zone-label">导航</div>
+    <div class="zone-content" id="content-lb">
+      <!-- 动态内容 -->
+    </div>
+  </div>
+
+  <!-- 右下角：信息/通知 -->
+  <div id="zone-rb" class="zone">
+    <div class="zone-label">信息</div>
+    <div class="zone-content" id="content-rb">
+      <!-- 动态内容 -->
+    </div>
+  </div>
+</div>
+
+<!-- 底部信息栏 -->
+<div id="bottom-bar">
+  <div class="left">
+    <span id="current-time">--:--</span>
+    <span id="distance">里程: 0 km</span>
+  </div>
+  <div class="right">
+    <span id="mode-label">骑行</span>
+  </div>
+</div>
+
+<!-- 时间轴 -->
+<div id="timeline">
+  <div id="timeline-label">就绪</div>
+  <div id="timeline-progress">
+    <div class="bar" id="progress-bar"></div>
+  </div>
+</div>

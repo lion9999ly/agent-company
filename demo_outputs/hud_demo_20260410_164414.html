@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Smart Riding HUD Demo</title>
+<style>
+/* M1: 骨架 CSS
+ * 职责：CSS 变量定义 + 四角布局 + 全屏黑色背景 + 预警闪烁动画
+ */
+
+:root {
+  /* 背景 */
+  --bg: #050607;
+  --bg-zone: rgba(255,255,255,0.04);
+
+  /* 功能色 */
+  --c-speed: #ffffff;      /* 速度 - 白 */
+  --c-nav: #4A90E2;        /* 导航 - 蓝 */
+  --c-warn: #FF3B30;       /* 预警 - 红 */
+  --c-mesh: #5AC8FA;       /* 组队 - 青 */
+  --c-music: #AF52DE;      /* 音乐 - 紫 */
+  --c-call: #34C759;       /* 来电 - 绿 */
+  --c-dvr: #FF9500;        /* 录制 - 橙 */
+  --c-text: #ffffff;
+  --c-muted: rgba(255,255,255,0.58);
+  --c-dim: rgba(255,255,255,0.18);
+}
+
+/* 单绿光波导模式 */
+.theme-green {
+  --bg: #010a02;
+  --c-speed: #8CFF7A;
+  --c-nav: #6dff6d;
+  --c-warn: #b8ff7a;
+  --c-mesh: #7dff9d;
+  --c-music: #56d856;
+  --c-call: #8fff8f;
+  --c-dvr: #a0ff60;
+  --c-text: #9dff9d;
+  --c-muted: rgba(157,255,157,0.58);
+  --c-dim: rgba(157,255,157,0.18);
+}
+
+/* 全局重置 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--c-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* HUD 主容器 */
+#hud-root {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* 四角区域 */
+.zone {
+  position: absolute;
+  padding: 24px;
+  min-width: 180px;
+  max-width: 280px;
+}
+
+#zone-lt { top: 32px; left: 32px; text-align: left; }
+#zone-rt { top: 32px; right: 32px; text-align: right; }
+#zone-lb { bottom: 80px; left: 32px; text-align: left; }
+#zone-rb { bottom: 80px; right: 32px; text-align: right; }
+
+.zone-label {
+  font-size: 10px;
+  color: var(--c-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.zone-content {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.zone-content .value {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--c-speed);
+  line-height: 1;
+}
+
+.zone-content .unit {
+  font-size: 14px;
+  color: var(--c-muted);
+  margin-left: 4px;
+}
+
+/* 中央留空区域 */
+#center-clear {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 40%;
+  /* 完全不放置任何内容 */
+}
+
+/* 底部信息栏 */
+#bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.6));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  font-size: 14px;
+  color: var(--c-muted);
+  z-index: 100;
+}
+
+#bottom-bar .left { display: flex; gap: 24px; }
+#bottom-bar .right { display: flex; gap: 16px; }
+
+/* 时间轴 */
+#timeline {
+  position: fixed;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 90;
+}
+
+#timeline-progress {
+  flex: 1;
+  height: 4px;
+  background: var(--c-dim);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#timeline-progress .bar {
+  height: 100%;
+  background: var(--c-text);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+#timeline-label {
+  font-size: 12px;
+  color: var(--c-muted);
+  min-width: 80px;
+}
+
+/* 预警闪烁动画 */
+@keyframes warn-flash {
+  0%, 100% {
+    box-shadow: 0 0 0 2px var(--c-warn), 0 0 20px var(--c-warn);
+    border-color: var(--c-warn);
+  }
+  50% {
+    box-shadow: 0 0 0 4px var(--c-warn), 0 0 40px var(--c-warn);
+    border-color: var(--c-warn);
+  }
+}
+
+.warn-flash {
+  animation: warn-flash 0.5s ease-in-out infinite;
+  border: 2px solid var(--c-warn);
+}
+
+/* 开机覆盖层 */
+#boot-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.5s ease-out;
+}
+
+#boot-overlay .logo {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--c-text);
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+}
+
+#boot-overlay .status {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--c-muted);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 沙盒面板 */
+#sandbox {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 300px;
+  height: 100vh;
+  background: rgba(20,20,22,0.95);
+  border-left: 1px solid var(--c-dim);
+  padding: 20px;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  z-index: 200;
+}
+
+#sandbox.open { right: 0; }
+
+#sandbox .group {
+  margin-bottom: 16px;
+}
+
+#sandbox .group-title {
+  font-size: 12px;
+  color: var(--c-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--c-dim);
+}
+
+#sandbox .btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#sandbox button {
+  background: var(--bg-zone);
+  border: 1px solid var(--c-dim);
+  color: var(--c-text);
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#sandbox button:hover {
+  background: var(--c-dim);
+  border-color: var(--c-muted);
+}
+
+/* 隐藏类 */
+.hidden { display: none !important; }
+.dim { opacity: 0.3; }
+
+/* 响应式 */
+@media (max-width: 1024px) {
+  .zone { padding: 16px; min-width: 140px; }
+  #zone-lt { top: 16px; left: 16px; }
+  #zone-rt { top: 16px; right: 16px; }
+  #zone-lb { bottom: 60px; left: 16px; }
+  #zone-rb { bottom: 60px; right: 16px; }
+  .zone-content .value { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+<!-- M1: 骨架 HTML - body 内结构 -->
+
+<div id="boot-overlay">
+  <div class="logo">SMART HUD</div>
+  <div class="status">系统初始化中...</div>
+</div>
+
+<div id="hud-root">
+  <!-- 左上角：速度 + 骑行状态 -->
+  <div id="zone-lt" class="zone">
+    <div class="zone-label">速度</div>
+    <div class="zone-content" id="content-lt">
+      <div class="value" id="speed-value">0</div>
+      <div class="unit">km/h</div>
+      <div id="ride-status" style="margin-top:8px;font-size:12px;color:var(--c-muted);">骑行中</div>
+    </div>
+  </div>
+
+  <!-- 右上角：设备状态 -->
+  <div id="zone-rt" class="zone">
+    <div class="zone-label">设备</div>
+    <div class="zone-content" id="content-rt">
+      <div id="device-status">
+        <span style="color:var(--c-call)">●</span> 电量 87%
+        <span style="margin-left:8px;color:var(--c-nav)">●</span> 信号 良好
+      </div>
+    </div>
+  </div>
+
+  <!-- 中央留空（不放任何内容）-->
+  <div id="center-clear"></div>
+
+  <!-- 左下角：通知/导航 -->
+  <div id="zone-lb" class="zone">
+    <div class="zone-label">导航</div>
+    <div class="zone-content" id="content-lb">
+      <!-- 动态内容 -->
+    </div>
+  </div>
+
+  <!-- 右下角：信息/通知 -->
+  <div id="zone-rb" class="zone">
+    <div class="zone-label">信息</div>
+    <div class="zone-content" id="content-rb">
+      <!-- 动态内容 -->
+    </div>
+  </div>
+</div>
+
+<!-- 底部信息栏 -->
+<div id="bottom-bar">
+  <div class="left">
+    <span id="current-time">--:--</span>
+    <span id="distance">里程: 0 km</span>
+  </div>
+  <div class="right">
+    <span id="mode-label">骑行</span>
+  </div>
+</div>
+
+<!-- 时间轴 -->
+<div id="timeline">
+  <div id="timeline-label">就绪</div>
+  <div id="timeline-progress">
+    <div class="bar" id="progress-bar"></div>
+  </div>
+</div>
+<div id="sandbox">
+<!-- M5: 控制面板 HTML -->
+
+<div class="group">
+  <div class="group-title">ADAS 预警</div>
+  <div class="btn-row">
+    <button data-event="warn-front">前方碰撞</button>
+    <button data-event="warn-left">左后盲区</button>
+    <button data-event="warn-right">右后盲区</button>
+  </div>
+</div>
+
+<div class="group">
+  <div class="group-title">通信</div>
+  <div class="btn-row">
+    <button data-event="call-zhang">来电：张三</button>
+    <button data-event="call-li">来电：李四</button>
+    <button data-event="mesh-join">Mesh 加入</button>
+  </div>
+</div>
+
+<div class="group">
+  <div class="group-title">媒体</div>
+  <div class="btn-row">
+    <button data-event="music-play">音乐播放</button>
+    <button data-event="music-pause">暂停</button>
+  </div>
+</div>
+
+<div class="group">
+  <div class="group-title">导航</div>
+  <div class="btn-row">
+    <button data-event="nav-start">导航开始</button>
+    <button data-event="nav-left">左转提示</button>
+    <button data-event="nav-arrive">到达目的地</button>
+  </div>
+</div>
+
+<div class="group">
+  <div class="group-title">录制</div>
+  <div class="btn-row">
+    <button data-event="dvr-start">开始录制</button>
+    <button data-event="dvr-stop">停止录制</button>
+  </div>
+</div>
+
+<div class="group">
+  <div class="group-title">系统</div>
+  <div class="btn-row">
+    <button data-event="speed-0">速度 0</button>
+    <button data-event="speed-40">速度 40</button>
+    <button data-event="speed-80">速度 80</button>
+    <button data-event="speed-120">速度 120</button>
+  </div>
+</div>
+
+<div class="group">
+  <div class="group-title">剧本</div>
+  <div class="btn-row">
+    <button data-event="scenario-1">日常通勤</button>
+    <button data-event="scenario-2">紧急场景</button>
+    <button data-event="scenario-3">组队骑行</button>
+  </div>
+</div>
+</div>
+<script>
+// === M2: State Machine ===
+// M2: 状态机
+// 职责：7 状态定义、优先级栈、状态切换逻辑、速度分级
+
+// 状态枚举
+const MODE = {
+  CRUISE: 'cruise',
+  NAV: 'nav',
+  CALL: 'call',
+  MUSIC: 'music',
+  MESH: 'mesh',
+  WARN: 'warn',
+  DVR: 'dvr'
+};
+
+// 优先级（数字越大越高）
+const PRIORITY = {
+  cruise: 0,
+  dvr: 1,
+  music: 2,
+  mesh: 3,
+  nav: 4,
+  call: 5,
+  warn: 6
+};
+
+// 全局状态
+let currentMode = MODE.CRUISE;
+let currentSpeed = 0;
+let speedLevel = 'S0';
+let modeStack = []; // 优先级栈
+
+// 状态控制
+function setMode(mode) {
+  const newPriority = PRIORITY[mode];
+  const currentPriority = PRIORITY[currentMode];
+
+  // warn 必须立即切换，无视当前状态
+  if (mode === MODE.WARN) {
+    if (currentMode !== MODE.WARN) {
+      modeStack.push(currentMode);
+    }
+    currentMode = mode;
+    renderAll();
+    return;
+  }
+
+  // 低优先级无法抢占高优先级
+  if (newPriority < currentPriority) {
+    console.log(`[HUD] ${mode} 优先级不足，当前 ${currentMode}`);
+    return;
+  }
+
+  // 正常切换
+  currentMode = mode;
+  renderAll();
+}
+
+function getMode() {
+  return currentMode;
+}
+
+function getPriority(mode) {
+  return PRIORITY[mode] || 0;
+}
+
+function pushMode(mode) {
+  modeStack.push(currentMode);
+  currentMode = mode;
+  renderAll();
+}
+
+function popMode() {
+  if (modeStack.length > 0) {
+    currentMode = modeStack.pop();
+    renderAll();
+  }
+}
+
+// 事件触发
+function emitEvent(event) {
+  if (!event || !event.type) return;
+
+  switch (event.type) {
+    case 'warning':
+      if (event.direction) {
+        emitWarning(event.direction);
+      }
+      break;
+    case 'speed':
+      if (typeof event.data === 'number') {
+        setSpeed(event.data);
+      }
+      break;
+    case 'call':
+      setMode(MODE.CALL);
+      break;
+    case 'nav':
+      setMode(MODE.NAV);
+      break;
+    case 'music':
+      setMode(MODE.MUSIC);
+      break;
+    case 'mesh':
+      setMode(MODE.MESH);
+      break;
+    case 'dvr':
+      setMode(MODE.DVR);
+      break;
+  }
+}
+
+function emitWarning(direction) {
+  // 先进入 warn 状态
+  setMode(MODE.WARN);
+
+  // 根据方向添加闪烁
+  const zones = {
+    front: ['zone-lt', 'zone-rt'],
+    left: ['zone-lb'],
+    right: ['zone-rb']
+  };
+
+  const targetZones = zones[direction] || [];
+  targetZones.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.add('warn-flash');
+      setTimeout(() => el.classList.remove('warn-flash'), 3000);
+    }
+  });
+
+  // 更新预警内容
+  const warnMessages = {
+    front: { type: '前方碰撞', distance: '30m' },
+    left: { type: '左后盲区', distance: '车辆接近' },
+    right: { type: '开门预警', distance: '右侧有车' }
+  };
+
+  const msg = warnMessages[direction] || { type: '未知预警', distance: '' };
+  window._warnData = msg;
+  renderAll();
+
+  // 3秒后恢复
+  setTimeout(() => {
+    if (currentMode === MODE.WARN) {
+      popMode();
+      window._warnData = null;
+    }
+  }, 3000);
+}
+
+// 速度分级
+function setSpeed(kmh) {
+  currentSpeed = kmh;
+
+  if (kmh <= 30) {
+    speedLevel = 'S0';
+  } else if (kmh <= 60) {
+    speedLevel = 'S1';
+  } else if (kmh <= 100) {
+    speedLevel = 'S2';
+  } else {
+    speedLevel = 'S3';
+  }
+
+  renderAll();
+}
+
+function getSpeedLevel() {
+  return speedLevel;
+}
+
+// 导出到 window
+window.MODE = MODE;
+window.PRIORITY = PRIORITY;
+window.setMode = setMode;
+window.getMode = getMode;
+window.getPriority = getPriority;
+window.pushMode = pushMode;
+window.popMode = popMode;
+window.emitEvent = emitEvent;
+window.emitWarning = emitWarning;
+window.setSpeed = setSpeed;
+window.getSpeedLevel = getSpeedLevel;
+
+// === M3: Renderers ===
+// M3: 渲染器
+// 职责：根据当前状态和速度等级，更新四角 + 底部的 DOM 内容
+
+// 各状态的内容模板
+const CONTENT_TEMPLATES = {
+  cruise: {
+    lt: () => `<div class="value">${currentSpeed}</div><div class="unit">km/h</div><div style="margin-top:8px;font-size:12px;color:var(--c-muted);">骑行中</div>`,
+    rt: () => `<span style="color:var(--c-call)">●</span> 电量 87%<br><span style="color:var(--c-nav)">●</span> 信号 良好`,
+    lb: () => '',
+    rb: () => '',
+    bottom: '就绪'
+  },
+  nav: {
+    lt: () => `<div class="value">${currentSpeed}</div><div class="unit">km/h</div>`,
+    rt: () => `<div style="color:var(--c-nav)">下一路口</div><div style="font-size:24px;font-weight:600;">${window._navDistance || '200'}m</div>`,
+    lb: () => `<div style="font-size:32px;color:var(--c-nav);">←</div><div style="font-size:12px;">左转</div>`,
+    rb: () => `<div style="color:var(--c-muted)">ETA</div><div style="font-size:18px;">${window._navETA || '5分钟'}</div>`,
+    bottom: '导航中'
+  },
+  call: {
+    lt: () => `<div class="value">${currentSpeed}</div><div class="unit">km/h</div>`,
+    rt: () => `<div style="color:var(--c-call)">📞 来电</div><div style="font-size:20px;font-weight:600;">${window._callName || '张三'}</div>`,
+    lb: () => `<div style="color:var(--c-call)">接听</div><div style="color:var(--c-muted)">按任意键</div>`,
+    rb: () => `<div style="color:var(--c-warn)">挂断</div><div style="font-size:12px;">长按</div>`,
+    bottom: '来电'
+  },
+  music: {
+    lt: () => `<div class="value">${currentSpeed}</div><div class="unit">km/h</div>`,
+    rt: () => '',
+    lb: () => `<div style="font-size:14px;">${window._musicTrack || '未知歌曲'}</div><div style="font-size:12px;color:var(--c-muted);">${window._musicArtist || '未知歌手'}</div>`,
+    rb: () => `<span style="color:var(--c-muted)">◀</span> <span style="color:var(--c-music)">▶</span> <span style="color:var(--c-muted)">▶</span>`,
+    bottom: '音乐'
+  },
+  mesh: {
+    lt: () => `<div class="value">${currentSpeed}</div><div class="unit">km/h</div>`,
+    rt: () => `<div style="color:var(--c-mesh)">👥 组队</div><div style="font-size:24px;">${window._meshCount || 3}人</div>`,
+    lb: () => `<div style="font-size:12px;">最近队友</div><div style="font-size:18px;">${window._meshDistance || '50'}m</div>`,
+    rb: () => `<div style="color:var(--c-mesh)">已连接</div>`,
+    bottom: '组队中'
+  },
+  warn: {
+    lt: () => `<div class="value" style="color:var(--c-warn);">${currentSpeed}</div><div class="unit">km/h</div>`,
+    rt: () => `<div style="color:var(--c-warn);font-size:18px;font-weight:600;">⚠ ${window._warnData?.type || '预警'}</div>`,
+    lb: () => `<div style="font-size:14px;">方向</div><div style="font-size:18px;">${window._warnData?.direction || '前方'}</div>`,
+    rb: () => `<div style="font-size:14px;">距离</div><div style="font-size:18px;">${window._warnData?.distance || '30m'}</div>`,
+    bottom: '⚠ 注意安全'
+  },
+  dvr: {
+    lt: () => `<div class="value">${currentSpeed}</div><div class="unit">km/h</div>`,
+    rt: () => `<div style="color:var(--c-dvr)">● REC</div><div style="font-size:12px;">录制中</div>`,
+    lb: () => '',
+    rb: () => `<div style="font-size:14px;">时长</div><div style="font-size:18px;">${window._dvrTime || '00:00'}</div>`,
+    bottom: '录制中'
+  }
+};
+
+// 主渲染函数
+function renderAll() {
+  const mode = getMode();
+  const level = getSpeedLevel();
+  const template = CONTENT_TEMPLATES[mode] || CONTENT_TEMPLATES.cruise;
+
+  // 更新速度显示
+  const speedEl = document.getElementById('speed-value');
+  if (speedEl) {
+    speedEl.textContent = currentSpeed;
+  }
+
+  // 更新时间
+  const timeEl = document.getElementById('current-time');
+  if (timeEl) {
+    const now = new Date();
+    timeEl.textContent = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  // 根据速度等级决定渲染策略
+  const zones = ['lt', 'rt', 'lb', 'rb'];
+
+  zones.forEach(zone => {
+    const contentEl = document.getElementById(`content-${zone}`);
+    if (!contentEl) return;
+
+    // S2/S3 精简模式
+    if ((level === 'S2' || level === 'S3') && zone !== 'lt') {
+      // 只保留速度和预警相关
+      if (mode === 'warn' || zone === 'rt') {
+        contentEl.innerHTML = template[zone] ? template[zone]() : '';
+      } else {
+        contentEl.innerHTML = '';
+      }
+    } else {
+      contentEl.innerHTML = template[zone] ? template[zone]() : '';
+    }
+  });
+
+  // 更新底部状态
+  const bottomEl = document.getElementById('mode-label');
+  if (bottomEl) {
+    bottomEl.textContent = template.bottom || '骑行';
+  }
+
+  // 更新颜色主题
+  const modeColors = {
+    cruise: 'var(--c-speed)',
+    nav: 'var(--c-nav)',
+    call: 'var(--c-call)',
+    music: 'var(--c-music)',
+    mesh: 'var(--c-mesh)',
+    warn: 'var(--c-warn)',
+    dvr: 'var(--c-dvr)'
+  };
+
+  const speedValue = document.querySelector('#speed-value');
+  if (speedValue) {
+    speedValue.style.color = modeColors[mode] || 'var(--c-speed)';
+  }
+}
+
+// 初始化时钟
+setInterval(() => {
+  const timeEl = document.getElementById('current-time');
+  if (timeEl) {
+    const now = new Date();
+    timeEl.textContent = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  }
+}, 1000);
+
+// 导出到 window
+window.renderAll = renderAll;
+
+// === M4: Scenarios ===
+// M4: 剧本
+// 职责：3 条自动剧本 + 时间轴控制
+
+// 剧本定义
+const SCENARIOS = {
+  1: {
+    name: '日常通勤',
+    duration: 45000,
+    events: [
+      { time: 0, action: () => { setMode(MODE.CRUISE); setSpeed(0); } },
+      { time: 3000, action: () => setSpeed(40) },
+      { time: 8000, action: () => { setMode(MODE.NAV); window._navDistance = '3200'; window._navETA = '8分钟'; } },
+      { time: 12000, action: () => setSpeed(65) },
+      { time: 18000, action: () => { window._navDistance = '200'; renderAll(); } },
+      { time: 22000, action: () => { setSpeed(35); window._navDistance = '50'; } },
+      { time: 25000, action: () => { setMode(MODE.CALL); window._callName = '张三'; } },
+      { time: 30000, action: () => { setMode(MODE.NAV); } },
+      { time: 35000, action: () => { window._navDistance = '0'; renderAll(); } },
+      { time: 40000, action: () => { setSpeed(0); setMode(MODE.CRUISE); } }
+    ]
+  },
+  2: {
+    name: '紧急场景',
+    duration: 40000,
+    events: [
+      { time: 0, action: () => { setMode(MODE.CRUISE); setSpeed(60); } },
+      { time: 5000, action: () => emitWarning('front') },
+      { time: 12000, action: () => emitWarning('left') },
+      { time: 18000, action: () => setSpeed(80) },
+      { time: 22000, action: () => emitWarning('right') },
+      { time: 28000, action: () => emitWarning('front') },
+      { time: 35000, action: () => { setSpeed(50); setMode(MODE.CRUISE); } }
+    ]
+  },
+  3: {
+    name: '组队骑行',
+    duration: 50000,
+    events: [
+      { time: 0, action: () => { setMode(MODE.CRUISE); setSpeed(45); } },
+      { time: 5000, action: () => { setMode(MODE.MESH); window._meshCount = 3; window._meshDistance = '120'; } },
+      { time: 8000, action: () => { setMode(MODE.DVR); window._dvrTime = '00:00'; } },
+      { time: 12000, action: () => setSpeed(70) },
+      { time: 18000, action: () => { window._navDistance = '山路入口'; } },
+      { time: 26000, action: () => emitWarning('front') },
+      { time: 38000, action: () => { setSpeed(40); setMode(MODE.MESH); } },
+      { time: 45000, action: () => { setSpeed(0); setMode(MODE.CRUISE); } }
+    ]
+  }
+};
+
+// 播放状态
+let currentScenario = null;
+let scenarioTimer = null;
+let scenarioStartTime = 0;
+let isPaused = false;
+let eventIndex = 0;
+
+// 播放剧本
+function playScenario(num) {
+  stopScenario();
+  currentScenario = SCENARIOS[num];
+  if (!currentScenario) return;
+
+  scenarioStartTime = Date.now();
+  eventIndex = 0;
+  isPaused = false;
+
+  // 更新标签
+  const labelEl = document.getElementById('timeline-label');
+  if (labelEl) labelEl.textContent = currentScenario.name;
+
+  // 开始播放
+  runScenario();
+}
+
+function runScenario() {
+  if (!currentScenario || isPaused) return;
+
+  const elapsed = Date.now() - scenarioStartTime;
+  const events = currentScenario.events;
+
+  // 执行到时间的 event
+  while (eventIndex < events.length && events[eventIndex].time <= elapsed) {
+    events[eventIndex].action();
+    eventIndex++;
+  }
+
+  // 更新进度条
+  const progress = Math.min(elapsed / currentScenario.duration * 100, 100);
+  const bar = document.getElementById('progress-bar');
+  if (bar) bar.style.width = progress + '%';
+
+  // 检查结束
+  if (elapsed >= currentScenario.duration) {
+    stopScenario();
+    return;
+  }
+
+  scenarioTimer = setTimeout(runScenario, 100);
+}
+
+function pauseScenario() {
+  isPaused = !isPaused;
+  if (!isPaused) {
+    runScenario();
+  }
+}
+
+function stopScenario() {
+  if (scenarioTimer) {
+    clearTimeout(scenarioTimer);
+    scenarioTimer = null;
+  }
+  currentScenario = null;
+  isPaused = false;
+
+  const bar = document.getElementById('progress-bar');
+  if (bar) bar.style.width = '0%';
+
+  const labelEl = document.getElementById('timeline-label');
+  if (labelEl) labelEl.textContent = '就绪';
+}
+
+// 时间轴点击跳转
+function setupTimelineClick() {
+  const progress = document.getElementById('timeline-progress');
+  if (!progress) return;
+
+  progress.addEventListener('click', (e) => {
+    if (!currentScenario) return;
+
+    const rect = progress.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percent = clickX / rect.width;
+    const targetTime = percent * currentScenario.duration;
+
+    // 重置播放位置
+    scenarioStartTime = Date.now() - targetTime;
+    eventIndex = 0;
+
+    // 重新执行
+    runScenario();
+  });
+}
+
+// 初始化
+document.addEventListener('DOMContentLoaded', setupTimelineClick);
+
+// 导出
+window.SCENARIOS = SCENARIOS;
+window.playScenario = playScenario;
+window.pauseScenario = pauseScenario;
+window.stopScenario = stopScenario;
+
+// === M5: Controls ===
+// M5: 控制
+// 职责：沙盒面板交互、键盘快捷键、A/B 主题切换、开机自检
+
+// 开机自检动画
+function bootSequence() {
+  const overlay = document.getElementById('boot-overlay');
+  if (!overlay) return;
+
+  // 隐藏沙盒面板
+  const sandbox = document.getElementById('sandbox');
+  if (sandbox) sandbox.classList.remove('open');
+
+  // 初始化渲染
+  setMode(MODE.CRUISE);
+  setSpeed(0);
+  renderAll();
+
+  // 1s: 四角区域逐个亮起
+  setTimeout(() => {
+    const zones = ['zone-lt', 'zone-rt', 'zone-rb', 'zone-lb'];
+    zones.forEach((id, i) => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.style.opacity = '1';
+      }, i * 300);
+    });
+  }, 1000);
+
+  // 2.5s: 底部信息栏滑入
+  setTimeout(() => {
+    const bottom = document.getElementById('bottom-bar');
+    if (bottom) bottom.style.opacity = '1';
+  }, 2500);
+
+  // 3s: 覆盖层淡出
+  setTimeout(() => {
+    overlay.style.opacity = '0';
+    setTimeout(() => {
+      overlay.style.display = 'none';
+    }, 500);
+  }, 3000);
+}
+
+// 沙盒面板交互
+function setupSandboxEvents() {
+  const sandbox = document.getElementById('sandbox');
+  if (!sandbox) return;
+
+  sandbox.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-event]');
+    if (!btn) return;
+
+    const event = btn.dataset.event;
+    handleSandboxEvent(event);
+  });
+}
+
+function handleSandboxEvent(event) {
+  switch (event) {
+    case 'warn-front': emitWarning('front'); break;
+    case 'warn-left': emitWarning('left'); break;
+    case 'warn-right': emitWarning('right'); break;
+    case 'call-zhang': setMode(MODE.CALL); window._callName = '张三'; renderAll(); break;
+    case 'call-li': setMode(MODE.CALL); window._callName = '李四'; renderAll(); break;
+    case 'mesh-join': setMode(MODE.MESH); window._meshCount = 3; renderAll(); break;
+    case 'music-play': setMode(MODE.MUSIC); window._musicTrack = '追梦人'; renderAll(); break;
+    case 'music-pause': setMode(MODE.CRUISE); break;
+    case 'nav-start': setMode(MODE.NAV); window._navDistance = '3200'; renderAll(); break;
+    case 'nav-left': window._navDistance = '200 左转'; renderAll(); break;
+    case 'nav-arrive': window._navDistance = '0 已到达'; renderAll(); break;
+    case 'dvr-start': setMode(MODE.DVR); window._dvrTime = '00:00'; renderAll(); break;
+    case 'dvr-stop': setMode(MODE.CRUISE); break;
+    case 'speed-0': setSpeed(0); break;
+    case 'speed-40': setSpeed(40); break;
+    case 'speed-80': setSpeed(80); break;
+    case 'speed-120': setSpeed(120); break;
+    case 'scenario-1': playScenario(1); break;
+    case 'scenario-2': playScenario(2); break;
+    case 'scenario-3': playScenario(3); break;
+  }
+}
+
+// 键盘快捷键
+function setupKeyboardShortcuts() {
+  document.addEventListener('keydown', (e) => {
+    // 空格：播放/暂停
+    if (e.code === 'Space') {
+      e.preventDefault();
+      if (currentScenario) {
+        pauseScenario();
+      } else {
+        playScenario(1);
+      }
+    }
+
+    // 数字键：切换剧本
+    if (e.key === '1') playScenario(1);
+    if (e.key === '2') playScenario(2);
+    if (e.key === '3') playScenario(3);
+
+    // T：切换主题
+    if (e.key === 't' || e.key === 'T') {
+      document.body.classList.toggle('theme-green');
+    }
+
+    // S：切换沙盒面板
+    if (e.key === 's' || e.key === 'S') {
+      const sandbox = document.getElementById('sandbox');
+      if (sandbox) sandbox.classList.toggle('open');
+    }
+
+    // W：前方预警
+    if (e.key === 'w' || e.key === 'W') {
+      emitWarning('front');
+    }
+
+    // A：左后预警
+    if (e.key === 'a' || e.key === 'A') {
+      emitWarning('left');
+    }
+
+    // D：右后预警
+    if (e.key === 'd' || e.key === 'D') {
+      emitWarning('right');
+    }
+
+    // Esc：重置
+    if (e.key === 'Escape') {
+      stopScenario();
+      setMode(MODE.CRUISE);
+      setSpeed(0);
+      renderAll();
+    }
+  });
+}
+
+// 初始化
+document.addEventListener('DOMContentLoaded', () => {
+  setupSandboxEvents();
+  setupKeyboardShortcuts();
+});
+
+// 导出
+window.bootSequence = bootSequence;
+
+// === Boot ===
+document.addEventListener('DOMContentLoaded', bootSequence);
+</script>
+</body>
+</html>
