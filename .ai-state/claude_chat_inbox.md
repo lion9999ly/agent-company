@@ -181,8 +181,14 @@
 
 ---
 
-## [圆桌] HUD Demo 生成 - 2026-04-09 23:59
+## [研究] HUD三条光学路径硬件参数补全 - 2026-04-11 15:30
 
-- **结果**: 通过
-- **关键数据**: 迭代 3 轮
-- **产出文件**: `demo_outputs\hud_demo_roundtable_20260409_235918.html`
+- **结果**：通过
+- **关键数据**：
+  - 路径1 (OLED+FreeForm): FOV 21°, 到眼亮度 500nits, 眼盒 10×8mm
+  - 路径2 (双目全彩波导): FOV 24°, 到眼亮度 1000nits, 眼盒 8×6mm (彩虹效应待解决)
+  - 路径3 (单色绿光波导): FOV 22°, 到眼亮度 1500nits, 功耗 0.5W (V2推荐)
+- **产出文件**：
+  - GitHub Issue #50: https://github.com/lion9999ly/agent-company/issues/50
+  - 参数文档: demo_outputs/specs/optical_constraints.md
+- **数据缺口**：SeeYA完整规格、JBD功耗、高折射率树脂量产状态需商务接触
