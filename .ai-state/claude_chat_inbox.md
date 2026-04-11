@@ -181,7 +181,24 @@
 
 ---
 
-## [研究] HUD三条光学路径硬件参数补全 - 2026-04-11 15:30
+## [研究] HUD三条光学路径参数补全 (v2) - 2026-04-11 16:25
+
+- **结果**：通过
+- **工具链**：Tavily API + requests + model_gateway (正确方式)
+- **关键数据**：
+  - SeeYA SY049: 1920x1080, 3000nits, 50000:1对比度
+  - JBD Hummingbird: 640x480, 200万nits绿光, 30°FOV
+  - JBD Phoenix: 200万nits全彩, 6000nits到眼 (2024最新)
+  - 树脂波导: FOV 20-40°, 透过率80-85%
+- **产出文件**：
+  - GitHub Issue #53: https://github.com/lion9999ly/agent-company/issues/53
+  - 参数文档: demo_outputs/specs/optical_constraints.md (覆盖旧版)
+  - 原始数据: .ai-state/research_raw_data.json
+- **数据缺口**：虚像距离、整机功耗、体积重量需商务接触
+
+---
+
+## [诊断] Deep Research工具链诊断 - 2026-04-11 15:45
 
 - **结果**：通过
 - **关键数据**：
