@@ -1,7 +1,7 @@
 """
 @description: 圆桌系统公开接口
-@dependencies: task_spec, crystallizer, roundtable, generator, verifier, memory, meta_cognition, resilience
-@last_modified: 2026-04-10
+@dependencies: task_spec, crystallizer, roundtable, generator, verifier, memory, meta_cognition, resilience, code_orchestrator
+@last_modified: 2026-04-11
 """
 
 import asyncio
@@ -27,6 +27,9 @@ from scripts.roundtable.generator import Generator
 from scripts.roundtable.verifier import Verifier, VerifyResult
 from scripts.roundtable.meta_cognition import MetaCognition
 from scripts.roundtable.resilience import Resilience, ParkedException
+
+# 新增：代码类产出的 Orchestrator
+from scripts.roundtable.code_orchestrator import run_code_orchestrator
 
 
 async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
@@ -77,65 +80,82 @@ async def run_task(task: TaskSpec, gw=None, kb=None, feishu=None) -> dict:
     result = await rt.discuss(task, context)
     await _notify(f"🔵 圆桌收敛，共 {result.rounds} 轮")
 
-    # 3. 生成
-    gen = Generator(gw)
-    output = await gen.generate(task, result)
+    # === 分流点：代码类 vs 文档类 ===
+    code_types = ('html', 'code', 'js', 'jsx', 'python', 'ts', 'tsx')
+    if task.output_type in code_types:
+        # 代码类产出：走 Orchestrator（程序控制 CC 分模块写代码 + 测试 + 截图）
+        print(f"[Roundtable] 检测到代码类产出 ({task.output_type})，走 Orchestrator 路径")
+        output, output_path_str = await run_code_orchestrator(task, result, gw, feishu)
+        output_path = output_path_str
+        verify_summary = "Orchestrator 测试 + 截图完成"
+    else:
+        # 文档类产出：走原有 Generator 路径（文档不需要执行验证）
+        # 3. 生成
+        gen = Generator(gw)
+        output = await gen.generate(task, result)
 
-    # 4. 审查闭环
-    ver = Verifier(gw)
-    iteration = 0
-    verify_summary = ""
+        # 4. 审查闭环
+        ver = Verifier(gw)
+        iteration = 0
+        verify_summary = ""
 
-    try:
-        while iteration < task.max_iterations:
-            vr = await ver.verify(task, output)
-            if vr.passed:
-                await _notify(f"✅ 审查通过")
-                verify_summary = _format_verify_summary(vr)
-                break
+        try:
+            while iteration < task.max_iterations:
+                vr = await ver.verify(task, output)
+                if vr.passed:
+                    await _notify(f"✅ 审查通过")
+                    verify_summary = _format_verify_summary(vr)
+                    break
 
-            if vr.stuck:
-                await _notify(f"⚠️ 能力瓶颈：{vr.stuck_issues}，尝试升级...")
-                output = await gen.escalate(output, vr.stuck_issues, result)
-                continue
+                if vr.stuck:
+                    await _notify(f"⚠️ 能力瓶颈：{vr.stuck_issues}，尝试升级...")
+                    output = await gen.escalate(output, vr.stuck_issues, result)
+                    continue
 
-            iteration += 1
-            await _notify(f"🔄 审查第{iteration}轮，{len(vr.issues)}个缺陷，修复中...")
-            output = await gen.fix(output, [i.description for i in vr.issues], result)
-    except Exception as e:
-        print(f"[Roundtable] 审查闭环异常: {type(e).__name__}: {e}")
-        verify_summary = f"审查异常中断: {e}"
-        await _notify(f"审查闭环异常: {type(e).__name__}，跳过审查继续输出")
+                iteration += 1
+                await _notify(f"🔄 审查第{iteration}轮，{len(vr.issues)}个缺陷，修复中...")
+                output = await gen.fix(output, [i.description for i in vr.issues], result)
+        except Exception as e:
+            print(f"[Roundtable] 审查闭环异常: {type(e).__name__}: {e}")
+            verify_summary = f"审查异常中断: {e}"
+            await _notify(f"审查闭环异常: {type(e).__name__}，跳过审查继续输出")
 
     # 5. 输出（P1 #3: 添加时间戳）# P0 修复: 加 try-except 保护
     from datetime import datetime
     import shutil
-    actual_output_path = str(Path(task.output_path).parent / f"{Path(task.output_path).stem}_latest{Path(task.output_path).suffix}")
 
-    try:
-        output_dir = Path(task.output_path).parent
-        output_dir.mkdir(parents=True, exist_ok=True)
+    # 代码类产出已经有 output_path（由 Orchestrator 生成），跳过写入
+    if task.output_type in code_types and output_path:
+        actual_output_path = output_path
+        print(f"[Roundtable] Orchestrator 输出文件: {actual_output_path}")
+    else:
+        # 文档类产出：需要写入文件
+        actual_output_path = str(Path(task.output_path).parent / f"{Path(task.output_path).stem}_latest{Path(task.output_path).suffix}")
 
-        # 生成带时间戳的文件名
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        base_name = Path(task.output_path).stem
-        ext = Path(task.output_path).suffix
-        timestamped_path = output_dir / f"{base_name}_{timestamp}{ext}"
+        try:
+            output_dir = Path(task.output_path).parent
+            output_dir.mkdir(parents=True, exist_ok=True)
 
-        # 写入带时间戳的文件
-        timestamped_path.write_text(output, encoding="utf-8")
-        print(f"[Roundtable] 输出文件: {timestamped_path}")
+            # 生成带时间戳的文件名
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            base_name = Path(task.output_path).stem
+            ext = Path(task.output_path).suffix
+            timestamped_path = output_dir / f"{base_name}_{timestamp}{ext}"
 
-        # 同时创建 latest 版本（复制）
-        latest_path = output_dir / f"{base_name}_latest{ext}"
-        shutil.copy2(timestamped_path, latest_path)
-        print(f"[Roundtable] Latest 版本: {latest_path}")
+            # 写入带时间戳的文件
+            timestamped_path.write_text(output, encoding="utf-8")
+            print(f"[Roundtable] 输出文件: {timestamped_path}")
 
-        # 更新返回路径为带时间戳版本
-        actual_output_path = str(timestamped_path)
-    except Exception as e:
-        print(f"[Roundtable] 步骤5输出异常: {type(e).__name__}: {e}")
-        await _notify(f"输出文件异常: {type(e).__name__}，使用默认路径")
+            # 同时创建 latest 版本（复制）
+            latest_path = output_dir / f"{base_name}_latest{ext}"
+            shutil.copy2(timestamped_path, latest_path)
+            print(f"[Roundtable] Latest 版本: {latest_path}")
+
+            # 更新返回路径为带时间戳版本
+            actual_output_path = str(timestamped_path)
+        except Exception as e:
+            print(f"[Roundtable] 步骤5输出异常: {type(e).__name__}: {e}")
+            await _notify(f"输出文件异常: {type(e).__name__}，使用默认路径")
 
     # 6. 知识回写 # P0 修复: 加 try-except 保护
     try:

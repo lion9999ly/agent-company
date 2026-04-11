@@ -5,8 +5,17 @@ import sys
 import time
 from pathlib import Path
 
+# Windows UTF-8 输出修复
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
 # 确保项目路径
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+project_root = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(project_root))
+
+from dotenv import load_dotenv
+load_dotenv(project_root / ".env")
 
 from scripts.deep_research.pipeline import deep_research_one
 
@@ -118,7 +127,7 @@ def run_tests():
                 "success": True,
                 "report": result[:5000] if len(result) > 5000 else result
             })
-            print(f"  ✓ 完成，报告长度: {len(result)} 字")
+            print(f"  [OK] 完成，报告长度: {len(result)} 字")
         except Exception as e:
             all_results.append({
                 "id": task["id"],
@@ -126,7 +135,7 @@ def run_tests():
                 "success": False,
                 "error": str(e)
             })
-            print(f"  ✗ 失败: {e}")
+            print(f"  [FAIL] 失败: {e}")
 
     elapsed = time.time() - start_time
     print(f"\n{'='*60}")
@@ -172,7 +181,7 @@ def generate_combined_report(results: list, elapsed: float) -> str:
     )
 
     for r in results:
-        status = "✅ 成功" if r['success'] else f"❌ 失败: {r.get('error', 'unknown')}"
+        status = "[OK]" if r['success'] else f"[FAIL]: {r.get('error', 'unknown')}"
         report += f"\n## {r['id']}: {r['title']}\n\n"
         report += f"**状态**: {status}\n\n"
         if r['success']:

@@ -1340,6 +1340,444 @@
       "installed_by": "meta_capability",
       "usage_count": 0,
       "last_used": null
+    },
+    {
+      "name": "chipset_param_cost_research_helper",
+      "type": "write_script",
+      "path": null,
+      "description": "用于补齐不同蓝牙/音频芯片组（如 Qualcomm QCC 系列、恒玄 BES 系列）的公开技术参数、功耗、价格线索与市场可用性信息采集能力的命令行工具。工具支持按关键词批量搜索公开网页，抓取页面标题、摘要与正文片段，基于规则抽取芯片型号、CPU/处理能力、功耗、电池续航线索、价格/成本/MOQ、供货/分销/可购买性等字段，并导出 CSV/Excel/JSON，保留来源链接与证据文本，辅助人工形成芯片选型对比表。该工具不保证获得受限的真实成交成本，但可系统化收集公开参数与价格证据。",
+      "invoke": "python .ai-state/tools/chipset_param_cost_research_helper.py --keywords \"Qualcomm QCC5171 specs power price availability|BES2700 specs power price availability|恒玄 BES2700 参数 功耗 价格 供货\" --max-results 10 --fetch-pages --out-prefix .ai-state/output/chipset_research/chipset_research",
+      "verify_cmd": "python .ai-state/tools/chipset_param_cost_research_helper.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 01:17",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "wind_noise_denoise_benchmark",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：模拟高速骑行风噪环境，对候选降噪算法（如 U-Net、Transformer 或任意 Python 推理封装）进行离线基准测试。支持将干净语音与风噪按不同车速/风速/SNR 混合，调用内置基线算法或外部模型适配器进行降噪，统计 SI-SDR、SNR 改善、LSD、STOI（可选）、推理延迟、RTF、分帧延迟估算，并导出 CSV/JSON 汇总结果，辅助验证风噪环境下的实际降噪性能与延迟。",
+      "invoke": "python .ai-state/tools/wind_noise_denoise_benchmark.py --clean_dir {clean_dir} --output_dir {output_dir} --algorithms none,spectral_gate,wiener,external --adapter {adapter_py} --adapter_kwargs_json \"{adapter_kwargs_json}\" --speeds 20,35,50 --snrs 0,5,10 --frame_ms 32 --hop_ms 8 --save_examples",
+      "verify_cmd": "python .ai-state/tools/wind_noise_denoise_benchmark.py --output_dir .ai-state/tools/_wind_bench_test --clean_dir .ai-state/tools/_wind_bench_test --algorithms none,spectral_gate,wiener --test",
+      "dependencies": [
+        "numpy scipy soundfile librosa tqdm"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-11 01:19",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "sy049_power_weight_research_helper",
+      "type": "write_script",
+      "path": null,
+      "description": "用于补齐 SY049 实际功耗与重量数据的公开资料采集与结构化核验工具。工具支持按关键词搜索公开网页，抓取页面标题、摘要与正文片段，规则提取 SY049 相关的功耗（mW/W）与重量（g/kg）数值，保留来源链接与证据文本，并输出 CSV/Excel/JSON。内置针对目标需求的判定逻辑：确认功耗是否为 468mW，重量是否落在 30-50g 范围内，辅助人工快速完成 data_fetch 缺口补齐。",
+      "invoke": "python .ai-state/tools/sy049_power_weight_research_helper.py --queries \"SY049 power consumption weight\" \"SY049 datasheet pdf\" --out-prefix .ai-state/tools/sy049_research",
+      "verify_cmd": "python .ai-state/tools/sy049_power_weight_research_helper.py --test",
+      "dependencies": [
+        "duckduckgo-search beautifulsoup4 lxml"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 16:46",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "sy049_price_moq_research_helper",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：系统化采集 SY049 OLED 在公开网页、分销商页面、B2B 平台与搜索结果中的价格、MOQ、采购量阶梯价、币种、报价条件、时间戳与来源链接；支持按关键词搜索、网页抓取、规则抽取、结果去重与 CSV/Excel/JSON 导出，辅助补齐 SY049 OLED 在 1000 件、5000 件等不同采购量下的价格区间证据。",
+      "invoke": "python .ai-state/tools/sy049_price_moq_research_helper.py --query \"SY049 OLED price MOQ\" --target-qtys 1000,5000 --out-prefix .ai-state/tools/output/sy049_price_research",
+      "verify_cmd": "python .ai-state/tools/sy049_price_moq_research_helper.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-11 16:57",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "seeya_datasheet_evb_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理 SeeYA SY049WDM01 / SY049WDM02 / SY049LDM01 官方规格书、EVB/评估板测试报告及相关公开证据的命令行工具。支持关键词搜索、网页抓取、PDF链接发现、文档下载、页面文本抽取、字段规则提取（功耗、接口时序、刷新率、寿命、分辨率、亮度、接口类型等），并导出 CSV/Excel/JSON 与证据清单，辅助确认是否已获得原厂完整 datasheet 或样品测试数据。",
+      "invoke": "python .ai-state/tools/seeya_datasheet_evb_fetcher.py --models SY049WDM01 SY049WDM02 SY049LDM01 --outdir outputs/seeya_datasheet_evb_fetcher",
+      "verify_cmd": "python .ai-state/tools/seeya_datasheet_evb_fetcher.py --test",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml",
+        "duckduckgo-search",
+        "pdfplumber"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 16:58",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_competitor_price_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理 EyeLights EyeRide 和 LIVALL MT1 Neo 的官方售价及促销价格。工具优先抓取官方商城/产品页，其次抓取公开搜索结果页中的价格线索，提取币种、原价、促销价、折扣文案、时间戳与来源链接，输出 CSV/Excel/JSON，保留证据文本，辅助快速补齐竞品定价数据缺口。",
+      "invoke": "python .ai-state/tools/helmet_competitor_price_fetcher.py --output .ai-state/data/helmet_competitor_prices.xlsx",
+      "verify_cmd": "python .ai-state/tools/helmet_competitor_price_fetcher.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 17:12",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "sy049_hud_system_budget",
+      "type": "write_script",
+      "path": ".ai-state/tools/sy049_hud_system_budget.py",
+      "description": "建立 SY049 在具体 HUD 光学架构下的系统级亮度-眼盒-功耗预算工具。工具基于目标 FOV、面板亮度、光机效率、组合器/波导反射率、VID、眼盒尺寸与面板/驱动功耗参数，计算从面板亮度到到眼亮度的链路模型，并结合 8 小时续航目标反推 HUD 平均功耗上限。支持单组命令行输入与 CSV/Excel 批量输入，输出到眼亮度、虚像尺寸、等效眼盒、功耗预算与续航闭环结果。",
+      "invoke": "python .ai-state/tools/sy049_hud_system_budget.py --panel_luminance_nits {panel_luminance_nits} --optical_efficiency {optical_efficiency} --combiner_reflectivity {combiner_reflectivity} --vid_m {vid_m} --fov_h_deg {fov_h_deg} --fov_v_deg {fov_v_deg} --eyebox_w_mm {eyebox_w_mm} --eyebox_h_mm {eyebox_h_mm} --panel_power_w {panel_power_w} --driver_power_w {driver_power_w} --hud_other_power_w {hud_other_power_w} --battery_wh {battery_wh} --system_baseline_power_w {system_baseline_power_w} --target_runtime_h 8 --target_eye_luminance_nits {target_eye_luminance_nits}",
+      "verify_cmd": "python .ai-state/tools/sy049_hud_system_budget.py --test",
+      "dependencies": [],
+      "status": "active",
+      "installed_at": "2026-04-11 17:29",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "helmet_display_tech_market_share_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理骑行头盔市场中不同显示技术（如 HUD、LED matrix、LCD/TFT、OLED、MicroLED、无显示）的公开市场份额线索与证据。工具支持关键词搜索、网页抓取、页面文本抽取、规则化识别品牌/产品/显示技术/销量或评论量代理指标，并按产品级证据汇总生成技术分布表。由于公开市场通常缺少直接的“显示技术市场份额”权威统计，本工具重点补齐“公开证据采集 + 产品技术归类 + 代理份额估算/证据留存”能力，输出 CSV/Excel 供人工研判。",
+      "invoke": "python .ai-state/tools/helmet_display_tech_market_share_research.py --output {output_xlsx} --csv-dir {output_csv_dir} --html-dir {html_dir} --max-results 10",
+      "verify_cmd": "python .ai-state/tools/helmet_display_tech_market_share_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 17:46",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "microled_power_curve_estimator",
+      "type": "write_script",
+      "path": ".ai-state/tools/microled_power_curve_estimator.py",
+      "description": "命令行工具：建立 MicroLED 模组在不同亮度下的功耗曲线。支持基于发光面积、亮度(nits)、发光效率(cd/A 或 EQE+波长)、LED正向电压、像素点亮面积比例/占空比、驱动静态功耗、扫描驱动附加功耗、亮度非线性效率滚降、AOD/全白/典型UI等场景参数，计算不同亮度点下的LED发光功耗、驱动功耗、总功耗，并输出 CSV/Excel/JSON 结果与功耗曲线拟合参数。支持单组参数扫描和从 CSV/Excel 批量输入多个方案，适合在缺少厂商完整实测曲线时进行工程化估算与方案比较。",
+      "invoke": "python .ai-state/tools/microled_power_curve_estimator.py --input {input} --output-prefix .ai-state/tools/output/microled_power_curve",
+      "verify_cmd": "python .ai-state/tools/microled_power_curve_estimator.py --test",
+      "dependencies": [],
+      "status": "active",
+      "installed_at": "2026-04-11 17:47",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "jbd_hummingbird_datasheet_request_helper",
+      "type": "write_script",
+      "path": ".ai-state/tools/jbd_hummingbird_datasheet_request_helper.py",
+      "description": "用于补齐 JBD Hummingbird I/II 正式 datasheet、FAE 参数表及头盔/HUD 应用说明获取能力的命令行工具。工具不绕过受限资料权限，而是系统化完成：1) 公开网页/搜索结果中发现 JBD 官网、代理商、联系人、产品页、PDF/表单线索；2) 生成中英文索资邮件模板与询价/FAE 对接清单；3) 结构化记录已获取/待确认字段（eyebox、VID、接口、工作温度、MTF、振动可靠性等）；4) 输出 Excel/CSV 证据表与 outreach 联系清单，辅助人工向 JBD 或代理商正式索取完整规格书。",
+      "invoke": "python .ai-state/tools/jbd_hummingbird_datasheet_request_helper.py --output_dir outputs/jbd_hummingbird_datasheet_request --max_results 8",
+      "verify_cmd": "python .ai-state/tools/jbd_hummingbird_datasheet_request_helper.py --test --output_dir .ai-state/tools/_test_jbd_hummingbird",
+      "dependencies": [
+        "beautifulsoup4"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 17:48",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "jbd_phoenix_fullcolor_spec_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "用于补齐 JBD Phoenix full-color microLED 完整规格数据获取能力的命令行工具。该工具不绕过受限资料权限，而是系统化完成：1) 公开网页/搜索结果中发现 JBD Phoenix 全彩 microLED 相关产品页、新闻稿、PDF、代理商页面与展会资料；2) 抓取页面文本与可下载文档链接；3) 规则提取关键规格字段，如分辨率、像素间距、亮度、对比度、色域、尺寸、刷新率、接口、功耗、工作温度等；4) 输出 CSV/Excel/JSON 证据表；5) 生成缺失字段清单与中英文索资模板，辅助人工向 JBD/代理商索取完整 datasheet。",
+      "invoke": "python .ai-state/tools/jbd_phoenix_fullcolor_spec_fetcher.py --output_dir .ai-state/output/jbd_phoenix_fullcolor_spec",
+      "verify_cmd": "python .ai-state/tools/jbd_phoenix_fullcolor_spec_fetcher.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search openpyxl"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-11 17:54",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "freeform_prism_vibration_fov_eyebox_simulator",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：基于工程近似模型模拟自由曲面棱镜在不同振动环境下的光学性能变化，重点评估振动导致的视轴扰动、相对位姿偏移对 FOV 与 eyebox 的影响。支持单场景参数输入或 CSV/Excel 批量输入；支持正弦振动、随机振动（以 RMS 位移/角位移近似）和自定义时域采样；通过眼盒采样与边界裁切模型计算静态/动态有效 FOV、眼盒可用率、通过率、抖动包络和统计量，并导出 CSV/Excel/JSON 结果，适合在缺少 Zemax/Code V/CAE 联合仿真环境时进行方案比较与敏感性分析。",
+      "invoke": "python .ai-state/tools/freeform_prism_vibration_fov_eyebox_simulator.py --input {input} --output_prefix .ai-state/tools/output/freeform_prism_vibration_result",
+      "verify_cmd": "python .ai-state/tools/freeform_prism_vibration_fov_eyebox_simulator.py --test",
+      "dependencies": [
+        "numpy"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 18:04",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "freeform_prism_yield_research_helper",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理自由曲面棱镜（freeform prism / free-form prism / freeform optics / birdbath prism / combiner prism）实际制造良率相关的公开证据。工具通过搜索引擎结果页、供应商页面、行业文章、PDF/报告链接进行抓取，抽取 yield/良率/合格率/scrap/rework/production rate 等关键词附近的数值与证据文本，输出 CSV/Excel/JSON，辅助人工补齐“供应商或行业报告提供的自由曲面棱镜良率数据”缺口。该工具不保证一定获得直接良率数字，但可系统化收集公开线索、供应商联系人、报告链接与证据片段。",
+      "invoke": "python .ai-state/tools/freeform_prism_yield_research_helper.py --query \"freeform prism yield manufacturing\" --query \"自由曲面 棱镜 良率\" --max-results 10 --outdir .ai-state/output/freeform_prism_yield_research",
+      "verify_cmd": "python .ai-state/tools/freeform_prism_yield_research_helper.py --test",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 18:05",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "freeform_prism_geometry_brightness_budget",
+      "type": "write_script",
+      "path": ".ai-state/tools/freeform_prism_geometry_brightness_budget.py",
+      "description": "建立头盔内HUD自由曲面棱镜的工程估算工具：基于目标FOV、eyebox、VID、eye relief与安装角，反推棱镜有效口径、外形包络、头盔内安装空间占用、光机体积、亮度链路损耗与可用眼盒。工具采用参数化几何模型与工程近似亮度预算，支持单组命令行输入与CSV/Excel批量输入，输出JSON/CSV/Excel结果，适合在缺少Zemax/Code V时进行方案比较与敏感性分析。",
+      "invoke": "python .ai-state/tools/freeform_prism_geometry_brightness_budget.py --fov_h_deg 26 --fov_v_deg 20 --eyebox_w_mm 8 --eyebox_h_mm 8 --eye_relief_mm 20 --vid_m 4 --prism_to_eye_mm 25 --panel_luminance_nits 3000 --output_prefix outputs/freeform_case_26x20",
+      "verify_cmd": "python .ai-state/tools/freeform_prism_geometry_brightness_budget.py --test",
+      "dependencies": [],
+      "status": "active",
+      "installed_at": "2026-04-11 18:06",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "resin_waveguide_ux_simulator",
+      "type": "write_script",
+      "path": null,
+      "description": "命令行工具：面向树脂衍射光波导在不同 FOV 和亮度条件下的导航信息可读性与用户体验差异评估。工具基于工程近似模型，将 FOV、到眼亮度、环境照度、背景透过/杂散光、等效分辨率、UI 元素角尺寸、对比度与边缘退化综合为可读性评分，并进一步输出用户体验分级。支持单组参数与 CSV/Excel 批量输入，适合在缺少完整光学/人因仿真平台时进行方案比较与敏感性分析。",
+      "invoke": "python .ai-state/tools/resin_waveguide_ux_simulator.py --input {input} --output {output}",
+      "verify_cmd": "python .ai-state/tools/resin_waveguide_ux_simulator.py --test",
+      "dependencies": [
+        "numpy"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 18:26",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "resin_waveguide_yield_research_helper",
+      "type": "write_script",
+      "path": ".ai-state/tools/resin_waveguide_yield_research_helper.py",
+      "description": "采集并结构化整理树脂衍射光波导（resin diffractive waveguide / polymer waveguide / plastic waveguide / SRG waveguide）实际量产良率相关的公开证据。工具通过搜索引擎结果页、供应商页面、行业文章、PDF/报告链接进行抓取，抽取 yield/良率/合格率/scrap/rework/mass production/volume production 等关键词附近的数值与证据文本，输出 CSV/Excel/JSON，辅助验证树脂衍射光波导的成本假设。该工具不保证一定获得直接良率数字，但可系统化收集公开线索、供应商联系人、报告链接与证据片段，并对“实际量产良率”与“间接制造良率线索”进行分级。",
+      "invoke": "python .ai-state/tools/resin_waveguide_yield_research_helper.py --query \"resin diffractive waveguide yield mass production\" --query \"树脂 衍射 光波导 良率 量产\" --output-prefix .ai-state/tools/output/resin_waveguide_yield_evidence",
+      "verify_cmd": "python .ai-state/tools/resin_waveguide_yield_research_helper.py --test",
+      "dependencies": [
+        "beautifulsoup4 pypdf"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 18:27",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "competitor_brightness_battery_evidence_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理 EyeRide 与 BMW ConnectedRide 的第三方实测到眼亮度/可读性与续航数据证据。工具支持关键词搜索、网页抓取、页面文本抽取、规则提取亮度/续航/使用时长/充电时间/评测结论/来源链接，并导出 CSV/Excel/JSON，辅助验证竞品真实性能。优先覆盖第三方评测、媒体测评、论坛实测与视频描述页，不依赖官方宣称。",
+      "invoke": "python .ai-state/tools/competitor_brightness_battery_evidence_fetcher.py --queries \"EyeRide review brightness battery life test\" \"BMW ConnectedRide Smartglasses review brightness battery life\" --max-results 10 --out {output_xlsx} --save-json {output_json}",
+      "verify_cmd": "python .ai-state/tools/competitor_brightness_battery_evidence_fetcher.py --max-results 2 --out .ai-state/tools/competitor_brightness_battery_evidence_test.xlsx",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 18:48",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "motorcycle_hud_optical_film_datasheet_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理主流摩托车 HUD 光学组合薄膜/组合器相关公开规格书与实测数据证据的命令行工具。面向窄带增反膜、分光/反射膜、AR/AG 膜、HUD combiner film 等关键词，支持：1) 通过搜索引擎结果页与已知供应商站点发现 PDF/规格书/产品页；2) 下载 PDF 与网页；3) 抽取透过率、反射率、波长曲线、雾度、重影/双像、色偏、厚度、入射角、测试条件等字段；4) 保留来源链接、证据片段、文件路径；5) 导出 CSV/Excel/JSON，辅助人工快速筛选是否存在可用的具体供应商规格书与实测数据。该工具不保证一定获得所有厂商受限 datasheet，但可系统化补齐公开 data_fetch 能力。",
+      "invoke": "python .ai-state/tools/motorcycle_hud_optical_film_datasheet_fetcher.py --queries \"motorcycle HUD combiner film datasheet transmission reflection haze ghost image PDF\" \"narrow band anti reflective film HUD combiner datasheet PDF\" --max-results 10 --out outputs/motorcycle_hud_optical_film_datasheet_fetcher/results",
+      "verify_cmd": "python .ai-state/tools/motorcycle_hud_optical_film_datasheet_fetcher.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search pdfplumber pypdf openpyxl"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 18:55",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "competitor_hud_optical_params_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理竞品 HUD/AR 产品（如 DigiLens ARGO、WayRay、Sena 等）的公开真实光学参数证据。工具支持关键词搜索、网页抓取、PDF 链接发现与下载、页面文本抽取，并基于规则提取 FOV、入眼亮度/亮度、眼盒大小、eye relief、虚像距离等字段；输出 CSV/Excel/JSON 与证据清单，保留来源链接、证据片段、文件路径与置信度，辅助人工确认竞品真实光学参数。",
+      "invoke": "python .ai-state/tools/competitor_hud_optical_params_fetcher.py --products \"DigiLens ARGO\" \"WayRay\" \"Sena HUD\" --max-results 8 --output-dir .ai-state/output/competitor_hud_optical_params",
+      "verify_cmd": "python .ai-state/tools/competitor_hud_optical_params_fetcher.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search pdfplumber openpyxl"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-11 18:56",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "longjing_resin_waveguide_efficiency_fetcher",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理珑璟光电树脂光波导在不同光栅设计下的光学损耗/光学效率公开数据证据。工具支持按关键词搜索公开网页与 PDF 链接，抓取页面文本，抽取 efficiency / optical efficiency / loss / insertion loss / coupling efficiency / diffraction efficiency 等字段，并重点关联 grating design、surface relief grating、slanted grating、1D/2D grating、input/output/exit pupil expansion 等设计关键词，输出 CSV/Excel/JSON 及证据清单，辅助验证不同光栅设计下的效率百分比。",
+      "invoke": "python .ai-state/tools/longjing_resin_waveguide_efficiency_fetcher.py --out-dir .ai-state/output/longjing_resin_waveguide_efficiency --max-results 8 --query \"珑璟光电 树脂 光波导 光栅 效率\" --query \"Longjing Optoelectronics resin waveguide efficiency grating\"",
+      "verify_cmd": "python .ai-state/tools/longjing_resin_waveguide_efficiency_fetcher.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml duckduckgo-search pdfplumber"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 19:04",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "battery_life_cost_benefit_calculator",
+      "type": "write_script",
+      "path": ".ai-state/tools/battery_life_cost_benefit_calculator.py",
+      "description": "命令行工具：评估续航优化方案的成本与收益，支持两类路径：1) 增加电池容量；2) 优化系统功耗设计。工具可基于输入的 BOM 成本、研发/NRE、良率、售价、毛利率、销量提升、转化率提升、退货率改善、续航小时提升等参数，计算单机增量成本、总项目投入、单机增量收益、毛利变化、投资回收期、ROI、盈亏平衡销量，并支持 CSV/Excel 批量方案对比，输出 CSV/Excel/JSON 汇总结果。",
+      "invoke": "python .ai-state/tools/battery_life_cost_benefit_calculator.py --input {input} --output {output}",
+      "verify_cmd": "python .ai-state/tools/battery_life_cost_benefit_calculator.py --test",
+      "dependencies": [],
+      "status": "active",
+      "installed_at": "2026-04-11 19:05",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "waveguide_visual_comfort_research",
+      "type": "write_script",
+      "path": null,
+      "description": "采集并结构化整理几何波导（geometric waveguide）与全息/体全息波导（holographic waveguide / HOE / volume holographic waveguide）在骑行或近似动态运动场景下的视觉舒适性、眼疲劳、视觉负担、晕眩、可读性与主观用户测试数据。工具支持公开网页搜索、Crossref 文献检索、页面抓取、关键词证据抽取、规则化提取样本量/场景/速度/任务时长/疲劳指标/显著性结论/来源链接，并导出 CSV/Excel/JSON，辅助补齐“不同波导设计在高速骑行中的视觉疲劳表现”数据缺口。由于公开资料未必直接覆盖高速骑行场景，工具会同时采集骑行、驾驶、运动、动态头动、AR/HUD/HMD 近似场景证据，并对场景贴近度进行分级。",
+      "invoke": "python .ai-state/tools/waveguide_visual_comfort_research.py --queries \"geometric waveguide visual comfort cycling AR HUD eye fatigue\" \"holographic waveguide visual comfort cycling AR HUD eye fatigue\" --max-results 10 --out-dir .ai-state/output/waveguide_visual_comfort_research",
+      "verify_cmd": "python .ai-state/tools/waveguide_visual_comfort_research.py --test",
+      "dependencies": [
+        "beautifulsoup4 lxml scholarly"
+      ],
+      "status": "unverified",
+      "installed_at": "2026-04-11 19:25",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "binocular_waveguide_cost_pricing_model",
+      "type": "write_script",
+      "path": ".ai-state/tools/binocular_waveguide_cost_pricing_model.py",
+      "description": "命令行工具：建立双目波导设计的制造成本与市场定价模型。支持按材料/BOM、制程、良率、设备折旧、人工制造费用、NRE摊销、渠道与售后、目标毛利率、价格带与竞品锚点进行参数化建模，输出单机制造成本、完全成本、建议出厂价/渠道价/零售价，以及不同销量、良率、渠道结构下的敏感性分析。支持单组 JSON 输入与 CSV/Excel 批量输入，导出 CSV/Excel/JSON 结果，适合在缺少完整财务模型时进行工程化定价估算。",
+      "invoke": "python .ai-state/tools/binocular_waveguide_cost_pricing_model.py --input {input_json_or_csv_or_xlsx} --output-prefix .ai-state/tools/binocular_waveguide_cost_pricing_model_result",
+      "verify_cmd": "python .ai-state/tools/binocular_waveguide_cost_pricing_model.py --test",
+      "dependencies": [],
+      "status": "unverified",
+      "installed_at": "2026-04-11 19:27",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "binocular_waveguide_fusion_tolerance_model",
+      "type": "write_script",
+      "path": null,
+      "description": "建立双目波导在不同 IPD、佩戴偏移、振动条件下的融合容差模型的命令行工具。工具基于工程化双眼几何与舒适区近似，计算左右眼光轴偏差、虚像距离、水平/垂直视差、会聚需求、与用户舒适区间的关系，并输出每个场景的融合风险分级。支持单组参数输入与 CSV/Excel 批量输入，适合在缺少完整人因/光学联合仿真平台时进行方案比较、容差预算与敏感性分析。",
+      "invoke": "python .ai-state/tools/binocular_waveguide_fusion_tolerance_model.py --input {input} --output {output} --comfort-profile default",
+      "verify_cmd": "python .ai-state/tools/binocular_waveguide_fusion_tolerance_model.py --test",
+      "dependencies": [
+        "numpy"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 19:28",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "xr_platform_price_research_helper",
+      "type": "write_script",
+      "path": null,
+      "description": "用于补齐 Qualcomm Snapdragon XR2 / XR2+ 平台及配套存储供应链预估价格的数据采集与结构化整理工具。工具通过公开网页搜索、分销商/贸易平台页面抓取与规则抽取，收集芯片型号、平台名称、存储配置（LPDDR/DDR/UFS/eMMC）、价格线索、MOQ、币种、报价条件、时间戳与来源链接，并输出 CSV/Excel/JSON。工具不保证获得受限真实成交价，但可系统化沉淀公开价格证据，并支持基于规则生成 BOM 估算区间，辅助评估 Snapdragon XR 平台与基础 HUD 芯片的 BOM 成本差价。",
+      "invoke": "python .ai-state/tools/xr_platform_price_research_helper.py --keywords \"Qualcomm Snapdragon XR2 price\" \"Qualcomm Snapdragon XR2+ price\" \"Snapdragon XR2 LPDDR4X UFS price\" --out-dir .ai-state/tools/output_xr_platform_price",
+      "verify_cmd": "python .ai-state/tools/xr_platform_price_research_helper.py --test --out-dir .ai-state/tools/output_xr_test",
+      "dependencies": [
+        "beautifulsoup4"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 19:34",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "high_index_material_optical_gain_estimator",
+      "type": "write_script",
+      "path": ".ai-state/tools/high_index_material_optical_gain_estimator.py",
+      "description": "命令行工具：计算高折射率材料（如碳化硅 SiC）在不同波长下相对基线材料的光学性能提升幅度。支持基于材料色散数据（CSV/Excel/JSON 或内置样例）计算 Fresnel 反射率、临界角、数值孔径代理、界面透过率、全反射角度裕量等指标，并输出相对提升倍数/百分比。适合在缺少完整光学仿真软件时，对不同折射率材料在多波长条件下的性能提升进行工程化估算与批量比较。",
+      "invoke": "python .ai-state/tools/high_index_material_optical_gain_estimator.py --input {input} --target-material {target_material} --baseline-material {baseline_material} --wavelengths {wavelengths} --ambient-n {ambient_n} --clad-n {clad_n} --internal-ray-angle-deg {internal_ray_angle_deg} --output {output}",
+      "verify_cmd": "python .ai-state/tools/high_index_material_optical_gain_estimator.py --target-material SiC --baseline-material Glass --wavelengths 450,532,635 --test",
+      "dependencies": [],
+      "status": "active",
+      "installed_at": "2026-04-11 19:45",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "nanoimprint_cost_learning_curve_estimator",
+      "type": "write_script",
+      "path": ".ai-state/tools/nanoimprint_cost_learning_curve_estimator.py",
+      "description": "命令行工具：评估纳米压印（Nanoimprint / NIL）工艺的初始投入（CapEx/NRE）与单位成本下降曲线。支持按设备、模具/模板、洁净室与配套、工艺开发/NRE、良率爬坡、产能利用率、模具寿命、材料成本、人工/能耗/维护、折旧年限等参数建模；可计算不同年产量/累计产量下的单位成本、固定成本摊销、学习曲线（经验曲线）降本效果，并输出 CSV/Excel/JSON 结果，适合在缺少详细财务模型时进行工程化成本估算与方案比较。",
+      "invoke": "python .ai-state/tools/nanoimprint_cost_learning_curve_estimator.py --input {input} --output .ai-state/tools/nanoimprint_cost_output.xlsx",
+      "verify_cmd": "python .ai-state/tools/nanoimprint_cost_learning_curve_estimator.py --test --output .ai-state/tools/nanoimprint_cost_test.xlsx",
+      "dependencies": [],
+      "status": "active",
+      "installed_at": "2026-04-11 19:46",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
+    },
+    {
+      "name": "resin_waveguide_rgb_dispersion_simulator",
+      "type": "write_script",
+      "path": null,
+      "description": "建立树脂波导（n≈1.74）下 RGB 在不同 grating period / grating k-vector / 入射角 / 波导厚度 / HUD FOV / eyebox 条件下的传播路径、TIR 裕量、耦入/耦出角、色散分离（彩虹效应）与 FOV 影响的工程化光学仿真工具。工具基于矢量光栅方程与平板波导几何近似，支持单组参数和参数扫描，输出每个波长的波导内传播角、反射次数、出瞳横向色散、角度色散、TIR 可行性、FOV 可达性及彩虹风险评分，并导出 CSV/JSON。",
+      "invoke": "python .ai-state/tools/resin_waveguide_rgb_dispersion_simulator.py --n_core 1.74 --thickness_mm {thickness_mm} --propagation_length_mm {propagation_length_mm} --eyebox_width_mm {eyebox_width_mm} --eyebox_height_mm {eyebox_height_mm} --target_fov_x_deg {target_fov_x_deg} --target_fov_y_deg {target_fov_y_deg} --periods_nm {periods_nm} --grating_azimuth_list {grating_azimuth_list} --incidence_theta_x_list {incidence_theta_x_list} --incidence_theta_y_list {incidence_theta_y_list} --output_prefix {output_prefix}",
+      "verify_cmd": "python .ai-state/tools/resin_waveguide_rgb_dispersion_simulator.py --test",
+      "dependencies": [
+        "numpy pandas openpyxl"
+      ],
+      "status": "active",
+      "installed_at": "2026-04-11 19:47",
+      "installed_by": "meta_capability",
+      "usage_count": 0,
+      "last_used": null
     }
   ],
   "evolution_log": [
@@ -1863,6 +2301,174 @@
       "timestamp": "2026-04-08 01:23",
       "gap": "市场对不同价位头盔产品的接受度调查",
       "action": "registered helmet_price_acceptance_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 01:17",
+      "gap": "需要获取不同芯片组（如高通QCC系列、恒玄BES系列）的具体技术参数和成本数据",
+      "action": "registered chipset_param_cost_research_helper (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 01:19",
+      "gap": "需要验证推荐算法（如U-Net、Transformer）在风噪环境下的实际降噪性能",
+      "action": "registered wind_noise_denoise_benchmark (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 16:46",
+      "gap": "需要获取SY049的实际功耗和重量数据",
+      "action": "registered sy049_power_weight_research_helper (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 16:57",
+      "gap": "需要获取SY049 OLED的批量采购价格，以更准确地评估成本",
+      "action": "registered sy049_price_moq_research_helper (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 16:58",
+      "gap": "需要原厂完整datasheet或样品测试数据，以确认功耗、接口时序、刷新率和寿命",
+      "action": "registered seeya_datasheet_evb_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 17:12",
+      "gap": "需要获取市场竞品的具体定价数据",
+      "action": "registered helmet_competitor_price_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 17:29",
+      "gap": "需要基于目标FOV、光机效率、反射率和VID，计算SY049在具体HUD光学架构下的到眼亮度、眼盒和等效功耗预算",
+      "action": "registered sy049_hud_system_budget (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 17:46",
+      "gap": "骑行头盔市场中不同显示技术的具体市场份额数据",
+      "action": "registered helmet_display_tech_market_share_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 17:47",
+      "gap": "MicroLED模组在不同亮度下的功耗曲线",
+      "action": "registered microled_power_curve_estimator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 17:48",
+      "gap": "需要获取 JBD Hummingbird 系列的正式 datasheet 或 FAE 参数表，确认眼盒、VID、接口、工作温度、MTF、振动可靠性",
+      "action": "registered jbd_hummingbird_datasheet_request_helper (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 17:54",
+      "gap": "需要获取完整的 JBD Phoenix full-color microLED 规格数据",
+      "action": "registered jbd_phoenix_fullcolor_spec_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 18:04",
+      "gap": "需要计算自由曲面棱镜在不同振动环境下的光学性能变化",
+      "action": "registered freeform_prism_vibration_fov_eyebox_simulator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 18:05",
+      "gap": "需要获取自由曲面棱镜的实际制造良率数据",
+      "action": "registered freeform_prism_yield_research_helper (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 18:06",
+      "gap": "需要基于目标FOV、eyebox、VID反推自由曲面棱镜尺寸、安装空间和到眼亮度预算",
+      "action": "registered freeform_prism_geometry_brightness_budget (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 18:26",
+      "gap": "树脂衍射光波导在不同FOV和亮度条件下的用户体验模拟",
+      "action": "registered resin_waveguide_ux_simulator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 18:27",
+      "gap": "树脂衍射光波导的实际量产良率数据",
+      "action": "registered resin_waveguide_yield_research_helper (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 18:48",
+      "gap": "需要获取更多竞品的实际到眼亮度和续航数据",
+      "action": "registered competitor_brightness_battery_evidence_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 18:55",
+      "gap": "获取主流摩托车HUD光学组合薄膜（如窄带增反膜）的详细规格书",
+      "action": "registered motorcycle_hud_optical_film_datasheet_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 18:56",
+      "gap": "获取竞品HUD的真实光学参数",
+      "action": "registered competitor_hud_optical_params_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 19:04",
+      "gap": "获取珑璟光电树脂光波导的具体光学损耗数据",
+      "action": "registered longjing_resin_waveguide_efficiency_fetcher (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 19:05",
+      "gap": "计算续航优化方案的成本与收益",
+      "action": "registered battery_life_cost_benefit_calculator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 19:25",
+      "gap": "验证几何波导和全息波导在不同骑行场景下的视觉舒适性数据",
+      "action": "registered waveguide_visual_comfort_research (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 19:27",
+      "gap": "计算双目波导设计的制造成本与市场定价模型",
+      "action": "registered binocular_waveguide_cost_pricing_model (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 19:28",
+      "gap": "需要建立双目波导在不同IPD、佩戴偏移、振动条件下的融合容差模型",
+      "action": "registered binocular_waveguide_fusion_tolerance_model (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 19:34",
+      "gap": "需要评估高通 Snapdragon XR 平台与基础 HUD 芯片的 BOM 成本差价",
+      "action": "registered xr_platform_price_research_helper (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 19:45",
+      "gap": "需要计算高折射率材料（如碳化硅）在不同波长下的光学性能提升幅度",
+      "action": "registered high_index_material_optical_gain_estimator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 19:46",
+      "gap": "需要评估纳米压印工艺的初始投入与单位成本下降曲线",
+      "action": "registered nanoimprint_cost_learning_curve_estimator (write_script)",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-04-11 19:47",
+      "gap": "需要对特定HUD视场角、出瞳尺寸、波导厚度下的RGB传播路径和色散进行光学仿真",
+      "action": "registered resin_waveguide_rgb_dispersion_simulator (write_script)",
       "result": "success"
     }
   ]

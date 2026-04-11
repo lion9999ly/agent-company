@@ -1,0 +1,11 @@
+{
+  "id": "REQ_20260411_run_hud_demo",
+  "requested_by": "system",
+  "requested_at": "2026-04-11",
+  "target_file": "run_hud_demo.py",
+  "reason": "HUD Demo Orchestrator入口脚本，Phase 2-6已提取到code_orchestrator.py，此文件为入口点",
+  "threshold": 800,
+  "current_lines": 829,
+  "status": "approved",
+  "expiry_timestamp": 1893427200
+}

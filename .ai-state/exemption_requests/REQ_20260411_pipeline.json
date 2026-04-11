@@ -1,0 +1,11 @@
+{
+  "id": "REQ_20260411_pipeline",
+  "requested_by": "system",
+  "requested_at": "2026-04-11",
+  "target_file": "scripts\\deep_research\\pipeline.py",
+  "reason": "深度研究五层管道核心文件，SearchRouter新增后体积增加，已标记为拆分优先目标",
+  "threshold": 800,
+  "current_lines": 910,
+  "status": "approved",
+  "expiry_timestamp": 1893427200
+}

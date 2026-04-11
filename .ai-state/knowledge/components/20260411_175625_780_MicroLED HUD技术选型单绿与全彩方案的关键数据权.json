@@ -1,0 +1,20 @@
+{
+  "title": "MicroLED HUD技术选型：单绿与全彩方案的关键数据权衡",
+  "domain": "components",
+  "content": "报告通过详细的数据对比，量化了JBD单绿MicroLED与全彩MicroLED方案在智能头盔HUD应用中的关键差异。单绿方案在HUD模组功耗（0.2-0.4W vs. 0.5-1.0W）、到眼亮度（>4000 nits vs. 1000-2000 nits）、模组成本（1x vs. 2x-3x+）和技术成熟度/风险（高 vs. 中）方面均表现出显著优势。这些数据直接影响了产品的续航、户外可读性、零售价格和项目交付风险。尽管全彩方案在信息丰富度和营销卖点上具有吸引力，但其在功耗和亮度上的劣势，以及更高的成本和技术风险，使其不适合作为V1产品的首选。报告强调，基于量化数据进行权衡，是确保产品成功上市和满足核心用户需求的关键。",
+  "source": "deep_research:specs_jbd_hummingbird",
+  "created_at": "2026-04-11",
+  "tags": [
+    "MicroLED",
+    "HUD技术",
+    "技术选型",
+    "功耗",
+    "亮度",
+    "成本",
+    "技术风险",
+    "数据分析",
+    "deep_research",
+    "specs_jbd_hummingbird"
+  ],
+  "confidence": "medium"
+}

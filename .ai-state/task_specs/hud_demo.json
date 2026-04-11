@@ -41,10 +41,16 @@
     "CDO": "本议题是 HUD Demo 的视觉和交互设计。关注：四角布局信息密度、预警视觉冲击力、全彩配色的功能色语义（速度白/导航蓝/预警红/组队青/音乐紫）、A/B光学方案的视觉差异表达、自动剧本的叙事节奏。已知陷阱：HUD不是手机App，骑手用余光扫视，信息必须一瞥可读。产品核心使命：消灭停车掏手机。",
     "CTO": "本议题是 HUD Demo 的技术实现。关注：单HTML文件零依赖约束、状态机完整性（7个页面态+优先级切换）、键盘事件全覆盖、自动剧本时序驱动机制、代码结构可维护性。已知陷阱：单次LLM生成超500行HTML时质量下降——考虑是否需要分段生成策略。但最终产物必须是单文件。",
     "CMO": "本议题是 HUD Demo 的演示说服力。关注：竞品 Shoei GT-Air 3 Smart（$1199，EyeLights OLED HUD）的体验对标——我们要比它好在哪里看得出来？ADAS预警是核心差异化（Shoei做不到）——Demo里ADAS场景是否足够震撼？3分钟内投资人/供应商能否get到产品价值？目标用户是玩乐骑+摩旅骑手，不是通勤。",
-    "Critic": "审查标准：14条验收标准逐条验证。额外关注：Demo是否传达了产品的核心差异化（ADAS安全感知），还是沦为了一个花哨的信息展示板？审查各角色置信度标注是否诚实。"
+    "Critic": "审查标准：14条验收标准逐条验证。额外关注：Demo是否传达了产品的核心差异化（ADAS安全感知），还是沦为一个花哨的信息展示板？审查各角色置信度标注是否诚实。"
   },
   "output_type": "html",
   "output_path": "demo_outputs/hud_demo_roundtable.html",
+  "spec_files": {
+    "tech_spec": "demo_outputs/specs/hud_demo_tech_spec.md",
+    "test_spec": "demo_outputs/specs/hud_demo_test_spec.js",
+    "visual_criteria": "demo_outputs/specs/hud_demo_visual_criteria.md",
+    "optical_modes": "demo_outputs/specs/tech_spec_optical_modes.md"
+  },
   "generator_input_mode": "raw_proposal",
   "auto_verify_rules": [],
   "max_iterations": 10,

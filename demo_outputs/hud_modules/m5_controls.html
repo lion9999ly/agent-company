@@ -1,63 +1,64 @@
-<!-- M5: 控制面板 HTML -->
+<!-- M5: 控制面板 HTML - 沙盒面板 + 开机覆盖层 -->
 
-<div class="group">
-  <div class="group-title">ADAS 预警</div>
-  <div class="btn-row">
-    <button data-event="warn-front">前方碰撞</button>
-    <button data-event="warn-left">左后盲区</button>
-    <button data-event="warn-right">右后盲区</button>
-  </div>
+<!-- 开机覆盖层 -->
+<div id="boot-overlay">
+  <div class="logo">HUD Demo</div>
+  <div class="status">系统启动中...</div>
 </div>
 
-<div class="group">
-  <div class="group-title">通信</div>
-  <div class="btn-row">
-    <button data-event="call-zhang">来电：张三</button>
-    <button data-event="call-li">来电：李四</button>
-    <button data-event="mesh-join">Mesh 加入</button>
+<!-- 沙盒控制面板 -->
+<div id="sandbox">
+  <div class="group">
+    <div class="group-title">ADAS 预警</div>
+    <div class="btn-row">
+      <button data-event="warn-front">前方碰撞</button>
+      <button data-event="warn-left">左后盲区</button>
+      <button data-event="warn-right">右后盲区</button>
+    </div>
   </div>
-</div>
-
-<div class="group">
-  <div class="group-title">媒体</div>
-  <div class="btn-row">
-    <button data-event="music-play">音乐播放</button>
-    <button data-event="music-pause">暂停</button>
+  <div class="group">
+    <div class="group-title">通信</div>
+    <div class="btn-row">
+      <button data-event="call-zhang">来电：张三</button>
+      <button data-event="mesh-join">Mesh 加入</button>
+    </div>
   </div>
-</div>
-
-<div class="group">
-  <div class="group-title">导航</div>
-  <div class="btn-row">
-    <button data-event="nav-start">导航开始</button>
-    <button data-event="nav-left">左转提示</button>
-    <button data-event="nav-arrive">到达目的地</button>
+  <div class="group">
+    <div class="group-title">媒体</div>
+    <div class="btn-row">
+      <button data-event="music-play">音乐播放</button>
+      <button data-event="music-pause">暂停</button>
+    </div>
   </div>
-</div>
-
-<div class="group">
-  <div class="group-title">录制</div>
-  <div class="btn-row">
-    <button data-event="dvr-start">开始录制</button>
-    <button data-event="dvr-stop">停止录制</button>
+  <div class="group">
+    <div class="group-title">导航</div>
+    <div class="btn-row">
+      <button data-event="nav-start">导航开始</button>
+      <button data-event="nav-arrive">到达</button>
+    </div>
   </div>
-</div>
-
-<div class="group">
-  <div class="group-title">系统</div>
-  <div class="btn-row">
-    <button data-event="speed-0">速度 0</button>
-    <button data-event="speed-40">速度 40</button>
-    <button data-event="speed-80">速度 80</button>
-    <button data-event="speed-120">速度 120</button>
+  <div class="group">
+    <div class="group-title">录制</div>
+    <div class="btn-row">
+      <button data-event="dvr-start">开始录制</button>
+      <button data-event="dvr-stop">停止</button>
+    </div>
   </div>
-</div>
-
-<div class="group">
-  <div class="group-title">剧本</div>
-  <div class="btn-row">
-    <button data-event="scenario-1">日常通勤</button>
-    <button data-event="scenario-2">紧急场景</button>
-    <button data-event="scenario-3">组队骑行</button>
+  <div class="group">
+    <div class="group-title">速度</div>
+    <div class="btn-row">
+      <button data-event="speed-0">0 km/h</button>
+      <button data-event="speed-40">40 km/h</button>
+      <button data-event="speed-80">80 km/h</button>
+      <button data-event="speed-120">120 km/h</button>
+    </div>
+  </div>
+  <div class="group">
+    <div class="group-title">剧本</div>
+    <div class="btn-row">
+      <button data-event="scenario-1">通勤</button>
+      <button data-event="scenario-2">紧急</button>
+      <button data-event="scenario-3">组队</button>
+    </div>
   </div>
 </div>

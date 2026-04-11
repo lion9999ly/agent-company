@@ -237,3 +237,74 @@
 {"query": "Bose QuietComfort", "task": "嘈杂环境下的头盔语音控制与降噪技术研究", "chars_returned": 6000, "timestamp": "2026-04-08 01:18"}
 {"query": "歌尔股份 ODM", "task": "嘈杂环境下的头盔语音控制与降噪技术研究", "chars_returned": 5010, "timestamp": "2026-04-08 01:18"}
 {"query": "LG Chem 电池", "task": "嘈杂环境下的头盔语音控制与降噪技术研究", "chars_returned": 3066, "timestamp": "2026-04-08 01:18"}
+{"query": "风噪下摩托车语音识别", "task": "嘈杂环境下的头盔语音控制与降噪技术研究", "chars_returned": 6000, "timestamp": "2026-04-11 01:12"}
+{"query": "头盔波束成形麦克风阵列", "task": "嘈杂环境下的头盔语音控制与降噪技术研究", "chars_returned": 5245, "timestamp": "2026-04-11 01:12"}
+{"query": "头盔语音控制降噪", "task": "嘈杂环境下的头盔语音控制与降噪技术研究", "chars_returned": 2847, "timestamp": "2026-04-11 01:12"}
+{"query": "头盔音频DSP", "task": "嘈杂环境下的头盔语音控制与降噪技术研究", "chars_returned": 6000, "timestamp": "2026-04-11 01:12"}
+{"query": "AI降噪头盔", "task": "嘈杂环境下的头盔语音控制与降噪技术研究", "chars_returned": 2865, "timestamp": "2026-04-11 01:12"}
+{"query": "嘈杂环境唤醒词检测", "task": "嘈杂环境下的头盔语音控制与降噪技术研究", "chars_returned": 4415, "timestamp": "2026-04-11 01:12"}
+{"query": "SeeYA SY049 resolution brightness contrast", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 4796, "timestamp": "2026-04-11 16:43"}
+{"query": "SY049 OLED microdisplay datasheet", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 4012, "timestamp": "2026-04-11 16:43"}
+{"query": "SeeYA SY049 OLED microdisplay specifications", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 5549, "timestamp": "2026-04-11 16:43"}
+{"query": "{'category': '芯片', 'type': '产品', 'name': '硅晶圆 (silicon wafers)'}", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 5043, "timestamp": "2026-04-11 16:43"}
+{"query": "{'category': '头盔', 'type': '产品', 'name': '智能骑行头盔'}", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 5045, "timestamp": "2026-04-11 16:43"}
+{"query": "{'category': '光学', 'type': '产品', 'name': 'OLED沉积设备 (OLED deposition equipment)'}", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 4498, "timestamp": "2026-04-11 16:43"}
+{"query": "{'category': '光学', 'type': '公司/品牌', 'name': 'SeeYA'}", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 3884, "timestamp": "2026-04-11 16:43"}
+{"query": "{'category': '光学', 'type': '产品', 'name': 'SY049 OLED microdisplay'}", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 6000, "timestamp": "2026-04-11 16:43"}
+{"query": "OLED", "task": "SeeYA SY049 OLED", "chars_returned": 6000, "timestamp": "2026-04-11 16:54"}
+{"query": "智能骑行头盔", "task": "SeeYA SY049 OLED", "chars_returned": 4434, "timestamp": "2026-04-11 16:54"}
+{"query": "SeeYA SY049 OLED microdisplay specifications", "task": "SeeYA SY049 OLED", "chars_returned": 5352, "timestamp": "2026-04-11 16:54"}
+{"query": "SeeYA", "task": "SeeYA SY049 OLED", "chars_returned": 3889, "timestamp": "2026-04-11 16:54"}
+{"query": "SY049 OLED", "task": "SeeYA SY049 OLED", "chars_returned": 6000, "timestamp": "2026-04-11 16:54"}
+{"query": "SeeYA", "task": "SeeYA SY049 OLED", "chars_returned": 3103, "timestamp": "2026-04-11 17:09"}
+{"query": "OLED", "task": "SeeYA SY049 OLED", "chars_returned": 6000, "timestamp": "2026-04-11 17:09"}
+{"query": "智能骑行头盔", "task": "SeeYA SY049 OLED", "chars_returned": 4508, "timestamp": "2026-04-11 17:09"}
+{"query": "SeeYA SY049 OLED microdisplay specifications", "task": "SeeYA SY049 OLED", "chars_returned": 6000, "timestamp": "2026-04-11 17:09"}
+{"query": "SY049", "task": "SeeYA SY049 OLED", "chars_returned": 6000, "timestamp": "2026-04-11 17:09"}
+{"query": "SeeYA", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 6000, "timestamp": "2026-04-11 17:26"}
+{"query": "SeeYA SY049 OLED microdisplay specifications", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 6000, "timestamp": "2026-04-11 17:26"}
+{"query": "SY049 OLED microdisplay", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 3773, "timestamp": "2026-04-11 17:26"}
+{"query": "SeeYA SY049 resolution brightness contrast", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 6000, "timestamp": "2026-04-11 17:26"}
+{"query": "SY049 OLED microdisplay datasheet", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 6000, "timestamp": "2026-04-11 17:26"}
+{"query": "智能骑行头盔", "task": "SeeYA SY049 OLED microdisplay", "chars_returned": 4842, "timestamp": "2026-04-11 17:26"}
+{"query": "JBD Hummingbird MicroLED brightness power consumption", "task": "JBD Hummingbird MicroLED", "chars_returned": 6000, "timestamp": "2026-04-11 17:44"}
+{"query": "JBD Hummingbird MicroLED specifications", "task": "JBD Hummingbird MicroLED", "chars_returned": 6000, "timestamp": "2026-04-11 17:44"}
+{"query": "JBD Hummingbird MicroLED", "task": "JBD Hummingbird MicroLED", "chars_returned": 3917, "timestamp": "2026-04-11 17:44"}
+{"query": "JBD MicroLED display datasheet", "task": "JBD Hummingbird MicroLED", "chars_returned": 4891, "timestamp": "2026-04-11 17:44"}
+{"query": "智能骑行头盔 ODM", "task": "JBD Hummingbird MicroLED", "chars_returned": 4637, "timestamp": "2026-04-11 17:44"}
+{"query": "可穿戴设备电池方案", "task": "JBD Hummingbird MicroLED", "chars_returned": 5441, "timestamp": "2026-04-11 17:44"}
+{"query": "智能头盔声学模块", "task": "JBD Hummingbird MicroLED", "chars_returned": 6000, "timestamp": "2026-04-11 17:44"}
+{"query": "MicroLED 微显示器供应商", "task": "JBD Hummingbird MicroLED", "chars_returned": 4510, "timestamp": "2026-04-11 17:44"}
+{"query": "freeform optical prism AR display specifications", "task": "Freeform prism helmet HUD", "chars_returned": 6000, "timestamp": "2026-04-11 18:01"}
+{"query": "freeform prism helmet HUD FOV eyebox", "task": "Freeform prism helmet HUD", "chars_returned": 6000, "timestamp": "2026-04-11 18:01"}
+{"query": "helmet HUD freeform prism design parameters", "task": "Freeform prism helmet HUD", "chars_returned": 6000, "timestamp": "2026-04-11 18:01"}
+{"query": "微型投影 光学引擎", "task": "树脂衍射光波导", "chars_returned": 4347, "timestamp": "2026-04-11 18:22"}
+{"query": "resin diffractive waveguide full color FOV brightness", "task": "树脂衍射光波导", "chars_returned": 4510, "timestamp": "2026-04-11 18:22"}
+{"query": "polymer waveguide AR display efficiency", "task": "树脂衍射光波导", "chars_returned": 6000, "timestamp": "2026-04-11 18:22"}
+{"query": "智能头盔 AR 光波导", "task": "树脂衍射光波导", "chars_returned": 4560, "timestamp": "2026-04-11 18:22"}
+{"query": "衍射光波导 供应商", "task": "树脂衍射光波导", "chars_returned": 4204, "timestamp": "2026-04-11 18:22"}
+{"query": "智能穿戴 ODM 方案", "task": "树脂衍射光波导", "chars_returned": 6000, "timestamp": "2026-04-11 18:22"}
+{"query": "树脂光波导 全彩 FOV 亮度", "task": "树脂衍射光波导", "chars_returned": 6000, "timestamp": "2026-04-11 18:22"}
+{"query": "头盔显示模组 厂商", "task": "树脂衍射光波导", "chars_returned": 4658, "timestamp": "2026-04-11 18:22"}
+{"query": "Cardo", "task": "Motorcycle helmet HUD combiner", "chars_returned": 6000, "timestamp": "2026-04-11 18:45"}
+{"query": "Qualcomm", "task": "Motorcycle helmet HUD combiner", "chars_returned": 6000, "timestamp": "2026-04-11 18:45"}
+{"query": "motorcycle helmet HUD optical combiner film", "task": "Motorcycle helmet HUD combiner", "chars_returned": 6000, "timestamp": "2026-04-11 18:45"}
+{"query": "WayRay", "task": "Motorcycle helmet HUD combiner", "chars_returned": 6000, "timestamp": "2026-04-11 18:45"}
+{"query": "DigiLens", "task": "Motorcycle helmet HUD combiner", "chars_returned": 6000, "timestamp": "2026-04-11 18:45"}
+{"query": "helmet HUD combiner reflectance transmittance", "task": "Motorcycle helmet HUD combiner", "chars_returned": 6000, "timestamp": "2026-04-11 18:45"}
+{"query": "Sena", "task": "Motorcycle helmet HUD combiner", "chars_returned": 6000, "timestamp": "2026-04-11 18:45"}
+{"query": "HUD optical film helmet visor", "task": "Motorcycle helmet HUD combiner", "chars_returned": 3799, "timestamp": "2026-04-11 18:45"}
+{"query": "Longjing Optics resin waveguide specifications", "task": "珑璟光电树脂光波导", "chars_returned": 6000, "timestamp": "2026-04-11 19:02"}
+{"query": "珑璟光电 树脂光波导 参数", "task": "珑璟光电树脂光波导", "chars_returned": 6000, "timestamp": "2026-04-11 19:02"}
+{"query": "珑璟光电 光波导 FOV 效率", "task": "珑璟光电树脂光波导", "chars_returned": 4093, "timestamp": "2026-04-11 19:02"}
+{"query": "Goertek", "task": "Binocular waveguide vergence", "chars_returned": 3633, "timestamp": "2026-04-11 19:22"}
+{"query": "Vuzix", "task": "Binocular waveguide vergence", "chars_returned": 6000, "timestamp": "2026-04-11 19:22"}
+{"query": "DigiLens", "task": "Binocular waveguide vergence", "chars_returned": 6000, "timestamp": "2026-04-11 19:22"}
+{"query": "WaveOptics", "task": "Binocular waveguide vergence", "chars_returned": 6000, "timestamp": "2026-04-11 19:22"}
+{"query": "dual waveguide vergence accommodation conflict", "task": "Binocular waveguide vergence", "chars_returned": 6000, "timestamp": "2026-04-11 19:22"}
+{"query": "AR glasses binocular waveguide placement", "task": "Binocular waveguide vergence", "chars_returned": 6000, "timestamp": "2026-04-11 19:22"}
+{"query": "binocular waveguide side placement vergence", "task": "Binocular waveguide vergence", "chars_returned": 6000, "timestamp": "2026-04-11 19:22"}
+{"query": "Qualcomm Snapdragon XR", "task": "Binocular waveguide vergence", "chars_returned": 6000, "timestamp": "2026-04-11 19:22"}
+{"query": "diffractive waveguide color uniformity", "task": "树脂光波导彩虹效应", "chars_returned": 6000, "timestamp": "2026-04-11 19:42"}
+{"query": "polymer waveguide rainbow effect mitigation", "task": "树脂光波导彩虹效应", "chars_returned": 6000, "timestamp": "2026-04-11 19:42"}
+{"query": "树脂光波导 彩虹效应 解决方案", "task": "树脂光波导彩虹效应", "chars_returned": 6000, "timestamp": "2026-04-11 19:42"}

@@ -41,6 +41,117 @@ REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ============================================================
+# SearchRouter - 多通道搜索分流（替代依赖 Claude Code WebSearch）
+# ============================================================
+
+class SearchRouter:
+    """搜索路由器：按语言和内容类型分流到不同搜索通道
+
+    通道：
+    - Tavily：英文搜索首选（API 直接调用）
+    - doubao：中文搜索首选（火山引擎中文增强）
+    - Gemini：备用通道
+    - Grok：备用通道
+
+    关键：不要用 Claude Code WebSearch（harness 配置问题）
+    """
+
+    def __init__(self):
+        self._last_search_time = 0
+
+    def search(self, query: str, language: str = 'auto') -> str:
+        """执行搜索，返回结果文本
+
+        Args:
+            query: 搜索词
+            language: 'auto'（自动检测）/'zh'/'en'
+
+        Returns:
+            搜索结果文本（失败返回空字符串）
+        """
+        # 搜索间隔防限流
+        elapsed = time.time() - self._last_search_time
+        if elapsed < 2:
+            time.sleep(2 - elapsed)
+        self._last_search_time = time.time()
+
+        if language == 'auto':
+            language = self._detect_language(query)
+
+        if language == 'zh':
+            # 中文查询：doubao 优先
+            result = self._search_doubao(query)
+            if result:
+                return result
+            return self._search_tavily(query)
+        else:
+            # 英文查询：Tavily 优先
+            result = self._search_tavily(query)
+            if result:
+                return result
+            return self._search_gemini(query)
+
+    def _detect_language(self, text: str) -> str:
+        """简单语言检测：含中文字符则返回 zh"""
+        for char in text:
+            if '\u4e00' <= char <= '\u9fff':
+                return 'zh'
+        return 'en'
+
+    def _search_tavily(self, query: str) -> str:
+        """Tavily API 直接调用（已验证可用）"""
+        try:
+            # call_for_search 内部会调用 Tavily
+            result = call_for_search(query, engine='tavily')
+            if result and result.get('success'):
+                return result.get('response', '')
+        except Exception as e:
+            print(f"  [SearchRouter] Tavily 失败: {e}")
+        return ''
+
+    def _search_doubao(self, query: str) -> str:
+        """豆包搜索增强（火山引擎，中文优势）"""
+        try:
+            # 通过 model_gateway 调用，task_type='chat'（不用 'deep_research'）
+            result = call_model('doubao_seed_pro', query,
+                system_prompt="你是一个搜索助手。请搜索并返回相关信息。",
+                task_type='search')
+            if result and result.get('success'):
+                return result.get('response', '')
+        except Exception as e:
+            print(f"  [SearchRouter] doubao 失败: {e}")
+        return ''
+
+    def _search_gemini(self, query: str) -> str:
+        """Gemini 2.5 Flash 搜索增强"""
+        try:
+            result = call_model('gemini_2_5_flash', query,
+                system_prompt="搜索并返回相关信息。",
+                task_type='search')
+            if result and result.get('success'):
+                return result.get('response', '')
+        except Exception as e:
+            print(f"  [SearchRouter] Gemini 失败: {e}")
+        return ''
+
+    def _search_grok(self, query: str) -> str:
+        """Grok 4 搜索（备用）"""
+        try:
+            result = call_model('grok_4', query,
+                system_prompt="搜索并返回相关信息。",
+                task_type='search')
+            if result and result.get('success'):
+                return result.get('response', '')
+        except Exception as e:
+            print(f"  [SearchRouter] Grok 失败: {e}")
+        return ''
+
+
+# 全局 SearchRouter 实例
+search_router = SearchRouter()
+
+
+# ============================================================
 # 三原则
 # ============================================================
 THINKING_PRINCIPLES = """
@@ -345,7 +456,18 @@ def deep_research_one(task: dict, progress_callback=None,
         source_text = ""
         channel_results = {}
 
-        # Channel A: o3-deep-research
+        # === 使用 SearchRouter 替代原有搜索逻辑 ===
+        # 原因：Claude Code WebSearch 在 harness 配置下不可用
+        # SearchRouter 内部有 sleep(2) 防限流
+
+        # 使用 SearchRouter 获取搜索结果
+        router_result = search_router.search(query, language='auto')
+        if router_result and len(router_result) > 100:
+            source_text = router_result[:5000]
+            channel_results["router"] = router_result[:3000]
+            print(f"    [{i}] SearchRouter: {len(router_result)} 字")
+
+        # 补充通道：o3-deep-research（深度研究，慢但全面）
         o3_result = call_with_backoff("o3_deep_research", query,
             "Search for technical specifications, patents, and research papers.",
             "deep_research_search")
@@ -354,31 +476,7 @@ def deep_research_one(task: dict, progress_callback=None,
         elif "404" in str(o3_result.get("error", "")):
             record_model_404("o3_deep_research")
 
-        # Channel B: doubao
-        doubao_result = call_with_backoff("doubao_seed_pro", query,
-            "搜索中文互联网信息。", "chinese_search")
-        if doubao_result.get("success") and len(doubao_result.get("response", "")) > 200:
-            channel_results["doubao"] = doubao_result["response"][:3000]
-        elif "404" in str(doubao_result.get("error", "")):
-            record_model_404("doubao_seed_pro")
-
-        # Channel C: grok
-        grok_result = call_with_backoff("grok_4", query,
-            "Search for real-time social media discussions.", "grok_search")
-        if grok_result.get("success") and len(grok_result.get("response", "")) > 200:
-            channel_results["grok"] = grok_result["response"][:3000]
-        elif "404" in str(grok_result.get("error", "")):
-            record_model_404("grok_4")
-
-        # Channel D: gemini-deep
-        gemini_deep_result = call_with_backoff("gemini_deep_research", query,
-            "Search for academic papers and industry reports.", "gemini_deep_search")
-        if gemini_deep_result.get("success") and len(gemini_deep_result.get("response", "")) > 200:
-            channel_results["gemini_deep"] = gemini_deep_result["response"][:3000]
-        elif "404" in str(gemini_deep_result.get("error", "")):
-            record_model_404("gemini_deep_research")
-
-        # 合并 + 去重（基于前 200 字 hash）
+        # 合并 + 去重
         seen_hashes = set()
         for channel, text in channel_results.items():
             text_hash = hash(text[:200])
@@ -389,12 +487,9 @@ def deep_research_one(task: dict, progress_callback=None,
                 source_text += f"\n--- [{channel}] ---\n"
             source_text += text
 
-        # Fallback: tavily
+        # 最终兜底：如果所有 channel 都失败，返回空
         if not source_text:
-            tavily_result = registry.call("tavily_search", query)
-            if tavily_result.get("success") and len(tavily_result.get("data", "")) > 200:
-                source_text = tavily_result["data"][:3000]
-                print(f"    [{i}] tavily(fallback): {len(source_text)} 字")
+            print(f"    [{i}] 全通道失败: {query[:50]}")
 
         return {"index": i, "query": query, "content": source_text,
                 "channels": list(channel_results.keys())}

@@ -8,10 +8,6 @@
 - **最近提交**：feat: generator retry, snapshots, verdict parser
 
 ## 最近变更
-- 2026-04-09: fix: Day 17 诊断修复 - 5 个问题
-- 2026-04-08: 圆桌 v2 核心重构（收敛分层、因果链、动态输入、规则库）
-- 2026-04-08: Generator 重试机制、过程快照保留、评判解析器
-- 2026-04-07: HUD Demo Segment 5 完成 + 视觉打磨
 
 ## 能力清单
 - `圆桌` - 多角色讨论引擎（Phase 1-4）

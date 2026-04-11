@@ -198,14 +198,44 @@
 
 ---
 
-## [诊断] Deep Research工具链诊断 - 2026-04-11 15:45
+## [修复] 深度研究管道搜索层重构 - 2026-04-11 17:30
 
 - **结果**：通过
 - **关键数据**：
-  - 路径1 (OLED+FreeForm): FOV 21°, 到眼亮度 500nits, 眼盒 10×8mm
-  - 路径2 (双目全彩波导): FOV 24°, 到眼亮度 1000nits, 眼盒 8×6mm (彩虹效应待解决)
-  - 路径3 (单色绿光波导): FOV 22°, 到眼亮度 1500nits, 功耗 0.5W (V2推荐)
+  - 搜索层重构：Tavily主力(快) + o3-deep补充(慢) + doubao中文
+  - L1搜索：5/5有效 (Tavily: 2807-3812字/查询)
+  - L2提炼：5/5成功
+  - L3 Agent：CTO/CMO/CDO全部成功
+  - Critic：P0:1, P1:2, P2:1
+  - Final Synthesis：5190字
+  - KB提取：3条知识
+  - 总耗时：953.6秒(~16分钟)
 - **产出文件**：
-  - GitHub Issue #50: https://github.com/lion9999ly/agent-company/issues/50
-  - 参数文档: demo_outputs/specs/optical_constraints.md
-- **数据缺口**：SeeYA完整规格、JBD功耗、高折射率树脂量产状态需商务接触
+  - GitHub Issue #55: https://github.com/lion9999ly/agent-company/issues/55
+  - 参数文档: demo_outputs/specs/optical_constraints.md (追加)
+  - 测试报告: .ai-state/reports/test_seeya_20260411_1718.md
+- **修改文件**：
+  - scripts/deep_research/pipeline.py (搜索层重构)
+  - scripts/deep_research/critic.py (gateway导入)
+  - src/utils/progress_heartbeat.py (UTF-8编码)
+- **待决问题**：完整8任务测试在后台运行中
+
+---
+
+## [修复] 深度研究管道8任务完整测试 - 2026-04-11 19:55
+
+- **结果**：通过 (8/8)
+- **关键数据**：
+  - 总耗时：154.5分钟
+  - 成功任务：8/8 (100%)
+  - 新生成工具：5个 (光学仿真、成本估算等)
+  - KB提取：多条知识
+- **产出文件**：
+  - GitHub Issue #55 Comment: https://github.com/lion9999ly/agent-company/issues/55#issuecomment-4229376170
+  - 参数文档: demo_outputs/specs/optical_constraints.md (完整报告)
+  - 各任务报告: .ai-state/reports/*.md
+- **关键结论**：
+  - 方案A（激进全彩）：市场吸引力高但体验风险极大
+  - 方案B（稳健单色）：体验闭环、成本可控、推荐V1
+  - 方案C（平台演进）：V1稳健+V2预研策略
+- **P0级缺口**：供应商振动台实测数据缺失

@@ -170,6 +170,12 @@ function getSpeedLevel() {
   return speedLevel;
 }
 
+// renderAll 占位（由 M3 实现）
+function renderAll() {
+  // M3 会覆盖此函数
+  console.log('[M2] renderAll 占位调用');
+}
+
 // 导出到 window
 window.MODE = MODE;
 window.PRIORITY = PRIORITY;
@@ -182,3 +188,4 @@ window.emitEvent = emitEvent;
 window.emitWarning = emitWarning;
 window.setSpeed = setSpeed;
 window.getSpeedLevel = getSpeedLevel;
+window.renderAll = renderAll;

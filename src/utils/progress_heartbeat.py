@@ -1,7 +1,7 @@
 """
 @description: 长任务进度心跳 — 统一接口，支持日志+飞书推送
 @dependencies: pathlib, datetime, json
-@last_modified: 2026-03-26
+@last_modified: 2026-04-11
 
 用法:
     from src.utils.progress_heartbeat import ProgressHeartbeat
@@ -13,11 +13,21 @@
     hb.finish("扩展完成")
 """
 
+import sys
+import io
 import time
 import json
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, Callable
+
+# Windows UTF-8 输出修复
+if sys.platform == 'win32' and not isinstance(sys.stdout, io.TextIOWrapper):
+    try:
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+    except Exception:
+        pass
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 HEARTBEAT_DIR = ROOT / ".ai-state"
@@ -74,7 +84,7 @@ class ProgressHeartbeat:
         progress_pct = f" ({self.current * 100 // self.total}%)" if self.total > 0 else ""
 
         # 每条简短日志
-        status = "✓" if success else "✗"
+        status = "[OK]" if success else "[X]"
         print(f"  [{self.task_name}] [{self.current}/{self.total}]{progress_pct} {status} {detail[:60]}")
 
         # 每 log_interval 条详细日志
@@ -111,7 +121,7 @@ class ProgressHeartbeat:
         elapsed_min = elapsed / 60
 
         msg = (
-            f"✅ [{self.task_name}] 完成\n"
+            f"[DONE] [{self.task_name}] 完成\n"
             f"处理: {self.current}/{self.total} | 耗时: {elapsed_min:.1f}min"
         )
         if self.errors > 0:
@@ -127,7 +137,7 @@ class ProgressHeartbeat:
         """任务异常终止"""
         elapsed = time.time() - self.start_time
         msg = (
-            f"❌ [{self.task_name}] 异常终止\n"
+            f"[ERR] [{self.task_name}] 异常终止\n"
             f"进度: {self.current}/{self.total} | 耗时: {elapsed / 60:.1f}min\n"
             f"错误: {error_msg[:200]}"
         )
