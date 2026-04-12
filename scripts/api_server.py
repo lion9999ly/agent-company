@@ -239,6 +239,7 @@ async def exec_endpoint(request: ExecRequest):
                 timeout=timeout_sec,
                 cwd=work_dir,
                 encoding="utf-8",
+                shell=True,  # Windows 上执行 .cmd 文件需要 shell=True
             )
             return result
 
