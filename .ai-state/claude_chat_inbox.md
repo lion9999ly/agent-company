@@ -445,21 +445,17 @@
 
 ## [配置] Windows 计划任务创建 - 2026-04-12 12:35
 
-- **结果**：⚠️ 部分完成（需手动确认 UAC）
+- **结果**：✅ 完成
 - **关键数据**：
   - 创建 `scripts/create_scheduled_task.ps1` (PowerShell 脚本)
   - 创建 `metabot/start_scheduled_tasks.bat` + `start_scheduled_tasks_hidden.vbs`
   - 创建 `metabot/import_scheduled_task.bat` (一键导入脚本)
-- **权限问题**：
-  - Register-ScheduledTask 需管理员权限
-  - schtasks /create 需管理员权限
-  - UAC 弹窗需用户手动点击"是"
-- **一键操作**：
-  - 右键 `import_scheduled_task.bat` → 以管理员身份运行
-  - 或在管理员 PowerShell 中执行：
-    ```powershell
-    powershell -ExecutionPolicy Bypass -File D:\Users\uih00653\my_agent_company\pythonProject1\scripts\create_scheduled_task.ps1
-    ```
+- **验证结果**：
+  - TaskName: Scheduled_Tasks_AutoStart
+  - State: Ready
+  - Description: Scheduled Tasks AutoStart
+  - Execute: wscript.exe
+  - Arguments: D:\Users\uih00653\metabot\start_scheduled_tasks_hidden.vbs
 - **产出文件**：
   - `scripts/create_scheduled_task.ps1`
   - `C:\Users\uih00653\metabot\import_scheduled_task.bat`
