@@ -1,0 +1,12 @@
+{
+  "title": "[AutoLearn] 头盔摄像头",
+  "domain": "components",
+  "content": "{\n  \"topic\": \"头盔摄像头的防水防雾方案\",\n  \"product\": \"头盔摄像头\",\n  \"key_specs\": [\n    {\n      \"name\": \"结构密封防水-硅橡胶密封圈邵氏硬度\",\n      \"value\": \"45±5度\",\n      \"source\": \"中低防护级\"\n    },\n    {\n      \"name\": \"结构密封防水-硅橡胶密封圈压缩量\",\n      \"value\": \"22%-28%\",\n      \"source\": \"中低防护级\"\n    },\n    {\n      \"name\": \"结构密封防水-液态硅胶密封塞插拔寿命\",\n      \"value\": \"≥1000次\",\n      \"source\": \"中低防护级\"\n    },\n    {\n      \"name\": \"结构密封防水-IPX5/IPX6性能\",\n      \"value\": \"可承受100mm/h暴雨连续喷射3小时无进水\",\n      \"source\": \"中低防护级\"\n    },\n    {\n      \"name\": \"结构密封防水-环氧灌封胶厚度\",\n      \"value\": \"≥2mm\",\n      \"source\": \"高防护级\"\n    },\n    {\n      \"name\": \"结构密封防水-IPX7性能\",\n      \"value\": \"可承受1米水深浸泡30分钟无进水\",\n      \"source\": \"高防护级\"\n    },\n    {\n      \"name\": \"结构密封防水-IPX8性能\",\n      \"value\": \"可承受30米水深浸泡24小时无进水\",\n      \"source\": \"高防护级\"\n    },\n    {\n      \"name\": \"表面涂层防水-普通款",
+  "source": "auto_learn",
+  "created_at": "2026-04-12",
+  "tags": [
+    "auto_learn",
+    "decision_blocking"
+  ],
+  "confidence": "medium"
+}

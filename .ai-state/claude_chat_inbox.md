@@ -761,3 +761,187 @@ mcp_config = {
 ```
 
 ---
+
+## [评估] smolagents (HuggingFace) 接入可行性 - 2026-04-12 11:30
+
+### 1. Tool class 接口定义
+
+**核心接口**：
+```python
+class Tool(BaseTool):
+    name: str                          # 工具名称
+    description: str                   # 工具描述
+    inputs: dict[str, dict]            # 输入参数定义
+    output_type: str                   # 输出类型
+    output_schema: dict | None         # 可选 JSON schema
+    
+    def forward(self, *args, **kwargs): # 实现具体逻辑
+        raise NotImplementedError
+    
+    def setup(self):                    # 延迟初始化
+        self.is_initialized = True
+```
+
+**代码量估算**：
+| Tool | 代码行数 | 说明 |
+|------|----------|------|
+| DoubaoSearchTool | 30-50 行 | 继承 Tool + 实现 forward() |
+| TavilySearchTool | 30-50 行 | 同上 |
+
+**结论**：接口简洁，每个 Tool **30-50 行**即可实现。
+
+---
+
+### 2. open_deep_research 示例可跑性
+
+**目录结构**：
+```
+examples/open_deep_research/
+├── run.py              # 主运行脚本（~100行）
+├── run_gaia.py         # GAIA 基准测试
+├── app.py              # Gradio UI
+├── requirements.txt    # 依赖列表
+└── scripts/            # 自定义工具
+```
+
+**能否直接跑通**：
+| 条件 | 状态 | 说明 |
+|------|------|------|
+| API Keys | ⚠️ 需配置 | `OPENAI_API_KEY`, `SERPER_API_KEY` |
+| 模型访问 | ⚠️ 受限 | 默认 o1 需要 tier-3 access |
+| 开发版安装 | ⚠️ 需要 | `pip install -e ../../.[dev]` |
+| 自定义工具 | ⚠️ 需要 | scripts/ 目录必须完整 clone |
+
+**建议改用模型**：
+```python
+# Azure OpenAI
+model = LiteLLMModel(model_id="azure/gpt-4o", api_base="...", api_key="...")
+
+# 豆包
+model = LiteLLMModel(model_id="doubao/ep-xxx", api_base="https://ark.cn-beijing.volces.com/api/v3")
+```
+
+---
+
+### 3. LiteLLM 对接能力
+
+**LiteLLMModel 类**：
+```python
+class LiteLLMModel(ApiModel):
+    model_id: str           # 模型标识
+    api_base: str | None    # API URL
+    api_key: str | None     # API key
+    custom_role_conversions: dict  # 角色转换
+```
+
+**支持的提供商**：
+| 提商商 | model_id 格式 | 示例 |
+|--------|---------------|------|
+| Azure OpenAI | `azure/<deployment>` | `azure/o3-deep-research` |
+| 火山引擎/豆包 | 自定义 api_base | `api_base="https://ark.cn-beijing.volces.com/api/v3"` |
+| Gemini | `gemini/<model>` | `gemini/gemini-2.5-flash` |
+| Anthropic | `anthropic/<model>` | `anthropic/claude-3-5-sonnet` |
+
+**结论**：**Azure OpenAI、豆包、Gemini 都可以接入**，通过 LiteLLM 统一接口。
+
+---
+
+### 4. 后处理 Hook 可行性
+
+**smolagents 输出结构**：
+```python
+@dataclass
+class RunResult:
+    output: Any | None
+    state: Literal["success", "max_steps_error"]
+    steps: list[dict]
+    token_usage: TokenUsage | None
+    timing: Timing
+
+@dataclass
+class ActionStep(MemoryStep):
+    step_number: int
+    model_output: str | list[dict] | None
+    tool_calls: list[ToolCall] | None
+    observations: str | None
+    is_final_answer: bool = False
+```
+
+**step_callbacks 机制**：
+```python
+# Agent 初始化注册回调
+agent = CodeAgent(
+    tools=[...],
+    model=model,
+    step_callbacks=[critic_hook, kb_insert_hook],
+    final_answer_checks=[validate_answer],
+)
+
+# 回调函数签名
+def critic_hook(memory_step: ActionStep, agent=None):
+    if memory_step.is_final_answer:
+        result = run_critic_evaluation(memory_step.action_output)
+        if result.rating == "P0":
+            raise AgentError("Critic blocked output")
+```
+
+**接入方案**：
+```python
+from scripts.deep_research.critic import run_critic_evaluation
+from scripts.deep_research.kb_manager import insert_to_kb
+
+def critic_hook(memory_step, agent=None):
+    """Critic 评审 hook"""
+    if memory_step.is_final_answer:
+        result = run_critic_evaluation(memory_step.action_output)
+        if result.rating == "P0":
+            raise AgentError("Critic blocked")
+
+def kb_insert_hook(memory_step, agent=None):
+    """KB 入库 hook"""
+    if memory_step.is_final_answer:
+        insert_to_kb(
+            query=agent.memory.steps[0].task,
+            answer=memory_step.action_output,
+            sources=extract_sources(memory_step),
+        )
+```
+
+**结论**：**可以直接接入**，step_callbacks 和 final_answer_checks 完善。
+
+---
+
+### 5. Windows 兼容性
+
+**已知 Issues**：
+| Issue | 状态 | 说明 |
+|-------|------|------|
+| #142 uvloop | ✅ 已修复 | v1.9.2+ LiteLLM 不强制依赖 uvloop |
+| #572 importlib | ✅ 已修复 | v1.8.0+ prompts 目录加载正确 |
+| #832 ChromaDB | ⚠️ Open | batch_size 问题（非核心依赖） |
+
+**潜在风险**：
+- Docker/E2B Executor：沙箱执行需要 Docker Desktop
+- 文件路径：内部用 `pathlib.Path`，兼容
+
+**结论**：**Windows 兼容性已基本解决**，建议使用 v1.13+。
+
+---
+
+### 综合评估
+
+| 维度 | 评分 | 说明 |
+|------|------|------|
+| Tool 接口简洁度 | 9/10 | 30-50 行即可实现 |
+| LiteLLM 对接 | 10/10 | Azure/豆包/Gemini 全覆盖 |
+| 后处理 Hook | 8/10 | step_callbacks 完善 |
+| Windows 兼容 | 7/10 | 主要问题已修复 |
+| 文档完善度 | 8/10 | README 清晰 |
+
+**接入建议**：
+1. 使用 `LiteLLMModel` 统一对接 Azure/豆包
+2. 通过 `step_callbacks` 接入 Critic 和 KB 入库
+3. 自定义 SearchTool 约 80-100 行代码
+4. Windows 使用最新版本（v1.13+）
+
+---
