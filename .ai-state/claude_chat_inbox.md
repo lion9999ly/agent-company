@@ -528,3 +528,236 @@ python -m openspace.mcp_server --transport sse --port 8080
   - CC → OpenSpace MCP → LiteLLM → 各 provider
 
 ---
+
+## [深度评估] open_deep_research 可扩展性分析 - 2026-04-12 11:15
+
+### 1. 搜索层架构分析
+
+#### 核心文件
+- `src/open_deep_research/configuration.py` - SearchAPI Enum 定义
+- `src/open_deep_research/utils.py` - get_search_tool(), get_all_tools()
+
+#### SearchAPI 定义（硬编码）
+```python
+class SearchAPI(Enum):
+    ANTHROPIC = "anthropic"
+    OPENAI = "openai"
+    TAVILY = "tavily"
+    NONE = "none"
+```
+
+#### get_search_tool() 实现（硬编码路由）
+```python
+async def get_search_tool(search_api: SearchAPI):
+    if search_api == SearchAPI.ANTHROPIC:
+        return [{"type": "web_search_20250305", "name": "web_search"}]
+    elif search_api == SearchAPI.OPENAI:
+        return [{"type": "web_search_preview"}]
+    elif search_api == SearchAPI.TAVILY:
+        search_tool = tavily_search  # @tool decorated function
+        return [search_tool]
+    elif search_api == SearchAPI.NONE:
+        return []
+```
+
+#### 可插拔性评估：**不可插拔**
+
+| 方面 | 分析 |
+|------|------|
+| Enum 扩展 | ❌ 需修改 SearchAPI Enum（核心文件） |
+| 工具注册 | ❌ 需修改 get_search_tool() 函数体 |
+| MCP 扩展 | ✅ 可通过 MCPConfig 新增外部工具（不改核心） |
+
+#### 新增 doubao 中文搜索的工作量
+
+**方案A：修改核心代码（不推荐）**
+```python
+# configuration.py - 新增 Enum 值
+class SearchAPI(Enum):
+    DOUBAO = "doubao"  # 新增
+
+# utils.py - 新增分支
+elif search_api == SearchAPI.DOUBAO:
+    doubao_tool = doubao_search  # 需实现 @tool 函数
+    return [doubao_tool]
+```
+
+**工作量：中（2-8h）** - 需实现 doubao_search @tool 函数 + 修改2个核心文件
+
+**方案B：通过 MCP 接入 doubao（推荐）**
+```yaml
+mcp_config:
+  url: "http://localhost:9300/mcp"  # 我们的 Python 服务
+  tools: ["doubao_search"]
+```
+
+**工作量：小（<2h）** - 仅配置 MCP endpoint
+
+---
+
+### 2. 模型层分析
+
+#### 核心调用方式
+```python
+from langchain.chat_models import init_chat_model
+
+configurable_model = init_chat_model(
+    configurable_fields=("model", "max_tokens", "api_key"),
+)
+
+# 使用时
+model = configurable_model.with_config({
+    "model": configurable.research_model,  # "openai:gpt-4.1" 格式
+    "api_key": get_api_key_for_model(model_name, config),
+})
+```
+
+#### model 字符串格式
+```
+"openai:gpt-4.1-mini"
+"anthropic:claude-sonnet-4"
+"google:gemini-2.5-flash"
+```
+
+#### LiteLLM 兼容性：**需要适配层**
+
+| 问题 | 分析 |
+|------|------|
+| 格式差异 | LiteLLM 使用 `azure/gpt-5.4`，LangChain 使用 `openai:gpt-4.1` |
+| init_chat_model | 不支持 LiteLLM provider 名称 |
+| 解决方案 | 写一个 LiteLLM → LangChain wrapper |
+
+#### LiteLLM wrapper 实现思路
+```python
+from litellm import completion
+from langchain_core.language_models import BaseChatModel
+
+class LiteLLMChatModel(BaseChatModel):
+    def _generate(self, messages, ...):
+        response = completion(model=self.model, messages=messages)
+        return AIMessage(content=response.choices[0].message.content)
+```
+
+**工作量：中（2-8h）** - wrapper + 测试
+
+---
+
+### 3. 输出格式分析
+
+#### open_deep_research 输出
+```python
+# AgentState 定义
+class AgentState(MessagesState):
+    final_report: str  # markdown 格式字符串
+    notes: list[str]   # 研究笔记列表
+```
+
+#### final_report_generation 输出
+```python
+return {
+    "final_report": final_report.content,  # AIMessage.content
+    "messages": [final_report],
+}
+```
+
+#### KB 入库能力：**缺失**
+
+| 方面 | open_deep_research | 我们的 pipeline.py |
+|------|-------------------|-------------------|
+| KB 入库 | ❌ 无 | ✅ add_knowledge(), add_report() |
+| 结构化提取 | ❌ 无 | ✅ extract_structured_data() |
+| domain/tags | ❌ 无 | ✅ domain, tags, confidence |
+
+#### 对接我们的 KB 流程
+
+**方案：后处理 hook**
+```python
+# 在 final_report_generation 后新增节点
+async def kb_extraction_node(state: AgentState, config):
+    report = state["final_report"]
+    # 调用我们的 KB 提取逻辑
+    entries = extract_knowledge_from_report(report)
+    for entry in entries:
+        add_knowledge(**entry)
+    return state
+```
+
+**工作量：中（2-8h）** - 新增节点 + 提取逻辑迁移
+
+---
+
+### 4. 我们独有能力补齐工作量
+
+| 能力 | open_deep_research 状态 | 补齐方案 | 工作量 |
+|------|------------------------|----------|--------|
+| doubao 中文搜索 | ❌ 硬编码 Enum | MCP 接入 | **小**（<2h） |
+| KB 提取入库 | ❌ 无此功能 | 后处理节点 | **中**（2-8h） |
+| SearchRouter 分流 | ❌ 无此设计 | 保留自建 SearchRouter | **大**（>8h） |
+| 多模型摘要 | ✅ 已有（4角色） | 直接用 | **无** |
+| 五层管道 | ⚠️ 架构不同（LangGraph） | 重构适配 | **大**（>8h） |
+| Agent 辩论 | ❌ 无此功能 | 新增节点 | **中**（2-8h） |
+| Critic P0/P1/P2 | ⚠️ 有评审但无分级 | 修改 prompts | **中**（2-8h） |
+
+#### 总补齐工作量：**大（>16h）**
+
+---
+
+### 5. Fork vs 自建长期成本对比
+
+| 维度 | Fork open_deep_research | 保留自建 |
+|------|------------------------|----------|
+| **功能更新** | ✅ 上游持续迭代（LangChain 官方维护） | ❌ 需自研 |
+| **Bug 修复** | ✅ 上游社区修复 | ❌ 需自修 |
+| **Merge 成本** | ❌ 每次上游更新需 Merge 冲突 | ✅ 无 Merge |
+| **架构适配** | ❌ 需适配 LangGraph 架构 | ✅ 完全控制 |
+| **搜索层扩展** | ❌ 需改核心代码或 MCP | ✅ SearchRouter 可插拔 |
+| **KB 入库** | ❌ 需后处理 hook | ✅ 已有完善流程 |
+| **模型扩展** | ⚠️ 需 LiteLLM wrapper | ✅ 已有 model_gateway |
+
+#### 关键决策因素
+
+1. **搜索层差异是致命伤**
+   - open_deep_research 搜索层**硬编码**
+   - 我们的 SearchRouter 是**可插拔设计**
+   - doubao 中文优先是我们核心能力，fork 后需大改
+
+2. **LangGraph 架构**
+   - open_deep_research 是 LangGraph 状态机
+   - 我们的五层管道是 ThreadPoolExecutor 并发
+   - 架构迁移成本 >16h
+
+3. **上游同步成本**
+   - LangChain 官方频繁更新
+   - 每 2-3 周 Merge 冲突处理
+   - 长期成本 > 自建维护
+
+#### 结论：**保留自建，借鉴架构**
+
+| 推荐方案 | 原因 |
+|----------|------|
+| ✅ 保留自建 | 搜索层 + KB 入库 + Agent 辩论都是核心能力 |
+| ⚠️ 借鉴架构 | LangGraph 状态机、MCP 工具扩展 |
+| ❌ 不 Fork | 搜索层硬编码 + Merge 成本 > 自建成本 |
+
+#### 借鉴建议
+
+```python
+# 1. 借鉴 LangGraph 状态机设计
+class ResearchState(TypedDict):
+    messages: list[Message]
+    notes: Annotated[list[str], operator.add]
+    final_report: str
+
+# 2. 借鉴 MCP 工具扩展
+mcp_config = {
+    "url": "http://localhost:9300/mcp",
+    "tools": ["doubao_search", "kb_extract"]
+}
+
+# 3. 保留我们的核心优势
+- SearchRouter 类（可插拔搜索）
+- KB 入库流程（add_knowledge）
+- Agent 辩论机制
+```
+
+---
