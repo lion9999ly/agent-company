@@ -487,6 +487,37 @@
 
 ---
 
+## [修复] smolagents step_callbacks 注册 - 2026-04-12 12:45
+
+- **结果**：✅ 通过
+- **问题**：原实现未正确使用 CallbackRegistry，hooks 未触发
+- **关键发现**：
+  - smolagents v1.24.0 使用 `CallbackRegistry` 类管理 callbacks
+  - 支持 dict 方式注册：`{ActionStep: [hooks], FinalAnswerStep: [hooks], PlanningStep: [hooks]}`
+  - ActionStep 无 `is_final_answer` 属性，需用 `isinstance(memory_step, FinalAnswerStep)` 判断
+- **修复内容**：
+  - 导入 `FinalAnswerStep`, `PlanningStep` 类型
+  - 使用 dict 方式注册 step_callbacks
+  - 修改 hooks 使用 `isinstance` 判断步骤类型
+  - 添加 `hook_calls` 全局计数器跟踪调用
+  - 添加 `timing_hook` 记录每步耗时
+- **Hook 统计**：
+  - ActionStep: 3 hooks (critic, kb_insert, timing)
+  - FinalAnswerStep: 2 hooks (critic, kb_insert)
+  - PlanningStep: 1 hook (critic)
+- **测试验证**：
+  - Mock ActionStep → hook_calls['action_steps']=1 ✓
+  - Mock FinalAnswerStep → hook_calls['final_answers']=1 ✓
+  - 完整运行 "2+2" → hook_stats={'action_steps':1, 'final_answers':1, 'planning_steps':0} ✓
+- **产出文件**：
+  - `scripts/smolagents_research/run_research.py` (重构)
+  - `scripts/smolagents_research/test_hooks.py` (测试脚本)
+- **后续对接**：
+  - critic_hook → scripts/deep_research/critic.py (P0/P1/P2 评审)
+  - kb_insert_hook → knowledge_base 入库逻辑
+
+---
+
 ## [轮子检查] LiteLLM (BerriAI/litellm) - 2026-04-12 10:45
 
 - **对标组件**：`model_gateway/` 目录 + `model_registry.yaml`
