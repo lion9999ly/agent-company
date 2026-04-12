@@ -66,7 +66,6 @@ class ExecRequest(BaseModel):
     """直接执行端点请求模型"""
     prompt: str
     workingDirectory: Optional[str] = None
-    maxTurns: Optional[int] = 10
     timeoutSeconds: Optional[int] = 120
 
 
@@ -214,13 +213,11 @@ async def exec_endpoint(request: ExecRequest):
     # Claude CLI 绝对路径（Windows 上需要 .cmd 扩展名）
     CLAUDE_CLI_PATH = os.getenv("CLAUDE_EXECUTABLE_PATH", "C:/Users/uih00653/nodejs/claude.cmd")
 
-    # 构建 CC 命令（工作目录通过 subprocess.cwd 控制，无需 CLI 参数）
+    # 构建 CC 命令（验证过的最小参数组合）
     claude_cmd = [
         CLAUDE_CLI_PATH,
         "-p", request.prompt,
-        "--max-turns", str(request.maxTurns),
-        "--dangerously-skip-permissions",  # 绕过所有权限确认
-        "--output-format", "json",  # json 格式输出，无需 --verbose
+        "--dangerously-skip-permissions",
     ]
 
     timeout_sec = request.timeoutSeconds or 120
@@ -245,8 +242,8 @@ async def exec_endpoint(request: ExecRequest):
         with ThreadPoolExecutor(max_workers=1) as executor:
             result = await loop.run_in_executor(executor, run_claude)
 
-        # 解析输出
-        output_text = result.stdout
+        # 解析输出（纯文本格式）
+        output_text = result.stdout.strip()
         error_text = result.stderr
 
         if result.returncode != 0:
@@ -260,33 +257,11 @@ async def exec_endpoint(request: ExecRequest):
                 }
             )
 
-        # 提取最终结果（从 stream-json 输出中解析）
-        final_result = ""
-        try:
-            # stream-json 格式每行一个 JSON 对象
-            for line in output_text.strip().split("\n"):
-                if line.startswith("{"):
-                    try:
-                        data = json.loads(line)
-                        if data.get("type") == "result":
-                            final_result = data.get("result", "")
-                        elif data.get("type") == "assistant":
-                            content = data.get("message", {}).get("content", [])
-                            for block in content:
-                                if block.get("type") == "text":
-                                    final_result = block.get("text", "")
-                    except json.JSONDecodeError:
-                        continue
-        except Exception as parse_err:
-            logger.warning(f"Failed to parse stream output: {parse_err}")
-            final_result = output_text  # 回退到原始输出
-
-        logger.info(f"Exec completed successfully: result_length={len(final_result)}")
+        logger.info(f"Exec completed successfully: result_length={len(output_text)}")
 
         return JSONResponse(content={
             "success": True,
-            "result": final_result,
-            "rawOutput": output_text,
+            "result": output_text,
             "returncode": result.returncode,
         })
 
