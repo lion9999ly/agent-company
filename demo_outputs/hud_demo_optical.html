@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Smart Riding HUD Demo - Optical Modes</title>
+<style>
+/* ============================================================
+   M1: Skeleton - CSS Variables + Layout + Optical Modes
+   ============================================================ */
+
+:root {
+  --bg: #050607;
+  --bg-zone: rgba(255,255,255,0.04);
+  --bg-zone-border: rgba(255,255,255,0.08);
+  --c-speed: #ffffff;
+  --c-nav: #4A90E2;
+  --c-warn: #FF3B30;
+  --c-mesh: #5AC8FA;
+  --c-music: #AF52DE;
+  --c-call: #34C759;
+  --c-dvr: #FF9500;
+  --c-text: #ffffff;
+  --c-muted: rgba(255,255,255,0.58);
+  --c-dim: rgba(255,255,255,0.18);
+  --s-font-xl: clamp(32px, 4vw, 48px);
+  --s-font-lg: clamp(18px, 2vw, 24px);
+  --s-font-md: clamp(14px, 1.4vw, 18px);
+  --s-font-sm: clamp(11px, 1vw, 14px);
+  --g-zone-pad: clamp(12px, 1.5vw, 20px);
+  --g-zone-gap: 8px;
+  --canvas-w: 1280px;
+  --canvas-h: 720px;
+}
+
+/* Single-green waveguide theme (mode C) */
+.theme-green {
+  --bg: #010a02;
+  --bg-zone: rgba(0,255,0,0.04);
+  --bg-zone-border: rgba(0,255,0,0.08);
+  --c-speed: #8CFF7A;
+  --c-nav: #6dff6d;
+  --c-warn: #ccff66;
+  --c-mesh: #7dff9d;
+  --c-music: #56d856;
+  --c-call: #8fff8f;
+  --c-dvr: #a0ff60;
+  --c-text: #9dff9d;
+  --c-muted: rgba(157,255,157,0.58);
+  --c-dim: rgba(157,255,157,0.18);
+}
+
+/* Base styles */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--c-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+  width: var(--canvas-w);
+  height: var(--canvas-h);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#hud-root {
+  position: relative;
+  width: var(--canvas-w);
+  height: var(--canvas-h);
+}
+
+/* Warning flash animation */
+@keyframes warn-flash {
+  0%, 100% { border-color: var(--c-warn); box-shadow: 0 0 20px var(--c-warn); }
+  50% { border-color: transparent; box-shadow: 0 0 5px var(--c-warn); }
+}
+.warn-flash {
+  animation: warn-flash 0.5s infinite;
+  border-width: 3px;
+}
+
+/* Zone base style */
+.hud-zone {
+  position: absolute;
+  background: var(--bg-zone);
+  border: 1px solid var(--bg-zone-border);
+  border-radius: 12px;
+  padding: var(--g-zone-pad);
+  display: flex;
+  flex-direction: column;
+  gap: var(--g-zone-gap);
+  transition: opacity 0.3s, display 0.3s;
+}
+.zone-label {
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+  letter-spacing: 1px;
+}
+.zone-content {
+  font-size: var(--s-font-lg);
+  color: var(--c-text);
+}
+.zone-value {
+  font-size: var(--s-font-xl);
+  font-weight: 700;
+}
+
+/* ============================================================
+   Optical Mode A: FreeForm Prism (38° FOV, single-eye, centered)
+   ============================================================ */
+.optics-freeform #hud-viewport {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 840px;
+  height: 480px;
+  border-radius: 40px;
+  overflow: hidden;
+  background: transparent;
+}
+.optics-freeform #hud-mask {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 420px 240px at center, transparent 70%, black 71%);
+  pointer-events: none;
+  z-index: 100;
+}
+.optics-freeform #center-clear {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 200px;
+}
+.optics-freeform #zone-lt {
+  top: 20px; left: 20px; width: 180px; height: 120px;
+}
+.optics-freeform #zone-rt {
+  top: 20px; right: 20px; width: 180px; height: 120px;
+}
+.optics-freeform #zone-lb {
+  bottom: 20px; left: 20px; width: 180px; height: 100px;
+}
+.optics-freeform #zone-rb {
+  bottom: 20px; right: 20px; width: 180px; height: 100px;
+}
+.optics-freeform #bottom-bar {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 700px; height: 30px;
+  background: var(--bg-zone);
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+}
+
+/* ============================================================
+   Optical Mode B/C: Waveguide (35° FOV, dual-eye, side windows)
+   ============================================================ */
+.optics-wg-color #hud-viewport-left,
+.optics-wg-green #hud-viewport-left {
+  position: absolute;
+  left: 40px;
+  top: 120px;
+  width: 360px;
+  height: 480px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: transparent;
+  border: 1px solid var(--bg-zone-border);
+}
+.optics-wg-color #hud-viewport-right,
+.optics-wg-green #hud-viewport-right {
+  position: absolute;
+  right: 40px;
+  top: 120px;
+  width: 360px;
+  height: 480px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: transparent;
+  border: 1px solid var(--bg-zone-border);
+}
+.optics-wg-color #hud-center-gap,
+.optics-wg-green #hud-center-gap {
+  position: absolute;
+  left: 400px;
+  width: 480px;
+  height: 100%;
+  border-left: 1px dashed rgba(255,255,255,0.1);
+  border-right: 1px dashed rgba(255,255,255,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--c-dim);
+  font-size: var(--s-font-sm);
+}
+.optics-wg-color #hud-viewport-left #zone-lt,
+.optics-wg-green #hud-viewport-left #zone-lt {
+  position: absolute;
+  top: 20px; left: 20px; right: 20px; height: 140px;
+}
+.optics-wg-color #hud-viewport-left #zone-lb,
+.optics-wg-green #hud-viewport-left #zone-lb {
+  position: absolute;
+  bottom: 20px; left: 20px; right: 20px; height: 120px;
+}
+.optics-wg-color #hud-viewport-right #zone-rt,
+.optics-wg-green #hud-viewport-right #zone-rt {
+  position: absolute;
+  top: 20px; left: 20px; right: 20px; height: 120px;
+}
+.optics-wg-color #hud-viewport-right #zone-rb,
+.optics-wg-green #hud-viewport-right #zone-rb {
+  position: absolute;
+  bottom: 20px; left: 20px; right: 20px; height: 140px;
+}
+.optics-wg-color #bottom-bar,
+.optics-wg-green #bottom-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 400px;
+  width: 480px;
+  height: 40px;
+  background: var(--bg-zone);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+}
+
+/* Hide incompatible elements per mode */
+.optics-freeform #hud-viewport-left,
+.optics-freeform #hud-viewport-right,
+.optics-freeform #hud-center-gap { display: none; }
+.optics-wg-color #hud-viewport,
+.optics-wg-green #hud-viewport,
+.optics-wg-color #hud-mask,
+.optics-wg-green #hud-mask { display: none; }
+
+/* Timeline */
+#timeline {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 40px;
+  background: var(--bg-zone);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 4px;
+}
+#timeline-progress {
+  width: 0%;
+  height: 4px;
+  background: var(--c-nav);
+  border-radius: 2px;
+  transition: width 0.5s;
+}
+#timeline-label {
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+}
+
+/* Sandbox panel */
+#sandbox {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  border-left: 1px solid var(--bg-zone-border);
+  padding: 20px;
+  display: none;
+  overflow-y: auto;
+  z-index: 200;
+}
+#sandbox.active { display: block; }
+.sandbox-group {
+  margin-bottom: 16px;
+}
+.sandbox-group h4 {
+  font-size: var(--s-font-md);
+  color: var(--c-muted);
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--bg-zone-border);
+  padding-bottom: 4px;
+}
+.sandbox-group button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  background: var(--bg-zone);
+  border: 1px solid var(--bg-zone-border);
+  border-radius: 6px;
+  color: var(--c-text);
+  font-size: var(--s-font-sm);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.sandbox-group button:hover {
+  background: var(--bg-zone-border);
+}
+.sandbox-group button:active {
+  background: var(--c-nav);
+}
+
+/* Boot overlay */
+#boot-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 300;
+  transition: opacity 0.5s;
+}
+#boot-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+#boot-logo {
+  font-size: var(--s-font-xl);
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+#boot-status {
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+  margin-top: 20px;
+}
+
+/* Optical mode indicator */
+#optics-indicator {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--s-font-sm);
+  color: var(--c-dim);
+  background: var(--bg-zone);
+  padding: 4px 12px;
+  border-radius: 4px;
+  z-index: 150;
+}
+
+/* Speed color levels */
+.speed-s0 { color: var(--c-speed); }
+.speed-s1 { color: var(--c-speed); }
+.speed-s2 { color: var(--c-nav); }
+.speed-s3 { color: var(--c-warn); }
+
+/* Info colors by type */
+.nav-info { color: var(--c-nav); }
+.warn-info { color: var(--c-warn); }
+.mesh-info { color: var(--c-mesh); }
+.music-info { color: var(--c-music); }
+.call-info { color: var(--c-call); }
+.dvr-info { color: var(--c-dvr); }
+
+/* Mode transition */
+.optics-transition {
+  transition: opacity 0.5s;
+}
+</style>
+</head>
+<body>
+
+<!-- M1: Skeleton HTML -->
+<div id="hud-root">
+  <!-- Optical Mode A: FreeForm viewport -->
+  <div id="hud-viewport">
+    <div id="hud-mask"></div>
+    <div id="zone-lt" class="hud-zone">
+      <div class="zone-label">SPEED</div>
+      <div class="zone-content">
+        <span class="zone-value" id="speed-value">0</span>
+        <span class="zone-unit">km/h</span>
+      </div>
+      <div class="zone-extra" id="zone-lt-extra"></div>
+    </div>
+    <div id="zone-rt" class="hud-zone">
+      <div class="zone-label">STATUS</div>
+      <div class="zone-content" id="zone-rt-content"></div>
+    </div>
+    <div id="zone-lb" class="hud-zone">
+      <div class="zone-label">NOTIFY</div>
+      <div class="zone-content" id="zone-lb-content"></div>
+    </div>
+    <div id="zone-rb" class="hud-zone">
+      <div class="zone-label">INFO</div>
+      <div class="zone-content" id="zone-rb-content"></div>
+    </div>
+    <div id="center-clear"></div>
+  </div>
+
+  <!-- Optical Mode B/C: Waveguide dual-eye viewports -->
+  <div id="hud-viewport-left">
+    <div id="hud-center-gap">ROAD VIEW</div>
+    <!-- Zones moved here dynamically for waveguide mode -->
+  </div>
+  <div id="hud-viewport-right">
+    <!-- Zones moved here dynamically for waveguide mode -->
+  </div>
+
+  <div id="bottom-bar">
+    <span id="bottom-time">12:00</span>
+    <span id="bottom-mileage">0.0 km</span>
+    <span id="bottom-status">IDLE</span>
+  </div>
+
+  <div id="timeline">
+    <div id="timeline-progress"></div>
+    <span id="timeline-label">No scenario</span>
+  </div>
+
+  <div id="optics-indicator">FreeForm Prism 38°</div>
+
+  <!-- M5: Sandbox panel -->
+  <div id="sandbox">
+    <section data-group="optics" class="sandbox-group">
+      <h4>OPTICAL MODE</h4>
+      <button data-event="optics-freeform">FreeForm Prism (38°)</button>
+      <button data-event="optics-wg-color">Color Waveguide (35°)</button>
+      <button data-event="optics-wg-green">Green Waveguide (35°)</button>
+    </section>
+    <section data-group="adas" class="sandbox-group">
+      <h4>ADAS WARNING</h4>
+      <button data-event="warn-front">Front Collision (FCW)</button>
+      <button data-event="warn-left">Left Blind Spot (BSD)</button>
+      <button data-event="warn-right">Right Dooring</button>
+    </section>
+    <section data-group="comm" class="sandbox-group">
+      <h4>COMMUNICATION</h4>
+      <button data-event="call-incoming">Incoming Call</button>
+      <button data-event="call-end">End Call</button>
+    </section>
+    <section data-group="media" class="sandbox-group">
+      <h4>MEDIA</h4>
+      <button data-event="music-play">Play Music</button>
+      <button data-event="music-pause">Pause Music</button>
+    </section>
+    <section data-group="nav" class="sandbox-group">
+      <h4>NAVIGATION</h4>
+      <button data-event="nav-start">Start Navigation</button>
+      <button data-event="nav-end">End Navigation</button>
+      <button data-event="nav-turn-left">Turn Left</button>
+      <button data-event="nav-turn-right">Turn Right</button>
+    </section>
+    <section data-group="mesh" class="sandbox-group">
+      <h4>MESH GROUP</h4>
+      <button data-event="mesh-join">Join Group</button>
+      <button data-event="mesh-leave">Leave Group</button>
+    </section>
+    <section data-group="dvr" class="sandbox-group">
+      <h4>DVR</h4>
+      <button data-event="dvr-start">Start Recording</button>
+      <button data-event="dvr-stop">Stop Recording</button>
+    </section>
+    <section data-group="system" class="sandbox-group">
+      <h4>SYSTEM</h4>
+      <button data-event="speed-set-0">Speed: 0</button>
+      <button data-event="speed-set-30">Speed: 30</button>
+      <button data-event="speed-set-60">Speed: 60</button>
+      <button data-event="speed-set-100">Speed: 100</button>
+      <button data-event="speed-set-120">Speed: 120</button>
+      <button data-event="reset">Reset All</button>
+    </section>
+    <section data-group="scenarios" class="sandbox-group">
+      <h4>SCENARIOS</h4>
+      <button data-event="scenario-commute">Commute (45s)</button>
+      <button data-event="scenario-emergency">Emergency (40s)</button>
+      <button data-event="scenario-group">Group Ride (50s)</button>
+      <button data-event="scenario-pause">Pause</button>
+      <button data-event="scenario-resume">Resume</button>
+    </section>
+  </div>
+
+  <!-- Boot overlay -->
+  <div id="boot-overlay">
+    <div id="boot-logo">SMART HUD</div>
+    <div id="boot-status">Initializing...</div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   M2: State Machine - 7 Modes + Priority Stack
+   ============================================================ */
+
+// State enumeration
+const MODE = {
+  CRUISE: 'cruise',
+  NAV: 'nav',
+  CALL: 'call',
+  MUSIC: 'music',
+  MESH: 'mesh',
+  WARN: 'warn',
+  DVR: 'dvr',
+};
+
+// Priority: WARN highest, CRUISE lowest
+const PRIORITY = {
+  cruise: 0,
+  dvr: 1,
+  music: 2,
+  mesh: 3,
+  nav: 4,
+  call: 5,
+  warn: 6,
+};
+
+// Optical mode enumeration
+const OPTICS = {
+  FREEFORM: 'freeform',
+  WAVEGUIDE_COLOR: 'wg_color',
+  WAVEGUIDE_GREEN: 'wg_green',
+};
+
+// Internal state
+let _currentMode = 'cruise';
+let _modeStack = [];
+let _currentSpeed = 0;
+let _speedLevel = 'S0';
+let _currentOptics = 'freeform';
+let _scenarioRunning = null;
+let _scenarioTime = 0;
+let _scenarioTimer = null;
+let _lastEventData = {};
+let _warningFlashTimer = null;
+
+// Expose to window
+window.MODE = MODE;
+window.PRIORITY = PRIORITY;
+window.OPTICS = OPTICS;
+window._lastEventData = _lastEventData;
+
+// Get current mode
+function getMode() {
+  return _currentMode;
+}
+window.getMode = getMode;
+
+// Get priority of a mode
+function getPriority(mode) {
+  if (PRIORITY[mode] === undefined) return -1;
+  return PRIORITY[mode];
+}
+window.getPriority = getPriority;
+
+// Set mode with priority check
+function setMode(mode) {
+  if (!MODE[Object.keys(MODE).find(k => MODE[k] === mode)]) {
+    console.warn('Invalid mode:', mode);
+    return false;
+  }
+  // cruise always succeeds and clears stack
+  if (mode === 'cruise') {
+    _modeStack = [];
+    _currentMode = 'cruise';
+    renderAll();
+    return true;
+  }
+  // Priority check
+  if (PRIORITY[mode] < PRIORITY[_currentMode]) {
+    console.warn('Priority too low:', mode, 'current:', _currentMode);
+    return false;
+  }
+  // Push current mode to stack if different
+  if (_currentMode !== mode) {
+    _modeStack.push(_currentMode);
+  }
+  _currentMode = mode;
+  renderAll();
+  return true;
+}
+window.setMode = setMode;
+
+// Pop mode from stack
+function popMode() {
+  if (_modeStack.length > 0) {
+    _currentMode = _modeStack.pop();
+  } else {
+    _currentMode = 'cruise';
+  }
+  renderAll();
+}
+window.popMode = popMode;
+
+// Emit event
+function emitEvent(event) {
+  if (!event || !event.type) return;
+  _lastEventData[event.type] = event.data || {};
+  if (event.type === 'warn') {
+    setMode('warn');
+    flashWarning(event.direction || 'front');
+  } else {
+    setMode(event.type);
+  }
+}
+window.emitEvent = emitEvent;
+
+// Emit warning with direction mapping
+function emitWarning(direction) {
+  // Validate direction parameter
+  const validDirections = ['front', 'left', 'right'];
+  if (!validDirections.includes(direction)) {
+    console.warn('Invalid warning direction:', direction);
+    direction = 'front';
+  }
+  // Store warning event data for rendering
+  _lastEventData['warn'] = { direction: direction };
+  // Set mode and trigger flash
+  setMode('warn');
+  flashWarning(direction);
+}
+window.emitWarning = emitWarning;
+
+// Flash warning in specific zones
+function flashWarning(direction) {
+  // Clear any existing warning
+  clearWarningFlash();
+
+  let zones = [];
+  if (direction === 'front') {
+    zones = ['zone-lt', 'zone-rt'];
+  } else if (direction === 'left') {
+    zones = ['zone-lb'];
+  } else if (direction === 'right') {
+    zones = ['zone-rb'];
+  }
+
+  // In waveguide mode, flash both viewports for front warning
+  if (_currentOptics !== 'freeform' && direction === 'front') {
+    const leftVP = document.getElementById('hud-viewport-left');
+    const rightVP = document.getElementById('hud-viewport-right');
+    if (leftVP) leftVP.classList.add('warn-flash');
+    if (rightVP) rightVP.classList.add('warn-flash');
+  }
+
+  zones.forEach(id => {
+    const zone = document.getElementById(id);
+    if (zone) zone.classList.add('warn-flash');
+  });
+
+  // Auto-clear after 3 seconds
+  _warningFlashTimer = setTimeout(() => {
+    clearWarningFlash();
+    popMode();
+  }, 3000);
+}
+window.flashWarning = flashWarning;
+
+// Clear warning flash
+function clearWarningFlash() {
+  if (_warningFlashTimer) {
+    clearTimeout(_warningFlashTimer);
+    _warningFlashTimer = null;
+  }
+  document.querySelectorAll('.warn-flash').forEach(el => {
+    el.classList.remove('warn-flash');
+  });
+}
+
+// Set speed with boundary check
+function setSpeed(kmh) {
+  if (kmh < 0) kmh = 0;
+  if (kmh > 300) kmh = 300;
+  _currentSpeed = kmh;
+
+  // Calculate speed level
+  if (kmh <= 30) _speedLevel = 'S0';
+  else if (kmh <= 60) _speedLevel = 'S1';
+  else if (kmh <= 100) _speedLevel = 'S2';
+  else _speedLevel = 'S3';
+
+  renderAll();
+}
+window.setSpeed = setSpeed;
+
+// Get speed level
+function getSpeedLevel() {
+  return _speedLevel;
+}
+window.getSpeedLevel = getSpeedLevel;
+
+// Set optical mode
+function setOptics(mode) {
+  if (!OPTICS[Object.keys(OPTICS).find(k => OPTICS[k] === mode)]) {
+    console.warn('Invalid optics:', mode);
+    return;
+  }
+  _currentOptics = mode;
+  applyOpticsLayout();
+  renderAll();
+  updateOpticsIndicator();
+}
+window.setOptics = setOptics;
+window.currentOptics = _currentOptics;
+
+// Apply optics layout (move zones for waveguide mode)
+function applyOpticsLayout() {
+  const body = document.body;
+  body.classList.remove('optics-freeform', 'optics-wg-color', 'optics-wg-green');
+  body.classList.add('optics-' + _currentOptics);
+
+  // Handle theme-green for waveguide green mode
+  if (_currentOptics === 'wg_green') {
+    body.classList.add('theme-green');
+  } else {
+    body.classList.remove('theme-green');
+  }
+
+  // Move zones for waveguide mode
+  const leftVP = document.getElementById('hud-viewport-left');
+  const rightVP = document.getElementById('hud-viewport-right');
+  const mainViewport = document.getElementById('hud-viewport');
+
+  const zoneLT = document.getElementById('zone-lt');
+  const zoneRT = document.getElementById('zone-rt');
+  const zoneLB = document.getElementById('zone-lb');
+  const zoneRB = document.getElementById('zone-rb');
+
+  if (_currentOptics === 'freeform') {
+    // Move zones back to main viewport
+    if (zoneLT && zoneLT.parentElement !== mainViewport) mainViewport.appendChild(zoneLT);
+    if (zoneRT && zoneRT.parentElement !== mainViewport) mainViewport.appendChild(zoneRT);
+    if (zoneLB && zoneLB.parentElement !== mainViewport) mainViewport.appendChild(zoneLB);
+    if (zoneRB && zoneRB.parentElement !== mainViewport) mainViewport.appendChild(zoneRB);
+  } else {
+    // Move zones to dual viewports
+    if (zoneLT && zoneLT.parentElement !== leftVP) leftVP.appendChild(zoneLT);
+    if (zoneLB && zoneLB.parentElement !== leftVP) leftVP.appendChild(zoneLB);
+    if (zoneRT && zoneRT.parentElement !== rightVP) rightVP.appendChild(zoneRT);
+    if (zoneRB && zoneRB.parentElement !== rightVP) rightVP.appendChild(zoneRB);
+  }
+}
+
+// Update optics indicator
+function updateOpticsIndicator() {
+  const indicator = document.getElementById('optics-indicator');
+  if (!indicator) return;
+  const labels = {
+    'freeform': 'FreeForm Prism 38°',
+    'wg_color': 'Color Waveguide 35°',
+    'wg_green': 'Green Waveguide 35°',
+  };
+  indicator.textContent = labels[_currentOptics] || _currentOptics;
+}
+
+/* ============================================================
+   M3: Renderers - DOM Updates per Mode
+   ============================================================ */
+
+function renderAll() {
+  window.currentOptics = _currentOptics;
+
+  // Direct DOM operation: update speed display
+  const speedEl = document.getElementById('speed-value');
+  if (speedEl) {
+    speedEl.textContent = _currentSpeed;
+    speedEl.className = 'zone-value speed-' + _speedLevel.toLowerCase();
+  }
+
+  // Update zone contents
+  renderSpeed();
+  renderZoneRT();
+  renderZoneLB();
+  renderZoneRB();
+  renderBottomBar();
+  applySpeedLevelVisibility();
+}
+window.renderAll = renderAll;
+
+// Render speed in zone-lt
+function renderSpeed() {
+  const zoneLT = document.getElementById('zone-lt');
+  if (!zoneLT) return;
+
+  const valueEl = zoneLT.querySelector('#speed-value') || zoneLT.querySelector('.zone-value');
+  const extraEl = zoneLT.querySelector('#zone-lt-extra') || zoneLT.querySelector('.zone-extra');
+
+  if (valueEl) {
+    valueEl.textContent = _currentSpeed;
+    // Color based on speed level
+    valueEl.className = 'zone-value speed-' + _speedLevel.toLowerCase();
+  }
+
+  if (extraEl) {
+    extraEl.textContent = '';
+    if (_currentMode === 'cruise') {
+      extraEl.textContent = 'CRUISE';
+      extraEl.className = 'zone-extra';
+      extraEl.style.color = 'var(--c-muted)';
+    } else if (_currentMode === 'warn') {
+      extraEl.textContent = 'WARNING';
+      extraEl.className = 'zone-extra warn-info';
+    }
+  }
+}
+
+// Render zone-rt (right top)
+function renderZoneRT() {
+  const zoneRT = document.getElementById('zone-rt');
+  if (!zoneRT) return;
+
+  const contentEl = zoneRT.querySelector('.zone-content') || zoneRT.querySelector('#zone-rt-content');
+  const labelEl = zoneRT.querySelector('.zone-label');
+
+  if (!contentEl) return;
+
+  contentEl.innerHTML = '';
+
+  switch (_currentMode) {
+    case 'cruise':
+      if (labelEl) labelEl.textContent = 'STATUS';
+      contentEl.innerHTML = `
+        <div style="font-size: var(--s-font-md);">
+          <span style="color: var(--c-call);">●</span> BAT 85%
+          <span style="color: var(--c-nav); margin-left: 8px;">●</span> SIG OK
+        </div>
+        <div style="font-size: var(--s-font-sm); color: var(--c-muted); margin-top: 4px;">
+          TEMP 28°C
+        </div>
+      `;
+      break;
+    case 'nav':
+      if (labelEl) labelEl.textContent = 'DISTANCE';
+      const navData = _lastEventData['nav'] || {};
+      contentEl.innerHTML = `
+        <div class="zone-value nav-info">${navData.distance || '250'}m</div>
+        <div style="font-size: var(--s-font-sm); color: var(--c-muted);">to junction</div>
+      `;
+      break;
+    case 'call':
+      if (labelEl) labelEl.textContent = 'CALLER';
+      const callData = _lastEventData['call'] || {};
+      contentEl.innerHTML = `
+        <div style="font-size: var(--s-font-lg); color: var(--c-call);">${callData.caller || 'John Doe'}</div>
+        <div style="font-size: var(--s-font-sm); color: var(--c-muted);">incoming call</div>
+      `;
+      break;
+    case 'warn':
+      if (labelEl) labelEl.textContent = 'THREAT';
+      const warnData = _lastEventData['warn'] || {};
+      const threatTypes = {
+        'front': 'FCW Collision',
+        'left': 'BSD Blind Spot',
+        'right': 'Dooring Risk',
+      };
+      contentEl.innerHTML = `
+        <div class="zone-value warn-info">${threatTypes[warnData.direction] || 'DANGER'}</div>
+        <div style="font-size: var(--s-font-sm); color: var(--c-warn);">IMMEDIATE</div>
+      `;
+      break;
+    case 'music':
+      if (labelEl) labelEl.textContent = '';
+      contentEl.innerHTML = '';
+      break;
+    case 'mesh':
+      if (labelEl) labelEl.textContent = 'TEAM';
+      const meshData = _lastEventData['mesh'] || {};
+      contentEl.innerHTML = `
+        <div style="font-size: var(--s-font-lg); color: var(--c-mesh);">${meshData.count || 3} riders</div>
+        <div style="font-size: var(--s-font-sm); color: var(--c-muted);">${meshData.distance || '1.2'}km away</div>
+      `;
+      break;
+    case 'dvr':
+      if (labelEl) labelEl.textContent = 'REC';
+      contentEl.innerHTML = `
+        <div style="font-size: var(--s-font-lg); color: var(--c-dvr);">
+          <span style="animation: warn-flash 1s infinite; color: var(--c-dvr);">●</span> REC
+        </div>
+        <div style="font-size: var(--s-font-sm); color: var(--c-muted);">00:00</div>
+      `;
+      break;
+  }
+}
+
+// Render zone-lb (left bottom)
+function renderZoneLB() {
+  const zoneLB = document.getElementById('zone-lb');
+  if (!zoneLB) return;
+
+  const contentEl = zoneLB.querySelector('.zone-content') || zoneLB.querySelector('#zone-lb-content');
+  const labelEl = zoneLB.querySelector('.zone-label');
+
+  if (!contentEl) return;
+
+  contentEl.innerHTML = '';
+
+  switch (_currentMode) {
+    case 'cruise':
+    case 'dvr':
+    case 'call':
+      if (labelEl) labelEl.textContent = 'NOTIFY';
+      contentEl.innerHTML = '';
+      break;
+    case 'nav':
+      if (labelEl) labelEl.textContent = 'TURN';
+      const navData = _lastEventData['nav'] || {};
+      const turnArrow = navData.turn === 'left' ? '←' : (navData.turn === 'right' ? '→' : '↑');
+      contentEl.innerHTML = `
+        <div class="zone-value nav-info" style="font-size: 48px;">${turnArrow}</div>
+        <div style="font-size: var(--s-font-sm); color: var(--c-muted);">${navData.turn || 'straight'}</div>
+      `;
+      break;
+    case 'music':
+      if (labelEl) labelEl.textContent = 'TRACK';
+      const musicData = _lastEventData['music'] || {};
+      contentEl.innerHTML = `
+        <div style="font-size: var(--s-font-md); color: var(--c-music);">${musicData.track || 'Ride On'}</div>
+        <div style="font-size: var(--s-font-sm); color: var(--c-muted);">${musicData.artist || 'Artist'}</div>
+      `;
+      break;
+    case 'mesh':
+      if (labelEl) labelEl.textContent = 'STATUS';
+      contentEl.innerHTML = `
+        <div style="font-size: var(--s-font-md); color: var(--c-mesh);">Connected</div>
+        <div style="font-size: var(--s-font-sm); color: var(--c-muted);">Channel 1</div>
+      `;
+      break;
+    case 'warn':
+      if (labelEl) labelEl.textContent = 'DIRECTION';
+      const warnData = _lastEventData['warn'] || {};
+      const dirLabels = {
+        'front': 'FRONT',
+        'left': 'LEFT',
+        'right': 'RIGHT',
+      };
+      contentEl.innerHTML = `
+        <div class="zone-value warn-info">${dirLabels[warnData.direction] || 'ALERT'}</div>
+      `;
+      break;
+  }
+}
+
+// Render zone-rb (right bottom)
+function renderZoneRB() {
+  const zoneRB = document.getElementById('zone-rb');
+  if (!zoneRB) return;
+
+  const contentEl = zoneRB.querySelector('.zone-content') || zoneRB.querySelector('#zone-rb-content');
+  const labelEl = zoneRB.querySelector('.zone-label');
+
+  if (!contentEl) return;
+
+  contentEl.innerHTML = '';
+
+  switch (_currentMode) {
+    case 'cruise':
+    case 'warn':
+    case 'call':
+      if (labelEl) labelEl.textContent = 'INFO';
+      contentEl.innerHTML = '';
+      break;
+    case 'nav':
+      if (labelEl) labelEl.textContent = 'ETA';
+      const navData = _lastEventData['nav'] || {};
+      contentEl.innerHTML = `
+        <div style="font-size: var(--s-font-lg); color: var(--c-nav);">${navData.eta || '5'} min</div>
+        <div style="font-size: var(--s-font-sm); color: var(--c-muted);">arrival</div>
+      `;
+      break;
+    case 'music':
+      if (labelEl) labelEl.textContent = 'CONTROL';
+      contentEl.innerHTML = `
+        <div style="display: flex; gap: 8px; justify-content: center;">
+          <button style="background: var(--bg-zone); border: 1px solid var(--bg-zone-border); color: var(--c-music); padding: 4px 8px; border-radius: 4px; cursor: pointer;">⏮</button>
+          <button style="background: var(--bg-zone); border: 1px solid var(--bg-zone-border); color: var(--c-music); padding: 4px 8px; border-radius: 4px; cursor: pointer;">⏯</button>
+          <button style="background: var(--bg-zone); border: 1px solid var(--bg-zone-border); color: var(--c-music); padding: 4px 8px; border-radius: 4px; cursor: pointer;">⏭</button>
+        </div>
+      `;
+      break;
+    case 'mesh':
+      if (labelEl) labelEl.textContent = 'CHANNEL';
+      contentEl.innerHTML = `
+        <div style="font-size: var(--s-font-md); color: var(--c-mesh);">Group Alpha</div>
+      `;
+      break;
+    case 'dvr':
+      if (labelEl) labelEl.textContent = '';
+      contentEl.innerHTML = '';
+      break;
+  }
+}
+
+// Render bottom bar
+function renderBottomBar() {
+  const timeEl = document.getElementById('bottom-time');
+  const mileageEl = document.getElementById('bottom-mileage');
+  const statusEl = document.getElementById('bottom-status');
+
+  if (timeEl) {
+    const now = new Date();
+    timeEl.textContent = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  if (mileageEl) {
+    mileageEl.textContent = '12.5 km';
+  }
+
+  if (statusEl) {
+    const statusLabels = {
+      'cruise': 'IDLE',
+      'nav': 'NAVIGATING',
+      'call': 'ON CALL',
+      'music': 'PLAYING',
+      'mesh': 'GROUP MODE',
+      'warn': '⚠ ALERT',
+      'dvr': '● REC',
+    };
+    statusEl.textContent = statusLabels[_currentMode] || 'IDLE';
+    statusEl.style.color = _currentMode === 'warn' ? 'var(--c-warn)' :
+                            _currentMode === 'dvr' ? 'var(--c-dvr)' : 'var(--c-muted)';
+  }
+}
+
+// Apply visibility based on speed level
+function applySpeedLevelVisibility() {
+  const zoneRT = document.getElementById('zone-rt');
+  const zoneLB = document.getElementById('zone-lb');
+  const zoneRB = document.getElementById('zone-rb');
+  const bottomBar = document.getElementById('bottom-bar');
+
+  // Reset all
+  [zoneRT, zoneLB, zoneRB, bottomBar].forEach(el => {
+    if (el) el.style.display = '';
+  });
+
+  // S2: Hide LB and RB (keep LT + RT + compact bottom)
+  if (_speedLevel === 'S2') {
+    if (zoneLB) zoneLB.style.display = 'none';
+    if (zoneRB) zoneRB.style.display = 'none';
+  }
+
+  // S3: Keep only LT (speed) + warning zones
+  if (_speedLevel === 'S3') {
+    if (zoneRT) zoneRT.style.display = 'none';
+    if (zoneLB) zoneLB.style.display = 'none';
+    if (zoneRB) zoneRB.style.display = 'none';
+  }
+}
+
+/* ============================================================
+   M4: Scenarios - Automated Scripts
+   ============================================================ */
+
+const SCENARIOS = {
+  commute: {
+    duration: 45,
+    events: [
+      { time: 0, event: { type: 'cruise' } },
+      { time: 3, speed: 40 },
+      { time: 8, event: { type: 'nav', data: { distance: 500, eta: 8, turn: 'straight' } } },
+      { time: 12, speed: 65 },
+      { time: 18, event: { type: 'nav', data: { distance: 100, eta: 2, turn: 'left' } } },
+      { time: 22, speed: 35 },
+      { time: 25, event: { type: 'call', data: { caller: 'Mom' } } },
+      { time: 30, event: { type: 'cruise' } },
+      { time: 35, event: { type: 'nav', data: { distance: 50, eta: 1, turn: 'right' } } },
+      { time: 40, speed: 0 },
+      { time: 45, event: { type: 'cruise' } },
+    ],
+  },
+  emergency: {
+    duration: 40,
+    events: [
+      { time: 0, speed: 60 },
+      { time: 5, event: { type: 'warn', direction: 'front' } },
+      { time: 12, event: { type: 'warn', direction: 'left' } },
+      { time: 18, speed: 80 },
+      { time: 22, event: { type: 'warn', direction: 'right' } },
+      { time: 28, event: { type: 'warn', direction: 'front' } },
+      { time: 35, speed: 50 },
+      { time: 40, event: { type: 'cruise' } },
+    ],
+  },
+  group: {
+    duration: 50,
+    events: [
+      { time: 0, speed: 45 },
+      { time: 5, event: { type: 'mesh', data: { count: 4, distance: '0.5' } } },
+      { time: 8, event: { type: 'dvr' } },
+      { time: 12, speed: 70 },
+      { time: 18, event: { type: 'nav', data: { distance: 200, eta: 3, turn: 'straight' } } },
+      { time: 22, event: { type: 'mesh', data: { count: 4, message: 'Nice turn!' } } },
+      { time: 26, event: { type: 'warn', direction: 'right' } },
+      { time: 33, event: { type: 'music', data: { track: 'Highway Song', artist: 'Biker Band' } } },
+      { time: 38, speed: 40 },
+      { time: 42, event: { type: 'cruise' } },
+      { time: 45, event: { type: 'cruise' } },
+      { time: 48, speed: 0 },
+      { time: 50, event: { type: 'cruise' } },
+    ],
+  },
+};
+window.SCENARIOS = SCENARIOS;
+
+function playScenario(name) {
+  if (!SCENARIOS[name]) {
+    console.warn('Scenario not found:', name);
+    return;
+  }
+
+  // Stop any running scenario
+  pauseScenario();
+
+  _scenarioRunning = name;
+  _scenarioTime = 0;
+
+  const scenario = SCENARIOS[name];
+  const labelEl = document.getElementById('timeline-label');
+  if (labelEl) labelEl.textContent = name;
+
+  _scenarioTimer = setInterval(() => {
+    _scenarioTime++;
+
+    // Update progress
+    const progressEl = document.getElementById('timeline-progress');
+    if (progressEl) {
+      progressEl.style.width = (_scenarioTime / scenario.duration * 100) + '%';
+    }
+
+    // Trigger events at this time
+    scenario.events.forEach(e => {
+      if (e.time === _scenarioTime) {
+        if (e.speed !== undefined) {
+          setSpeed(e.speed);
+        }
+        if (e.event) {
+          emitEvent(e.event);
+        }
+      }
+    });
+
+    // End scenario
+    if (_scenarioTime >= scenario.duration) {
+      pauseScenario();
+      setMode('cruise');
+      setSpeed(0);
+    }
+  }, 1000);
+}
+window.playScenario = playScenario;
+
+function pauseScenario() {
+  if (_scenarioTimer) {
+    clearInterval(_scenarioTimer);
+    _scenarioTimer = null;
+  }
+  _scenarioRunning = null;
+}
+window.pauseScenario = pauseScenario;
+
+function resumeScenario() {
+  if (_scenarioRunning && SCENARIOS[_scenarioRunning]) {
+    playScenario(_scenarioRunning);
+  }
+}
+window.resumeScenario = resumeScenario;
+
+/* ============================================================
+   M5: Controls - Sandbox + Keyboard + Boot
+   ============================================================ */
+
+// Boot sequence
+function bootSequence() {
+  const overlay = document.getElementById('boot-overlay');
+  const logo = document.getElementById('boot-logo');
+  const status = document.getElementById('boot-status');
+
+  if (!overlay) return;
+
+  // Apply initial optics layout
+  applyOpticsLayout();
+
+  // 0-1s: Logo fade in
+  setTimeout(() => {
+    if (logo) logo.style.opacity = '1';
+    if (status) status.textContent = 'Loading...';
+  }, 100);
+
+  // 1-2s: Status update
+  setTimeout(() => {
+    if (status) status.textContent = 'Optical: FreeForm 38°';
+  }, 1000);
+
+  // 2-2.5s: Ready
+  setTimeout(() => {
+    if (status) status.textContent = 'Ready';
+  }, 2000);
+
+  // 2.5-3s: Fade out overlay
+  setTimeout(() => {
+    overlay.classList.add('hidden');
+    renderAll();
+  }, 2500);
+
+  // 3s: Remove overlay completely
+  setTimeout(() => {
+    overlay.style.display = 'none';
+  }, 3000);
+}
+window.bootSequence = bootSequence;
+
+// Bind sandbox buttons
+function bindSandboxButtons() {
+  const sandbox = document.getElementById('sandbox');
+  if (!sandbox) return;
+
+  sandbox.querySelectorAll('button[data-event]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const eventStr = btn.getAttribute('data-event');
+      handleSandboxEvent(eventStr);
+    });
+  });
+}
+
+// Handle sandbox events
+function handleSandboxEvent(eventStr) {
+  // Optical modes
+  if (eventStr.startsWith('optics-')) {
+    const mode = eventStr.replace('optics-', '');
+    if (mode === 'wg-color') setOptics('wg_color');
+    else if (mode === 'wg-green') setOptics('wg_green');
+    else setOptics(mode);
+    return;
+  }
+
+  // ADAS warnings
+  if (eventStr.startsWith('warn-')) {
+    const dir = eventStr.replace('warn-', '');
+    emitWarning(dir);
+    return;
+  }
+
+  // Call
+  if (eventStr === 'call-incoming') {
+    emitEvent({ type: 'call', data: { caller: 'Unknown' } });
+  } else if (eventStr === 'call-end') {
+    popMode();
+  }
+
+  // Music
+  if (eventStr === 'music-play') {
+    emitEvent({ type: 'music', data: { track: 'Song', artist: 'Artist' } });
+  } else if (eventStr === 'music-pause') {
+    popMode();
+  }
+
+  // Navigation
+  if (eventStr === 'nav-start') {
+    emitEvent({ type: 'nav', data: { distance: 500, eta: 10, turn: 'straight' } });
+  } else if (eventStr === 'nav-end') {
+    popMode();
+  } else if (eventStr === 'nav-turn-left') {
+    _lastEventData['nav'] = { distance: 100, eta: 2, turn: 'left' };
+    renderAll();
+  } else if (eventStr === 'nav-turn-right') {
+    _lastEventData['nav'] = { distance: 100, eta: 2, turn: 'right' };
+    renderAll();
+  }
+
+  // Mesh
+  if (eventStr === 'mesh-join') {
+    emitEvent({ type: 'mesh', data: { count: 3, distance: '1.0' } });
+  } else if (eventStr === 'mesh-leave') {
+    popMode();
+  }
+
+  // DVR
+  if (eventStr === 'dvr-start') {
+    setMode('dvr');
+  } else if (eventStr === 'dvr-stop') {
+    popMode();
+  }
+
+  // Speed
+  if (eventStr.startsWith('speed-set-')) {
+    const speed = parseInt(eventStr.replace('speed-set-', ''));
+    setSpeed(speed);
+  }
+
+  // Reset
+  if (eventStr === 'reset') {
+    pauseScenario();
+    _modeStack = [];
+    _currentMode = 'cruise';
+    _currentSpeed = 0;
+    _speedLevel = 'S0';
+    clearWarningFlash();
+    renderAll();
+  }
+
+  // Scenarios
+  if (eventStr === 'scenario-commute') playScenario('commute');
+  if (eventStr === 'scenario-emergency') playScenario('emergency');
+  if (eventStr === 'scenario-group') playScenario('group');
+  if (eventStr === 'scenario-pause') pauseScenario();
+  if (eventStr === 'scenario-resume') resumeScenario();
+}
+
+// Keyboard shortcuts
+function bindKeyboard() {
+  document.addEventListener('keydown', (e) => {
+    const key = e.key.toLowerCase();
+
+    // F1/F2/F3: Optical modes
+    if (e.key === 'F1') { setOptics('freeform'); return; }
+    if (e.key === 'F2') { setOptics('wg_color'); return; }
+    if (e.key === 'F3') { setOptics('wg_green'); return; }
+
+    // 1/2/3: Scenarios
+    if (key === '1') { playScenario('commute'); return; }
+    if (key === '2') { playScenario('emergency'); return; }
+    if (key === '3') { playScenario('group'); return; }
+
+    // Space: Pause/Resume
+    if (key === ' ' || e.code === 'Space') {
+      if (_scenarioRunning) pauseScenario();
+      else resumeScenario();
+      return;
+    }
+
+    // T: Theme toggle (only works in waveguide modes)
+    if (key === 't') {
+      if (_currentOptics === 'wg_color') setOptics('wg_green');
+      else if (_currentOptics === 'wg_green') setOptics('wg_color');
+      return;
+    }
+
+    // S: Sandbox toggle
+    if (key === 's') {
+      const sandbox = document.getElementById('sandbox');
+      if (sandbox) sandbox.classList.toggle('active');
+      return;
+    }
+
+    // W/A/D: Warnings
+    if (key === 'w') { emitWarning('front'); return; }
+    if (key === 'a') { emitWarning('left'); return; }
+    if (key === 'd') { emitWarning('right'); return; }
+
+    // Escape: Reset
+    if (key === 'escape') {
+      handleSandboxEvent('reset');
+      const sandbox = document.getElementById('sandbox');
+      if (sandbox) sandbox.classList.remove('active');
+      return;
+    }
+  });
+}
+
+// Initialize on DOM ready
+document.addEventListener('DOMContentLoaded', function() {
+  bindSandboxButtons();
+  bindKeyboard();
+  bootSequence();
+});
+</script>
+</body>
+</html>

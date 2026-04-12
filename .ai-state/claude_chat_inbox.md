@@ -1491,3 +1491,27 @@ agent = CodeAgent(
 - OpenSpace MCP server 需持续运行（后台进程）
 
 ---
+
+---
+
+## [重做] HUD Demo 三种光学模式 - 2026-04-12 15:30
+
+- **结果**：✅ 通过
+- **关键数据**：
+  - 单文件 HTML，129/129 测试全部通过
+  - 三种光学模式：FreeForm棱镜38°FOV / 全彩光波导35° / 单绿光波导35°
+  - 7态状态机：cruise/nav/call/music/mesh/warn/dvr
+  - 预警优先级抢占：warn > call > nav > mesh > music > dvr > cruise
+  - ADAS预警方向映射：front→zone-lt+zone-rt, left→zone-lb, right→zone-rb
+  - CSS变量响应式 clamp (font-size/sizes/padding)
+  - 双目波导模式：左右眼独立窗口，中间480px留空
+  - F1/F2/F3 快捷键切换光学模式
+  - 3个剧本：commute(45s), emergency(40s), group(50s)
+- **产出文件**：
+  - `demo_outputs/hud_demo_optical.html` (39.1KB, 1383行)
+- **DOM ID契约验证**：
+  - #hud-root, #zone-lt/rt/lb/rb, #center-clear, #bottom-bar, #timeline, #sandbox, #boot-overlay 全部存在
+  - #hud-viewport-left, #hud-viewport-right (波导双目模式)
+  - #hud-mask (FreeForm蒙版)
+  - #optics-indicator (光学模式指示器)
+- **待决问题**：无
