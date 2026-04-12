@@ -292,11 +292,14 @@ body {
 
 /* ========== Warning Zone Content ========== */
 .warning-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
   background: rgba(255,59,48,0.2);
   border: 2px solid var(--c-warn);
-  border-radius: 8px;
-  padding: 8px 12px;
-  margin: 4px;
+  border-radius: 6px;
+  padding: 4px 8px;
   animation: warn-flash 0.5s infinite;
 }
 
@@ -306,7 +309,7 @@ body {
 }
 
 .warning-icon {
-  font-size: var(--s-font-lg);
+  font-size: var(--s-font-sm);
   color: var(--c-warn);
 }
 
@@ -315,7 +318,7 @@ body {
 }
 
 .warning-type {
-  font-size: var(--s-font-md);
+  font-size: var(--s-font-sm);
   font-weight: bold;
   color: var(--c-warn);
 }
@@ -330,7 +333,7 @@ body {
 }
 
 .warning-ttc {
-  font-size: var(--s-font-lg);
+  font-size: var(--s-font-md);
   font-weight: bold;
   color: var(--c-warn);
 }
@@ -788,8 +791,8 @@ body {
         <span class="traffic-sign-value">—</span>
       </div>
       <div class="status-row">
-        <div class="status-item">🔋 100%</div>
-        <div class="status-item">📶 5G</div>
+        <div class="status-item">[BAT] 100%</div>
+        <div class="status-item">[5G]</div>
       </div>
     </div>
 
@@ -932,9 +935,9 @@ body {
       <button class="sandbox-btn" data-scenario="touring">摩旅</button>
     </div>
     <div class="sandbox-row">
-      <button class="sandbox-btn" data-action="play">▶ 播放</button>
-      <button class="sandbox-btn" data-action="pause">⏸ 暂停</button>
-      <button class="sandbox-btn" data-action="stop">⏹ 停止</button>
+      <button class="sandbox-btn" data-action="play">PLAY</button>
+      <button class="sandbox-btn" data-action="pause">PAUSE</button>
+      <button class="sandbox-btn" data-action="stop">STOP</button>
     </div>
   </div>
 
@@ -1148,6 +1151,11 @@ function emitWarning(type, direction, distance, closingSpeed) {
   // Sort by TTC (shortest first)
   activeWarnings.sort((a, b) => a.ttc - b.ttc);
 
+  // Keep only top 2 warnings (Bug3 fix)
+  if (activeWarnings.length > 2) {
+    activeWarnings = activeWarnings.slice(0, 2);
+  }
+
   // Set warn mode
   setMode('warn');
 
@@ -1318,7 +1326,7 @@ function renderLtZone(level) {
   if (currentMode === 'cruise') {
     status = '巡航中';
   } else if (currentMode === 'warn') {
-    status = '⚠ 注意';
+    status = '[!] 注意';
   }
 
   // Only update status part, speed is already rendered
@@ -1343,15 +1351,15 @@ function renderNavZone(level) {
 
     if (navLevel === 'arrow') {
       zoneNav.innerHTML = `
-        <div class="nav-arrow">⬅️</div>
+        <div class="nav-arrow">[LEFT]</div>
         <div class="nav-distance">200m</div>
       `;
     } else if (navLevel === 'simple') {
       zoneNav.innerHTML = `
-        <div class="nav-arrow">⬅️ 左转</div>
+        <div class="nav-arrow">[LEFT] 左转</div>
         <div class="nav-distance">路口 200m</div>
         <div style="font-size:var(--s-font-sm);color:var(--c-muted);margin-top:8px;">
-          <div>━━━</div>
+          <div>---</div>
           <div style="font-size:10px;">简易路口图</div>
         </div>
       `;
@@ -1396,7 +1404,7 @@ function renderWarnings() {
   // Most urgent - large display
   const urgentHtml = `
     <div class="warning-badge">
-      <div class="warning-icon">⚠</div>
+      <div class="warning-icon">[!]</div>
       <div class="warning-type">${mostUrgent.type.toUpperCase()}</div>
       <div class="warning-detail">${mostUrgent.direction} | ${mostUrgent.distance}m | ${mostUrgent.closingSpeed}km/h</div>
       <div class="warning-ttc">TTC: ${mostUrgent.ttc}s</div>
@@ -1425,7 +1433,7 @@ function renderRtZone(level) {
     const signValue = CONFIG.currentSign.replace('limit', '');
     zoneRt.innerHTML = `
       <div class="traffic-sign">
-        <div style="font-size:16px;">🚸</div>
+        <div style="font-size:16px;">[LIMIT]</div>
         <div class="traffic-sign-value">限速 ${signValue}</div>
       </div>
     `;
@@ -1433,11 +1441,11 @@ function renderRtZone(level) {
     // Show status
     zoneRt.innerHTML = `
       <div class="status-row">
-        <div class="status-item">🔋 100%</div>
-        <div class="status-item">📶 5G</div>
+        <div class="status-item">[BAT] 100%</div>
+        <div class="status-item">[5G]</div>
       </div>
       <div class="status-row" style="margin-top:4px;">
-        <div class="status-item">🌡 28°</div>
+        <div class="status-item">[T] 28°</div>
       </div>
     `;
   }
@@ -1450,14 +1458,14 @@ function renderRbZone(level) {
     zoneRb.innerHTML = `
       <div class="mesh-info">
         <div>组队骑行</div>
-        <div style="margin-top:8px;">👥 3人在线</div>
+        <div style="margin-top:8px;">[GRP] 3人在线</div>
         <div style="font-size:var(--s-font-sm);color:var(--c-muted);">队友: 前方 200m</div>
       </div>
     `;
   } else if (currentMode === 'music') {
     zoneRb.innerHTML = `
       <div class="music-info">
-        <div>🎵 播放中</div>
+        <div>[PLAY] 播放中</div>
         <div style="margin-top:4px;">《骑行之歌》</div>
         <div style="font-size:var(--s-font-sm);color:var(--c-muted);">歌手: Leo</div>
       </div>
@@ -1500,7 +1508,7 @@ const SCENARIOS = {
       { t: 3, action: () => { setSpeed(40); showVoiceSubtitle('启动引擎'); }},
       { t: 8, action: () => { setMode('nav'); showVoiceSubtitle('导航开始，目的地：公司'); }},
       { t: 12, action: () => { setSpeed(65); }},
-      { t: 18, action: () => { zoneNav.querySelector('.nav-arrow').textContent = '⬅️ 左转'; zoneNav.querySelector('.nav-distance').textContent = '100m'; }},
+      { t: 18, action: () => { zoneNav.querySelector('.nav-arrow').textContent = '[LEFT] 左转'; zoneNav.querySelector('.nav-distance').textContent = '100m'; }},
       { t: 22, action: () => { setSpeed(35); }},
       { t: 25, action: () => { setMode('call'); showVoiceSubtitle('来电：张三'); }},
       { t: 30, action: () => { popMode(); showVoiceSubtitle('通话结束，恢复导航'); }},
@@ -1554,6 +1562,7 @@ const SCENARIOS = {
       { t: 0, action: () => { setSpeed(30); setMode('cruise'); }},
       { t: 5, action: () => { setMode('dvr'); showVoiceSubtitle('DVR生活记录开始'); }},
       { t: 15, action: () => { showVoiceSubtitle('用户：标记这个精彩瞬间'); showMomentSaved(); }},
+      { t: 20, action: () => { setTrafficSign('limit60'); showVoiceSubtitle('识别到限速标志60'); }},
       { t: 25, action: () => { popMode(); setMode('nav'); }},
       { t: 35, action: () => { setTrafficSign('limit80'); showVoiceSubtitle('识别到限速标志80'); }},
       { t: 45, action: () => { setSpeed(0); popMode(); }},
