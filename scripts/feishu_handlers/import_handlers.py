@@ -136,7 +136,7 @@ def _handle_share_url(text: str, open_id: str, reply_target: str, reply_type: st
     send_reply(reply_target, "🔗 正在读取和学习...")
 
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         from src.tools.knowledge_base import add_knowledge
         from src.tools.tool_registry import get_tool_registry
 
@@ -262,7 +262,7 @@ def _handle_article_import(text: str, open_id: str, reply_target: str, send_repl
 
     try:
         from src.tools.knowledge_base import add_knowledge
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
 
         gateway = get_model_gateway()
         summary_result = gateway.call_azure_openai(

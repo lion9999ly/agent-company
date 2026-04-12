@@ -23,7 +23,7 @@ from scripts.smolagents_research.tavily_search_tool import TavilySearchTool
 from scripts.smolagents_research.doubao_search_tool import DoubaoSearchTool
 
 # === 旧管道：直接 API 调用 ===
-from src.utils.model_gateway import call_for_search
+from scripts.litellm_gateway import call_for_search
 from scripts.deep_research.models import call_model
 
 

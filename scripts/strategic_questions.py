@@ -54,7 +54,7 @@ Q: [问题]
 """
 
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
 
         result = gw.call("gpt_5_4", prompt,

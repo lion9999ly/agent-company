@@ -10,7 +10,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from dotenv import load_dotenv
 load_dotenv(str(PROJECT_ROOT / ".env"))
 
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 
 gateway = get_model_gateway()
 

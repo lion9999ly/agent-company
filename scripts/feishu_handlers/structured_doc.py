@@ -4481,7 +4481,7 @@ def try_structured_doc_fast_track(
 
     def _process_in_background():
         try:
-            from src.utils.model_gateway import get_model_gateway
+            from scripts.litellm_gateway import get_model_gateway
             from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt, KB_ROOT
 
             gw = get_model_gateway()

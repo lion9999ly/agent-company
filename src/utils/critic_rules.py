@@ -182,7 +182,7 @@ def get_relevant_rules(task_description: str, gateway=None) -> List[Dict[str, An
         return all_rules
 
     if gateway is None:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gateway = get_model_gateway()
 
     # 构建规则摘要列表

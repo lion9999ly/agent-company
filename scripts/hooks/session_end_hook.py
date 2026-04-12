@@ -48,7 +48,7 @@ def create_session_checkpoint() -> str:
 def run_final_review(review_request: dict) -> dict:
     """执行最终评审"""
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gateway = get_model_gateway()
 
         # 构建评审内容

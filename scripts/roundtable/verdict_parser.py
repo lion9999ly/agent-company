@@ -16,7 +16,7 @@ from dataclasses import dataclass
 import json
 from datetime import datetime
 
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 
 
 @dataclass

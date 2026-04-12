@@ -47,7 +47,7 @@ def _run_roundtable_background(spec, reply_target: str, send_reply: Callable):
         try:
             import asyncio
             from scripts.roundtable import run_task
-            from src.utils.model_gateway import get_model_gateway
+            from scripts.litellm_gateway import get_model_gateway
             from src.tools import knowledge_base as kb_module
             from scripts.feishu_handlers.chat_helpers import log as _log
             from scripts.feishu_output import update_doc

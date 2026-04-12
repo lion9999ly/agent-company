@@ -17,7 +17,7 @@ from src.schema.state import AgentGlobalState
 # 导入上下文切片管理器
 from src.graph.context_slicer import get_context_slicer, ContextSlice
 # 导入模型网关
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 # 导入工具注册表
 from src.tools.tool_registry import get_tool_registry
 # 导入 prompt 加载器

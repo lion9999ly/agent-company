@@ -26,7 +26,7 @@ if env_file.exists():
 
 from src.tools.tool_registry import get_tool_registry
 from src.tools.knowledge_base import add_knowledge, get_knowledge_stats, search_knowledge
-from src.utils.model_gateway import get_model_gateway, call_for_search, call_for_refine
+from scripts.litellm_gateway import get_model_gateway, call_for_search, call_for_refine
 from src.utils.progress_heartbeat import ProgressHeartbeat
 
 TOPICS_PATH = Path(__file__).parent.parent / ".ai-state" / "knowledge" / "learning_topics.json"
@@ -1016,7 +1016,7 @@ def run_night_deep_learning(progress_callback=None) -> str:
 
 def auto_schedule_research(alignment_report: str, progress_callback=None) -> str:
     """基于对齐报告 + 主动建议队列，自动发起深度研究"""
-    from src.utils.model_gateway import get_model_gateway
+    from scripts.litellm_gateway import get_model_gateway
 
     gateway = get_model_gateway()
 
@@ -1445,7 +1445,7 @@ def start_daily_scheduler(interval_hours: float = 2.0, feishu_notify=None):
 def generate_alignment_report() -> str:
     """生成每日对齐报告——不只是数字，而是认知变化和行动建议"""
     from src.tools.knowledge_base import get_knowledge_stats, KB_ROOT
-    from src.utils.model_gateway import get_model_gateway
+    from scripts.litellm_gateway import get_model_gateway
 
     gateway = get_model_gateway()
     stats = get_knowledge_stats()

@@ -29,7 +29,7 @@ if env_file.exists():
             os.environ.setdefault(key.strip(), value.strip())
 
 from src.tools.knowledge_base import add_knowledge, get_knowledge_stats
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 
 INBOX_DIR = Path(__file__).parent.parent / ".ai-state" / "inbox"
 PROCESSED_DIR = INBOX_DIR / "processed"

@@ -384,7 +384,7 @@ def _analyze_failure(data: dict, feedback: str, rating: str):
     """分析失败原因（后台线程）"""
     print(f"[Evolution] _analyze_failure 线程已启动")
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         from src.tools.knowledge_base import add_knowledge
 
         gw = get_model_gateway()
@@ -420,7 +420,7 @@ def _analyze_success(data: dict):
     """分析成功模式（后台线程）"""
     print(f"[Evolution] _analyze_success 线程已启动")
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         from src.tools.knowledge_base import add_knowledge
 
         gw = get_model_gateway()

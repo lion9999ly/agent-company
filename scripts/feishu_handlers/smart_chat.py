@@ -117,7 +117,7 @@ def handle_answer_feedback(text: str, open_id: str, reply_target: str, send_repl
 
 def _classify_intent(text: str) -> str:
     """用 gemini_2_5_flash 分类用户意图"""
-    from src.utils.model_gateway import get_model_gateway
+    from scripts.litellm_gateway import get_model_gateway
     gw = get_model_gateway()
     result = gw.call("gemini_2_5_flash",
         f"用户说: {text}\n\n"
@@ -139,7 +139,7 @@ def _classify_intent(text: str) -> str:
 
 def _handle_coach_response(text: str, reply_target: str, send_reply: Callable):
     """教练模式回复——只问问题，不给答案"""
-    from src.utils.model_gateway import get_model_gateway
+    from scripts.litellm_gateway import get_model_gateway
     from src.tools.knowledge_base import search_knowledge
     gw = get_model_gateway()
 
@@ -164,7 +164,7 @@ def _handle_coach_response(text: str, reply_target: str, send_reply: Callable):
 def _handle_fast_query(text: str, reply_target: str, send_reply: Callable):
     """简单问答快速通道"""
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt
         gw = get_model_gateway()
 
@@ -192,7 +192,7 @@ def _handle_decision_brief(decision_id: str, reply_target: str, send_reply: Call
     def _run():
         try:
             import yaml as _yaml
-            from src.utils.model_gateway import get_model_gateway
+            from scripts.litellm_gateway import get_model_gateway
             from src.tools.knowledge_base import search_knowledge
             gw = get_model_gateway()
 
@@ -248,7 +248,7 @@ def _handle_negotiation_brief(target_name: str, reply_target: str, send_reply: C
     def _run():
         try:
             import yaml as _yaml
-            from src.utils.model_gateway import get_model_gateway
+            from scripts.litellm_gateway import get_model_gateway
             from src.tools.knowledge_base import search_knowledge
             gw = get_model_gateway()
 
@@ -288,7 +288,7 @@ def _smart_route_and_reply(text: str, open_id: str, chat_id: str, reply_target: 
                            send_reply: Callable, session_id: str = None, mem=None):
     """智能路由和回复"""
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt
 
         kb_entries = search_knowledge(text, limit=5)

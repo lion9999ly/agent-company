@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
 
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 from src.tools.knowledge_base import search_knowledge, format_knowledge_for_prompt
 from scripts.roundtable.memory import format_memos_for_context, create_decision_memo
 from scripts.roundtable.roles import get_role_prompt

@@ -124,7 +124,7 @@ def handle_image_message(open_id: str, image_key: str, message_id: str, reply_ta
 
         # 压缩后调用 Gemini Vision
         compressed = compress_image(image_data)
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         result = get_model_gateway().call_gemini_vision("gemini_3_pro", compressed,
             "请详细描述这张图片的内容。如果图片包含文字，也请提取出来。")
 
@@ -220,7 +220,7 @@ def handle_audio_message(open_id: str, message_id: str, content: str = "", reply
 
     log(f"  [语音下载成功: {len(audio_bytes)} bytes]")
 
-    from src.utils.model_gateway import get_model_gateway
+    from scripts.litellm_gateway import get_model_gateway
     result = get_model_gateway().call_gemini_audio(
         "gemini_3_pro",
         audio_bytes,
@@ -243,7 +243,7 @@ def handle_audio_message(open_id: str, message_id: str, content: str = "", reply
     # 语音转文字后，按文本处理
     # 这里需要调用 text_router 或其他处理逻辑
     # 简化版本：直接调用 LLM
-    from src.utils.model_gateway import get_model_gateway
+    from scripts.litellm_gateway import get_model_gateway
     reply = get_model_gateway().call_azure_openai("cpo", transcribed_text, "", "chat")
     if reply.get("success"):
         send_reply(reply_target, reply["response"])

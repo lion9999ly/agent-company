@@ -68,7 +68,7 @@ def get_kb_stats() -> dict:
 def get_model_status() -> dict:
     """获取模型状态"""
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
         enabled = [name for name, cfg in gw.models.items() if cfg.enabled]
         return {

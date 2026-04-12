@@ -250,6 +250,23 @@ def get_model_gateway():
     return get_litellm_gateway()
 
 
+def call_for_search(prompt: str, system_prompt: str = "", task_type: str = "search") -> dict:
+    """兼容旧接口 - 搜索环节便捷调用（Gemini flash 优先）"""
+    gateway = get_litellm_gateway()
+    result = gateway.call("gemini_2_5_flash", prompt, system_prompt=system_prompt, task_type=task_type)
+    if not result.get("success"):
+        # 降级到 gpt_4o
+        result = gateway.call("gpt_4o", prompt, system_prompt=system_prompt, task_type=task_type)
+        result["degraded_from"] = "gemini_2_5_flash"
+    return result
+
+
+def call_for_refine(prompt: str, system_prompt: str = "", task_type: str = "refine") -> dict:
+    """兼容旧接口 - 提炼环节便捷调用（使用 gpt_5_4）"""
+    gateway = get_litellm_gateway()
+    return gateway.call("gpt_5_4", prompt, system_prompt=system_prompt, task_type=task_type)
+
+
 # ============================================================
 # 测试函数
 # ============================================================

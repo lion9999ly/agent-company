@@ -6,7 +6,7 @@
 from typing import Dict, Any, Callable, Optional
 from pathlib import Path
 import time
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 
 
 class ToolRegistry:

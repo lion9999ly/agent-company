@@ -117,7 +117,7 @@ def auto_fix_failures(failed_items: list, max_rounds: int = 3) -> dict:
 def _fix_via_model_gateway(item: dict) -> str:
     """CC 不可用时，用 model_gateway 调用 gpt-5.4 分析"""
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
         result = gw.call("gpt_5_4",
             f"测试失败: {item.get('error', '')}\nTraceback: {item.get('traceback', '')}\n"

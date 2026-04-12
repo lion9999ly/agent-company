@@ -379,7 +379,7 @@ def _handle_one_pager(reply_target: str, send_reply: Callable):
 
     def _run():
         try:
-            from src.utils.model_gateway import get_model_gateway
+            from scripts.litellm_gateway import get_model_gateway
             from src.tools.knowledge_base import search_knowledge
             gw = get_model_gateway()
 

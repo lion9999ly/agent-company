@@ -11,7 +11,7 @@ from dataclasses import asdict
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 from src.tools.fix_executor import create_proposal, format_proposal_for_feishu
 
 PROJECT_ROOT = Path(__file__).parent.parent

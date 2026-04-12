@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from dotenv import load_dotenv
 load_dotenv()
 
-from src.utils.model_gateway import get_model_gateway, call_for_search, call_for_refine
+from scripts.litellm_gateway import get_model_gateway, call_for_search, call_for_refine
 from src.tools.knowledge_base import (
     add_knowledge, add_report, search_knowledge,
     get_knowledge_stats, KB_ROOT

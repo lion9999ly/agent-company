@@ -12,7 +12,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from src.utils.model_gateway import call_for_search
+from scripts.litellm_gateway import call_for_search
 from src.tools.knowledge_base import add_knowledge, KB_ROOT
 from src.tools.tool_registry import ToolRegistry
 from src.utils.progress_heartbeat import ProgressHeartbeat

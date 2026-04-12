@@ -21,7 +21,7 @@ if env_file.exists():
             key, value = line.split("=", 1)
             os.environ.setdefault(key.strip(), value.strip())
 
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 from src.tools.knowledge_base import add_knowledge, search_knowledge, get_knowledge_stats
 from src.tools.tool_registry import get_tool_registry
 

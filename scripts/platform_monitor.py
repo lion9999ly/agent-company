@@ -188,7 +188,7 @@ def _llm_relevance_and_summarize(items: List[Dict], gateway) -> List[Dict]:
         f"不相关的只输出 {{\"index\": N, \"relevant\": false}}"
     )
 
-    from src.utils.model_gateway import call_for_search
+    from scripts.litellm_gateway import call_for_search
     result = call_for_search(prompt, "只输出 JSON 数组。", "platform_monitor")
 
     if not result.get("success"):
@@ -240,7 +240,7 @@ def run_platform_monitor(
     Returns:
         扫描报告文本
     """
-    from src.utils.model_gateway import get_model_gateway
+    from scripts.litellm_gateway import get_model_gateway
     from src.tools.knowledge_base import add_knowledge
 
     gateway = get_model_gateway()

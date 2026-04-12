@@ -18,7 +18,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.utils.model_gateway import get_model_gateway, call_for_search, call_for_refine
+from scripts.litellm_gateway import get_model_gateway, call_for_search, call_for_refine
 from src.tools.knowledge_base import add_knowledge, add_report, search_knowledge, get_knowledge_stats, KB_ROOT
 from src.tools.tool_registry import get_tool_registry
 from src.utils.progress_heartbeat import ProgressHeartbeat

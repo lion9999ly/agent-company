@@ -247,7 +247,7 @@ def handle_fetch_instruction(text: str, reply_target: str, send_reply,
     try:
         send_reply(reply_target, "🤖 备选方案：调用 GPT-5.4 执行...")
 
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
 
         system_prompt = f"""你是一个有完整文件系统访问能力的 AI 助手。

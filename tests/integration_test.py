@@ -34,7 +34,7 @@ def test_model_gateway():
     print("\n=== 模型网关测试 ===")
 
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
         test_result("gateway_import", True)
 
@@ -150,7 +150,7 @@ def test_image_generation():
     print("\n=== 图片生成测试 ===")
 
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
 
         # 检查 seedream 是否在模型列表
@@ -169,7 +169,7 @@ def test_deepseek_r1():
     print("\n=== DeepSeek R1 测试 ===")
 
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
 
         result = gw.call("deepseek_r1_volcengine", "1+1=?", task_type="integration_test")

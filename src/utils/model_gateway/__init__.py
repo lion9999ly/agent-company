@@ -1,4 +1,8 @@
 """
+# DEPRECATED: 此模块已被 scripts/litellm_gateway.py 替代，请勿使用
+# 迁移日期: 2026-04-12
+# 新接口: from scripts.litellm_gateway import get_model_gateway, call_for_search, call_for_refine
+
 src/utils/model_gateway — 多模型网关（v2 重构版）
 
 公开接口（向后兼容）:

@@ -3,6 +3,26 @@
 
 ---
 
+## [迁移] model_gateway 退役 - 2026-04-12 16:30
+
+- **结果**：完成
+- **关键数据**：
+  - 迁移文件数：52 个活跃 Python 文件
+  - 新网关：scripts/litellm_gateway.py（兼容接口完整）
+  - 旧网关：src/utils/model_gateway/ 标记 DEPRECATED
+- **替换详情**：
+  - `from src.utils.model_gateway import get_model_gateway` → `from scripts.litellm_gateway import get_model_gateway`
+  - `from src.utils.model_gateway import get_model_gateway, call_for_search, call_for_refine` → 同样迁移
+  - `ModelGateway` 类引用 → `get_litellm_gateway()` 返回 LiteLLMGateway
+- **产出文件**：
+  - 新网关增强：scripts/litellm_gateway.py（新增 call_for_search/call_for_refine）
+  - 旧网关标记：src/utils/model_gateway/__init__.py（DEPRECATED 注释）
+- **待决问题**：
+  - archived/ 目录 2 个文件未迁移（归档文件，不影响活跃代码）
+  - 旧网关内部模块（providers/*.py）未删除（保留供参考）
+
+---
+
 ## [交付] HUD Demo - 2026-04-10 16:44
 
 - **结果**：通过

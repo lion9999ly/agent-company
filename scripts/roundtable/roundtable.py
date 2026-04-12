@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field
 
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 from scripts.roundtable.crystallizer import Crystallizer, CrystalContext
 from scripts.roundtable.confidence import extract_all_claims, detect_conflict, resolve_conflict, validate_confidence_honesty
 from scripts.roundtable.roles import get_role_model, get_role_prompt, ROLE_REGISTRY

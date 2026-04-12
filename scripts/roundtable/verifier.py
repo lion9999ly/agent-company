@@ -14,7 +14,7 @@ from dataclasses import dataclass
 import re
 import json
 
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 from scripts.roundtable.task_spec import TaskSpec
 
 

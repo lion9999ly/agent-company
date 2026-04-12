@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Test the extraction logic
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 
 gateway = get_model_gateway()
 test_report = """

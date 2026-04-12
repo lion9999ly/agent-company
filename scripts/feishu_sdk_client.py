@@ -49,7 +49,7 @@ def log(msg: str):
 
 from feishu_bridge.ocr_middleware import process_image_to_text
 from src.graph.router import app as langgraph_app
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 from src.tools.fix_executor import get_pending_proposals, approve_and_execute, reject_proposal, format_proposal_for_feishu
 
 try:
@@ -593,7 +593,7 @@ def handle_rating(text: str, open_id: str, reply_target: str = None) -> bool:
             def _analyze_failure():
                 print("[Evolution] _analyze_failure 线程已启动")
                 try:
-                    from src.utils.model_gateway import get_model_gateway
+                    from scripts.litellm_gateway import get_model_gateway
                     from src.tools.knowledge_base import add_knowledge
                     from src.utils.critic_rules import add_critic_rule
 
@@ -751,7 +751,7 @@ def handle_rating(text: str, open_id: str, reply_target: str = None) -> bool:
             # 好评 → 提取成功模式
             def _extract_success():
                 try:
-                    from src.utils.model_gateway import get_model_gateway
+                    from scripts.litellm_gateway import get_model_gateway
                     from src.tools.knowledge_base import add_knowledge
 
                     gw = get_model_gateway()
@@ -1332,7 +1332,7 @@ def handle_share_content(open_id: str, text: str = "", url: str = "", reply_targ
     import concurrent.futures
     from pathlib import Path
     from urllib.parse import urlparse
-    from src.utils.model_gateway import get_model_gateway
+    from scripts.litellm_gateway import get_model_gateway
     from src.tools.knowledge_base import add_knowledge
     from src.tools.tool_registry import get_tool_registry
 
@@ -2534,7 +2534,7 @@ def handle_message(event):
                             report = deep_research_one(task, progress_callback=lambda msg: send_reply(reply_target, msg))
 
                             # 生成摘要
-                            from src.utils.model_gateway import get_model_gateway
+                            from scripts.litellm_gateway import get_model_gateway
                             gw = get_model_gateway()
                             summary_prompt = (
                                 f"以下是一份研究报告（{len(report)}字）。\n"

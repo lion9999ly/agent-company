@@ -20,7 +20,7 @@ from datetime import datetime, timedelta
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 from src.tools.knowledge_base import KB_ROOT, add_knowledge, get_knowledge_stats
 
 gateway = get_model_gateway()

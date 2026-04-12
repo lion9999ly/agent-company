@@ -147,7 +147,7 @@ def _section_system_health() -> str:
 
     # 模型状态
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
         enabled = sum(1 for m in gw.models.values() if m.enabled)
         lines.append(f"- 可用模型: {enabled} 个")

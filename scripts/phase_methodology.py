@@ -23,7 +23,7 @@ def extract_phase_methodology(completed_phase: str) -> dict:
     Returns:
         提取的方法论摘要
     """
-    from src.utils.model_gateway import get_model_gateway
+    from scripts.litellm_gateway import get_model_gateway
 
     gateway = get_model_gateway()
 

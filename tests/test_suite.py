@@ -62,7 +62,7 @@ def run_hard_tests() -> list:
         "scripts.tonight_deep_research",
         "scripts.feishu_handlers.text_router",
         "src.tools.knowledge_base",
-        "src.utils.model_gateway",
+        "scripts.litellm_gateway",  # 新网关替代 src.utils.model_gateway
         "src.utils.token_usage_tracker",
     ]
     for mod in core_modules:
@@ -161,7 +161,7 @@ def run_soft_tests() -> list:
 
     # 只在模型可用时才跑软测试
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
     except Exception:
         return [{"name": "soft_test_skip", "status": "skip", "error": "model_gateway 不可用"}]

@@ -155,8 +155,8 @@ def main():
 
     # 尝试导入 gateway
     try:
-        from src.utils.model_gateway import ModelGateway
-        gateway = ModelGateway()
+        from scripts.litellm_gateway import get_litellm_gateway
+        gateway = get_litellm_gateway()
         print("[Test] ModelGateway 初始化成功")
     except Exception as e:
         print(f"[Warn] ModelGateway 初始化失败: {e}")

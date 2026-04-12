@@ -15,7 +15,7 @@ from typing import Dict, Any, Optional, Callable
 from dataclasses import dataclass
 
 # 依赖
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 from src.tools.knowledge_base import KB_ROOT
 
 # 路径常量

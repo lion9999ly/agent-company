@@ -76,7 +76,7 @@ def save_monitor_state(state: dict):
 def search_keyword(keyword: str, config: dict = None) -> list:
     """搜索单个关键词"""
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
 
         # 获取时间过滤配置
@@ -127,7 +127,7 @@ def _analyze_impact(keyword: str, summary: str, config: dict) -> str:
         return "none"  # 未启用研判层
 
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
         gw = get_model_gateway()
 
         prompt = f"""分析以下竞品动态的影响级别：

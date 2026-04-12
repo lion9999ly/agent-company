@@ -6,7 +6,7 @@
 import threading
 import time
 
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 
 gateway = get_model_gateway()
 

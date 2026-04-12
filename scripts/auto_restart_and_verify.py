@@ -268,7 +268,7 @@ def verify_model_gateway() -> VerifyResult:
     result = VerifyResult("Model Gateway")
 
     try:
-        from src.utils.model_gateway import get_model_gateway
+        from scripts.litellm_gateway import get_model_gateway
 
         gw = get_model_gateway()
         test_result = gw.call("gpt_5_4", "回复OK", "测试连接", "test")

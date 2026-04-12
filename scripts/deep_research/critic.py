@@ -9,7 +9,7 @@ import re
 import time
 
 from src.tools.tool_registry import ToolRegistry
-from src.utils.model_gateway import get_model_gateway
+from scripts.litellm_gateway import get_model_gateway
 from scripts.deep_research.models import (
     call_model, get_model_for_task, get_model_for_role
 )
