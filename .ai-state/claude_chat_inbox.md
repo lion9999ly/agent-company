@@ -239,3 +239,115 @@
   - 方案B（稳健单色）：体验闭环、成本可控、推荐V1
   - 方案C（平台演进）：V1稳健+V2预研策略
 - **P0级缺口**：供应商振动台实测数据缺失
+
+---
+
+## [诊断] MetaBot Peer 路由机制 - 2026-04-12 08:38
+
+- **结果**：完成（发现根本原因，未改代码）
+- **问题描述**：飞书发 "agent-service xxx" 未路由到 Peer，被 CC 直接处理
+- **关键发现**：
+  - **根本原因**：飞书消息路径完全不经过 peer 转发逻辑
+  - MetaBot peer 功能是 **API 网关设计**，不是**消息路由设计**
+  - `message-bridge.ts:handleMessage()` → `executeQuery()` → CC，无 peerManager 调用
+  - Peer 转发仅对 `POST /api/talk` API 调用有效
+- **API 层 peer 转发触发条件**：
+  - 方式1：Qualified Name `peerName/botName`（如 `agent-company/agent-service`）
+  - 方式2：本地 registry 查不到 botName → 自动查 peer fallback
+- **测试验证**：
+  - `GET /api/peers`: `{"peers":[{"name":"agent-company","url":"http://localhost:9300","healthy":true,"botCount":1}]}`
+  - `GET http://localhost:9300/api/health`: `{"status":"healthy","kb_count":3502}`
+  - Python 请求 `POST /api/talk` with `botName="agent-service"` 成功转发
+- **可行方案**：
+  - **方案A（推荐）**：创建 Skill 文件 `.claude/skills/roundtable.md`，飞书发 `/roundtable` → CC 执行 → 调用 Python 服务
+  - **方案B**：CC 内部加路由逻辑，判断消息前缀后调用 Python 服务 API
+  - **方案C**：改 MetaBot 源码（用户禁止）
+- **产出文件**：
+  - Python Peer 服务: `scripts/api_server.py` (端口 9300)
+  - MetaBot 配置: `~/metabot/bots.json` (peers 配置已添加)
+- **下一步**：待确认方案后实现
+
+---
+
+## [实现] Python 服务路由规则 - 2026-04-12 08:42
+
+- **结果**：通过
+- **关键数据**：
+  - CLAUDE.md 新增路由规则段落（VERSION: 20260412.3）
+  - Python 服务新增 3 个端点：POST /roundtable, /research, /agent
+  - 端点验证：全部返回 200
+- **路由规则**：
+  - `/roundtable <主题>` → POST localhost:9300/roundtable
+  - `/research <查询>` → POST localhost:9300/research
+  - `/agent <指令>` → POST localhost:9300/agent
+- **产出文件**：
+  - CLAUDE.md (v20260412.3)
+  - scripts/api_server.py (新增 3 端点)
+- **端点测试结果**：
+  - Health: 200 ✓
+  - Roundtable: 200 ✓
+  - Research: 200 ✓
+  - Agent: 200 ✓
+- **待决问题**：端点为 placeholder，实际功能待后续集成圆桌/深度研究脚本
+
+---
+
+## [验证] MetaBot 重启测试 - 2026-04-12 08:44
+
+- **结果**：通过
+- **关键数据**：
+  - MetaBot 重启后 2 秒恢复
+  - Peer 发现正常：healthy=true, botCount=1
+  - 端点测试全部 200
+- **重启验证**：
+  - 关闭 PID 37172 → 重启 → 2秒恢复
+  - MetaBot health: `{"status":"ok", "bots":1, "peerBots":1, "peersHealthy":1}`
+  - Python health: `{"status":"healthy", "kb_count":3502}`
+  - Roundtable test: 200 ✓
+- **Windows 任务计划程序**：
+  - MetaBot_AutoStart: ✓ 已配置（登录时触发）
+  - 命令: `bash.exe -l -c "source ~/metabot/start_metabot.sh"`
+- **待办**：
+  - Python 服务（api_server.py）无自启配置
+  - 需添加 Windows 任务计划程序任务 Python_Peer_AutoStart
+
+---
+
+## [配置] Python 服务开机自启 - 2026-04-12 08:50
+
+- **结果**：通过
+- **关键数据**：
+  - 创建启动脚本: `~/metabot/start_python_peer.bat`
+  - 任务计划: `Python_Peer_AutoStart`（登录时触发）
+  - 运行级别: highest（最高权限）
+- **产出文件**：
+  - `C:\Users\uih00653\metabot\start_python_peer.bat`
+- **验证结果**：
+  - 任务名: `\Python_Peer_AutoStart`
+  - 触发器: 登录时
+  - 命令: `start_python_peer.bat`
+  - 状态: 已启用
+- **自启配置完成**：
+  - MetaBot_AutoStart ✓（登录时）
+  - Python_Peer_AutoStart ✓（登录时）
+
+---
+
+## [配置] 自启动改为后台无窗口运行 - 2026-04-12 09:30
+
+- **结果**：部分完成（VBS验证通过，scheduled tasks需管理员重建）
+- **关键数据**：
+  - 创建 VBS 文件：`start_metabot_hidden.vbs`, `start_python_peer_hidden.vbs`
+  - 创建 XML 配置：`MetaBot_AutoStart.xml`, `Python_Peer_AutoStart.xml`
+  - VBS 启动测试：无窗口弹出，服务正常运行
+  - 端口验证：9100 (MetaBot PID 22700), 9300 (Python Peer PID 15800) 已监听
+- **产出文件**：
+  - `C:\Users\uih00653\metabot\start_metabot_hidden.vbs`
+  - `C:\Users\uih00653\metabot\start_python_peer_hidden.vbs`
+  - `C:\Users\uih00653\metabot\MetaBot_AutoStart.xml`
+  - `C:\Users\uih00653\metabot\Python_Peer_AutoStart.xml`
+  - `C:\Users\uih00653\metabot\rebuild_tasks.ps1`
+  - `C:\Users\uih00653\metabot\import_tasks.bat`
+- **待办**：
+  - 需以管理员权限运行 `import_tasks.bat` 重建 scheduled tasks
+  - 双击 `C:\Users\uih00653\metabot\import_tasks.bat` 即可
