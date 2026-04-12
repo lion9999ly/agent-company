@@ -1147,3 +1147,68 @@ agent = CodeAgent(
 3. **替换 scripts/deep_research/pipeline.py 搜索层**
 
 ---
+
+## [创建] 三个规范文件 - 2026-04-12 11:42
+
+### 1. skills/model-selection/SKILL.md
+
+**内容**：多模型决策树
+
+**核心原则**：
+> **多模型是补丁，不是默认。**
+
+**五种启用条件**：
+| 条件 | 检测方法 |
+|------|----------|
+| 上下文 >60% 导致降智 | Token 计数超过最大上下文 60% |
+| 输出 >4000 token 导致后半段降智 | 生成内容超过 4000 token |
+| 需要不同工具能力 | 任务需要特定工具（搜索、视觉） |
+| 单模型连续两次同类错误 | 相同错误重复出现 2 次 |
+| 需要对抗偏见 | 评审/决策类任务 |
+
+**强制声明规则**：每次启用多模型必须声明 `reason`（来自五种条件之一）
+
+---
+
+### 2. skills/wheel-check/SKILL.md
+
+**内容**：轮子检查规则
+
+**核心原则**：
+> **先找轮子，再考虑造。**
+
+**检查标准**：
+| 指标 | 阈值 |
+|------|------|
+| Stars 数 | ≥100 |
+| 最近更新 | ≤6 个月 |
+| 需求覆盖 | ≥70% |
+
+**搜索渠道**：GitHub、Awesome Lists、npm、PyPI、Hacker News
+
+---
+
+### 3. .ai-state/decision_log.md
+
+**内容**：决策日志模板
+
+**已有决策记录**：
+
+| 决策 | 时间 | 选择 | 原因 |
+|------|------|------|------|
+| 光学路径选择 | 2026-04-06 | OLED + FreeForm | 量产周期 5-7月 vs 18-36月 |
+| MetaBot 替代自建通信层 | 2026-04-10 | 整合 MetaBot | 轮子检查通过 |
+| LiteLLM 替代 model_gateway | 2026-04-12 | 整合 LiteLLM | 42k star，95% 覆盖 |
+| smolagents 替代搜索层 | 2026-04-12 | 整合 smolagents | Tool 可插拔 + LiteLLM 原生对接 |
+
+**决策统计**：整合轮子 3 项，自建 1 项，等待 0 项
+
+---
+
+### 产出文件
+
+- `skills/model-selection/SKILL.md`（95 行）
+- `skills/wheel-check/SKILL.md`（110 行）
+- `.ai-state/decision_log.md`（120 行）
+
+---
