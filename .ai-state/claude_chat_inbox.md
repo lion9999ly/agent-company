@@ -497,6 +497,30 @@
 - **Hook 统计**：
   - ActionStep: 3 hooks (critic, kb_insert, timing)
   - FinalAnswerStep: 2 hooks (critic, kb_insert)
+
+---
+
+## [文档] product_anchor.md 补全 - 2026-04-12 14:30
+
+- **结果**：完成
+- **内容章节**（新增）：
+  - 一、目标用户定义（详细画像：年龄、收入、频次、决策因素）
+  - 二、价格锚点（¥7000-8000 定价策略与支撑逻辑）
+  - 三、硬约束（全内置、8h续航、工业设计≥功能、重量≤1.8kg）
+  - 四、V1功能优先级（语音>HUD>ADAS>行车记录>Mesh，按优先级排序）
+  - 五、光学路径推荐（OLED+FreeForm单绿已确认）
+  - 六、端侧AI四层架构（L0-L3详细定义与端云协同策略）
+  - 七、ADAS差异化定位（摩托车专属场景、小障碍物识别、V1不做LDW）
+  - 八、供应商状态
+  - 九、已确认决策
+  - 十、待决策事项
+- **关键决策**：
+  - 光学路径：OLED+FreeForm 已确认（decision_log 2026-04-06）
+  - V1 ADAS范围：BSD+FCW+行人检测，LDW V2再做（高误报风险）
+  - 端侧AI架构：L0(硬件)→L1(DSP)→L2(轻量模型)→L3(云端大模型)
+  - V1不上ANC：物理隔音+ENC+云端纠错为主
+- **文件路径**：`.ai-state/product_anchor.md`
+- **版本**：20260412.1
   - PlanningStep: 1 hook (critic)
 - **测试验证**：
   - Mock ActionStep → hook_calls['action_steps']=1 ✓
