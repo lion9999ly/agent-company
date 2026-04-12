@@ -220,7 +220,7 @@ async def exec_endpoint(request: ExecRequest):
         "-p", request.prompt,
         "--max-turns", str(request.maxTurns),
         "--dangerously-skip-permissions",  # 绕过所有权限确认
-        "--output-format", "stream-json",
+        "--output-format", "json",  # json 格式输出，无需 --verbose
     ]
 
     timeout_sec = request.timeoutSeconds or 120
