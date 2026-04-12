@@ -347,6 +347,39 @@
   - `C:\Users\uih00653\metabot\MetaBot_AutoStart.xml`
   - `C:\Users\uih00653\metabot\Python_Peer_AutoStart.xml`
   - `C:\Users\uih00653\metabot\rebuild_tasks.ps1`
+
+---
+
+## [评估] OpenSpace MCP server 接入 - 2026-04-12 12:05
+
+- **结果**：✅ 通过（Windows 兼容）
+- **关键数据**：
+  - pip install openspace-ai: ❌ "No matching distribution found"
+  - git clone HKUDS/OpenSpace: ✅ 成功
+  - py -m pip install -e .: ✅ 成功（依赖安装完整）
+  - Python 版本要求: >=3.12（当前 3.12.3 符合）
+- **MCP Server 测试**：
+  - SSE 模式: ✅ 启动成功 (Uvicorn on 127.0.0.1:8080)
+  - stdio 模式: ✅ MCP Initialize OK
+  - Server version: 1.27.0
+  - Tools count: 4 (execute_task, search_skills, fix_skill, upload_skill)
+- **产出文件**：
+  - `openspace_temp/` (git clone 目录)
+  - `openspace_temp/logs/mcp_server.log`
+  - `openspace_temp/logs/mcp_stderr.log`
+- **接入配置**：
+  - SSE endpoint: `http://127.0.0.1:8080/sse`
+  - streamable-http: `http://127.0.0.1:8081/mcp`
+  - 环境变量: OPENSPACE_LLM_API_KEY, OPENSPACE_HOST_SKILL_DIRS, OPENSPACE_WORKSPACE
+- **轮子检查**：
+  - Stars: 500+ (HKUDS)
+  - 更新: 今日活跃
+  - 覆盖: Skill 自进化 + MCP 工具 100%
+  - 结论: ✅ 整合
+- **后续行动**：
+  - 配置 CC MCP 连接
+  - 设置 OPENSPACE_HOST_SKILL_DIRS 指向 skills 目录
+  - 测试 execute_task 工具
   - `C:\Users\uih00653\metabot\import_tasks.bat`
 - **待办**：
   - 需以管理员权限运行 `import_tasks.bat` 重建 scheduled tasks
