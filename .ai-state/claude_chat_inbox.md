@@ -351,3 +351,22 @@
 - **待办**：
   - 需以管理员权限运行 `import_tasks.bat` 重建 scheduled tasks
   - 双击 `C:\Users\uih00653\metabot\import_tasks.bat` 即可
+
+---
+
+## [创建] agentskills.io 标准 Skill 系统 - 2026-04-12 10:30
+
+- **结果**：通过
+- **关键数据**：
+  - 创建 5 个 Skill 目录：roundtable, deep-research, hud-demo, optical-lookup, feishu-output
+  - 每个 SKILL.md 包含 YAML frontmatter + 适用场景 + 执行步骤 + 已知坑 + 验收标准
+  - 正文控制在 3000 tokens 以内
+- **产出文件**：
+  - `skills/roundtable/SKILL.md` - 圆桌讨论执行流程
+  - `skills/deep-research/SKILL.md` - 深度研究五层管道
+  - `skills/hud-demo/SKILL.md` - HUD Demo 生成规范
+  - `skills/optical-lookup/SKILL.md` - 光学参数查询与约束
+  - `skills/feishu-output/SKILL.md` - 飞书输出格式规范
+- **目录结构验证**：
+  - `ls skills/*/SKILL.md` 返回 5 个文件
+- **待决问题**：无
