@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "query": "motorcycle helmet HUD optical solution comparison 2026: microLED vs OLED vs waveguide",
+  "result": "\n| Technology  | Brightness                                  | Contrast                          | Efficiency                        | Durability                      | Use Case                                                                      |\n|-------------|--------------------------------------------|------------------------------------|-----------------------------------|---------------------------------|--------------------------------------------------------------------------------|\n| microLED    | Highest brightness (up to 50,000 nits), crucial for outdoor visibility | High contrast ratio, excellent for sharp visuals | Energy-efficient                | Resistant to wear and tear; suitable for rugged conditions | Frequently used in premium AR-HUDs like BOE's HERO 2.0                        |\n| OLED        | Lower brightness compared to microLED, but still sufficient for most conditions | Excellent contrast and deep blacks; supports vibrant displays | Relatively lower power consumption | Prone to burn-in over time; less durable in extreme conditions | Used in HUD systems where image quality is prioritized, e.g., Shoei OLED helmets |\n| Waveguide   | Dependent on the projector quality; generally moderate | Adequate, but can suffer from light leakage in some designs | Optimized for low-weight designs but may not be energy-efficient | Fragile; requires protection within a helmet | Widely applied in AR/MR displays for projection-based HUDs                     |\n",
+  "elapsed_seconds": 47.619119,
+  "model": "gpt_4o",
+  "provider": "azure_norway",
+  "hook_stats": {
+    "action_steps": 5,
+    "final_answers": 1,
+    "planning_steps": 0
+  }
+}

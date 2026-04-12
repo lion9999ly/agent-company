@@ -211,9 +211,12 @@ async def exec_endpoint(request: ExecRequest):
     # 确定工作目录
     work_dir = request.workingDirectory or WORK_DIR
 
+    # Claude CLI 绝对路径（Windows 上需要 .cmd 扩展名）
+    CLAUDE_CLI_PATH = os.getenv("CLAUDE_EXECUTABLE_PATH", "C:/Users/uih00653/nodejs/claude.cmd")
+
     # 构建 CC 命令
     claude_cmd = [
-        "claude",
+        CLAUDE_CLI_PATH,
         "-p", request.prompt,
         "--max-turns", str(request.maxTurns),
         "--dangerously-skip-permissions",  # 绕过所有权限确认
