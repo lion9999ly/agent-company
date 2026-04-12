@@ -1,0 +1,18 @@
+{
+  "test_time": "2026-04-12 12:58:43",
+  "sse_endpoint": "http://127.0.0.1:8080/sse",
+  "skill_dirs": "D:\\Users\\uih00653\\my_agent_company\\pythonProject1\\skills",
+  "sse_connection": true,
+  "session_id": "8868536fc1ab4335a04e914791ab768e",
+  "skill_count": 7,
+  "skills_found": [
+    "deep-research",
+    "feishu-output",
+    "hud-demo",
+    "model-selection",
+    "optical-lookup",
+    "roundtable",
+    "wheel-check"
+  ],
+  "search_skills_success": true
+}

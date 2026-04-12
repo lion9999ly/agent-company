@@ -1386,3 +1386,40 @@ agent = CodeAgent(
 - smolagents 搜索层切换完全成功
 
 ---
+
+---
+
+## [接入] OpenSpace MCP 正式接入 CC - 2026-04-12 12:58
+
+### 配置内容
+1. **settings.json**: 添加 mcpServers.openspace SSE endpoint
+2. **SSE endpoint**: `http://127.0.0.1:8080/sse`
+3. **环境变量**: OPENSPACE_HOST_SKILL_DIRS 指向 skills/ 目录
+
+### 测试结果
+| 测试项 | 结果 |
+|--------|------|
+| SSE 连接 | ✅ 成功 |
+| Session ID | 8868536fc1ab4335a04e914791ab768e |
+| search_skills | ✅ 发现 7 个 SKILL.md |
+
+### 发现的 SKILL.md
+1. deep-research
+2. feishu-output
+3. hud-demo
+4. model-selection
+5. optical-lookup
+6. roundtable
+7. wheel-check
+
+### OpenSpace MCP 工具
+- `execute_task`: 委托任务执行（自动搜索、自动进化）
+- `search_skills`: 本地 + 云端技能搜索
+- `fix_skill`: 修复损坏的 SKILL.md
+- `upload_skill`: 上传技能到云端社区
+
+### 注意事项
+- CC 需重启才能加载新的 MCP 配置
+- OpenSpace MCP server 需持续运行（后台进程）
+
+---
