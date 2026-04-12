@@ -214,7 +214,7 @@ async def exec_endpoint(request: ExecRequest):
     # Claude CLI 绝对路径（Windows 上需要 .cmd 扩展名）
     CLAUDE_CLI_PATH = os.getenv("CLAUDE_EXECUTABLE_PATH", "C:/Users/uih00653/nodejs/claude.cmd")
 
-    # 构建 CC 命令
+    # 构建 CC 命令（工作目录通过 subprocess.cwd 控制，无需 CLI 参数）
     claude_cmd = [
         CLAUDE_CLI_PATH,
         "-p", request.prompt,
@@ -222,9 +222,6 @@ async def exec_endpoint(request: ExecRequest):
         "--dangerously-skip-permissions",  # 绕过所有权限确认
         "--output-format", "stream-json",
     ]
-
-    if work_dir:
-        claude_cmd.extend(["--working-directory", work_dir])
 
     timeout_sec = request.timeoutSeconds or 120
 
