@@ -1,0 +1,94 @@
+<h2>HUD Demo 物理布局模型</h2>
+<p class="subtitle">根据 SKILL.md v2 规范，面镜两侧各有一条竖向显示带，中间完全透明</p>
+
+<div class="mockup">
+  <div class="mockup-header">面镜布局示意（俯视图）</div>
+  <div class="mockup-body" style="background: #1a1a2e; padding: 20px;">
+    <div style="display: flex; gap: 20px; height: 400px; position: relative;">
+      <!-- 左侧竖向显示带 -->
+      <div style="width: 120px; background: rgba(0,255,0,0.1); border: 2px solid rgba(0,255,0,0.3); border-radius: 10px; display: flex; flex-direction: column;">
+        <div style="height: 80px; background: rgba(0,255,0,0.2); border-bottom: 1px solid rgba(0,255,0,0.3); padding: 10px; text-align: center;">
+          <div style="color: #00ff00; font-size: 14px;">LT</div>
+          <div style="color: #00ff00; font-size: 20px; font-weight: bold;">68</div>
+          <div style="color: #00ff00; font-size: 10px;">km/h</div>
+        </div>
+        <div style="flex: 1; background: rgba(0,255,0,0.15); border-bottom: 1px solid rgba(0,255,0,0.3); padding: 10px; text-align: center;">
+          <div style="color: #00ff00; font-size: 12px;">导航地图</div>
+          <div style="color: #00ff00; font-size: 24px;">⬅️</div>
+          <div style="color: #00ff00; font-size: 10px;">200m</div>
+        </div>
+        <div style="height: 80px; background: rgba(0,255,0,0.2); padding: 10px; text-align: center;">
+          <div style="color: #00ff00; font-size: 14px;">LB</div>
+          <div style="color: #00ff00; font-size: 10px;">ADAS/来电</div>
+        </div>
+      </div>
+
+      <!-- 中央透明区域 -->
+      <div style="flex: 1; background: linear-gradient(to bottom, #2d2d44, #1a1a2e); display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(255,255,255,0.1);">
+        <div style="color: rgba(255,255,255,0.3); font-size: 14px; text-align: center;">
+          <div style="font-size: 24px;">🚗</div>
+          中央透明区域<br/>
+          <span style="font-size: 12px;">（路面视野，不放任何信息）</span>
+          <div style="margin-top: 20px; font-size: 12px; color: rgba(255,255,255,0.2);">
+            ← 辐辏安全间距 →
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧竖向显示带 -->
+      <div style="width: 120px; background: rgba(0,255,0,0.1); border: 2px solid rgba(0,255,0,0.3); border-radius: 10px; display: flex; flex-direction: column;">
+        <div style="height: 80px; background: rgba(0,255,0,0.2); border-bottom: 1px solid rgba(0,255,0,0.3); padding: 10px; text-align: center;">
+          <div style="color: #00ff00; font-size: 14px;">RT</div>
+          <div style="color: #00ff00; font-size: 16px;">🚸</div>
+          <div style="color: #00ff00; font-size: 10px;">限速60</div>
+        </div>
+        <div style="flex: 1; background: rgba(0,255,0,0.15); padding: 10px; text-align: center;">
+          <div style="color: rgba(0,255,0,0.5); font-size: 12px;">（空）</div>
+        </div>
+        <div style="height: 80px; background: rgba(0,255,0,0.2); padding: 10px; text-align: center;">
+          <div style="color: #00ff00; font-size: 14px;">RB</div>
+          <div style="color: #00ff00; font-size: 10px;">组队/DVR</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 5px;">
+      <div style="color: #00ff00; font-size: 12px;">
+        <strong>布局硬约束：</strong>
+        <ul style="margin: 5px 0; padding-left: 20px;">
+          <li>信息只能出现在左右两条竖向显示带内</li>
+          <li>中央区域必须完全透明（路面可见）</li>
+          <li>中央间距满足辐辏约束（左眼内容右眼不可见）</li>
+          <li>显示带位于面镜高度中偏上位置</li>
+          <li>显示区域大小/位置可调（sandbox控件）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>确认：这个物理布局模型是否符合您的预期？</h3>
+  <p>这是 SKILL.md v2 定义的核心约束，与之前的四角布局有本质区别：</p>
+  <ul>
+    <li>之前：四个独立角（LT/RT/LB/RB）分散在面镜四周</li>
+    <li>现在：两条<strong>竖向显示带</strong>（左侧条 + 右侧条），中央大区域透明</li>
+  </ul>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="yes" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>确认，继续</h3>
+      <p>布局模型正确，继续展示光学模式差异</p>
+    </div>
+  </div>
+  <div class="option" data-choice="discuss" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>需要讨论</h3>
+      <p>有疑问或需要调整布局细节</p>
+    </div>
+  </div>
+</div>

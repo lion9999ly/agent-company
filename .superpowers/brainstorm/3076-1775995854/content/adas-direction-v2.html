@@ -1,0 +1,153 @@
+<h2>ADAS 预警方向映射规则（修正版）</h2>
+<p class="subtitle">边缘闪烁在竖条边框内部，不超出显示带范围</p>
+
+<div class="mockup">
+  <div class="mockup-header">方向映射示意（边缘在竖条内部）</div>
+  <div class="mockup-body" style="background: #0a0a12; padding: 20px;">
+
+    <div style="display: flex; gap: 40px; justify-content: center; margin-bottom: 30px;">
+
+      <!-- 左侧竖条 -->
+      <div style="width: 120px; position: relative;">
+        <div style="text-align: center; color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 10px;">左侧竖条</div>
+
+        <!-- 竖条主体：外边缘=左border，内边缘=右border -->
+        <div style="height: 300px; background: rgba(74,144,226,0.15); border-radius: 10px; display: flex; flex-direction: column; position: relative;">
+
+          <!-- 外边缘（左border）闪烁 - BSD -->
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #FF3B30; border-radius: 10px 0 0 10px; animation: pulse 0.5s infinite;"></div>
+
+          <!-- 内边缘（右border）虚线 - LDW -->
+          <div style="position: absolute; right: 0; top: 20%; bottom: 20%; width: 4px; background: repeating-linear-gradient(to bottom, #FF9500 0px, #FF9500 8px, transparent 8px, transparent 16px); border-radius: 0 10px 10px 0;"></div>
+
+          <!-- 竖条内容 -->
+          <div style="margin-left: 8px; margin-right: 8px; height: 70px; padding: 10px; text-align: center; border-bottom: 1px solid rgba(74,144,226,0.3);">
+            <div style="color: #fff; font-size: 20px;">LT</div>
+            <div style="color: #fff; font-size: 10px;">速度</div>
+          </div>
+          <div style="margin-left: 8px; margin-right: 8px; flex: 1; padding: 10px; text-align: center; border-bottom: 1px solid rgba(74,144,226,0.3);">
+            <div style="color: #4A90E2; font-size: 12px;">导航</div>
+          </div>
+          <div style="margin-left: 8px; margin-right: 8px; height: 70px; padding: 10px; text-align: center;">
+            <div style="color: #fff; font-size: 20px;">LB</div>
+            <div style="color: #fff; font-size: 10px;">预警/来电</div>
+          </div>
+        </div>
+
+        <!-- 标签：在竖条外面标注 -->
+        <div style="position: absolute; left: -60px; top: 0; color: #FF3B30; font-size: 10px; white-space: nowrap;">外边缘<br/>BSD闪烁</div>
+        <div style="position: absolute; right: -70px; top: 40%; color: #FF9500; font-size: 10px; white-space: nowrap;">内边缘<br/>LDW虚线</div>
+      </div>
+
+      <!-- 中央 -->
+      <div style="width: 200px; display: flex; align-items: center; justify-content: center;">
+        <div style="color: rgba(255,255,255,0.3); font-size: 14px; text-align: center;">
+          中央透明<br/>路面视野
+        </div>
+      </div>
+
+      <!-- 右侧竖条 -->
+      <div style="width: 120px; position: relative;">
+        <div style="text-align: center; color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 10px;">右侧竖条</div>
+
+        <!-- 竖条主体：外边缘=右border，内边缘=左border -->
+        <div style="height: 300px; background: rgba(74,144,226,0.15); border-radius: 10px; display: flex; flex-direction: column; position: relative;">
+
+          <!-- 内边缘（左border）虚线 - LDW -->
+          <div style="position: absolute; left: 0; top: 20%; bottom: 20%; width: 4px; background: repeating-linear-gradient(to bottom, #FF9500 0px, #FF9500 8px, transparent 8px, transparent 16px); border-radius: 10px 0 0 10px;"></div>
+
+          <!-- 外边缘（右border）闪烁 - Dooring -->
+          <div style="position: absolute; right: 0; top: 0; bottom: 0; width: 4px; background: #FF3B30; border-radius: 0 10px 10px 0; animation: pulse 0.5s infinite;"></div>
+
+          <!-- 竖条内容 -->
+          <div style="margin-left: 8px; margin-right: 8px; height: 70px; padding: 10px; text-align: center; border-bottom: 1px solid rgba(74,144,226,0.3);">
+            <div style="color: #fff; font-size: 20px;">RT</div>
+            <div style="color: #fff; font-size: 10px;">标志/状态</div>
+          </div>
+          <div style="margin-left: 8px; margin-right: 8px; flex: 1; padding: 10px; text-align: center; border-bottom: 1px solid rgba(74,144,226,0.3);">
+            <div style="color: rgba(255,255,255,0.3); font-size: 12px;">（空）</div>
+          </div>
+          <div style="margin-left: 8px; margin-right: 8px; height: 70px; padding: 10px; text-align: center;">
+            <div style="color: #fff; font-size: 20px;">RB</div>
+            <div style="color: #fff; font-size: 10px;">组队/DVR</div>
+          </div>
+        </div>
+
+        <!-- 标签：在竖条外面标注 -->
+        <div style="position: absolute; left: -70px; top: 40%; color: #FF9500; font-size: 10px; white-space: nowrap;">内边缘<br/>LDW虚线</div>
+        <div style="position: absolute; right: -60px; top: 0; color: #FF3B30; font-size: 10px; white-space: nowrap;">外边缘<br/>Dooring闪烁</div>
+      </div>
+    </div>
+
+    <!-- 方向映射表 -->
+    <div style="padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px;">
+      <h4 style="color: #fff; margin-bottom: 10px;">方向映射规则（修正版）</h4>
+      <table style="width: 100%; color: rgba(255,255,255,0.8); font-size: 12px;">
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <td style="padding: 8px;"><strong>前方威胁 (FCW)</strong></td>
+          <td style="padding: 8px;">LT + RT zone 同时闪烁</td>
+          <td style="padding: 8px; color: #FF3B30;">双侧 zone 边框脉冲</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <td style="padding: 8px;"><strong>左后方 BSD</strong></td>
+          <td style="padding: 8px;">左侧竖条<span style="color: #FF3B30;">左边缘（外边缘）</span>闪烁</td>
+          <td style="padding: 8px; color: #FF3B30;">竖条内部最左边 4px 亮条</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <td style="padding: 8px;"><strong>右侧 Dooring</strong></td>
+          <td style="padding: 8px;">右侧竖条<span style="color: #FF3B30;">右边缘（外边缘）</span>闪烁</td>
+          <td style="padding: 8px; color: #FF3B30;">竖条内部最右边 4px 亮条</td>
+        </tr>
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <td style="padding: 8px;"><strong>LDW 左侧压线</strong></td>
+          <td style="padding: 8px;">左侧竖条<span style="color: #FF9500;">右边缘（内边缘）</span>虚线</td>
+          <td style="padding: 8px; color: #FF9500;">竖条内部靠中央的虚线</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px;"><strong>LDW 右侧压线</strong></td>
+          <td style="padding: 8px;">右侧竖条<span style="color: #FF9500;">左边缘（内边缘）</span>虚线</td>
+          <td style="padding: 8px; color: #FF9500;">竖条内部靠中央的虚线</td>
+        </tr>
+      </table>
+
+      <div style="margin-top: 15px; padding: 10px; background: rgba(255,59,48,0.1); border-radius: 5px;">
+        <strong style="color: #FF3B30;">关键定义：</strong>
+        <ul style="font-size: 11px; color: rgba(255,255,255,0.8); margin: 8px 0; padding-left: 20px;">
+          <li><strong>外边缘</strong> = 竖条远离中央的那条边（左侧条的左边，右侧条的右边）</li>
+          <li><strong>内边缘</strong> = 竖条靠近中央的那条边（左侧条的右边，右侧条的左边）</li>
+          <li>所有边缘闪烁都在竖条<strong>内部</strong>，不超出显示带范围</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+</style>
+
+<div class="section">
+  <h3>修正后的验收标准</h3>
+  <ul style="font-size: 14px;">
+    <li><strong>#6</strong>：BSD 左后方 → 左侧竖条内部左边缘（外边缘）闪烁</li>
+    <li><strong>#7</strong>：LDW → 对应侧竖条内部靠中央的边缘（内边缘）虚线</li>
+    <li>边缘闪烁宽度 4px，在竖条内部</li>
+  </ul>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="continue" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>确认，继续展示状态机与剧本</h3>
+      <p>边缘在竖条内部的规则已确认</p>
+    </div>
+  </div>
+  <div class="option" data-choice="adjust" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>还需要调整</h3>
+      <p>边缘闪烁的宽度/颜色/位置有其他要求</p>
+    </div>
+  </div>
+</div>

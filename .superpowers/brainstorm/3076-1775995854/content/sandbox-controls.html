@@ -1,0 +1,182 @@
+<h2>Sandbox 控件要求</h2>
+<p class="subtitle">验收标准 #14：显示区域大小和位置可通过 sandbox 调节</p>
+
+<div class="mockup">
+  <div class="mockup-header" style="background: #AF52DE;">Sandbox 面板结构（右侧，默认隐藏）</div>
+  <div class="mockup-body" style="background: #0a0a12; padding: 15px;">
+
+    <div style="display: flex; gap: 20px;">
+      <!-- HUD 主画面 -->
+      <div style="flex: 1; background: #1a1a2e; border-radius: 10px; padding: 10px; min-height: 350px; display: flex; justify-content: center; align-items: center;">
+        <div style="color: rgba(255,255,255,0.3); font-size: 14px; text-align: center;">
+          <div style="font-size: 24px;">🏍️</div>
+          HUD 主画面<br/>
+          <span style="font-size: 12px;">（按 S 键显示/隐藏 Sandbox）</span>
+        </div>
+      </div>
+
+      <!-- Sandbox 面板 -->
+      <div style="width: 280px; background: rgba(175,82,222,0.1); border: 2px solid #AF52DE; border-radius: 10px; padding: 15px;">
+        <div style="color: #AF52DE; font-size: 14px; font-weight: bold; margin-bottom: 12px;">🛠️ Sandbox 控制面板</div>
+
+        <!-- 光学模式 -->
+        <div style="margin-bottom: 12px;">
+          <div style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">光学模式（F1/F2/F3）</div>
+          <div style="display: flex; gap: 5px;">
+            <button class="mock-button" style="flex: 1; background: rgba(74,144,226,0.3); border: 1px solid #4A90E2; color: #4A90E2; padding: 6px 8px; border-radius: 5px; font-size: 11px;">FreeForm</button>
+            <button class="mock-button" style="flex: 1; background: rgba(52,199,89,0.3); border: 1px solid #34C759; color: #34C759; padding: 6px 8px; border-radius: 5px; font-size: 11px;">全彩光波导</button>
+            <button class="mock-button" style="flex: 1; background: rgba(0,255,0,0.3); border: 1px solid #00FF00; color: #00FF00; padding: 6px 8px; border-radius: 5px; font-size: 11px;">单绿</button>
+          </div>
+        </div>
+
+        <!-- FOV 大小 -->
+        <div style="margin-bottom: 12px;">
+          <div style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">FOV 大小：38°</div>
+          <input class="mock-input" type="range" style="width: 100%; accent-color: #AF52DE;">
+          <div style="display: flex; justify-content: space-between; color: rgba(255,255,255,0.5); font-size: 10px;">
+            <span>28°</span><span>50°</span>
+          </div>
+        </div>
+
+        <!-- 显示区域调节 -->
+        <div style="margin-bottom: 12px;">
+          <div style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">显示区域位置/大小</div>
+          <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+              <div style="font-size: 10px; color: rgba(255,255,255,0.6);">宽度</div>
+              <input class="mock-input" type="range" style="width: 100%; accent-color: #AF52DE;">
+            </div>
+            <div style="flex: 1;">
+              <div style="font-size: 10px; color: rgba(255,255,255,0.6);">高度偏移</div>
+              <input class="mock-input" type="range" style="width: 100%; accent-color: #AF52DE;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 中央间距 -->
+        <div style="margin-bottom: 12px;">
+          <div style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">中央间距（辐辏约束）：480px</div>
+          <input class="mock-input" type="range" style="width: 100%; accent-color: #AF52DE;">
+        </div>
+
+        <!-- 背景透明度 -->
+        <div style="margin-bottom: 12px;">
+          <div style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">背景透明度：50%</div>
+          <input class="mock-input" type="range" style="width: 100%; accent-color: #AF52DE;">
+          <div style="margin-top: 5px;">
+            <button class="mock-button" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.8); padding: 4px 8px; border-radius: 3px; font-size: 10px;">上传背景图片</button>
+          </div>
+        </div>
+
+        <!-- 单绿亮度分级 -->
+        <div style="margin-bottom: 12px; padding: 8px; background: rgba(0,255,0,0.1); border-radius: 5px;">
+          <div style="color: #00FF00; font-size: 12px; margin-bottom: 5px;">单绿亮度分级</div>
+          <div style="display: flex; gap: 5px; font-size: 10px;">
+            <div style="flex: 1; text-align: center;">
+              <div style="color: rgba(0,255,0,1);">紧急</div>
+              <input class="mock-input" type="number" value="100" style="width: 100%; background: transparent; border: 1px solid rgba(0,255,0,0.3); color: #00FF00; text-align: center; font-size: 10px; padding: 2px;">
+            </div>
+            <div style="flex: 1; text-align: center;">
+              <div style="color: rgba(0,255,0,0.8);">主要</div>
+              <input class="mock-input" type="number" value="80" style="width: 100%; background: transparent; border: 1px solid rgba(0,255,0,0.3); color: #00FF00; text-align: center; font-size: 10px; padding: 2px;">
+            </div>
+            <div style="flex: 1; text-align: center;">
+              <div style="color: rgba(0,255,0,0.5);">次要</div>
+              <input class="mock-input" type="number" value="50" style="width: 100%; background: transparent; border: 1px solid rgba(0,255,0,0.3); color: #00FF00; text-align: center; font-size: 10px; padding: 2px;">
+            </div>
+            <div style="flex: 1; text-align: center;">
+              <div style="color: rgba(0,255,0,0.2);">背景</div>
+              <input class="mock-input" type="number" value="20" style="width: 100%; background: transparent; border: 1px solid rgba(0,255,0,0.3); color: #00FF00; text-align: center; font-size: 10px; padding: 2px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 导航级别 -->
+        <div style="margin-bottom: 12px;">
+          <div style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">导航显示级别</div>
+          <div style="display: flex; gap: 5px;">
+            <button class="mock-button" style="flex: 1; background: rgba(74,144,226,0.3); border: 1px solid #4A90E2; color: #4A90E2; padding: 5px; border-radius: 4px; font-size: 10px;">箭头</button>
+            <button class="mock-button" style="flex: 1; background: rgba(74,144,226,0.5); border: 2px solid #4A90E2; color: #4A90E2; padding: 5px; border-radius: 4px; font-size: 10px;">简易地图</button>
+            <button class="mock-button" style="flex: 1; background: rgba(74,144,226,0.3); border: 1px solid #4A90E2; color: #4A90E2; padding: 5px; border-radius: 4px; font-size: 10px;">全地图</button>
+          </div>
+        </div>
+
+        <!-- 速度设置 -->
+        <div style="margin-bottom: 12px;">
+          <div style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">速度：68 km/h（S1）</div>
+          <input class="mock-input" type="range" style="width: 100%; accent-color: #AF52DE;">
+        </div>
+
+        <!-- ADAS 预警触发 -->
+        <div style="margin-bottom: 12px;">
+          <div style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">ADAS 预警触发</div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;">
+            <button class="mock-button" style="background: rgba(255,59,48,0.3); border: 1px solid #FF3B30; color: #FF3B30; padding: 5px; border-radius: 4px; font-size: 10px;">FCW</button>
+            <button class="mock-button" style="background: rgba(255,59,48,0.3); border: 1px solid #FF3B30; color: #FF3B30; padding: 5px; border-radius: 4px; font-size: 10px;">BSD</button>
+            <button class="mock-button" style="background: rgba(255,59,48,0.3); border: 1px solid #FF3B30; color: #FF3B30; padding: 5px; border-radius: 4px; font-size: 10px;">Dooring</button>
+            <button class="mock-button" style="background: rgba(255,59,48,0.3); border: 1px solid #FF3B30; color: #FF3B30; padding: 5px; border-radius: 4px; font-size: 10px;">行人</button>
+            <button class="mock-button" style="background: rgba(255,149,0,0.3); border: 1px solid #FF9500; color: #FF9500; padding: 5px; border-radius: 4px; font-size: 10px;">LDW左</button>
+            <button class="mock-button" style="background: rgba(255,149,0,0.3); border: 1px solid #FF9500; color: #FF9500; padding: 5px; border-radius: 4px; font-size: 10px;">LDW右</button>
+          </div>
+          <div style="margin-top: 5px; display: flex; gap: 10px;">
+            <div style="flex: 1;">
+              <div style="font-size: 10px; color: rgba(255,255,255,0.6);">距离(m)</div>
+              <input class="mock-input" type="number" value="15" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 10px; padding: 3px;">
+            </div>
+            <div style="flex: 1;">
+              <div style="font-size: 10px; color: rgba(255,255,255,0.6);">关闭速度</div>
+              <input class="mock-input" type="number" value="45" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 10px; padding: 3px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 剧本控制 -->
+        <div style="margin-bottom: 8px;">
+          <div style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 5px;">剧本播放控制</div>
+          <div style="display: flex; gap: 5px;">
+            <button class="mock-button" style="flex: 1; background: rgba(74,144,226,0.3); border: 1px solid #4A90E2; color: #4A90E2; padding: 5px; border-radius: 4px; font-size: 10px;">commute</button>
+            <button class="mock-button" style="flex: 1; background: rgba(255,59,48,0.3); border: 1px solid #FF3B30; color: #FF3B30; padding: 5px; border-radius: 4px; font-size: 10px;">emergency</button>
+          </div>
+          <div style="display: flex; gap: 5px; margin-top: 5px;">
+            <button class="mock-button" style="flex: 1; background: rgba(90,200,250,0.3); border: 1px solid #5AC8FA; color: #5AC8FA; padding: 5px; border-radius: 4px; font-size: 10px;">group</button>
+            <button class="mock-button" style="flex: 1; background: rgba(255,149,0,0.3); border: 1px solid #FF9500; color: #FF9500; padding: 5px; border-radius: 4px; font-size: 10px;">touring</button>
+          </div>
+          <div style="margin-top: 5px; display: flex; gap: 5px;">
+            <button class="mock-button" style="flex: 1; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: #fff; padding: 5px; border-radius: 4px; font-size: 10px;">▶ 播放</button>
+            <button class="mock-button" style="flex: 1; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: #fff; padding: 5px; border-radius: 4px; font-size: 10px;">⏸ 暂停</button>
+            <button class="mock-button" style="flex: 1; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: #fff; padding: 5px; border-radius: 4px; font-size: 10px;">⏹ 停止</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>键盘快捷键</h3>
+  <table style="font-size: 12px; color: rgba(255,255,255,0.8);">
+    <tr><td style="width: 80px;"><strong>F1/F2/F3</strong></td><td>切换光学模式</td></tr>
+    <tr><td><strong>Space</strong></td><td>播放/暂停剧本</td></tr>
+    <tr><td><strong>S</strong></td><td>显示/隐藏 Sandbox</td></tr>
+    <tr><td><strong>1/2/3/4</strong></td><td>切换剧本</td></tr>
+    <tr><td><strong>W/A/D</strong></td><td>触发预警（前方/左后/右后）</td></tr>
+    <tr><td><strong>Esc</strong></td><td>重置到 Cruise</td></tr>
+  </table>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="approve" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>确认全部设计，开始写 Spec</h3>
+      <p>Sandbox 控件要求已确认，可以输出设计文档</p>
+    </div>
+  </div>
+  <div class="option" data-choice="adjust" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>需要调整 Sandbox 控件</h3>
+      <p>某些控件布局或参数需要调整</p>
+    </div>
+  </div>
+</div>

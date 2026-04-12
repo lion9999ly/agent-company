@@ -1,0 +1,134 @@
+<h2>三种光学模式对比</h2>
+<p class="subtitle">验收标准 #1：同一个 ADAS 预警在三种模式下的编码方式必须有可见差异</p>
+
+<div class="split">
+  <!-- 模式 A：FreeForm -->
+  <div class="mockup">
+    <div class="mockup-header" style="background: #4A90E2;">模式 A：OLED + FreeForm 棱镜</div>
+    <div class="mockup-body" style="background: #0a0a12; padding: 15px;">
+      <div style="text-align: center; color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 10px;">FOV: 38° | 全彩 RGB | 高亮度</div>
+
+      <div style="display: flex; gap: 10px; height: 250px;">
+        <div style="width: 80px; background: rgba(74,144,226,0.2); border: 2px solid #4A90E2; border-radius: 8px; padding: 10px;">
+          <div style="color: #ffffff; font-size: 28px; font-weight: bold;">68</div>
+          <div style="color: #ffffff; font-size: 10px;">km/h</div>
+          <div style="margin-top: 15px; color: #4A90E2; font-size: 14px;">⬅️ 左转</div>
+          <div style="color: #4A90E2; font-size: 12px;">200m</div>
+        </div>
+        <div style="flex: 1; border: 1px dashed rgba(255,255,255,0.1);"></div>
+        <div style="width: 80px; background: rgba(255,59,48,0.3); border: 3px solid #FF3B30; border-radius: 8px; padding: 10px; animation: pulse 1s infinite;">
+          <div style="color: #FF3B30; font-size: 14px; font-weight: bold;">⚠️ FCW</div>
+          <div style="color: #FF3B30; font-size: 12px;">前方</div>
+          <div style="color: #FF3B30; font-size: 10px;">15m | 45km/h</div>
+          <div style="color: #FF3B30; font-size: 16px; font-weight: bold;">TTC: 1.2s</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 10px; padding: 8px; background: rgba(255,59,48,0.1); border-radius: 5px;">
+        <div style="color: #FF3B30; font-size: 11px;">
+          <strong>颜色编码：</strong>红色 = 紧急预警，蓝色 = 导航，白色 = 速度
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模式 B：全彩光波导 -->
+  <div class="mockup">
+    <div class="mockup-header" style="background: #34C759;">模式 B：全彩光波导</div>
+    <div class="mockup-body" style="background: #080810; padding: 15px;">
+      <div style="text-align: center; color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 10px;">FOV: 35° | 全彩 RGB | 低亮度，高透过率</div>
+
+      <div style="display: flex; gap: 10px; height: 250px;">
+        <div style="width: 80px; background: rgba(52,199,89,0.15); border: 2px solid rgba(52,199,89,0.4); border-radius: 8px; padding: 10px;">
+          <div style="color: rgba(255,255,255,0.9); font-size: 28px; font-weight: bold;">68</div>
+          <div style="color: rgba(255,255,255,0.9); font-size: 10px;">km/h</div>
+          <div style="margin-top: 15px; color: #34C759; font-size: 14px;">⬅️ 左转</div>
+          <div style="color: #34C759; font-size: 12px;">200m</div>
+        </div>
+        <div style="flex: 1; border: 1px dashed rgba(255,255,255,0.1);"></div>
+        <div style="width: 80px; background: rgba(255,149,0,0.2); border: 2px solid #FF9500; border-radius: 8px; padding: 10px;">
+          <div style="color: #FF9500; font-size: 14px; font-weight: bold;">⚠️ FCW</div>
+          <div style="color: #FF9500; font-size: 12px;">前方</div>
+          <div style="color: #FF9500; font-size: 10px;">15m | 45km/h</div>
+          <div style="color: #FF9500; font-size: 16px; font-weight: bold;">TTC: 1.2s</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 10px; padding: 8px; background: rgba(255,149,0,0.1); border-radius: 5px;">
+        <div style="color: #FF9500; font-size: 11px;">
+          <strong>颜色编码：</strong>橙色 = 预警（亮度较低），绿色 = 导航，背景更透明
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mockup" style="margin-top: 20px;">
+  <div class="mockup-header" style="background: #00FF00;">模式 C：单绿光波导 ⚠️ 严格约束</div>
+  <div class="mockup-body" style="background: #010a02; padding: 15px;">
+    <div style="text-align: center; color: rgba(0,255,0,0.6); font-size: 12px; margin-bottom: 10px;">FOV: 35° | 唯一色相 #00FF00 | 中亮度</div>
+
+    <div style="display: flex; gap: 10px; height: 250px;">
+      <!-- 速度区域：80%亮度 -->
+      <div style="width: 80px; background: rgba(0,255,0,0.08); border: 2px solid rgba(0,255,0,0.3); border-radius: 8px; padding: 10px;">
+        <div style="color: rgba(0,255,0,0.8); font-size: 28px; font-weight: bold;">68</div>
+        <div style="color: rgba(0,255,0,0.8); font-size: 10px;">km/h</div>
+        <div style="margin-top: 15px; color: rgba(0,255,0,0.8); font-size: 14px;">⬅️ 左转</div>
+        <div style="color: rgba(0,255,0,0.8); font-size: 12px;">200m</div>
+        <div style="margin-top: 10px; color: rgba(0,255,0,0.5); font-size: 9px;">【主要信息 80%】</div>
+      </div>
+      <div style="flex: 1; border: 1px dashed rgba(0,255,0,0.1);"></div>
+      <!-- 预警区域：100%亮度 + 闪烁 -->
+      <div style="width: 80px; background: rgba(0,255,0,0.25); border: 3px solid rgba(0,255,0,1); border-radius: 8px; padding: 10px;">
+        <div style="color: rgba(0,255,0,1); font-size: 14px; font-weight: bold; animation: blink 0.25s infinite;">⚠️ FCW</div>
+        <div style="color: rgba(0,255,0,1); font-size: 12px;">前方</div>
+        <div style="color: rgba(0,255,0,1); font-size: 10px;">15m | 45km/h</div>
+        <div style="color: rgba(0,255,0,1); font-size: 16px; font-weight: bold; animation: blink 0.25s infinite;">TTC: 1.2s</div>
+        <div style="margin-top: 10px; color: rgba(0,255,0,1); font-size: 9px;">【紧急 100% + 闪烁】</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 10px; padding: 8px; background: rgba(0,255,0,0.1); border-radius: 5px;">
+      <div style="color: rgba(0,255,0,0.9); font-size: 11px;">
+        <strong>验收标准 #2：</strong>单绿模式下不得出现 #00FF00 以外的任何色相！
+        <br/>
+        <strong>亮度编码规则：</strong>
+        <span style="color: rgba(0,255,0,1);">100% 紧急</span> |
+        <span style="color: rgba(0,255,0,0.8);">80% 主要</span> |
+        <span style="color: rgba(0,255,0,0.5);">50% 次要</span> |
+        <span style="color: rgba(0,255,0,0.2);">20% 背景</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+</style>
+
+<div class="section">
+  <h3>确认：三种光学模式的视觉差异是否清晰？</h3>
+  <ul>
+    <li><strong>模式 A</strong>：红色预警，高对比度，信息丰富</li>
+    <li><strong>模式 B</strong>：橙色预警（亮度较低），背景更透明</li>
+    <li><strong>模式 C</strong>：纯绿色 #00FF00，用亮度百分比区分信息等级</li>
+  </ul>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="continue" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>确认，继续展示 ADAS 预警方向映射</h3>
+      <p>三种模式差异清晰，继续看预警闪烁位置规则</p>
+    </div>
+  </div>
+  <div class="option" data-choice="adjust" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>需要调整亮度编码</h3>
+      <p>单绿模式的亮度分级需要调整参数</p>
+    </div>
+  </div>
+</div>

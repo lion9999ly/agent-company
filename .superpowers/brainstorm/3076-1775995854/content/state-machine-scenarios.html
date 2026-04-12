@@ -1,0 +1,264 @@
+<h2>状态机与剧本设计</h2>
+<p class="subtitle">验收标准 #8-9：优先级抢占后内容缩小但不消失，预警结束后自动恢复</p>
+
+<div class="mockup">
+  <div class="mockup-header" style="background: #5AC8FA;">7 种模式与优先级</div>
+  <div class="mockup-body" style="background: #0a0a12; padding: 15px;">
+
+    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+      <!-- 优先级条 -->
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <div style="width: 60px; text-align: center; color: rgba(255,255,255,0.6); font-size: 10px;">优先级</div>
+        <div style="height: 40px; background: #FF3B30; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px;">6</div>
+        <div style="height: 40px; background: #34C759; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px;">5</div>
+        <div style="height: 40px; background: #4A90E2; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px;">4</div>
+        <div style="height: 40px; background: #5AC8FA; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px;">3</div>
+        <div style="height: 40px; background: #AF52DE; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px;">2</div>
+        <div style="height: 40px; background: #FF9500; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px;">1</div>
+        <div style="height: 40px; background: rgba(255,255,255,0.2); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); font-size: 12px;">0</div>
+      </div>
+
+      <!-- 模式条 -->
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <div style="width: 80px; text-align: center; color: rgba(255,255,255,0.6); font-size: 10px;">模式</div>
+        <div style="height: 40px; background: rgba(255,59,48,0.3); border: 2px solid #FF3B30; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #FF3B30; font-weight: bold;">WARN</div>
+        <div style="height: 40px; background: rgba(52,199,89,0.3); border: 2px solid #34C759; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #34C759;">CALL</div>
+        <div style="height: 40px; background: rgba(74,144,226,0.3); border: 2px solid #4A90E2; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #4A90E2;">NAV</div>
+        <div style="height: 40px; background: rgba(90,200,250,0.3); border: 2px solid #5AC8FA; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #5AC8FA;">MESH</div>
+        <div style="height: 40px; background: rgba(175,82,222,0.3); border: 2px solid #AF52DE; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #AF52DE;">MUSIC</div>
+        <div style="height: 40px; background: rgba(255,149,0,0.3); border: 2px solid #FF9500; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #FF9500;">DVR</div>
+        <div style="height: 40px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6);">CRUISE</div>
+      </div>
+
+      <!-- 说明 -->
+      <div style="flex: 1; padding-left: 20px;">
+        <div style="color: rgba(255,255,255,0.8); font-size: 12px; line-height: 1.6;">
+          <strong style="color: #FF3B30;">WARN 最高优先级</strong>
+          <ul style="margin: 5px 0; padding-left: 15px; font-size: 11px;">
+            <li>触发时其他所有内容缩小到角落</li>
+            <li>预警结束后<strong style="color: #34C759;">自动恢复</strong>之前状态</li>
+          </ul>
+          <br/>
+          <strong>速度分级影响：</strong>
+          <table style="font-size: 11px; margin-top: 8px;">
+            <tr><td style="color: #fff;">S0: 0-30 km/h</td><td>全部信息显示</td></tr>
+            <tr><td style="color: #fff;">S1: 31-60 km/h</td><td>全部信息显示</td></tr>
+            <tr><td style="color: rgba(255,255,255,0.6);">S2: 61-100 km/h</td><td>导航降级，隐藏音乐/组队详情</td></tr>
+            <tr><td style="color: rgba(255,255,255,0.4);">S3: >100 km/h</td><td>仅速度 + ADAS + 简化导航</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mockup" style="margin-top: 15px;">
+  <div class="mockup-header" style="background: #4A90E2;">4 个剧本时序</div>
+  <div class="mockup-body" style="background: #0a0a12; padding: 15px;">
+
+    <!-- 剧本时间轴 -->
+    <div style="display: flex; gap: 15px;">
+      <!-- 剧本1 -->
+      <div style="flex: 1; padding: 10px; background: rgba(74,144,226,0.1); border-radius: 8px;">
+        <div style="color: #4A90E2; font-size: 14px; font-weight: bold; margin-bottom: 8px;">1. commute（通勤）50s</div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.8;">
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">0s</span>启动
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">3s</span>加速40km/h
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">8s</span><strong style="color: #4A90E2;">导航</strong>启动
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">12s</span>加速65 → S2降级
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">18s</span>左转箭头
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">22s</span>减速35 → S1恢复
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #34C759;">25s</span><strong style="color: #34C759;">来电</strong>抢占
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">30s</span>挂断 → 自动恢复导航
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">35s</span>到达
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">40s</span>停车
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: rgba(255,255,255,0.5);">50s</span><strong>结束</strong>
+          </div>
+        </div>
+        <div style="margin-top: 8px; padding: 5px; background: rgba(0,0,0,0.2); border-radius: 4px; font-size: 10px; color: #FF9500;">
+          语音交互：导航切换 ×2
+        </div>
+      </div>
+
+      <!-- 剧本2 -->
+      <div style="flex: 1; padding: 10px; background: rgba(255,59,48,0.1); border-radius: 8px;">
+        <div style="color: #FF3B30; font-size: 14px; font-weight: bold; margin-bottom: 8px;">2. emergency（紧急）45s</div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.8;">
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">0s</span>速度60km/h
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #FF3B30;">5s</span><strong style="color: #FF3B30;">FCW</strong>前方碰撞
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">8s</span>恢复
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #FF3B30;">12s</span><strong style="color: #FF3B30;">BSD</strong>左后方来车
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">15s</span>恢复
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">18s</span>加速80
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #FF3B30;">22s</span><strong style="color: #FF3B30;">Dooring</strong>右侧开门
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">25s</span>恢复
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #FF3B30;">28s</span><strong style="color: #FF3B30;">行人</strong>前方检测
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">31s</span>恢复
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">35s</span>减速50
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: rgba(255,255,255,0.5);">45s</span><strong>结束</strong>
+          </div>
+        </div>
+        <div style="margin-top: 8px; padding: 5px; background: rgba(0,0,0,0.2); border-radius: 4px; font-size: 10px; color: #FF9500;">
+          验收：多重预警并发 + TTC倒计时
+        </div>
+      </div>
+
+      <!-- 剧本3 -->
+      <div style="flex: 1; padding: 10px; background: rgba(90,200,250,0.1); border-radius: 8px;">
+        <div style="color: #5AC8FA; font-size: 14px; font-weight: bold; margin-bottom: 8px;">3. group（组队）55s</div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.8;">
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">0s</span>速度45km/h
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #5AC8FA;">5s</span><strong style="color: #5AC8FA;">Mesh</strong>组队加入
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #FF9500;">8s</span><strong style="color: #FF9500;">DVR</strong>录像开始
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">12s</span>加速70
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #4A90E2;">18s</span><strong style="color: #4A90E2;">导航</strong>山路
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">22s</span>队友消息
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #FF3B30;">26s</span><strong style="color: #FF3B30;">弯道预警</strong>
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">29s</span>恢复
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #AF52DE;">33s</span><strong style="color: #AF52DE;">音乐</strong>播放
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">38s</span>减速40
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">42s</span>集合点到达
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #FF9500;">45s</span>停止DVR
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">48s</span>停车
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: rgba(255,255,255,0.5);">55s</span><strong>结束</strong>
+          </div>
+        </div>
+        <div style="margin-top: 8px; padding: 5px; background: rgba(0,0,0,0.2); border-radius: 4px; font-size: 10px; color: #FF9500;">
+          语音交互：标记精彩瞬间 ×1
+        </div>
+      </div>
+
+      <!-- 剧本4 -->
+      <div style="flex: 1; padding: 10px; background: rgba(255,149,0,0.1); border-radius: 8px;">
+        <div style="color: #FF9500; font-size: 14px; font-weight: bold; margin-bottom: 8px;">4. touring（摩旅）60s</div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.8;">
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">0s</span>风景巡航
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #FF9500;">5s</span><strong style="color: #FF9500;">DVR</strong>生活记录
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">15s</span><strong style="color: #FF9500;">语音标记</strong>"精彩瞬间"
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #4A90E2;">25s</span><strong style="color: #4A90E2;">导航</strong>偶尔提示
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #5AC8FA;">35s</span><strong style="color: #5AC8FA;">交通标志</strong>限速80
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">45s</span>减速停靠
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: #fff;">50s</span>拍照模式
+          </div>
+          <div style="position: relative; padding-left: 20px;">
+            <span style="position: absolute; left: 0; color: rgba(255,255,255,0.5);">60s</span><strong>结束</strong>
+          </div>
+        </div>
+        <div style="margin-top: 8px; padding: 5px; background: rgba(0,0,0,0.2); border-radius: 4px; font-size: 10px; color: #FF9500;">
+          验收 #10：语音标记精彩瞬间 + 交通标志持续显示
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>验收标准 #8-9 关键点</h3>
+  <ul style="font-size: 14px;">
+    <li><strong>#8</strong>：高优先级触发时，低优先级信息<strong>缩小到角落但不消失</strong></li>
+    <li><strong>#9</strong>：预警结束后<strong>自动恢复</strong>之前状态，无需用户操作</li>
+    <li><strong>#10</strong>：touring 剧本必须包含语音标记"精彩瞬间"</li>
+    <li><strong>#11</strong>：语音交互以<strong>字幕形式</strong>出现在非可视区域（底部或顶部）</li>
+  </ul>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="continue" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>确认，继续展示 Sandbox 控件</h3>
+      <p>状态机和剧本设计已确认</p>
+    </div>
+  </div>
+  <div class="option" data-choice="adjust" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>需要调整剧本时序</h3>
+      <p>某些事件的时间点或顺序需要调整</p>
+    </div>
+  </div>
+</div>

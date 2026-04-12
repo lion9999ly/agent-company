@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Smart Riding HUD Demo v2</title>
+<style>
+/* ========== CSS Variables ========== */
+:root {
+  /* Base colors - full color mode */
+  --bg: #050607;
+  --bg-zone: rgba(255,255,255,0.04);
+  --bg-zone-border: rgba(255,255,255,0.08);
+  --c-speed: #ffffff;
+  --c-nav: #4A90E2;
+  --c-warn: #FF3B30;
+  --c-mesh: #5AC8FA;
+  --c-music: #AF52DE;
+  --c-call: #34C759;
+  --c-dvr: #FF9500;
+  --c-text: #ffffff;
+  --c-muted: rgba(255,255,255,0.58);
+  --c-dim: rgba(255,255,255,0.18);
+
+  /* Sizes */
+  --s-font-xl: clamp(32px, 4vw, 48px);
+  --s-font-lg: clamp(18px, 2vw, 24px);
+  --s-font-md: clamp(14px, 1.4vw, 18px);
+  --s-font-sm: clamp(11px, 1vw, 14px);
+  --g-zone-pad: clamp(12px, 1.5vw, 20px);
+  --g-zone-gap: 8px;
+
+  /* Layout - configurable via sandbox */
+  --left-strip-width: 120px;
+  --right-strip-width: 120px;
+  --strip-height: 420px;
+  --strip-top-offset: 80px;
+  --center-gap: 480px;
+
+  /* FOV */
+  --fov: 38;
+
+  /* Background */
+  --bg-opacity: 0.5;
+}
+
+/* ========== Green Mode Variables (Optics C) ========== */
+.optics-green {
+  --bg: #010a02;
+  --bg-zone: rgba(0,255,0,0.04);
+  --bg-zone-border: rgba(0,255,0,0.08);
+  /* All colors MUST be #00FF00 - only brightness varies */
+  --c-speed: rgba(0,255,0,0.8);
+  --c-nav: rgba(0,255,0,0.8);
+  --c-warn: rgba(0,255,0,1);
+  --c-mesh: rgba(0,255,0,0.5);
+  --c-music: rgba(0,255,0,0.5);
+  --c-call: rgba(0,255,0,0.5);
+  --c-dvr: rgba(0,255,0,0.5);
+  --c-text: rgba(0,255,0,0.8);
+  --c-muted: rgba(0,255,0,0.5);
+  --c-dim: rgba(0,255,0,0.2);
+}
+
+/* ========== Waveguide Mode (lower brightness) ========== */
+.optics-waveguide {
+  --c-warn: #FF9500;
+  --bg-opacity: 0.3;
+}
+
+/* ========== Base Layout ========== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--c-text);
+  font-family: 'Segoe UI', -apple-system, sans-serif;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+#hud-root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ========== Road Background ========== */
+#road-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #1a1a2e 0%, #0d0d1a 50%, #050508 100%);
+  opacity: var(--bg-opacity);
+  z-index: 0;
+}
+
+#road-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: var(--bg-opacity);
+}
+
+/* ========== Left Strip ========== */
+#hud-viewport-left {
+  position: absolute;
+  left: calc(50% - var(--center-gap)/2 - var(--left-strip-width));
+  top: var(--strip-top-offset);
+  width: var(--left-strip-width);
+  height: var(--strip-height);
+  border-radius: 10px;
+  background: var(--bg-zone);
+  border: 2px solid var(--bg-zone-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+/* Left strip edge indicators (inside strip) */
+#hud-viewport-left .edge-outer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: transparent;
+  border-radius: 10px 0 0 10px;
+  z-index: 11;
+}
+
+#hud-viewport-left .edge-inner {
+  position: absolute;
+  right: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 4px;
+  background: transparent;
+  border-radius: 0 10px 10px 0;
+  z-index: 11;
+}
+
+/* ========== Right Strip ========== */
+#hud-viewport-right {
+  position: absolute;
+  right: calc(50% - var(--center-gap)/2 - var(--right-strip-width));
+  top: var(--strip-top-offset);
+  width: var(--right-strip-width);
+  height: var(--strip-height);
+  border-radius: 10px;
+  background: var(--bg-zone);
+  border: 2px solid var(--bg-zone-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+/* Right strip edge indicators (inside strip) */
+#hud-viewport-right .edge-outer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: transparent;
+  border-radius: 0 10px 10px 0;
+  z-index: 11;
+}
+
+#hud-viewport-right .edge-inner {
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 4px;
+  background: transparent;
+  border-radius: 10px 0 0 10px;
+  z-index: 11;
+}
+
+/* ========== Zone Layout ========== */
+.zone {
+  padding: var(--g-zone-pad);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#zone-lt {
+  height: 90px;
+  border-bottom: 1px solid var(--bg-zone-border);
+}
+
+#zone-nav {
+  flex: 1;
+  border-bottom: 1px solid var(--bg-zone-border);
+  min-height: 140px;
+}
+
+#zone-lb {
+  height: 90px;
+}
+
+#zone-rt {
+  height: 90px;
+  border-bottom: 1px solid var(--bg-zone-border);
+}
+
+#zone-rb {
+  height: 90px;
+  flex: 1;
+}
+
+/* Center zone in right strip (empty placeholder) */
+#zone-center-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--bg-zone-border);
+}
+
+/* ========== Speed Display ========== */
+#speed-value {
+  font-size: var(--s-font-xl);
+  font-weight: 700;
+  color: var(--c-speed);
+  line-height: 1;
+}
+
+#speed-unit {
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+}
+
+#speed-level {
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+  margin-top: 4px;
+}
+
+/* ========== Warning Animations ========== */
+@keyframes warn-flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes edge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.warn-active {
+  border-color: var(--c-warn);
+}
+
+.warn-flash {
+  animation: warn-flash 0.5s infinite;
+}
+
+/* Edge flashing - outer edge (BSD/Dooring) */
+.edge-outer.flash {
+  background: var(--c-warn);
+  animation: edge-pulse 0.5s infinite;
+}
+
+/* Edge flashing - inner edge (LDW dashed) */
+.edge-inner.flash-dashed {
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--c-warn) 0px, var(--c-warn) 8px,
+    transparent 8px, transparent 16px
+  );
+  animation: edge-pulse 1s infinite;
+}
+
+/* ========== Green mode special handling ========== */
+.optics-green .edge-outer.flash {
+  background: rgba(0,255,0,1);
+}
+
+.optics-green .edge-inner.flash-dashed {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,255,0,1) 0px, rgba(0,255,0,1) 8px,
+    transparent 8px, transparent 16px
+  );
+}
+
+/* ========== Warning Zone Content ========== */
+.warning-badge {
+  background: rgba(255,59,48,0.2);
+  border: 2px solid var(--c-warn);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 4px;
+  animation: warn-flash 0.5s infinite;
+}
+
+.optics-green .warning-badge {
+  background: rgba(0,255,0,0.2);
+  border: 2px solid rgba(0,255,0,1);
+}
+
+.warning-icon {
+  font-size: var(--s-font-lg);
+  color: var(--c-warn);
+}
+
+.optics-green .warning-icon {
+  color: rgba(0,255,0,1);
+}
+
+.warning-type {
+  font-size: var(--s-font-md);
+  font-weight: bold;
+  color: var(--c-warn);
+}
+
+.optics-green .warning-type {
+  color: rgba(0,255,0,1);
+}
+
+.warning-detail {
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+}
+
+.warning-ttc {
+  font-size: var(--s-font-lg);
+  font-weight: bold;
+  color: var(--c-warn);
+}
+
+.optics-green .warning-ttc {
+  color: rgba(0,255,0,1);
+}
+
+/* ========== Navigation ========== */
+.nav-arrow {
+  font-size: 32px;
+  color: var(--c-nav);
+}
+
+.optics-green .nav-arrow {
+  color: rgba(0,255,0,0.8);
+}
+
+.nav-distance {
+  font-size: var(--s-font-md);
+  color: var(--c-nav);
+}
+
+.optics-green .nav-distance {
+  color: rgba(0,255,0,0.8);
+}
+
+/* ========== Traffic Sign ========== */
+.traffic-sign {
+  font-size: 24px;
+  color: var(--c-text);
+}
+
+.optics-green .traffic-sign {
+  color: rgba(0,255,0,0.8);
+}
+
+.traffic-sign-value {
+  font-size: var(--s-font-lg);
+  font-weight: bold;
+}
+
+/* ========== Status Info ========== */
+.status-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* ========== Bottom Bar (Voice subtitle area) ========== */
+#bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+#voice-subtitle {
+  font-size: var(--s-font-sm);
+  color: var(--c-text);
+  text-align: center;
+}
+
+.optics-green #voice-subtitle {
+  color: rgba(0,255,0,0.8);
+}
+
+/* ========== Timeline ========== */
+#timeline {
+  position: absolute;
+  bottom: 40px;
+  left: 10px;
+  right: 10px;
+  height: 30px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  z-index: 15;
+  padding: 5px 10px;
+}
+
+#timeline-progress {
+  height: 8px;
+  background: var(--c-nav);
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.1s;
+}
+
+.optics-green #timeline-progress {
+  background: rgba(0,255,0,0.8);
+}
+
+#timeline-label {
+  position: absolute;
+  right: 10px;
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+}
+
+/* ========== Sandbox Panel ========== */
+#sandbox {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background: rgba(20,20,30,0.95);
+  border-left: 2px solid var(--bg-zone-border);
+  padding: 15px;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+}
+
+#sandbox.visible {
+  display: block;
+}
+
+.sandbox-section {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sandbox-section h4 {
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+  margin-bottom: 8px;
+}
+
+.sandbox-row {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.sandbox-btn {
+  flex: 1;
+  padding: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 5px;
+  color: var(--c-text);
+  font-size: var(--s-font-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sandbox-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.sandbox-btn.active {
+  background: var(--c-nav);
+  border-color: var(--c-nav);
+}
+
+.optics-green .sandbox-btn.active {
+  background: rgba(0,255,0,0.3);
+  border-color: rgba(0,255,0,0.8);
+  color: rgba(0,255,0,1);
+}
+
+.sandbox-btn.warn {
+  background: rgba(255,59,48,0.3);
+  border-color: var(--c-warn);
+  color: var(--c-warn);
+}
+
+.optics-green .sandbox-btn.warn {
+  background: rgba(0,255,0,0.2);
+  border-color: rgba(0,255,0,1);
+  color: rgba(0,255,0,1);
+}
+
+.sandbox-slider {
+  width: 100%;
+  margin: 5px 0;
+  accent-color: var(--c-nav);
+}
+
+.optics-green .sandbox-slider {
+  accent-color: rgba(0,255,0,0.8);
+}
+
+.sandbox-input {
+  width: 60px;
+  padding: 4px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 3px;
+  color: var(--c-text);
+  font-size: var(--s-font-sm);
+  text-align: center;
+}
+
+.sandbox-label {
+  font-size: 11px;
+  color: var(--c-muted);
+  margin-bottom: 3px;
+}
+
+/* ========== Optics Indicator ========== */
+#optics-indicator {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+  background: rgba(0,0,0,0.4);
+  padding: 5px 10px;
+  border-radius: 5px;
+  z-index: 20;
+}
+
+/* ========== Boot Overlay ========== */
+#boot-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+#boot-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#boot-logo {
+  font-size: 48px;
+  font-weight: bold;
+  color: var(--c-nav);
+  opacity: 0;
+  animation: boot-fade-in 1s forwards;
+}
+
+.optics-green #boot-logo {
+  color: rgba(0,255,0,0.8);
+}
+
+@keyframes boot-fade-in {
+  to { opacity: 1; }
+}
+
+#boot-status {
+  margin-top: 20px;
+  font-size: var(--s-font-sm);
+  color: var(--c-muted);
+}
+
+/* ========== Center Gap Indicator ========== */
+#center-gap-indicator {
+  position: absolute;
+  left: calc(50% - var(--center-gap)/2);
+  right: calc(50% - var(--center-gap)/2);
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed rgba(255,255,255,0.1);
+  border-right: 1px dashed rgba(255,255,255,0.1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.optics-green #center-gap-indicator {
+  border-left: 1px dashed rgba(0,255,0,0.1);
+  border-right: 1px dashed rgba(0,255,0,0.1);
+}
+
+/* ========== Shrunk state (priority preemption) ========== */
+.shrunk {
+  transform: scale(0.6);
+  opacity: 0.5;
+}
+
+/* ========== DVR REC indicator ========== */
+.dvr-rec {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--c-dvr);
+}
+
+.optics-green .dvr-rec {
+  color: rgba(0,255,0,0.5);
+}
+
+.dvr-dot {
+  width: 10px;
+  height: 10px;
+  background: #FF0000;
+  border-radius: 50%;
+  animation: warn-flash 1s infinite;
+}
+
+.optics-green .dvr-dot {
+  background: rgba(0,255,0,1);
+}
+
+/* ========== Call UI ========== */
+.call-info {
+  font-size: var(--s-font-md);
+  color: var(--c-call);
+}
+
+.optics-green .call-info {
+  color: rgba(0,255,0,0.5);
+}
+
+.call-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.call-btn {
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: var(--s-font-sm);
+  cursor: pointer;
+}
+
+.call-btn.accept {
+  background: rgba(52,199,89,0.3);
+  border: 1px solid var(--c-call);
+  color: var(--c-call);
+}
+
+.call-btn.reject {
+  background: rgba(255,59,48,0.3);
+  border: 1px solid var(--c-warn);
+  color: var(--c-warn);
+}
+
+.optics-green .call-btn.accept,
+.optics-green .call-btn.reject {
+  background: rgba(0,255,0,0.2);
+  border: 1px solid rgba(0,255,0,0.5);
+  color: rgba(0,255,0,0.8);
+}
+
+/* ========== Mesh UI ========== */
+.mesh-info {
+  font-size: var(--s-font-sm);
+  color: var(--c-mesh);
+}
+
+.optics-green .mesh-info {
+  color: rgba(0,255,0,0.5);
+}
+
+/* ========== Music UI ========== */
+.music-info {
+  font-size: var(--s-font-sm);
+  color: var(--c-music);
+}
+
+.optics-green .music-info {
+  color: rgba(0,255,0,0.5);
+}
+
+/* ========== Moment Saved Notification ========== */
+#moment-saved {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--s-font-lg);
+  color: var(--c-dvr);
+  background: rgba(0,0,0,0.7);
+  padding: 15px 30px;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 50;
+}
+
+#moment-saved.visible {
+  opacity: 1;
+}
+
+.optics-green #moment-saved {
+  color: rgba(0,255,0,1);
+}
+</style>
+</head>
+<body>
+
+<!-- Boot Overlay -->
+<div id="boot-overlay">
+  <div id="boot-logo">SMART HUD</div>
+  <div id="boot-status">系统启动中...</div>
+</div>
+
+<!-- HUD Root -->
+<div id="hud-root">
+  <!-- Road Background -->
+  <div id="road-bg"></div>
+
+  <!-- Center Gap Indicator -->
+  <div id="center-gap-indicator"></div>
+
+  <!-- Optics Mode Indicator -->
+  <div id="optics-indicator">FreeForm 38°</div>
+
+  <!-- Left Strip -->
+  <div id="hud-viewport-left">
+    <div class="edge-outer"></div>
+    <div class="edge-inner"></div>
+
+    <div id="zone-lt" class="zone">
+      <div id="speed-value">0</div>
+      <div id="speed-unit">km/h</div>
+      <div id="speed-level">S0</div>
+    </div>
+
+    <div id="zone-nav" class="zone">
+      <div class="nav-arrow">—</div>
+      <div class="nav-distance">—</div>
+    </div>
+
+    <div id="zone-lb" class="zone">
+      <div class="zone-content">—</div>
+    </div>
+  </div>
+
+  <!-- Right Strip -->
+  <div id="hud-viewport-right">
+    <div class="edge-outer"></div>
+    <div class="edge-inner"></div>
+
+    <div id="zone-rt" class="zone">
+      <div class="traffic-sign">
+        <span class="traffic-sign-value">—</span>
+      </div>
+      <div class="status-row">
+        <div class="status-item">🔋 100%</div>
+        <div class="status-item">📶 5G</div>
+      </div>
+    </div>
+
+    <div id="zone-center-right" class="zone">
+      <!-- Empty placeholder for center area -->
+    </div>
+
+    <div id="zone-rb" class="zone">
+      <div class="zone-content">—</div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div id="timeline">
+    <div id="timeline-progress"></div>
+    <div id="timeline-label">等待播放</div>
+  </div>
+
+  <!-- Bottom Bar (Voice Subtitle) -->
+  <div id="bottom-bar">
+    <div id="voice-subtitle"></div>
+  </div>
+
+  <!-- Moment Saved Notification -->
+  <div id="moment-saved">Moment saved!</div>
+</div>
+
+<!-- Sandbox Panel -->
+<div id="sandbox">
+  <div class="sandbox-section">
+    <h4>光学模式 (F1/F2/F3)</h4>
+    <div class="sandbox-row">
+      <button class="sandbox-btn active" data-optics="freeform">FreeForm</button>
+      <button class="sandbox-btn" data-optics="waveguide">全彩波导</button>
+      <button class="sandbox-btn" data-optics="green">单绿波导</button>
+    </div>
+  </div>
+
+  <div class="sandbox-section">
+    <h4>FOV 大小</h4>
+    <input type="range" class="sandbox-slider" id="fov-slider" min="28" max="50" value="38">
+    <div class="sandbox-label">当前: <span id="fov-value">38</span>°</div>
+  </div>
+
+  <div class="sandbox-section">
+    <h4>显示区域</h4>
+    <div class="sandbox-label">竖条宽度</div>
+    <input type="range" class="sandbox-slider" id="strip-width" min="80" max="180" value="120">
+    <div class="sandbox-label">中央间距</div>
+    <input type="range" class="sandbox-slider" id="center-gap-slider" min="300" max="600" value="480">
+    <div class="sandbox-label">当前间距: <span id="gap-value">480</span>px</div>
+  </div>
+
+  <div class="sandbox-section">
+    <h4>背景透明度</h4>
+    <input type="range" class="sandbox-slider" id="bg-opacity" min="0" max="100" value="50">
+    <div class="sandbox-label">当前: <span id="opacity-value">50</span>%</div>
+  </div>
+
+  <div class="sandbox-section optics-green-only">
+    <h4>单绿亮度分级 (%)</h4>
+    <div class="sandbox-row">
+      <div>
+        <div class="sandbox-label">紧急</div>
+        <input type="number" class="sandbox-input" id="brightness-urgent" value="100">
+      </div>
+      <div>
+        <div class="sandbox-label">主要</div>
+        <input type="number" class="sandbox-input" id="brightness-primary" value="80">
+      </div>
+      <div>
+        <div class="sandbox-label">次要</div>
+        <input type="number" class="sandbox-input" id="brightness-secondary" value="50">
+      </div>
+      <div>
+        <div class="sandbox-label">背景</div>
+        <input type="number" class="sandbox-input" id="brightness-bg" value="20">
+      </div>
+    </div>
+  </div>
+
+  <div class="sandbox-section">
+    <h4>速度 (km/h)</h4>
+    <input type="range" class="sandbox-slider" id="speed-slider" min="0" max="150" value="0">
+    <div class="sandbox-label">当前: <span id="speed-display">0</span> km/h (<span id="speed-level-display">S0</span>)</div>
+  </div>
+
+  <div class="sandbox-section">
+    <h4>导航级别</h4>
+    <div class="sandbox-row">
+      <button class="sandbox-btn" data-nav="arrow">箭头</button>
+      <button class="sandbox-btn active" data-nav="simple">简易</button>
+      <button class="sandbox-btn" data-nav="full">全地图</button>
+    </div>
+  </div>
+
+  <div class="sandbox-section">
+    <h4>ADAS 预警</h4>
+    <div class="sandbox-row">
+      <button class="sandbox-btn warn" data-warning="fcw">FCW</button>
+      <button class="sandbox-btn warn" data-warning="bsd">BSD</button>
+      <button class="sandbox-btn warn" data-warning="dooring">Dooring</button>
+    </div>
+    <div class="sandbox-row">
+      <button class="sandbox-btn warn" data-warning="pedestrian">行人</button>
+      <button class="sandbox-btn warn" data-warning="ldw-left">LDW左</button>
+      <button class="sandbox-btn warn" data-warning="ldw-right">LDW右</button>
+    </div>
+    <div class="sandbox-row">
+      <div>
+        <div class="sandbox-label">距离(m)</div>
+        <input type="number" class="sandbox-input" id="warning-distance" value="15">
+      </div>
+      <div>
+        <div class="sandbox-label">关闭速度</div>
+        <input type="number" class="sandbox-input" id="warning-speed" value="45">
+      </div>
+    </div>
+    <button class="sandbox-btn" data-action="clear-warning" style="width:100%">清除预警</button>
+  </div>
+
+  <div class="sandbox-section">
+    <h4>交通标志</h4>
+    <div class="sandbox-row">
+      <button class="sandbox-btn" data-sign="limit30">限30</button>
+      <button class="sandbox-btn" data-sign="limit60">限60</button>
+      <button class="sandbox-btn" data-sign="limit80">限80</button>
+      <button class="sandbox-btn" data-sign="none">无标志</button>
+    </div>
+  </div>
+
+  <div class="sandbox-section">
+    <h4>剧本播放 (1/2/3/4)</h4>
+    <div class="sandbox-row">
+      <button class="sandbox-btn" data-scenario="commute">通勤</button>
+      <button class="sandbox-btn" data-scenario="emergency">紧急</button>
+    </div>
+    <div class="sandbox-row">
+      <button class="sandbox-btn" data-scenario="group">组队</button>
+      <button class="sandbox-btn" data-scenario="touring">摩旅</button>
+    </div>
+    <div class="sandbox-row">
+      <button class="sandbox-btn" data-action="play">▶ 播放</button>
+      <button class="sandbox-btn" data-action="pause">⏸ 暂停</button>
+      <button class="sandbox-btn" data-action="stop">⏹ 停止</button>
+    </div>
+  </div>
+
+  <div class="sandbox-section">
+    <h4>其他事件</h4>
+    <div class="sandbox-row">
+      <button class="sandbox-btn" data-event="call">来电</button>
+      <button class="sandbox-btn" data-event="mesh">组队</button>
+      <button class="sandbox-btn" data-event="music">音乐</button>
+    </div>
+    <div class="sandbox-row">
+      <button class="sandbox-btn" data-event="dvr">DVR</button>
+      <button class="sandbox-btn" data-event="moment">语音标记</button>
+    </div>
+  </div>
+
+  <div class="sandbox-section">
+    <h4>快捷键</h4>
+    <div class="sandbox-label">S: Sandbox | Space: 播放 | Esc: 重置</div>
+    <div class="sandbox-label">W/A/D: 预警方向 | 1-4: 剧本</div>
+  </div>
+</div>
+
+<script>
+// ========== Global Configuration ========== */
+const CONFIG = {
+  optics: 'freeform',
+  fov: 38,
+  leftStripWidth: 120,
+  rightStripWidth: 120,
+  stripHeight: 420,
+  stripTopOffset: 80,
+  centerGap: 480,
+  bgOpacity: 0.5,
+  brightness: {
+    urgent: 100,
+    primary: 80,
+    secondary: 50,
+    background: 20
+  },
+  speed: 0,
+  navLevel: 'simple',
+  currentSign: null
+};
+
+// ========== Mode Constants ========== */
+const MODE = {
+  CRUISE: 'cruise',
+  NAV: 'nav',
+  CALL: 'call',
+  MUSIC: 'music',
+  MESH: 'mesh',
+  WARN: 'warn',
+  DVR: 'dvr'
+};
+
+const PRIORITY = {
+  cruise: 0,
+  dvr: 1,
+  music: 2,
+  mesh: 3,
+  nav: 4,
+  call: 5,
+  warn: 6
+};
+
+const OPTICS = {
+  FREEFORM: 'freeform',
+  WAVEGUIDE: 'waveguide',
+  GREEN: 'green'
+};
+
+// ========== State Variables ========== */
+let currentMode = MODE.CRUISE;
+let modeStack = [];
+let currentSpeed = 0;
+let activeWarnings = [];
+let scenarioRunning = false;
+let scenarioPaused = false;
+let scenarioTimer = null;
+let scenarioTime = 0;
+let currentScenario = null;
+let ttcTimer = null;
+
+// ========== DOM Elements ========== */
+const $ = (id) => document.getElementById(id);
+const hudRoot = $('hud-root');
+const speedValue = $('speed-value');
+const speedUnit = $('speed-unit');
+const speedLevel = $('speed-level');
+const zoneLt = $('zone-lt');
+const zoneNav = $('zone-nav');
+const zoneLb = $('zone-lb');
+const zoneRt = $('zone-rt');
+const zoneRb = $('zone-rb');
+const bottomBar = $('bottom-bar');
+const voiceSubtitle = $('voice-subtitle');
+const timelineProgress = $('timeline-progress');
+const timelineLabel = $('timeline-label');
+const sandbox = $('sandbox');
+const bootOverlay = $('boot-overlay');
+const opticsIndicator = $('optics-indicator');
+const leftStrip = $('hud-viewport-left');
+const rightStrip = $('hud-viewport-right');
+const momentSaved = $('moment-saved');
+const leftEdgeOuter = leftStrip.querySelector('.edge-outer');
+const leftEdgeInner = leftStrip.querySelector('.edge-inner');
+const rightEdgeOuter = rightStrip.querySelector('.edge-outer');
+const rightEdgeInner = rightStrip.querySelector('.edge-inner');
+
+// ========== Speed Level Calculation ========== */
+function getSpeedLevel(speed) {
+  if (speed <= 30) return 'S0';
+  if (speed <= 60) return 'S1';
+  if (speed <= 100) return 'S2';
+  return 'S3';
+}
+
+// ========== Mode Management ========== */
+function setMode(mode) {
+  if (!MODE[mode.toUpperCase()] && !Object.values(MODE).includes(mode)) {
+    console.warn('Invalid mode:', mode);
+    return false;
+  }
+
+  const modeLower = mode.toLowerCase();
+  const newPriority = PRIORITY[modeLower] || 0;
+  const currentPriority = PRIORITY[currentMode] || 0;
+
+  if (newPriority > currentPriority) {
+    // Push current mode to stack
+    modeStack.push(currentMode);
+    currentMode = modeLower;
+  } else if (newPriority < currentPriority) {
+    // Lower priority can't preempt
+    return false;
+  }
+
+  // cruise always resets
+  if (modeLower === 'cruise') {
+    modeStack = [];
+    currentMode = 'cruise';
+  }
+
+  renderAll();
+  return true;
+}
+
+function getMode() {
+  return currentMode;
+}
+
+function popMode() {
+  if (modeStack.length > 0) {
+    currentMode = modeStack.pop();
+  } else {
+    currentMode = 'cruise';
+  }
+  renderAll();
+}
+
+// ========== Speed Control ========== */
+function setSpeed(speed) {
+  currentSpeed = Math.max(0, Math.min(300, speed));
+  const level = getSpeedLevel(currentSpeed);
+  CONFIG.speed = currentSpeed;
+  renderAll();
+}
+
+// ========== Optics Control ========== */
+function setOptics(optics) {
+  CONFIG.optics = optics;
+
+  // Remove all optics classes
+  hudRoot.classList.remove('optics-green', 'optics-waveguide');
+
+  // Apply new optics class
+  if (optics === 'green') {
+    hudRoot.classList.add('optics-green');
+  } else if (optics === 'waveguide') {
+    hudRoot.classList.add('optics-waveguide');
+  }
+
+  // Update indicator
+  const fov = CONFIG.fov;
+  const opticsName = optics === 'freeform' ? 'FreeForm' :
+                     optics === 'waveguide' ? '全彩波导' : '单绿波导';
+  opticsIndicator.textContent = `${opticsName} ${fov}°`;
+
+  // Update sandbox buttons
+  document.querySelectorAll('[data-optics]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.optics === optics);
+  });
+
+  renderAll();
+}
+
+// ========== Warning System ========== */
+function emitWarning(type, direction, distance, closingSpeed) {
+  const warning = {
+    type: type,
+    direction: direction || 'front',
+    distance: distance || 15,
+    closingSpeed: closingSpeed || 45,
+    ttc: Math.round(distance / (closingSpeed / 3.6)),
+    timestamp: Date.now()
+  };
+
+  activeWarnings.push(warning);
+
+  // Sort by TTC (shortest first)
+  activeWarnings.sort((a, b) => a.ttc - b.ttc);
+
+  // Set warn mode
+  setMode('warn');
+
+  // Apply edge flashing based on direction
+  applyWarningEdges(warning);
+
+  // Start TTC countdown for the most urgent warning
+  if (activeWarnings[0] === warning) {
+    startTtcCountdown(warning);
+  }
+
+  renderAll();
+}
+
+function applyWarningEdges(warning) {
+  const { type, direction } = warning;
+
+  // Clear previous edge flashes
+  clearEdgeFlashes();
+
+  if (direction === 'front' || type === 'fcw' || type === 'pedestrian') {
+    // Front threat: LT + RT zone flash
+    zoneLt.classList.add('warn-active', 'warn-flash');
+    zoneRt.classList.add('warn-active', 'warn-flash');
+  }
+
+  if (direction === 'left' || type === 'bsd') {
+    // BSD: left strip outer edge (left border)
+    leftEdgeOuter.classList.add('flash');
+  }
+
+  if (direction === 'right' || type === 'dooring') {
+    // Dooring: right strip outer edge (right border)
+    rightEdgeOuter.classList.add('flash');
+  }
+
+  if (type === 'ldw-left') {
+    // LDW left: left strip inner edge (right border)
+    leftEdgeInner.classList.add('flash-dashed');
+  }
+
+  if (type === 'ldw-right') {
+    // LDW right: right strip inner edge (left border)
+    rightEdgeInner.classList.add('flash-dashed');
+  }
+}
+
+function clearEdgeFlashes() {
+  leftEdgeOuter.classList.remove('flash');
+  leftEdgeInner.classList.remove('flash-dashed');
+  rightEdgeOuter.classList.remove('flash');
+  rightEdgeInner.classList.remove('flash-dashed');
+  zoneLt.classList.remove('warn-active', 'warn-flash');
+  zoneRt.classList.remove('warn-active', 'warn-flash');
+}
+
+function startTtcCountdown(warning) {
+  if (ttcTimer) clearInterval(ttcTimer);
+
+  ttcTimer = setInterval(() => {
+    if (warning.ttc > 0) {
+      warning.ttc--;
+      renderWarnings();
+    } else {
+      clearInterval(ttcTimer);
+    }
+  }, 1000);
+}
+
+function clearWarning() {
+  activeWarnings = [];
+  clearEdgeFlashes();
+  if (ttcTimer) clearInterval(ttcTimer);
+
+  // Restore previous mode
+  popMode();
+  renderAll();
+}
+
+// ========== Traffic Sign ========== */
+function setTrafficSign(sign) {
+  CONFIG.currentSign = sign;
+  renderAll();
+}
+
+// ========== Event System ========== */
+function emitEvent(eventType) {
+  switch (eventType) {
+    case 'call':
+      setMode('call');
+      break;
+    case 'mesh':
+      setMode('mesh');
+      break;
+    case 'music':
+      setMode('music');
+      break;
+    case 'dvr':
+      setMode('dvr');
+      break;
+    case 'moment':
+      showMomentSaved();
+      break;
+  }
+}
+
+function showMomentSaved() {
+  momentSaved.classList.add('visible');
+  setTimeout(() => {
+    momentSaved.classList.remove('visible');
+  }, 2000);
+}
+
+// ========== Voice Subtitle ========== */
+function showVoiceSubtitle(text) {
+  voiceSubtitle.textContent = text;
+  setTimeout(() => {
+    voiceSubtitle.textContent = '';
+  }, 3000);
+}
+
+// ========== Rendering ========== */
+function renderAll() {
+  renderSpeed();
+  renderZoneContent();
+  updateSpeedLevelDisplay();
+  applyLayoutConfig();
+}
+
+function renderSpeed() {
+  speedValue.textContent = currentSpeed;
+  const level = getSpeedLevel(currentSpeed);
+  speedLevel.textContent = level;
+}
+
+function updateSpeedLevelDisplay() {
+  $('speed-display').textContent = currentSpeed;
+  $('speed-level-display').textContent = getSpeedLevel(currentSpeed);
+}
+
+function applyLayoutConfig() {
+  hudRoot.style.setProperty('--left-strip-width', CONFIG.leftStripWidth + 'px');
+  hudRoot.style.setProperty('--right-strip-width', CONFIG.rightStripWidth + 'px');
+  hudRoot.style.setProperty('--strip-height', CONFIG.stripHeight + 'px');
+  hudRoot.style.setProperty('--center-gap', CONFIG.centerGap + 'px');
+  hudRoot.style.setProperty('--bg-opacity', CONFIG.bgOpacity);
+  hudRoot.style.setProperty('--fov', CONFIG.fov);
+}
+
+function renderZoneContent() {
+  const level = getSpeedLevel(currentSpeed);
+
+  // Render based on current mode
+  renderLtZone(level);
+  renderNavZone(level);
+  renderLbZone(level);
+  renderRtZone(level);
+  renderRbZone(level);
+
+  // Handle S2/S3 hiding
+  applySpeedLevelHiding(level);
+}
+
+function renderLtZone(level) {
+  // LT always shows speed
+  // Additional status based on mode
+  let status = '';
+  if (currentMode === 'cruise') {
+    status = '巡航中';
+  } else if (currentMode === 'warn') {
+    status = '⚠ 注意';
+  }
+
+  // Only update status part, speed is already rendered
+  const existingStatus = zoneLt.querySelector('.status-label');
+  if (existingStatus) {
+    existingStatus.textContent = status;
+  } else if (status) {
+    const statusEl = document.createElement('div');
+    statusEl.className = 'status-label';
+    statusEl.style.cssText = 'font-size:var(--s-font-sm);color:var(--c-muted);margin-top:4px;';
+    statusEl.textContent = status;
+    zoneLt.appendChild(statusEl);
+  }
+}
+
+function renderNavZone(level) {
+  // Clear and render nav
+  zoneNav.innerHTML = '';
+
+  if (currentMode === 'nav' || currentMode === 'cruise') {
+    const navLevel = level === 'S2' || level === 'S3' ? 'arrow' : CONFIG.navLevel;
+
+    if (navLevel === 'arrow') {
+      zoneNav.innerHTML = `
+        <div class="nav-arrow">⬅️</div>
+        <div class="nav-distance">200m</div>
+      `;
+    } else if (navLevel === 'simple') {
+      zoneNav.innerHTML = `
+        <div class="nav-arrow">⬅️ 左转</div>
+        <div class="nav-distance">路口 200m</div>
+        <div style="font-size:var(--s-font-sm);color:var(--c-muted);margin-top:8px;">
+          <div>━━━</div>
+          <div style="font-size:10px;">简易路口图</div>
+        </div>
+      `;
+    } else {
+      zoneNav.innerHTML = `
+        <div style="font-size:var(--s-font-sm);color:var(--c-nav);">导航地图</div>
+        <div style="width:80px;height:60px;background:rgba(74,144,226,0.2);border:1px solid var(--c-nav);border-radius:5px;margin:8px auto;">
+          <div style="font-size:10px;color:var(--c-muted);padding-top:20px;">路线示意</div>
+        </div>
+        <div class="nav-distance">ETA: 5min</div>
+      `;
+    }
+  }
+}
+
+function renderLbZone(level) {
+  zoneLb.innerHTML = '';
+
+  if (currentMode === 'warn') {
+    renderWarnings();
+  } else if (currentMode === 'call') {
+    zoneLb.innerHTML = `
+      <div class="call-info">张三来电</div>
+      <div class="call-actions">
+        <button class="call-btn accept" onclick="popMode()">接听</button>
+        <button class="call-btn reject" onclick="popMode()">拒绝</button>
+      </div>
+    `;
+  } else {
+    zoneLb.innerHTML = '<div style="color:var(--c-dim);">—</div>';
+  }
+}
+
+function renderWarnings() {
+  if (activeWarnings.length === 0) return;
+
+  // Sort by TTC
+  const sorted = [...activeWarnings].sort((a, b) => a.ttc - b.ttc);
+  const mostUrgent = sorted[0];
+  const others = sorted.slice(1);
+
+  // Most urgent - large display
+  const urgentHtml = `
+    <div class="warning-badge">
+      <div class="warning-icon">⚠</div>
+      <div class="warning-type">${mostUrgent.type.toUpperCase()}</div>
+      <div class="warning-detail">${mostUrgent.direction} | ${mostUrgent.distance}m | ${mostUrgent.closingSpeed}km/h</div>
+      <div class="warning-ttc">TTC: ${mostUrgent.ttc}s</div>
+    </div>
+  `;
+
+  // Others - smaller
+  let othersHtml = '';
+  if (others.length > 0) {
+    othersHtml = '<div style="margin-top:8px;font-size:var(--s-font-sm);color:var(--c-muted);">';
+    others.forEach(w => {
+      othersHtml += `<div class="shrunk" style="padding:4px;">${w.type} TTC:${w.ttc}s</div>`;
+    });
+    othersHtml += '</div>';
+  }
+
+  zoneLb.innerHTML = urgentHtml + othersHtml;
+  zoneRb.innerHTML = '';
+}
+
+function renderRtZone(level) {
+  zoneRt.innerHTML = '';
+
+  if (CONFIG.currentSign) {
+    // Show traffic sign
+    const signValue = CONFIG.currentSign.replace('limit', '');
+    zoneRt.innerHTML = `
+      <div class="traffic-sign">
+        <div style="font-size:16px;">🚸</div>
+        <div class="traffic-sign-value">限速 ${signValue}</div>
+      </div>
+    `;
+  } else {
+    // Show status
+    zoneRt.innerHTML = `
+      <div class="status-row">
+        <div class="status-item">🔋 100%</div>
+        <div class="status-item">📶 5G</div>
+      </div>
+      <div class="status-row" style="margin-top:4px;">
+        <div class="status-item">🌡 28°</div>
+      </div>
+    `;
+  }
+}
+
+function renderRbZone(level) {
+  zoneRb.innerHTML = '';
+
+  if (currentMode === 'mesh') {
+    zoneRb.innerHTML = `
+      <div class="mesh-info">
+        <div>组队骑行</div>
+        <div style="margin-top:8px;">👥 3人在线</div>
+        <div style="font-size:var(--s-font-sm);color:var(--c-muted);">队友: 前方 200m</div>
+      </div>
+    `;
+  } else if (currentMode === 'music') {
+    zoneRb.innerHTML = `
+      <div class="music-info">
+        <div>🎵 播放中</div>
+        <div style="margin-top:4px;">《骑行之歌》</div>
+        <div style="font-size:var(--s-font-sm);color:var(--c-muted);">歌手: Leo</div>
+      </div>
+    `;
+  } else if (currentMode === 'dvr') {
+    zoneRb.innerHTML = `
+      <div class="dvr-rec">
+        <div class="dvr-dot"></div>
+        <div>REC</div>
+      </div>
+    `;
+  } else if (currentMode === 'warn') {
+    // Warning details shown in LB, RB empty
+    zoneRb.innerHTML = '';
+  } else {
+    zoneRb.innerHTML = '<div style="color:var(--c-dim);">—</div>';
+  }
+}
+
+function applySpeedLevelHiding(level) {
+  // S2/S3: hide music/mesh details
+  if (level === 'S2' || level === 'S3') {
+    if (currentMode === 'music' || currentMode === 'mesh') {
+      zoneRb.classList.add('shrunk');
+    } else {
+      zoneRb.classList.remove('shrunk');
+    }
+  } else {
+    zoneRb.classList.remove('shrunk');
+  }
+}
+
+// ========== Scenarios ========== */
+const SCENARIOS = {
+  commute: {
+    name: '通勤',
+    duration: 50,
+    events: [
+      { t: 0, action: () => { setSpeed(0); setMode('cruise'); }},
+      { t: 3, action: () => { setSpeed(40); showVoiceSubtitle('启动引擎'); }},
+      { t: 8, action: () => { setMode('nav'); showVoiceSubtitle('导航开始，目的地：公司'); }},
+      { t: 12, action: () => { setSpeed(65); }},
+      { t: 18, action: () => { zoneNav.querySelector('.nav-arrow').textContent = '⬅️ 左转'; zoneNav.querySelector('.nav-distance').textContent = '100m'; }},
+      { t: 22, action: () => { setSpeed(35); }},
+      { t: 25, action: () => { setMode('call'); showVoiceSubtitle('来电：张三'); }},
+      { t: 30, action: () => { popMode(); showVoiceSubtitle('通话结束，恢复导航'); }},
+      { t: 35, action: () => { showVoiceSubtitle('即将到达目的地'); }},
+      { t: 40, action: () => { setSpeed(0); popMode(); }},
+      { t: 50, action: () => { stopScenario(); }}
+    ]
+  },
+  emergency: {
+    name: '紧急',
+    duration: 45,
+    events: [
+      { t: 0, action: () => { setSpeed(60); }},
+      { t: 5, action: () => { emitWarning('fcw', 'front', 15, 45); showVoiceSubtitle('前方碰撞预警！'); }},
+      { t: 8, action: () => { clearWarning(); }},
+      { t: 12, action: () => { emitWarning('bsd', 'left', 8, 30); showVoiceSubtitle('左后方有车接近'); }},
+      { t: 15, action: () => { clearWarning(); }},
+      { t: 18, action: () => { setSpeed(80); }},
+      { t: 22, action: () => { emitWarning('dooring', 'right', 5, 20); showVoiceSubtitle('右侧车门即将开启'); }},
+      { t: 25, action: () => { clearWarning(); }},
+      { t: 28, action: () => { emitWarning('pedestrian', 'front', 10, 50); showVoiceSubtitle('前方行人！'); }},
+      { t: 31, action: () => { clearWarning(); }},
+      { t: 35, action: () => { setSpeed(50); }},
+      { t: 45, action: () => { stopScenario(); }}
+    ]
+  },
+  group: {
+    name: '组队',
+    duration: 55,
+    events: [
+      { t: 0, action: () => { setSpeed(45); }},
+      { t: 5, action: () => { setMode('mesh'); showVoiceSubtitle('已加入组队频道'); }},
+      { t: 8, action: () => { setMode('dvr'); showVoiceSubtitle('DVR录像开始'); }},
+      { t: 12, action: () => { setSpeed(70); }},
+      { t: 18, action: () => { popMode(); setMode('nav'); }},
+      { t: 22, action: () => { showVoiceSubtitle('队友：前方弯道注意'); }},
+      { t: 26, action: () => { emitWarning('fcw', 'front', 30, 40); }},
+      { t: 29, action: () => { clearWarning(); }},
+      { t: 33, action: () => { popMode(); setMode('music'); }},
+      { t: 38, action: () => { setSpeed(40); }},
+      { t: 42, action: () => { showVoiceSubtitle('到达集合点'); }},
+      { t: 45, action: () => { popMode(); popMode(); }},
+      { t: 48, action: () => { setSpeed(0); }},
+      { t: 55, action: () => { stopScenario(); }}
+    ]
+  },
+  touring: {
+    name: '摩旅',
+    duration: 60,
+    events: [
+      { t: 0, action: () => { setSpeed(30); setMode('cruise'); }},
+      { t: 5, action: () => { setMode('dvr'); showVoiceSubtitle('DVR生活记录开始'); }},
+      { t: 15, action: () => { showVoiceSubtitle('用户：标记这个精彩瞬间'); showMomentSaved(); }},
+      { t: 25, action: () => { popMode(); setMode('nav'); }},
+      { t: 35, action: () => { setTrafficSign('limit80'); showVoiceSubtitle('识别到限速标志80'); }},
+      { t: 45, action: () => { setSpeed(0); popMode(); }},
+      { t: 50, action: () => { showVoiceSubtitle('停靠拍照模式'); }},
+      { t: 60, action: () => { stopScenario(); }}
+    ]
+  }
+};
+
+function playScenario(name) {
+  const scenario = SCENARIOS[name];
+  if (!scenario) return;
+
+  currentScenario = name;
+  scenarioRunning = true;
+  scenarioPaused = false;
+  scenarioTime = 0;
+
+  timelineLabel.textContent = scenario.name;
+  timelineProgress.style.width = '0%';
+
+  // Clear previous state
+  clearWarning();
+  modeStack = [];
+  currentMode = 'cruise';
+  CONFIG.currentSign = null;
+
+  scenarioTimer = setInterval(() => {
+    if (scenarioPaused) return;
+
+    scenarioTime++;
+
+    // Update timeline
+    const progress = (scenarioTime / scenario.duration) * 100;
+    timelineProgress.style.width = progress + '%';
+
+    // Execute events at current time
+    scenario.events.forEach(event => {
+      if (event.t === scenarioTime) {
+        event.action();
+      }
+    });
+
+    if (scenarioTime >= scenario.duration) {
+      stopScenario();
+    }
+  }, 1000);
+}
+
+function pauseScenario() {
+  scenarioPaused = true;
+  timelineLabel.textContent = currentScenario ? SCENARIOS[currentScenario].name + ' (暂停)' : '等待播放';
+}
+
+function resumeScenario() {
+  scenarioPaused = false;
+  if (currentScenario) {
+    timelineLabel.textContent = SCENARIOS[currentScenario].name;
+  }
+}
+
+function stopScenario() {
+  if (scenarioTimer) clearInterval(scenarioTimer);
+  scenarioRunning = false;
+  scenarioPaused = false;
+  scenarioTime = 0;
+  currentScenario = null;
+
+  clearWarning();
+  modeStack = [];
+  currentMode = 'cruise';
+  setSpeed(0);
+  CONFIG.currentSign = null;
+
+  timelineProgress.style.width = '0%';
+  timelineLabel.textContent = '等待播放';
+  voiceSubtitle.textContent = '';
+
+  renderAll();
+}
+
+// ========== Sandbox UI Binding ========== */
+function setupSandboxControls() {
+  // Optics buttons
+  document.querySelectorAll('[data-optics]').forEach(btn => {
+    btn.addEventListener('click', () => setOptics(btn.dataset.optics));
+  });
+
+  // FOV slider
+  $('fov-slider').addEventListener('input', (e) => {
+    CONFIG.fov = e.target.value;
+    $('fov-value').textContent = CONFIG.fov;
+    opticsIndicator.textContent = opticsIndicator.textContent.replace(/\d+°/, CONFIG.fov + '°');
+  });
+
+  // Strip width
+  $('strip-width').addEventListener('input', (e) => {
+    CONFIG.leftStripWidth = CONFIG.rightStripWidth = parseInt(e.target.value);
+    applyLayoutConfig();
+  });
+
+  // Center gap
+  $('center-gap-slider').addEventListener('input', (e) => {
+    CONFIG.centerGap = parseInt(e.target.value);
+    $('gap-value').textContent = CONFIG.centerGap;
+    applyLayoutConfig();
+  });
+
+  // Background opacity
+  $('bg-opacity').addEventListener('input', (e) => {
+    CONFIG.bgOpacity = parseInt(e.target.value) / 100;
+    $('opacity-value').textContent = e.target.value;
+    applyLayoutConfig();
+  });
+
+  // Speed slider
+  $('speed-slider').addEventListener('input', (e) => {
+    setSpeed(parseInt(e.target.value));
+  });
+
+  // Nav level buttons
+  document.querySelectorAll('[data-nav]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      CONFIG.navLevel = btn.dataset.nav;
+      document.querySelectorAll('[data-nav]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderAll();
+    });
+  });
+
+  // Warning buttons
+  document.querySelectorAll('[data-warning]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.warning;
+      const distance = parseInt($('warning-distance').value);
+      const speed = parseInt($('warning-speed').value);
+
+      let direction = 'front';
+      if (type === 'bsd') direction = 'left';
+      if (type === 'dooring') direction = 'right';
+      if (type === 'ldw-left') direction = 'left';
+      if (type === 'ldw-right') direction = 'right';
+
+      emitWarning(type, direction, distance, speed);
+    });
+  });
+
+  // Clear warning
+  document.querySelector('[data-action="clear-warning"]').addEventListener('click', clearWarning);
+
+  // Traffic sign buttons
+  document.querySelectorAll('[data-sign]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const sign = btn.dataset.sign;
+      setTrafficSign(sign === 'none' ? null : sign);
+    });
+  });
+
+  // Scenario buttons
+  document.querySelectorAll('[data-scenario]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      playScenario(btn.dataset.scenario);
+    });
+  });
+
+  // Play/Pause/Stop buttons
+  document.querySelector('[data-action="play"]').addEventListener('click', () => {
+    if (scenarioPaused) resumeScenario();
+    else if (currentScenario) playScenario(currentScenario);
+  });
+  document.querySelector('[data-action="pause"]').addEventListener('click', pauseScenario);
+  document.querySelector('[data-action="stop"]').addEventListener('click', stopScenario);
+
+  // Event buttons
+  document.querySelectorAll('[data-event]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      emitEvent(btn.dataset.event);
+    });
+  });
+
+  // Brightness inputs (green mode)
+  $('brightness-urgent').addEventListener('input', (e) => {
+    CONFIG.brightness.urgent = parseInt(e.target.value);
+    renderAll();
+  });
+  $('brightness-primary').addEventListener('input', (e) => {
+    CONFIG.brightness.primary = parseInt(e.target.value);
+    renderAll();
+  });
+  $('brightness-secondary').addEventListener('input', (e) => {
+    CONFIG.brightness.secondary = parseInt(e.target.value);
+    renderAll();
+  });
+  $('brightness-bg').addEventListener('input', (e) => {
+    CONFIG.brightness.background = parseInt(e.target.value);
+    renderAll();
+  });
+}
+
+// ========== Keyboard Shortcuts ========== */
+function setupKeyboard() {
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'F1':
+        setOptics('freeform');
+        break;
+      case 'F2':
+        setOptics('waveguide');
+        break;
+      case 'F3':
+        setOptics('green');
+        break;
+      case 's':
+      case 'S':
+        sandbox.classList.toggle('visible');
+        break;
+      case ' ':
+        e.preventDefault();
+        if (scenarioRunning && !scenarioPaused) pauseScenario();
+        else if (scenarioPaused) resumeScenario();
+        break;
+      case '1':
+        playScenario('commute');
+        break;
+      case '2':
+        playScenario('emergency');
+        break;
+      case '3':
+        playScenario('group');
+        break;
+      case '4':
+        playScenario('touring');
+        break;
+      case 'w':
+      case 'W':
+        emitWarning('fcw', 'front', 15, 45);
+        break;
+      case 'a':
+      case 'A':
+        emitWarning('bsd', 'left', 8, 30);
+        break;
+      case 'd':
+      case 'D':
+        emitWarning('dooring', 'right', 5, 20);
+        break;
+      case 'Escape':
+        clearWarning();
+        stopScenario();
+        sandbox.classList.remove('visible');
+        break;
+    }
+  });
+}
+
+// ========== Boot Sequence ========== */
+function bootSequence() {
+  const bootStatus = $('boot-status');
+  const steps = [
+    { t: 500, text: '检测显示模块...' },
+    { t: 1000, text: '光学系统校准...' },
+    { t: 1500, text: 'HUD 就绪' }
+  ];
+
+  steps.forEach(step => {
+    setTimeout(() => {
+      bootStatus.textContent = step.text;
+    }, step.t);
+  });
+
+  setTimeout(() => {
+    bootOverlay.classList.add('hidden');
+  }, 2000);
+}
+
+// ========== Initialize ========== */
+document.addEventListener('DOMContentLoaded', () => {
+  setupSandboxControls();
+  setupKeyboard();
+  bootSequence();
+  renderAll();
+
+  // Expose to window for external testing
+  window.setMode = setMode;
+  window.getMode = getMode;
+  window.setSpeed = setSpeed;
+  window.setOptics = setOptics;
+  window.emitWarning = emitWarning;
+  window.emitEvent = emitEvent;
+  window.playScenario = playScenario;
+  window.CONFIG = CONFIG;
+  window.MODE = MODE;
+  window.OPTICS = OPTICS;
+});
+</script>
+</body>
+</html>
