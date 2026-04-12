@@ -431,10 +431,7 @@
 - **Windows 计划任务**：
   - 任务名：Scheduled_Tasks_AutoStart
   - 触发器：登录时
-  - ❌ 需手动以管理员权限运行（UAC 弹窗需确认）
-- **一键创建方式**：
-  - 右键以管理员身份运行：`C:\Users\uih00653\metabot\import_scheduled_task.bat`
-  - 或 PowerShell：`powershell -ExecutionPolicy Bypass -File scripts\create_scheduled_task.ps1`（需管理员）
+  - State: Ready ✅ 已创建
 - **验证命令**：`schtasks /query /tn "Scheduled_Tasks_AutoStart"`
 - **运行方式**：
   - 调度器：`py scripts/scheduled_tasks.py`
