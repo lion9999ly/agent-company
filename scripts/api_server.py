@@ -50,6 +50,26 @@ class TalkResponse(BaseModel):
     error: Optional[str] = None
 
 
+class RoundtableRequest(BaseModel):
+    topic: str
+
+
+class ResearchRequest(BaseModel):
+    query: str
+
+
+class AgentRequest(BaseModel):
+    instruction: str
+
+
+class ExecRequest(BaseModel):
+    """直接执行端点请求模型"""
+    prompt: str
+    workingDirectory: Optional[str] = None
+    maxTurns: Optional[int] = 10
+    timeoutSeconds: Optional[int] = 120
+
+
 class BotInfo(BaseModel):
     name: str
     description: Optional[str] = None
@@ -66,11 +86,12 @@ class HealthResponse(BaseModel):
 
 
 # === 注册的 Bots ===
+# 使用不同名称避免与 MetaBot 本地 Feishu bot 冲突
 REGISTERED_BOTS = [
     BotInfo(
-        name="hud-helmet-dev",
-        description="智能骑行头盔研发助手 - 圆桌讨论、深度研究",
-        specialties=["roundtable", "deep_research", "hud", "helmet"],
+        name="agent-service",
+        description="Agent Company 后端服务 - 圆桌讨论、深度研究、系统状态",
+        specialties=["roundtable", "deep_research", "system_status"],
         platform="web",
         workingDirectory=WORK_DIR,
     ),
@@ -114,6 +135,178 @@ async def list_skills():
     return JSONResponse(content={
         "skills": []
     })
+
+
+# === CC 直接调用的端点（不经过 MetaBot peer 转发） ===
+
+@app.post("/roundtable")
+async def roundtable_endpoint(request: RoundtableRequest):
+    """
+    圆桌讨论端点 - CC 直接调用
+
+    Body: {"topic": "讨论主题"}
+    """
+    logger.info(f"Roundtable endpoint called: topic={request.topic}")
+
+    # Placeholder - 实际实现待集成 scripts/roundtable/roundtable.py
+    return JSONResponse(content={
+        "status": "ok",
+        "message": f"圆桌讨论路由已注册，主题: {request.topic}",
+        "note": "功能待实现，需集成 scripts/roundtable/roundtable.py"
+    })
+
+
+@app.post("/research")
+async def research_endpoint(request: ResearchRequest):
+    """
+    深度研究端点 - CC 直接调用
+
+    Body: {"query": "研究查询"}
+    """
+    logger.info(f"Research endpoint called: query={request.query}")
+
+    # Placeholder - 实际实现待集成 scripts/deep_research/pipeline.py
+    return JSONResponse(content={
+        "status": "ok",
+        "message": f"深度研究路由已注册，查询: {request.query}",
+        "note": "功能待实现，需集成 scripts/deep_research/pipeline.py"
+    })
+
+
+@app.post("/agent")
+async def agent_endpoint(request: AgentRequest):
+    """
+    通用 Agent 端点 - CC 直接调用
+
+    Body: {"instruction": "指令内容"}
+    """
+    logger.info(f"Agent endpoint called: instruction={request.instruction}")
+
+    # Placeholder - 实际实现待定义
+    return JSONResponse(content={
+        "status": "ok",
+        "message": f"Agent 路由已注册，指令: {request.instruction}",
+        "note": "功能待实现"
+    })
+
+
+@app.post("/exec")
+async def exec_endpoint(request: ExecRequest):
+    """
+    直接执行端点 - 绕过 MetaBot 审批层，直接调用 CC subprocess
+
+    Body: {
+        "prompt": "执行指令",
+        "workingDirectory": "可选工作目录",
+        "maxTurns": 10,
+        "timeoutSeconds": 120
+    }
+    """
+    import subprocess
+    import asyncio
+    from concurrent.futures import ThreadPoolExecutor
+
+    logger.info(f"Exec endpoint called: prompt={request.prompt[:100]}...")
+
+    # 确定工作目录
+    work_dir = request.workingDirectory or WORK_DIR
+
+    # 构建 CC 命令
+    claude_cmd = [
+        "claude",
+        "-p", request.prompt,
+        "--max-turns", str(request.maxTurns),
+        "--dangerously-skip-permissions",  # 绕过所有权限确认
+        "--output-format", "stream-json",
+    ]
+
+    if work_dir:
+        claude_cmd.extend(["--working-directory", work_dir])
+
+    timeout_sec = request.timeoutSeconds or 120
+
+    try:
+        # 使用线程池执行 subprocess，避免阻塞
+        def run_claude():
+            logger.info(f"Executing: {claude_cmd}")
+            result = subprocess.run(
+                claude_cmd,
+                capture_output=True,
+                text=True,
+                timeout=timeout_sec,
+                cwd=work_dir,
+                encoding="utf-8",
+            )
+            return result
+
+        # 在线程池中执行
+        loop = asyncio.get_event_loop()
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            result = await loop.run_in_executor(executor, run_claude)
+
+        # 解析输出
+        output_text = result.stdout
+        error_text = result.stderr
+
+        if result.returncode != 0:
+            logger.error(f"CC execution failed: returncode={result.returncode}, stderr={error_text}")
+            return JSONResponse(
+                status_code=500,
+                content={
+                    "success": False,
+                    "error": f"Claude execution failed: {error_text}",
+                    "returncode": result.returncode,
+                }
+            )
+
+        # 提取最终结果（从 stream-json 输出中解析）
+        final_result = ""
+        try:
+            # stream-json 格式每行一个 JSON 对象
+            for line in output_text.strip().split("\n"):
+                if line.startswith("{"):
+                    try:
+                        data = json.loads(line)
+                        if data.get("type") == "result":
+                            final_result = data.get("result", "")
+                        elif data.get("type") == "assistant":
+                            content = data.get("message", {}).get("content", [])
+                            for block in content:
+                                if block.get("type") == "text":
+                                    final_result = block.get("text", "")
+                    except json.JSONDecodeError:
+                        continue
+        except Exception as parse_err:
+            logger.warning(f"Failed to parse stream output: {parse_err}")
+            final_result = output_text  # 回退到原始输出
+
+        logger.info(f"Exec completed successfully: result_length={len(final_result)}")
+
+        return JSONResponse(content={
+            "success": True,
+            "result": final_result,
+            "rawOutput": output_text,
+            "returncode": result.returncode,
+        })
+
+    except subprocess.TimeoutExpired:
+        logger.error(f"CC execution timeout after {timeout_sec}s")
+        return JSONResponse(
+            status_code=504,
+            content={
+                "success": False,
+                "error": f"Execution timeout after {timeout_sec} seconds",
+            }
+        )
+    except Exception as e:
+        logger.error(f"Exec endpoint error: {e}")
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": str(e),
+            }
+        )
 
 
 @app.post("/api/talk", response_model=TalkResponse)
