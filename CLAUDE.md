@@ -1,6 +1,6 @@
 # CLAUDE.md 版本号（每次修改必须更新此版本号）
 
-**VERSION: 20260412.2**
+**VERSION: 20260412.4**
 
 ## 版本号检查规则（最高优先级）
 
@@ -482,6 +482,8 @@ python scripts/doc_sync_validator.py
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-04-12 | **默认授权规则**: 文件创建/修改/pip install/git操作默认授权，CLAUDE.md v20260412.4 |
+| 2026-04-12 | **Python服务路由**: 飞书消息转发到Python Peer，CLAUDE.md v20260412.3 |
 | 2026-04-12 | **执行报告规则**: 飞书任务完成后追加 claude_chat_inbox.md，CLAUDE.md v20260412.2 |
 | 2026-04-12 | **系统设计原则**: 新增 8 条核心设计原则，CLAUDE.md v20260412.1 |
 | 2026-04-11 | **轮子检查规则**: 开发新组件前必须先搜索GitHub开源方案，CLAUDE.md v20260411.2 |
@@ -684,3 +686,46 @@ python scripts/regression_check.py --quick   # 快速检查
 ---
 
 *本文档由 Claude Code 自动生成，遵循 `.ai-architecture/` 架构规范*
+
+---
+
+## Python 服务路由规则
+
+当收到以下前缀的飞书消息时，不要自己处理，而是转发到 Python 服务：
+
+| 命令 | Python 端点 | Body |
+|------|-------------|------|
+| `/roundtable <主题>` | POST http://localhost:9300/roundtable | `{"topic": "<主题>"}` |
+| `/research <查询>` | POST http://localhost:9300/research | `{"query": "<查询>"}` |
+| `/agent <指令>` | POST http://localhost:9300/agent | `{"instruction": "<指令>"}` |
+
+**执行方式**：
+```bash
+curl -X POST http://localhost:9300/roundtable \
+  -H "Content-Type: application/json" \
+  -d '{"topic": "xxx"}' \
+  --max-time 30
+```
+
+等待返回结果，将结果回复到飞书。
+
+**异常处理**：
+- Python 服务无响应（超时30秒或连接失败）
+- 回复："Python 服务未响应，请检查 localhost:9300 是否运行"
+
+---
+
+## 默认授权规则
+
+以下操作**默认授权执行**，不需要逐次审批：
+
+- 文件创建（Write/Edit 工具）
+- 文件修改（Edit 工具）
+- pip install 包安装
+- git commit / git push
+
+**例外**：涉及以下敏感操作仍需审批：
+- 删除文件（rm/rmdir）
+- 强制推送（git push --force）
+- 修改 .env 或密钥文件
+- 修改 CLAUDE.md 本文件
