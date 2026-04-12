@@ -370,3 +370,161 @@
 - **目录结构验证**：
   - `ls skills/*/SKILL.md` 返回 5 个文件
 - **待决问题**：无
+
+---
+
+## [轮子检查] LiteLLM (BerriAI/litellm) - 2026-04-12 10:45
+
+- **对标组件**：`model_gateway/` 目录 + `model_registry.yaml`
+- **Stars 数**：42,970
+- **最近更新**：2026-04-12（今日活跃）
+- **功能覆盖度**：95%
+
+### 关键能力验证
+
+| 能力 | 我们需求 | LiteLLM 支持 | 状态 |
+|------|----------|--------------|------|
+| Azure OpenAI | GPT-5.4, o3-deep-research | ✅ `litellm/llms/azure/` 完整目录 | 完全覆盖 |
+| Volcengine | doubao, DeepSeek-R1, GLM-4 | ✅ endpoint `ark.cn-beijing.volces.com` | 完全覆盖 |
+| Gemini | Gemini 3.1 Pro, 2.5 Flash | ✅ `litellm/llms/gemini/` 完整目录 | 完全覆盖 |
+| Fallback 路由 | 禁用模型降级链 | ✅ `max_fallbacks`, `default_fallbacks`, `context_window_fallbacks`, `content_policy_fallbacks` | 完全覆盖 |
+| 流式输出 | 流式响应 | ✅ `streaming` 支持 | 完全覆盖 |
+| Agent 调用 | A2A Protocol | ✅ `litellm/a2a_protocol/` | 超出需求 |
+
+### Windows 兼容性
+✅ 完全兼容 — Python 项目，跨平台
+
+### 接入改动量：**中**
+
+1. **需替换**：`src/utils/model_gateway/` 整个目录（6 文件）
+2. **需适配**：`model_registry.yaml` → LiteLLM RouterConfig 格式
+3. **需验证**：14+ 模型路由正确性（已确认 Azure/Volcengine/Gemini 均有独立 provider）
+
+### 结论：**替换**（高优先级）
+
+- LiteLLM 提供 100+ LLM 统一接口，远超我们自建能力
+- Fallback 系统比我们的 PEER_MODELS/FALLBACK_MAP 更完善
+- 可减少维护负担，专注业务逻辑
+
+### 接入建议
+
+```yaml
+# LiteLLM RouterConfig 示例（适配我们的配置）
+model_list:
+  - model_name: "gpt_5_4"
+    litellm_params:
+      model: "azure/gpt-5.4"
+      api_key: "${AZURE_OPENAI_API_KEY}"
+      api_base: "${AZURE_OPENAI_ENDPOINT}"
+  - model_name: "doubao_seed_pro"
+    litellm_params:
+      model: "volcengine/doubao-seed-2-0-pro-260215"
+      api_key: "${ARK_API_KEY}"
+      api_base: "https://ark.cn-beijing.volces.com/api/v3"
+
+fallbacks:
+  - {"gpt_5_4": ["doubao_seed_pro", "gemini_2_5_pro"]}
+  - {"o3_deep_research": ["gpt_5_4", "doubao_seed_pro"]}
+```
+
+---
+
+## [轮子检查] LangChain open_deep_research - 2026-04-12 10:45
+
+- **对标组件**：`scripts/deep_research/` 管道
+- **Stars 数**：11,078
+- **最近更新**：2026-04-12（今日活跃）
+- **功能覆盖度**：70%
+
+### 关键能力验证
+
+| 能力 | 我们需求 | open_deep_research 支持 | 状态 |
+|------|----------|------------------------|------|
+| Tavily 搜索 | 英文搜索主力 | ✅ SearchAPI.TAVILY 默认 | 完全覆盖 |
+| 多模型摘要 | L1-L5 分层模型 | ✅ Summarization/Research/Compression/Final 四角色 | 覆盖 70% |
+| 结构化输出 | Critic 评分 | ✅ 需要 model 支持 structured outputs | 覆盖 |
+| 中文查询 | doubao 中文优先 | ⚠️ 无内置 doubao SearchRouter | 需适配 |
+| MCP 支持 | 工具扩展 | ✅ MCPConfig + tools 字段 | 完全覆盖 |
+| 并发控制 | Provider Semaphore | ✅ max_concurrent_research_units | 部分覆盖 |
+
+### Windows 兼容性
+✅ 完全兼容 — README 有 Windows 激活命令 `.venv\Scripts\activate`
+
+### 接入改动量：**大**
+
+1. **架构差异**：LangGraph 架构 vs 我们的五层管道
+2. **SearchRouter 缺失**：需适配 doubao 中文优先逻辑
+3. **降级链不同**：需合并我们的 FALLBACK_MAP
+4. **需集成**：替换 `tonight_deep_research.py` 主流程
+
+### 结论：**暂缓**
+
+- 覆盖度仅 70%，核心 SearchRouter 需大改
+- 我们的五层管道有 doubao 中文增强，open_deep_research 缺失
+- 可作为参考，但不建议直接替换
+- 建议：借鉴其 LangGraph 架构思路，保留我们的 SearchRouter
+
+### 可借鉴点
+
+- LangGraph Studio UI（可视化调试）
+- Deep Research Bench 评估体系（50 中文 + 50 英文任务）
+- MCP server 集成模式
+
+---
+
+## [轮子检查] OpenSpace (HKUDS/OpenSpace) - 2026-04-12 10:45
+
+- **对标组件**：无现有对标（新增能力）
+- **Stars 数**：4,996
+- **最近更新**：2026-04-12（今日活跃）
+- **功能覆盖度**：80%（skill 自进化能力）
+
+### 关键能力验证
+
+| 能力 | 我们需求 | OpenSpace 支持 | 状态 |
+|------|----------|---------------|------|
+| MCP Server 接入 CC | 新增能力 | ✅ `openspace/mcp_server.py` SSE + HTTP 模式 | 完全覆盖 |
+| Skill 自进化 | 元能力层目标 | ✅ `skill_engine/evolver.py` FIX/DERIVED/CAPTURED | 完全覆盖 |
+| Skill Registry | 能力注册表 | ✅ `skill_engine/registry.py` + `store.py` | 完全覆盖 |
+| Execution Analyzer | 任务分析 | ✅ `skill_engine/analyzer.py` | 完全覆盖 |
+| Windows 兼容 | Windows 平台 | ✅ pyproject.toml 有 `pywinauto`, `pywin32` 依赖 | 完全覆盖 |
+
+### Windows 兼容性
+✅ 完全兼容 — 有 Windows optional dependencies
+
+### 接入改动量：**中**
+
+1. **无需替换**：现有组件不受影响
+2. **新增接入**：作为 MCP server 接入 Claude Code
+3. **配置工作**：启动 SSE 模式，配置 CC 的 MCP servers
+
+### 结论：**替换**（作为新增能力接入）
+
+- OpenSpace 提供我们 `meta_capability.py` 缺失的 skill 自进化闭环
+- EvolutionType 三种模式：FIX（修复）、DERIVED（增强）、CAPTURED（捕获）
+- SkillLineage 版本 DAG 模型，与我们质量控制需求匹配
+- 不替换现有组件，而是 **并行接入**
+
+### 接入建议
+
+```bash
+# 启动 OpenSpace MCP server（SSE 模式）
+python -m openspace.mcp_server --transport sse --port 8080
+
+# CC settings.json 添加 MCP server
+{
+  "mcpServers": {
+    "openspace": {
+      "url": "http://localhost:8080/sse"
+    }
+  }
+}
+```
+
+### 依赖关系注意
+
+- OpenSpace 本身依赖 `litellm>=1.70.0`
+- 若接入 LiteLLM 作为 model_gateway，形成依赖链：
+  - CC → OpenSpace MCP → LiteLLM → 各 provider
+
+---
