@@ -56,4 +56,4 @@ claude-install-windows/
 *.mp4
 *.pptx
 *.zip
-_archive_competitors/
+_archive_competitors/.dataset/

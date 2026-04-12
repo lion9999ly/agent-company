@@ -1,0 +1,15 @@
+test_case,expected_result,acceptance_criteria
+AC1_optical_mode_encoding,"FreeForm/Waveguide uses color, Green mode uses brightness only",AC1
+AC2_green_mode_color_only,"All elements must be #00FF00 only, no other hue",AC2
+AC3_central_transparency,"Central area must have no HUD elements, transparent background",AC3
+AC4_adas_info_complete,"Must show: distance(m), closing_speed(km/h), TTC(s countdown)",AC4
+AC5_multi_warning_priority,"Shortest TTC maximized, others weakened but visible",AC5
+AC6_bsd_outer_edge,"BSD left-rear flash on left strip LEFT edge (outer edge)",AC6
+AC7_ldw_inner_edge,"LDW left/right flash on strip edge nearest center (inner edge)",AC7
+AC8_priority_preemption,"Lower priority shrinks to corner, does not disappear",AC8
+AC9_auto_recovery,"After warning ends, auto restore previous mode",AC9
+AC10_touring_voice_mark,"touring scenario must include voice mark moment",AC10
+AC11_subtitle_position,"Voice subtitles must appear outside HUD visual area",AC11
+AC12_bg_opacity_control,"Background opacity slider must exist and work",AC12
+AC13_traffic_sign_persistent,"Traffic sign persists in RT zone until next sign",AC13
+AC14_display_area_adjustable,"Strip width/height/position controls must exist and work",AC14

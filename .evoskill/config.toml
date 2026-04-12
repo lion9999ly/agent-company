@@ -1,0 +1,22 @@
+[harness]
+name = "claude"
+model = "sonnet"
+data_dirs = ["demo_outputs"]
+
+[evolution]
+mode = "skill_only"
+iterations = 20
+frontier_size = 3
+concurrency = 4
+no_improvement_limit = 5
+
+[dataset]
+path = "data/hud_validation.csv"
+question_column = "test_case"
+ground_truth_column = "expected_result"
+category_column = "acceptance_criteria"
+train_ratio = 0.5
+val_ratio = 0.5
+
+[scorer]
+type = "multi_tolerance"
