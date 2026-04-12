@@ -1245,3 +1245,35 @@ agent = CodeAgent(
 - `.ai-state/decision_log.md`（120 行）
 
 ---
+
+---
+
+## [测试] 搜索层切换 smolagents - 2026-04-12 12:07
+
+### 任务摘要
+将 pipeline.py 搜索层切换到 smolagents 工具，完成对比测试。
+
+### 修改文件
+- `scripts/deep_research/pipeline.py`（导入 smolagents 工具，修改 SearchRouter）
+- `scripts/smolagents_research/__init__.py`（新增）
+- `scripts/deep_research/search_layer_comparison_test.py`（新增测试脚本）
+
+### 测试结果
+
+| 搜索引擎 | 旧管道成功率 | 新管道成功率 | 旧管道字数 | 新管道字数 | 新管道耗时 |
+|----------|--------------|--------------|------------|------------|------------|
+| Tavily | 0/3 | 3/3 | 0 | 3545 | 4.05s |
+| Doubao | 3/3 | 3/3 | 1200 | 104 | 90.92s |
+
+### 关键发现
+- **Tavily**: 新管道（smolagents）完全成功，旧管道全部失败
+- **Doubao**: 新管道更快（90s vs 163s），但返回内容较短（104字 vs 1200字）
+
+### 待优化
+- DoubaoSearchTool 返回内容较短，需检查是否是 prompt 或 API 调用方式问题
+
+### 结论
+- Tavily smolagents 工具接入成功，可替代旧管道
+- Doubao smolagents 工具可用但输出质量需优化
+
+---

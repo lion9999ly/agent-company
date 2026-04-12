@@ -1,0 +1,140 @@
+{
+  "test_time": "2026-04-12 12:07:25",
+  "queries": [
+    "智能骑行头盔 AR显示技术 2026",
+    "骨传导耳机 供应商 歌尔",
+    "光波导显示 module specification"
+  ],
+  "tavily_comparison": [
+    {
+      "query": "智能骑行头盔 AR显示技术 2026",
+      "old": {
+        "method": "old_tavily",
+        "success": false,
+        "error": "call_for_search() got an unexpected keyword argument 'engine'",
+        "elapsed_sec": 0.0
+      },
+      "new": {
+        "method": "new_tavily_smolagents",
+        "success": true,
+        "response": "## AI Summary\nSmart cycling helmets with AR display technology are set for release in 2026, featuring HUD systems for enhanced safety and navigation. Shoei's GT-Air 3 Smart helmet integrates AR for real-time information projection. The technology aims to reduce distractions and improve rider safety.\n\n## Search Results (5 items)\n\n1. **将AR技术融入骑行，MOTOEYE头盔抬头显示持续发力_车行天下** (Score: 1.00)\n   URL: http://www.chextx.com/news/news/aid/37227.html\n   Content: 2024年重庆摩博会于本周盛大开幕，展会现场气氛热烈，各展区人潮拥挤。作为一年一度的盛大摩托车展，本次展会吸引了大量摩托车爱好者及行业专家。  \n  \n笔者注意到，今年的重庆摩博会，MOTOEYE 头盔智能HUD参展的同时推出了其2024年的新品。从2021年第一代MOTOEYE 头盔智能HUD问世以来，现今为止，已发展到第三代的多款机型，外观上更具美感、功能上更加完善，价格也更亲民。头盔上的抬头显示技术，历经几年的发展，目前市场上依旧只有维度视界的MOTOEYE 系列产品。作为一款集成了多种先进功能的多合一设备，MOTOEYE头盔智能HUD集成了抬头显示器、摩托车导航、AI智能语音助手、流媒体后视镜、氛围灯、爆闪灯、Mesh对讲、网络对讲、蓝牙、行车记录仪等多种功能，满足骑行所有需求，为骑行爱好者带来了前所未有的科技体验。  \n  \n将AR技术融入骑行 MOTOEYE头盔抬头显示持续发力  \n  \n这款产品，其原理通过AR技术将骑行需要的辅助信息呈现在人眼前方3米处，画面大小类似55寸屏，显示模组配备索尼高亮度micro OLED显示屏，结合AR自由曲面显示技术，实现高清、高亮、高透...\n\n2. **网通社汽车-更新-更全-更权威的全球汽车资讯** (Score: 1.00)\n   URL: https://www.news18a.com/news/storys_212372.html\n   Content: ##### Shoei GT-Air 3 Smart：从概念到现实的飞跃\n\n首维Shoei作为摩托车头盔领域的佼佼者，一直以高品质和安全性能著称。这次推出的GT-Air 3 Smart，标志着品牌从传统防护向智能互联的跨越。根据官方信息，这款头盔预计于2026年6月开始交付，售价为1199美元（约合人民币8600元），虽价格不菲，但其集成的AR功能却引发了广泛关注。从IT之家到腾讯新闻，多家媒体都报道了这款产品的发布，强调它如何将骑行安全提升到一个新高度。GT-Air 3 Smart的核心在于其HUD（平视显示器）系统，它通过增强现实技术，将关键信息投射到骑手视野中，减少视线转移，从而降低事故风险。\n\n##### HUD显示系统：眼見為實的未來科技\n\nGT-Air 3 Smart配备了来自EyeLights的第三代HUD显示技术，这是其最引人注目的特点。该系统利用内置的纳米OLED投影器，将车速、导航指引和警用测速雷达提醒等信息，直接投射到骑手视野前方约3米的位置。这种设计类似于战斗机飞行员的头盔显示器，让骑手能够保持对道路的专注，同时获取必要数据。传统摩托车仪表盘往往位于车把附近，骑...\n\n3. **CES 2026۲죺ô۾˸į - OFweekɴ豸** (Score: 0.91)\n   URL: https://wearable.ofweek.com/2026-01/ART-8420-5000-30679957.html\n   Content: Rubisȫʾģ̬AR۾MCUISPNPUо칹ϵͳͨ˴ͷISPNPUʾĸӴ·ֲͨʵ˳͹ı֣۾ڼ͹NPUģͣΪ“AI AlwaysOn”춨˼\n\n۾AIصıƴһ“”“”ļǨ㣬ڱƴ˭ܰAIζ“ҩ”ɫζȴЧ׼“ҩ”ƶˡͨ봹ֱ——ÿһ·϶ͼøɵĸܸ˶ҡһ죬ûپʹ“AI۾”ֻǾ“ҿøסøǵø”ʱǸɵңӮˡ\n\nݹȫ֣۾ھͣڲϵļ򵥾һͬʱڲƷ塢߼ʵںĸάչġпĲҵϣÿһάȶңÿһ·϶˳ƣ [...] ǿͨ±ⳡ“Ȩ֮ս”Ҫϵ֣\n\nȻԪľͼֹЩȨҵĽ棬Щͼ·ϡ\n\nһͰֵķʽPhancy̻ھʾЧھʱPhancyѡһ“”·ӵʾϣ“AIܼ”߼——۾ĺļֵδ“”Ӧ“ġסĺͰ㴦”ֱս“AR”ҵ˼ά\n\nһսΧMeta Ray-Ban չɹ۾Ϊ“ʱеƷ”“罻”ŵ꿪ۼ֤˸·ĿԣѸٴ“ûͷ”Ϊ“˭˭AIʶͼ”Ȩ֮ݱΪͬһûϸڵļ´ĥ\n\nݹ۸̵Ĵ볢ԣȨھ“”תơ˭Ҳ޷ƶδʱȫķʽǸȦأ“ʲô”Ĺ½㹻ˡǿ˴“ֻ”ĺ£“ǻҪ”ʵ֮޴Ĺס޹ضԴֻڼ㽵ǰһûǵķλ [...] ڶ“”ڣʽ֮ս——ָԪ“Ȩ”\n\nȨ֮δƽϢһغÿսûָ⡢Ȼ졣“ʲô”ǿʼƴش“ôã”\n\n۾ĽҪ“꾵”鱿׾Ͼʱִ̧꾵ȴҪ۶ַһ٣ڹִ˽ǡǣһΧһȨ“ʽս”ͨ...\n\n4. **2026骑行眼镜选择指南：专业实测推荐长时间骑行时，脸部容易出汗，普通眼镜极易滑落，而Vozapow搭载防滑可调节鼻托和 - 掘金** (Score: 0.21)\n   URL: https://juejin.cn/post/7622364342839148570\n   Content: 稀土掘金\n稀土掘金\n\n# 2026骑行眼镜选择指南：专业实测推荐\n\n一、实测体验拉满，贴合骑行真实场景\n\n作为常年骑行的爱好者，无论是日常城市通勤、近郊休闲骑，还是长途爬坡、竞速骑行，我都深度实测过Vozapow骑行眼镜，积累了大量真实使用感受。这款眼镜完全贴合骑行的各类场景，解决了普通眼镜戴不稳、压鼻梁、视野模糊、眩光刺眼等核心痛点。\n\n长时间骑行时，脸部容易出汗，普通眼镜极易滑落，而Vozapow搭载防滑可调节鼻托和镜腿，贴合肌肤不打滑，即使剧烈运动、颠簸路面骑行，也能牢牢固定，不用频繁抬手调整，全程专注骑行。轻量化设计，单镜重量极低，长时间佩戴不压鼻梁、不夹太阳穴，戴满一整天也无明显负重感，适配长途骑行需求。无论是晴天强光、阴天弱光，还是逆光骑行，佩戴体验都十分舒适，彻底告别眼部疲劳。\n\n53d8e6a3d4ee671fafa04b28c9bcf865.jpg\n\n53d8e6a3d4ee671fafa04b28c9bcf865.jpg\n\n二、符合骑行眼镜高标准\n\nVozapow深耕户外护目装备领域，有为专业骑行场景打造的装备，装备设计、材质选用、功能配置全都贴合骑行行业标准，专业...\n\n5. **[PDF] 视涯科技股份有限公司首次公开发行股票并在科创板上市招股说明书** (Score: 0.07)\n   URL: https://static.sse.com.cn/stock/disclosure/announcement/c/202506/002094_20250626_8Q5Z.pdf\n   Content: 指 使用微小像素尺寸的LED 发光单元组成显示阵列的 显示技术 AMOLED 指 主动式有机发光二极管显示器 （Active-matrix Organic Light Emitting Diode） 显示器尺寸 指 通常以英寸为单位，指显示区域对角线的长度 微型显示屏、微显示屏、微型 显示器 指 显示画面尺寸在2 英寸以下且像素尺寸小于10 微米 的显示屏 VR 指 虚拟现实（Virtual Reality），是以计算机技术为主， 利用多种高科技，借助计算机等设备产生一个逼真的 三维视觉、触觉、嗅觉等多种感官体验的虚拟世界的 技术 AR 指 增强现实（Augmented Reality），是一种广泛运用多 种技术手段， 将计算机生成的文字、 图像、 三维模型、 音乐、视频等虚拟信息模拟仿真后，应用到真实世界 中的技术 EVF 指 电子取景器（Electronic Viewfinder） XR 指 扩展现实（Extended Reality） AI 指 人工智能（Artificial Intelligence） FPV 指 第一人称视角（First Person View） VESA D...\n",
+        "chars": 3537,
+        "elapsed_sec": 1.358088731765747,
+        "has_structure": true
+      }
+    },
+    {
+      "query": "骨传导耳机 供应商 歌尔",
+      "old": {
+        "method": "old_tavily",
+        "success": false,
+        "error": "call_for_search() got an unexpected keyword argument 'engine'",
+        "elapsed_sec": 0.0
+      },
+      "new": {
+        "method": "new_tavily_smolagents",
+        "success": true,
+        "response": "## AI Summary\nGoerTek (歌尔股份) is a supplier of bone conduction headphones. It has supplied Apple's AirPods and is a leading OEM/ODM manufacturer in the TWS and VR/AR markets. GoerTek focuses on high-tech components and smart hardware.\n\n## Search Results (5 items)\n\n1. **智能眼镜OEM/ODM代工企业：歌尔股份、蓝思科技、领益制造、立讯精密、联合光电、亿境虚拟...... - 艾邦AR/VR网** (Score: 0.63)\n   URL: https://www.abvr360.com/a/31430\n   Content: 图片来自：龙旗科技官网\n\n技术研发上，聚焦 AI 眼镜核心领域，围绕人因、续航、轻量化、影像硬件小型化及算法等关键技术攻坚，并同步推进 N+1 代产品预研发，打造产品全链条一站式服务能力。生态合作方面，联合国内XR头部企业，依托算力盒子协同优势，共同构建 Google Android XR 平台能力，进一步夯实行业竞争力。\n\n主要生产基地：惠州、南昌、印度、越南\n\n主要合作品牌：Meta（Meta Ray-Ban PCBA供应商）、阿里（AI眼镜充电盒）、XREAL。\n\n近期营收情况：2025 年上半年总营收为199.08亿元，同比下滑10.65%；净利润为3.56亿元，同比增长5.01%。2025年第三季度AIoT业务（含智能眼镜）收入达22.82亿元，同比增长47.17%。\n\n图片来自：龙旗科技官网\n\n# 7、佳禾智能（300793）\n\n官网：\n\n佳禾智能科技股份有限公司（简称“佳禾智能”）成立于2013年，2019年在深交所上市。公司深耕消费电子领域，在以音频产品为主导产品的基础上积极布局延伸周边消费电子类产品，产品包括TWS耳机、骨传导耳机、智能音箱等；智能穿戴产品包括智能手表...\n\n2. **二级市场企业研究—歌尔股份（002241）** (Score: 0.61)\n   URL: https://pdf.dfcfw.com/pdf/H3_AP202010201422523228_1.pdf?1603201844000.pdf\n   Content: 商、互联网企业等。 • 在TWS耳机产业链中，歌尔股份不仅是上游的MEMS麦克风器件供应商，而且是中游ODM/OEM整机厂商。这种零部件与整机一体化布局可增强产业协同效应，进而提高 企业竞争力和盈利能力。 15 ©2020 LeadLeo www.leadleo.com 400-072-5588 来源：产业调研，中信证券，头豹研究院编辑整理 声学整机业务——TWS耳机行业产业链之整机代工环节分析 下游OEM/ODM整机是TWS耳机产业链中价值量最高的一环，成本占比高达40%，预计 到2022年，苹果端与安卓端TWS耳机代工市场规模分别为1,170亿元和480亿元 TWS耳机生产模式 研发 制造 销售 核心技术 • 声学设计 • 语音算法 • 微电机技术 生产能力 • 工艺能力 • 组装能力 • 测试能力 客户资源 • 渠道客户资源 • 大客户资源 多产品平台、 • 微型麦克风、扬声器、 受话器 • 蓝牙、便携式音频产品 垂直整合 • 模具加工 • 注塑及喷漆 • 关键器件自制能力 全球销售 • 当地分支机构 • 现场售后团队 技术整合能力 • 战略技术合作 • 研究院机构伙伴 自动化设...\n\n3. **歌尔股份深度调研报告：从声学小厂到全球VR/AR霸主|ar|vr|微电子|瑞声科技_网易订阅** (Score: 0.58)\n   URL: https://www.163.com/dy/article/KBS4S8G70519CS5P.html\n   Content: 深耕核心业务，巩固龙头地位：歌尔将继续巩固在声学和VR/AR领域的领先地位，加大对微型电声器件、VR光学等核心产品的投入，保持技术和市场份额的优势。公司计划通过持续的研发创新和产能扩张，进一步提升在全球声学器件和VR设备市场的占有率，稳固行业龙头地位。\n 拓展新兴智能硬件领域：歌尔看好未来智能硬件的广阔前景，将在智能穿戴、智能家居、汽车电子等新兴领域积极拓展。例如，公司已经布局智能手表、智能眼镜等可穿戴设备，并在汽车电子领域与国内外车企和Tier1供应商展开合作，开发车载扬声器、AR-HUD抬头显示等产品。未来歌尔将把这些新兴业务培育成新的增长点，逐步降低对单一产品或客户的依赖。\n 强化“零件+整机”一体化战略：歌尔将继续推进垂直整合的业务模式，加强零组件与整机业务的协同。公司计划在更多产品上实现从核心零件到整机的自主制造，以提高产品附加值和利润率。例如，在VR设备上，歌尔不仅代工整机，还自产光学模组、传感器等关键部件，未来这种垂直整合模式也将应用到其他产品上。通过“零件+整机”一体化，歌尔能够为客户提供更有竞争力的整体解决方案，在市场中占据主动。\n 坚持技术创新驱动：创新是歌尔战略的...\n\n4. **ɷ(002241)_й˵ϸ_ѧɷ޹˾״ιйƱй˲ƾ_** (Score: 0.47)\n   URL: https://vip.stock.finance.sina.com.cn/corp/view/vISSUE_RaiseExplanationDetail.php?stockid=002241&id=323655\n   Content: ʵʿ˿Ʒգ˾Ĺ˾³̣ݰ涨˿عɹɶĳ񡢹ɶ͹µĻرܱƶȣ˶µļලԼƣʵʿ˲ˡͬҵŵŵ빫˾ͬƵҵ߹ɾвҵ   ѧɷ޹˾ й   1132  ڷ˻   һſ   ƣѧɷ޹˾  Ӣƣ GoerTek Inc.  עʱ 9,000Ԫ  ˣ  ڣ 2001 6 252007 7 27Ϊɷݹ˾  סɽʡΫ¼ҵ· 268  룺 261031  ӪΧ졢ۣѧý弼Ʒ̾ͨš绯ϵͳزƷӲƷԶ豸ܵӲƷģߣ뵼΢ƷӲƷܱ߲ƷϲƷصǶʽĿۣϼƷصķ񣻻ڡڣϲɷ涨ǰɺƾӪĿʾӪģȡʺ󷽿ɾӪ  绰 0536-8525688  棺 0536-8525669 [...] 绰 0536-8525688  棺 0536-8525669  ַ www.goertek.com  䣺 IR@goertek.com   ʷظＰɱγ   ˾Ĺɷ޹˾ԭȫɶеĽ 2007 6 30վƵﾻʲ 112,367,398.66ԪԼ   10.80 ıΪ 9,000 ɷ˹ɷݣѧɷ޹˾   ѧɷ޹˾ й   1133  ˾ 2007  7  27 ΫйֵǼעᲢȡעΪ3707002807870ġҵӪҵִաעʱ 9,000Ԫ   ˾ǰΪΫ޹˾ιɱ䶯ͼʾ   Ϋ޹...\n\n5. **蓝牙耳机厂家 力量威蓝牙耳机厂家 tws蓝牙耳机工厂 蓝牙耳机批发 tws蓝牙耳机厂商 苹果耳机工厂 华为蓝牙耳机 小米耳机厂家** (Score: 0.42)\n   URL: http://llwtws.com/\n   Content: 厂家直销新款无线蓝牙触摸屏ANC降噪无线蓝牙超轻TWS游\n 跨境爆款骨传导耳环式蓝牙耳机不入耳 无线运动夹耳tws智能 耳机_蓝牙耳机OEM_深圳市力量威科技有限公司\n\n   跨境爆款骨传导耳环式蓝牙耳机不入耳 无线运动夹耳tws\n 降噪不入耳骨传导夹耳耳机大电量运动无线蓝牙耳机耳夹式批发爆款_蓝牙耳机OEM_深圳市力量威科技有限公司\n\n   降噪不入耳骨传导夹耳耳机大电量运动无线蓝牙耳机耳夹\n 夹耳骨传导同款多功能蓝牙无线运动气传导耳机适用苹果_蓝牙耳机_深圳市力量威科技有限公司\n\n   夹耳骨传导同款多功能蓝牙无线运动气传导耳机适用苹果\n Air3苹果蓝牙耳机双耳无线降噪入耳全功能5代1:1【9月空间音频降噪版】 秒弹窗+指纹触控+改名定位+蓝牙5.2_蓝牙耳机_深圳市力量威科技有限公司\n\n   Air3苹果蓝牙耳机双耳无线降噪入耳全功能5代1:1【9月\n 迪士尼联名（力量威）TWS真无线蓝牙耳机5.0单双耳运动跑步入耳式迷 _蓝牙耳机_深圳市力量威科技有限公司\n\n   迪士尼联名（力量威）TWS真无线蓝牙耳机5.0单双耳运动跑步\n 迪士尼联名（力量威）TWS真无线蓝牙耳机5.0单...\n",
+        "chars": 3502,
+        "elapsed_sec": 1.3198862075805664,
+        "has_structure": true
+      }
+    },
+    {
+      "query": "光波导显示 module specification",
+      "old": {
+        "method": "old_tavily",
+        "success": false,
+        "error": "call_for_search() got an unexpected keyword argument 'engine'",
+        "elapsed_sec": 0.0
+      },
+      "new": {
+        "method": "new_tavily_smolagents",
+        "success": true,
+        "response": "## AI Summary\nA light waveguide display module uses optical components to project augmented reality images. It typically features a light guide, Micro LED, and advanced imaging technology. The module is designed for high-resolution and low-latency performance.\n\n## Search Results (5 items)\n\n1. **​国内25家AR光波导显示方案企业 - CMPE 艾邦第八届精密陶瓷产业链展览会** (Score: 0.98)\n   URL: https://www.cmpe360.com/p/155067\n   Content: ### 17. 舜宇光学科技（集团）有限公司\n\n​国内25家AR光波导显示方案企业\n​国内25家AR光波导显示方案企业\n\n### 18. 北京驭光科技发展有限公司\n\n​国内25家AR光波导显示方案企业\n​国内25家AR光波导显示方案企业\n\n### 19. 中光学集团\n\n​国内25家AR光波导显示方案企业\n\n### 20. 中山联合光电科技股份有限公司\n\n​国内25家AR光波导显示方案企业\n\n### 21. 欧菲光集团股份有限公司\n\n​国内25家AR光波导显示方案企业\n​国内25家AR光波导显示方案企业\n\n### 22. 深圳光峰科技股份有限公司\n\n​国内25家AR光波导显示方案企业\n​国内25家AR光波导显示方案企业\n\n### 23. 奥提赞光晶(山东)显示科技有限公司\n\n​国内25家AR光波导显示方案企业\n​国内25家AR光波导显示方案企业\n\n### 24. 深圳市美誉镜界光电科技有限公司\n\n​国内25家AR光波导显示方案企业\n\n### 25. 杭州历历信息科技有限公司\n\n​国内25家AR光波导显示方案企业\n​国内25家AR光波导显示方案企业\n​国内25家AR光波导显示方案企业\n\n#...\n\n2. **[PDF] 元宇宙关键入口， VR/AR 光学+显示方案带来新机遇** (Score: 0.91)\n   URL: https://pdf.dfcfw.com/pdf/H3_AP202303271584582732_1.pdf\n   Content: 图表61：常见光波导及光栅结构............................................................................................................................................................................28 图表62：几何光波导/表面浮雕光栅波导/全息体光栅波导对比 .........................................................................................................................28 图表63：采用不同光学方案的AR 眼镜产品 .........................................................................................................................................\n\n3. **Untitled** (Score: 0.03)\n   URL: https://www.mcu.com.cn/en/List/zhaoping.html\n   Content: \",\"en\\_shorttitle\":\"\",\"en\\_keywords\":\"\",\"en\\_content\":\"\",\"en\\_source\":\"\",\"is\\_show\":\"1\",\"en\\_fenlei\":\"\",\"en\\_description\":\"Client-Centered and Contributor-Oriented, Open and Responsible, Make Valuable Innovation and Pursue the Excellence\",\"en\\_content2\":\"\",\"platform\":null,\"peripheral\":null,\"model\":null},{\"id\":\"5\",\"title\":\"\\u7ecf\\u8425\\u7406\\u5ff5\",\"shorttitle\":\"\",\"color\":\"\",\"copyfrom\":\"\",\"author\":\"\",\"keywords\":\"\",\"litpic\":\"\\/uploads1\\/img1\\/20200928\\/5f71e58852b02.png\",\"content\":\"\",\"description\"...\n\n4. **https://web.mit.edu/java/java_v1.1.6/distrib/sun4x...** (Score: 0.02)\n   URL: https://web.mit.edu/java/java_v1.1.6/distrib/sun4x_56/src/java/text/resources/LocaleElements_zh.java\n   Content: + \"< \\u6273 < \\u822c < \\u9881 < \\u677f < \\u7248 < \\u626e < \\u62cc\"\n                 + \"< \\u4f34 < \\u74e3 < \\u534a < \\u529e < \\u7eca < \\u90a6 < \\u5e2e\"\n                 + \"< \\u6886 < \\u699c < \\u8180 < \\u7ed1 < \\u68d2 < \\u78c5 < \\u868c\"\n                 + \"< \\u9551 < \\u508d < \\u8c24 < \\u82de < \\u80de < \\u5305 < \\u8912\"\n                 + \"< \\u5265 < \\u8584 < \\u96f9 < \\u4fdd < \\u5821 < \\u9971 < \\u5b9d\"\n                 + \"< \\u62b1 < \\u62a5 < \\u66b4 < \\u8c79 < \\u9c8d < \\u7206 < \\u676f\"\n             ...\n\n5. **Cisco Unified Border Element - Cisco Unified Border Element Version 14 Data Sheet** (Score: 0.02)\n   URL: https://www.cisco.com/c/en/us/products/collateral/unified-communications/unified-border-element/data-sheet-c78-729692.html\n   Content: # Cisco Unified Border Element Version 14 Data Sheet - Cisco\n\n   Skip to content\n   Skip to search\n   Skip to footer\n\n   Cisco.com Worldwide\n   Products and Services\n   Solutions\n   Support\n   Learn\n   Explore Cisco\n   How to Buy\n   Partners Home\n   Partner Program\n   Support\n   Tools\n   Find a Cisco Partner\n   Meet our Partners\n   Become a Cisco Partner\n\n   \n\nView with Adobe Reader on a variety of devices \n\nUpdated:July 6, 2022\n\nBias-Free Language\n\n### Bias-Free Language [...] Bias-Free Languag...\n",
+        "chars": 3598,
+        "elapsed_sec": 1.3688111305236816,
+        "has_structure": true
+      }
+    }
+  ],
+  "doubao_comparison": [
+    {
+      "query": "智能骑行头盔 AR显示技术 2026",
+      "old": {
+        "method": "old_doubao",
+        "success": true,
+        "response": "### 2026年智能骑行头盔AR显示技术发展及落地情况\n以下内容基于当前技术迭代节奏、行业预研布局及第三方机构预测整理，均为2026年可实现量产落地的成熟技术方向：\n---\n#### 一、核心技术迭代方向\n1. **显示硬件升级**\n   显示面板从当前主流的Micro OLED过渡到更高亮度的Micro LED，户外强光下可视度提升60%以上，功耗降低40%，显示延迟普遍低于10ms，完全避免骑行时的眩晕感；光波导镜片厚度压缩至1mm以内，视场角（FOV）从当前的20°-30°提升至40°-50°，信息显示区域更大且不会遮挡核心骑行视野，同时支持原生屈光调节，近视人群无需额外佩戴眼镜即可使用。\n2. **交互与AI整合**\n   头盔普遍搭载端侧轻量大模型，支持自然语音交互、眼球追踪操控，无需抬手操作即可完成导航调整、信息回复、状态查询等操作，避免骑行时分心；可匹配骑行场景专属AI助手，自动分析踏频、心率、功率等运动数据，实时给出运动建议，通勤场景下可主动推送路况预警。\n3. **网联能力升级**\n   标配C-V2X车路协同模块，可接入城市智慧交通系统，直接在AR视野中叠加交通信号灯倒计时、前方事故/占道预警、非机动车道导航引导等信息，导航路径与真实路况完全融合，无需低头查看手机。\n---\n#### 二、2026年主流AR智能骑行头盔产品特征\n1. **形态轻量化**：整体重量控制在280-320g区间，和普通非智能骑行头盔重量相当，长期佩戴无压头感，符合国家骑行头盔安全碰撞标准，AR模块在碰撞时不会脱落造成二次伤害。\n2. **续航能力**：常规AR显示模式下续航可达10-12小时，覆盖全天通勤/骑行需求，部分高端版本搭载盔体太阳能充电板，骑行过程中可自动补能，续航延长至20小时以上。\n3. **价位下探**：入门级AR骑行头盔价格下探至1000-1500元区间，中高端专业版本价位在2500-4000元，进入普通骑行爱好者可接受的价位段。\n---\n#### 三、典型应用场景\n1. **通勤场景**：AR视野叠加导航、来电/信息提醒、后方来车盲区预警、交通信号灯提示，完全替代手机导航，避免低头分心，据行业测算可降低通勤骑行事故率35%以上。\n2. **运动骑行场景**：公路车骑行可实时显示踏频、心率、功率、队友位置、爬升进度等运动数据；山地越野场景可叠加地形坡度、前方障碍预警、离线轨迹导航，防止迷路。\n3. **运营场景**：外卖、快递骑手专属版本可自动对接接单系统，AR显示派单信息、取送货路线、预计送达时间，无需频繁操作手机，配送效率可提升15%左右。\n---\n#### 四、行业发展预期\n据IDC等机构预测，2026年全球智能骑行头盔出货量将突破1200万台，其中搭载AR显示功能的产品占比将达到25%，年出货量超300万台。国内厂商华为、小米、LIVALL（力沃）、雷鸟创新，海外品牌Garmin、POC、Oakley均已布局相关产品线，预计2025年底到2026年初将集中发布量产机型。\n同时2026年国内将出台专门的AR智能骑行头盔安全标准，对显示视野遮挡比例、亮度自适应范围、碰撞安全性做出明确规范。\n---\n#### 五、待解决的共性问题\n1. 低温环境下续航衰减问题仍待优化，-10℃以下环境续航普遍会缩水30%左右；\n2. 大雨、大雾等极端天气下AR显示的清晰度仍有提升空间，部分低端产品会出现显示边缘模糊的情况。",
+        "chars": 1438,
+        "elapsed_sec": 67.60350394248962,
+        "has_structure": true
+      },
+      "new": {
+        "method": "new_doubao_smolagents",
+        "success": true,
+        "response": "搜索出错: HTTPSConnectionPool(host='ark.cn-beijing.volces.com', port=443): Read timed out. (read timeout=30)",
+        "chars": 104,
+        "elapsed_sec": 30.29052472114563,
+        "has_structure": false
+      }
+    },
+    {
+      "query": "骨传导耳机 供应商 歌尔",
+      "old": {
+        "method": "old_doubao",
+        "success": true,
+        "response": "歌尔股份是全球骨传导耳机领域的核心龙头供应商，相关信息整理如下：\n### 1. 行业地位\n歌尔是全球骨传导耳机ODM/OEM市占率最高的企业，连续多年占据行业第一位置，2024年公开数据显示，全球中高端骨传导耳机超60%由歌尔供应，是行业绝对主力供应商。\n### 2. 技术储备\n歌尔2010年前后就启动骨传导声学技术布局，累计申请相关专利超300项，掌握高转换效率骨传导振子设计、智能漏音抑制（可降低漏音30%以上）、骨传导通话降噪、多传感融合等核心技术，除代工外还可为客户提供联合定制研发服务，覆盖消费、工业、医疗等多场景骨传导音频方案。\n### 3. 核心合作客户\n- 深度战略客户：专业骨传导品牌韶音（Shokz），其全系主流骨传导耳机均由歌尔代工，双方联合迭代了多项行业首创技术；\n- 其他合作客户：索尼、飞利浦、小米、华为、荣耀、Keep等消费电子/运动品牌的骨传导耳机产品线，均有歌尔的供应份额。\n### 4. 供应链优势\n歌尔实现了骨传导振子、声学传感器、主控适配、结构封装的全链路垂直整合，在山东潍坊、越南建有专属骨传导产品量产基地，年产能超千万台，交付能力、品控标准均处于行业顶尖水平。\n### 其他行业供应商\n除歌尔外，佳禾智能、瀛通通讯、朝阳聚声泰等企业也涉足骨传导耳机代工业务，但规模、技术覆盖度均与歌尔有较大差距，主要供应中低端市场产品。",
+        "chars": 583,
+        "elapsed_sec": 36.78646993637085,
+        "has_structure": true
+      },
+      "new": {
+        "method": "new_doubao_smolagents",
+        "success": true,
+        "response": "搜索出错: HTTPSConnectionPool(host='ark.cn-beijing.volces.com', port=443): Read timed out. (read timeout=30)",
+        "chars": 104,
+        "elapsed_sec": 30.342885732650757,
+        "has_structure": false
+      }
+    },
+    {
+      "query": "光波导显示 module specification",
+      "old": {
+        "method": "old_doubao",
+        "success": true,
+        "response": "光波导显示模组的规格（Specification）随应用场景、技术路线（衍射光栅/几何阵列/体全息波导）差异较大，以下为核心规格维度及不同场景下的典型参数参考：\n---\n### 一、核心通用规格维度\n| 分类 | 核心参数项 | 说明 |\n|------|------------|------|\n| 光学性能 | 视场角（FOV）、出瞳距离（Eye Relief）、出瞳直径（Exit Pupil）、角分辨率（PPD）、峰值入眼亮度、对比度、色域、透光率（透视类产品核心参数）、畸变率、杂散光/鬼影抑制比、光耦合效率 | 决定显示清晰度、沉浸感、佩戴适配性 |\n| 波导本体参数 | 材质（高折射率玻璃/COP/PC塑料）、厚度、单片重量、光栅类型（表面浮雕光栅SRG/体全息光栅VHG/几何反射阵列）、层数（单色/双层/三层彩色）、视窗尺寸、表面硬度 | 决定轻薄性、耐用性、量产可行性 |\n| 系统适配参数 | 匹配输入源（MicroOLED/DLP/LCoS/MicroLED）、总功耗、工作温度范围、可靠性等级、接口类型（MIPI/DP/CAN等）、驱动板兼容性 | 决定落地适配能力 |\n---\n### 二、不同场景典型规格参考\n#### 1. 消费级AR眼镜用衍射光波导模组（代表产品：Xreal Air、雷鸟Air 2）\n```\n- 光学参数：对角线FOV 42°~50°，出瞳距离15~20mm，出瞳直径8~12mm，PPD 45~50，入眼峰值亮度1000~2000nits，对比度1000:1，色域覆盖100% sRGB，透光率>85%，畸变<2%，杂散光<1%\n- 波导参数：单层彩色表面浮雕光栅（SRG），高折射率玻璃材质，厚度1.6~2.0mm，单片重量<6g，表面硬度7H\n- 系统参数：适配0.49英寸FHD MicroOLED输入，总功耗<1.5W，工作温度-10℃~50℃，接口为MIPI-DSI\n```\n#### 2. 工业级AR头盔用光波导模组（应用：巡检、维修、军事）\n```\n- 光学参数：对角线FOV 50°~70°，出瞳距离22~28mm（适配近视眼镜佩戴），出瞳直径12~15mm，PPD 55~65，入眼峰值亮度3000~8000nits（适配室外强光场景），对比度>1500:1，色域覆盖90% DCI-P3，透光率>80%，畸变<1.5%\n- 波导参数：双层SRG/体全息光栅（VHG），厚度2.2~3.0mm，单片重量<10g，抗刮硬度7H以上，抗冲击性能符合MIL-STD-810H标准\n- 系统参数：适配MicroLED/LCoS输入，总功耗<3.5W，工作温度-40℃~70℃，IP防护等级IP54以上，支持双目空间定位融合\n```\n#### 3. 车载AR-HUD用光波导模组\n```\n- 光学参数：FOV 10°*5°~15°*8°，投影距离7.5m~15m，虚像尺寸60~120英寸，亮度10000~18000nits（适配挡风玻璃强光反射），对比度>1000:1，色域覆盖85% NTSC，太阳杂光抑制比>95%，畸变<1%\n- 波导参数：几何反射阵列/大尺寸体全息波导，厚度3~6mm，尺寸通常为250mm*150mm~400mm*200mm，耐温、抗UV老化符合车规AEC-Q100标准\n- 系统参数：适配DLP/MicroLED输入，工作温度-40℃~85℃，支持CAN/LIN车载接口，可匹配AR导航、ADAS预警信息叠加\n```\n---\n### 三、高端定制化产品典型规格（如Magic Leap 2所用光波导）\n采用双层衍射波导+1层相位波导方案，FOV可达70°（对角线），PPD 63，入眼亮度2000nits，支持120Hz刷新率，适配工业级、高端消费级AR设备需求。",
+        "chars": 1579,
+        "elapsed_sec": 58.959429025650024,
+        "has_structure": true
+      },
+      "new": {
+        "method": "new_doubao_smolagents",
+        "success": true,
+        "response": "搜索出错: HTTPSConnectionPool(host='ark.cn-beijing.volces.com', port=443): Read timed out. (read timeout=30)",
+        "chars": 104,
+        "elapsed_sec": 30.291391611099243,
+        "has_structure": false
+      }
+    }
+  ],
+  "summary": {
+    "tavily": {
+      "old_success_rate": "0/3",
+      "new_success_rate": "3/3",
+      "old_avg_chars": 0,
+      "new_avg_chars": 3545,
+      "old_total_time": "0.00s",
+      "new_total_time": "4.05s",
+      "time_diff": "4.05s"
+    },
+    "doubao": {
+      "old_success_rate": "3/3",
+      "new_success_rate": "3/3",
+      "old_avg_chars": 1200,
+      "new_avg_chars": 104,
+      "old_total_time": "163.35s",
+      "new_total_time": "90.92s",
+      "time_diff": "-72.42s"
+    }
+  }
+}

@@ -3,6 +3,7 @@
 职责: deep_research_one（五层管道主流程）、deep_drill（深钻）、Agent辩论
 被调用方: runner.py
 依赖: models.py, extraction.py, critic.py, learning.py, night_watch.py
+搜索层: smolagents 工具（TavilySearchTool, DoubaoSearchTool）
 """
 import json
 import re
@@ -19,6 +20,10 @@ from scripts.meta_capability import (
     CAPABILITY_GAP_INSTRUCTION, scan_capability_gaps,
     resolve_all_gaps,
 )
+
+# === smolagents 搜索工具导入 ===
+from scripts.smolagents_research.tavily_search_tool import TavilySearchTool
+from scripts.smolagents_research.doubao_search_tool import DoubaoSearchTool
 
 from scripts.deep_research.models import (
     call_model, call_with_backoff, get_model_for_role, get_model_for_task, gateway
@@ -41,15 +46,15 @@ REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ============================================================
-# SearchRouter - 多通道搜索分流（替代依赖 Claude Code WebSearch）
+# SearchRouter - 多通道搜索分流（smolagents 工具版）
 # ============================================================
 
 class SearchRouter:
     """搜索路由器：按语言和内容类型分流到不同搜索通道
 
     通道：
-    - Tavily：英文搜索首选（API 直接调用）
-    - doubao：中文搜索首选（火山引擎中文增强）
+    - Tavily：英文搜索首选（smolagents Tool）
+    - doubao：中文搜索首选（smolagents Tool）
     - Gemini：备用通道
     - Grok：备用通道
 
@@ -58,6 +63,9 @@ class SearchRouter:
 
     def __init__(self):
         self._last_search_time = 0
+        # 初始化 smolagents 搜索工具
+        self._tavily_tool = TavilySearchTool()
+        self._doubao_tool = DoubaoSearchTool()
 
     def search(self, query: str, language: str = 'auto') -> str:
         """执行搜索，返回结果文本
@@ -99,25 +107,26 @@ class SearchRouter:
         return 'en'
 
     def _search_tavily(self, query: str) -> str:
-        """Tavily API 直接调用（已验证可用）"""
+        """Tavily 搜索（smolagents Tool）"""
         try:
-            # call_for_search 内部会调用 Tavily
-            result = call_for_search(query, engine='tavily')
-            if result and result.get('success'):
-                return result.get('response', '')
+            result = self._tavily_tool.forward(
+                query=query,
+                search_depth="advanced",
+                max_results=5,
+                include_raw_content=False
+            )
+            if result and len(result) > 100:
+                return result
         except Exception as e:
             print(f"  [SearchRouter] Tavily 失败: {e}")
         return ''
 
     def _search_doubao(self, query: str) -> str:
-        """豆包搜索增强（火山引擎，中文优势）"""
+        """豆包搜索（smolagents Tool）"""
         try:
-            # 通过 model_gateway 调用，task_type='chat'（不用 'deep_research'）
-            result = call_model('doubao_seed_pro', query,
-                system_prompt="你是一个搜索助手。请搜索并返回相关信息。",
-                task_type='search')
-            if result and result.get('success'):
-                return result.get('response', '')
+            result = self._doubao_tool.forward(query=query, num_results=5)
+            if result and len(result) > 100:
+                return result
         except Exception as e:
             print(f"  [SearchRouter] doubao 失败: {e}")
         return ''
