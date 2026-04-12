@@ -1023,3 +1023,127 @@ MODEL_MAP = {
 3. **扩展**: 添加更多模型到 MODEL_MAP
 
 ---
+
+## [实现] smolagents 深度研究搜索层 - 2026-04-12 11:31
+
+### 1. 安装 smolagents
+
+- **版本**: v1.24.0
+- **安装方式**: `pip install smolagents[litellm]`
+- **依赖冲突**: huggingface-hub 版本冲突（可忽略）
+
+### 2. 创建 scripts/smolagents_research/ 目录
+
+**文件结构**:
+```
+scripts/smolagents_research/
+├── doubao_search_tool.py    # 豆包搜索 Tool (50行)
+├── tavily_search_tool.py    # Tavily 搜索 Tool (80行)
+├── run_research.py          # 入口脚本 (150行)
+└── test_research.py         # 测试脚本 (130行)
+```
+
+### 3. Tool 实现
+
+**DoubaoSearchTool**:
+```python
+class DoubaoSearchTool(Tool):
+    name = "doubao_search"
+    description = "使用豆包搜索引擎搜索信息，适合中文查询。"
+    inputs = {"query": {"type": "string"}, "num_results": {"type": "integer"}}
+    output_type = "string"
+    
+    def forward(self, query: str, num_results: int = 5) -> str:
+        # 调用豆包 API 返回结果
+```
+
+**TavilySearchTool**:
+```python
+class TavilySearchTool(Tool):
+    name = "tavily_search"
+    description = "使用 Tavily 搜索引擎进行专业搜索。"
+    inputs = {"query": {"type": "string"}, "search_depth": {"type": "string"}}
+    output_type = "string"
+    
+    def forward(self, query, search_depth="basic", max_results=5) -> str:
+        # 调用 Tavily API 返回结构化结果
+```
+
+### 4. Agent 配置
+
+**LiteLLMModel 对接**:
+```python
+model = LiteLLMModel(
+    model_id="azure/gpt-4o",
+    api_key=os.getenv("AZURE_OPENAI_NORWAY_API_KEY"),
+    api_base=os.getenv("AZURE_OPENAI_NORWAY_ENDPOINT"),
+)
+```
+
+**Tool 注册**:
+```python
+agent = CodeAgent(
+    tools=[DoubaoSearchTool(), TavilySearchTool()],
+    model=model,
+    max_steps=10,
+)
+```
+
+**step_callbacks 预留**:
+- `critic_hook`: P0/P1/P2 评审（预留对接 scripts/deep_research/critic.py）
+- `kb_insert_hook`: KB 入库（预留对接 scripts/deep_research/kb_manager.py）
+
+### 5. 端到端测试结果
+
+**测试查询**: `"SeeYA 0.49 OLED microdisplay specifications"`
+
+**测试结果**: **3/3 PASS**
+
+| 测试项 | 状态 | 说明 |
+|-------|------|------|
+| TavilyTool 直接调用 | ✓ PASS | 返回 AI Summary + 3 条搜索结果 |
+| Agent 端到端调用 | ✓ PASS | 4 步完成，耗时 9.5s |
+| 模型配置检查 | ✓ PASS | Azure/Volcengine/Gemini 全部配置正确 |
+
+**Agent 输出结果**:
+```json
+{
+  "Resolution": "1920x1080 (FHD)",
+  "Brightness": "Up to 3000 nits",
+  "Contrast Ratio": "50,000:1",
+  "Interface": "MIPI",
+  "Frame Rate": "60Hz to 90Hz",
+  "Operating Temperature Range": "-20°C to +70°C",
+  "Size": "0.49 inches",
+  "Weight": "Around 1 gram"
+}
+```
+
+### 6. 关键发现
+
+1. **CodeAgent 工具调用流程**:
+   - Step 1: 模型生成思考（选择使用哪个 tool）
+   - Step 2: 执行 Python 代码调用 tool
+   - Step 3: 模型总结结果
+   - Step 4: 调用 `final_answer()` 输出
+
+2. **LiteLLMModel 对接成功**:
+   - Azure OpenAI Norway endpoint 正常工作
+   - 模型生成代码格式需符合 `<code>` 标签要求
+
+3. **step_callbacks 需通过 CallbackRegistry 注册**:
+   - 不能直接传入 CodeAgent 参数
+   - 需后续研究正确的注册方式
+
+### 7. 产出文件
+
+- `scripts/smolagents_research/` 目录（4 个文件）
+- `.ai-state/smolagents_test_report.json` 测试报告
+
+### 8. 下一步
+
+1. **研究 step_callbacks 正确注册方式**
+2. **对接 Critic 和 KB 入库 hook**
+3. **替换 scripts/deep_research/pipeline.py 搜索层**
+
+---

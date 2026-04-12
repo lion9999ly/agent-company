@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-04-12T11:30:58.071267",
+  "tests": {
+    "tavily_tool": {
+      "success": true,
+      "result": "## AI Summary\nThe SeeYA 0.49 OLED microdisplay is a 1080P FHD 1920x1080 resolution module with 3000 nits brightness, used in AR and VR headsets. It features a 50000:1 contrast ratio and 20000 nits luminance. The display is based on single-crystal silicon transistors.\n\n## Search Results (3 items)\n\n1. **[PDF] SeeYA 0.49” Micro-OLED Specification Model Name: SY049WDM02** (Score: 0.93)\n   URL: https://mansky.co.uk/assets/uploads/pdfs/SeeYA_SY049WDM02_Specification_V1.1_20210415.pdf\n   Content: SeeYA 0.49” Micro-OLED SeeYA Technology CMODE(0300h): Compression Mode 0400H RDID123 Instruction R/W Address Parameter MIPI Other D15- D8 D7 D6 D5 D4 D3 D2 D1 D0 CMODE R/W 03h 0300h - - - - - - - - CMODE Description These commands are used for compression mode Bit Symbol Description Comment D0 CMODE Enable/Disable compression mode 0=Disable 1=Enable Restriction - Default Status Default Value Power On Sequence 0300h 80h SW Reset The same as above HW Reset The same as above Flow Chart Legend CMODE...\n\n2. **Seeya Micro Display - 20000nits OLED with 1920*1080 Resolution** (Score: 0.90)\n   URL: https://www.alibaba.com/product-detail/SeeYA-0-49-inch-1920-1080_1600922351560.html\n   Content: SeeYA 0.49 inch micro display offers 1920*1080 resolution, 20000nits luminance, and 50000:1 contrast ratio. Ideal for AR monoculars and high-resolution OLED...\n\n3. **Seeya 0.49\" Micro OLED Display 3000nits 1920X1080 for Sight/Ar/Vr/Night Version - Seeya and Micro OLED Display** (Score: 0.90)\n   URL: https://www.made-in-china.com/showroom/shgxgd/product-detailRGJYNVQzTUro/China-Seeya-0-49-Micro-OLED-Display-3000nits-1920X1080-for-Sight-Ar-Vr-Night-Version.html\n   Content: # Seeya 0.49\" Micro OLED Display 3000nits 1920X1080 for Sight/Ar/Vr/Night Version. Shanghai Top Display Optoelectronics Co., Ltd. What's your impression of this company? Main Products: LCD/OLED Display, Intelligent Display, Near-Eye Displays. | This display is a 0.49 inch diagonal, 1920(RGB) × 1080 dots active matrix color OLED module based on single-crystal silicon transistors. LCD/OLED Display, Intelligent Display, Near-Eye Displays. Company Introduction: Shanghai Top Display Optoelectronics (...\n"
+    },
+    "agent_e2e": {
+      "success": true,
+      "result": {
+        "Resolution": "1920x1080 (FHD)",
+        "Brightness": "Up to 3000 nits",
+        "Contrast Ratio": "50,000:1",
+        "Interface": "MIPI",
+        "Frame Rate": "60Hz to 90Hz",
+        "Operating Temperature Range": "-20°C to +70°C",
+        "Size": "0.49 inches",
+        "Weight": "Around 1 gram"
+      },
+      "elapsed": 9.478082
+    },
+    "model_config": {
+      "success": true
+    }
+  }
+}
