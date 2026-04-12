@@ -945,3 +945,81 @@ def kb_insert_hook(memory_step, agent=None):
 4. Windows 使用最新版本（v1.13+）
 
 ---
+
+## [实现] LiteLLM 替换 model_gateway - 2026-04-12 11:16
+
+### 1. 安装 LiteLLM
+
+- **版本**: v1.82.5
+- **安装方式**: `pip install litellm`
+- **依赖**: aiohttp, click, httpx, openai, pydantic, tiktoken
+
+### 2. 创建 litellm_gateway.py
+
+**文件**: `scripts/litellm_gateway.py`
+
+**核心功能**:
+- 统一调用接口 `call(model_name, prompt, ...)`
+- 兼容旧 model_gateway 接口
+- 支持三个 Provider: Azure, Volcengine, Gemini
+- 内置 Fallback 降级链
+- Provider 状态检查
+
+**模型路由映射**:
+```python
+MODEL_MAP = {
+    # Azure OpenAI (使用 azure/ 前缀)
+    "gpt_5_4": {"provider": "azure", "model": "azure/gpt-5.4"},
+    "gpt_4o": {"provider": "azure_norway", "model": "azure/gpt-4o"},
+    
+    # 火山引擎 (使用 openai/ 前缀 + api_base)
+    "doubao_seed_pro": {"provider": "volcengine", "model": "openai/doubao-seed-2-0-pro-260215"},
+    
+    # Gemini (使用 gemini/ 前缀)
+    "gemini_2_5_flash": {"provider": "gemini", "model": "gemini/gemini-2.5-flash"},
+}
+```
+
+### 3. 三 Provider 连通性测试
+
+**测试时间**: 2026-04-12 11:16
+
+**结果**: **3/3 PASS**
+
+| Provider | 模型 | 响应 | Tokens | 状态 |
+|----------|------|------|--------|------|
+| Azure OpenAI | azure/gpt-4o | "Azure OK" | 23 | ✓ PASS |
+| Volcengine | openai/doubao-seed-2-0-pro | "豆包 OK" | 118 | ✓ PASS |
+| Gemini | gemini/gemini-2.5-flash | (响应成功) | 32 | ✓ PASS |
+
+### 4. 关键发现
+
+**LiteLLM 模型命名规则**:
+- Azure OpenAI: `azure/<deployment_name>` (deployment 需正确)
+- 火山引擎: `openai/<model_name>` + 自定义 `api_base`
+- Gemini: `gemini/<model_name>` (直接使用)
+
+**注意事项**:
+- Azure deployment 名称必须与 Azure Portal 一致
+- 火山引擎需用 `openai/` 前缀，不能用裸模型名
+- Gemini API Key 需在 Google AI Studio 创建
+
+### 5. 旧 model_gateway.py 状态
+
+- **保留**: 不删除，并行运行验证
+- **位置**: `src/utils/model_gateway.py` (不存在，实际在 `.venv`)
+- **新位置**: `scripts/litellm_gateway.py`
+
+### 6. 产出文件
+
+- `scripts/litellm_gateway.py` - LiteLLM 统一网关 (200行)
+- `scripts/test_litellm_gateway.py` - 测试脚本 (170行)
+- `.ai-state/litellm_test_report.json` - 测试报告
+
+### 7. 下一步建议
+
+1. **验证**: 将 `scripts/deep_research/pipeline.py` 改用 litellm_gateway
+2. **替换**: 确认稳定后，逐步迁移所有 model_gateway 调用
+3. **扩展**: 添加更多模型到 MODEL_MAP
+
+---

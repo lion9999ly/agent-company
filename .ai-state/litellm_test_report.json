@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-04-12T11:16:05.899602",
+  "success_count": 3,
+  "total_count": 3,
+  "passed": true,
+  "results": {
+    "azure": {
+      "success": true,
+      "response": "Azure OK",
+      "model": "azure/gpt-4o",
+      "tokens_used": 23,
+      "prompt_tokens": 20,
+      "completion_tokens": 3
+    },
+    "volcengine": {
+      "success": true,
+      "response": "豆包 OK",
+      "model": "openai/doubao-seed-2-0-pro-260215",
+      "tokens_used": 118,
+      "prompt_tokens": 62,
+      "completion_tokens": 56
+    },
+    "gemini": {
+      "success": true,
+      "response": null,
+      "model": "gemini/gemini-2.5-flash",
+      "tokens_used": 32,
+      "prompt_tokens": 15,
+      "completion_tokens": 17
+    }
+  }
+}
