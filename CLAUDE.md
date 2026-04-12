@@ -1,6 +1,6 @@
 # CLAUDE.md 版本号（每次修改必须更新此版本号）
 
-**VERSION: 20260412.1**
+**VERSION: 20260412.2**
 
 ## 版本号检查规则（最高优先级）
 
@@ -482,6 +482,7 @@ python scripts/doc_sync_validator.py
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-04-12 | **执行报告规则**: 飞书任务完成后追加 claude_chat_inbox.md，CLAUDE.md v20260412.2 |
 | 2026-04-12 | **系统设计原则**: 新增 8 条核心设计原则，CLAUDE.md v20260412.1 |
 | 2026-04-11 | **轮子检查规则**: 开发新组件前必须先搜索GitHub开源方案，CLAUDE.md v20260411.2 |
 | 2026-04-09 | **报告输出规则**: 圆桌结果/诊断报告/修复报告必须创建 GitHub Issue，CLAUDE.md v20260409.1 |
@@ -669,6 +670,16 @@ python scripts/regression_check.py --quick   # 快速检查
 ```
 
 这使用 Windows 内置扬声器发出两声蜂鸣，通知用户任务已完成。
+
+---
+
+## 执行报告规则
+
+每次完成飞书消息指派的任务后，必须：
+1. 把任务摘要追加到 `.ai-state/claude_chat_inbox.md`（包括：做了什么、改了哪些文件、关键结果）
+2. `git add .ai-state/claude_chat_inbox.md && git commit -m "report: [任务简述]" && git push`
+
+这样 Claude Chat 可以通过 GitHub 了解系统变化，不需要 Leo 手动转达。
 
 ---
 
