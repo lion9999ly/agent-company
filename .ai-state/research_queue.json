@@ -1,0 +1,97 @@
+{
+  "last_updated": "2026-04-12T12:00:00",
+  "queue": [
+    {
+      "id": "R001",
+      "name": "HUD 光学方案对比",
+      "query": "motorcycle helmet HUD optical solution comparison 2026: microLED vs OLED vs waveguide",
+      "category": "technical",
+      "priority": "high",
+      "status": "pending"
+    },
+    {
+      "id": "R002",
+      "name": "语音交互降噪方案",
+      "query": "motorcycle helmet voice control noise cancellation technology 2026: wind noise suppression algorithms",
+      "category": "technical",
+      "priority": "high",
+      "status": "pending"
+    },
+    {
+      "id": "R003",
+      "name": "电池续航优化",
+      "query": "smart helmet battery life optimization 2026: low power display, thermal management, size constraints",
+      "category": "technical",
+      "priority": "high",
+      "status": "pending"
+    },
+    {
+      "id": "R004",
+      "name": "Mesh 通讯协议选型",
+      "query": "motorcycle Mesh communication protocol comparison 2026: Cardin vs Sena vs proprietary solutions",
+      "category": "technical",
+      "priority": "medium",
+      "status": "pending"
+    },
+    {
+      "id": "R005",
+      "name": "碰撞预警传感器布局",
+      "query": "motorcycle collision warning sensor placement 2026: radar vs camera vs ultrasonic integration",
+      "category": "technical",
+      "priority": "medium",
+      "status": "pending"
+    },
+    {
+      "id": "R006",
+      "name": "ECE 22.06 电子集成合规",
+      "query": "ECE 22.06 helmet standard electronic integration compliance 2026: testing requirements, certification process",
+      "category": "regulatory",
+      "priority": "high",
+      "status": "pending"
+    },
+    {
+      "id": "R007",
+      "name": "智能头盔用户接受度",
+      "query": "smart motorcycle helmet user adoption survey 2026: price sensitivity, feature preferences, safety concerns",
+      "category": "market",
+      "priority": "medium",
+      "status": "pending"
+    },
+    {
+      "id": "R008",
+      "name": "陀螺仪姿态算法",
+      "query": "motorcycle helmet gyroscope head tracking algorithm 2026: IMU sensor fusion, latency reduction",
+      "category": "technical",
+      "priority": "medium",
+      "status": "pending"
+    },
+    {
+      "id": "R009",
+      "name": "地图导航 HUD 界面设计",
+      "query": "motorcycle HUD navigation interface design 2026: UI guidelines, information density, glance time optimization",
+      "category": "ux",
+      "priority": "medium",
+      "status": "pending"
+    },
+    {
+      "id": "R010",
+      "name": "供应链成本分析",
+      "query": "smart helmet manufacturing cost breakdown 2026: display module, sensors, assembly, mass production scaling",
+      "category": "business",
+      "priority": "high",
+      "status": "pending"
+    }
+  ],
+  "metadata": {
+    "total": 10,
+    "pending": 10,
+    "completed": 0,
+    "categories": {
+      "technical": 6,
+      "regulatory": 1,
+      "market": 1,
+      "ux": 1,
+      "business": 1
+    }
+  }
+}

@@ -410,6 +410,35 @@
 
 ---
 
+## [创建] 定时任务调度系统 - 2026-04-12 12:20
+
+- **结果**：✅ 通过
+- **关键数据**：
+  - 安装 schedule 库 v1.2.2
+  - 创建 scheduled_tasks.py (350行) - 调度入口
+  - 三任务配置：00:00深度学习、06:00竞品监控、07:00系统日报
+  - 飞书推送：通过 curl localhost:9100 转发，只推开始+完成+异常
+- **研究队列**：
+  - 创建 research_queue.json 初始化10个主题
+  - 分类：technical(6)、regulatory(1)、market(1)、ux(1)、business(1)
+  - 主题包括：HUD光学方案、语音降噪、电池续航、Mesh通讯、碰撞预警、ECE合规、用户接受度、陀螺仪算法、HUD界面设计、供应链成本
+- **产出文件**：
+  - `scripts/scheduled_tasks.py` (调度入口)
+  - `.ai-state/research_queue.json` (10个研究主题)
+  - `C:\Users\uih00653\metabot\start_scheduled_tasks.bat`
+  - `C:\Users\uih00653\metabot\start_scheduled_tasks_hidden.vbs`
+  - `C:\Users\uih00653\metabot\create_scheduled_task.ps1`
+- **Windows 计划任务**：
+  - 任务名：Scheduled_Tasks_AutoStart
+  - 触发器：登录时
+  - 需以管理员权限运行 `create_scheduled_task.ps1`
+- **运行方式**：
+  - 调度器：`py scripts/scheduled_tasks.py`
+  - 测试：`py scripts/scheduled_tasks.py --task deep_research`
+  - 全量测试：`py scripts/scheduled_tasks.py --run-now`
+
+---
+
 ## [创建] agentskills.io 标准 Skill 系统 - 2026-04-12 10:30
 
 - **结果**：通过
